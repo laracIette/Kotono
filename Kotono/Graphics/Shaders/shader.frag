@@ -1,17 +1,8 @@
-#version 330
+#version 330 core
 
-out vec4 outputColor;
-
-in vec2 texCoord;
-
-#define NR_OF_TEXTURES 2
-
-uniform sampler2D textures[NR_OF_TEXTURES];
+out vec4 FragColor;
 
 void main()
 {
-    for (int i = 0; i < NR_OF_TEXTURES; i++)
-        outputColor += texture(textures[i], texCoord);
-
-    outputColor /= NR_OF_TEXTURES;
+    FragColor = vec4(1.0);
 }

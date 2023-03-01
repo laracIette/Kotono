@@ -1,33 +1,29 @@
 ﻿using OpenTK.Graphics.OpenGL4;
-using OpenTK.Mathematics;
 using PixelFormat = OpenTK.Graphics.OpenGL4.PixelFormat;
 using StbImageSharp;
-using System.IO;
+using Path = Kotono.Utils.Path;
 
 namespace Kotono.Graphics.Objects
 {
-    public class Image2D : ITexture2D
+    public class Texture
     {
         public readonly int Handle;
 
-        private readonly TextureUnit _unit;
-
-        public Image2D(int glHandle, TextureUnit unit)
+        public Texture(int glHandle)
         {
             Handle = glHandle;
-            _unit = unit;
         }
 
-        public static Image2D LoadFromFile(string path, TextureUnit unit)
+        public static Texture LoadFromFile(string path)
         {
             int handle = GL.GenTexture();
 
-            GL.ActiveTexture(unit);
+            GL.ActiveTexture(TextureUnit.Texture0);
             GL.BindTexture(TextureTarget.Texture2D, handle);
 
             StbImage.stbi_set_flip_vertically_on_load(1);
 
-            using (Stream stream = File.OpenRead(path))
+            using (Stream stream = File.OpenRead(Path.Assets + path))
             {
                 ImageResult image = ImageResult.FromStream(stream, ColorComponents.RedGreenBlueAlpha);
 
@@ -42,42 +38,13 @@ namespace Kotono.Graphics.Objects
 
             GL.GenerateMipmap(GenerateMipmapTarget.Texture2D);
 
-            return new Image2D(handle, unit);
+            return new Texture(handle);
         }
 
-        public void Use()
+        public void Use(TextureUnit unit)
         {
-            GL.ActiveTexture(_unit);
+            GL.ActiveTexture(unit);
             GL.BindTexture(TextureTarget.Texture2D, Handle);
-        }
-
-        public void Draw()
-        {
-            Use();
-        }
-
-        public Vector2 Position 
-        { 
-            get; 
-            set; 
-        }
-
-        public Vector2 Size
-        {
-            get;
-            set;
-        }
-
-        public float Angle 
-        { 
-            get; 
-            set; 
-        }
-
-        public bool IsDraw
-        {
-            get;
-            set;
         }
 
     }

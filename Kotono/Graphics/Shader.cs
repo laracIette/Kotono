@@ -1,21 +1,23 @@
 ﻿using OpenTK.Graphics.OpenGL4;
+using OpenTK.Mathematics;
+using Path = Kotono.Utils.Path;
 
 namespace Kotono.Graphics
 {
     public class Shader
     {
-        public readonly int Handle;
+        private readonly int Handle;
 
         private readonly Dictionary<string, int> _uniformLocations;
 
         public Shader(string vertPath, string fragPath)
         {
-            var shaderSource = File.ReadAllText(vertPath);
+            var shaderSource = File.ReadAllText(Path.Kotono + vertPath);
             var vertexShader = GL.CreateShader(ShaderType.VertexShader);
             GL.ShaderSource(vertexShader, shaderSource);
             CompileShader(vertexShader);
 
-            shaderSource = File.ReadAllText(fragPath);
+            shaderSource = File.ReadAllText(Path.Kotono + fragPath);
             var fragmentShader = GL.CreateShader(ShaderType.FragmentShader);
             GL.ShaderSource(fragmentShader, shaderSource);
             CompileShader(fragmentShader);
@@ -63,7 +65,8 @@ namespace Kotono.Graphics
             GL.GetProgram(program, GetProgramParameterName.LinkStatus, out var code);
             if (code != (int)All.True)
             {
-                throw new Exception($"Error occurred whilst linking Program({program})");
+                var infoLog = GL.GetProgramInfoLog(program);
+                throw new Exception($"Error occurred whilst linking Program({program}).\n\n{infoLog}");
             }
         }
 
@@ -81,6 +84,23 @@ namespace Kotono.Graphics
         {
             GL.UseProgram(Handle);
             GL.Uniform1(_uniformLocations[name], data);
+        }
+        public void SetFloat(string name, float data)
+        {
+            GL.UseProgram(Handle);
+            GL.Uniform1(_uniformLocations[name], data);
+        }
+
+        public void SetMatrix4(string name, Matrix4 data)
+        {
+            GL.UseProgram(Handle);
+            GL.UniformMatrix4(_uniformLocations[name], true, ref data);
+        }
+
+        public void SetVector3(string name, Vector3 data)
+        {
+            GL.UseProgram(Handle);
+            GL.Uniform3(_uniformLocations[name], data);
         }
     }
 }
