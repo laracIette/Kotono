@@ -54,7 +54,7 @@ namespace Kotono
             _diffuseMap = Texture.LoadFromFile("container2.png");
             _specularMap = Texture.LoadFromFile("container2_specular.png");
 
-            _camera = new Camera(new Vector3(0.0f), (float)Size.X / (float)Size.Y);
+            _camera = new Camera(Vector3.Zero, (float)Size.X / (float)Size.Y);
 
             CursorState = CursorState.Grabbed;
             IsVisible = true;
@@ -170,7 +170,7 @@ namespace Kotono
                 }
                 while (MeshManager._meshes.Where(c => Vector3.Distance(c.Position, position) <= 2.0f).Any());
 
-                MeshManager.LoadMeshOBJ("cube.obj", position, angle);
+                MeshManager.LoadMeshOBJ("cube3.obj", position, angle, Vector3.One);
             }
         }
 
@@ -180,7 +180,7 @@ namespace Kotono
 
             for (int i = 0; i < 20; i++)
             {
-                _pointLights.Add(new PointLight(Utils.Random.Vector3(-20.0f, 20.0f)));
+                _pointLights.Add(new PointLight(Random.Vector3(-20.0f, 20.0f)));
             }
         }
 
@@ -193,8 +193,8 @@ namespace Kotono
 
             ShaderManager.LightingShader.Use();
 
-            ShaderManager.LightingShader.SetMatrix4("view", _camera.GetViewMatrix());
-            ShaderManager.LightingShader.SetMatrix4("projection", _camera.GetProjectionMatrix());
+            ShaderManager.LightingShader.SetMatrix4("view", _camera.ViewMatrix);
+            ShaderManager.LightingShader.SetMatrix4("projection", _camera.ProjectionMatrix);
 
             ShaderManager.LightingShader.SetVector3("viewPos", _camera.Position);
 
@@ -230,21 +230,22 @@ namespace Kotono
             ShaderManager.LightingShader.SetFloat("spotLight.cutOff", MathF.Cos(MathHelper.DegreesToRadians(_spotLight.CutOffAngle)));
             ShaderManager.LightingShader.SetFloat("spotLight.outerCutOff", MathF.Cos(MathHelper.DegreesToRadians(_spotLight.OuterCutOffAngle)));
 
-            foreach (var model in MeshManager._meshes)
+            foreach (var mesh in MeshManager._meshes)
             {
-                ShaderManager.LightingShader.SetMatrix4("model", model.ModelMatrix);
+                ShaderManager.LightingShader.SetMatrix4("model", mesh.ModelMatrix);
 
-                GL.BindVertexArray(model.VertexArrayObject);
-                GL.BindBuffer(BufferTarget.ElementArrayBuffer, model.IndexBufferObject);
-                GL.DrawElements(PrimitiveType.Triangles, model.IndexCount, DrawElementsType.UnsignedInt, IntPtr.Zero);
+                GL.BindVertexArray(mesh.VertexArrayObject);
+
+                GL.BindBuffer(BufferTarget.ArrayBuffer, mesh.VertexBufferObject);
+                GL.DrawArrays(PrimitiveType.Triangles, 0, mesh.VerticesCount);
             }
 
             GL.BindVertexArray(_vaoLamp);
 
             ShaderManager.LampShader.Use();
 
-            ShaderManager.LampShader.SetMatrix4("view", _camera.GetViewMatrix());
-            ShaderManager.LampShader.SetMatrix4("projection", _camera.GetProjectionMatrix());
+            ShaderManager.LampShader.SetMatrix4("view", _camera.ViewMatrix);
+            ShaderManager.LampShader.SetMatrix4("projection", _camera.ProjectionMatrix);
 
             foreach (var pointLight in _pointLights)
             {

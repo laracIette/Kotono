@@ -5,9 +5,9 @@ namespace Kotono.Graphics.Objects.Lights
 {
     public class PointLight
     {
-        private Vector3 _position;
+        private Vector3 _position = Vector3.Zero;
 
-        private Vector3 _positionVelocity = new Vector3(0.0f, 0.0f, 0.0f);
+        private Vector3 _positionVelocity = Vector3.Zero;
 
         public PointLight(Vector3 position)
         {
@@ -22,7 +22,7 @@ namespace Kotono.Graphics.Objects.Lights
 
         public Vector3 Position
         {
-            get { return _position; }
+            get => _position;
             private set
             {
                 _position.X = MathHelper.Clamp(value.X, -20.0f, 20.0f);
@@ -33,7 +33,7 @@ namespace Kotono.Graphics.Objects.Lights
 
         private Vector3 PositionVelocity
         {
-            get { return _positionVelocity; }
+            get => _positionVelocity; 
             set
             {
                 _positionVelocity.X = MathHelper.Clamp(value.X, -1.0f, 1.0f);
@@ -42,12 +42,6 @@ namespace Kotono.Graphics.Objects.Lights
             }
         }
 
-        public Matrix4 Model
-        {
-            get
-            {
-                return Matrix4.CreateScale(0.2f) * Matrix4.CreateTranslation(Position);
-            }
-        }
+        public Matrix4 Model => Matrix4.CreateScale(new Vector3(0.2f, 0.2f, 0.4f)) * Matrix4.CreateTranslation(Position);
     }
 }

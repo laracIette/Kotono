@@ -65,6 +65,9 @@ namespace Kotono.Graphics
                 _fov = MathHelper.DegreesToRadians(value);
             }
         }
+        public Matrix4 ViewMatrix => Matrix4.LookAt(Position, Position + _front, _up);
+
+        public Matrix4 ProjectionMatrix => Matrix4.CreatePerspectiveFieldOfView(_fov, AspectRatio, 0.01f, 100f);
 
         private void UpdateVectors()
         {
@@ -77,14 +80,5 @@ namespace Kotono.Graphics
             _up = Vector3.Normalize(Vector3.Cross(_right, _front));
         }
 
-        public Matrix4 GetViewMatrix()
-        {
-            return Matrix4.LookAt(Position, Position + _front, _up);
-        }
-
-        public Matrix4 GetProjectionMatrix()
-        {
-            return Matrix4.CreatePerspectiveFieldOfView(_fov, AspectRatio, 0.01f, 100f);
-        }
     }
 }

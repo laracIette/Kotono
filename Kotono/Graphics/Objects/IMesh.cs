@@ -1,5 +1,4 @@
-﻿using Kotono.Graphics.Objects.Meshes;
-using OpenTK.Mathematics;
+﻿using OpenTK.Mathematics;
 
 namespace Kotono.Graphics.Objects
 {
@@ -13,8 +12,8 @@ namespace Kotono.Graphics.Objects
 
         public int VertexArrayObject { get; }
 
-        public int IndexBufferObject { get; }
+        public int VertexBufferObject { get; }
 
-        public int IndexCount { get; }
+        public int VerticesCount { get; }
     }
 }

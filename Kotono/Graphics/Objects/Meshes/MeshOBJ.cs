@@ -6,19 +6,20 @@ namespace Kotono.Graphics.Objects.Meshes
 {
     public class MeshOBJ : IMesh, IDisposable
     {
-        private Vector3 _position;
+        private Vector3 _position = Vector3.Zero;
 
-        private Vector3 _positionVelocity = new Vector3(0.0f);
+        private Vector3 _positionVelocity = Vector3.Zero;
 
-        private Vector3 _angleVelocity = new Vector3(0.0f);
+        private Vector3 _angleVelocity = Vector3.Zero;
 
-        public MeshOBJ(int vertexArrayObject, int indexBufferObject, int indexCount, Vector3 position, Vector3 angle)
+        public MeshOBJ(int vertexArrayObject, int vertexBufferObject, int verticesCount, Vector3 position, Vector3 angle, Vector3 scale)
         {
             VertexArrayObject = vertexArrayObject;
-            IndexBufferObject = indexBufferObject;
-            IndexCount = indexCount;
+            VertexBufferObject = vertexBufferObject;
+            VerticesCount = verticesCount;
             Position = position;
             Angle = angle;
+            Scale = scale;
         }
 
         public void Update(float deltaTime, IEnumerable<IMesh> models)
@@ -45,21 +46,11 @@ namespace Kotono.Graphics.Objects.Meshes
             }
         }
 
-        public void Dispose()
-        {
-            GL.BindVertexArray(0);
-            GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
-            GL.BindBuffer(BufferTarget.ElementArrayBuffer, 0);
-
-            GL.DeleteVertexArray(VertexArrayObject);
-            GL.DeleteBuffer(IndexBufferObject);
-        }
+        public int VertexBufferObject { get; }
 
         public int VertexArrayObject { get; }
 
-        public int IndexBufferObject { get; }
-
-        public int IndexCount { get; }
+        public int VerticesCount { get; }
 
         public Vector3 Position
         {
@@ -82,11 +73,9 @@ namespace Kotono.Graphics.Objects.Meshes
             }
         }
 
-        private Vector3 Angle
-        {
-            get;
-            set;
-        }
+        private Vector3 Angle { get; set; }
+
+        private Vector3 Scale { get; set; }
 
         private Vector3 AngleVelocity
         {
@@ -99,7 +88,20 @@ namespace Kotono.Graphics.Objects.Meshes
             }
         }
 
-        public Matrix4 ModelMatrix => Matrix4.CreateTranslation(Position) * Matrix4.CreateRotationX(Angle.X) * Matrix4.CreateRotationY(Angle.Y) * Matrix4.CreateRotationZ(Angle.Z);
+        public Matrix4 ModelMatrix =>
+            Matrix4.CreateScale(Scale)
+            * Matrix4.CreateRotationX(Angle.X)
+            * Matrix4.CreateRotationY(Angle.Y)
+            * Matrix4.CreateRotationZ(Angle.Z)
+            * Matrix4.CreateTranslation(Position);
 
+        public void Dispose()
+        {
+            GL.BindVertexArray(0);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, 0);
+
+            GL.DeleteVertexArray(VertexArrayObject);
+        }
     }
 }

@@ -43,14 +43,14 @@ namespace Kotono.Graphics.Objects.Lights
 
         public float CutOffAngle
         {
-            get { return _cutOffAngle; }
-            private set { _cutOffAngle = MathHelper.Clamp(value, 0.0f, 12.5f); }
+            get => _cutOffAngle;
+            private set => _cutOffAngle = MathHelper.Clamp(value, 0.0f, 12.5f);
         }
 
         public float OuterCutOffAngle
         {
-            get { return _outerCutOffAngle; }
-            private set { _outerCutOffAngle = MathHelper.Clamp(value, 0.0f, 17.5f); }
+            get => _outerCutOffAngle;
+            private set => _outerCutOffAngle = MathHelper.Clamp(value, 0.0f, 17.5f);
         }
     }
 }

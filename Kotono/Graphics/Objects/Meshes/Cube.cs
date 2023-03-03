@@ -126,8 +126,8 @@ namespace Kotono.Graphics.Objects.Meshes
 
         public int VertexArrayObject { get; }
 
-        public int IndexBufferObject { get; }
+        public int VertexBufferObject { get; }
 
-        public int IndexCount { get; }
+        public int VerticesCount { get; }
     }
 }
