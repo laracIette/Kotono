@@ -170,7 +170,7 @@ namespace Kotono
                 }
                 while (MeshManager._meshes.Where(c => Vector3.Distance(c.Position, position) <= 2.0f).Any());
 
-                MeshManager.LoadMeshOBJ("cube3.obj", position, angle, Vector3.One);
+                MeshManager.LoadMeshOBJ("cube.obj", position, angle, Vector3.One);
             }
         }
 

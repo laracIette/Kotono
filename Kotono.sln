@@ -5,7 +5,7 @@ VisualStudioVersion = 17.5.33414.496
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kotono", "Kotono\Kotono.csproj", "{DA470AD5-3E89-45B2-A2CA-B0A31C074D65}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestSharp", "..\TestSharp\TestSharp\TestSharp.csproj", "{D7C45BB4-BDB0-4C91-9F9E-DE0C199DF3F9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kotono-TestApp", "..\Kotono-TestApp\Kotono-TestApp\Kotono-TestApp.csproj", "{4596ADC5-1EED-48B2-BAB8-484572BF08BD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{DA470AD5-3E89-45B2-A2CA-B0A31C074D65}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DA470AD5-3E89-45B2-A2CA-B0A31C074D65}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DA470AD5-3E89-45B2-A2CA-B0A31C074D65}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D7C45BB4-BDB0-4C91-9F9E-DE0C199DF3F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D7C45BB4-BDB0-4C91-9F9E-DE0C199DF3F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D7C45BB4-BDB0-4C91-9F9E-DE0C199DF3F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D7C45BB4-BDB0-4C91-9F9E-DE0C199DF3F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4596ADC5-1EED-48B2-BAB8-484572BF08BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4596ADC5-1EED-48B2-BAB8-484572BF08BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4596ADC5-1EED-48B2-BAB8-484572BF08BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4596ADC5-1EED-48B2-BAB8-484572BF08BD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
