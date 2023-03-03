@@ -1,10 +1,11 @@
 ﻿using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
+using System.Reflection;
 using Random = Kotono.Utils.Random;
 
-namespace Kotono.Graphics.Objects
+namespace Kotono.Graphics.Objects.Meshes
 {
-    public class Cube
+    public class Cube : IMesh
     {
         public static readonly float[] _vertices =
         {
@@ -54,7 +55,7 @@ namespace Kotono.Graphics.Objects
 
         private Vector3 _position;
 
-        private Vector3 _positionVelocity = new Vector3(0.0f, 0.0f, 0.0f);
+        private Vector3 _positionVelocity = new Vector3(0.0f);
 
         private float _angleVelocity = 0.0f;
 
@@ -64,18 +65,18 @@ namespace Kotono.Graphics.Objects
             Angle = angle;
         }
 
-        public void Update(float deltaTime, IEnumerable<Cube> cubes)
+        public void Update(float deltaTime, IEnumerable<IMesh> models)
         {
-            AngleVelocity += Random.GetFloat(-0.1f, 0.1f);
+            AngleVelocity += Random.Float(-0.1f, 0.1f);
             Angle += AngleVelocity * deltaTime;
 
-            PositionVelocity += Random.GetVector3(-0.1f, 0.1f);
+            PositionVelocity += Random.Vector3(-0.1f, 0.1f);
 
             bool collides = false;
 
-            foreach (var cube in cubes)
+            foreach (var cube in models)
             {
-                if (Vector3.Distance(Position + (PositionVelocity * deltaTime), cube.Position) <= 1.5f)
+                if (Vector3.Distance(Position + PositionVelocity * deltaTime, cube.Position) <= 1.5f)
                 {
                     collides = true;
                     break;
@@ -90,17 +91,17 @@ namespace Kotono.Graphics.Objects
 
         public Vector3 Position
         {
-            get { return _position; }
+            get => _position;
             private set
             {
-                _position.X = MathHelper.Clamp(value.X, -5.0f, 5.0f);
-                _position.Y = MathHelper.Clamp(value.Y, -5.0f, 5.0f);
-                _position.Z = MathHelper.Clamp(value.Z, -5.0f, 5.0f);
+                _position.X = MathHelper.Clamp(value.X, -20.0f, 20.0f);
+                _position.Y = MathHelper.Clamp(value.Y, -20.0f, 20.0f);
+                _position.Z = MathHelper.Clamp(value.Z, -20.0f, 20.0f);
             }
         }
         private Vector3 PositionVelocity
         {
-            get { return _positionVelocity; }
+            get => _positionVelocity;
             set
             {
                 _positionVelocity.X = MathHelper.Clamp(value.X, -1.0f, 1.0f);
@@ -109,17 +110,24 @@ namespace Kotono.Graphics.Objects
             }
         }
 
-        public float Angle
+        private float Angle
         {
             get;
-            private set;
+            set;
         }
 
         private float AngleVelocity
         {
-            get { return _angleVelocity; }
-            set { _angleVelocity = MathHelper.Clamp(value, -2.5f, 2.5f); }
+            get => _angleVelocity;
+            set => _angleVelocity = MathHelper.Clamp(value, -2.5f, 2.5f);
         }
-        
+
+        public Matrix4 ModelMatrix => Matrix4.CreateTranslation(Position) * Matrix4.CreateFromAxisAngle(Position, Angle);
+
+        public int VertexArrayObject { get; }
+
+        public int IndexBufferObject { get; }
+
+        public int IndexCount { get; }
     }
 }

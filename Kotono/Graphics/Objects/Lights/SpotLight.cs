@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Kotono.Graphics.Objects
+namespace Kotono.Graphics.Objects.Lights
 {
     public class SpotLight
     {

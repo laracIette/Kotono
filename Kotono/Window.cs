@@ -6,6 +6,12 @@ using OpenTK.Windowing.Desktop;
 using Kotono.Graphics.Objects;
 using Kotono.Graphics;
 using Random = Kotono.Utils.Random;
+using Kotono.Utils;
+using Kotono.Graphics.Objects.Lights;
+using Kotono.Graphics.Objects.Meshes;
+using Assimp;
+using PrimitiveType = OpenTK.Graphics.OpenGL4.PrimitiveType;
+using Camera = Kotono.Graphics.Camera;
 
 namespace Kotono
 {
@@ -13,19 +19,11 @@ namespace Kotono
     // with several point lights
     public class Window : GameWindow
     {
-        private readonly List<Cube> _cubes = new List<Cube>();
-
         private readonly List<PointLight> _pointLights = new List<PointLight>();
 
         private int _vertexBufferObject;
 
-        private int _vaoModel;
-
         private int _vaoLamp;
-
-        private Shader _lampShader;
-
-        private Shader _lightingShader;
 
         private Texture _diffuseMap;
 
@@ -34,6 +32,8 @@ namespace Kotono
         private Camera _camera;
 
         private SpotLight _spotLight;
+
+        private float _deltaTime;
 
         public Window(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings)
             : base(gameWindowSettings, nativeWindowSettings)
@@ -44,71 +44,19 @@ namespace Kotono
         {
             base.OnLoad();
 
-            for (int i = 0; i < 10; i++)
-            {
-                float angle = Random.GetFloat(0.0f, 90.0f);
-
-                Vector3 position;
-                do
-                {
-                    position = Random.GetVector3(-5.0f, 5.0f);
-                }
-                while (_cubes.Where(c => Vector3.Distance(c.Position, position) <= 2.0f).Count() > 0);
-
-                _cubes.Add(new Cube(position, angle));
-            }
-
-            for (int i = 0; i < 4; i++)
-            {
-                _pointLights.Add(new PointLight(Utils.Random.GetVector3(-5.0f, 5.0f)));
-            }
-
-            _spotLight = new SpotLight(true);
-
-            GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-
+            GL.ClearColor(0.1f, 0.1f, 0.2f, 1.0f);
             GL.Enable(EnableCap.DepthTest);
 
-            _vertexBufferObject = GL.GenBuffer();
-            GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
-            GL.BufferData(BufferTarget.ArrayBuffer, Cube._vertices.Length * sizeof(float), Cube._vertices, BufferUsageHint.StaticDraw);
-
-            _lightingShader = new Shader("Graphics/Shaders/shader.vert", "Graphics/Shaders/lighting.frag");
-            _lampShader = new Shader("Graphics/Shaders/shader.vert", "Graphics/Shaders/shader.frag");
-
-            {
-                _vaoModel = GL.GenVertexArray();
-                GL.BindVertexArray(_vaoModel);
-
-                var positionLocation = _lightingShader.GetAttribLocation("aPos");
-                GL.EnableVertexAttribArray(positionLocation);
-                GL.VertexAttribPointer(positionLocation, 3, VertexAttribPointerType.Float, false, 8 * sizeof(float), 0);
-
-                var normalLocation = _lightingShader.GetAttribLocation("aNormal");
-                GL.EnableVertexAttribArray(normalLocation);
-                GL.VertexAttribPointer(normalLocation, 3, VertexAttribPointerType.Float, false, 8 * sizeof(float), 3 * sizeof(float));
-
-                var texCoordLocation = _lightingShader.GetAttribLocation("aTexCoords");
-                GL.EnableVertexAttribArray(texCoordLocation);
-                GL.VertexAttribPointer(texCoordLocation, 2, VertexAttribPointerType.Float, false, 8 * sizeof(float), 6 * sizeof(float));
-            }
-
-            {
-                _vaoLamp = GL.GenVertexArray();
-                GL.BindVertexArray(_vaoLamp);
-
-                var positionLocation = _lampShader.GetAttribLocation("aPos");
-                GL.EnableVertexAttribArray(positionLocation);
-                GL.VertexAttribPointer(positionLocation, 3, VertexAttribPointerType.Float, false, 8 * sizeof(float), 0);
-            }
-
+            CreateVertexBufferObject();
+            CreateShaders();
+            CreateObjects();
+            
             _diffuseMap = Texture.LoadFromFile("container2.png");
             _specularMap = Texture.LoadFromFile("container2_specular.png");
 
-            _camera = new Camera(Vector3.UnitZ * 3, Size.X / (float)Size.Y);
+            _camera = new Camera(new Vector3(0.0f), (float)Size.X / (float)Size.Y);
 
             CursorState = CursorState.Grabbed;
-
             IsVisible = true;
         }
 
@@ -118,76 +66,7 @@ namespace Kotono
 
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
-            GL.BindVertexArray(_vaoModel);
-
-            _diffuseMap.Use(TextureUnit.Texture0);
-            _specularMap.Use(TextureUnit.Texture1);
-
-            _lightingShader.Use();
-
-            _lightingShader.SetMatrix4("view", _camera.GetViewMatrix());
-            _lightingShader.SetMatrix4("projection", _camera.GetProjectionMatrix());
-
-            _lightingShader.SetVector3("viewPos", _camera.Position);
-
-            _lightingShader.SetInt("material.diffuse", 0);
-            _lightingShader.SetInt("material.specular", 1);
-            _lightingShader.SetVector3("material.specular", new Vector3(0.5f, 0.5f, 0.5f));
-            _lightingShader.SetFloat("material.shininess", 32.0f);
-
-            
-            _lightingShader.SetVector3("dirLight.direction", new Vector3(-0.2f, -1.0f, -0.3f));
-            _lightingShader.SetVector3("dirLight.ambient", new Vector3(0.05f, 0.05f, 0.05f));
-            _lightingShader.SetVector3("dirLight.diffuse", new Vector3(0.4f, 0.4f, 0.4f));
-            _lightingShader.SetVector3("dirLight.specular", new Vector3(0.5f, 0.5f, 0.5f));
-
-            for (int i = 0; i < _pointLights.Count; i++)
-            {
-                _lightingShader.SetVector3($"pointLights[{i}].position", _pointLights[i].Position);
-                _lightingShader.SetVector3($"pointLights[{i}].ambient", new Vector3(0.05f, 0.05f, 0.05f));
-                _lightingShader.SetVector3($"pointLights[{i}].diffuse", new Vector3(0.8f, 0.8f, 0.8f));
-                _lightingShader.SetVector3($"pointLights[{i}].specular", new Vector3(1.0f, 1.0f, 1.0f));
-                _lightingShader.SetFloat($"pointLights[{i}].constant", 1.0f);
-                _lightingShader.SetFloat($"pointLights[{i}].linear", 0.09f);
-                _lightingShader.SetFloat($"pointLights[{i}].quadratic", 0.032f);
-            }
-
-            _lightingShader.SetVector3("spotLight.position", _camera.Position);
-            _lightingShader.SetVector3("spotLight.direction", _camera.Front);
-            _lightingShader.SetVector3("spotLight.ambient", new Vector3(0.0f, 0.0f, 0.0f));
-            _lightingShader.SetVector3("spotLight.diffuse", new Vector3(1.0f, 1.0f, 1.0f));
-            _lightingShader.SetVector3("spotLight.specular", new Vector3(1.0f, 1.0f, 1.0f));
-            _lightingShader.SetFloat("spotLight.constant", 1.0f);
-            _lightingShader.SetFloat("spotLight.linear", 0.09f);
-            _lightingShader.SetFloat("spotLight.quadratic", 0.032f);
-            _lightingShader.SetFloat("spotLight.cutOff", MathF.Cos(MathHelper.DegreesToRadians(_spotLight.CutOffAngle)));
-            _lightingShader.SetFloat("spotLight.outerCutOff", MathF.Cos(MathHelper.DegreesToRadians(_spotLight.OuterCutOffAngle)));
-
-            foreach (var cube in _cubes)
-            {
-                Matrix4 model = Matrix4.CreateTranslation(cube.Position);
-                model *= Matrix4.CreateFromAxisAngle(cube.Position, cube.Angle);
-                _lightingShader.SetMatrix4("model", model);
-
-                GL.DrawArrays(PrimitiveType.Triangles, 0, 36);
-            }
-
-            GL.BindVertexArray(_vaoLamp);
-
-            _lampShader.Use();
-
-            _lampShader.SetMatrix4("view", _camera.GetViewMatrix());
-            _lampShader.SetMatrix4("projection", _camera.GetProjectionMatrix());
-
-            foreach (var pointLight in _pointLights)
-            {
-                Matrix4 lampMatrix = Matrix4.CreateScale(0.2f);
-                lampMatrix *= Matrix4.CreateTranslation(pointLight.Position);
-
-                _lampShader.SetMatrix4("model", lampMatrix);
-
-                GL.DrawArrays(PrimitiveType.Triangles, 0, 36);
-            }
+            UpdateShaders();
 
             base.SwapBuffers();
         }
@@ -196,73 +75,48 @@ namespace Kotono
         {
             base.OnUpdateFrame(e);
 
-            if (!base.IsFocused)
+            if (!IsFocused)
             {
                 return;
             }
 
-            var input = base.KeyboardState;
+            InputManager.Update(KeyboardState, MouseState);
 
-            if (input.IsKeyDown(Keys.Escape))
+            if (InputManager.KeyboardState.IsKeyDown(Keys.Escape))
             {
                 base.Close();
             }
 
-            float cameraSpeed = 1.5f;
-            float sensitivity = 0.2f;
+            _deltaTime = (float)e.Time;
 
-            var deltaTime = (float)e.Time;
+            MoveCamera();
 
-            if (input.IsKeyDown(Keys.LeftShift))
+            if (InputManager.KeyboardState.IsKeyDown(Keys.F11) && !InputManager.KeyboardState.WasKeyDown(Keys.F11))
             {
-                cameraSpeed *= 2.0f;
+                WindowState = (WindowState == WindowState.Fullscreen) ? WindowState.Normal : WindowState.Fullscreen;
             }
 
-            if (input.IsKeyDown(Keys.W))
+            if (InputManager.KeyboardState.IsKeyDown(Keys.Enter) && !InputManager.KeyboardState.WasKeyDown(Keys.Enter))
             {
-                _camera.Position += _camera.Front * cameraSpeed * deltaTime; // Forward
+                CursorState = (CursorState == CursorState.Normal) ? CursorState.Grabbed : CursorState.Normal;
             }
-            if (input.IsKeyDown(Keys.S))
-            {
-                _camera.Position -= _camera.Front * cameraSpeed * deltaTime; // Backwards
-            }
-            if (input.IsKeyDown(Keys.A))
-            {
-                _camera.Position -= _camera.Right * cameraSpeed * deltaTime; // Left
-            }
-            if (input.IsKeyDown(Keys.D))
-            {
-                _camera.Position += _camera.Right * cameraSpeed * deltaTime; // Right
-            }
-            if (input.IsKeyDown(Keys.Space))
-            {
-                _camera.Position += _camera.Up * cameraSpeed * deltaTime; // Up
-            }
-            if (input.IsKeyDown(Keys.LeftControl))
-            {
-                _camera.Position -= _camera.Up * cameraSpeed * deltaTime; // Down
-            }
-            if (input.IsKeyDown(Keys.F) && !input.WasKeyDown(Keys.F))
+
+            if (InputManager.KeyboardState.IsKeyDown(Keys.F) && !InputManager.KeyboardState.WasKeyDown(Keys.F))
             {
                 _spotLight.Switch();
             }
 
-            _spotLight.Update(deltaTime);
+            _spotLight.Update(_deltaTime);
 
-            foreach (var cube in _cubes)
+            foreach (var model in MeshManager._meshes)
             {
-                cube.Update(deltaTime, _cubes.Where(c => (Vector3.Distance(c.Position, cube.Position) <= 2.0f) && (c != cube)));
+                model.Update(_deltaTime, MeshManager._meshes.Where(c => (Vector3.Distance(c.Position, model.Position) <= 2.0f) && (c != model)));
             }
 
             foreach (var pointLight in _pointLights)
             {
-                pointLight.Update(deltaTime);
+                pointLight.Update(_deltaTime);
             }
-
-            var mouse = base.MouseState;
-
-            _camera.Yaw += mouse.Delta.X * sensitivity;
-            _camera.Pitch -= mouse.Delta.Y * sensitivity;
         }
 
         protected override void OnMouseWheel(MouseWheelEventArgs e)
@@ -277,7 +131,167 @@ namespace Kotono
             base.OnResize(e);
 
             GL.Viewport(0, 0, Size.X, Size.Y);
-            _camera.AspectRatio = Size.X / (float)Size.Y;
+            _camera.AspectRatio = (float)Size.X / (float)Size.Y;
         }
+
+        private void CreateVertexBufferObject()
+        {
+            _vertexBufferObject = GL.GenBuffer();
+            GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
+            GL.BufferData(BufferTarget.ArrayBuffer, Cube._vertices.Length * sizeof(float), Cube._vertices, BufferUsageHint.StaticDraw);
+        }
+
+        private void CreateShaders()
+        {
+            _vaoLamp = GL.GenVertexArray();
+            GL.BindVertexArray(_vaoLamp);
+
+            int positionLocation = ShaderManager.LampShader.GetAttribLocation("aPos");
+            GL.EnableVertexAttribArray(positionLocation);
+            GL.VertexAttribPointer(positionLocation, 3, VertexAttribPointerType.Float, false, 8 * sizeof(float), 0);
+        }
+
+        private void CreateObjects()
+        {
+            CreateMeshs();
+            CreateLights();
+        }
+
+        private void CreateMeshs()
+        {
+            for (int i = 0; i < 100; i++)
+            {
+                Vector3 angle = Random.Vector3(0.0f, 1.0f);
+
+                Vector3 position;
+                do
+                {
+                    position = Random.Vector3(-20.0f, 20.0f);
+                }
+                while (MeshManager._meshes.Where(c => Vector3.Distance(c.Position, position) <= 2.0f).Any());
+
+                MeshManager.LoadMeshOBJ("cube.obj", position, angle);
+            }
+        }
+
+        private void CreateLights()
+        {
+            _spotLight = new SpotLight(true);
+
+            for (int i = 0; i < 20; i++)
+            {
+                _pointLights.Add(new PointLight(Utils.Random.Vector3(-20.0f, 20.0f)));
+            }
+        }
+
+        private void UpdateShaders()
+        {
+
+            _diffuseMap.Use(TextureUnit.Texture0);
+            _specularMap.Use(TextureUnit.Texture1);
+
+
+            ShaderManager.LightingShader.Use();
+
+            ShaderManager.LightingShader.SetMatrix4("view", _camera.GetViewMatrix());
+            ShaderManager.LightingShader.SetMatrix4("projection", _camera.GetProjectionMatrix());
+
+            ShaderManager.LightingShader.SetVector3("viewPos", _camera.Position);
+
+            ShaderManager.LightingShader.SetInt("material.diffuse", 0);
+            ShaderManager.LightingShader.SetInt("material.specular", 1);
+            ShaderManager.LightingShader.SetVector3("material.specular", new Vector3(0.5f, 0.5f, 0.5f));
+            ShaderManager.LightingShader.SetFloat("material.shininess", 32.0f);
+
+            ShaderManager.LightingShader.SetVector3("dirLight.direction", new Vector3(-0.2f, -1.0f, -0.3f));
+            ShaderManager.LightingShader.SetVector3("dirLight.ambient", new Vector3(0.05f, 0.05f, 0.05f));
+            ShaderManager.LightingShader.SetVector3("dirLight.diffuse", new Vector3(0.4f, 0.4f, 0.4f));
+            ShaderManager.LightingShader.SetVector3("dirLight.specular", new Vector3(0.5f, 0.5f, 0.5f));
+
+            for (int i = 0; i < _pointLights.Count; i++)
+            {
+                ShaderManager.LightingShader.SetVector3($"pointLights[{i}].position", _pointLights[i].Position);
+                ShaderManager.LightingShader.SetVector3($"pointLights[{i}].ambient", new Vector3(0.05f, 0.05f, 0.05f));
+                ShaderManager.LightingShader.SetVector3($"pointLights[{i}].diffuse", new Vector3(0.8f, 0.8f, 0.8f));
+                ShaderManager.LightingShader.SetVector3($"pointLights[{i}].specular", new Vector3(1.0f, 1.0f, 1.0f));
+                ShaderManager.LightingShader.SetFloat($"pointLights[{i}].constant", 1.0f);
+                ShaderManager.LightingShader.SetFloat($"pointLights[{i}].linear", 0.09f);
+                ShaderManager.LightingShader.SetFloat($"pointLights[{i}].quadratic", 0.032f);
+            }
+
+            ShaderManager.LightingShader.SetVector3("spotLight.position", _camera.Position);
+            ShaderManager.LightingShader.SetVector3("spotLight.direction", _camera.Front);
+            ShaderManager.LightingShader.SetVector3("spotLight.ambient", new Vector3(0.0f, 0.0f, 0.0f));
+            ShaderManager.LightingShader.SetVector3("spotLight.diffuse", new Vector3(1.0f, 1.0f, 1.0f));
+            ShaderManager.LightingShader.SetVector3("spotLight.specular", new Vector3(1.0f, 1.0f, 1.0f));
+            ShaderManager.LightingShader.SetFloat("spotLight.constant", 1.0f);
+            ShaderManager.LightingShader.SetFloat("spotLight.linear", 0.09f);
+            ShaderManager.LightingShader.SetFloat("spotLight.quadratic", 0.032f);
+            ShaderManager.LightingShader.SetFloat("spotLight.cutOff", MathF.Cos(MathHelper.DegreesToRadians(_spotLight.CutOffAngle)));
+            ShaderManager.LightingShader.SetFloat("spotLight.outerCutOff", MathF.Cos(MathHelper.DegreesToRadians(_spotLight.OuterCutOffAngle)));
+
+            foreach (var model in MeshManager._meshes)
+            {
+                ShaderManager.LightingShader.SetMatrix4("model", model.ModelMatrix);
+
+                GL.BindVertexArray(model.VertexArrayObject);
+                GL.BindBuffer(BufferTarget.ElementArrayBuffer, model.IndexBufferObject);
+                GL.DrawElements(PrimitiveType.Triangles, model.IndexCount, DrawElementsType.UnsignedInt, IntPtr.Zero);
+            }
+
+            GL.BindVertexArray(_vaoLamp);
+
+            ShaderManager.LampShader.Use();
+
+            ShaderManager.LampShader.SetMatrix4("view", _camera.GetViewMatrix());
+            ShaderManager.LampShader.SetMatrix4("projection", _camera.GetProjectionMatrix());
+
+            foreach (var pointLight in _pointLights)
+            {
+                ShaderManager.LampShader.SetMatrix4("model", pointLight.Model);
+
+                GL.DrawArrays(PrimitiveType.Triangles, 0, 36);
+            }
+        }
+
+        private void MoveCamera()
+        {
+            float cameraSpeed = 1.5f;
+            float sensitivity = 0.2f;
+
+            if (InputManager.KeyboardState.IsKeyDown(Keys.LeftShift))
+            {
+                cameraSpeed *= 2.0f;
+            }
+
+            if (InputManager.KeyboardState.IsKeyDown(Keys.W))
+            {
+                _camera.Position += _camera.Front * cameraSpeed * _deltaTime; // Forward
+            }
+            if (InputManager.KeyboardState.IsKeyDown(Keys.S))
+            {
+                _camera.Position -= _camera.Front * cameraSpeed * _deltaTime; // Backwards
+            }
+            if (InputManager.KeyboardState.IsKeyDown(Keys.A))
+            {
+                _camera.Position -= _camera.Right * cameraSpeed * _deltaTime; // Left
+            }
+            if (InputManager.KeyboardState.IsKeyDown(Keys.D))
+            {
+                _camera.Position += _camera.Right * cameraSpeed * _deltaTime; // Right
+            }
+            if (InputManager.KeyboardState.IsKeyDown(Keys.Space))
+            {
+                _camera.Position += _camera.Up * cameraSpeed * _deltaTime; // Up
+            }
+            if (InputManager.KeyboardState.IsKeyDown(Keys.LeftControl))
+            {
+                _camera.Position -= _camera.Up * cameraSpeed * _deltaTime; // Down
+            }
+
+            _camera.Yaw += InputManager.MouseState.Delta.X * sensitivity;
+            _camera.Pitch -= InputManager.MouseState.Delta.Y * sensitivity;
+        }
+
     }
 }
