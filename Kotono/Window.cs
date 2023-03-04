@@ -14,8 +14,6 @@ using Camera = Kotono.Graphics.Camera;
 
 namespace Kotono
 {
-    // In this tutorial we focus on how to set up a scene with multiple lights, both of different types but also
-    // with several point lights
     public class Window : GameWindow
     {
         private readonly List<PointLight> _pointLights = new List<PointLight>();
