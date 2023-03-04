@@ -9,7 +9,6 @@ using Random = Kotono.Utils.Random;
 using Kotono.Utils;
 using Kotono.Graphics.Objects.Lights;
 using Kotono.Graphics.Objects.Meshes;
-using Assimp;
 using PrimitiveType = OpenTK.Graphics.OpenGL4.PrimitiveType;
 using Camera = Kotono.Graphics.Camera;
 
@@ -24,10 +23,6 @@ namespace Kotono
         private int _vertexBufferObject;
 
         private int _vaoLamp;
-
-        private Texture _diffuseMap;
-
-        private Texture _specularMap;
 
         private Camera _camera;
 
@@ -50,9 +45,6 @@ namespace Kotono
             CreateVertexBufferObject();
             CreateShaders();
             CreateObjects();
-            
-            _diffuseMap = Texture.LoadFromFile("container2.png");
-            _specularMap = Texture.LoadFromFile("container2_specular.png");
 
             _camera = new Camera(Vector3.Zero, (float)Size.X / (float)Size.Y);
 
@@ -170,7 +162,7 @@ namespace Kotono
                 }
                 while (MeshManager._meshes.Where(c => Vector3.Distance(c.Position, position) <= 2.0f).Any());
 
-                MeshManager.LoadMeshOBJ("cube.obj", position, angle, Vector3.One);
+                MeshManager.LoadMeshOBJ("cube.obj", position, angle, Random.Vector3(0.75f, 1.0f), "container2.png", "container2_specular.png");
             }
         }
 
@@ -180,17 +172,17 @@ namespace Kotono
 
             for (int i = 0; i < 20; i++)
             {
-                _pointLights.Add(new PointLight(Random.Vector3(-20.0f, 20.0f)));
+                var angle = Random.Vector3(0.0f, 1.0f);
+                var position = Random.Vector3(-20.0f, 20.0f);
+
+                //MeshManager.LoadMeshOBJ("cube.obj", position, angle, new Vector3(0.2f, 0.2f, 0.4f));
+
+                _pointLights.Add(new PointLight(position));
             }
         }
 
         private void UpdateShaders()
         {
-
-            _diffuseMap.Use(TextureUnit.Texture0);
-            _specularMap.Use(TextureUnit.Texture1);
-
-
             ShaderManager.LightingShader.Use();
 
             ShaderManager.LightingShader.SetMatrix4("view", _camera.ViewMatrix);
@@ -232,6 +224,9 @@ namespace Kotono
 
             foreach (var mesh in MeshManager._meshes)
             {
+                TextureManager.UseTexture(mesh.DiffuseMap, TextureUnit.Texture0);
+                TextureManager.UseTexture(mesh.SpecularMap, TextureUnit.Texture1);
+
                 ShaderManager.LightingShader.SetMatrix4("model", mesh.ModelMatrix);
 
                 GL.BindVertexArray(mesh.VertexArrayObject);

@@ -15,5 +15,9 @@ namespace Kotono.Graphics.Objects
         public int VertexBufferObject { get; }
 
         public int VerticesCount { get; }
+
+        public int DiffuseMap { get; }
+
+        public int SpecularMap { get; }
     }
 }

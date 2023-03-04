@@ -8,87 +8,95 @@ namespace Kotono.Graphics.Objects
 {
     public static class MeshManager
     {
-        public static List<IMesh> _meshes = new List<IMesh>();
+        public static readonly List<IMesh> _meshes = new List<IMesh>();
 
-        public static void LoadMeshOBJ(string path, Vector3 position, Vector3 angle, Vector3 scale)
+        private static readonly Dictionary<string, Tuple<int, int, int>> _paths = new Dictionary<string, Tuple<int, int, int>>();
+
+        public static void LoadMeshOBJ(string path, Vector3 position, Vector3 angle, Vector3 scale, string diffusePath, string specularPath)
         {
-            var positions = new List<Vector3>();
-            var texCoords = new List<Vector2>();
-            var normals   = new List<Vector3>();
-            var vertices  = new List<Vertex>();
+            var diffuseMap = TextureManager.LoadTexture(diffusePath);
+            var specularMap = TextureManager.LoadTexture(specularPath);
 
-            foreach (var line in File.ReadAllLines(Path.Assets + path))
+            if (!_paths.ContainsKey(path))
             {
-                string[] tokens = line.Split(' ');
+                var positions = new List<Vector3>();
+                var texCoords = new List<Vector2>();
+                var normals = new List<Vector3>();
+                var vertices = new List<Vertex>();
 
-                switch (tokens[0])
+                foreach (var line in File.ReadAllLines(Path.Assets + path))
                 {
-                    case "v":
-                        var pos = new Vector3(
-                            float.Parse(tokens[1], CultureInfo.InvariantCulture),
-                            float.Parse(tokens[2], CultureInfo.InvariantCulture),
-                            float.Parse(tokens[3], CultureInfo.InvariantCulture)
-                        );
-                        positions.Add(pos);
-                        break;
+                    string[] tokens = line.Split(' ');
 
-                    case "vt":
-                        var texCoord = new Vector2(
-                            float.Parse(tokens[1], CultureInfo.InvariantCulture),
-                            float.Parse(tokens[2], CultureInfo.InvariantCulture)
-                        );
-                        texCoords.Add(texCoord);
-                        break;
+                    switch (tokens[0])
+                    {
+                        case "v":
+                            var pos = new Vector3(
+                                float.Parse(tokens[1], CultureInfo.InvariantCulture),
+                                float.Parse(tokens[2], CultureInfo.InvariantCulture),
+                                float.Parse(tokens[3], CultureInfo.InvariantCulture)
+                            );
+                            positions.Add(pos);
+                            break;
 
-                    case "vn":
-                        var normal = new Vector3(
-                            float.Parse(tokens[1], CultureInfo.InvariantCulture),
-                            float.Parse(tokens[2], CultureInfo.InvariantCulture),
-                            float.Parse(tokens[3], CultureInfo.InvariantCulture)
-                        );
-                        normals.Add(normal);
-                        break;
+                        case "vt":
+                            var texCoord = new Vector2(
+                                float.Parse(tokens[1], CultureInfo.InvariantCulture),
+                                float.Parse(tokens[2], CultureInfo.InvariantCulture)
+                            );
+                            texCoords.Add(texCoord);
+                            break;
 
-                    case "f":
-                        for (int i = 1; i < tokens.Length; i++)
-                        {
-                            string[] vertexTokens = tokens[i].Split('/');
+                        case "vn":
+                            var normal = new Vector3(
+                                float.Parse(tokens[1], CultureInfo.InvariantCulture),
+                                float.Parse(tokens[2], CultureInfo.InvariantCulture),
+                                float.Parse(tokens[3], CultureInfo.InvariantCulture)
+                            );
+                            normals.Add(normal);
+                            break;
 
-                            var vertex = new Vertex
+                        case "f":
+                            for (int i = 1; i < tokens.Length; i++)
                             {
-                                position = positions[int.Parse(vertexTokens[0]) - 1],
-                                texCoords = texCoords[int.Parse(vertexTokens[1]) - 1],
-                                normal = normals[int.Parse(vertexTokens[2]) - 1]
-                            };
-                            vertices.Add(vertex);
-                        }
-                        break;
+                                string[] vertexTokens = tokens[i].Split('/');
+
+                                var vertex = new Vertex
+                                {
+                                    position = positions[int.Parse(vertexTokens[0]) - 1],
+                                    texCoords = texCoords[int.Parse(vertexTokens[1]) - 1],
+                                    normal = normals[int.Parse(vertexTokens[2]) - 1]
+                                };
+                                vertices.Add(vertex);
+                            }
+                            break;
+                    }
+
                 }
 
+                int vertexBufferObject = GL.GenBuffer();
+                GL.BindBuffer(BufferTarget.ArrayBuffer, vertexBufferObject);
+                GL.BufferData(BufferTarget.ArrayBuffer, vertices.Count * Vertex.SizeInBytes, vertices.ToArray(), BufferUsageHint.StaticDraw);
+
+                int vertexArrayObject = GL.GenVertexArray();
+                GL.BindVertexArray(vertexArrayObject);
+
+                int positionAttributeLocation = ShaderManager.LightingShader.GetAttribLocation("aPos");
+                GL.EnableVertexAttribArray(positionAttributeLocation);
+                GL.VertexAttribPointer(positionAttributeLocation, 3, VertexAttribPointerType.Float, false, Vertex.SizeInBytes, 0);
+
+                int texCoordAttributeLocation = ShaderManager.LightingShader.GetAttribLocation("aTexCoords");
+                GL.EnableVertexAttribArray(texCoordAttributeLocation);
+                GL.VertexAttribPointer(texCoordAttributeLocation, 2, VertexAttribPointerType.Float, false, Vertex.SizeInBytes, Vector3.SizeInBytes);
+
+                int normalAttributeLocation = ShaderManager.LightingShader.GetAttribLocation("aNormal");
+                GL.EnableVertexAttribArray(normalAttributeLocation);
+                GL.VertexAttribPointer(normalAttributeLocation, 3, VertexAttribPointerType.Float, false, Vertex.SizeInBytes, Vector3.SizeInBytes + Vector2.SizeInBytes);
+
+                _paths[path] = Tuple.Create(vertexArrayObject, vertexBufferObject, vertices.Count);
             }
 
-
-            int vertexBufferObject = GL.GenBuffer();
-            GL.BindBuffer(BufferTarget.ArrayBuffer, vertexBufferObject);
-            GL.BufferData(BufferTarget.ArrayBuffer, vertices.Count * Vertex.SizeInBytes, vertices.ToArray(), BufferUsageHint.StaticDraw);
-
-            int vertexArrayObject = GL.GenVertexArray();
-            GL.BindVertexArray(vertexArrayObject);
-
-            int positionAttributeLocation = ShaderManager.LightingShader.GetAttribLocation("aPos");
-            GL.EnableVertexAttribArray(positionAttributeLocation);
-            GL.VertexAttribPointer(positionAttributeLocation, 3, VertexAttribPointerType.Float, false, Vertex.SizeInBytes, 0);
-
-            int texCoordAttributeLocation = ShaderManager.LightingShader.GetAttribLocation("aTexCoords");
-            GL.EnableVertexAttribArray(texCoordAttributeLocation);
-            GL.VertexAttribPointer(texCoordAttributeLocation, 2, VertexAttribPointerType.Float, false, Vertex.SizeInBytes, Vector3.SizeInBytes);
-
-            int normalAttributeLocation = ShaderManager.LightingShader.GetAttribLocation("aNormal");
-            GL.EnableVertexAttribArray(normalAttributeLocation);
-            GL.VertexAttribPointer(normalAttributeLocation, 3, VertexAttribPointerType.Float, false, Vertex.SizeInBytes, Vector3.SizeInBytes + Vector2.SizeInBytes);
-
-
-            _meshes.Add(new MeshOBJ(vertexArrayObject, vertexBufferObject, vertices.Count, position, angle, scale));
+            _meshes.Add(new MeshOBJ(_paths[path].Item1, _paths[path].Item2, _paths[path].Item3, position, angle, scale, diffuseMap, specularMap));
         }
     }
 }

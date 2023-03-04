@@ -12,7 +12,7 @@ namespace Kotono.Graphics.Objects.Meshes
 
         private Vector3 _angleVelocity = Vector3.Zero;
 
-        public MeshOBJ(int vertexArrayObject, int vertexBufferObject, int verticesCount, Vector3 position, Vector3 angle, Vector3 scale)
+        public MeshOBJ(int vertexArrayObject, int vertexBufferObject, int verticesCount, Vector3 position, Vector3 angle, Vector3 scale, int diffuseMap, int specularMap)
         {
             VertexArrayObject = vertexArrayObject;
             VertexBufferObject = vertexBufferObject;
@@ -20,6 +20,8 @@ namespace Kotono.Graphics.Objects.Meshes
             Position = position;
             Angle = angle;
             Scale = scale;
+            DiffuseMap = diffuseMap;
+            SpecularMap = specularMap;
         }
 
         public void Update(float deltaTime, IEnumerable<IMesh> models)
@@ -51,6 +53,10 @@ namespace Kotono.Graphics.Objects.Meshes
         public int VertexArrayObject { get; }
 
         public int VerticesCount { get; }
+
+        public int DiffuseMap { get; }
+
+        public int SpecularMap { get; }
 
         public Vector3 Position
         {
