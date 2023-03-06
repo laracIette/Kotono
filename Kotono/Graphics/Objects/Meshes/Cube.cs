@@ -122,7 +122,7 @@ namespace Kotono.Graphics.Objects.Meshes
             set => _angleVelocity = MathHelper.Clamp(value, -2.5f, 2.5f);
         }
 
-        public Matrix4 ModelMatrix => Matrix4.CreateTranslation(Position) * Matrix4.CreateFromAxisAngle(Position, Angle);
+        public Matrix4 Model => Matrix4.CreateTranslation(Position) * Matrix4.CreateFromAxisAngle(Position, Angle);
 
         public int VertexArrayObject { get; }
 

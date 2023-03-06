@@ -94,7 +94,7 @@ namespace Kotono.Graphics.Objects.Meshes
             }
         }
 
-        public Matrix4 ModelMatrix =>
+        public Matrix4 Model =>
             Matrix4.CreateScale(Scale)
             * Matrix4.CreateRotationX(Angle.X)
             * Matrix4.CreateRotationY(Angle.Y)

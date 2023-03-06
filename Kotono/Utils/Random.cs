@@ -8,7 +8,7 @@ namespace Kotono.Utils
         private static readonly System.Random _random = new System.Random();
 
         /// <summary>
-        /// An int between min and max.
+        /// 
         /// </summary>
         /// <param name="min"></param>
         /// <param name="max"></param>

@@ -8,7 +8,7 @@ namespace Kotono.Graphics.Objects
 
         public Vector3 Position { get; }
 
-        public Matrix4 ModelMatrix { get; }
+        public Matrix4 Model { get; }
 
         public int VertexArrayObject { get; }
 

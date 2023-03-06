@@ -225,7 +225,7 @@ namespace Kotono
                 TextureManager.UseTexture(mesh.DiffuseMap, TextureUnit.Texture0);
                 TextureManager.UseTexture(mesh.SpecularMap, TextureUnit.Texture1);
 
-                ShaderManager.LightingShader.SetMatrix4("model", mesh.ModelMatrix);
+                ShaderManager.LightingShader.SetMatrix4("model", mesh.Model);
 
                 GL.BindVertexArray(mesh.VertexArrayObject);
 
