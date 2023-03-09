@@ -1,5 +1,6 @@
 ﻿using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
+using static OpenTK.Graphics.OpenGL.GL;
 using Random = Kotono.Utils.Random;
 
 namespace Kotono.Graphics.Objects.Meshes
@@ -46,6 +47,19 @@ namespace Kotono.Graphics.Objects.Meshes
             {
                 Position += PositionVelocity * deltaTime;
             }
+        }
+
+        public void Draw()
+        {
+            TextureManager.UseTexture(DiffuseMap, TextureUnit.Texture0);
+            TextureManager.UseTexture(SpecularMap, TextureUnit.Texture1);
+
+            ShaderManager.LightingShader.SetMatrix4("model", Model);
+
+            GL.BindVertexArray(VertexArrayObject);
+
+            GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
+            GL.DrawArrays(PrimitiveType.Triangles, 0, VerticesCount);
         }
 
         public int VertexBufferObject { get; }

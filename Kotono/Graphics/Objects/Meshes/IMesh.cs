@@ -1,10 +1,12 @@
 ﻿using OpenTK.Mathematics;
 
-namespace Kotono.Graphics.Objects
+namespace Kotono.Graphics.Objects.Meshes
 {
     public interface IMesh
     {
         public void Update(float deltaTime, IEnumerable<IMesh> models);
+
+        public void Draw();
 
         public Vector3 Position { get; }
 

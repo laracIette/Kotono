@@ -89,6 +89,11 @@ namespace Kotono.Graphics.Objects.Meshes
             }
         }
 
+        public void Draw()
+        {
+
+        }
+
         public Vector3 Position
         {
             get => _position;

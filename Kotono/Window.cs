@@ -11,16 +11,13 @@ using Kotono.Graphics.Objects.Lights;
 using Kotono.Graphics.Objects.Meshes;
 using PrimitiveType = OpenTK.Graphics.OpenGL4.PrimitiveType;
 using Camera = Kotono.Graphics.Camera;
+using System.Runtime.InteropServices;
 
 namespace Kotono
 {
     public class Window : GameWindow
     {
         private readonly List<PointLight> _pointLights = new List<PointLight>();
-
-        private int _vertexBufferObject;
-
-        private int _vaoLamp;
 
         private Camera _camera;
 
@@ -40,9 +37,7 @@ namespace Kotono
             GL.ClearColor(0.1f, 0.1f, 0.2f, 1.0f);
             GL.Enable(EnableCap.DepthTest);
 
-            CreateVertexBufferObject();
-            CreateShaders();
-            CreateObjects();
+            CreateLights();
 
             _camera = new Camera(Vector3.Zero, (float)Size.X / (float)Size.Y);
 
@@ -98,9 +93,9 @@ namespace Kotono
 
             _spotLight.Update(_deltaTime);
 
-            foreach (var model in MeshManager._meshes)
+            foreach (var model in ObjectManager._meshes)
             {
-                model.Update(_deltaTime, MeshManager._meshes.Where(c => (Vector3.Distance(c.Position, model.Position) <= 2.0f) && (c != model)));
+                model.Update(_deltaTime, ObjectManager._meshes.Where(c => (Vector3.Distance(c.Position, model.Position) <= 2.0f) && (c != model)));
             }
 
             foreach (var pointLight in _pointLights)
@@ -124,63 +119,39 @@ namespace Kotono
             _camera.AspectRatio = (float)Size.X / (float)Size.Y;
         }
 
-        private void CreateVertexBufferObject()
-        {
-            _vertexBufferObject = GL.GenBuffer();
-            GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
-            GL.BufferData(BufferTarget.ArrayBuffer, Cube._vertices.Length * sizeof(float), Cube._vertices, BufferUsageHint.StaticDraw);
-        }
-
-        private void CreateShaders()
-        {
-            _vaoLamp = GL.GenVertexArray();
-            GL.BindVertexArray(_vaoLamp);
-
-            int positionLocation = ShaderManager.LampShader.GetAttribLocation("aPos");
-            GL.EnableVertexAttribArray(positionLocation);
-            GL.VertexAttribPointer(positionLocation, 3, VertexAttribPointerType.Float, false, 8 * sizeof(float), 0);
-        }
-
-        private void CreateObjects()
-        {
-            CreateMeshs();
-            CreateLights();
-        }
-
-        private void CreateMeshs()
-        {
-            for (int i = 0; i < 100; i++)
-            {
-                Vector3 angle = Random.Vector3(0.0f, 1.0f);
-
-                Vector3 position;
-                do
-                {
-                    position = Random.Vector3(-20.0f, 20.0f);
-                }
-                while (MeshManager._meshes.Where(c => Vector3.Distance(c.Position, position) <= 2.0f).Any());
-
-                MeshManager.LoadMeshOBJ("cube.obj", position, angle, Random.Vector3(0.75f, 1.0f), "container2.png", "container2_specular.png");
-            }
-        }
-
-        private void CreateLights()
+        private void CreateLights() // TODO
         {
             _spotLight = new SpotLight(true);
 
             for (int i = 0; i < 20; i++)
             {
-                var angle = Random.Vector3(0.0f, 1.0f);
                 var position = Random.Vector3(-20.0f, 20.0f);
-
-                //MeshManager.LoadMeshOBJ("cube.obj", position, angle, new Vector3(0.2f, 0.2f, 0.4f));
 
                 _pointLights.Add(new PointLight(position));
             }
+
+            GL.GenBuffers(1, out int lightBuffer);
+            GL.BindBuffer(BufferTarget.ShaderStorageBuffer, lightBuffer);
+            GL.BufferData(BufferTarget.ShaderStorageBuffer, Marshal.SizeOf(typeof(LightBuffer)) * 256, IntPtr.Zero, BufferUsageHint.DynamicDraw);
+
+            int bindingPoint = 0; // choose a binding point index
+            int lightBufferIndex = GL.GetProgramResourceIndex(ShaderManager.LightingShader.Handle, ProgramInterface.ShaderStorageBlock, "LightBuffer");
+            GL.ShaderStorageBlockBinding(ShaderManager.LightingShader.Handle, lightBufferIndex, bindingPoint);
+            GL.BindBufferBase(BufferRangeTarget.ShaderStorageBuffer, bindingPoint, lightBuffer);
         }
 
         private void UpdateShaders()
         {
+            LightBuffer lightBufferData = new LightBuffer
+            {
+                Lights = _pointLights.ToArray(),
+                NumLights = _pointLights.Count
+            };
+
+            IntPtr bufferPointer = GL.MapBufferRange(BufferTarget.ShaderStorageBuffer, IntPtr.Zero, Marshal.SizeOf(typeof(LightBuffer)) * 256, BufferAccessMask.MapWriteBit | BufferAccessMask.MapInvalidateBufferBit);
+            Marshal.StructureToPtr(lightBufferData, bufferPointer, false);
+            GL.UnmapBuffer(BufferTarget.ShaderStorageBuffer);
+
             ShaderManager.LightingShader.Use();
 
             ShaderManager.LightingShader.SetMatrix4("view", _camera.ViewMatrix);
@@ -220,32 +191,10 @@ namespace Kotono
             ShaderManager.LightingShader.SetFloat("spotLight.cutOff", MathF.Cos(MathHelper.DegreesToRadians(_spotLight.CutOffAngle)));
             ShaderManager.LightingShader.SetFloat("spotLight.outerCutOff", MathF.Cos(MathHelper.DegreesToRadians(_spotLight.OuterCutOffAngle)));
 
-            foreach (var mesh in MeshManager._meshes)
+            foreach (var mesh in ObjectManager._meshes)
             {
-                TextureManager.UseTexture(mesh.DiffuseMap, TextureUnit.Texture0);
-                TextureManager.UseTexture(mesh.SpecularMap, TextureUnit.Texture1);
-
-                ShaderManager.LightingShader.SetMatrix4("model", mesh.Model);
-
-                GL.BindVertexArray(mesh.VertexArrayObject);
-
-                GL.BindBuffer(BufferTarget.ArrayBuffer, mesh.VertexBufferObject);
-                GL.DrawArrays(PrimitiveType.Triangles, 0, mesh.VerticesCount);
-            }
-
-            GL.BindVertexArray(_vaoLamp);
-
-            ShaderManager.LampShader.Use();
-
-            ShaderManager.LampShader.SetMatrix4("view", _camera.ViewMatrix);
-            ShaderManager.LampShader.SetMatrix4("projection", _camera.ProjectionMatrix);
-
-            foreach (var pointLight in _pointLights)
-            {
-                ShaderManager.LampShader.SetMatrix4("model", pointLight.Model);
-
-                GL.DrawArrays(PrimitiveType.Triangles, 0, 36);
-            }
+                mesh.Draw();
+            } 
         }
 
         private void MoveCamera()

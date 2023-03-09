@@ -1,4 +1,5 @@
-﻿using Kotono.Graphics.Objects.Meshes;
+﻿using Kotono.Graphics.Objects.Lights;
+using Kotono.Graphics.Objects.Meshes;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using System.Globalization;
@@ -6,9 +7,10 @@ using Path = Kotono.Utils.Path;
 
 namespace Kotono.Graphics.Objects
 {
-    public static class MeshManager
+    public static class ObjectManager
     {
         public static readonly List<IMesh> _meshes = new List<IMesh>();
+        public static readonly List<ILight> _lights = new List<ILight>();
 
         private static readonly Dictionary<string, Tuple<int, int, int>> _paths = new Dictionary<string, Tuple<int, int, int>>();
 
@@ -97,6 +99,11 @@ namespace Kotono.Graphics.Objects
             }
 
             _meshes.Add(new MeshOBJ(_paths[path].Item1, _paths[path].Item2, _paths[path].Item3, position, angle, scale, diffuseMap, specularMap));
+        }
+
+        public static void LoadPointLight()
+        {
+
         }
     }
 }
