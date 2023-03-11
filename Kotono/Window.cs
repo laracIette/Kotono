@@ -8,8 +8,6 @@ using Kotono.Graphics;
 using Random = Kotono.Utils.Random;
 using Kotono.Utils;
 using Kotono.Graphics.Objects.Lights;
-using Kotono.Graphics.Objects.Meshes;
-using PrimitiveType = OpenTK.Graphics.OpenGL4.PrimitiveType;
 using Camera = Kotono.Graphics.Camera;
 using System.Runtime.InteropServices;
 
@@ -22,8 +20,6 @@ namespace Kotono
         private Camera _camera;
 
         private SpotLight _spotLight;
-
-        private float _deltaTime;
 
         public Window(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings)
             : base(gameWindowSettings, nativeWindowSettings)
@@ -72,9 +68,9 @@ namespace Kotono
                 base.Close();
             }
 
-            _deltaTime = (float)e.Time;
+            Time.Update((float)e.Time);
 
-            MoveCamera();
+            _camera.Move();
 
             if (InputManager.KeyboardState.IsKeyDown(Keys.F11) && !InputManager.KeyboardState.WasKeyDown(Keys.F11))
             {
@@ -86,21 +82,16 @@ namespace Kotono
                 CursorState = (CursorState == CursorState.Normal) ? CursorState.Grabbed : CursorState.Normal;
             }
 
-            if (InputManager.KeyboardState.IsKeyDown(Keys.F) && !InputManager.KeyboardState.WasKeyDown(Keys.F))
-            {
-                _spotLight.Switch();
-            }
+            _spotLight.Update();
 
-            _spotLight.Update(_deltaTime);
-
-            foreach (var model in ObjectManager._meshes)
+            foreach (var mesh in ObjectManager._meshes)
             {
-                model.Update(_deltaTime, ObjectManager._meshes.Where(c => (Vector3.Distance(c.Position, model.Position) <= 2.0f) && (c != model)));
+                mesh.Update();
             }
 
             foreach (var pointLight in _pointLights)
             {
-                pointLight.Update(_deltaTime);
+                pointLight.Update();
             }
         }
 
@@ -142,7 +133,7 @@ namespace Kotono
 
         private void UpdateShaders()
         {
-            LightBuffer lightBufferData = new LightBuffer
+            var lightBufferData = new LightBuffer
             {
                 Lights = _pointLights.ToArray(),
                 NumLights = _pointLights.Count
@@ -195,45 +186,6 @@ namespace Kotono
             {
                 mesh.Draw();
             } 
-        }
-
-        private void MoveCamera()
-        {
-            float cameraSpeed = 1.5f;
-            float sensitivity = 0.2f;
-
-            if (InputManager.KeyboardState.IsKeyDown(Keys.LeftShift))
-            {
-                cameraSpeed *= 2.0f;
-            }
-
-            if (InputManager.KeyboardState.IsKeyDown(Keys.W))
-            {
-                _camera.Position += _camera.Front * cameraSpeed * _deltaTime; // Forward
-            }
-            if (InputManager.KeyboardState.IsKeyDown(Keys.S))
-            {
-                _camera.Position -= _camera.Front * cameraSpeed * _deltaTime; // Backwards
-            }
-            if (InputManager.KeyboardState.IsKeyDown(Keys.A))
-            {
-                _camera.Position -= _camera.Right * cameraSpeed * _deltaTime; // Left
-            }
-            if (InputManager.KeyboardState.IsKeyDown(Keys.D))
-            {
-                _camera.Position += _camera.Right * cameraSpeed * _deltaTime; // Right
-            }
-            if (InputManager.KeyboardState.IsKeyDown(Keys.Space))
-            {
-                _camera.Position += _camera.Up * cameraSpeed * _deltaTime; // Up
-            }
-            if (InputManager.KeyboardState.IsKeyDown(Keys.LeftControl))
-            {
-                _camera.Position -= _camera.Up * cameraSpeed * _deltaTime; // Down
-            }
-
-            _camera.Yaw += InputManager.MouseState.Delta.X * sensitivity;
-            _camera.Pitch -= InputManager.MouseState.Delta.Y * sensitivity;
         }
 
     }

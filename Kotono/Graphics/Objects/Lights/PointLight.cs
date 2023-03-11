@@ -1,4 +1,5 @@
-﻿using OpenTK.Mathematics;
+﻿using Kotono.Utils;
+using OpenTK.Mathematics;
 using Random = Kotono.Utils.Random;
 
 namespace Kotono.Graphics.Objects.Lights
@@ -14,10 +15,10 @@ namespace Kotono.Graphics.Objects.Lights
             Position = position;
         }
 
-        public void Update(float deltaTime)
+        public void Update()
         {
-            PositionVelocity += Random.Vector3(-0.1f, 0.1f);
-            Position += PositionVelocity * deltaTime;
+            PositionVelocity += Random.Vector3(-0.1f, 0.1f) * Time.Delta;
+            Position += PositionVelocity;
         }
 
         public Vector3 Position

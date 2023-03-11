@@ -4,7 +4,7 @@ namespace Kotono.Graphics.Objects.Meshes
 {
     public interface IMesh
     {
-        public void Update(float deltaTime, IEnumerable<IMesh> models);
+        public void Update();
 
         public void Draw();
 

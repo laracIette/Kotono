@@ -1,4 +1,6 @@
-﻿using OpenTK.Mathematics;
+﻿using Kotono.Utils;
+using OpenTK.Mathematics;
+using OpenTK.Windowing.GraphicsLibraryFramework;
 
 namespace Kotono.Graphics
 {
@@ -16,10 +18,18 @@ namespace Kotono.Graphics
 
         private float _fov = MathHelper.PiOver2;
 
+        private float _sensitivity;
+
+        private float _speed;
+
         public Camera(Vector3 position, float aspectRatio)
         {
             Position = position;
             AspectRatio = aspectRatio;
+
+            _speed = 1.5f;
+            _sensitivity = 0.2f;
+
         }
 
         public Vector3 Position { get; set; }
@@ -68,6 +78,42 @@ namespace Kotono.Graphics
         public Matrix4 ViewMatrix => Matrix4.LookAt(Position, Position + _front, _up);
 
         public Matrix4 ProjectionMatrix => Matrix4.CreatePerspectiveFieldOfView(_fov, AspectRatio, 0.01f, 100f);
+
+        public void Move()
+        {
+            if (InputManager.KeyboardState.IsKeyDown(Keys.LeftShift))
+            {
+                _speed *= 2.0f;
+            }
+
+            if (InputManager.KeyboardState.IsKeyDown(Keys.W))
+            {
+                Position += Front * _speed * Time.Delta; // Forward
+            }
+            if (InputManager.KeyboardState.IsKeyDown(Keys.S))
+            {
+                Position -= Front * _speed * Time.Delta; // Backwards
+            }
+            if (InputManager.KeyboardState.IsKeyDown(Keys.A))
+            {
+                Position -= Right * _speed * Time.Delta; // Left
+            }
+            if (InputManager.KeyboardState.IsKeyDown(Keys.D))
+            {
+                Position += Right * _speed * Time.Delta; // Right
+            }
+            if (InputManager.KeyboardState.IsKeyDown(Keys.Space))
+            {
+                Position += Up * _speed * Time.Delta; // Up
+            }
+            if (InputManager.KeyboardState.IsKeyDown(Keys.LeftControl))
+            {
+                Position -= Up * _speed * Time.Delta; // Down
+            }
+
+            Yaw += InputManager.MouseState.Delta.X * _sensitivity;
+            Pitch -= InputManager.MouseState.Delta.Y * _sensitivity;
+        }
 
         private void UpdateVectors()
         {

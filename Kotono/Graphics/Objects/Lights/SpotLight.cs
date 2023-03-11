@@ -1,4 +1,6 @@
-﻿using OpenTK.Mathematics;
+﻿using Kotono.Utils;
+using OpenTK.Mathematics;
+using OpenTK.Windowing.GraphicsLibraryFramework;
 
 namespace Kotono.Graphics.Objects.Lights
 {
@@ -15,25 +17,25 @@ namespace Kotono.Graphics.Objects.Lights
             _isOn = isOn;
         }
 
-        public void Switch()
+        public void Update()
         {
-            _isOn = !_isOn;
-        }
+            if (InputManager.KeyboardState.IsKeyDown(Keys.F) && !InputManager.KeyboardState.WasKeyDown(Keys.F))
+            {
+                _isOn = !_isOn;
+            }
 
-        public void Update(float deltaTime)
-        {
             if (_isOn)
             {
                 if (OuterCutOffAngle >= 5.0f)
                 {
-                    CutOffAngle += 100.0f * deltaTime;
+                    CutOffAngle += 100.0f * Time.Delta;
                 }
-                OuterCutOffAngle += 100.0f * deltaTime;
+                OuterCutOffAngle += 100.0f * Time.Delta;
             }
             else
             {
-                CutOffAngle -= 100.0f * deltaTime;
-                OuterCutOffAngle -= 100.0f * deltaTime;
+                CutOffAngle -= 100.0f * Time.Delta;
+                OuterCutOffAngle -= 100.0f * Time.Delta;
             }
         }
 

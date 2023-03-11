@@ -1,4 +1,5 @@
-﻿using OpenTK.Graphics.OpenGL4;
+﻿using Kotono.Utils;
+using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using static OpenTK.Graphics.OpenGL.GL;
 using Random = Kotono.Utils.Random;
@@ -25,18 +26,18 @@ namespace Kotono.Graphics.Objects.Meshes
             SpecularMap = specularMap;
         }
 
-        public void Update(float deltaTime, IEnumerable<IMesh> models)
+        public void Update()
         {
-            AngleVelocity += Random.Vector3(-0.1f, 0.1f);
-            Angle += AngleVelocity * deltaTime;
+            AngleVelocity += Random.Vector3(-0.1f, 0.1f) * Time.Delta;
+            Angle += AngleVelocity;
 
-            PositionVelocity += Random.Vector3(-0.1f, 0.1f);
+            PositionVelocity += Random.Vector3(-0.1f, 0.1f) * Time.Delta;
 
             bool collides = false;
 
-            foreach (var cube in models)
+            foreach (var mesh in ObjectManager._meshes.Where(m => this != m))
             {
-                if (Vector3.Distance(Position + PositionVelocity * deltaTime, cube.Position) <= 1.5f)
+                if (Vector3.Distance(Position + PositionVelocity, mesh.Position) <= 1.5f)
                 {
                     collides = true;
                     break;
@@ -45,7 +46,7 @@ namespace Kotono.Graphics.Objects.Meshes
 
             if (!collides)
             {
-                Position += PositionVelocity * deltaTime;
+                Position += PositionVelocity;
             }
         }
 
