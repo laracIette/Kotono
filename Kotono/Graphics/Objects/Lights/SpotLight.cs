@@ -20,7 +20,7 @@ namespace Kotono.Graphics.Objects.Lights
 
         public void Update()
         {
-            if (InputManager.KeyboardState.IsKeyDown(Keys.F) && !InputManager.KeyboardState.WasKeyDown(Keys.F))
+            if (InputManager.KeyboardState.IsKeyPressed(Keys.F))
             {
                 _isOn = !_isOn;
             }

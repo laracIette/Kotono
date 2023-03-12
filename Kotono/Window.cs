@@ -68,17 +68,17 @@ namespace Kotono
                 base.Close();
             }
 
-            if (InputManager.KeyboardState.IsKeyDown(Keys.F11) && !InputManager.KeyboardState.WasKeyDown(Keys.F11))
+            if (InputManager.KeyboardState.IsKeyPressed(Keys.F11))
             {
                 WindowState = (WindowState == WindowState.Fullscreen) ? WindowState.Normal : WindowState.Fullscreen;
             }
 
-            if (InputManager.KeyboardState.IsKeyDown(Keys.Enter) && !InputManager.KeyboardState.WasKeyDown(Keys.Enter))
+            if (InputManager.KeyboardState.IsKeyPressed(Keys.Enter))
             {
                 CursorState = (CursorState == CursorState.Normal) ? CursorState.Grabbed : CursorState.Normal;
             }
 
-            if (InputManager.KeyboardState.IsKeyDown(Keys.Up) && !InputManager.KeyboardState.WasKeyDown(Keys.Up))
+            if (InputManager.KeyboardState.IsKeyPressed(Keys.Up))
             {
                 if (ObjectManager.PointLights.Count < 20)
                 {
@@ -86,7 +86,7 @@ namespace Kotono
                 }
             }
 
-            if (InputManager.KeyboardState.IsKeyDown(Keys.Down) && !InputManager.KeyboardState.WasKeyDown(Keys.Down))
+            if (InputManager.KeyboardState.IsKeyPressed(Keys.Down))
             {
                 if (ObjectManager.PointLights.Count > 0)
                 {
