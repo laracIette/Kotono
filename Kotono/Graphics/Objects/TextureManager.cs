@@ -41,7 +41,6 @@ namespace Kotono.Graphics.Objects
             return _textures[path];
         }
 
-
         public static void UseTexture(int handle, TextureUnit unit)
         {
             GL.ActiveTexture(unit);

@@ -9,8 +9,8 @@ namespace Kotono.Graphics.Objects
 {
     public static class ObjectManager
     {
-        public static readonly List<IMesh> _meshes = new List<IMesh>();
-        public static readonly List<ILight> _lights = new List<ILight>();
+        public static readonly List<IMesh> Meshes = new List<IMesh>();
+        public static readonly List<ILight> Lights = new List<ILight>();
 
         private static readonly Dictionary<string, Tuple<int, int, int>> _paths = new Dictionary<string, Tuple<int, int, int>>();
 
@@ -98,7 +98,7 @@ namespace Kotono.Graphics.Objects
                 _paths[path] = Tuple.Create(vertexArrayObject, vertexBufferObject, vertices.Count);
             }
 
-            _meshes.Add(new MeshOBJ(_paths[path].Item1, _paths[path].Item2, _paths[path].Item3, position, angle, scale, diffuseMap, specularMap));
+            Meshes.Add(new MeshOBJ(_paths[path].Item1, _paths[path].Item2, _paths[path].Item3, position, angle, scale, diffuseMap, specularMap));
         }
 
         public static void LoadPointLight()

@@ -28,16 +28,16 @@ namespace Kotono.Graphics.Objects.Meshes
 
         public void Update()
         {
-            AngleVelocity += Random.Vector3(-0.1f, 0.1f) * Time.Delta;
-            Angle += AngleVelocity;
+            AngleVelocity += Random.Vector3(-0.1f, 0.1f);
+            Angle += AngleVelocity * Time.Delta;
 
-            PositionVelocity += Random.Vector3(-0.1f, 0.1f) * Time.Delta;
+            PositionVelocity += Random.Vector3(-0.1f, 0.1f);
 
             bool collides = false;
 
-            foreach (var mesh in ObjectManager._meshes.Where(m => this != m))
+            foreach (var mesh in ObjectManager.Meshes.Where(m => this != m))
             {
-                if (Vector3.Distance(Position + PositionVelocity, mesh.Position) <= 1.5f)
+                if (Vector3.Distance(Position + PositionVelocity * Time.Delta, mesh.Position) <= 1.5f)
                 {
                     collides = true;
                     break;
@@ -46,7 +46,7 @@ namespace Kotono.Graphics.Objects.Meshes
 
             if (!collides)
             {
-                Position += PositionVelocity;
+                Position += PositionVelocity * Time.Delta;
             }
         }
 

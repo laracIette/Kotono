@@ -17,8 +17,8 @@ namespace Kotono.Graphics.Objects.Lights
 
         public void Update()
         {
-            PositionVelocity += Random.Vector3(-0.1f, 0.1f) * Time.Delta;
-            Position += PositionVelocity;
+            PositionVelocity += Random.Vector3(-0.1f, 0.1f);
+            Position += PositionVelocity * Time.Delta;
         }
 
         public Vector3 Position

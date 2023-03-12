@@ -3,7 +3,7 @@
     public static class Path
     {
         // to replace by your path where your projects are located
-        private const string _path = "C:/Users/nicos/source/repos/";
+        private const string _path = "C:/Users/nicos/Documents/Visual Studio 2022/Projects/";
 
         public const string Kotono = _path + "Kotono/Kotono/";
 

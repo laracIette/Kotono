@@ -83,7 +83,7 @@ namespace Kotono.Graphics
         {
             if (InputManager.KeyboardState.IsKeyDown(Keys.LeftShift))
             {
-                _speed *= 2.0f;
+                _speed = 3.0f;
             }
 
             if (InputManager.KeyboardState.IsKeyDown(Keys.W))

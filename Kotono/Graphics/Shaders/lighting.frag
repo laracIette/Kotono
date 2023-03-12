@@ -1,5 +1,4 @@
-#version 330 core
-#extension GL_ARB_shading_language_420pack : enable
+#version 430 core
 
 struct Material {
     sampler2D diffuse;
@@ -27,11 +26,11 @@ struct PointLight {
     vec3 diffuse;
     vec3 specular;
 };
+#define NR_POINT_LIGHTS 20
 
-layout (std430, binding = 0) buffer LightBuffer {
-    PointLight pointLights[256];
-    int numLights;
-};
+uniform PointLight pointLights[NR_POINT_LIGHTS];
+
+uniform int numLights;
 
 struct SpotLight{
     vec3  position;
@@ -51,6 +50,7 @@ uniform SpotLight spotLight;
 
 uniform Material material;
 uniform vec3 viewPos;
+
 
 out vec4 FragColor;
 
