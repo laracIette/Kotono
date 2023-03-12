@@ -1,13 +1,14 @@
-﻿using OpenTK.Graphics.OpenGL4;
-using StbImageSharp;
-using System.Reflection.Metadata;
+﻿using StbImageSharp;
+
+using OpenTK.Graphics.OpenGL4;
+
 using Path = Kotono.Utils.Path;
 
 namespace Kotono.Graphics.Objects
 {
     public static class TextureManager
     {
-        private static readonly Dictionary<string, int> _textures = new Dictionary<string, int>();
+        private static readonly Dictionary<string, int> _textures = new();
 
         public static int LoadTexture(string path)
         {

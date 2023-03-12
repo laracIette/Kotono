@@ -3,13 +3,13 @@ using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using OpenTK.Windowing.Desktop;
-using Kotono.Graphics.Objects;
+
 using Kotono.Graphics;
-using Random = Kotono.Utils.Random;
-using Kotono.Utils;
+using Kotono.Graphics.Objects;
 using Kotono.Graphics.Objects.Lights;
+using Kotono.Utils;
+using Random = Kotono.Utils.Random;
 using Camera = Kotono.Graphics.Camera;
-using System.Runtime.InteropServices;
 
 namespace Kotono
 {

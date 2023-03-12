@@ -1,6 +1,7 @@
-﻿using Kotono.Utils;
-using OpenTK.Mathematics;
+﻿using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
+
+using Kotono.Utils;
 
 namespace Kotono.Graphics
 {
@@ -29,7 +30,6 @@ namespace Kotono.Graphics
 
             _speed = 1.5f;
             _sensitivity = 0.2f;
-
         }
 
         public Vector3 Position { get; set; }

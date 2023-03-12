@@ -1,7 +1,7 @@
-﻿using Kotono.Utils;
-using OpenTK.Graphics.OpenGL4;
+﻿using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
-using static OpenTK.Graphics.OpenGL.GL;
+
+using Kotono.Utils;
 using Random = Kotono.Utils.Random;
 
 namespace Kotono.Graphics.Objects.Meshes

@@ -1,6 +1,7 @@
-﻿using Kotono.Utils;
-using OpenTK.Mathematics;
+﻿using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
+
+using Kotono.Utils;
 
 namespace Kotono.Graphics.Objects.Lights
 {

@@ -5,7 +5,7 @@ namespace Kotono.Utils
     
     public static class Random
     {
-        private static readonly System.Random _random = new System.Random();
+        private static readonly System.Random _random = new();
 
         /// <summary>
         /// 

@@ -1,5 +1,6 @@
 ﻿using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
+
 using Path = Kotono.Utils.Path;
 
 namespace Kotono.Graphics

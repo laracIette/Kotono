@@ -1,18 +1,20 @@
-﻿using Kotono.Graphics.Objects.Lights;
-using Kotono.Graphics.Objects.Meshes;
+﻿using System.Globalization;
+
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
-using System.Globalization;
+
+using Kotono.Graphics.Objects.Lights;
+using Kotono.Graphics.Objects.Meshes;
 using Path = Kotono.Utils.Path;
 
 namespace Kotono.Graphics.Objects
 {
     public static class ObjectManager
     {
-        public static readonly List<IMesh> Meshes = new List<IMesh>();
-        public static readonly List<PointLight> PointLights = new List<PointLight>();
+        public static readonly List<IMesh> Meshes = new();
+        public static readonly List<PointLight> PointLights = new();
 
-        private static readonly Dictionary<string, Tuple<int, int, int>> _paths = new Dictionary<string, Tuple<int, int, int>>();
+        private static readonly Dictionary<string, Tuple<int, int, int>> _paths = new();
 
         public static void LoadMeshOBJ(string path, Vector3 position, Vector3 angle, Vector3 scale, string diffusePath, string specularPath)
         {
