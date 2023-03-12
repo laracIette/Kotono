@@ -15,13 +15,9 @@ namespace Kotono
 {
     public class Window : GameWindow
     {
-        private readonly List<PointLight> _pointLights = new List<PointLight>();
-
         private Camera _camera;
 
         private SpotLight _spotLight;
-
-        private int _numLights = 0;
 
         public Window(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings)
             : base(gameWindowSettings, nativeWindowSettings)
@@ -35,7 +31,7 @@ namespace Kotono
             GL.ClearColor(0.1f, 0.1f, 0.2f, 1.0f);
             GL.Enable(EnableCap.DepthTest);
 
-            CreateLights();
+            _spotLight = new SpotLight(true);
 
             _camera = new Camera(Vector3.Zero, (float)Size.X / (float)Size.Y);
 
@@ -84,17 +80,17 @@ namespace Kotono
 
             if (InputManager.KeyboardState.IsKeyDown(Keys.Up) && !InputManager.KeyboardState.WasKeyDown(Keys.Up))
             {
-                if (_numLights < 20)
+                if (ObjectManager.PointLights.Count < 20)
                 {
-                    _numLights++;
+                    ObjectManager.LoadPointLight(Random.Vector3(-20.0f, 20.0f)); ;
                 }
             }
 
             if (InputManager.KeyboardState.IsKeyDown(Keys.Down) && !InputManager.KeyboardState.WasKeyDown(Keys.Down))
             {
-                if (_numLights > 0)
+                if (ObjectManager.PointLights.Count > 0)
                 {
-                    _numLights--;
+                    ObjectManager.PointLights.RemoveAt(0);
                 }
             }
 
@@ -107,7 +103,7 @@ namespace Kotono
                 mesh.Update();
             }
 
-            foreach (var pointLight in _pointLights)
+            foreach (var pointLight in ObjectManager.PointLights)
             {
                 pointLight.Update();
             }
@@ -128,21 +124,9 @@ namespace Kotono
             _camera.AspectRatio = (float)Size.X / (float)Size.Y;
         }
 
-        private void CreateLights()
-        {
-            _spotLight = new SpotLight(true);
-
-            for (int i = 0; i < 20; i++)
-            {
-                var position = Random.Vector3(-20.0f, 20.0f);
-
-                _pointLights.Add(new PointLight(position));
-            }
-        }
-
         private void UpdateShaders()
         {
-            ShaderManager.LightingShader.SetInt("numLights", _numLights);
+            ShaderManager.LightingShader.SetInt("numLights", ObjectManager.PointLights.Count);
 
             ShaderManager.LightingShader.SetMatrix4("view", _camera.ViewMatrix);
             ShaderManager.LightingShader.SetMatrix4("projection", _camera.ProjectionMatrix);
@@ -159,9 +143,9 @@ namespace Kotono
             ShaderManager.LightingShader.SetVector3("dirLight.diffuse", new Vector3(0.4f, 0.4f, 0.4f));
             ShaderManager.LightingShader.SetVector3("dirLight.specular", new Vector3(0.5f, 0.5f, 0.5f));
 
-            for (int i = 0; i < _numLights; i++)
+            for (int i = 0; i < ObjectManager.PointLights.Count; i++)
             {
-                ShaderManager.LightingShader.SetVector3($"pointLights[{i}].position", _pointLights[i].Position);
+                ShaderManager.LightingShader.SetVector3($"pointLights[{i}].position", ObjectManager.PointLights[i].Position);
                 ShaderManager.LightingShader.SetVector3($"pointLights[{i}].ambient", new Vector3(0.05f, 0.05f, 0.05f));
                 ShaderManager.LightingShader.SetVector3($"pointLights[{i}].diffuse", new Vector3(0.8f, 0.8f, 0.8f));
                 ShaderManager.LightingShader.SetVector3($"pointLights[{i}].specular", new Vector3(1.0f, 1.0f, 1.0f));

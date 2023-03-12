@@ -10,7 +10,7 @@ namespace Kotono.Graphics.Objects
     public static class ObjectManager
     {
         public static readonly List<IMesh> Meshes = new List<IMesh>();
-        public static readonly List<ILight> Lights = new List<ILight>();
+        public static readonly List<PointLight> PointLights = new List<PointLight>();
 
         private static readonly Dictionary<string, Tuple<int, int, int>> _paths = new Dictionary<string, Tuple<int, int, int>>();
 
@@ -101,9 +101,9 @@ namespace Kotono.Graphics.Objects
             Meshes.Add(new MeshOBJ(_paths[path].Item1, _paths[path].Item2, _paths[path].Item3, position, angle, scale, diffuseMap, specularMap));
         }
 
-        public static void LoadPointLight()
+        public static void LoadPointLight(Vector3 position)
         {
-
+            PointLights.Add(new PointLight(position));
         }
     }
 }
