@@ -1,19 +1,20 @@
-﻿using Assimp;
-using OpenTK.Mathematics;
+﻿using OpenTK.Mathematics;
 
 namespace Kotono.Graphics.Objects
 {
     public struct Vertex
     {
-        public Vector3D Position { get; set; }
-        public Vector2D TexCoord { get; set; }
-        public Vector3D Normal { get; set; }
+        public Vector3 Position { get; set; }
 
-        public Vertex(Vector3D position, Vector2D texCoord, Vector3D normal)
+        public Vector3 Normal { get; set; }
+
+        public Vector2 TexCoord { get; set; }
+
+        public Vertex(Vector3 position, Vector3 normal, Vector2 texCoord)
         {
             Position = position;
-            TexCoord = texCoord;
             Normal = normal;
+            TexCoord = texCoord;
         }
 
         public static readonly int SizeInBytes = sizeof(float) * 8;
