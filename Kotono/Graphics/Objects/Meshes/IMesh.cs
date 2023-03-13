@@ -16,7 +16,7 @@ namespace Kotono.Graphics.Objects.Meshes
 
         public int VertexBufferObject { get; }
 
-        public int VerticesCount { get; }
+        public int IndicesCount { get; }
 
         public int DiffuseMap { get; }
 

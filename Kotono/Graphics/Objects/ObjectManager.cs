@@ -18,7 +18,9 @@ namespace Kotono.Graphics.Objects
         public static readonly List<IMesh> Meshes = new();
         public static readonly List<PointLight> PointLights = new();
 
-        private static readonly Dictionary<string, Tuple<int, int, int, int, int>> _paths = new();
+        private static readonly Dictionary<string, Tuple<int, int, int>> _paths = new();
+
+        //private static int ID = 0;
 
         public static void LoadMeshOBJ(string path, Vector3 position, Vector3 angle, Vector3 scale, string diffusePath, string specularPath)
         {
@@ -54,19 +56,15 @@ namespace Kotono.Graphics.Objects
                         indices[i] = mesh.GetIndices().ToList();
                     }
                 }
-                // create vertex buffer
-                int vertexBufferObject = GL.GenBuffer();
-                GL.BindBuffer(BufferTarget.ArrayBuffer, vertexBufferObject);
-                GL.BufferData(BufferTarget.ArrayBuffer, models[0].Count * Vertex.SizeInBytes, models[0].ToArray(), BufferUsageHint.DynamicDraw);
-                
-                //tst
-                int indicesBufferObject = GL.GenBuffer();
-                GL.BindBuffer(BufferTarget.ElementArrayBuffer, indicesBufferObject);
-                GL.BufferData(BufferTarget.ElementArrayBuffer, indices[0].Count * sizeof(int), indices[0].ToArray(), BufferUsageHint.DynamicDraw);
 
                 // create vertex array
                 int vertexArrayObject = GL.GenVertexArray();
                 GL.BindVertexArray(vertexArrayObject);
+
+                // create vertex buffer
+                int vertexBufferObject = GL.GenBuffer();
+                GL.BindBuffer(BufferTarget.ArrayBuffer, vertexBufferObject);
+                GL.BufferData(BufferTarget.ArrayBuffer, models[0].Count * Vertex.SizeInBytes, models[0].ToArray(), BufferUsageHint.DynamicDraw);
 
                 int positionAttributeLocation = ShaderManager.LightingShader.GetAttribLocation("aPos");
                 GL.EnableVertexAttribArray(positionAttributeLocation);
@@ -80,10 +78,15 @@ namespace Kotono.Graphics.Objects
                 GL.EnableVertexAttribArray(texCoordAttributeLocation);
                 GL.VertexAttribPointer(texCoordAttributeLocation, 2, VertexAttribPointerType.Float, false, Vertex.SizeInBytes, sizeof(float) * 6);
 
-                _paths[path] = Tuple.Create(vertexArrayObject, vertexBufferObject, indicesBufferObject, models[0].Count, indices[0].Count);
+                // create element buffer
+                int elementBufferObject = GL.GenBuffer();
+                GL.BindBuffer(BufferTarget.ElementArrayBuffer, elementBufferObject);
+                GL.BufferData(BufferTarget.ElementArrayBuffer, indices[0].Count * sizeof(int), indices[0].ToArray(), BufferUsageHint.DynamicDraw);
+
+                _paths[path] = Tuple.Create(vertexArrayObject, vertexBufferObject, indices[0].Count);
             }
 
-            Meshes.Add(new MeshOBJ(_paths[path].Item1, _paths[path].Item2, _paths[path].Item3, _paths[path].Item4, _paths[path].Item5, position, angle, scale, diffuseMap, specularMap));
+            Meshes.Add(new MeshOBJ(_paths[path].Item1, _paths[path].Item2, _paths[path].Item3, position, angle, scale, diffuseMap, specularMap));
         }
 
         public static void LoadPointLight(Vector3 position)

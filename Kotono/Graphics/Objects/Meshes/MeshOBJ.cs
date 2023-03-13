@@ -14,11 +14,10 @@ namespace Kotono.Graphics.Objects.Meshes
 
         private Vector3 _angleVelocity = Vector3.Zero;
 
-        public MeshOBJ(int vertexArrayObject, int vertexBufferObject, int indicesBufferObject, int verticesCount, int indicesCount, Vector3 position, Vector3 angle, Vector3 scale, int diffuseMap, int specularMap)
+        public MeshOBJ(int vertexArrayObject, int vertexBufferObject, int indicesCount, Vector3 position, Vector3 angle, Vector3 scale, int diffuseMap, int specularMap)
         {
             VertexArrayObject = vertexArrayObject;
             VertexBufferObject = vertexBufferObject;
-            VerticesCount = verticesCount;
             IndicesCount = indicesCount;
             Position = position;
             Angle = angle;
@@ -59,20 +58,14 @@ namespace Kotono.Graphics.Objects.Meshes
             ShaderManager.LightingShader.SetMatrix4("model", Model);
 
             GL.BindVertexArray(VertexArrayObject);
-
             GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
-            //GL.BindBuffer(BufferTarget.ElementArrayBuffer, IndicesBufferObject);
-            GL.DrawArrays(PrimitiveType.Triangles, 0, VerticesCount);
-            //GL.DrawElements(BeginMode.Triangles, IndicesCount, DrawElementsType.UnsignedInt, 0);
-        }
 
-        public int VertexBufferObject { get; }
+            GL.DrawElements(PrimitiveType.Triangles, IndicesCount, DrawElementsType.UnsignedInt, IntPtr.Zero);
+        }
 
         public int VertexArrayObject { get; }
 
-        public int IndicesBufferObject { get; }
-
-        public int VerticesCount { get; }
+        public int VertexBufferObject { get; }
 
         public int IndicesCount { get; }
 
@@ -127,9 +120,9 @@ namespace Kotono.Graphics.Objects.Meshes
         {
             GL.BindVertexArray(0);
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
-            GL.BindBuffer(BufferTarget.ElementArrayBuffer, 0);
 
             GL.DeleteVertexArray(VertexArrayObject);
+            GL.DeleteVertexArray(VertexBufferObject);
         }
     }
 }
