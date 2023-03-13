@@ -14,11 +14,11 @@ namespace Kotono.Graphics.Objects.Meshes
 
         private Vector3 _angleVelocity = Vector3.Zero;
 
-        public MeshOBJ(int vertexArrayObject, int vertexBufferObject, int verticesCount, Vector3 position, Vector3 angle, Vector3 scale, int diffuseMap, int specularMap)
+        public MeshOBJ(int vertexArrayObject, int vertexBufferObject, int indicesCount, Vector3 position, Vector3 angle, Vector3 scale, int diffuseMap, int specularMap)
         {
             VertexArrayObject = vertexArrayObject;
             VertexBufferObject = vertexBufferObject;
-            VerticesCount = verticesCount;
+            IndicesCount = indicesCount;
             Position = position;
             Angle = angle;
             Scale = scale;
@@ -58,16 +58,16 @@ namespace Kotono.Graphics.Objects.Meshes
             ShaderManager.LightingShader.SetMatrix4("model", Model);
 
             GL.BindVertexArray(VertexArrayObject);
-
             GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
-            GL.DrawArrays(PrimitiveType.Triangles, 0, VerticesCount);
-        }
 
-        public int VertexBufferObject { get; }
+            GL.DrawElements(PrimitiveType.Triangles, IndicesCount, DrawElementsType.UnsignedInt, IntPtr.Zero);
+        }
 
         public int VertexArrayObject { get; }
 
-        public int VerticesCount { get; }
+        public int VertexBufferObject { get; }
+
+        public int IndicesCount { get; }
 
         public int DiffuseMap { get; }
 
@@ -120,9 +120,9 @@ namespace Kotono.Graphics.Objects.Meshes
         {
             GL.BindVertexArray(0);
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
-            GL.BindBuffer(BufferTarget.ElementArrayBuffer, 0);
 
             GL.DeleteVertexArray(VertexArrayObject);
+            GL.DeleteVertexArray(VertexBufferObject);
         }
     }
 }

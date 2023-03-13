@@ -8,6 +8,7 @@ using OpenTK.Mathematics;
 using Kotono.Graphics.Objects.Lights;
 using Kotono.Graphics.Objects.Meshes;
 using Path = Kotono.Utils.Path;
+using System.Reflection;
 
 
 namespace Kotono.Graphics.Objects
@@ -19,6 +20,8 @@ namespace Kotono.Graphics.Objects
 
         private static readonly Dictionary<string, Tuple<int, int, int>> _paths = new();
 
+        //private static int ID = 0;
+
         public static void LoadMeshOBJ(string path, Vector3 position, Vector3 angle, Vector3 scale, string diffusePath, string specularPath)
         {
             var diffuseMap = TextureManager.LoadTexture(diffusePath);
@@ -26,44 +29,61 @@ namespace Kotono.Graphics.Objects
 
             if (!_paths.ContainsKey(path))
             {
-                AssimpContext importer = new();
-                Scene scene = importer.ImportFile(Path.Assets + path, PostProcessSteps.Triangulate);
+                List<Vertex>[] models;
+                List<int>[] indices;
 
-                // Extract the vertices from the mesh
-                Mesh mesh = scene.Meshes[0];
-                Vector3D[] positions = mesh.Vertices.ToArray();
-                Vector2D[] texCoords = mesh.TextureCoordinateChannels[0].Select(v => new Vector2D(v.X, v.Y)).ToArray();
-                Vector3D[] normals = mesh.Normals.ToArray();
-
-                // Combine the vertex data into a single array
-                Vertex[] vertices = new Vertex[mesh.VertexCount];
-                for (int i = 0; i < mesh.VertexCount; i++)
+                using (var importer = new AssimpContext())
                 {
-                    vertices[i].Position = positions[i];
-                    vertices[i].TexCoord = texCoords[i];
-                    vertices[i].Normal = normals[i];
+                    var scene = importer.ImportFile(Path.Assets + path, PostProcessSteps.Triangulate);
+
+                    models = new List<Vertex>[scene.Meshes.Count];
+                    indices = new List<int>[scene.Meshes.Count];
+                    for (int i = 0; i < scene.Meshes.Count; i++)
+                    {
+                        var mesh = scene.Meshes[i];
+                        var vertices = new List<Vertex>();
+
+                        for (int j = 0; j < mesh.Vertices.Count; j++)
+                        {
+                            var pos = new Vector3(mesh.Vertices[j].X, mesh.Vertices[j].Y, mesh.Vertices[j].Z);
+                            var normal = new Vector3(mesh.Normals[j].X, mesh.Normals[j].Y, mesh.Normals[j].Z);
+                            var texCoord = new Vector2(mesh.TextureCoordinateChannels[0][j].X, mesh.TextureCoordinateChannels[0][j].Y);
+
+                            vertices.Add(new Vertex(pos, normal, texCoord));
+                        }
+
+                        models[i] = vertices;
+                        indices[i] = mesh.GetIndices().ToList();
+                    }
                 }
 
-                int vertexBufferObject = GL.GenBuffer();
-                GL.BindBuffer(BufferTarget.ArrayBuffer, vertexBufferObject);
-                GL.BufferData(BufferTarget.ArrayBuffer, vertices.Length * Vertex.SizeInBytes, vertices, BufferUsageHint.StaticDraw);
-
+                // create vertex array
                 int vertexArrayObject = GL.GenVertexArray();
                 GL.BindVertexArray(vertexArrayObject);
+
+                // create vertex buffer
+                int vertexBufferObject = GL.GenBuffer();
+                GL.BindBuffer(BufferTarget.ArrayBuffer, vertexBufferObject);
+                GL.BufferData(BufferTarget.ArrayBuffer, models[0].Count * Vertex.SizeInBytes, models[0].ToArray(), BufferUsageHint.DynamicDraw);
 
                 int positionAttributeLocation = ShaderManager.LightingShader.GetAttribLocation("aPos");
                 GL.EnableVertexAttribArray(positionAttributeLocation);
                 GL.VertexAttribPointer(positionAttributeLocation, 3, VertexAttribPointerType.Float, false, Vertex.SizeInBytes, 0);
 
-                int texCoordAttributeLocation = ShaderManager.LightingShader.GetAttribLocation("aTexCoords");
-                GL.EnableVertexAttribArray(texCoordAttributeLocation);
-                GL.VertexAttribPointer(texCoordAttributeLocation, 2, VertexAttribPointerType.Float, false, Vertex.SizeInBytes, sizeof(float) * 3);
-
                 int normalAttributeLocation = ShaderManager.LightingShader.GetAttribLocation("aNormal");
                 GL.EnableVertexAttribArray(normalAttributeLocation);
-                GL.VertexAttribPointer(normalAttributeLocation, 3, VertexAttribPointerType.Float, false, Vertex.SizeInBytes, sizeof(float) * 5);
+                GL.VertexAttribPointer(normalAttributeLocation, 3, VertexAttribPointerType.Float, false, Vertex.SizeInBytes, sizeof(float) * 3);
 
-                _paths[path] = Tuple.Create(vertexArrayObject, vertexBufferObject, vertices.Length);
+                int texCoordAttributeLocation = ShaderManager.LightingShader.GetAttribLocation("aTexCoords");
+                GL.EnableVertexAttribArray(texCoordAttributeLocation);
+                GL.VertexAttribPointer(texCoordAttributeLocation, 2, VertexAttribPointerType.Float, false, Vertex.SizeInBytes, sizeof(float) * 6);
+
+                // create element buffer
+                int elementBufferObject = GL.GenBuffer();
+                GL.BindBuffer(BufferTarget.ElementArrayBuffer, elementBufferObject);
+                GL.BufferData(BufferTarget.ElementArrayBuffer, indices[0].Count * sizeof(int), indices[0].ToArray(), BufferUsageHint.DynamicDraw);
+
+                _paths[path] = Tuple.Create(vertexArrayObject, vertexBufferObject, indices[0].Count);
             }
 
             Meshes.Add(new MeshOBJ(_paths[path].Item1, _paths[path].Item2, _paths[path].Item3, position, angle, scale, diffuseMap, specularMap));
