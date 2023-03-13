@@ -1,4 +1,6 @@
-﻿using System.Globalization;
+﻿using Assimp;
+
+using System.Globalization;
 
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
@@ -6,6 +8,7 @@ using OpenTK.Mathematics;
 using Kotono.Graphics.Objects.Lights;
 using Kotono.Graphics.Objects.Meshes;
 using Path = Kotono.Utils.Path;
+
 
 namespace Kotono.Graphics.Objects
 {
@@ -23,64 +26,27 @@ namespace Kotono.Graphics.Objects
 
             if (!_paths.ContainsKey(path))
             {
-                var positions = new List<Vector3>();
-                var texCoords = new List<Vector2>();
-                var normals = new List<Vector3>();
-                var vertices = new List<Vertex>();
+                AssimpContext importer = new();
+                Scene scene = importer.ImportFile(Path.Assets + path, PostProcessSteps.Triangulate);
 
-                foreach (var line in File.ReadAllLines(Path.Assets + path))
+                // Extract the vertices from the mesh
+                Mesh mesh = scene.Meshes[0];
+                Vector3D[] positions = mesh.Vertices.ToArray();
+                Vector2D[] texCoords = mesh.TextureCoordinateChannels[0].Select(v => new Vector2D(v.X, v.Y)).ToArray();
+                Vector3D[] normals = mesh.Normals.ToArray();
+
+                // Combine the vertex data into a single array
+                Vertex[] vertices = new Vertex[mesh.VertexCount];
+                for (int i = 0; i < mesh.VertexCount; i++)
                 {
-                    string[] tokens = line.Split(' ');
-
-                    switch (tokens[0])
-                    {
-                        case "v":
-                            var pos = new Vector3(
-                                float.Parse(tokens[1], CultureInfo.InvariantCulture),
-                                float.Parse(tokens[2], CultureInfo.InvariantCulture),
-                                float.Parse(tokens[3], CultureInfo.InvariantCulture)
-                            );
-                            positions.Add(pos);
-                            break;
-
-                        case "vt":
-                            var texCoord = new Vector2(
-                                float.Parse(tokens[1], CultureInfo.InvariantCulture),
-                                float.Parse(tokens[2], CultureInfo.InvariantCulture)
-                            );
-                            texCoords.Add(texCoord);
-                            break;
-
-                        case "vn":
-                            var normal = new Vector3(
-                                float.Parse(tokens[1], CultureInfo.InvariantCulture),
-                                float.Parse(tokens[2], CultureInfo.InvariantCulture),
-                                float.Parse(tokens[3], CultureInfo.InvariantCulture)
-                            );
-                            normals.Add(normal);
-                            break;
-
-                        case "f":
-                            for (int i = 1; i < tokens.Length; i++)
-                            {
-                                string[] vertexTokens = tokens[i].Split('/');
-
-                                var vertex = new Vertex
-                                {
-                                    position = positions[int.Parse(vertexTokens[0]) - 1],
-                                    texCoords = texCoords[int.Parse(vertexTokens[1]) - 1],
-                                    normal = normals[int.Parse(vertexTokens[2]) - 1]
-                                };
-                                vertices.Add(vertex);
-                            }
-                            break;
-                    }
-
+                    vertices[i].Position = positions[i];
+                    vertices[i].TexCoord = texCoords[i];
+                    vertices[i].Normal = normals[i];
                 }
 
                 int vertexBufferObject = GL.GenBuffer();
                 GL.BindBuffer(BufferTarget.ArrayBuffer, vertexBufferObject);
-                GL.BufferData(BufferTarget.ArrayBuffer, vertices.Count * Vertex.SizeInBytes, vertices.ToArray(), BufferUsageHint.StaticDraw);
+                GL.BufferData(BufferTarget.ArrayBuffer, vertices.Length * Vertex.SizeInBytes, vertices, BufferUsageHint.StaticDraw);
 
                 int vertexArrayObject = GL.GenVertexArray();
                 GL.BindVertexArray(vertexArrayObject);
@@ -91,13 +57,13 @@ namespace Kotono.Graphics.Objects
 
                 int texCoordAttributeLocation = ShaderManager.LightingShader.GetAttribLocation("aTexCoords");
                 GL.EnableVertexAttribArray(texCoordAttributeLocation);
-                GL.VertexAttribPointer(texCoordAttributeLocation, 2, VertexAttribPointerType.Float, false, Vertex.SizeInBytes, Vector3.SizeInBytes);
+                GL.VertexAttribPointer(texCoordAttributeLocation, 2, VertexAttribPointerType.Float, false, Vertex.SizeInBytes, sizeof(float) * 3);
 
                 int normalAttributeLocation = ShaderManager.LightingShader.GetAttribLocation("aNormal");
                 GL.EnableVertexAttribArray(normalAttributeLocation);
-                GL.VertexAttribPointer(normalAttributeLocation, 3, VertexAttribPointerType.Float, false, Vertex.SizeInBytes, Vector3.SizeInBytes + Vector2.SizeInBytes);
+                GL.VertexAttribPointer(normalAttributeLocation, 3, VertexAttribPointerType.Float, false, Vertex.SizeInBytes, sizeof(float) * 5);
 
-                _paths[path] = Tuple.Create(vertexArrayObject, vertexBufferObject, vertices.Count);
+                _paths[path] = Tuple.Create(vertexArrayObject, vertexBufferObject, vertices.Length);
             }
 
             Meshes.Add(new MeshOBJ(_paths[path].Item1, _paths[path].Item2, _paths[path].Item3, position, angle, scale, diffuseMap, specularMap));

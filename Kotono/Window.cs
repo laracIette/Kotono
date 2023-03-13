@@ -70,12 +70,16 @@ namespace Kotono
 
             if (InputManager.KeyboardState.IsKeyPressed(Keys.F11))
             {
-                WindowState = (WindowState == WindowState.Fullscreen) ? WindowState.Normal : WindowState.Fullscreen;
+                WindowState = (WindowState == WindowState.Fullscreen) ? 
+                    WindowState.Normal : 
+                    WindowState.Fullscreen;
             }
 
             if (InputManager.KeyboardState.IsKeyPressed(Keys.Enter))
             {
-                CursorState = (CursorState == CursorState.Normal) ? CursorState.Grabbed : CursorState.Normal;
+                CursorState = (CursorState == CursorState.Normal) ? 
+                    CursorState.Grabbed : 
+                    CursorState.Normal;
             }
 
             if (InputManager.KeyboardState.IsKeyPressed(Keys.Up))
