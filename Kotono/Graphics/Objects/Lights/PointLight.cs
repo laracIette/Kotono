@@ -11,15 +11,20 @@ namespace Kotono.Graphics.Objects.Lights
 
         private Vector3 _positionVelocity = Vector3.Zero;
 
-        public PointLight(Vector3 position)
+        public PointLight(Vector3 position, int meshIndex)
+        {
+            Position = position;
+            MeshIndex = meshIndex;
+        }
+
+        public void Update(Vector3 position)
         {
             Position = position;
         }
 
-        public void Update()
+        internal void UpdateIndex()
         {
-            PositionVelocity += Random.Vector3(-0.1f, 0.1f);
-            Position += PositionVelocity * Time.Delta;
+            MeshIndex--;
         }
 
         public Vector3 Position
@@ -43,6 +48,8 @@ namespace Kotono.Graphics.Objects.Lights
                 _positionVelocity.Z = MathHelper.Clamp(value.Z, -1.0f, 1.0f);
             }
         }
+
+        public int MeshIndex { get; private set; }
 
         public Matrix4 Model => Matrix4.CreateScale(new Vector3(0.2f, 0.2f, 0.4f)) * Matrix4.CreateTranslation(Position);
     }

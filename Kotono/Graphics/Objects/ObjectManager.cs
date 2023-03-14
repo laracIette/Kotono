@@ -91,7 +91,8 @@ namespace Kotono.Graphics.Objects
 
         public static void LoadPointLight(Vector3 position)
         {
-            PointLights.Add(new PointLight(position));
+            PointLights.Add(new PointLight(position, Meshes.Count));
+            LoadMeshOBJ("sphere.obj", position, Vector3.Zero, new Vector3(0.2f), "white.png", "white.png");
         }
     }
 }

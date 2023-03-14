@@ -10,6 +10,7 @@ using Kotono.Graphics.Objects.Lights;
 using Kotono.Utils;
 using Random = Kotono.Utils.Random;
 using Camera = Kotono.Graphics.Camera;
+using Assimp;
 
 namespace Kotono
 {
@@ -94,7 +95,13 @@ namespace Kotono
             {
                 if (ObjectManager.PointLights.Count > 0)
                 {
+                    ObjectManager.Meshes.RemoveAt(ObjectManager.PointLights[0].MeshIndex);
                     ObjectManager.PointLights.RemoveAt(0);
+
+                    foreach (var pointLight in ObjectManager.PointLights)
+                    {
+                        pointLight.UpdateIndex();
+                    }
                 }
             }
 
@@ -109,7 +116,7 @@ namespace Kotono
 
             foreach (var pointLight in ObjectManager.PointLights)
             {
-                pointLight.Update();
+                pointLight.Update(ObjectManager.Meshes[pointLight.MeshIndex].Position);
             }
         }
 
