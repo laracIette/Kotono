@@ -95,8 +95,7 @@ namespace Kotono
             {
                 if (ObjectManager.PointLights.Count > 0)
                 {
-                    ObjectManager.Meshes.RemoveAt(ObjectManager.PointLights[0].MeshIndex);
-                    ObjectManager.PointLights.RemoveAt(0);
+                    ObjectManager.RemovePointLight(0);
 
                     foreach (var pointLight in ObjectManager.PointLights)
                     {
@@ -137,44 +136,47 @@ namespace Kotono
 
         private void UpdateShaders()
         {
-            ShaderManager.LightingShader.SetInt("numLights", ObjectManager.PointLights.Count);
+            ShaderManager.Lighting.SetInt("numLights", ObjectManager.PointLights.Count);
 
-            ShaderManager.LightingShader.SetMatrix4("view", _camera.ViewMatrix);
-            ShaderManager.LightingShader.SetMatrix4("projection", _camera.ProjectionMatrix);
+            ShaderManager.Lighting.SetMatrix4("view", _camera.ViewMatrix);
+            ShaderManager.Lighting.SetMatrix4("projection", _camera.ProjectionMatrix);
 
-            ShaderManager.LightingShader.SetVector3("viewPos", _camera.Position);
+            ShaderManager.Lighting.SetVector3("viewPos", _camera.Position);
 
-            ShaderManager.LightingShader.SetInt("material.diffuse", 0);
-            ShaderManager.LightingShader.SetInt("material.specular", 1);
-            ShaderManager.LightingShader.SetVector3("material.specular", new Vector3(0.5f, 0.5f, 0.5f));
-            ShaderManager.LightingShader.SetFloat("material.shininess", 32.0f);
+            ShaderManager.Lighting.SetInt("material.diffuse", 0);
+            ShaderManager.Lighting.SetInt("material.specular", 1);
+            ShaderManager.Lighting.SetVector3("material.specular", new Vector3(0.5f, 0.5f, 0.5f));
+            ShaderManager.Lighting.SetFloat("material.shininess", 32.0f);
 
-            ShaderManager.LightingShader.SetVector3("dirLight.direction", new Vector3(-0.2f, -1.0f, -0.3f));
-            ShaderManager.LightingShader.SetVector3("dirLight.ambient", new Vector3(0.05f, 0.05f, 0.05f));
-            ShaderManager.LightingShader.SetVector3("dirLight.diffuse", new Vector3(0.4f, 0.4f, 0.4f));
-            ShaderManager.LightingShader.SetVector3("dirLight.specular", new Vector3(0.5f, 0.5f, 0.5f));
+            ShaderManager.Lighting.SetVector3("dirLight.direction", new Vector3(-0.2f, -1.0f, -0.3f));
+            ShaderManager.Lighting.SetVector3("dirLight.ambient", new Vector3(0.05f, 0.05f, 0.05f));
+            ShaderManager.Lighting.SetVector3("dirLight.diffuse", new Vector3(0.4f, 0.4f, 0.4f));
+            ShaderManager.Lighting.SetVector3("dirLight.specular", new Vector3(0.5f, 0.5f, 0.5f));
 
             for (int i = 0; i < ObjectManager.PointLights.Count; i++)
             {
-                ShaderManager.LightingShader.SetVector3($"pointLights[{i}].position", ObjectManager.PointLights[i].Position);
-                ShaderManager.LightingShader.SetVector3($"pointLights[{i}].ambient", new Vector3(0.05f, 0.05f, 0.05f));
-                ShaderManager.LightingShader.SetVector3($"pointLights[{i}].diffuse", new Vector3(0.8f, 0.8f, 0.8f));
-                ShaderManager.LightingShader.SetVector3($"pointLights[{i}].specular", new Vector3(1.0f, 1.0f, 1.0f));
-                ShaderManager.LightingShader.SetFloat($"pointLights[{i}].constant", 1.0f);
-                ShaderManager.LightingShader.SetFloat($"pointLights[{i}].linear", 0.09f);
-                ShaderManager.LightingShader.SetFloat($"pointLights[{i}].quadratic", 0.032f);
+                ShaderManager.Lighting.SetVector3($"pointLights[{i}].position", ObjectManager.PointLights[i].Position);
+                ShaderManager.Lighting.SetVector3($"pointLights[{i}].ambient", new Vector3(0.05f, 0.05f, 0.05f));
+                ShaderManager.Lighting.SetVector3($"pointLights[{i}].diffuse", new Vector3(0.8f, 0.8f, 0.8f));
+                ShaderManager.Lighting.SetVector3($"pointLights[{i}].specular", new Vector3(1.0f, 1.0f, 1.0f));
+                ShaderManager.Lighting.SetFloat($"pointLights[{i}].constant", 1.0f);
+                ShaderManager.Lighting.SetFloat($"pointLights[{i}].linear", 0.09f);
+                ShaderManager.Lighting.SetFloat($"pointLights[{i}].quadratic", 0.032f);
             }
 
-            ShaderManager.LightingShader.SetVector3("spotLight.position", _camera.Position);
-            ShaderManager.LightingShader.SetVector3("spotLight.direction", _camera.Front);
-            ShaderManager.LightingShader.SetVector3("spotLight.ambient", new Vector3(0.0f, 0.0f, 0.0f));
-            ShaderManager.LightingShader.SetVector3("spotLight.diffuse", new Vector3(1.0f, 1.0f, 1.0f));
-            ShaderManager.LightingShader.SetVector3("spotLight.specular", new Vector3(1.0f, 1.0f, 1.0f));
-            ShaderManager.LightingShader.SetFloat("spotLight.constant", 1.0f);
-            ShaderManager.LightingShader.SetFloat("spotLight.linear", 0.09f);
-            ShaderManager.LightingShader.SetFloat("spotLight.quadratic", 0.032f);
-            ShaderManager.LightingShader.SetFloat("spotLight.cutOff", MathF.Cos(MathHelper.DegreesToRadians(_spotLight.CutOffAngle)));
-            ShaderManager.LightingShader.SetFloat("spotLight.outerCutOff", MathF.Cos(MathHelper.DegreesToRadians(_spotLight.OuterCutOffAngle)));
+            ShaderManager.Lighting.SetVector3("spotLight.position", _camera.Position);
+            ShaderManager.Lighting.SetVector3("spotLight.direction", _camera.Front);
+            ShaderManager.Lighting.SetVector3("spotLight.ambient", new Vector3(0.0f, 0.0f, 0.0f));
+            ShaderManager.Lighting.SetVector3("spotLight.diffuse", new Vector3(1.0f, 1.0f, 1.0f));
+            ShaderManager.Lighting.SetVector3("spotLight.specular", new Vector3(1.0f, 1.0f, 1.0f));
+            ShaderManager.Lighting.SetFloat("spotLight.constant", 1.0f);
+            ShaderManager.Lighting.SetFloat("spotLight.linear", 0.09f);
+            ShaderManager.Lighting.SetFloat("spotLight.quadratic", 0.032f);
+            ShaderManager.Lighting.SetFloat("spotLight.cutOff", MathF.Cos(MathHelper.DegreesToRadians(_spotLight.CutOffAngle)));
+            ShaderManager.Lighting.SetFloat("spotLight.outerCutOff", MathF.Cos(MathHelper.DegreesToRadians(_spotLight.OuterCutOffAngle)));
+            
+            ShaderManager.PointLight.SetMatrix4("view", _camera.ViewMatrix);
+            ShaderManager.PointLight.SetMatrix4("projection", _camera.ProjectionMatrix);
 
             foreach (var mesh in ObjectManager.Meshes)
             {

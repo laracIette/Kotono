@@ -7,7 +7,7 @@ namespace Kotono.Graphics
 {
     public class Shader
     {
-        public readonly int Handle;
+        private readonly int Handle;
 
         private readonly Dictionary<string, int> _uniformLocations;
 

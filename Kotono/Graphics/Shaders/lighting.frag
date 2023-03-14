@@ -51,7 +51,6 @@ uniform SpotLight spotLight;
 uniform Material material;
 uniform vec3 viewPos;
 
-
 out vec4 FragColor;
 
 in vec3 Normal;

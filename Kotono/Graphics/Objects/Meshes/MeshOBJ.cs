@@ -14,7 +14,9 @@ namespace Kotono.Graphics.Objects.Meshes
 
         private Vector3 _angleVelocity = Vector3.Zero;
 
-        public MeshOBJ(int vertexArrayObject, int vertexBufferObject, int indicesCount, Vector3 position, Vector3 angle, Vector3 scale, int diffuseMap, int specularMap)
+        private readonly Shader _shader;
+
+        public MeshOBJ(int vertexArrayObject, int vertexBufferObject, int indicesCount, Vector3 position, Vector3 angle, Vector3 scale, int diffuseMap, int specularMap, Shader shader)
         {
             VertexArrayObject = vertexArrayObject;
             VertexBufferObject = vertexBufferObject;
@@ -24,6 +26,7 @@ namespace Kotono.Graphics.Objects.Meshes
             Scale = scale;
             DiffuseMap = diffuseMap;
             SpecularMap = specularMap;
+            _shader = shader;
         }
 
         public void Update()
@@ -55,7 +58,7 @@ namespace Kotono.Graphics.Objects.Meshes
             TextureManager.UseTexture(DiffuseMap, TextureUnit.Texture0);
             TextureManager.UseTexture(SpecularMap, TextureUnit.Texture1);
 
-            ShaderManager.LightingShader.SetMatrix4("model", Model);
+            _shader.SetMatrix4("model", Model);
 
             GL.BindVertexArray(VertexArrayObject);
             GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);

@@ -22,7 +22,7 @@ namespace Kotono.Graphics.Objects
 
         //private static int ID = 0;
 
-        public static void LoadMeshOBJ(string path, Vector3 position, Vector3 angle, Vector3 scale, string diffusePath, string specularPath)
+        public static void LoadMeshOBJ(string path, Vector3 position, Vector3 angle, Vector3 scale, string diffusePath, string specularPath, Shader shader)
         {
             var diffuseMap = TextureManager.LoadTexture(diffusePath);
             var specularMap = TextureManager.LoadTexture(specularPath);
@@ -66,15 +66,15 @@ namespace Kotono.Graphics.Objects
                 GL.BindBuffer(BufferTarget.ArrayBuffer, vertexBufferObject);
                 GL.BufferData(BufferTarget.ArrayBuffer, models[0].Count * Vertex.SizeInBytes, models[0].ToArray(), BufferUsageHint.DynamicDraw);
 
-                int positionAttributeLocation = ShaderManager.LightingShader.GetAttribLocation("aPos");
+                int positionAttributeLocation = shader.GetAttribLocation("aPos");
                 GL.EnableVertexAttribArray(positionAttributeLocation);
                 GL.VertexAttribPointer(positionAttributeLocation, 3, VertexAttribPointerType.Float, false, Vertex.SizeInBytes, 0);
 
-                int normalAttributeLocation = ShaderManager.LightingShader.GetAttribLocation("aNormal");
+                int normalAttributeLocation = shader.GetAttribLocation("aNormal");
                 GL.EnableVertexAttribArray(normalAttributeLocation);
                 GL.VertexAttribPointer(normalAttributeLocation, 3, VertexAttribPointerType.Float, false, Vertex.SizeInBytes, sizeof(float) * 3);
 
-                int texCoordAttributeLocation = ShaderManager.LightingShader.GetAttribLocation("aTexCoords");
+                int texCoordAttributeLocation = shader.GetAttribLocation("aTexCoords");
                 GL.EnableVertexAttribArray(texCoordAttributeLocation);
                 GL.VertexAttribPointer(texCoordAttributeLocation, 2, VertexAttribPointerType.Float, false, Vertex.SizeInBytes, sizeof(float) * 6);
 
@@ -86,13 +86,19 @@ namespace Kotono.Graphics.Objects
                 _paths[path] = Tuple.Create(vertexArrayObject, vertexBufferObject, indices[0].Count);
             }
 
-            Meshes.Add(new MeshOBJ(_paths[path].Item1, _paths[path].Item2, _paths[path].Item3, position, angle, scale, diffuseMap, specularMap));
+            Meshes.Add(new MeshOBJ(_paths[path].Item1, _paths[path].Item2, _paths[path].Item3, position, angle, scale, diffuseMap, specularMap, shader));
         }
 
         public static void LoadPointLight(Vector3 position)
         {
             PointLights.Add(new PointLight(position, Meshes.Count));
-            LoadMeshOBJ("sphere.obj", position, Vector3.Zero, new Vector3(0.2f), "white.png", "white.png");
+            LoadMeshOBJ("sphere.obj", position, Vector3.Zero, new Vector3(0.2f), "white.png", "white.png", ShaderManager.PointLight);
+        }
+
+        public static void RemovePointLight(int index)
+        {
+            Meshes.RemoveAt(PointLights[index].MeshIndex);
+            PointLights.RemoveAt(index);
         }
     }
 }

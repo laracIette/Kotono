@@ -1,15 +1,10 @@
 ﻿using OpenTK.Mathematics;
 
-using Kotono.Utils;
-using Random = Kotono.Utils.Random;
-
 namespace Kotono.Graphics.Objects.Lights
 {
     public class PointLight
     {
         private Vector3 _position = Vector3.Zero;
-
-        private Vector3 _positionVelocity = Vector3.Zero;
 
         public PointLight(Vector3 position, int meshIndex)
         {
@@ -35,17 +30,6 @@ namespace Kotono.Graphics.Objects.Lights
                 _position.X = MathHelper.Clamp(value.X, -20.0f, 20.0f);
                 _position.Y = MathHelper.Clamp(value.Y, -20.0f, 20.0f);
                 _position.Z = MathHelper.Clamp(value.Z, -20.0f, 20.0f);
-            }
-        }
-
-        private Vector3 PositionVelocity
-        {
-            get => _positionVelocity; 
-            set
-            {
-                _positionVelocity.X = MathHelper.Clamp(value.X, -1.0f, 1.0f);
-                _positionVelocity.Y = MathHelper.Clamp(value.Y, -1.0f, 1.0f);
-                _positionVelocity.Z = MathHelper.Clamp(value.Z, -1.0f, 1.0f);
             }
         }
 
