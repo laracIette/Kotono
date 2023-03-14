@@ -1,13 +1,10 @@
 ﻿using OpenTK.Mathematics;
-using System.Drawing;
 
 namespace Kotono.Graphics.Objects.Meshes
 {
     public interface IMesh
     {
         public void Update();
-
-        public void UpdateColor();
 
         public void Draw();
 

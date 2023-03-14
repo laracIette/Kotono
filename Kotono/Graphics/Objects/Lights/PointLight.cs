@@ -1,40 +1,65 @@
-﻿using OpenTK.Mathematics;
+﻿using Kotono.Graphics.Objects.Meshes;
+using OpenTK.Mathematics;
 
 namespace Kotono.Graphics.Objects.Lights
 {
     public class PointLight
     {
-        private Vector3 _position = Vector3.Zero;
+        private Vector3 _ambient;
 
-        public PointLight(Vector3 position, int meshIndex)
+        protected Vector3 _diffuse;
+
+        private Vector3 _specular;
+
+        private float _constant;
+
+        private float _linear;
+
+        private float _quadratic;
+
+        private int _shaderIndex;
+
+        private readonly PointLightMesh _mesh;
+
+
+        public PointLight(Vector3 position, Vector3 ambient, Vector3 diffuse, Vector3 specular, float constant, float linear, float quadratic)
         {
-            Position = position;
-            MeshIndex = meshIndex;
+            _ambient = ambient;
+            _diffuse = diffuse;
+            _specular = specular;
+            _constant = constant;
+            _linear = linear;
+            _quadratic = quadratic;
+            _shaderIndex = ObjectManager.PointLights.Count;
+
+            _mesh = new PointLightMesh(position);
         }
 
-        public void Update(Vector3 position)
+        public virtual void Update()
         {
-            Position = position;
+            _mesh.Update();
+            _mesh.Color = _diffuse;
         }
 
         public void UpdateIndex()
         {
-            MeshIndex--;
+            _shaderIndex--;
         }
 
-        public Vector3 Position
+        public void UpdateShaders()
         {
-            get => _position;
-            private set
-            {
-                _position.X = MathHelper.Clamp(value.X, -20.0f, 20.0f);
-                _position.Y = MathHelper.Clamp(value.Y, -20.0f, 20.0f);
-                _position.Z = MathHelper.Clamp(value.Z, -20.0f, 20.0f);
-            }
+            ShaderManager.Lighting.SetVector3($"pointLights[{_shaderIndex}].position", _mesh.Position);
+            ShaderManager.Lighting.SetVector3($"pointLights[{_shaderIndex}].ambient", _ambient);
+            ShaderManager.Lighting.SetVector3($"pointLights[{_shaderIndex}].diffuse", _diffuse);
+            ShaderManager.Lighting.SetVector3($"pointLights[{_shaderIndex}].specular", _specular);
+            ShaderManager.Lighting.SetFloat($"pointLights[{_shaderIndex}].constant", _constant);
+            ShaderManager.Lighting.SetFloat($"pointLights[{_shaderIndex}].linear", _linear);
+            ShaderManager.Lighting.SetFloat($"pointLights[{_shaderIndex}].quadratic", _quadratic);
         }
 
-        public int MeshIndex { get; private set; }
-
-        public Matrix4 Model => Matrix4.CreateScale(new Vector3(0.2f, 0.2f, 0.4f)) * Matrix4.CreateTranslation(Position);
+        public void Draw()
+        {
+            _mesh.Draw();
+        }
     }
 }

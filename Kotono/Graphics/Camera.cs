@@ -23,11 +23,8 @@ namespace Kotono.Graphics
 
         private float _speed;
 
-        public Camera(Vector3 position, float aspectRatio)
+        public Camera()
         {
-            Position = position;
-            AspectRatio = aspectRatio;
-
             _speed = 1.5f;
             _sensitivity = 0.2f;
         }

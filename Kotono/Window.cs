@@ -8,16 +8,11 @@ using Kotono.Graphics;
 using Kotono.Graphics.Objects;
 using Kotono.Graphics.Objects.Lights;
 using Kotono.Utils;
-using Random = Kotono.Utils.Random;
-using Camera = Kotono.Graphics.Camera;
-using Assimp;
 
 namespace Kotono
 {
     public class Window : GameWindow
     {
-        private Camera _camera;
-
         private SpotLight _spotLight;
 
         public Window(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings)
@@ -34,7 +29,8 @@ namespace Kotono
 
             _spotLight = new SpotLight(true);
 
-            _camera = new Camera(Vector3.Zero, (float)Size.X / (float)Size.Y);
+            CameraManager.Main.Position = Vector3.Zero;
+            CameraManager.Main.AspectRatio = (float)Size.X / (float)Size.Y;
 
             CursorState = CursorState.Grabbed;
             IsVisible = true;
@@ -87,7 +83,7 @@ namespace Kotono
             {
                 if (ObjectManager.PointLights.Count < 20)
                 {
-                    ObjectManager.LoadPointLight(Random.Vector3(-20.0f, 20.0f)); ;
+                    ObjectManager.PointLights.Add(new RainbowPointLight());
                 }
             }
 
@@ -95,7 +91,7 @@ namespace Kotono
             {
                 if (ObjectManager.PointLights.Count > 0)
                 {
-                    ObjectManager.RemovePointLight(0);
+                    ObjectManager.PointLights.RemoveAt(0);
 
                     foreach (var pointLight in ObjectManager.PointLights)
                     {
@@ -104,7 +100,7 @@ namespace Kotono
                 }
             }
 
-            _camera.Move();
+            CameraManager.Main.Move();
 
             _spotLight.Update();
 
@@ -115,8 +111,7 @@ namespace Kotono
 
             foreach (var pointLight in ObjectManager.PointLights)
             {
-                pointLight.Update(ObjectManager.Meshes[pointLight.MeshIndex].Position);
-                ObjectManager.Meshes[pointLight.MeshIndex].UpdateColor();
+                pointLight.Update();
             }
         }
 
@@ -124,7 +119,7 @@ namespace Kotono
         {
             base.OnMouseWheel(e);
 
-            _camera.Fov -= e.OffsetY;
+            CameraManager.Main.Fov -= e.OffsetY;
         }
 
         protected override void OnResize(ResizeEventArgs e)
@@ -132,17 +127,17 @@ namespace Kotono
             base.OnResize(e);
 
             GL.Viewport(0, 0, Size.X, Size.Y);
-            _camera.AspectRatio = (float)Size.X / (float)Size.Y;
+            CameraManager.Main.AspectRatio = (float)Size.X / (float)Size.Y;
         }
 
         private void UpdateShaders()
         {
             ShaderManager.Lighting.SetInt("numLights", ObjectManager.PointLights.Count);
 
-            ShaderManager.Lighting.SetMatrix4("view", _camera.ViewMatrix);
-            ShaderManager.Lighting.SetMatrix4("projection", _camera.ProjectionMatrix);
+            ShaderManager.Lighting.SetMatrix4("view", CameraManager.Main.ViewMatrix);
+            ShaderManager.Lighting.SetMatrix4("projection", CameraManager.Main.ProjectionMatrix);
 
-            ShaderManager.Lighting.SetVector3("viewPos", _camera.Position);
+            ShaderManager.Lighting.SetVector3("viewPos", CameraManager.Main.Position);
 
             ShaderManager.Lighting.SetInt("material.diffuse", 0);
             ShaderManager.Lighting.SetInt("material.specular", 1);
@@ -154,19 +149,13 @@ namespace Kotono
             ShaderManager.Lighting.SetVector3("dirLight.diffuse", new Vector3(0.4f, 0.4f, 0.4f));
             ShaderManager.Lighting.SetVector3("dirLight.specular", new Vector3(0.5f, 0.5f, 0.5f));
 
-            for (int i = 0; i < ObjectManager.PointLights.Count; i++)
+            foreach (var pointLight in ObjectManager.PointLights)
             {
-                ShaderManager.Lighting.SetVector3($"pointLights[{i}].position", ObjectManager.PointLights[i].Position);
-                ShaderManager.Lighting.SetVector3($"pointLights[{i}].ambient", new Vector3(0.05f, 0.05f, 0.05f));
-                ShaderManager.Lighting.SetVector3($"pointLights[{i}].diffuse", ObjectManager.Meshes[ObjectManager.PointLights[i].MeshIndex].Color);
-                ShaderManager.Lighting.SetVector3($"pointLights[{i}].specular", new Vector3(1.0f, 1.0f, 1.0f));
-                ShaderManager.Lighting.SetFloat($"pointLights[{i}].constant", 1.0f);
-                ShaderManager.Lighting.SetFloat($"pointLights[{i}].linear", 0.09f);
-                ShaderManager.Lighting.SetFloat($"pointLights[{i}].quadratic", 0.032f);
+                pointLight.UpdateShaders();
             }
 
-            ShaderManager.Lighting.SetVector3("spotLight.position", _camera.Position);
-            ShaderManager.Lighting.SetVector3("spotLight.direction", _camera.Front);
+            ShaderManager.Lighting.SetVector3("spotLight.position", CameraManager.Main.Position);
+            ShaderManager.Lighting.SetVector3("spotLight.direction", CameraManager.Main.Front);
             ShaderManager.Lighting.SetVector3("spotLight.ambient", new Vector3(0.0f, 0.0f, 0.0f));
             ShaderManager.Lighting.SetVector3("spotLight.diffuse", new Vector3(1.0f, 1.0f, 1.0f));
             ShaderManager.Lighting.SetVector3("spotLight.specular", new Vector3(1.0f, 1.0f, 1.0f));
@@ -176,13 +165,18 @@ namespace Kotono
             ShaderManager.Lighting.SetFloat("spotLight.cutOff", MathF.Cos(MathHelper.DegreesToRadians(_spotLight.CutOffAngle)));
             ShaderManager.Lighting.SetFloat("spotLight.outerCutOff", MathF.Cos(MathHelper.DegreesToRadians(_spotLight.OuterCutOffAngle)));
             
-            ShaderManager.PointLight.SetMatrix4("view", _camera.ViewMatrix);
-            ShaderManager.PointLight.SetMatrix4("projection", _camera.ProjectionMatrix);
+            ShaderManager.PointLight.SetMatrix4("view", CameraManager.Main.ViewMatrix);
+            ShaderManager.PointLight.SetMatrix4("projection", CameraManager.Main.ProjectionMatrix);
 
             foreach (var mesh in ObjectManager.Meshes)
             {
                 mesh.Draw();
             } 
+
+            foreach (var pointLight in ObjectManager.PointLights)
+            {
+                pointLight.Draw();
+            }
         }
 
     }
