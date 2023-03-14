@@ -16,7 +16,9 @@ namespace Kotono.Graphics.Objects.Meshes
 
         private readonly Shader _shader;
 
-        public MeshOBJ(int vertexArrayObject, int vertexBufferObject, int indicesCount, Vector3 position, Vector3 angle, Vector3 scale, int diffuseMap, int specularMap, Shader shader)
+        private Vector4 _color;
+
+        public MeshOBJ(int vertexArrayObject, int vertexBufferObject, int indicesCount, Vector3 position, Vector3 angle, Vector3 scale, int diffuseMap, int specularMap, Shader shader, Vector4 color)
         {
             VertexArrayObject = vertexArrayObject;
             VertexBufferObject = vertexBufferObject;
@@ -27,6 +29,7 @@ namespace Kotono.Graphics.Objects.Meshes
             DiffuseMap = diffuseMap;
             SpecularMap = specularMap;
             _shader = shader;
+            _color = color;
         }
 
         public void Update()
@@ -59,6 +62,7 @@ namespace Kotono.Graphics.Objects.Meshes
             TextureManager.UseTexture(SpecularMap, TextureUnit.Texture1);
 
             _shader.SetMatrix4("model", Model);
+            _shader.SetVector4("color", _color);
 
             GL.BindVertexArray(VertexArrayObject);
             GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);

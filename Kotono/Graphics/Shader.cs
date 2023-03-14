@@ -103,5 +103,11 @@ namespace Kotono.Graphics
             Use();
             GL.Uniform3(_uniformLocations[name], data);
         }
+
+        public void SetVector4(string name, Vector4 data)
+        {
+            Use();
+            GL.Uniform4(_uniformLocations[name], data);
+        }
     }
 }

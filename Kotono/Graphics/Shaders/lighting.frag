@@ -51,6 +51,8 @@ uniform SpotLight spotLight;
 uniform Material material;
 uniform vec3 viewPos;
 
+uniform vec4 color;
+
 out vec4 FragColor;
 
 in vec3 Normal;
@@ -75,7 +77,7 @@ void main()
     //phase 3: Spot light
     result += CalcSpotLight(spotLight, norm, FragPos, viewDir);    
 
-    FragColor = vec4(result, 1.0);
+    FragColor = vec4(result, 1.0) + color;
 }
 
 vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir)

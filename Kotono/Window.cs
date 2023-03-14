@@ -62,7 +62,7 @@ namespace Kotono
 
             InputManager.Update(KeyboardState, MouseState);
 
-            Time.Update((float)e.Time);
+            Time.Update();
 
             if (InputManager.KeyboardState.IsKeyDown(Keys.Escape))
             {
