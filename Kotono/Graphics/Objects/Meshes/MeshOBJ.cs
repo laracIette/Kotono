@@ -3,6 +3,7 @@ using OpenTK.Mathematics;
 
 using Kotono.Utils;
 using Random = Kotono.Utils.Random;
+using System;
 
 namespace Kotono.Graphics.Objects.Meshes
 {
@@ -16,9 +17,9 @@ namespace Kotono.Graphics.Objects.Meshes
 
         private readonly Shader _shader;
 
-        private Vector4 _color;
+        private Vector3 _color;
 
-        public MeshOBJ(int vertexArrayObject, int vertexBufferObject, int indicesCount, Vector3 position, Vector3 angle, Vector3 scale, int diffuseMap, int specularMap, Shader shader, Vector4 color)
+        public MeshOBJ(int vertexArrayObject, int vertexBufferObject, int indicesCount, Vector3 position, Vector3 angle, Vector3 scale, int diffuseMap, int specularMap, Shader shader, Vector3 color)
         {
             VertexArrayObject = vertexArrayObject;
             VertexBufferObject = vertexBufferObject;
@@ -56,13 +57,20 @@ namespace Kotono.Graphics.Objects.Meshes
             }
         }
 
+        public void UpdateColor()
+        {
+            _color.X = (float)(Math.Sin(0.002 * Time.Now + 0.0) * 0.5) + 0.5f;
+            _color.Y = (float)(Math.Sin(0.002 * Time.Now + 2.0) * 0.5) + 0.5f;
+            _color.Z = (float)(Math.Sin(0.002 * Time.Now + 4.0) * 0.5) + 0.5f;
+        }
+
         public void Draw()
         {
             TextureManager.UseTexture(DiffuseMap, TextureUnit.Texture0);
             TextureManager.UseTexture(SpecularMap, TextureUnit.Texture1);
 
             _shader.SetMatrix4("model", Model);
-            _shader.SetVector4("color", _color);
+            _shader.SetVector3("color", Color);
 
             GL.BindVertexArray(VertexArrayObject);
             GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
@@ -79,6 +87,8 @@ namespace Kotono.Graphics.Objects.Meshes
         public int DiffuseMap { get; }
 
         public int SpecularMap { get; }
+
+        public Vector3 Color => _color;
 
         public Vector3 Position
         {

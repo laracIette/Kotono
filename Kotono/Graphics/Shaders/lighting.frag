@@ -51,7 +51,7 @@ uniform SpotLight spotLight;
 uniform Material material;
 uniform vec3 viewPos;
 
-uniform vec4 color;
+uniform vec3 color;
 
 out vec4 FragColor;
 
@@ -75,9 +75,9 @@ void main()
     for(int i = 0; i < numLights; i++)
         result += CalcPointLight(pointLights[i], norm, FragPos, viewDir);
     //phase 3: Spot light
-    result += CalcSpotLight(spotLight, norm, FragPos, viewDir);    
+    result += CalcSpotLight(spotLight, norm, FragPos, viewDir);
 
-    FragColor = vec4(result, 1.0) + color;
+    FragColor = vec4(result * color, 1.0);
 }
 
 vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir)
@@ -105,8 +105,7 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
     //attenuation
     float distance    = length(light.position - fragPos);
-    float attenuation = 1.0 / (light.constant + light.linear * distance +
-    light.quadratic * (distance * distance));
+    float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));
     //combine results
     vec3 ambient  = light.ambient  * vec3(texture(material.diffuse, TexCoords));
     vec3 diffuse  = light.diffuse  * diff * vec3(texture(material.diffuse, TexCoords));

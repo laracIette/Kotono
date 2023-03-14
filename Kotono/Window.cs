@@ -116,6 +116,7 @@ namespace Kotono
             foreach (var pointLight in ObjectManager.PointLights)
             {
                 pointLight.Update(ObjectManager.Meshes[pointLight.MeshIndex].Position);
+                ObjectManager.Meshes[pointLight.MeshIndex].UpdateColor();
             }
         }
 
@@ -157,7 +158,7 @@ namespace Kotono
             {
                 ShaderManager.Lighting.SetVector3($"pointLights[{i}].position", ObjectManager.PointLights[i].Position);
                 ShaderManager.Lighting.SetVector3($"pointLights[{i}].ambient", new Vector3(0.05f, 0.05f, 0.05f));
-                ShaderManager.Lighting.SetVector3($"pointLights[{i}].diffuse", new Vector3(0.8f, 0.8f, 0.8f));
+                ShaderManager.Lighting.SetVector3($"pointLights[{i}].diffuse", ObjectManager.Meshes[ObjectManager.PointLights[i].MeshIndex].Color);
                 ShaderManager.Lighting.SetVector3($"pointLights[{i}].specular", new Vector3(1.0f, 1.0f, 1.0f));
                 ShaderManager.Lighting.SetFloat($"pointLights[{i}].constant", 1.0f);
                 ShaderManager.Lighting.SetFloat($"pointLights[{i}].linear", 0.09f);

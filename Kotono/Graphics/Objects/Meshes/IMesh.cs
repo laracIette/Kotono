@@ -1,4 +1,5 @@
 ﻿using OpenTK.Mathematics;
+using System.Drawing;
 
 namespace Kotono.Graphics.Objects.Meshes
 {
@@ -6,9 +7,13 @@ namespace Kotono.Graphics.Objects.Meshes
     {
         public void Update();
 
+        public void UpdateColor();
+
         public void Draw();
 
         public Vector3 Position { get; }
+
+        public Vector3 Color { get; }
 
         public Matrix4 Model { get; }
 

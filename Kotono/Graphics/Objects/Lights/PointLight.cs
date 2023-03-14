@@ -17,7 +17,7 @@ namespace Kotono.Graphics.Objects.Lights
             Position = position;
         }
 
-        internal void UpdateIndex()
+        public void UpdateIndex()
         {
             MeshIndex--;
         }

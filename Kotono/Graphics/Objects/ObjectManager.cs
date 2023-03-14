@@ -22,7 +22,7 @@ namespace Kotono.Graphics.Objects
 
         //private static int ID = 0;
 
-        public static void LoadMeshOBJ(string path, Vector3 position, Vector3 angle, Vector3 scale, string diffusePath, string specularPath, Shader shader, Vector4 color)
+        public static void LoadMeshOBJ(string path, Vector3 position, Vector3 angle, Vector3 scale, string diffusePath, string specularPath, Shader shader, Vector3 color)
         {
             var diffuseMap = TextureManager.LoadTexture(diffusePath);
             var specularMap = TextureManager.LoadTexture(specularPath);
@@ -92,7 +92,7 @@ namespace Kotono.Graphics.Objects
         public static void LoadPointLight(Vector3 position)
         {
             PointLights.Add(new PointLight(position, Meshes.Count));
-            LoadMeshOBJ("sphere.obj", position, Vector3.Zero, new Vector3(0.2f), "white.png", "white.png", ShaderManager.PointLight, new Vector4(0.0f, 0.0f, 1.0f, 1.0f));
+            LoadMeshOBJ("sphere.obj", position, Vector3.Zero, new Vector3(0.2f), "white.png", "white.png", ShaderManager.PointLight, new Vector3(0.0f, 0.0f, 1.0f));
         }
 
         public static void RemovePointLight(int index)

@@ -6,6 +6,8 @@
 
         public static long Now { get; private set; }
 
+        public static int Milliseconds { get; private set; }
+
         public static void Update()
         {
             var now = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond; 
