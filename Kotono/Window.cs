@@ -15,6 +15,8 @@ namespace Kotono
     {
         private SpotLight _spotLight;
 
+        private Hitbox _hitbox;
+
         public Window(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings)
             : base(gameWindowSettings, nativeWindowSettings)
         {
@@ -28,6 +30,8 @@ namespace Kotono
             GL.Enable(EnableCap.DepthTest);
 
             _spotLight = new SpotLight(true);
+
+            _hitbox = new Hitbox(Vector3.Zero, Vector3.Zero, Vector3.UnitY);
 
             CameraManager.Main.Position = Vector3.Zero;
             CameraManager.Main.AspectRatio = (float)Size.X / (float)Size.Y;
@@ -134,7 +138,7 @@ namespace Kotono
             ShaderManager.Lighting.SetFloat("spotLight.quadratic", 0.032f);
             ShaderManager.Lighting.SetFloat("spotLight.cutOff", MathF.Cos(MathHelper.DegreesToRadians(_spotLight.CutOffAngle)));
             ShaderManager.Lighting.SetFloat("spotLight.outerCutOff", MathF.Cos(MathHelper.DegreesToRadians(_spotLight.OuterCutOffAngle)));
-            
+
             ShaderManager.PointLight.SetMatrix4("view", CameraManager.Main.ViewMatrix);
             ShaderManager.PointLight.SetMatrix4("projection", CameraManager.Main.ProjectionMatrix);
 
@@ -147,6 +151,8 @@ namespace Kotono
             {
                 pointLight.Draw();
             }
+
+            _hitbox.Draw();
         }
 
     }
