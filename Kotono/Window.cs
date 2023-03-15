@@ -60,47 +60,24 @@ namespace Kotono
 
             Time.Update();
 
-            if (InputManager.KeyboardState.IsKeyDown(Keys.Escape))
+            if (InputManager.KeyboardState.IsKeyDown(InputManager.Escape))
             {
                 base.Close();
             }
 
-            if (InputManager.KeyboardState.IsKeyPressed(Keys.F11))
+            if (InputManager.KeyboardState.IsKeyPressed(InputManager.Fullscreen))
             {
-                WindowState = (WindowState == WindowState.Fullscreen) ? 
-                    WindowState.Normal : 
+                WindowState = (WindowState == WindowState.Fullscreen) ?
+                    WindowState.Normal :
                     WindowState.Fullscreen;
             }
 
-            if (InputManager.KeyboardState.IsKeyPressed(Keys.Enter))
+            if (InputManager.KeyboardState.IsKeyPressed(InputManager.GrabMouse))
             {
-                CursorState = (CursorState == CursorState.Normal) ? 
-                    CursorState.Grabbed : 
+                CursorState = (CursorState == CursorState.Normal) ?
+                    CursorState.Grabbed :
                     CursorState.Normal;
             }
-
-            if (InputManager.KeyboardState.IsKeyPressed(Keys.Up))
-            {
-                if (ObjectManager.PointLights.Count < 20)
-                {
-                    ObjectManager.PointLights.Add(new RainbowPointLight());
-                }
-            }
-
-            if (InputManager.KeyboardState.IsKeyPressed(Keys.Down))
-            {
-                if (ObjectManager.PointLights.Count > 0)
-                {
-                    ObjectManager.PointLights.RemoveAt(0);
-
-                    foreach (var pointLight in ObjectManager.PointLights)
-                    {
-                        pointLight.UpdateIndex();
-                    }
-                }
-            }
-
-            CameraManager.Main.Move();
 
             _spotLight.Update();
 
@@ -113,13 +90,6 @@ namespace Kotono
             {
                 pointLight.Update();
             }
-        }
-
-        protected override void OnMouseWheel(MouseWheelEventArgs e)
-        {
-            base.OnMouseWheel(e);
-
-            CameraManager.Main.Fov -= e.OffsetY;
         }
 
         protected override void OnResize(ResizeEventArgs e)

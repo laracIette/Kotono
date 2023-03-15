@@ -110,6 +110,7 @@ namespace Kotono.Graphics
 
             Yaw += InputManager.MouseState.Delta.X * _sensitivity;
             Pitch -= InputManager.MouseState.Delta.Y * _sensitivity;
+            Fov -= InputManager.MouseState.ScrollDelta.Y;
         }
 
         private void UpdateVectors()
