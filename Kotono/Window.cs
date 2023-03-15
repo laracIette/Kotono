@@ -8,6 +8,7 @@ using Kotono.Graphics;
 using Kotono.Graphics.Objects;
 using Kotono.Graphics.Objects.Lights;
 using Kotono.Utils;
+using Random = Kotono.Utils.Random;
 
 namespace Kotono
 {
@@ -31,7 +32,7 @@ namespace Kotono
 
             _spotLight = new SpotLight(true);
 
-            _hitbox = new Hitbox(Vector3.Zero, Vector3.Zero, Vector3.UnitY);
+            _hitbox = new Hitbox(Random.Vector3(0.0f, 1.0f), Random.Vector3(0.0f, 1.0f), Random.Vector3(0.5f, 1.5f), Random.Vector3(0.0f, 1.0f));
 
             CameraManager.Main.Position = Vector3.Zero;
             CameraManager.Main.AspectRatio = (float)Size.X / (float)Size.Y;
