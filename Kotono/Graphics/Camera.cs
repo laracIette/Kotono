@@ -1,7 +1,6 @@
-﻿using OpenTK.Mathematics;
+﻿using Kotono.Utils;
+using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
-
-using Kotono.Utils;
 using System;
 
 namespace Kotono.Graphics
@@ -79,7 +78,7 @@ namespace Kotono.Graphics
 
         public void Move()
         {
-            if (InputManager.KeyboardState.IsKeyDown(Keys.LeftShift))
+            if (InputManager.KeyboardState!.IsKeyDown(Keys.LeftShift))
             {
                 _speed = 3.0f;
             }
@@ -109,7 +108,7 @@ namespace Kotono.Graphics
                 Position -= Up * _speed * Time.Delta; // Down
             }
 
-            Yaw += InputManager.MouseState.Delta.X * _sensitivity;
+            Yaw += InputManager.MouseState!.Delta.X * _sensitivity;
             Pitch -= InputManager.MouseState.Delta.Y * _sensitivity;
             Fov -= InputManager.MouseState.ScrollDelta.Y;
         }

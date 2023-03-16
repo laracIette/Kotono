@@ -5,10 +5,20 @@ using System.Collections.Generic;
 
 namespace Kotono.Graphics.Objects
 {
-    public static class ObjectManager
+    public sealed class ObjectManager
     {
-        public static readonly List<IMesh> Meshes = new();
-        public static readonly List<PointLight> PointLights = new();
-        public static readonly Dictionary<string, Tuple<int, int, int>> Paths = new();
+        private static readonly Lazy<List<IMesh>> _meshes = new(() => new());
+
+        private static readonly Lazy<List<PointLight>> _pointLights = new(() => new());
+
+        private static readonly Lazy<Dictionary<string, Tuple<int, int, int>>> _paths = new(() => new());
+
+        public static List<IMesh> Meshes => _meshes.Value;
+
+        public static List<PointLight> PointLights => _pointLights.Value;
+
+        public static Dictionary<string, Tuple<int, int, int>> Paths => _paths.Value;
+
+        private ObjectManager() { }
     }
 }

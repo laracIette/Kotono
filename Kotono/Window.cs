@@ -1,15 +1,12 @@
 ﻿using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
-using OpenTK.Windowing.GraphicsLibraryFramework;
 using OpenTK.Windowing.Desktop;
 
 using Kotono.Graphics;
 using Kotono.Graphics.Objects;
 using Kotono.Graphics.Objects.Lights;
 using Kotono.Utils;
-using Random = Kotono.Utils.Random;
-using Kotono.Graphics.Objects.Hitboxes;
 using System;
 
 namespace Kotono
@@ -64,7 +61,7 @@ namespace Kotono
 
             Time.Update();
 
-            if (InputManager.KeyboardState.IsKeyDown(InputManager.Escape))
+            if (InputManager.KeyboardState!.IsKeyDown(InputManager.Escape))
             {
                 base.Close();
             }

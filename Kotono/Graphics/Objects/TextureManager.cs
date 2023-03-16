@@ -8,7 +8,7 @@ using System.IO;
 
 namespace Kotono.Graphics.Objects
 {
-    public static class TextureManager
+    public sealed class TextureManager
     {
         private static readonly Dictionary<string, int> _textures = new();
 

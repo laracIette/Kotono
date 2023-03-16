@@ -1,9 +1,13 @@
-﻿using OpenTK.Mathematics;
+﻿using System;
 
 namespace Kotono.Graphics
 {
-    public static class CameraManager
+    public sealed class CameraManager
     {
-        public static readonly Camera Main = new();
+        private static readonly Lazy<Camera> _main = new(() => new());
+
+        public static Camera Main => _main.Value;
+
+        private CameraManager() { }
     }
 }

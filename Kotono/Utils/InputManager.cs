@@ -2,22 +2,24 @@
 
 namespace Kotono.Utils
 {
-    public static class InputManager
+    public sealed class InputManager
     {
-        public static KeyboardState KeyboardState;
+        public static Keys Escape { get; set; } = Keys.Escape;
 
-        public static MouseState MouseState;
+        public static Keys Fullscreen { get; set; } = Keys.F11;
 
-        public static Keys Escape = Keys.Escape;
+        public static Keys GrabMouse { get; set; } = Keys.Enter;
 
-        public static Keys Fullscreen = Keys.F11;
+        public static KeyboardState? KeyboardState { get; private set; }
 
-        public static Keys GrabMouse = Keys.Enter;
+        public static MouseState? MouseState { get; private set; }
 
         public static void Update(KeyboardState keyboardState, MouseState mouseState)
         {
             KeyboardState = keyboardState;
             MouseState = mouseState;
         }
+
+        private InputManager() { }
     }
 }

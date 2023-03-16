@@ -9,7 +9,7 @@ namespace Kotono.Graphics
 {
     public class Shader
     {
-        private readonly int Handle;
+        private readonly int _handle;
 
         private readonly Dictionary<string, int> _uniformLocations;
 
@@ -25,27 +25,27 @@ namespace Kotono.Graphics
             GL.ShaderSource(fragmentShader, shaderSource);
             CompileShader(fragmentShader);
 
-            Handle = GL.CreateProgram();
+            _handle = GL.CreateProgram();
 
-            GL.AttachShader(Handle, vertexShader);
-            GL.AttachShader(Handle, fragmentShader);
+            GL.AttachShader(_handle, vertexShader);
+            GL.AttachShader(_handle, fragmentShader);
 
-            LinkProgram(Handle);
+            LinkProgram(_handle);
 
-            GL.DetachShader(Handle, vertexShader);
-            GL.DetachShader(Handle, fragmentShader);
+            GL.DetachShader(_handle, vertexShader);
+            GL.DetachShader(_handle, fragmentShader);
             GL.DeleteShader(fragmentShader);
             GL.DeleteShader(vertexShader);
 
 
-            GL.GetProgram(Handle, GetProgramParameterName.ActiveUniforms, out var numberOfUniforms);
+            GL.GetProgram(_handle, GetProgramParameterName.ActiveUniforms, out var numberOfUniforms);
 
             _uniformLocations = new Dictionary<string, int>();
 
             for (var i = 0; i < numberOfUniforms; i++)
             {
-                var key = GL.GetActiveUniform(Handle, i, out _, out _);
-                var location = GL.GetUniformLocation(Handle, key);
+                var key = GL.GetActiveUniform(_handle, i, out _, out _);
+                var location = GL.GetUniformLocation(_handle, key);
                 _uniformLocations.Add(key, location);
             }
         }
@@ -75,12 +75,12 @@ namespace Kotono.Graphics
 
         private void Use()
         {
-            GL.UseProgram(Handle);
+            GL.UseProgram(_handle);
         }
 
         public int GetAttribLocation(string attribName)
         {
-            return GL.GetAttribLocation(Handle, attribName);
+            return GL.GetAttribLocation(_handle, attribName);
         }
 
         public void SetInt(string name, int data)
