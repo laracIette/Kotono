@@ -9,14 +9,13 @@ using Kotono.Graphics.Objects;
 using Kotono.Graphics.Objects.Lights;
 using Kotono.Utils;
 using Random = Kotono.Utils.Random;
+using Kotono.Graphics.Objects.Hitboxes;
 
 namespace Kotono
 {
     public class Window : GameWindow
     {
         private SpotLight _spotLight;
-
-        private Hitbox _hitbox;
 
         public Window(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings)
             : base(gameWindowSettings, nativeWindowSettings)
@@ -32,7 +31,6 @@ namespace Kotono
 
             _spotLight = new SpotLight(true);
 
-            _hitbox = new Hitbox(Random.Vector3(0.0f, 1.0f), Random.Vector3(0.0f, 1.0f), Random.Vector3(0.5f, 1.5f), Random.Vector3(0.0f, 1.0f));
 
             CameraManager.Main.Position = Vector3.Zero;
             CameraManager.Main.AspectRatio = (float)Size.X / (float)Size.Y;
@@ -152,8 +150,6 @@ namespace Kotono
             {
                 pointLight.Draw();
             }
-
-            _hitbox.Draw();
         }
 
     }

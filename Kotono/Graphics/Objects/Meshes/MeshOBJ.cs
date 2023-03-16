@@ -3,11 +3,10 @@ using OpenTK.Mathematics;
 
 using Kotono.Utils;
 using Random = Kotono.Utils.Random;
-using System;
 using Assimp;
-using System.IO;
 using Path = Kotono.Utils.Path;
 using PrimitiveType = OpenTK.Graphics.OpenGL4.PrimitiveType;
+using Kotono.Graphics.Objects.Hitboxes;
 
 namespace Kotono.Graphics.Objects.Meshes
 {
@@ -133,6 +132,8 @@ namespace Kotono.Graphics.Objects.Meshes
             GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
 
             GL.DrawElements(PrimitiveType.Triangles, IndicesCount, DrawElementsType.UnsignedInt, IntPtr.Zero);
+
+            HitboxManager.Box.Draw(Position, Angle, Scale * 2, Color);
         }
 
         public int VertexArrayObject { get; }

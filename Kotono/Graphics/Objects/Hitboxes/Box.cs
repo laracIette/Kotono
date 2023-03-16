@@ -1,11 +1,11 @@
 ﻿using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 
-namespace Kotono.Graphics.Objects
+namespace Kotono.Graphics.Objects.Hitboxes
 {
-    public class Hitbox
+    public class Box
     {
-        private readonly float[] _vertices =
+        private static readonly float[] _vertices =
         {
             -0.5f, -0.5f, -0.5f,
              0.5f, -0.5f, -0.5f,
@@ -46,25 +46,12 @@ namespace Kotono.Graphics.Objects
             -0.5f,  0.5f, -0.5f
         };
 
-        private Vector3 _position;
-
-        private Vector3 _angle;
-
-        private Vector3 _scale;
-
-        private Vector3 _color;
-
         private readonly int _vertexArrayObject;
 
         private readonly int _vertexBufferObject;
 
-        public Hitbox(Vector3 position, Vector3 angle, Vector3 scale, Vector3 color)
+        public Box()
         {
-            _position = position;
-            _angle = angle;
-            _scale = scale;
-            _color = color;
-
             // Create vertex array
             _vertexArrayObject = GL.GenVertexArray();
             GL.BindVertexArray(_vertexArrayObject);
@@ -79,11 +66,17 @@ namespace Kotono.Graphics.Objects
             GL.VertexAttribPointer(positionAttributeLocation, 3, VertexAttribPointerType.Float, false, 0, 0);
         }
 
-        public void Draw()
+        public void Draw(Vector3 position, Vector3 angle, Vector3 scale, Vector3 color)
         {
-            ShaderManager.Hitbox.SetVector3("color", _color);
+            ShaderManager.Hitbox.SetVector3("color", color);
 
-            ShaderManager.Hitbox.SetMatrix4("model", Model);
+            Matrix4 model = Matrix4.CreateScale(scale)
+            * Matrix4.CreateRotationX(angle.X)
+            * Matrix4.CreateRotationY(angle.Y)
+            * Matrix4.CreateRotationZ(angle.Z)
+            * Matrix4.CreateTranslation(position);
+
+            ShaderManager.Hitbox.SetMatrix4("model", model);
             ShaderManager.Hitbox.SetMatrix4("view", CameraManager.Main.ViewMatrix);
             ShaderManager.Hitbox.SetMatrix4("projection", CameraManager.Main.ProjectionMatrix);
 
@@ -91,12 +84,5 @@ namespace Kotono.Graphics.Objects
             GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
             GL.DrawArrays(PrimitiveType.Lines, 0, _vertices.Length);
         }
-
-        public Matrix4 Model =>
-            Matrix4.CreateScale(_scale)
-            * Matrix4.CreateRotationX(_angle.X)
-            * Matrix4.CreateRotationY(_angle.Y)
-            * Matrix4.CreateRotationZ(_angle.Z)
-            * Matrix4.CreateTranslation(_position);
     }
 }

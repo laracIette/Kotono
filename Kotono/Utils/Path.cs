@@ -2,8 +2,8 @@
 {
     public static class Path
     {
-        // to replace by your path where your projects are located
-        private const string _path = "C:/Users/nicos/Documents/Visual Studio 2022/Projects/";
+        // to replace by your path where your projects are located, this path is relative to the project's .dll folder
+        private const string _path = "../../../../../";
 
         public const string Kotono = _path + "Kotono/Kotono/";
 
