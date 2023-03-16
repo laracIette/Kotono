@@ -1,10 +1,14 @@
 ﻿using Kotono.Graphics.Objects.Hitboxes;
-using OpenTK.Mathematics;
+using System;
 
 namespace Kotono.Graphics.Objects
 {
-    public static class HitboxManager
+    public sealed class HitboxManager
     {
-        public static readonly Box Box = new();
+        private static readonly Lazy<Box> lazyBox = new(() => new Box());
+
+        public static Box Box => lazyBox.Value;
+
+        private HitboxManager() { }
     }
 }

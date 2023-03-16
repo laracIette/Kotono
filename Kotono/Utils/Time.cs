@@ -1,4 +1,6 @@
-﻿namespace Kotono.Utils
+﻿using System;
+
+namespace Kotono.Utils
 {
     public static class Time
     {

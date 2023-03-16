@@ -2,6 +2,7 @@
 using OpenTK.Windowing.GraphicsLibraryFramework;
 
 using Kotono.Utils;
+using System;
 
 namespace Kotono.Graphics
 {

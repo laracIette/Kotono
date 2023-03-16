@@ -10,6 +10,7 @@ using Kotono.Graphics.Objects.Lights;
 using Kotono.Utils;
 using Random = Kotono.Utils.Random;
 using Kotono.Graphics.Objects.Hitboxes;
+using System;
 
 namespace Kotono
 {

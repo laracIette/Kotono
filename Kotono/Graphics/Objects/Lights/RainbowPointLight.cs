@@ -1,5 +1,6 @@
 ﻿using Kotono.Utils;
 using OpenTK.Mathematics;
+using System;
 using Random = Kotono.Utils.Random;
 
 namespace Kotono.Graphics.Objects.Lights

@@ -6,7 +6,9 @@ using Random = Kotono.Utils.Random;
 using Assimp;
 using Path = Kotono.Utils.Path;
 using PrimitiveType = OpenTK.Graphics.OpenGL4.PrimitiveType;
-using Kotono.Graphics.Objects.Hitboxes;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Kotono.Graphics.Objects.Meshes
 {

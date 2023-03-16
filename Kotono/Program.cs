@@ -1,4 +1,6 @@
-﻿namespace Kotono
+﻿using System;
+
+namespace Kotono
 {
 	public class Program
 	{
