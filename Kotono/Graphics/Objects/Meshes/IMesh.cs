@@ -12,6 +12,10 @@ namespace Kotono.Graphics.Objects.Meshes
 
         public Vector3 Color { get; }
 
+        public Vector3 Angle { get; }
+
+        public Vector3 Scale { get; }
+
         public Matrix4 Model { get; }
 
         public int VertexArrayObject { get; }

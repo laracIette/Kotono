@@ -4,11 +4,9 @@ namespace Kotono.Utils
 {
     public static class Time
     {
-        public static float Delta { get; private set; }
-
         public static long Now { get; private set; }
 
-        public static int Milliseconds { get; private set; }
+        public static float Delta { get; private set; }
 
         public static void Update()
         {

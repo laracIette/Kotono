@@ -171,9 +171,9 @@ namespace Kotono.Graphics.Objects.Meshes
             }
         }
 
-        private Vector3 Angle { get; set; }
+        public Vector3 Angle { get; private set; }
 
-        private Vector3 Scale { get; set; }
+        public Vector3 Scale { get; private set; }
 
         private Vector3 AngleVelocity
         {

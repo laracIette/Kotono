@@ -8,6 +8,7 @@ using Kotono.Graphics.Objects;
 using Kotono.Graphics.Objects.Lights;
 using Kotono.Utils;
 using System;
+using System.Runtime.CompilerServices;
 
 namespace Kotono
 {
@@ -29,7 +30,6 @@ namespace Kotono
 
             _spotLight = new SpotLight(true);
 
-
             CameraManager.Main.Position = Vector3.Zero;
             CameraManager.Main.AspectRatio = (float)Size.X / (float)Size.Y;
 
@@ -42,7 +42,10 @@ namespace Kotono
             base.OnRenderFrame(e);
 
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+        }
 
+        protected new void RenderFrame()
+        {
             UpdateShaders();
 
             base.SwapBuffers();

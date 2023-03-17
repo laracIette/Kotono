@@ -2,7 +2,7 @@
 
 namespace Kotono.Utils
 {
-    public sealed class InputManager
+    public static class InputManager
     {
         public static Keys Escape { get; set; } = Keys.Escape;
 
@@ -19,7 +19,5 @@ namespace Kotono.Utils
             KeyboardState = keyboardState;
             MouseState = mouseState;
         }
-
-        private InputManager() { }
     }
 }
