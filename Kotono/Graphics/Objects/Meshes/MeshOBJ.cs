@@ -9,6 +9,7 @@ using PrimitiveType = OpenTK.Graphics.OpenGL4.PrimitiveType;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Kotono.Graphics.Objects.Hitboxes;
 
 namespace Kotono.Graphics.Objects.Meshes
 {
@@ -21,6 +22,8 @@ namespace Kotono.Graphics.Objects.Meshes
         private Vector3 _angleVelocity;
 
         private readonly Shader _shader;
+
+        private readonly Box _hitbox;
 
         public MeshOBJ(string path, Vector3 position, Vector3 angle, Vector3 scale, string diffusePath, string specularPath, Shader shader, Vector3 color)
         {
@@ -96,6 +99,8 @@ namespace Kotono.Graphics.Objects.Meshes
             SpecularMap = specularMap;
             _shader = shader;
             Color = color;
+
+            _hitbox = new Box();
         }
 
         public void Update()
@@ -104,22 +109,20 @@ namespace Kotono.Graphics.Objects.Meshes
             Angle += AngleVelocity * Time.Delta;
 
             PositionVelocity += Random.Vector3(-0.1f, 0.1f);
+            Position += PositionVelocity * Time.Delta;
 
-            bool collides = false;
+            _hitbox.Position = Position;
 
-            foreach (var mesh in ObjectManager.Meshes.Where(m => this != m))
+            foreach (var mesh in ObjectManager.Meshes.Where(m => m != this))
             {
-                if (Vector3.Distance(Position + PositionVelocity * Time.Delta, mesh.Position) <= 1.5f)
+                if (_hitbox.Collides(mesh.Hitbox))
                 {
-                    collides = true;
+                    Position -= PositionVelocity * Time.Delta;
                     break;
                 }
             }
 
-            if (!collides)
-            {
-                Position += PositionVelocity * Time.Delta;
-            }
+            _hitbox.Update(Position, Vector3.Zero, Scale * 2, Vector3.UnitX);
         }
 
         public virtual void Draw()
@@ -135,7 +138,7 @@ namespace Kotono.Graphics.Objects.Meshes
 
             GL.DrawElements(PrimitiveType.Triangles, IndicesCount, DrawElementsType.UnsignedInt, IntPtr.Zero);
 
-            HitboxManager.Box.Draw(Position, Angle, Scale * 2, Color);
+            _hitbox.Draw();
         }
 
         public int VertexArrayObject { get; }
@@ -147,6 +150,11 @@ namespace Kotono.Graphics.Objects.Meshes
         public int DiffuseMap { get; }
 
         public int SpecularMap { get; }
+
+        public Box Hitbox 
+        { 
+            get => _hitbox;
+        }
 
         public Vector3 Color { get; set; }
 

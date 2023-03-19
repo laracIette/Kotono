@@ -29,7 +29,7 @@ namespace Kotono.Graphics
             _sensitivity = 0.2f;
         }
 
-        public Vector3 Position { get; set; }
+        public Vector3 Position { get; private set; } = Vector3.Zero;
 
         public float AspectRatio { private get; set; }
 

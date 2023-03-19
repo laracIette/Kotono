@@ -30,7 +30,6 @@ namespace Kotono
 
             _spotLight = new SpotLight(true);
 
-            CameraManager.Main.Position = Vector3.Zero;
             CameraManager.Main.AspectRatio = (float)Size.X / (float)Size.Y;
 
             CursorState = CursorState.Grabbed;
@@ -111,6 +110,12 @@ namespace Kotono
             ShaderManager.Lighting.SetMatrix4("view", CameraManager.Main.ViewMatrix);
             ShaderManager.Lighting.SetMatrix4("projection", CameraManager.Main.ProjectionMatrix);
 
+            ShaderManager.PointLight.SetMatrix4("view", CameraManager.Main.ViewMatrix);
+            ShaderManager.PointLight.SetMatrix4("projection", CameraManager.Main.ProjectionMatrix);
+
+            ShaderManager.Hitbox.SetMatrix4("view", CameraManager.Main.ViewMatrix);
+            ShaderManager.Hitbox.SetMatrix4("projection", CameraManager.Main.ProjectionMatrix);
+
             ShaderManager.Lighting.SetVector3("viewPos", CameraManager.Main.Position);
 
             ShaderManager.Lighting.SetInt("material.diffuse", 0);
@@ -138,9 +143,6 @@ namespace Kotono
             ShaderManager.Lighting.SetFloat("spotLight.quadratic", 0.032f);
             ShaderManager.Lighting.SetFloat("spotLight.cutOff", MathF.Cos(MathHelper.DegreesToRadians(_spotLight.CutOffAngle)));
             ShaderManager.Lighting.SetFloat("spotLight.outerCutOff", MathF.Cos(MathHelper.DegreesToRadians(_spotLight.OuterCutOffAngle)));
-
-            ShaderManager.PointLight.SetMatrix4("view", CameraManager.Main.ViewMatrix);
-            ShaderManager.PointLight.SetMatrix4("projection", CameraManager.Main.ProjectionMatrix);
 
             foreach (var mesh in ObjectManager.Meshes)
             {

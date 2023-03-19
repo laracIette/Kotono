@@ -1,4 +1,5 @@
-﻿using OpenTK.Mathematics;
+﻿using Kotono.Graphics.Objects.Hitboxes;
+using OpenTK.Mathematics;
 
 namespace Kotono.Graphics.Objects.Meshes
 {
@@ -27,5 +28,7 @@ namespace Kotono.Graphics.Objects.Meshes
         public int DiffuseMap { get; }
 
         public int SpecularMap { get; }
+
+        public Box Hitbox { get; }
     }
 }
