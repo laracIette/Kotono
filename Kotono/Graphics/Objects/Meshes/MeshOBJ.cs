@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Kotono.Graphics.Objects.Hitboxes;
+using System.Reflection;
 
 namespace Kotono.Graphics.Objects.Meshes
 {
@@ -23,7 +24,7 @@ namespace Kotono.Graphics.Objects.Meshes
 
         private readonly Shader _shader;
 
-        private readonly Box _hitbox;
+        private readonly int _hitbox;
 
         public MeshOBJ(string path, Vector3 position, Vector3 angle, Vector3 scale, string diffusePath, string specularPath, Shader shader, Vector3 color)
         {
@@ -100,7 +101,9 @@ namespace Kotono.Graphics.Objects.Meshes
             _shader = shader;
             Color = color;
 
-            _hitbox = new Box();
+            _hitbox = ObjectManager.Hitboxes.Count;
+
+            ObjectManager.Hitboxes.Add(new Box());
         }
 
         public void Update()
@@ -111,18 +114,18 @@ namespace Kotono.Graphics.Objects.Meshes
             PositionVelocity += Random.Vector3(-0.1f, 0.1f);
             Position += PositionVelocity * Time.Delta;
 
-            _hitbox.Position = Position;
+            ObjectManager.Hitboxes[_hitbox].Position = Position;
 
             foreach (var mesh in ObjectManager.Meshes.Where(m => m != this))
             {
-                if (_hitbox.Collides(mesh.Hitbox))
+                if (ObjectManager.Hitboxes[_hitbox].Collides(mesh.Hitbox))
                 {
                     Position -= PositionVelocity * Time.Delta;
                     break;
                 }
             }
 
-            _hitbox.Update(Position, Vector3.Zero, Scale * 2, Vector3.UnitX);
+            ObjectManager.Hitboxes[_hitbox].Update(Position, Vector3.Zero, Scale * 2, Vector3.UnitX);
         }
 
         public virtual void Draw()

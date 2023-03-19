@@ -4,7 +4,7 @@ using System;
 
 namespace Kotono.Graphics.Objects.Hitboxes
 {
-    public class Box
+    public class Box : IHitbox
     {
         private static readonly float[] _vertices =
         {
