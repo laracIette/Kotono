@@ -11,11 +11,10 @@ namespace Kotono.Graphics.Objects.Lights
 
         private float _outerCutOffAngle = 17.5f;
 
-        private bool _isOn;
+        private bool _isOn = true;
 
-        public SpotLight(bool isOn)
+        public SpotLight()
         {
-            _isOn = isOn;
         }
 
         public void Update()

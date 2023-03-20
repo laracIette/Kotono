@@ -1,21 +1,21 @@
-﻿using OpenTK.Graphics.OpenGL4;
-using OpenTK.Mathematics;
-
+﻿using Assimp;
+using Kotono.Graphics.Objects.Hitboxes;
 using Kotono.Utils;
-using Random = Kotono.Utils.Random;
-using Assimp;
-using Path = Kotono.Utils.Path;
-using PrimitiveType = OpenTK.Graphics.OpenGL4.PrimitiveType;
+using OpenTK.Graphics.OpenGL4;
+using OpenTK.Mathematics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Kotono.Graphics.Objects.Hitboxes;
-using System.Reflection;
+using Path = Kotono.Utils.Path;
+using PrimitiveType = OpenTK.Graphics.OpenGL4.PrimitiveType;
+using Random = Kotono.Utils.Random;
 
 namespace Kotono.Graphics.Objects.Meshes
 {
     public class MeshOBJ : IMesh, IDisposable
     {
+        private static readonly Dictionary<string, int[]> _paths = new();
+
         private Vector3 _position;
 
         private Vector3 _positionVelocity;
@@ -31,7 +31,7 @@ namespace Kotono.Graphics.Objects.Meshes
             var diffuseMap = TextureManager.LoadTexture(diffusePath);
             var specularMap = TextureManager.LoadTexture(specularPath);
 
-            if (!ObjectManager.Paths.ContainsKey(path))
+            if (!_paths.ContainsKey(path))
             {
                 List<Vertex>[] models;
                 List<int>[] indices;
@@ -87,12 +87,17 @@ namespace Kotono.Graphics.Objects.Meshes
                 GL.BindBuffer(BufferTarget.ElementArrayBuffer, elementBufferObject);
                 GL.BufferData(BufferTarget.ElementArrayBuffer, indices[0].Count * sizeof(int), indices[0].ToArray(), BufferUsageHint.DynamicDraw);
 
-                ObjectManager.Paths[path] = Tuple.Create(vertexArrayObject, vertexBufferObject, indices[0].Count);
+                _paths[path] = new int[]
+                { 
+                    vertexArrayObject, 
+                    vertexBufferObject, 
+                    indices[0].Count 
+                };
             }
 
-            VertexArrayObject = ObjectManager.Paths[path].Item1;
-            VertexBufferObject = ObjectManager.Paths[path].Item2;
-            IndicesCount = ObjectManager.Paths[path].Item3;
+            VertexArrayObject = _paths[path][0];
+            VertexBufferObject = _paths[path][1];
+            IndicesCount = _paths[path][2];
             Position = position;
             Angle = angle;
             Scale = scale;
@@ -101,9 +106,12 @@ namespace Kotono.Graphics.Objects.Meshes
             _shader = shader;
             Color = color;
 
-            _hitbox = ObjectManager.Hitboxes.Count;
+            _hitbox = KT.CreateHitbox(new Box());
 
-            ObjectManager.Hitboxes.Add(new Box());
+            KT.SetHitBoxPosition(_hitbox, Position);
+            KT.SetHitBoxAngle(_hitbox, Vector3.Zero);
+            KT.SetHitBoxScale(_hitbox, Scale * 2);
+            KT.SetHitBoxColor(_hitbox, Vector3.UnitX);
         }
 
         public void Update()
@@ -114,18 +122,7 @@ namespace Kotono.Graphics.Objects.Meshes
             PositionVelocity += Random.Vector3(-0.1f, 0.1f);
             Position += PositionVelocity * Time.Delta;
 
-            ObjectManager.Hitboxes[_hitbox].Position = Position;
-
-            foreach (var mesh in ObjectManager.Meshes.Where(m => m != this))
-            {
-                if (ObjectManager.Hitboxes[_hitbox].Collides(mesh.Hitbox))
-                {
-                    Position -= PositionVelocity * Time.Delta;
-                    break;
-                }
-            }
-
-            ObjectManager.Hitboxes[_hitbox].Update(Position, Vector3.Zero, Scale * 2, Vector3.UnitX);
+            KT.SetHitBoxPosition(_hitbox, Position);
         }
 
         public virtual void Draw()
@@ -140,8 +137,6 @@ namespace Kotono.Graphics.Objects.Meshes
             GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
 
             GL.DrawElements(PrimitiveType.Triangles, IndicesCount, DrawElementsType.UnsignedInt, IntPtr.Zero);
-
-            _hitbox.Draw();
         }
 
         public int VertexArrayObject { get; }
@@ -153,11 +148,6 @@ namespace Kotono.Graphics.Objects.Meshes
         public int DiffuseMap { get; }
 
         public int SpecularMap { get; }
-
-        public Box Hitbox 
-        { 
-            get => _hitbox;
-        }
 
         public Vector3 Color { get; set; }
 

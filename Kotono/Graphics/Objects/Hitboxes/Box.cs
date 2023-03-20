@@ -53,13 +53,13 @@ namespace Kotono.Graphics.Objects.Hitboxes
 
         private static bool _isFirst = true;
 
-        public Vector3 Position { get; set; }
+        public Vector3 Position { get; set; } = Vector3.Zero;
 
-        public Vector3 Angle { get; private set; }
+        public Vector3 Angle { get; set; } = Vector3.Zero;  
 
-        public Vector3 Scale { get; private set; }
+        public Vector3 Scale { get; set; } = Vector3.One;
 
-        public Vector3 Color { get; private set; }
+        public Vector3 Color { get; set; } = Vector3.One;
 
         public Box()
         {
@@ -81,6 +81,8 @@ namespace Kotono.Graphics.Objects.Hitboxes
                 GL.VertexAttribPointer(positionAttributeLocation, 3, VertexAttribPointerType.Float, false, 0, 0);
             }
         }
+
+        public void Update() { }
 
         public void Update(Vector3 position, Vector3 angle, Vector3 scale, Vector3 color)
         {

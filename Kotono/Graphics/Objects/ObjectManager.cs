@@ -1,29 +1,96 @@
 ﻿using Kotono.Graphics.Objects.Hitboxes;
 using Kotono.Graphics.Objects.Lights;
 using Kotono.Graphics.Objects.Meshes;
-using System;
-using System.Collections.Generic;
+using OpenTK.Mathematics;
 
 namespace Kotono.Graphics.Objects
 {
-    public sealed class ObjectManager
+    public class ObjectManager
     {
-        private static readonly Lazy<List<IMesh>> _meshes = new(() => new());
+        private MeshManager MeshManager { get; } = new();
 
-        private static readonly Lazy<List<PointLight>> _pointLights = new(() => new());
+        private HitboxManager HitboxManager { get; } = new();
 
-        private static readonly Lazy<List<IHitbox>> _hitboxes = new(() => new());
+        private PointLightManager PointLightManager { get; } = new();
 
-        private static readonly Lazy<Dictionary<string, Tuple<int, int, int>>> _paths = new(() => new());
+        public ObjectManager() { }
 
-        public static List<IMesh> Meshes => _meshes.Value;
+        public int CreateMesh(IMesh mesh)
+            => MeshManager.Add(mesh);
+        
+        public int CreateHitbox(IHitbox hitbox)
+            => HitboxManager.Add(hitbox);
 
-        public static List<PointLight> PointLights => _pointLights.Value;
+        public int CreatePointLight(PointLight pointLight)
+            => PointLightManager.Add(pointLight);
 
-        public static List<IHitbox> Hitboxes => _hitboxes.Value;
+        public IMesh GetMesh(int index)
+            => MeshManager.Get(index);
 
-        public static Dictionary<string, Tuple<int, int, int>> Paths => _paths.Value;
+        public IHitbox GetHitbox(int index)
+            => HitboxManager.Get(index);
 
-        private ObjectManager() { }
+        public PointLight GetPointLight(int index)
+            => PointLightManager.Get(index);
+
+        public void RemoveMesh(int index)
+        {
+            MeshManager.Remove(index);
+        }
+
+        public void RemoveHitbox(int index)
+        { 
+            HitboxManager.Remove(index);
+        }
+
+        public void RemovePointLight(int index)
+        {
+            PointLightManager.Remove(index);
+        }
+
+        public void SetHitBoxPosition(int index, Vector3 position)
+        {
+            HitboxManager.SetPosition(index, position);
+        }
+
+        public void SetHitBoxAngle(int index, Vector3 angle)
+        {
+            HitboxManager.SetAngle(index, angle);
+        }
+
+        public void SetHitBoxScale(int index, Vector3 scale)
+        {
+            HitboxManager.SetScale(index, scale);
+        }
+
+        public void SetHitBoxColor(int index, Vector3 color)
+        {
+            HitboxManager.SetColor(index, color);
+        }
+
+        public int GetPointLightsCount()
+            => PointLightManager.GetCount();
+
+        public int GetFirstPointLightIndex()
+            => PointLightManager.GetFirstIndex();
+
+        public void Update()
+        {
+            MeshManager.Update();
+            HitboxManager.Update();
+            PointLightManager.Update();
+        }
+
+        public void UpdateShaders()
+        {
+            PointLightManager.UpdateShaders();
+        }
+
+        public void Draw()
+        {
+            MeshManager.Draw();
+            HitboxManager.Draw();
+            PointLightManager.Draw();
+        }
     }
 }
