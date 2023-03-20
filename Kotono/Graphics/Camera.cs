@@ -7,37 +7,21 @@ namespace Kotono.Graphics
 {
     public class Camera
     {
-        private Vector3 _front = -Vector3.UnitZ;
-
-        private Vector3 _up = Vector3.UnitY;
-
-        private Vector3 _right = Vector3.UnitX;
-
-        private float _pitch;
+        private float _pitch = 0.0f;
 
         private float _yaw = -MathHelper.PiOver2;
 
         private float _fov = MathHelper.PiOver2;
 
-        private float _sensitivity;
+        public Vector3 Front { get; private set; } = -Vector3.UnitZ;
 
-        private float _speed;
+        public Vector3 Up { get; private set; } = Vector3.UnitY;
 
-        public Camera()
-        {
-            _speed = 1.5f;
-            _sensitivity = 0.2f;
-        }
+        public Vector3 Right { get; private set; } = Vector3.UnitX;
 
         public Vector3 Position { get; private set; } = Vector3.Zero;
 
         public float AspectRatio { private get; set; }
-
-        public Vector3 Front => _front;
-
-        public Vector3 Up => _up;
-
-        public Vector3 Right => _right;
 
         public float Pitch
         {
@@ -72,56 +56,64 @@ namespace Kotono.Graphics
                 _fov = MathHelper.DegreesToRadians(value);
             }
         }
-        public Matrix4 ViewMatrix => Matrix4.LookAt(Position, Position + _front, _up);
+        public Matrix4 ViewMatrix => Matrix4.LookAt(Position, Position + Front, Up);
 
         public Matrix4 ProjectionMatrix => Matrix4.CreatePerspectiveFieldOfView(_fov, AspectRatio, 0.01f, 100f);
 
+        public Camera() { }
+
         public void Move()
         {
+            float speed = 1.5f;
+            float sensitivity = 0.2f;
+
             if (InputManager.KeyboardState!.IsKeyDown(Keys.LeftShift))
             {
-                _speed = 3.0f;
+                speed *= 2.0f;
             }
 
             if (InputManager.KeyboardState.IsKeyDown(Keys.W))
             {
-                Position += Front * _speed * Time.Delta; // Forward
+                Position += Front * speed * Time.Delta; // Forward
             }
             if (InputManager.KeyboardState.IsKeyDown(Keys.S))
             {
-                Position -= Front * _speed * Time.Delta; // Backwards
+                Position -= Front * speed * Time.Delta; // Backwards
             }
             if (InputManager.KeyboardState.IsKeyDown(Keys.A))
             {
-                Position -= Right * _speed * Time.Delta; // Left
+                Position -= Right * speed * Time.Delta; // Left
             }
             if (InputManager.KeyboardState.IsKeyDown(Keys.D))
             {
-                Position += Right * _speed * Time.Delta; // Right
+                Position += Right * speed * Time.Delta; // Right
             }
             if (InputManager.KeyboardState.IsKeyDown(Keys.Space))
             {
-                Position += Up * _speed * Time.Delta; // Up
+                Position += Up * speed * Time.Delta; // Up
             }
             if (InputManager.KeyboardState.IsKeyDown(Keys.LeftControl))
             {
-                Position -= Up * _speed * Time.Delta; // Down
+                Position -= Up * speed * Time.Delta; // Down
             }
 
-            Yaw += InputManager.MouseState!.Delta.X * _sensitivity;
-            Pitch -= InputManager.MouseState.Delta.Y * _sensitivity;
+            Yaw += InputManager.MouseState!.Delta.X * sensitivity;
+            Pitch -= InputManager.MouseState.Delta.Y * sensitivity;
             Fov -= InputManager.MouseState.ScrollDelta.Y;
         }
 
         private void UpdateVectors()
         {
-            _front.X = MathF.Cos(_pitch) * MathF.Cos(_yaw);
-            _front.Y = MathF.Sin(_pitch);
-            _front.Z = MathF.Cos(_pitch) * MathF.Sin(_yaw);
+            Front = new Vector3 
+            {
+                X = MathF.Cos(_pitch) * MathF.Cos(_yaw),
+                Y = MathF.Sin(_pitch),
+                Z = MathF.Cos(_pitch) * MathF.Sin(_yaw) 
+            };
 
-            _front = Vector3.Normalize(_front);
-            _right = Vector3.Normalize(Vector3.Cross(_front, Vector3.UnitY));
-            _up = Vector3.Normalize(Vector3.Cross(_right, _front));
+            Front = Vector3.Normalize(Front);
+            Right = Vector3.Normalize(Vector3.Cross(Front, Vector3.UnitY));
+            Up = Vector3.Normalize(Vector3.Cross(Right, Front));
         }
 
     }

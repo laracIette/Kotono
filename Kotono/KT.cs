@@ -1,4 +1,5 @@
-﻿using Kotono.Graphics.Objects;
+﻿using Kotono.Graphics;
+using Kotono.Graphics.Objects;
 using Kotono.Graphics.Objects.Hitboxes;
 using Kotono.Graphics.Objects.Lights;
 using Kotono.Graphics.Objects.Meshes;
@@ -77,10 +78,43 @@ namespace Kotono
         public static void UpdateShaders()
         {
             ObjectManager.UpdateShaders();
+
+            ShaderManager.Lighting.SetInt("numLights", GetPointLightsCount());
+
+            ShaderManager.Lighting.SetMatrix4("view", CameraManager.Main.ViewMatrix);
+            ShaderManager.Lighting.SetMatrix4("projection", CameraManager.Main.ProjectionMatrix);
+
+            ShaderManager.PointLight.SetMatrix4("view", CameraManager.Main.ViewMatrix);
+            ShaderManager.PointLight.SetMatrix4("projection", CameraManager.Main.ProjectionMatrix);
+
+            ShaderManager.Hitbox.SetMatrix4("view", CameraManager.Main.ViewMatrix);
+            ShaderManager.Hitbox.SetMatrix4("projection", CameraManager.Main.ProjectionMatrix);
+
+            ShaderManager.Lighting.SetVector3("viewPos", CameraManager.Main.Position);
+
+            ShaderManager.Lighting.SetInt("material.diffuse", 0);
+            ShaderManager.Lighting.SetInt("material.specular", 1);
+            ShaderManager.Lighting.SetVector3("material.specular", new Vector3(0.5f, 0.5f, 0.5f));
+            ShaderManager.Lighting.SetFloat("material.shininess", 32.0f);
+
+            ShaderManager.Lighting.SetVector3("dirLight.direction", new Vector3(-0.2f, -1.0f, -0.3f));
+            ShaderManager.Lighting.SetVector3("dirLight.ambient", new Vector3(0.05f, 0.05f, 0.05f));
+            ShaderManager.Lighting.SetVector3("dirLight.diffuse", new Vector3(0.4f, 0.4f, 0.4f));
+            ShaderManager.Lighting.SetVector3("dirLight.specular", new Vector3(0.5f, 0.5f, 0.5f));
+            
+            ShaderManager.Lighting.SetVector3("spotLight.position", CameraManager.Main.Position);
+            ShaderManager.Lighting.SetVector3("spotLight.direction", CameraManager.Main.Front);
+            ShaderManager.Lighting.SetVector3("spotLight.ambient", new Vector3(0.0f, 0.0f, 0.0f));
+            ShaderManager.Lighting.SetVector3("spotLight.diffuse", new Vector3(1.0f, 1.0f, 1.0f));
+            ShaderManager.Lighting.SetVector3("spotLight.specular", new Vector3(1.0f, 1.0f, 1.0f));
+            ShaderManager.Lighting.SetFloat("spotLight.constant", 1.0f);
+            ShaderManager.Lighting.SetFloat("spotLight.linear", 0.09f);
+            ShaderManager.Lighting.SetFloat("spotLight.quadratic", 0.032f);
         }
 
-        public static void Draw()
+        public static void RenderFrame()
         {
+            UpdateShaders();
             ObjectManager.Draw();
         }
     }

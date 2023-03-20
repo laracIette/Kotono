@@ -14,6 +14,8 @@ namespace Kotono.Graphics.Objects.Meshes
 {
     public class MeshOBJ : IMesh, IDisposable
     {
+        private static readonly Dictionary<string, int[]> _paths = new();
+
         private Vector3 _position;
 
         private Vector3 _positionVelocity;
@@ -29,7 +31,7 @@ namespace Kotono.Graphics.Objects.Meshes
             var diffuseMap = TextureManager.LoadTexture(diffusePath);
             var specularMap = TextureManager.LoadTexture(specularPath);
 
-            if (!ObjectManager.Paths.ContainsKey(path))
+            if (!_paths.ContainsKey(path))
             {
                 List<Vertex>[] models;
                 List<int>[] indices;
@@ -85,12 +87,17 @@ namespace Kotono.Graphics.Objects.Meshes
                 GL.BindBuffer(BufferTarget.ElementArrayBuffer, elementBufferObject);
                 GL.BufferData(BufferTarget.ElementArrayBuffer, indices[0].Count * sizeof(int), indices[0].ToArray(), BufferUsageHint.DynamicDraw);
 
-                ObjectManager.Paths[path] = Tuple.Create(vertexArrayObject, vertexBufferObject, indices[0].Count);
+                _paths[path] = new int[]
+                { 
+                    vertexArrayObject, 
+                    vertexBufferObject, 
+                    indices[0].Count 
+                };
             }
 
-            VertexArrayObject = ObjectManager.Paths[path].Item1;
-            VertexBufferObject = ObjectManager.Paths[path].Item2;
-            IndicesCount = ObjectManager.Paths[path].Item3;
+            VertexArrayObject = _paths[path][0];
+            VertexBufferObject = _paths[path][1];
+            IndicesCount = _paths[path][2];
             Position = position;
             Angle = angle;
             Scale = scale;
@@ -100,6 +107,11 @@ namespace Kotono.Graphics.Objects.Meshes
             Color = color;
 
             _hitbox = KT.CreateHitbox(new Box());
+
+            KT.SetHitBoxPosition(_hitbox, Position);
+            KT.SetHitBoxAngle(_hitbox, Vector3.Zero);
+            KT.SetHitBoxScale(_hitbox, Scale * 2);
+            KT.SetHitBoxColor(_hitbox, Vector3.UnitX);
         }
 
         public void Update()
@@ -111,9 +123,6 @@ namespace Kotono.Graphics.Objects.Meshes
             Position += PositionVelocity * Time.Delta;
 
             KT.SetHitBoxPosition(_hitbox, Position);
-            KT.SetHitBoxAngle(_hitbox, Vector3.Zero);
-            KT.SetHitBoxScale(_hitbox, Scale * 2);
-            KT.SetHitBoxColor(_hitbox, Vector3.UnitX);
         }
 
         public virtual void Draw()
