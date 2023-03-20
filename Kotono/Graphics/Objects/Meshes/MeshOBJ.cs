@@ -1,15 +1,14 @@
-﻿using OpenTK.Graphics.OpenGL4;
-using OpenTK.Mathematics;
-
+﻿using Assimp;
+using Kotono.Graphics.Objects.Hitboxes;
 using Kotono.Utils;
-using Random = Kotono.Utils.Random;
-using Assimp;
-using Path = Kotono.Utils.Path;
-using PrimitiveType = OpenTK.Graphics.OpenGL4.PrimitiveType;
+using OpenTK.Graphics.OpenGL4;
+using OpenTK.Mathematics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Kotono.Graphics.Objects.Hitboxes;
+using Path = Kotono.Utils.Path;
+using PrimitiveType = OpenTK.Graphics.OpenGL4.PrimitiveType;
+using Random = Kotono.Utils.Random;
 
 namespace Kotono.Graphics.Objects.Meshes
 {
@@ -111,19 +110,10 @@ namespace Kotono.Graphics.Objects.Meshes
             PositionVelocity += Random.Vector3(-0.1f, 0.1f);
             Position += PositionVelocity * Time.Delta;
 
-            KT.GetHitbox(_hitbox).Position = Position;
-            /*
-            foreach (var mesh in ObjectManager.Meshes.Where(m => m != this))
-            {
-                if (ObjectManager.Hitboxes[_hitbox].Collides(mesh.Hitbox))
-                {
-                    Position -= PositionVelocity * Time.Delta;
-                    break;
-                }
-            }
-            */
-
-            //KT.GetHitbox(_hitbox).Update(Position, Vector3.Zero, Scale * 2, Vector3.UnitX);
+            KT.SetHitBoxPosition(_hitbox, Position);
+            KT.SetHitBoxAngle(_hitbox, Vector3.Zero);
+            KT.SetHitBoxScale(_hitbox, Scale * 2);
+            KT.SetHitBoxColor(_hitbox, Vector3.UnitX);
         }
 
         public virtual void Draw()

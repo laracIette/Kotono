@@ -1,8 +1,10 @@
 ﻿using Kotono.Graphics.Objects.Hitboxes;
 using Kotono.Graphics.Objects.Lights;
 using Kotono.Graphics.Objects.Meshes;
+using OpenTK.Mathematics;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Kotono.Graphics.Objects
 {
@@ -56,8 +58,31 @@ namespace Kotono.Graphics.Objects
             _pointLightManager.Remove(index);
         }
 
+        public void SetHitBoxPosition(int index, Vector3 position)
+        {
+            _hitboxManager.SetPosition(index, position);
+        }
+
+        public void SetHitBoxAngle(int index, Vector3 angle)
+        {
+            _hitboxManager.SetAngle(index, angle);
+        }
+
+        public void SetHitBoxScale(int index, Vector3 scale)
+        {
+            _hitboxManager.SetScale(index, scale);
+        }
+
+        public void SetHitBoxColor(int index, Vector3 color)
+        {
+            _hitboxManager.SetColor(index, color);
+        }
+
         public int GetPointLightsCount()
-            => _pointLightManager.GetCount();        
+            => _pointLightManager.GetCount();
+
+        public int GetFirstPointLightIndex()
+            => _pointLightManager.GetFirstIndex();
 
         public void Update()
         {
@@ -173,6 +198,26 @@ namespace Kotono.Graphics.Objects
                 return _hitboxes[_indexOffset[index]];
             }
 
+            public void SetPosition(int index, Vector3 position)
+            {
+                _hitboxes[_indexOffset[index]].Position = position;
+            }
+
+            public void SetAngle(int index, Vector3 angle)
+            {
+                _hitboxes[_indexOffset[index]].Angle = angle;
+            }
+
+            public void SetScale(int index, Vector3 scale)
+            {
+                _hitboxes[_indexOffset[index]].Scale = scale;
+            }
+
+            public void SetColor(int index, Vector3 color)
+            {
+                _hitboxes[_indexOffset[index]].Color = color;
+            }
+
             public void Update()
             {
                 foreach (var hitbox in _hitboxes)
@@ -218,6 +263,7 @@ namespace Kotono.Graphics.Objects
             public void Remove(int index)
             {
                 _pointLights.RemoveAt(_indexOffset[index]);
+                _indexOffset.Remove(index);
 
                 foreach (var i in _indexOffset.Keys)
                 {
@@ -235,7 +281,10 @@ namespace Kotono.Graphics.Objects
             }
 
             public int GetCount()
-                => _pointLightsCount;
+                => _pointLights.Count;
+
+            public int GetFirstIndex()
+                => _indexOffset.First().Key;
 
             public void Update()
             {

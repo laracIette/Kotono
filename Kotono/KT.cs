@@ -2,6 +2,7 @@
 using Kotono.Graphics.Objects.Hitboxes;
 using Kotono.Graphics.Objects.Lights;
 using Kotono.Graphics.Objects.Meshes;
+using OpenTK.Mathematics;
 
 namespace Kotono
 {
@@ -42,8 +43,31 @@ namespace Kotono
         public static void RemovePointLight(int index)
             => ObjectManager.RemovePointLight(index);
 
+        public static void SetHitBoxPosition(int index, Vector3 position)
+        {
+            ObjectManager.SetHitBoxPosition(index, position);
+        }
+
+        public static void SetHitBoxAngle(int index, Vector3 angle)
+        {
+            ObjectManager.SetHitBoxAngle(index, angle);
+        }
+
+        public static void SetHitBoxScale(int index, Vector3 scale)
+        {
+            ObjectManager.SetHitBoxScale(index, scale);
+        }
+
+        public static void SetHitBoxColor(int index, Vector3 color)
+        {
+            ObjectManager.SetHitBoxColor(index, color);
+        }
+
         public static int GetPointLightsCount()
             => ObjectManager.GetPointLightsCount();
+
+        public static int GetFirstPointLightIndex()
+            => ObjectManager.GetFirstPointLightIndex();
 
         public static void Update()
         {

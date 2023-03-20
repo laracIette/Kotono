@@ -53,13 +53,13 @@ namespace Kotono.Graphics.Objects.Hitboxes
 
         private static bool _isFirst = true;
 
-        public Vector3 Position { get; set; }
+        public Vector3 Position { get; set; } = Vector3.Zero;
 
-        public Vector3 Angle { get; private set; }
+        public Vector3 Angle { get; set; } = Vector3.Zero;  
 
-        public Vector3 Scale { get; private set; }
+        public Vector3 Scale { get; set; } = Vector3.One;
 
-        public Vector3 Color { get; private set; }
+        public Vector3 Color { get; set; } = Vector3.One;
 
         public Box()
         {
