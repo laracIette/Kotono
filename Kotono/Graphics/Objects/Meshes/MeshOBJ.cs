@@ -10,7 +10,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Kotono.Graphics.Objects.Hitboxes;
-using System.Reflection;
 
 namespace Kotono.Graphics.Objects.Meshes
 {
@@ -101,9 +100,7 @@ namespace Kotono.Graphics.Objects.Meshes
             _shader = shader;
             Color = color;
 
-            _hitbox = ObjectManager.Hitboxes.Count;
-
-            ObjectManager.Hitboxes.Add(new Box());
+            _hitbox = KT.CreateHitbox(new Box());
         }
 
         public void Update()
@@ -114,8 +111,8 @@ namespace Kotono.Graphics.Objects.Meshes
             PositionVelocity += Random.Vector3(-0.1f, 0.1f);
             Position += PositionVelocity * Time.Delta;
 
-            ObjectManager.Hitboxes[_hitbox].Position = Position;
-
+            KT.GetHitbox(_hitbox).Position = Position;
+            /*
             foreach (var mesh in ObjectManager.Meshes.Where(m => m != this))
             {
                 if (ObjectManager.Hitboxes[_hitbox].Collides(mesh.Hitbox))
@@ -124,8 +121,9 @@ namespace Kotono.Graphics.Objects.Meshes
                     break;
                 }
             }
+            */
 
-            ObjectManager.Hitboxes[_hitbox].Update(Position, Vector3.Zero, Scale * 2, Vector3.UnitX);
+            //KT.GetHitbox(_hitbox).Update(Position, Vector3.Zero, Scale * 2, Vector3.UnitX);
         }
 
         public virtual void Draw()
@@ -140,8 +138,6 @@ namespace Kotono.Graphics.Objects.Meshes
             GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
 
             GL.DrawElements(PrimitiveType.Triangles, IndicesCount, DrawElementsType.UnsignedInt, IntPtr.Zero);
-
-            _hitbox.Draw();
         }
 
         public int VertexArrayObject { get; }
@@ -153,11 +149,6 @@ namespace Kotono.Graphics.Objects.Meshes
         public int DiffuseMap { get; }
 
         public int SpecularMap { get; }
-
-        public Box Hitbox 
-        { 
-            get => _hitbox;
-        }
 
         public Vector3 Color { get; set; }
 

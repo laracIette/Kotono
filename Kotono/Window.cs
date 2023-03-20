@@ -8,13 +8,13 @@ using Kotono.Graphics.Objects;
 using Kotono.Graphics.Objects.Lights;
 using Kotono.Utils;
 using System;
-using System.Runtime.CompilerServices;
 
 namespace Kotono
 {
     public class Window : GameWindow
     {
-        private SpotLight _spotLight;
+        private readonly SpotLight _spotLight = new();
+
 
         public Window(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings)
             : base(gameWindowSettings, nativeWindowSettings)
@@ -27,8 +27,6 @@ namespace Kotono
 
             GL.ClearColor(0.1f, 0.1f, 0.2f, 1.0f);
             GL.Enable(EnableCap.DepthTest);
-
-            _spotLight = new SpotLight(true);
 
             CameraManager.Main.AspectRatio = (float)Size.X / (float)Size.Y;
 
@@ -84,15 +82,7 @@ namespace Kotono
 
             _spotLight.Update();
 
-            foreach (var mesh in ObjectManager.Meshes)
-            {
-                mesh.Update();
-            }
-
-            foreach (var pointLight in ObjectManager.PointLights)
-            {
-                pointLight.Update();
-            }
+            KT.Update();
         }
 
         protected override void OnResize(ResizeEventArgs e)
@@ -105,7 +95,7 @@ namespace Kotono
 
         private void UpdateShaders()
         {
-            ShaderManager.Lighting.SetInt("numLights", ObjectManager.PointLights.Count);
+            ShaderManager.Lighting.SetInt("numLights", KT.GetPointLightsCount());
 
             ShaderManager.Lighting.SetMatrix4("view", CameraManager.Main.ViewMatrix);
             ShaderManager.Lighting.SetMatrix4("projection", CameraManager.Main.ProjectionMatrix);
@@ -128,10 +118,7 @@ namespace Kotono
             ShaderManager.Lighting.SetVector3("dirLight.diffuse", new Vector3(0.4f, 0.4f, 0.4f));
             ShaderManager.Lighting.SetVector3("dirLight.specular", new Vector3(0.5f, 0.5f, 0.5f));
 
-            foreach (var pointLight in ObjectManager.PointLights)
-            {
-                pointLight.UpdateShaders();
-            }
+            KT.UpdateShaders();
 
             ShaderManager.Lighting.SetVector3("spotLight.position", CameraManager.Main.Position);
             ShaderManager.Lighting.SetVector3("spotLight.direction", CameraManager.Main.Front);
@@ -144,15 +131,7 @@ namespace Kotono
             ShaderManager.Lighting.SetFloat("spotLight.cutOff", MathF.Cos(MathHelper.DegreesToRadians(_spotLight.CutOffAngle)));
             ShaderManager.Lighting.SetFloat("spotLight.outerCutOff", MathF.Cos(MathHelper.DegreesToRadians(_spotLight.OuterCutOffAngle)));
 
-            foreach (var mesh in ObjectManager.Meshes)
-            {
-                mesh.Draw();
-            } 
-
-            foreach (var pointLight in ObjectManager.PointLights)
-            {
-                pointLight.Draw();
-            }
+            KT.Draw();
         }
 
     }

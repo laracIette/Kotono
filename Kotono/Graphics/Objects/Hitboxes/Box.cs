@@ -82,6 +82,8 @@ namespace Kotono.Graphics.Objects.Hitboxes
             }
         }
 
+        public void Update() { }
+
         public void Update(Vector3 position, Vector3 angle, Vector3 scale, Vector3 color)
         {
             Position = position;

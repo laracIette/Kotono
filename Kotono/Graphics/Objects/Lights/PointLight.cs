@@ -30,7 +30,7 @@ namespace Kotono.Graphics.Objects.Lights
             _constant = constant;
             _linear = linear;
             _quadratic = quadratic;
-            _shaderIndex = ObjectManager.PointLights.Count;
+            _shaderIndex = KT.GetPointLightsCount();
 
             _mesh = new PointLightMesh(position);
         }
