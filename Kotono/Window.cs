@@ -97,5 +97,11 @@ namespace Kotono
             CameraManager.Main.AspectRatio = (float)Size.X / (float)Size.Y;
         }
 
+        protected override void OnUnload()
+        {
+            KT.Exit();
+
+            base.OnUnload();
+        }
     }
 }

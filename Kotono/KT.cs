@@ -1,4 +1,5 @@
-﻿using Kotono.Graphics;
+﻿using Kotono.Audio;
+using Kotono.Graphics;
 using Kotono.Graphics.Objects;
 using Kotono.Graphics.Objects.Hitboxes;
 using Kotono.Graphics.Objects.Lights;
@@ -12,6 +13,8 @@ namespace Kotono
         private KT() { }
 
         private static ObjectManager ObjectManager { get; } = new();
+
+        private static AudioManager AudioManager { get; } = new();
 
         public static int CreateMesh(IMesh mesh)
             => ObjectManager.CreateMesh(mesh);
@@ -70,6 +73,34 @@ namespace Kotono
         public static int GetFirstPointLightIndex()
             => ObjectManager.GetFirstPointLightIndex();
 
+        public static int CreateSound(string path)
+            => AudioManager.Create(path);
+
+        public static void PlaySound(int source)
+        {
+            AudioManager.Play(source);
+        }
+
+        public static void PauseSound(int source)
+        {
+            AudioManager.Pause(source);
+        }
+
+        public static void RewindSound(int source)
+        {
+            AudioManager.Rewind(source);
+        }
+
+        public static void StopSound(int source)
+        {
+            AudioManager.Stop(source);
+        }
+
+        public static void DeleteSound(int source)
+        {
+            AudioManager.Delete(source);
+        }
+
         public static void Update()
         {
             ObjectManager.Update();
@@ -116,6 +147,11 @@ namespace Kotono
         {
             UpdateShaders();
             ObjectManager.Draw();
+        }
+
+        public static void Exit()
+        {
+            AudioManager.Dispose();
         }
     }
 }
