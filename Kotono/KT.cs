@@ -4,6 +4,7 @@ using Kotono.Graphics.Objects;
 using Kotono.Graphics.Objects.Hitboxes;
 using Kotono.Graphics.Objects.Lights;
 using Kotono.Graphics.Objects.Meshes;
+using Kotono.Utils;
 using OpenTK.Mathematics;
 
 namespace Kotono
@@ -103,6 +104,7 @@ namespace Kotono
 
         public static void Update()
         {
+            Time.Update();
             ObjectManager.Update();
         }
 

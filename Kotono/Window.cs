@@ -1,11 +1,10 @@
-﻿using OpenTK.Graphics.OpenGL4;
+﻿using Kotono.Graphics;
+using Kotono.Graphics.Objects.Lights;
+using Kotono.Utils;
+using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
-
-using Kotono.Graphics;
-using Kotono.Graphics.Objects.Lights;
-using Kotono.Utils;
 using System;
 
 namespace Kotono
@@ -13,7 +12,6 @@ namespace Kotono
     public class Window : GameWindow
     {
         private readonly SpotLight _spotLight = new();
-
 
         public Window(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings)
             : base(gameWindowSettings, nativeWindowSettings)
@@ -30,7 +28,10 @@ namespace Kotono
             CameraManager.Main.AspectRatio = (float)Size.X / (float)Size.Y;
 
             InputManager.Update(KeyboardState, MouseState);
+        }
 
+        protected new void Load()
+        {
             CursorState = CursorState.Grabbed;
             IsVisible = true;
         }
@@ -39,11 +40,15 @@ namespace Kotono
         {
             base.OnRenderFrame(e);
 
+            if (!IsFocused) return;
+
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
         }
 
         protected new void RenderFrame()
         {
+            if (!IsFocused) return;
+
             ShaderManager.Lighting.SetFloat("spotLight.cutOff", MathF.Cos(MathHelper.DegreesToRadians(_spotLight.CutOffAngle)));
             ShaderManager.Lighting.SetFloat("spotLight.outerCutOff", MathF.Cos(MathHelper.DegreesToRadians(_spotLight.OuterCutOffAngle)));
 
@@ -56,14 +61,9 @@ namespace Kotono
         {
             base.OnUpdateFrame(e);
 
-            if (!IsFocused)
-            {
-                return;
-            }
-
-            Time.Update();
-
             InputManager.Update(KeyboardState, MouseState);
+
+            KT.Update();
 
             if (InputManager.KeyboardState!.IsKeyDown(InputManager.Escape))
             {
@@ -72,9 +72,9 @@ namespace Kotono
 
             if (InputManager.KeyboardState.IsKeyPressed(InputManager.Fullscreen))
             {
-                WindowState = (WindowState == WindowState.Fullscreen) ?
-                    WindowState.Normal :
-                    WindowState.Fullscreen;
+                WindowState = (WindowState == WindowState.Normal) ?
+                    WindowState.Fullscreen :
+                    WindowState.Normal;
             }
 
             if (InputManager.KeyboardState.IsKeyPressed(InputManager.GrabMouse))
@@ -85,8 +85,6 @@ namespace Kotono
             }
 
             _spotLight.Update();
-
-            KT.Update();
         }
 
         protected override void OnResize(ResizeEventArgs e)
