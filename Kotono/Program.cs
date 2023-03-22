@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Kotono.Assistant;
+using System;
 
 namespace Kotono
 {
@@ -6,7 +7,12 @@ namespace Kotono
 	{
 		public static void Main(string[] args)
         {
-            Console.WriteLine("Compilation Completed !");
+			//Console.WriteLine("Compilation Completed !");
+
+			using (var partner = new Partner())
+			{
+				partner.Run();
+			}
 		}
 	}
 }
