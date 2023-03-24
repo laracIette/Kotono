@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using Path = Kotono.Utils.Path;
 
-namespace Kotono.Graphics
+namespace Kotono.Graphics.Shaders
 {
     public class Shader
     {
@@ -49,6 +49,9 @@ namespace Kotono.Graphics
                 _uniformLocations.Add(key, location);
             }
         }
+
+        public virtual void Update() { }
+
         private static void CompileShader(int shader)
         {
             GL.CompileShader(shader);

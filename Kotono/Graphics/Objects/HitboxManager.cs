@@ -18,7 +18,7 @@ namespace Kotono.Graphics.Objects
 
         public HitboxManager() { }
 
-        public int Add(IHitbox mesh)
+        public int Create(IHitbox mesh)
         {
             _indexOffset[_hitboxIndex] = _hitboxes.Count;
 
@@ -27,7 +27,7 @@ namespace Kotono.Graphics.Objects
             return _hitboxIndex++;
         }
 
-        public void Remove(int index)
+        public void Delete(int index)
         {
             _hitboxes.RemoveAt(_indexOffset[index]);
             _indexOffset.Remove(index);

@@ -25,7 +25,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Graphics\Shaders\" />
     <Folder Include="Tests\" />
   </ItemGroup>
 

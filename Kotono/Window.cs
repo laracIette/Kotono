@@ -1,5 +1,6 @@
 ﻿using Kotono.Graphics;
 using Kotono.Graphics.Objects.Lights;
+using Kotono.Graphics.Shaders;
 using Kotono.Utils;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
@@ -13,6 +14,8 @@ namespace Kotono
     {
         private readonly SpotLight _spotLight = new();
 
+        private int _lightingShader;
+
         public Window(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings)
             : base(gameWindowSettings, nativeWindowSettings)
         {
@@ -24,6 +27,10 @@ namespace Kotono
 
             GL.ClearColor(0.1f, 0.1f, 0.2f, 1.0f);
             GL.Enable(EnableCap.DepthTest);
+
+            _lightingShader = KT.CreateShader(new LightingShader());
+
+            KT.CreateCamera(new Camera());
 
             KT.SetCameraAspectRatio(0, (float)Size.X / (float)Size.Y);
 
@@ -49,8 +56,8 @@ namespace Kotono
         {
             if (!IsFocused) return;
 
-            ShaderManager.Lighting.SetFloat("spotLight.cutOff", MathF.Cos(MathHelper.DegreesToRadians(_spotLight.CutOffAngle)));
-            ShaderManager.Lighting.SetFloat("spotLight.outerCutOff", MathF.Cos(MathHelper.DegreesToRadians(_spotLight.OuterCutOffAngle)));
+            KT.SetShaderFloat(_lightingShader, "spotLight.cutOff", MathF.Cos(MathHelper.DegreesToRadians(_spotLight.CutOffAngle)));
+            KT.SetShaderFloat(_lightingShader, "spotLight.outerCutOff", MathF.Cos(MathHelper.DegreesToRadians(_spotLight.OuterCutOffAngle)));
 
             KT.RenderFrame();
 

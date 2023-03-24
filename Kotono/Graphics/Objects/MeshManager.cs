@@ -17,7 +17,7 @@ namespace Kotono.Graphics.Objects
 
         public MeshManager() { }
 
-        public int Add(IMesh mesh)
+        public int Create(IMesh mesh)
         {
             _indexOffset[_meshIndex] = _meshes.Count;
 
@@ -26,9 +26,10 @@ namespace Kotono.Graphics.Objects
             return _meshIndex++;
         }
 
-        public void Remove(int index)
+        public void Delete(int index)
         {
             _meshes.RemoveAt(_indexOffset[index]);
+            
             _indexOffset.Remove(index);
 
             foreach (var i in _indexOffset.Keys)

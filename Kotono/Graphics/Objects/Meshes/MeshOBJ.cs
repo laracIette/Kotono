@@ -1,5 +1,6 @@
 ﻿using Assimp;
 using Kotono.Graphics.Objects.Hitboxes;
+using Kotono.Graphics.Shaders;
 using Kotono.Utils;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
@@ -22,9 +23,9 @@ namespace Kotono.Graphics.Objects.Meshes
 
         private Vector3 _angleVelocity;
 
-        private readonly Shader _shader;
-
         private readonly int _hitbox;
+
+        protected int _shader;
 
         public MeshOBJ(string path, Vector3 position, Vector3 angle, Vector3 scale, string diffusePath, string specularPath, Shader shader, Vector3 color)
         {
@@ -103,7 +104,7 @@ namespace Kotono.Graphics.Objects.Meshes
             Scale = scale;
             DiffuseMap = diffuseMap;
             SpecularMap = specularMap;
-            _shader = shader;
+            _shader = KT.CreateShader(shader);
             Color = color;
 
             _hitbox = KT.CreateHitbox(new Box());
@@ -130,8 +131,8 @@ namespace Kotono.Graphics.Objects.Meshes
             TextureManager.UseTexture(DiffuseMap, TextureUnit.Texture0);
             TextureManager.UseTexture(SpecularMap, TextureUnit.Texture1);
 
-            _shader.SetMatrix4("model", Model);
-            _shader.SetVector3("color", Color);
+            KT.SetShaderMatrix4(_shader, "model", Model);
+            KT.SetShaderVector3(_shader, "color", Color);
 
             GL.BindVertexArray(VertexArrayObject);
             GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);

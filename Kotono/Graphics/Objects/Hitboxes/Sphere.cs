@@ -1,4 +1,5 @@
-﻿using OpenTK.Graphics.OpenGL4;
+﻿using Kotono.Graphics.Shaders;
+using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using System;
 
@@ -14,6 +15,8 @@ namespace Kotono.Graphics.Objects.Hitboxes
 
         private static int _vertexBufferObject;
 
+        private static int _hitboxShader;
+
         private static bool _isFirst = true;
 
         public Vector3 Position { get; private set; }
@@ -27,6 +30,8 @@ namespace Kotono.Graphics.Objects.Hitboxes
             if (_isFirst)
             {
                 _isFirst = false;
+
+                _hitboxShader = KT.CreateShader(new HitboxShader());
 
                 for (int i = 0; i <= _segments; i++)
                 {
@@ -48,7 +53,7 @@ namespace Kotono.Graphics.Objects.Hitboxes
                 GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
                 GL.BufferData(BufferTarget.ArrayBuffer, _vertices.Length * sizeof(float) * 3, _vertices, BufferUsageHint.StaticDraw);
 
-                int positionAttributeLocation = ShaderManager.Hitbox.GetAttribLocation("aPos");
+                int positionAttributeLocation = KT.GetShaderAttribLocation(_hitboxShader, "aPos");
                 GL.EnableVertexAttribArray(positionAttributeLocation);
                 GL.VertexAttribPointer(positionAttributeLocation, 3, VertexAttribPointerType.Float, false, Vector3.SizeInBytes, 0);
             }
@@ -63,9 +68,8 @@ namespace Kotono.Graphics.Objects.Hitboxes
 
         public void Draw()
         {
-            ShaderManager.Hitbox.SetVector3("color", Color);
-
-            ShaderManager.Hitbox.SetMatrix4("model", Model);
+            KT.SetShaderVector3(_hitboxShader, "color", Color);
+            KT.SetShaderMatrix4(_hitboxShader, "model", Model);
 
             GL.BindVertexArray(_vertexArrayObject);
             GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);

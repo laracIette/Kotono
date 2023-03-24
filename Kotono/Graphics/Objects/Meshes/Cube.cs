@@ -1,4 +1,5 @@
-﻿using OpenTK.Mathematics;
+﻿using Kotono.Graphics.Shaders;
+using OpenTK.Mathematics;
 
 namespace Kotono.Graphics.Objects.Meshes
 {
@@ -12,7 +13,7 @@ namespace Kotono.Graphics.Objects.Meshes
                   scale,
                   diffusePath,
                   specularPath, 
-                  ShaderManager.Lighting, 
+                  new LightingShader(), 
                   color
               )
         {

@@ -16,13 +16,13 @@ namespace Kotono.Graphics.Objects
         public ObjectManager() { }
 
         public int CreateMesh(IMesh mesh)
-            => MeshManager.Add(mesh);
+            => MeshManager.Create(mesh);
         
         public int CreateHitbox(IHitbox hitbox)
-            => HitboxManager.Add(hitbox);
+            => HitboxManager.Create(hitbox);
 
         public int CreatePointLight(PointLight pointLight)
-            => PointLightManager.Add(pointLight);
+            => PointLightManager.Create(pointLight);
 
         public IMesh GetMesh(int index)
             => MeshManager.Get(index);
@@ -33,19 +33,19 @@ namespace Kotono.Graphics.Objects
         public PointLight GetPointLight(int index)
             => PointLightManager.Get(index);
 
-        public void RemoveMesh(int index)
+        public void DeleteMesh(int index)
         {
-            MeshManager.Remove(index);
+            MeshManager.Delete(index);
         }
 
-        public void RemoveHitbox(int index)
+        public void DeleteHitbox(int index)
         { 
-            HitboxManager.Remove(index);
+            HitboxManager.Delete(index);
         }
 
-        public void RemovePointLight(int index)
+        public void DeletePointLight(int index)
         {
-            PointLightManager.Remove(index);
+            PointLightManager.Delete(index);
         }
 
         public void SetHitBoxPosition(int index, Vector3 position)

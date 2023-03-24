@@ -5,6 +5,7 @@ using Kotono.Graphics.Objects;
 using Kotono.Graphics.Objects.Hitboxes;
 using Kotono.Graphics.Objects.Lights;
 using Kotono.Graphics.Objects.Meshes;
+using Kotono.Graphics.Shaders;
 using Kotono.Utils;
 using OpenTK.Mathematics;
 using Camera = Kotono.Graphics.Camera;
@@ -20,6 +21,8 @@ namespace Kotono
         private static AudioManager AudioManager { get; } = new();
 
         private static CameraManager CameraManager { get; } = new();
+
+        private static ShaderManager ShaderManager { get; } = new();
 
         public static int CreateMesh(IMesh mesh)
             => ObjectManager.CreateMesh(mesh);
@@ -39,18 +42,18 @@ namespace Kotono
         public static PointLight GetPointLight(int index)
             => ObjectManager.GetPointLight(index);
 
-        public static void RemoveMesh(int index)
+        public static void DeleteMesh(int index)
         {
-            ObjectManager.RemoveMesh(index);
+            ObjectManager.DeleteMesh(index);
         }
 
-        public static void RemoveHitbox(int index)
+        public static void DeleteHitbox(int index)
         {
-            ObjectManager.RemoveHitbox(index);
+            ObjectManager.DeleteHitbox(index);
         }
 
-        public static void RemovePointLight(int index)
-            => ObjectManager.RemovePointLight(index);
+        public static void DeletePointLight(int index)
+            => ObjectManager.DeletePointLight(index);
 
         public static void SetHitBoxPosition(int index, Vector3 position)
         {
@@ -109,6 +112,9 @@ namespace Kotono
         public static int CreateCamera(Camera camera)
             => CameraManager.Create(camera);
 
+        public static void DeleteCamera(int index) 
+            => CameraManager.Delete(index);
+
         public static Vector3 GetCameraPosition(int index)
             => CameraManager.GetPosition(index);
 
@@ -126,6 +132,40 @@ namespace Kotono
             CameraManager.SetAspectRatio(index, aspectRatio);
         }
 
+        public static int CreateShader(Shader shader)
+            => ShaderManager.Create(shader);
+
+        public static void DeleteShader(int index)
+            => ShaderManager.Delete(index);
+
+        public static int GetShaderAttribLocation(int index, string attribName)
+            => ShaderManager.GetAttribLocation(index, attribName);
+
+        public static void SetShaderInt(int index, string name, int data)
+        {
+            ShaderManager.SetInt(index, name, data);
+        }
+
+        public static void SetShaderFloat(int index, string name, float data)
+        {
+            ShaderManager.SetFloat(index, name, data);
+        }
+
+        public static void SetShaderMatrix4(int index, string name, Matrix4 data)
+        {
+            ShaderManager.SetMatrix4(index, name, data);
+        }
+
+        public static void SetShaderVector3(int index, string name, Vector3 data)
+        {
+            ShaderManager.SetVector3(index, name, data);
+        }
+
+        public static void SetShaderVector4(int index, string name, Vector4 data)
+        {
+            ShaderManager.SetVector4(index, name, data);
+        }
+
         public static void Update()
         {
             Time.Update();
@@ -133,47 +173,16 @@ namespace Kotono
             CameraManager.Update();
         }
 
-        public static void UpdateShaders()
-        {
-            ObjectManager.UpdateShaders();
-
-            ShaderManager.Lighting.SetInt("numLights", GetPointLightsCount());
-
-            ShaderManager.Lighting.SetMatrix4("view", GetCameraViewMatrix(0));
-            ShaderManager.Lighting.SetMatrix4("projection", GetCameraProjectionMatrix(0));
-
-            ShaderManager.PointLight.SetMatrix4("view", GetCameraViewMatrix(0));
-            ShaderManager.PointLight.SetMatrix4("projection", GetCameraProjectionMatrix(0));
-
-            ShaderManager.Hitbox.SetMatrix4("view", GetCameraViewMatrix(0));
-            ShaderManager.Hitbox.SetMatrix4("projection", GetCameraProjectionMatrix(0));
-
-            ShaderManager.Lighting.SetVector3("viewPos", GetCameraPosition(0));
-
-            ShaderManager.Lighting.SetInt("material.diffuse", 0);
-            ShaderManager.Lighting.SetInt("material.specular", 1);
-            ShaderManager.Lighting.SetVector3("material.specular", new Vector3(0.5f, 0.5f, 0.5f));
-            ShaderManager.Lighting.SetFloat("material.shininess", 32.0f);
-
-            ShaderManager.Lighting.SetVector3("dirLight.direction", new Vector3(-0.2f, -1.0f, -0.3f));
-            ShaderManager.Lighting.SetVector3("dirLight.ambient", new Vector3(0.05f, 0.05f, 0.05f));
-            ShaderManager.Lighting.SetVector3("dirLight.diffuse", new Vector3(0.4f, 0.4f, 0.4f));
-            ShaderManager.Lighting.SetVector3("dirLight.specular", new Vector3(0.5f, 0.5f, 0.5f));
-            
-            ShaderManager.Lighting.SetVector3("spotLight.position", GetCameraPosition(0));
-            ShaderManager.Lighting.SetVector3("spotLight.direction", GetCameraFront(0));
-            ShaderManager.Lighting.SetVector3("spotLight.ambient", new Vector3(0.0f, 0.0f, 0.0f));
-            ShaderManager.Lighting.SetVector3("spotLight.diffuse", new Vector3(1.0f, 1.0f, 1.0f));
-            ShaderManager.Lighting.SetVector3("spotLight.specular", new Vector3(1.0f, 1.0f, 1.0f));
-            ShaderManager.Lighting.SetFloat("spotLight.constant", 1.0f);
-            ShaderManager.Lighting.SetFloat("spotLight.linear", 0.09f);
-            ShaderManager.Lighting.SetFloat("spotLight.quadratic", 0.032f);
-        }
-
         public static void RenderFrame()
         {
             UpdateShaders();
             ObjectManager.Draw();
+        }
+
+        private static void UpdateShaders()
+        {
+            ObjectManager.UpdateShaders();
+            ShaderManager.Update();
         }
 
         public static void Exit()

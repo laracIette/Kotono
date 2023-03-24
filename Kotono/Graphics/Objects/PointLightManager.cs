@@ -18,7 +18,7 @@ namespace Kotono.Graphics.Objects
 
         public PointLightManager() { }
 
-        public int Add(PointLight mesh)
+        public int Create(PointLight mesh)
         {
             _indexOffset[_pointLightIndex] = _pointLights.Count;
 
@@ -27,7 +27,7 @@ namespace Kotono.Graphics.Objects
             return _pointLightIndex++;
         }
 
-        public void Remove(int index)
+        public void Delete(int index)
         {
             _pointLights.RemoveAt(_indexOffset[index]);
             _indexOffset.Remove(index);

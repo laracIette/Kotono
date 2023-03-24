@@ -1,4 +1,5 @@
-﻿using OpenTK.Graphics.OpenGL4;
+﻿using Kotono.Graphics.Shaders;
+using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using System;
 
@@ -14,7 +15,7 @@ namespace Kotono.Graphics.Objects.Meshes
                   new Vector3(0.2f),
                   "white.png",
                   "white.png",
-                  ShaderManager.PointLight,
+                  new PointLightShader(),
                   Vector3.One
               )
         {
@@ -22,8 +23,8 @@ namespace Kotono.Graphics.Objects.Meshes
 
         public override void Draw()
         {
-            ShaderManager.PointLight.SetMatrix4("model", Model);
-            ShaderManager.PointLight.SetVector3("color", Color);
+            KT.SetShaderMatrix4(_shader, "model", Model);
+            KT.SetShaderVector3(_shader, "color", Color);
 
             GL.BindVertexArray(VertexArrayObject);
             GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);

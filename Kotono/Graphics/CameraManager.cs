@@ -6,34 +6,58 @@ namespace Kotono.Graphics
     public class CameraManager
     {
         private readonly List<Camera> _cameras = new();
-        
+
+        /// <summary>
+        /// Key: Direct Index,
+        /// Value: Real Index.
+        /// </summary>
+        private readonly Dictionary<int, int> _indexOffset = new();
+
+        private int _cameraIndex = 0;
+
         public CameraManager() 
-        { 
-            _cameras.Add(new Camera());
+        {
         }
 
         public int Create(Camera camera)
         {
+            _indexOffset[_cameraIndex] = _cameras.Count;
+
             _cameras.Add(camera);
 
-            return _cameras.Count - 1;
+            return _cameraIndex++;
+        }
+
+        public void Delete(int index) 
+        {
+            _cameras.RemoveAt(_indexOffset[index]);
+
+            _indexOffset.Remove(index);
+
+            foreach (var i in _indexOffset.Keys)
+            {
+                if (i > index)
+                {
+                    _indexOffset[i]--;
+                }
+            }
         }
 
         public Vector3 GetPosition(int index)
-            => _cameras[index].Position;
+            => _cameras[_indexOffset[index]].Position;
 
         public Matrix4 GetViewMatrix(int index)
-            => _cameras[index].ViewMatrix;
+            => _cameras[_indexOffset[index]].ViewMatrix;
 
         public Matrix4 GetProjectionMatrix(int index) 
-            => _cameras[index].ProjectionMatrix;
+            => _cameras[_indexOffset[index]].ProjectionMatrix;
 
         public Vector3 GetFront(int index)
-            => _cameras[index].Front;
+            => _cameras[_indexOffset[index]].Front;
 
         public void SetAspectRatio(int index, float aspectRatio)
         {
-            _cameras[index].AspectRatio = aspectRatio;
+            _cameras[_indexOffset[index]].AspectRatio = aspectRatio;
         }
 
         public void Update()
