@@ -25,7 +25,7 @@ namespace Kotono
             GL.ClearColor(0.1f, 0.1f, 0.2f, 1.0f);
             GL.Enable(EnableCap.DepthTest);
 
-            CameraManager.Main.AspectRatio = (float)Size.X / (float)Size.Y;
+            KT.SetCameraAspectRatio(0, (float)Size.X / (float)Size.Y);
 
             InputManager.Update(KeyboardState, MouseState);
         }
@@ -92,7 +92,7 @@ namespace Kotono
             base.OnResize(e);
 
             GL.Viewport(0, 0, Size.X, Size.Y);
-            CameraManager.Main.AspectRatio = (float)Size.X / (float)Size.Y;
+            KT.SetCameraAspectRatio(0, (float)Size.X / (float)Size.Y);
         }
 
         protected override void OnUnload()

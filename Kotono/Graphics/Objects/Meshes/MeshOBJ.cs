@@ -201,6 +201,8 @@ namespace Kotono.Graphics.Objects.Meshes
 
             GL.DeleteVertexArray(VertexArrayObject);
             GL.DeleteVertexArray(VertexBufferObject);
+            
+            GC.SuppressFinalize(this);
         }
     }
 }

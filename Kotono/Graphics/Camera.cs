@@ -62,7 +62,12 @@ namespace Kotono.Graphics
 
         public Camera() { }
 
-        public void Move()
+        public void Update()
+        {
+            Move();
+        }
+
+        private void Move()
         {
             float speed = 1.5f;
             float sensitivity = 0.2f;

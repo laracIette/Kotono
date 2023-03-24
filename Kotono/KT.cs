@@ -1,4 +1,5 @@
-﻿using Kotono.Audio;
+﻿using Assimp;
+using Kotono.Audio;
 using Kotono.Graphics;
 using Kotono.Graphics.Objects;
 using Kotono.Graphics.Objects.Hitboxes;
@@ -6,6 +7,7 @@ using Kotono.Graphics.Objects.Lights;
 using Kotono.Graphics.Objects.Meshes;
 using Kotono.Utils;
 using OpenTK.Mathematics;
+using Camera = Kotono.Graphics.Camera;
 
 namespace Kotono
 {
@@ -16,6 +18,8 @@ namespace Kotono
         private static ObjectManager ObjectManager { get; } = new();
 
         private static AudioManager AudioManager { get; } = new();
+
+        private static CameraManager CameraManager { get; } = new();
 
         public static int CreateMesh(IMesh mesh)
             => ObjectManager.CreateMesh(mesh);
@@ -102,10 +106,31 @@ namespace Kotono
             AudioManager.Delete(source);
         }
 
+        public static int CreateCamera(Camera camera)
+            => CameraManager.Create(camera);
+
+        public static Vector3 GetCameraPosition(int index)
+            => CameraManager.GetPosition(index);
+
+        public static Matrix4 GetCameraViewMatrix(int index)
+            => CameraManager.GetViewMatrix(index);
+
+        public static Matrix4 GetCameraProjectionMatrix(int index)
+            => CameraManager.GetProjectionMatrix(index);
+
+        public static Vector3 GetCameraFront(int index)
+            => CameraManager.GetFront(index);
+
+        public static void SetCameraAspectRatio(int index, float aspectRatio)
+        {
+            CameraManager.SetAspectRatio(index, aspectRatio);
+        }
+
         public static void Update()
         {
             Time.Update();
             ObjectManager.Update();
+            CameraManager.Update();
         }
 
         public static void UpdateShaders()
@@ -114,16 +139,16 @@ namespace Kotono
 
             ShaderManager.Lighting.SetInt("numLights", GetPointLightsCount());
 
-            ShaderManager.Lighting.SetMatrix4("view", CameraManager.Main.ViewMatrix);
-            ShaderManager.Lighting.SetMatrix4("projection", CameraManager.Main.ProjectionMatrix);
+            ShaderManager.Lighting.SetMatrix4("view", GetCameraViewMatrix(0));
+            ShaderManager.Lighting.SetMatrix4("projection", GetCameraProjectionMatrix(0));
 
-            ShaderManager.PointLight.SetMatrix4("view", CameraManager.Main.ViewMatrix);
-            ShaderManager.PointLight.SetMatrix4("projection", CameraManager.Main.ProjectionMatrix);
+            ShaderManager.PointLight.SetMatrix4("view", GetCameraViewMatrix(0));
+            ShaderManager.PointLight.SetMatrix4("projection", GetCameraProjectionMatrix(0));
 
-            ShaderManager.Hitbox.SetMatrix4("view", CameraManager.Main.ViewMatrix);
-            ShaderManager.Hitbox.SetMatrix4("projection", CameraManager.Main.ProjectionMatrix);
+            ShaderManager.Hitbox.SetMatrix4("view", GetCameraViewMatrix(0));
+            ShaderManager.Hitbox.SetMatrix4("projection", GetCameraProjectionMatrix(0));
 
-            ShaderManager.Lighting.SetVector3("viewPos", CameraManager.Main.Position);
+            ShaderManager.Lighting.SetVector3("viewPos", GetCameraPosition(0));
 
             ShaderManager.Lighting.SetInt("material.diffuse", 0);
             ShaderManager.Lighting.SetInt("material.specular", 1);
@@ -135,8 +160,8 @@ namespace Kotono
             ShaderManager.Lighting.SetVector3("dirLight.diffuse", new Vector3(0.4f, 0.4f, 0.4f));
             ShaderManager.Lighting.SetVector3("dirLight.specular", new Vector3(0.5f, 0.5f, 0.5f));
             
-            ShaderManager.Lighting.SetVector3("spotLight.position", CameraManager.Main.Position);
-            ShaderManager.Lighting.SetVector3("spotLight.direction", CameraManager.Main.Front);
+            ShaderManager.Lighting.SetVector3("spotLight.position", GetCameraPosition(0));
+            ShaderManager.Lighting.SetVector3("spotLight.direction", GetCameraFront(0));
             ShaderManager.Lighting.SetVector3("spotLight.ambient", new Vector3(0.0f, 0.0f, 0.0f));
             ShaderManager.Lighting.SetVector3("spotLight.diffuse", new Vector3(1.0f, 1.0f, 1.0f));
             ShaderManager.Lighting.SetVector3("spotLight.specular", new Vector3(1.0f, 1.0f, 1.0f));
