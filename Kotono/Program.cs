@@ -1,17 +1,17 @@
 ﻿using Kotono.Assistant;
-using System;
+using System.Threading.Tasks;
 
 namespace Kotono
 {
 	public class Program
 	{
-		public static void Main(string[] args)
-        {
+		public static async Task Main(string[] args)
+		{
 			//Console.WriteLine("Compilation Completed !");
 
 			using (var partner = new Partner())
 			{
-				partner.Run();
+				await Partner.Run();
 			}
 		}
 	}
