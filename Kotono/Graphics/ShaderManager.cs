@@ -1,14 +1,30 @@
 ﻿using Kotono.Graphics.Shaders;
 using OpenTK.Mathematics;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Kotono.Graphics
 {
+    public enum ShaderType
+    {
+        Lighting,
+        Hitbox,
+        PointLight
+    }
+
     public class ShaderManager
     {
         private readonly List<Shader> _shaders = new();
 
+        public ShaderManager() 
+        {
+            _shaders.Add(new LightingShader());
+            _shaders.Add(new HitboxShader());
+            _shaders.Add(new PointLightShader());
+        }
+
+        /*
+        
         /// <summary>
         /// Key: Direct Index,
         /// Value: Real Index.
@@ -16,9 +32,7 @@ namespace Kotono.Graphics
         private readonly Dictionary<int, int> _indexOffset = new();
 
         private int _shaderIndex = 0;
-
-        public ShaderManager() { }
-
+         
         public int Create(Shader shader)
         {
             foreach (var key in _indexOffset.Keys)
@@ -38,6 +52,11 @@ namespace Kotono.Graphics
 
         public void Delete(int index)
         {
+            if (_shaders.Count <= 0)
+            {
+                throw new Exception($"The number of Shader is already at 0.");
+            }
+
             _shaders.RemoveAt(_indexOffset[index]);
 
             _indexOffset.Remove(index);
@@ -50,33 +69,36 @@ namespace Kotono.Graphics
                 }
             }
         }
+        */
 
-        public int GetAttribLocation(int index, string attribName)
-            => _shaders[_indexOffset[index]].GetAttribLocation(attribName);
-
-        public void SetInt(int index, string name, int data)
+        public int GetAttribLocation(ShaderType type, string attribName)
         {
-            _shaders[_indexOffset[index]].SetInt(name, data);
+            return _shaders[(int)type].GetAttribLocation(attribName);
         }
 
-        public void SetFloat(int index, string name, float data)
+        public void SetInt(ShaderType type, string name, int data)
         {
-            _shaders[_indexOffset[index]].SetFloat(name, data);
+            _shaders[(int)type].SetInt(name, data);
         }
 
-        public void SetMatrix4(int index, string name, Matrix4 data)
+        public void SetFloat(ShaderType type, string name, float data)
         {
-            _shaders[_indexOffset[index]].SetMatrix4(name, data);
+            _shaders[(int)type].SetFloat(name, data);
         }
 
-        public void SetVector3(int index, string name, Vector3 data)
+        public void SetMatrix4(ShaderType type, string name, Matrix4 data)
         {
-            _shaders[_indexOffset[index]].SetVector3(name, data);
+            _shaders[(int)type].SetMatrix4(name, data);
         }
 
-        public void SetVector4(int index, string name, Vector4 data)
+        public void SetVector3(ShaderType type, string name, Vector3 data)
         {
-            _shaders[_indexOffset[index]].SetVector4(name, data);
+            _shaders[(int)type].SetVector3(name, data);
+        }
+
+        public void SetVector4(ShaderType type, string name, Vector4 data)
+        {
+            _shaders[(int)type].SetVector4(name, data);
         }
 
         public void Update()

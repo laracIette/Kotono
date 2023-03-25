@@ -15,7 +15,7 @@ namespace Kotono.Graphics.Objects.Meshes
                   new Vector3(0.2f),
                   "white.png",
                   "white.png",
-                  new PointLightShader(),
+                  ShaderType.PointLight,
                   Vector3.One
               )
         {
@@ -23,8 +23,8 @@ namespace Kotono.Graphics.Objects.Meshes
 
         public override void Draw()
         {
-            KT.SetShaderMatrix4(_shader, "model", Model);
-            KT.SetShaderVector3(_shader, "color", Color);
+            KT.SetShaderMatrix4(_shaderType, "model", Model);
+            KT.SetShaderVector3(_shaderType, "color", Color);
 
             GL.BindVertexArray(VertexArrayObject);
             GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);

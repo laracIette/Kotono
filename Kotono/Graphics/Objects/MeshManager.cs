@@ -1,4 +1,6 @@
-﻿using Kotono.Graphics.Objects.Meshes;
+﻿using Kotono.Graphics.Objects.Lights;
+using Kotono.Graphics.Objects.Meshes;
+using System;
 using System.Collections.Generic;
 
 namespace Kotono.Graphics.Objects
@@ -28,6 +30,11 @@ namespace Kotono.Graphics.Objects
 
         public void Delete(int index)
         {
+            if (_meshes.Count <= 0)
+            {
+                throw new Exception($"The number of Mesh is already at 0.");
+            }
+
             _meshes.RemoveAt(_indexOffset[index]);
             
             _indexOffset.Remove(index);

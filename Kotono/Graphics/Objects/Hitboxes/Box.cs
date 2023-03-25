@@ -52,8 +52,6 @@ namespace Kotono.Graphics.Objects.Hitboxes
 
         private static int _vertexBufferObject;
 
-        private static int _hitboxShader;
-
         private static bool _isFirst = true;
 
         public Vector3 Position { get; set; } = Vector3.Zero;
@@ -70,8 +68,6 @@ namespace Kotono.Graphics.Objects.Hitboxes
             {
                 _isFirst = false;
 
-                _hitboxShader = KT.CreateShader(new HitboxShader());
-
                 // Create vertex array
                 _vertexArrayObject = GL.GenVertexArray();
                 GL.BindVertexArray(_vertexArrayObject);
@@ -81,7 +77,7 @@ namespace Kotono.Graphics.Objects.Hitboxes
                 GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
                 GL.BufferData(BufferTarget.ArrayBuffer, _vertices.Length * sizeof(float), _vertices, BufferUsageHint.StaticDraw);
 
-                int positionAttributeLocation = KT.GetShaderAttribLocation(_hitboxShader, "aPos");
+                int positionAttributeLocation = KT.GetShaderAttribLocation(ShaderType.Hitbox, "aPos");
                 GL.EnableVertexAttribArray(positionAttributeLocation);
                 GL.VertexAttribPointer(positionAttributeLocation, 3, VertexAttribPointerType.Float, false, 0, 0);
             }
@@ -99,8 +95,8 @@ namespace Kotono.Graphics.Objects.Hitboxes
 
         public void Draw()
         {
-            KT.SetShaderVector3(_hitboxShader, "color", Color);
-            KT.SetShaderMatrix4(_hitboxShader, "model", Model);
+            KT.SetShaderVector3(ShaderType.Hitbox, "color", Color);
+            KT.SetShaderMatrix4(ShaderType.Hitbox, "model", Model);
 
             GL.BindVertexArray(_vertexArrayObject);
             GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);

@@ -1,20 +1,19 @@
-﻿using Assimp;
-using Kotono.Audio;
+﻿using Kotono.Audio;
 using Kotono.Graphics;
 using Kotono.Graphics.Objects;
 using Kotono.Graphics.Objects.Hitboxes;
 using Kotono.Graphics.Objects.Lights;
 using Kotono.Graphics.Objects.Meshes;
-using Kotono.Graphics.Shaders;
 using Kotono.Utils;
 using OpenTK.Mathematics;
-using Camera = Kotono.Graphics.Camera;
 
 namespace Kotono
 {
     public sealed class KT
     {
         private KT() { }
+
+        public const int MAX_POINT_LIGHTS = PointLightManager.MAX;
 
         private static ObjectManager ObjectManager { get; } = new();
 
@@ -42,38 +41,26 @@ namespace Kotono
         public static PointLight GetPointLight(int index)
             => ObjectManager.GetPointLight(index);
 
-        public static void DeleteMesh(int index)
-        {
-            ObjectManager.DeleteMesh(index);
-        }
+        public static void DeleteMesh(int index) 
+            => ObjectManager.DeleteMesh(index);
 
         public static void DeleteHitbox(int index)
-        {
-            ObjectManager.DeleteHitbox(index);
-        }
+            => ObjectManager.DeleteHitbox(index);
 
         public static void DeletePointLight(int index)
             => ObjectManager.DeletePointLight(index);
 
         public static void SetHitBoxPosition(int index, Vector3 position)
-        {
-            ObjectManager.SetHitBoxPosition(index, position);
-        }
+            => ObjectManager.SetHitBoxPosition(index, position);
 
         public static void SetHitBoxAngle(int index, Vector3 angle)
-        {
-            ObjectManager.SetHitBoxAngle(index, angle);
-        }
+            => ObjectManager.SetHitBoxAngle(index, angle);
 
         public static void SetHitBoxScale(int index, Vector3 scale)
-        {
-            ObjectManager.SetHitBoxScale(index, scale);
-        }
+            => ObjectManager.SetHitBoxScale(index, scale);
 
         public static void SetHitBoxColor(int index, Vector3 color)
-        {
-            ObjectManager.SetHitBoxColor(index, color);
-        }
+            => ObjectManager.SetHitBoxColor(index, color);
 
         public static int GetPointLightsCount()
             => ObjectManager.GetPointLightsCount();
@@ -85,29 +72,28 @@ namespace Kotono
             => AudioManager.Create(path);
 
         public static void PlaySound(int source)
-        {
-            AudioManager.Play(source);
-        }
+            => AudioManager.Play(source);
+
+        public static bool IsSoundPlaying(int source)
+            => AudioManager.IsPlaying(source);
 
         public static void PauseSound(int source)
-        {
-            AudioManager.Pause(source);
-        }
+            => AudioManager.Pause(source);
+
+        public static bool IsSoundPaused(int source)
+            => AudioManager.IsPaused(source);
 
         public static void RewindSound(int source)
-        {
-            AudioManager.Rewind(source);
-        }
+            => AudioManager.Rewind(source);
 
         public static void StopSound(int source)
-        {
-            AudioManager.Stop(source);
-        }
+            => AudioManager.Stop(source);
+
+        public static bool IsSoundStopped(int source)
+            => AudioManager.IsStopped(source);
 
         public static void DeleteSound(int source)
-        {
-            AudioManager.Delete(source);
-        }
+            => AudioManager.Delete(source);
 
         public static int CreateCamera(Camera camera)
             => CameraManager.Create(camera);
@@ -128,43 +114,33 @@ namespace Kotono
             => CameraManager.GetFront(index);
 
         public static void SetCameraAspectRatio(int index, float aspectRatio)
-        {
-            CameraManager.SetAspectRatio(index, aspectRatio);
-        }
+            => CameraManager.SetAspectRatio(index, aspectRatio);
 
+        /*
         public static int CreateShader(Shader shader)
             => ShaderManager.Create(shader);
 
         public static void DeleteShader(int index)
             => ShaderManager.Delete(index);
+        */
 
-        public static int GetShaderAttribLocation(int index, string attribName)
-            => ShaderManager.GetAttribLocation(index, attribName);
+        public static int GetShaderAttribLocation(ShaderType type, string attribName)
+            => ShaderManager.GetAttribLocation(type, attribName);
 
-        public static void SetShaderInt(int index, string name, int data)
-        {
-            ShaderManager.SetInt(index, name, data);
-        }
+        public static void SetShaderInt(ShaderType type, string name, int data)
+            => ShaderManager.SetInt(type, name, data);
 
-        public static void SetShaderFloat(int index, string name, float data)
-        {
-            ShaderManager.SetFloat(index, name, data);
-        }
+        public static void SetShaderFloat(ShaderType type, string name, float data)
+            => ShaderManager.SetFloat(type, name, data);
 
-        public static void SetShaderMatrix4(int index, string name, Matrix4 data)
-        {
-            ShaderManager.SetMatrix4(index, name, data);
-        }
+        public static void SetShaderMatrix4(ShaderType type, string name, Matrix4 data)
+            => ShaderManager.SetMatrix4(type, name, data);
 
-        public static void SetShaderVector3(int index, string name, Vector3 data)
-        {
-            ShaderManager.SetVector3(index, name, data);
-        }
+        public static void SetShaderVector3(ShaderType type, string name, Vector3 data)
+            => ShaderManager.SetVector3(type, name, data);
 
-        public static void SetShaderVector4(int index, string name, Vector4 data)
-        {
-            ShaderManager.SetVector4(index, name, data);
-        }
+        public static void SetShaderVector4(ShaderType type, string name, Vector4 data)
+            => ShaderManager.SetVector4(type, name, data);
 
         public static void Update()
         {

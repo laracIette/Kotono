@@ -1,4 +1,5 @@
 ﻿using OpenTK.Mathematics;
+using System;
 using System.Collections.Generic;
 
 namespace Kotono.Graphics
@@ -28,8 +29,13 @@ namespace Kotono.Graphics
             return _cameraIndex++;
         }
 
-        public void Delete(int index) 
+        public void Delete(int index)
         {
+            if (_cameras.Count <= 0)
+            {
+                throw new Exception($"The number of Camera is already at 0.");
+            }
+
             _cameras.RemoveAt(_indexOffset[index]);
 
             _indexOffset.Remove(index);

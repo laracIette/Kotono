@@ -16,12 +16,12 @@ namespace Kotono.Graphics.Shaders
         public Shader(string vertPath, string fragPath)
         {
             var shaderSource = File.ReadAllText(Path.Kotono + vertPath);
-            var vertexShader = GL.CreateShader(ShaderType.VertexShader);
+            var vertexShader = GL.CreateShader(OpenTK.Graphics.OpenGL4.ShaderType.VertexShader);
             GL.ShaderSource(vertexShader, shaderSource);
             CompileShader(vertexShader);
 
             shaderSource = File.ReadAllText(Path.Kotono + fragPath);
-            var fragmentShader = GL.CreateShader(ShaderType.FragmentShader);
+            var fragmentShader = GL.CreateShader(OpenTK.Graphics.OpenGL4.ShaderType.FragmentShader);
             GL.ShaderSource(fragmentShader, shaderSource);
             CompileShader(fragmentShader);
 

@@ -13,7 +13,7 @@ namespace Kotono.Graphics.Objects.Meshes
                   scale,
                   diffusePath,
                   specularPath,
-                  new LightingShader(),
+                  ShaderType.Lighting,
                   color
               )
         {

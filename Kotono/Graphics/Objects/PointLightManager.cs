@@ -1,4 +1,5 @@
 ﻿using Kotono.Graphics.Objects.Lights;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -6,6 +7,8 @@ namespace Kotono.Graphics.Objects
 {
     internal class PointLightManager
     {
+        public const int MAX = 100;
+
         private readonly List<PointLight> _pointLights = new();
 
         /// <summary>
@@ -20,6 +23,11 @@ namespace Kotono.Graphics.Objects
 
         public int Create(PointLight mesh)
         {
+            if (_pointLights.Count >= MAX)
+            {
+                throw new Exception($"The number of PointLight is already at its max value: {MAX}.");
+            }
+
             _indexOffset[_pointLightIndex] = _pointLights.Count;
 
             _pointLights.Add(mesh);
@@ -29,6 +37,11 @@ namespace Kotono.Graphics.Objects
 
         public void Delete(int index)
         {
+            if (_pointLights.Count <= 0)
+            {
+                throw new Exception($"The number of PointLight is already at 0.");
+            }
+
             _pointLights.RemoveAt(_indexOffset[index]);
             _indexOffset.Remove(index);
 

@@ -1,5 +1,7 @@
 ﻿using Kotono.Graphics.Objects.Hitboxes;
+using Kotono.Graphics.Objects.Lights;
 using OpenTK.Mathematics;
+using System;
 using System.Collections.Generic;
 
 namespace Kotono.Graphics.Objects
@@ -29,6 +31,11 @@ namespace Kotono.Graphics.Objects
 
         public void Delete(int index)
         {
+            if (_hitboxes.Count <= 0)
+            {
+                throw new Exception($"The number of Hitbox is already at 0.");
+            }
+
             _hitboxes.RemoveAt(_indexOffset[index]);
             _indexOffset.Remove(index);
 

@@ -8,7 +8,7 @@ using Path = Kotono.Utils.Path;
 
 namespace Kotono.Audio
 {
-    public class AudioManager
+    public class SoundManager
     {
         private readonly ALDevice _device;
 
@@ -16,7 +16,7 @@ namespace Kotono.Audio
 
         private readonly Dictionary<string, int> _sources = new();
 
-        public AudioManager() 
+        public SoundManager() 
         {
             _device = ALC.OpenDevice(null);
             _context = ALC.CreateContext(_device, Array.Empty<int>());
@@ -53,9 +53,19 @@ namespace Kotono.Audio
             AL.SourcePlay(source);
         }
 
+        public bool IsPlaying(int source)
+        {
+            return AL.GetSourceState(source) == ALSourceState.Playing;
+        }
+
         public void Pause(int source)
         {
             AL.SourcePause(source);
+        }
+
+        public bool IsPaused(int source)
+        {
+            return AL.GetSourceState(source) == ALSourceState.Paused;
         }
 
         public void Rewind(int source)
@@ -68,8 +78,19 @@ namespace Kotono.Audio
             AL.SourceStop(source);
         }
 
-        public void Delete(int source) 
+        public bool IsStopped(int source)
         {
+            return AL.GetSourceState(source) == ALSourceState.Stopped;
+        }
+
+
+        public void Delete(int source)
+        {
+            if (_sources.Count <= 0)
+            {
+                throw new Exception($"The number of Source is already at 0.");
+            }
+
             AL.SourceStop(source);
             AL.DeleteSource(source);
 

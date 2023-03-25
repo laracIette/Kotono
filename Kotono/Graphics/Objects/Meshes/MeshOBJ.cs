@@ -25,9 +25,9 @@ namespace Kotono.Graphics.Objects.Meshes
 
         private readonly int _hitbox;
 
-        protected int _shader;
+        protected readonly ShaderType _shaderType;
 
-        public MeshOBJ(string path, Vector3 position, Vector3 angle, Vector3 scale, string diffusePath, string specularPath, Shader shader, Vector3 color)
+        public MeshOBJ(string path, Vector3 position, Vector3 angle, Vector3 scale, string diffusePath, string specularPath, ShaderType shaderType, Vector3 color)
         {
             var diffuseMap = TextureManager.LoadTexture(diffusePath);
             var specularMap = TextureManager.LoadTexture(specularPath);
@@ -71,15 +71,15 @@ namespace Kotono.Graphics.Objects.Meshes
                 GL.BindBuffer(BufferTarget.ArrayBuffer, vertexBufferObject);
                 GL.BufferData(BufferTarget.ArrayBuffer, models[0].Count * Vertex.SizeInBytes, models[0].ToArray(), BufferUsageHint.DynamicDraw);
 
-                int positionAttributeLocation = shader.GetAttribLocation("aPos");
+                int positionAttributeLocation = KT.GetShaderAttribLocation(shaderType, "aPos");
                 GL.EnableVertexAttribArray(positionAttributeLocation);
                 GL.VertexAttribPointer(positionAttributeLocation, 3, VertexAttribPointerType.Float, false, Vertex.SizeInBytes, 0);
 
-                int normalAttributeLocation = shader.GetAttribLocation("aNormal");
+                int normalAttributeLocation = KT.GetShaderAttribLocation(shaderType, "aNormal");
                 GL.EnableVertexAttribArray(normalAttributeLocation);
                 GL.VertexAttribPointer(normalAttributeLocation, 3, VertexAttribPointerType.Float, false, Vertex.SizeInBytes, sizeof(float) * 3);
 
-                int texCoordAttributeLocation = shader.GetAttribLocation("aTexCoords");
+                int texCoordAttributeLocation = KT.GetShaderAttribLocation(shaderType, "aTexCoords");
                 GL.EnableVertexAttribArray(texCoordAttributeLocation);
                 GL.VertexAttribPointer(texCoordAttributeLocation, 2, VertexAttribPointerType.Float, false, Vertex.SizeInBytes, sizeof(float) * 6);
 
@@ -104,7 +104,7 @@ namespace Kotono.Graphics.Objects.Meshes
             Scale = scale;
             DiffuseMap = diffuseMap;
             SpecularMap = specularMap;
-            _shader = KT.CreateShader(shader);
+            _shaderType = shaderType;
             Color = color;
 
             _hitbox = KT.CreateHitbox(new Box());
@@ -131,8 +131,8 @@ namespace Kotono.Graphics.Objects.Meshes
             TextureManager.UseTexture(DiffuseMap, TextureUnit.Texture0);
             TextureManager.UseTexture(SpecularMap, TextureUnit.Texture1);
 
-            KT.SetShaderMatrix4(_shader, "model", Model);
-            KT.SetShaderVector3(_shader, "color", Color);
+            KT.SetShaderMatrix4(_shaderType, "model", Model);
+            KT.SetShaderVector3(_shaderType, "color", Color);
 
             GL.BindVertexArray(VertexArrayObject);
             GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
