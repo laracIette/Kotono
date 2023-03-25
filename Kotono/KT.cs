@@ -17,7 +17,7 @@ namespace Kotono
 
         private static ObjectManager ObjectManager { get; } = new();
 
-        private static AudioManager AudioManager { get; } = new();
+        private static SoundManager AudioManager { get; } = new();
 
         private static CameraManager CameraManager { get; } = new();
 
