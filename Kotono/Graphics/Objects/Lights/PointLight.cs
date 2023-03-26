@@ -1,5 +1,4 @@
 ﻿using Kotono.Graphics.Objects.Meshes;
-using Kotono.Graphics.Shaders;
 using OpenTK.Mathematics;
 
 namespace Kotono.Graphics.Objects.Lights

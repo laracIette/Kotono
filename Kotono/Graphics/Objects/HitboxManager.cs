@@ -1,5 +1,4 @@
 ﻿using Kotono.Graphics.Objects.Hitboxes;
-using Kotono.Graphics.Objects.Lights;
 using OpenTK.Mathematics;
 using System;
 using System.Collections.Generic;
@@ -82,16 +81,7 @@ namespace Kotono.Graphics.Objects
             => _indexOffset.Keys.ToArray();
 
         public bool IsColliding(int index)
-        {
-            foreach (var hitbox in _hitboxes[_indexOffset[index]].Collisions)
-            {
-                if (_hitboxes[_indexOffset[index]].Collides(_hitboxes[_indexOffset[hitbox]]))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
+            => _hitboxes[_indexOffset[index]].Collisions.Where(h => _hitboxes[_indexOffset[index]].Collides(_hitboxes[_indexOffset[h]])).Any();
 
         public void Update()
         {

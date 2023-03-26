@@ -1,4 +1,4 @@
-﻿using Kotono.Graphics.Shaders;
+﻿using Kotono.Graphics.Objects.Hitboxes;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using System;
@@ -16,7 +16,11 @@ namespace Kotono.Graphics.Objects.Meshes
                   "white.png",
                   "white.png",
                   ShaderType.PointLight,
-                  Vector3.One
+                  Vector3.One,
+                  new int[]
+                  {
+                      KT.CreateHitbox(new Sphere())
+                  }
               )
         {
         }
