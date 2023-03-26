@@ -3,6 +3,7 @@ using Kotono.Graphics.Objects.Lights;
 using OpenTK.Mathematics;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Kotono.Graphics.Objects
 {
@@ -69,6 +70,27 @@ namespace Kotono.Graphics.Objects
         public void SetColor(int index, Vector3 color)
         {
             _hitboxes[_indexOffset[index]].Color = color;
+        }
+
+        public void AddCollision(int index, int hitboxIndex)
+            => _hitboxes[_indexOffset[index]].Collisions.Add(hitboxIndex);
+
+        public void AddCollision(int index, int[] hitboxIndexes)
+            => _hitboxes[_indexOffset[index]].Collisions.AddRange(hitboxIndexes);
+
+        public int[] GetAll()
+            => _indexOffset.Keys.ToArray();
+
+        public bool IsColliding(int index)
+        {
+            foreach (var hitbox in _hitboxes[_indexOffset[index]].Collisions)
+            {
+                if (_hitboxes[_indexOffset[index]].Collides(_hitboxes[_indexOffset[hitbox]]))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public void Update()

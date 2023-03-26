@@ -117,13 +117,24 @@ namespace Kotono.Graphics.Objects.Meshes
 
         public void Update()
         {
+            var tempPos = Position;
+
             AngleVelocity += Random.Vector3(-0.1f, 0.1f);
             Angle += AngleVelocity * Time.Delta;
 
             PositionVelocity += Random.Vector3(-0.1f, 0.1f);
-            Position += PositionVelocity * Time.Delta;
+            tempPos += PositionVelocity * Time.Delta;
 
-            KT.SetHitBoxPosition(_hitbox, Position);
+            KT.SetHitBoxPosition(_hitbox, tempPos);
+
+            if (KT.IsHitboxColliding(_hitbox))
+            {
+                KT.SetHitBoxPosition(_hitbox, Position);
+            }
+            else
+            {
+                Position = tempPos;
+            }
         }
 
         public virtual void Draw()
@@ -162,6 +173,7 @@ namespace Kotono.Graphics.Objects.Meshes
                 _position.Z = MathHelper.Clamp(value.Z, -20.0f, 20.0f);
             }
         }
+
         private Vector3 PositionVelocity
         {
             get => _positionVelocity;

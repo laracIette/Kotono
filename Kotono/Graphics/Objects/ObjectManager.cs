@@ -68,6 +68,18 @@ namespace Kotono.Graphics.Objects
             HitboxManager.SetColor(index, color);
         }
 
+        public void AddHitboxCollision(int index, int hitboxIndex)
+            => HitboxManager.AddCollision(index, hitboxIndex);
+
+        public void AddHitboxCollision(int index, int[] hitboxIndexes)
+            => HitboxManager.AddCollision(index, hitboxIndexes);
+
+        public int[] GetAllHitboxes()
+            => HitboxManager.GetAll();
+
+        public bool IsHitboxColliding(int index) 
+            => HitboxManager.IsColliding(index);
+
         public int GetPointLightsCount()
             => PointLightManager.GetCount();
 
