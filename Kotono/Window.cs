@@ -1,6 +1,5 @@
 ﻿using Kotono.Graphics;
 using Kotono.Graphics.Objects.Lights;
-using Kotono.Graphics.Shaders;
 using Kotono.Utils;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;

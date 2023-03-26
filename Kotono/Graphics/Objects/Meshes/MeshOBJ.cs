@@ -1,6 +1,4 @@
 ﻿using Assimp;
-using Kotono.Graphics.Objects.Hitboxes;
-using Kotono.Graphics.Shaders;
 using Kotono.Utils;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
@@ -23,11 +21,11 @@ namespace Kotono.Graphics.Objects.Meshes
 
         private Vector3 _angleVelocity;
 
-        private readonly int _hitbox;
+        private readonly int[] _hitboxes;
 
         protected readonly ShaderType _shaderType;
 
-        public MeshOBJ(string path, Vector3 position, Vector3 angle, Vector3 scale, string diffusePath, string specularPath, ShaderType shaderType, Vector3 color)
+        public MeshOBJ(string path, Vector3 position, Vector3 angle, Vector3 scale, string diffusePath, string specularPath, ShaderType shaderType, Vector3 color, int[] hitboxes)
         {
             var diffuseMap = TextureManager.LoadTexture(diffusePath);
             var specularMap = TextureManager.LoadTexture(specularPath);
@@ -107,23 +105,40 @@ namespace Kotono.Graphics.Objects.Meshes
             _shaderType = shaderType;
             Color = color;
 
-            _hitbox = KT.CreateHitbox(new Box());
+            _hitboxes = hitboxes;
 
-            KT.SetHitBoxPosition(_hitbox, Position);
-            KT.SetHitBoxAngle(_hitbox, Vector3.Zero);
-            KT.SetHitBoxScale(_hitbox, Scale * 2);
-            KT.SetHitBoxColor(_hitbox, Vector3.UnitX);
+            foreach (var hitbox in _hitboxes)
+            {
+                KT.SetHitBoxPosition(hitbox, Position);
+                KT.SetHitBoxAngle(hitbox, Vector3.Zero);
+                KT.SetHitBoxScale(hitbox, Scale * 2);
+                KT.SetHitBoxColor(hitbox, Vector3.UnitX);
+            }
         }
 
         public void Update()
         {
+            var tempPos = Position;
+
             AngleVelocity += Random.Vector3(-0.1f, 0.1f);
             Angle += AngleVelocity * Time.Delta;
 
             PositionVelocity += Random.Vector3(-0.1f, 0.1f);
-            Position += PositionVelocity * Time.Delta;
+            tempPos += PositionVelocity * Time.Delta;
 
-            KT.SetHitBoxPosition(_hitbox, Position);
+            foreach (var hitbox in _hitboxes)
+            {
+                KT.SetHitBoxPosition(hitbox, tempPos);
+
+                if (KT.IsHitboxColliding(hitbox))
+                {
+                    KT.SetHitBoxPosition(hitbox, Position);
+                }
+                else
+                {
+                    Position = tempPos;
+                }
+            }
         }
 
         public virtual void Draw()
@@ -162,6 +177,7 @@ namespace Kotono.Graphics.Objects.Meshes
                 _position.Z = MathHelper.Clamp(value.Z, -20.0f, 20.0f);
             }
         }
+
         private Vector3 PositionVelocity
         {
             get => _positionVelocity;

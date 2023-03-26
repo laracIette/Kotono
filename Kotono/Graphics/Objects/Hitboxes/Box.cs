@@ -1,7 +1,7 @@
-﻿using Kotono.Graphics.Shaders;
-using OpenTK.Graphics.OpenGL4;
+﻿using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using System;
+using System.Collections.Generic;
 
 namespace Kotono.Graphics.Objects.Hitboxes
 {
@@ -62,6 +62,8 @@ namespace Kotono.Graphics.Objects.Hitboxes
 
         public Vector3 Color { get; set; } = Vector3.One;
 
+        public List<int> Collisions { get; set; } = new();
+
         public Box()
         {
             if (_isFirst)
@@ -83,14 +85,9 @@ namespace Kotono.Graphics.Objects.Hitboxes
             }
         }
 
-        public void Update() { }
-
-        public void Update(Vector3 position, Vector3 angle, Vector3 scale, Vector3 color)
+        public void Update() 
         {
-            Position = position;
-            Angle = angle;
-            Scale = scale;
-            Color = color;
+
         }
 
         public void Draw()
@@ -103,16 +100,16 @@ namespace Kotono.Graphics.Objects.Hitboxes
             GL.DrawArrays(PrimitiveType.Lines, 0, _vertices.Length);
         }
 
-        public bool Collides(Box b)
-            => (Math.Abs(Position.X - b.Position.X) <= (Scale.X + b.Scale.X) / 2)
-            && (Math.Abs(Position.Y - b.Position.Y) <= (Scale.Y + b.Scale.Y) / 2)
-            && (Math.Abs(Position.Z - b.Position.Z) <= (Scale.Z + b.Scale.Z) / 2);
+        public bool Collides(IHitbox h)
+            => (Math.Abs(Position.X - h.Position.X) <= (Scale.X + h.Scale.X) / 2)
+            && (Math.Abs(Position.Y - h.Position.Y) <= (Scale.Y + h.Scale.Y) / 2)
+            && (Math.Abs(Position.Z - h.Position.Z) <= (Scale.Z + h.Scale.Z) / 2);
 
         private Matrix4 Model =>
             Matrix4.CreateScale(Scale)
-            * Matrix4.CreateRotationX(Angle.X)
-            * Matrix4.CreateRotationY(Angle.Y)
-            * Matrix4.CreateRotationZ(Angle.Z)
+            //* Matrix4.CreateRotationX(Angle.X)
+            //* Matrix4.CreateRotationY(Angle.Y)
+            //* Matrix4.CreateRotationZ(Angle.Z)
             * Matrix4.CreateTranslation(Position);
     }
 }
