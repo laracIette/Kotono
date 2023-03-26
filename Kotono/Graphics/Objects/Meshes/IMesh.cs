@@ -1,8 +1,9 @@
 ﻿using OpenTK.Mathematics;
+using System;
 
 namespace Kotono.Graphics.Objects.Meshes
 {
-    public interface IMesh
+    public interface IMesh : IDisposable
     {
         public void Update();
 
@@ -10,7 +11,7 @@ namespace Kotono.Graphics.Objects.Meshes
 
         public Vector3 Position { get; }
 
-        public Vector3 Color { get; }
+        public Vector3 Color { get; set; }
 
         public Vector3 Angle { get; }
 

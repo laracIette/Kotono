@@ -42,6 +42,7 @@ namespace Kotono.Graphics.Objects
                 throw new Exception($"The number of PointLight is already at 0.");
             }
 
+            _pointLights[_indexOffset[index]].Dispose();
             _pointLights.RemoveAt(_indexOffset[index]);
             _indexOffset.Remove(index);
 
@@ -54,9 +55,6 @@ namespace Kotono.Graphics.Objects
                 }
             }
         }
-
-        public PointLight Get(int index)
-            => _pointLights[_indexOffset[index]];
 
         public int GetCount()
             => _pointLights.Count;

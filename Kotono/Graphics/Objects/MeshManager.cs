@@ -1,4 +1,5 @@
 ﻿using Kotono.Graphics.Objects.Meshes;
+using OpenTK.Mathematics;
 using System;
 using System.Collections.Generic;
 
@@ -34,8 +35,8 @@ namespace Kotono.Graphics.Objects
                 throw new Exception($"The number of Mesh is already at 0.");
             }
 
+            _meshes[_indexOffset[index]].Dispose();
             _meshes.RemoveAt(_indexOffset[index]);
-            
             _indexOffset.Remove(index);
 
             foreach (var i in _indexOffset.Keys)
@@ -47,8 +48,13 @@ namespace Kotono.Graphics.Objects
             }
         }
 
-        public IMesh Get(int index)
-            => _meshes[_indexOffset[index]];
+        public Vector3 GetPosition(int index)
+            => _meshes[_indexOffset[index]].Position;
+
+        public void SetColor(int index, Vector3 color)
+        {
+            _meshes[_indexOffset[index]].Color = color;
+        }
 
         public void Update()
         {

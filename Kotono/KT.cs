@@ -32,14 +32,11 @@ namespace Kotono
         public static int CreatePointLight(PointLight pointLight)
             => ObjectManager.CreatePointLight(pointLight);
 
-        public static IMesh GetMesh(int index)
-            => ObjectManager.GetMesh(index);
+        public static Vector3 GetMeshPosition(int index)
+            => ObjectManager.GetMeshPosition(index);
 
-        public static IHitbox GetHitbox(int index)
-            => ObjectManager.GetHitbox(index);
-
-        public static PointLight GetPointLight(int index)
-            => ObjectManager.GetPointLight(index);
+        public static void SetMeshColor(int index, Vector3 color)
+            => ObjectManager.SetMeshColor(index, color);
 
         public static void DeleteMesh(int index) 
             => ObjectManager.DeleteMesh(index);

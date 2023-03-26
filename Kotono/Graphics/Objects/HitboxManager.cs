@@ -48,9 +48,6 @@ namespace Kotono.Graphics.Objects
             }
         }
 
-        public IHitbox Get(int index)
-            => _hitboxes[_indexOffset[index]];
-
         public void SetPosition(int index, Vector3 position)
         {
             _hitboxes[_indexOffset[index]].Position = position;
@@ -81,7 +78,7 @@ namespace Kotono.Graphics.Objects
             => _indexOffset.Keys.ToArray();
 
         public bool IsColliding(int index)
-            => _hitboxes[_indexOffset[index]].Collisions.Where(h => _hitboxes[_indexOffset[index]].Collides(_hitboxes[_indexOffset[h]])).Any();
+            => _hitboxes[_indexOffset[index]].Collisions.Any(h => _hitboxes[_indexOffset[index]].Collides(_hitboxes[_indexOffset[h]]));
 
         public void Update()
         {

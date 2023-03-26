@@ -24,14 +24,11 @@ namespace Kotono.Graphics.Objects
         public int CreatePointLight(PointLight pointLight)
             => PointLightManager.Create(pointLight);
 
-        public IMesh GetMesh(int index)
-            => MeshManager.Get(index);
+        public Vector3 GetMeshPosition(int index)
+            => MeshManager.GetPosition(index);
 
-        public IHitbox GetHitbox(int index)
-            => HitboxManager.Get(index);
-
-        public PointLight GetPointLight(int index)
-            => PointLightManager.Get(index);
+        public void SetMeshColor(int index, Vector3 color)
+            => MeshManager.SetColor(index, color);
 
         public void DeleteMesh(int index)
         {

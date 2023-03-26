@@ -11,7 +11,7 @@ using Random = Kotono.Utils.Random;
 
 namespace Kotono.Graphics.Objects.Meshes
 {
-    public class MeshOBJ : IMesh, IDisposable
+    public class MeshOBJ : IMesh
     {
         private static readonly Dictionary<string, int[]> _paths = new();
 
@@ -213,12 +213,11 @@ namespace Kotono.Graphics.Objects.Meshes
 
         public void Dispose()
         {
-            GL.BindVertexArray(0);
-            GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
+            foreach (var hitbox in _hitboxes)
+            {
+                KT.DeleteHitbox(hitbox);
+            }
 
-            GL.DeleteVertexArray(VertexArrayObject);
-            GL.DeleteVertexArray(VertexBufferObject);
-            
             GC.SuppressFinalize(this);
         }
     }

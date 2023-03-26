@@ -1,9 +1,10 @@
 ﻿using Kotono.Graphics.Objects.Meshes;
 using OpenTK.Mathematics;
+using System;
 
 namespace Kotono.Graphics.Objects.Lights
 {
-    public class PointLight
+    public class PointLight : IDisposable
     {
         private Vector3 _ambient;
 
@@ -19,7 +20,7 @@ namespace Kotono.Graphics.Objects.Lights
 
         private int _shaderIndex;
 
-        private readonly PointLightMesh _mesh;
+        private readonly int _mesh;
 
         public PointLight(Vector3 position, Vector3 ambient, Vector3 diffuse, Vector3 specular, float constant, float linear, float quadratic)
         {
@@ -31,13 +32,12 @@ namespace Kotono.Graphics.Objects.Lights
             _quadratic = quadratic;
             _shaderIndex = KT.GetPointLightsCount();
 
-            _mesh = new PointLightMesh(position);
+            _mesh = KT.CreateMesh(new PointLightMesh(position));
         }
 
         public virtual void Update()
         {
-            _mesh.Update();
-            _mesh.Color = _diffuse;
+            KT.SetMeshColor(_mesh, _diffuse);
         }
 
         public void UpdateIndex()
@@ -47,7 +47,7 @@ namespace Kotono.Graphics.Objects.Lights
 
         public void UpdateShaders()
         {
-            KT.SetShaderVector3(ShaderType.Lighting, $"pointLights[{_shaderIndex}].position", _mesh.Position);
+            KT.SetShaderVector3(ShaderType.Lighting, $"pointLights[{_shaderIndex}].position", KT.GetMeshPosition(_mesh));
             KT.SetShaderVector3(ShaderType.Lighting, $"pointLights[{_shaderIndex}].ambient", _ambient);
             KT.SetShaderVector3(ShaderType.Lighting, $"pointLights[{_shaderIndex}].diffuse", _diffuse);
             KT.SetShaderVector3(ShaderType.Lighting, $"pointLights[{_shaderIndex}].specular", _specular);
@@ -58,7 +58,14 @@ namespace Kotono.Graphics.Objects.Lights
 
         public void Draw()
         {
-            _mesh.Draw();
+            
+        }
+
+        public void Dispose()
+        {
+            KT.DeleteMesh(_mesh);
+
+            GC.SuppressFinalize(this);
         }
     }
 }
