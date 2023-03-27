@@ -48,40 +48,34 @@ namespace Kotono.Audio
         }
 
         public void Play(int source)
-        {
-            AL.SourcePlay(source);
-        }
+            => AL.SourcePlay(source);
 
-        public bool IsPlaying(int source)
-        {
-            return AL.GetSourceState(source) == ALSourceState.Playing;
-        }
+        public bool IsPlaying(int source) 
+            => AL.GetSourceState(source) == ALSourceState.Playing;
 
         public void Pause(int source)
-        {
-            AL.SourcePause(source);
-        }
+            => AL.SourcePause(source);
 
         public bool IsPaused(int source)
-        {
-            return AL.GetSourceState(source) == ALSourceState.Paused;
-        }
+            => AL.GetSourceState(source) == ALSourceState.Paused;
 
         public void Rewind(int source)
-        {
-            AL.SourceRewind(source);
-        }
+            => AL.SourceRewind(source);
 
         public void Stop(int source)
-        {
-            AL.SourceStop(source);
-        }
+            => AL.SourceStop(source);
 
         public bool IsStopped(int source)
+            => AL.GetSourceState(source) == ALSourceState.Stopped;
+
+        public float GetVolume(int source)
         {
-            return AL.GetSourceState(source) == ALSourceState.Stopped;
+            AL.GetSource(source, ALSourcef.Gain, out float volume);
+            return volume;
         }
 
+        public void SetVolume(int source, float volume)
+            => AL.Source(source, ALSourcef.Gain, volume);
 
         public void Delete(int source)
         {

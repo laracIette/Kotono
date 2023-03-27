@@ -17,7 +17,7 @@ namespace Kotono
 
         private static ObjectManager ObjectManager { get; } = new();
 
-        private static SoundManager AudioManager { get; } = new();
+        private static SoundManager SoundManager { get; } = new();
 
         private static CameraManager CameraManager { get; } = new();
 
@@ -78,31 +78,37 @@ namespace Kotono
             => ObjectManager.GetFirstPointLightIndex();
 
         public static int CreateSound(string path)
-            => AudioManager.Create(path);
-
-        public static void PlaySound(int source)
-            => AudioManager.Play(source);
-
-        public static bool IsSoundPlaying(int source)
-            => AudioManager.IsPlaying(source);
-
-        public static void PauseSound(int source)
-            => AudioManager.Pause(source);
-
-        public static bool IsSoundPaused(int source)
-            => AudioManager.IsPaused(source);
-
-        public static void RewindSound(int source)
-            => AudioManager.Rewind(source);
-
-        public static void StopSound(int source)
-            => AudioManager.Stop(source);
-
-        public static bool IsSoundStopped(int source)
-            => AudioManager.IsStopped(source);
+            => SoundManager.Create(path);
 
         public static void DeleteSound(int source)
-            => AudioManager.Delete(source);
+            => SoundManager.Delete(source);
+
+        public static void PlaySound(int source)
+            => SoundManager.Play(source);
+
+        public static bool IsSoundPlaying(int source)
+            => SoundManager.IsPlaying(source);
+
+        public static void PauseSound(int source)
+            => SoundManager.Pause(source);
+
+        public static bool IsSoundPaused(int source)
+            => SoundManager.IsPaused(source);
+
+        public static void RewindSound(int source)
+            => SoundManager.Rewind(source);
+
+        public static void StopSound(int source)
+            => SoundManager.Stop(source);
+
+        public static bool IsSoundStopped(int source)
+            => SoundManager.IsStopped(source);
+
+        public static float GetSoundVolume(int source)
+            => SoundManager.GetVolume(source);
+        
+        public static void SetSoundVolume(int source, float volume)
+            => SoundManager.SetVolume(source, volume);
 
         public static int CreateCamera(Camera camera)
             => CameraManager.Create(camera);
@@ -181,7 +187,7 @@ namespace Kotono
 
         public static void Exit()
         {
-            AudioManager.Dispose();
+            SoundManager.Dispose();
         }
     }
 }
