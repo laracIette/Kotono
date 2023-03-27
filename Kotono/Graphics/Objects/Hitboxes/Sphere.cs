@@ -7,9 +7,9 @@ namespace Kotono.Graphics.Objects.Hitboxes
 {
     public class Sphere : IHitbox
     {
-        private static readonly int _segments = 64;
+        private const int SEGMENTS = 64;
 
-        private static readonly Vector3[] _vertices = new Vector3[_segments + 1];
+        private static readonly Vector3[] _vertices = new Vector3[SEGMENTS + 1];
 
         private static int _vertexArrayObject;
 
@@ -33,9 +33,9 @@ namespace Kotono.Graphics.Objects.Hitboxes
             {
                 _isFirst = false;
 
-                for (int i = 0; i <= _segments; i++)
+                for (int i = 0; i <= SEGMENTS ; i++)
                 {
-                    float angle = i / (float)_segments * 2.0f * (float)Math.PI;
+                    float angle = i / (float)SEGMENTS * 2.0f * (float)Math.PI;
                     _vertices[i] = new Vector3
                     {
                         X = 0.0f + 0.5f * (float)Math.Cos(angle),
@@ -51,9 +51,9 @@ namespace Kotono.Graphics.Objects.Hitboxes
                 // create vertex buffer
                 _vertexBufferObject = GL.GenBuffer();
                 GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
-                GL.BufferData(BufferTarget.ArrayBuffer, _vertices.Length * sizeof(float) * 3, _vertices, BufferUsageHint.StaticDraw);
+                GL.BufferData(BufferTarget.ArrayBuffer, _vertices.Length * Vector3.SizeInBytes, _vertices, BufferUsageHint.StaticDraw);
 
-                int positionAttributeLocation = KT.GetShaderAttribLocation(ShaderType.Hitbox, "aPos");
+                int positionAttributeLocation = KT.GetShaderAttribLocation(ShaderType.Sphere, "aPos");
                 GL.EnableVertexAttribArray(positionAttributeLocation);
                 GL.VertexAttribPointer(positionAttributeLocation, 3, VertexAttribPointerType.Float, false, Vector3.SizeInBytes, 0);
             }
@@ -63,8 +63,9 @@ namespace Kotono.Graphics.Objects.Hitboxes
 
         public void Draw()
         {
-            KT.SetShaderVector3(ShaderType.Hitbox, "color", Color);
-            KT.SetShaderMatrix4(ShaderType.Hitbox, "model", Model);
+            KT.SetShaderVector3(ShaderType.Sphere, "color", Color);
+            KT.SetShaderVector3(ShaderType.Sphere, "centerPos", Position);
+            KT.SetShaderVector2(ShaderType.Sphere, "scale", Scale.Xy);
 
             GL.BindVertexArray(_vertexArrayObject);
             GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);

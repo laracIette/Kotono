@@ -118,9 +118,15 @@ namespace Kotono
 
         public static Matrix4 GetCameraProjectionMatrix(int index)
             => CameraManager.GetProjectionMatrix(index);
-
+        
         public static Vector3 GetCameraFront(int index)
             => CameraManager.GetFront(index);
+
+        public static Vector3 GetCameraRight(int index)
+            => CameraManager.GetRight(index);
+
+        public static Vector3 GetCameraUp(int index)
+            => CameraManager.GetUp(index);
 
         public static void SetCameraAspectRatio(int index, float aspectRatio)
             => CameraManager.SetAspectRatio(index, aspectRatio);
@@ -144,6 +150,9 @@ namespace Kotono
 
         public static void SetShaderMatrix4(ShaderType type, string name, Matrix4 data)
             => ShaderManager.SetMatrix4(type, name, data);
+
+        public static void SetShaderVector2(ShaderType type, string name, Vector2 data)
+            => ShaderManager.SetVector2(type, name, data);
 
         public static void SetShaderVector3(ShaderType type, string name, Vector3 data)
             => ShaderManager.SetVector3(type, name, data);

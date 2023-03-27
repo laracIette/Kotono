@@ -3,7 +3,7 @@
     public class PointLightShader : Shader
     {
         public PointLightShader() 
-            : base("Graphics/Shaders/shader.vert", "Graphics/Shaders/pointLight.frag")
+            : base("Graphics/Shaders/pointLight.vert", "Graphics/Shaders/pointLight.frag")
         { }
 
         public override void Update()

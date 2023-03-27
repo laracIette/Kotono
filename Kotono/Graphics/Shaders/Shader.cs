@@ -103,6 +103,11 @@ namespace Kotono.Graphics.Shaders
             GL.UniformMatrix4(_uniformLocations[name], true, ref data);
         }
 
+        public void SetVector2(string name, Vector2 data)
+        {
+            Use();
+            GL.Uniform2(_uniformLocations[name], data);
+        }
         public void SetVector3(string name, Vector3 data)
         {
             Use();

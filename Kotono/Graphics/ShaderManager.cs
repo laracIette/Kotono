@@ -8,7 +8,8 @@ namespace Kotono.Graphics
     {
         Lighting,
         Hitbox,
-        PointLight
+        PointLight,
+        Sphere
     }
 
     public class ShaderManager
@@ -20,55 +21,8 @@ namespace Kotono.Graphics
             _shaders.Add(new LightingShader());
             _shaders.Add(new HitboxShader());
             _shaders.Add(new PointLightShader());
+            _shaders.Add(new SphereShader());
         }
-
-        /*
-        
-        /// <summary>
-        /// Key: Direct Index,
-        /// Value: Real Index.
-        /// </summary>
-        private readonly Dictionary<int, int> _indexOffset = new();
-
-        private int _shaderIndex = 0;
-         
-        public int Create(Shader shader)
-        {
-            foreach (var key in _indexOffset.Keys)
-            {
-                if (_shaders[_indexOffset[key]].ToString() == shader.ToString())
-                {
-                    return key;
-                }
-            }
-
-            _indexOffset[_shaderIndex] = _shaders.Count;
-
-            _shaders.Add(shader);
-
-            return _shaderIndex++;
-        }
-
-        public void Delete(int index)
-        {
-            if (_shaders.Count <= 0)
-            {
-                throw new Exception($"The number of Shader is already at 0.");
-            }
-
-            _shaders.RemoveAt(_indexOffset[index]);
-
-            _indexOffset.Remove(index);
-
-            foreach (var i in _indexOffset.Keys)
-            {
-                if (i > index)
-                {
-                    _indexOffset[i]--;
-                }
-            }
-        }
-        */
 
         public int GetAttribLocation(ShaderType type, string attribName)
         {
@@ -88,6 +42,11 @@ namespace Kotono.Graphics
         public void SetMatrix4(ShaderType type, string name, Matrix4 data)
         {
             _shaders[(int)type].SetMatrix4(name, data);
+        }
+
+        public void SetVector2(ShaderType type, string name, Vector2 data)
+        {
+            _shaders[(int)type].SetVector2(name, data);
         }
 
         public void SetVector3(ShaderType type, string name, Vector3 data)

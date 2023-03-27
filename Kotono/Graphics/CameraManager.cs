@@ -60,6 +60,12 @@ namespace Kotono.Graphics
 
         public Vector3 GetFront(int index)
             => _cameras[_indexOffset[index]].Front;
+        
+        public Vector3 GetUp(int index)
+            => _cameras[_indexOffset[index]].Up;
+
+        public Vector3 GetRight(int index)
+            => _cameras[_indexOffset[index]].Right;
 
         public void SetAspectRatio(int index, float aspectRatio)
         {
