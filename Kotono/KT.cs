@@ -80,35 +80,41 @@ namespace Kotono
         public static int CreateSound(string path)
             => SoundManager.Create(path);
 
-        public static void DeleteSound(int source)
-            => SoundManager.Delete(source);
+        public static void DeleteSound(int index)
+            => SoundManager.Delete(index);
 
-        public static void PlaySound(int source)
-            => SoundManager.Play(source);
+        public static void PlaySound(int index)
+            => SoundManager.Play(index);
 
-        public static bool IsSoundPlaying(int source)
-            => SoundManager.IsPlaying(source);
+        public static bool IsSoundPlaying(int index)
+            => SoundManager.IsPlaying(index);
 
-        public static void PauseSound(int source)
-            => SoundManager.Pause(source);
+        public static void PauseSound(int index)
+            => SoundManager.Pause(index);
 
-        public static bool IsSoundPaused(int source)
-            => SoundManager.IsPaused(source);
+        public static bool IsSoundPaused(int index)
+            => SoundManager.IsPaused(index);
 
-        public static void RewindSound(int source)
-            => SoundManager.Rewind(source);
+        public static void RewindSound(int index)
+            => SoundManager.Rewind(index);
 
-        public static void StopSound(int source)
-            => SoundManager.Stop(source);
+        public static void StopSound(int index)
+            => SoundManager.Stop(index);
 
-        public static bool IsSoundStopped(int source)
-            => SoundManager.IsStopped(source);
+        public static bool IsSoundStopped(int index)
+            => SoundManager.IsStopped(index);
 
-        public static float GetSoundVolume(int source)
-            => SoundManager.GetVolume(source);
+        public static float GetSoundVolume(int index)
+            => SoundManager.GetVolume(index);
         
-        public static void SetSoundVolume(int source, float volume)
-            => SoundManager.SetVolume(source, volume);
+        public static void SetSoundVolume(int index, float volume)
+            => SoundManager.SetVolume(index, volume);
+
+        public static float GetGeneralVolume()
+            => SoundManager.GeneralVolume;
+
+        public static void SetGeneralVolume(float volume)
+            => SoundManager.GeneralVolume = volume;
 
         public static int CreateCamera(Camera camera)
             => CameraManager.Create(camera);

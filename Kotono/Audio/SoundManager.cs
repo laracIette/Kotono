@@ -13,7 +13,26 @@ namespace Kotono.Audio
 
         private readonly ALContext _context;
 
-        private readonly Dictionary<string, int> _sources = new();
+        private readonly List<Sound> _sounds = new();
+
+        /// <summary>
+        /// Key: Direct Index,
+        /// Value: Real Index.
+        /// </summary>
+        private readonly Dictionary<int, int> _indexOffset = new();
+
+        private float _generalVolume = 1.0f;
+
+        public float GeneralVolume
+        {
+            get => _generalVolume;
+            set
+            {
+                _generalVolume = Math.Clamp(value, 0.0f, 1.0f);
+            }
+        }
+
+        private int _soundIndex = 0;
 
         public SoundManager() 
         {
@@ -25,77 +44,81 @@ namespace Kotono.Audio
 
         public int Create(string path)
         {
-            if (!_sources.ContainsKey(path))
-            {
-                int buffer = AL.GenBuffer();
-                int source = AL.GenSource();
+            int buffer = AL.GenBuffer();
+            int source = AL.GenSource();
 
-                var data = LoadWav(path, out int channels, out int bits, out int rate);
+            var data = LoadWav(path, out int channels, out int bits, out int rate);
 
-                nint dataPtr = Marshal.AllocHGlobal(data.Length * sizeof(byte));
-                Marshal.Copy(data, 0, dataPtr, data.Length);
+            nint dataPtr = Marshal.AllocHGlobal(data.Length * sizeof(byte));
+            Marshal.Copy(data, 0, dataPtr, data.Length);
 
-                AL.BufferData(buffer, GetSoundFormat(channels, bits), dataPtr, data.Length, rate);
+            AL.BufferData(buffer, GetSoundFormat(channels, bits), dataPtr, data.Length, rate);
 
-                AL.Source(source, ALSourcei.Buffer, buffer);
+            AL.Source(source, ALSourcei.Buffer, buffer);
 
-                AL.DeleteBuffer(buffer);
+            AL.DeleteBuffer(buffer);
 
-                _sources[path] = source;
-            }
+            _indexOffset[_soundIndex] = _sounds.Count;
 
-            return _sources[path];
+            _sounds.Add(new Sound(source));
+            SetVolume(_soundIndex, GeneralVolume);
+
+            return _soundIndex++;
         }
 
-        public void Play(int source)
-            => AL.SourcePlay(source);
-
-        public bool IsPlaying(int source) 
-            => AL.GetSourceState(source) == ALSourceState.Playing;
-
-        public void Pause(int source)
-            => AL.SourcePause(source);
-
-        public bool IsPaused(int source)
-            => AL.GetSourceState(source) == ALSourceState.Paused;
-
-        public void Rewind(int source)
-            => AL.SourceRewind(source);
-
-        public void Stop(int source)
-            => AL.SourceStop(source);
-
-        public bool IsStopped(int source)
-            => AL.GetSourceState(source) == ALSourceState.Stopped;
-
-        public float GetVolume(int source)
+        public void Delete(int index)
         {
-            AL.GetSource(source, ALSourcef.Gain, out float volume);
-            return volume;
-        }
-
-        public void SetVolume(int source, float volume)
-            => AL.Source(source, ALSourcef.Gain, volume);
-
-        public void Delete(int source)
-        {
-            if (_sources.Count <= 0)
+            if (_sounds.Count <= 0)
             {
-                throw new Exception($"The number of Source is already at 0.");
+                throw new Exception($"The number of Sound is already at 0.");
             }
 
-            AL.SourceStop(source);
-            AL.DeleteSource(source);
+            AL.SourceStop(_sounds[_indexOffset[index]].Source);
+            AL.DeleteSource(_sounds[_indexOffset[index]].Source);
 
-            foreach (var path in _sources.Keys)
+            _sounds.RemoveAt(_indexOffset[index]);
+
+            _indexOffset.Remove(index);
+
+            foreach (var i in _indexOffset.Keys)
             {
-                if (_sources[path] == source)
+                if (i > index)
                 {
-                    _sources.Remove(path);
-                    break;
+                    _indexOffset[i]--;
                 }
             }
         }
+
+        public void Play(int index)
+            => AL.SourcePlay(_sounds[_indexOffset[index]].Source);
+
+        public bool IsPlaying(int index) 
+            => AL.GetSourceState(_sounds[_indexOffset[index]].Source) == ALSourceState.Playing;
+
+        public void Pause(int index)
+            => AL.SourcePause(_sounds[_indexOffset[index]].Source);
+
+        public bool IsPaused(int index)
+            => AL.GetSourceState(_sounds[_indexOffset[index]].Source) == ALSourceState.Paused;
+
+        public void Rewind(int index)
+            => AL.SourceRewind(_sounds[_indexOffset[index]].Source);
+
+        public void Stop(int index)
+            => AL.SourceStop(_sounds[_indexOffset[index]].Source);
+
+        public bool IsStopped(int index)
+            => AL.GetSourceState(_sounds[_indexOffset[index]].Source) == ALSourceState.Stopped;
+
+        public float GetVolume(int index)
+            => _sounds[_indexOffset[index]].Volume;
+
+        public void SetVolume(int index, float volume)
+        {
+            _sounds[_indexOffset[index]].Volume = volume;
+            AL.Source(_sounds[_indexOffset[index]].Source, ALSourcef.Gain, _sounds[_indexOffset[index]].Volume * GeneralVolume);
+        }
+
 
         /// <summary>
         /// 
@@ -170,10 +193,10 @@ namespace Kotono.Audio
 
         public void Dispose()
         {
-            foreach (var source in _sources.Values)
+            foreach (var sound in _sounds)
             {
-                AL.SourceStop(source);
-                AL.DeleteSource(source);
+                AL.SourceStop(sound.Source);
+                AL.DeleteSource(sound.Source);
             }
 
             if (_context != ALContext.Null)
