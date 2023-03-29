@@ -151,6 +151,9 @@ namespace Kotono
             => ShaderManager.Delete(index);
         */
 
+        public static void UseShader(ShaderType type)
+            => ShaderManager.Use(type);
+
         public static int GetShaderAttribLocation(ShaderType type, string attribName)
             => ShaderManager.GetAttribLocation(type, attribName);
 
