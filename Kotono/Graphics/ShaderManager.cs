@@ -10,7 +10,8 @@ namespace Kotono.Graphics
         Hitbox,
         PointLight,
         Sphere,
-        Frame
+        Frame,
+        Bloom
     }
 
     public class ShaderManager
@@ -24,6 +25,7 @@ namespace Kotono.Graphics
             _shaders.Add(new PointLightShader());
             _shaders.Add(new SphereShader());
             _shaders.Add(new FrameShader());
+            _shaders.Add(new BloomShader());
         }
 
         public void Use(ShaderType type)
