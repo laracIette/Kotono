@@ -12,8 +12,6 @@ namespace Kotono
 {
     public class Window : GameWindow
     {
-        private readonly SpotLight _spotLight = new();
-
         public Window(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings)
             : base(gameWindowSettings, nativeWindowSettings)
         {
@@ -47,9 +45,6 @@ namespace Kotono
 
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
-            KT.SetShaderFloat(ShaderType.Lighting, "spotLight.cutOff", MathF.Cos(MathHelper.DegreesToRadians(_spotLight.CutOffAngle)));
-            KT.SetShaderFloat(ShaderType.Lighting, "spotLight.outerCutOff", MathF.Cos(MathHelper.DegreesToRadians(_spotLight.OuterCutOffAngle)));
-
             KT.RenderFrame();
 
             base.SwapBuffers();
@@ -81,8 +76,6 @@ namespace Kotono
                     CursorState.Grabbed :
                     CursorState.Normal;
             }
-
-            _spotLight.Update();
         }
 
         protected override void OnResize(ResizeEventArgs e)

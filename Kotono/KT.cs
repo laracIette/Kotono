@@ -32,6 +32,9 @@ namespace Kotono
         public static int CreatePointLight(PointLight pointLight)
             => ObjectManager.CreatePointLight(pointLight);
 
+        public static int CreateSpotLight(SpotLight spotLight)
+            => ObjectManager.CreateSpotLight(spotLight);
+
         public static Vector3 GetMeshPosition(int index)
             => ObjectManager.GetMeshPosition(index);
 
@@ -46,6 +49,9 @@ namespace Kotono
 
         public static void DeletePointLight(int index)
             => ObjectManager.DeletePointLight(index);
+
+        public static void DeleteSpotLight(int index)
+            => ObjectManager.DeleteSpotLight(index);
 
         public static void SetHitBoxPosition(int index, Vector3 position)
             => ObjectManager.SetHitBoxPosition(index, position);
@@ -73,6 +79,9 @@ namespace Kotono
 
         public static int GetPointLightsCount()
             => ObjectManager.GetPointLightsCount();
+
+        public static int GetSpotLightsCount()
+            => ObjectManager.GetSpotLightsCount();
 
         public static int GetFirstPointLightIndex()
             => ObjectManager.GetFirstPointLightIndex();

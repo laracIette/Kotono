@@ -2,10 +2,11 @@
 using OpenTK.Windowing.GraphicsLibraryFramework;
 
 using Kotono.Utils;
+using System;
 
 namespace Kotono.Graphics.Objects.Lights
 {
-    public class SpotLight
+    public class SpotLight : IDisposable
     {
         private float _cutOffAngle = 12.5f;
 
@@ -13,8 +14,23 @@ namespace Kotono.Graphics.Objects.Lights
 
         private bool _isOn = true;
 
+        private int _shaderIndex;
+
+        private float CutOffAngle
+        {
+            get => _cutOffAngle;
+            set => _cutOffAngle = MathHelper.Clamp(value, 0.0f, 12.5f);
+        }
+
+        private float OuterCutOffAngle
+        {
+            get => _outerCutOffAngle;
+            set => _outerCutOffAngle = MathHelper.Clamp(value, 0.0f, 17.5f);
+        }
+
         public SpotLight()
         {
+            _shaderIndex = KT.GetSpotLightsCount();
         }
 
         public void Update()
@@ -39,16 +55,33 @@ namespace Kotono.Graphics.Objects.Lights
             }
         }
 
-        public float CutOffAngle
+        public void UpdateShaders()
         {
-            get => _cutOffAngle;
-            private set => _cutOffAngle = MathHelper.Clamp(value, 0.0f, 12.5f);
+            KT.SetShaderFloat(ShaderType.Lighting, $"spotLights[{_shaderIndex}].cutOff", MathF.Cos(MathHelper.DegreesToRadians(CutOffAngle)));
+            KT.SetShaderFloat(ShaderType.Lighting, $"spotLights[{_shaderIndex}].outerCutOff", MathF.Cos(MathHelper.DegreesToRadians(OuterCutOffAngle)));
+            KT.SetShaderVector3(ShaderType.Lighting, $"spotLights[{_shaderIndex}].position", KT.GetCameraPosition(0));
+            KT.SetShaderVector3(ShaderType.Lighting, $"spotLights[{_shaderIndex}].direction", KT.GetCameraFront(0));
+            KT.SetShaderVector3(ShaderType.Lighting, $"spotLights[{_shaderIndex}].ambient", new Vector3(0.0f, 0.0f, 0.0f));
+            KT.SetShaderVector3(ShaderType.Lighting, $"spotLights[{_shaderIndex}].diffuse", new Vector3(1.0f, 1.0f, 1.0f));
+            KT.SetShaderVector3(ShaderType.Lighting, $"spotLights[{ _shaderIndex}].specular", new Vector3(1.0f, 1.0f, 1.0f));
+            KT.SetShaderFloat(ShaderType.Lighting, $"spotLights[{_shaderIndex}].constant", 1.0f);
+            KT.SetShaderFloat(ShaderType.Lighting, $"spotLights[{_shaderIndex}].linear", 0.09f);
+            KT.SetShaderFloat(ShaderType.Lighting, $"spotLights[{_shaderIndex}].quadratic", 0.032f);
         }
 
-        public float OuterCutOffAngle
+        public void UpdateIndex()
         {
-            get => _outerCutOffAngle;
-            private set => _outerCutOffAngle = MathHelper.Clamp(value, 0.0f, 17.5f);
+            _shaderIndex--;
+        }
+
+        public void Draw()
+        {
+
+        }
+
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
         }
     }
 }

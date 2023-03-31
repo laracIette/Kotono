@@ -13,6 +13,8 @@ namespace Kotono.Graphics.Objects
 
         private PointLightManager PointLightManager { get; } = new();
 
+        private SpotLightManager SpotLightManager { get; } = new();
+
         public ObjectManager() { }
 
         public int CreateMesh(IMesh mesh)
@@ -23,6 +25,9 @@ namespace Kotono.Graphics.Objects
 
         public int CreatePointLight(PointLight pointLight)
             => PointLightManager.Create(pointLight);
+
+        public int CreateSpotLight(SpotLight spotLight)
+            => SpotLightManager.Create(spotLight);
 
         public Vector3 GetMeshPosition(int index)
             => MeshManager.GetPosition(index);
@@ -44,6 +49,9 @@ namespace Kotono.Graphics.Objects
         {
             PointLightManager.Delete(index);
         }
+
+        public void DeleteSpotLight(int index)
+            => SpotLightManager.Delete(index);
 
         public void SetHitBoxPosition(int index, Vector3 position)
         {
@@ -79,6 +87,9 @@ namespace Kotono.Graphics.Objects
 
         public int GetPointLightsCount()
             => PointLightManager.GetCount();
+        
+        public int GetSpotLightsCount()
+            => SpotLightManager.GetCount();
 
         public int GetFirstPointLightIndex()
             => PointLightManager.GetFirstIndex();
@@ -88,11 +99,13 @@ namespace Kotono.Graphics.Objects
             MeshManager.Update();
             HitboxManager.Update();
             PointLightManager.Update();
+            SpotLightManager.Update();
         }
 
         public void UpdateShaders()
         {
             PointLightManager.UpdateShaders();
+            SpotLightManager.UpdateShaders();
         }
 
         public void Draw()
@@ -100,6 +113,7 @@ namespace Kotono.Graphics.Objects
             MeshManager.Draw();
             HitboxManager.Draw();
             PointLightManager.Draw();
+            SpotLightManager.Draw();
         }
     }
 }

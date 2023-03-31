@@ -21,7 +21,7 @@ namespace Kotono.Graphics.Objects
 
         public PointLightManager() { }
 
-        public int Create(PointLight mesh)
+        public int Create(PointLight pointLight)
         {
             if (_pointLights.Count >= MAX)
             {
@@ -30,7 +30,7 @@ namespace Kotono.Graphics.Objects
 
             _indexOffset[_pointLightIndex] = _pointLights.Count;
 
-            _pointLights.Add(mesh);
+            _pointLights.Add(pointLight);
 
             return _pointLightIndex++;
         }
