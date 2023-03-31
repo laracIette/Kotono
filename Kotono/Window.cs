@@ -46,11 +46,6 @@ namespace Kotono
             if (!IsFocused) return;
 
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-        }
-
-        protected new void RenderFrame()
-        {
-            if (!IsFocused) return;
 
             KT.SetShaderFloat(ShaderType.Lighting, "spotLight.cutOff", MathF.Cos(MathHelper.DegreesToRadians(_spotLight.CutOffAngle)));
             KT.SetShaderFloat(ShaderType.Lighting, "spotLight.outerCutOff", MathF.Cos(MathHelper.DegreesToRadians(_spotLight.OuterCutOffAngle)));
