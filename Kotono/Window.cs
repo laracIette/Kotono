@@ -20,6 +20,12 @@ namespace Kotono
 
         private int _frameBufferObject;
 
+        int[] _pingpongFBO;
+
+        int[] _pingpongBuffer;
+
+        int[] _colorBuffers;
+
         private readonly float[] _frameVertices =
         {
             // positions   // texCoords
@@ -52,6 +58,7 @@ namespace Kotono
 
             KT.SetCameraAspectRatio(0, (float)Size.X / (float)Size.Y);
 
+            CreateFrameQuad();
             CreateFrameBuffer();
 
             InputManager.Update(KeyboardState, MouseState);
@@ -89,23 +96,57 @@ namespace Kotono
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
 
 
-            GL.Disable(EnableCap.DepthTest);
-            GL.ClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-            GL.Clear(ClearBufferMask.ColorBufferBit);
+            int horizontal = 1;
+            bool first_iteration = true;
+            int amount = 10;
+
+            KT.UseShader(ShaderType.Bloom);
+
+            for (int i = 0; i < amount; i++)
+            {
+                GL.BindFramebuffer(FramebufferTarget.Framebuffer, _pingpongFBO[horizontal]);
+                KT.SetShaderInt(ShaderType.Bloom, "horizontal", horizontal);
+                GL.BindTexture(TextureTarget.Texture2D, first_iteration ? _colorBuffers[1] : _pingpongBuffer[(horizontal == 0) ? 1 : 0]);
+                
+                RenderFrameQuad();
+
+                horizontal = (horizontal == 0) ? 1 : 0;
+                if (first_iteration)
+                {
+                    first_iteration = false;
+                }
+            }
+
+            GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
 
 
-            // draw frame buffer texture
+            //GL.Disable(EnableCap.DepthTest);
+            //GL.ClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+            //GL.Clear(ClearBufferMask.ColorBufferBit);
+
+
+            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+            
             KT.UseShader(ShaderType.Frame);
-
+            
             GL.ActiveTexture(TextureUnit.Texture0);
-            GL.BindTexture(TextureTarget.Texture2D, _frameColorTexture);
+            GL.BindTexture(TextureTarget.Texture2D, _colorBuffers[0]);
 
+            GL.ActiveTexture(TextureUnit.Texture1);
+            GL.BindTexture(TextureTarget.Texture2D, _pingpongBuffer[(horizontal == 0) ? 1 : 0]);
 
-            // render frame
-            GL.BindVertexArray(_frameVertexArrayObject);
-            GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
+            KT.SetShaderInt(ShaderType.Frame, "bloom", 1);
+            KT.SetShaderFloat(ShaderType.Frame, "exposure", 1.0f);
+
+            RenderFrameQuad();
 
             base.SwapBuffers();
+        }
+
+        private void RenderFrameQuad()
+        {
+            GL.BindVertexArray(_frameVertexArrayObject);
+            GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
         }
 
         protected override void OnUpdateFrame(FrameEventArgs e)
@@ -155,13 +196,11 @@ namespace Kotono
             base.OnUnload();
         }
 
-        private void CreateFrameBuffer()
+        private void CreateFrameQuad()
         {
-            // create frame texture vertex array
             _frameVertexArrayObject = GL.GenVertexArray();
             GL.BindVertexArray(_frameVertexArrayObject);
 
-            // vertex buffer
             _frameVertexBufferObject = GL.GenBuffer();
             GL.BindBuffer(BufferTarget.ArrayBuffer, _frameVertexBufferObject);
             GL.BufferData(BufferTarget.ArrayBuffer, sizeof(float) * _frameVertices.Length, _frameVertices, BufferUsageHint.StaticDraw);
@@ -170,39 +209,67 @@ namespace Kotono
             GL.VertexAttribPointer(0, 2, VertexAttribPointerType.Float, false, 4 * sizeof(float), 0);
             GL.EnableVertexAttribArray(1);
             GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 4 * sizeof(float), 2 * sizeof(float));
+        }
 
-
+        private void CreateFrameBuffer()
+        {
             // create frame buffer
             _frameBufferObject = GL.GenFramebuffer();
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, _frameBufferObject);
 
-            // create frame color texture
-            _frameColorTexture = GL.GenTexture();
-            GL.BindTexture(TextureTarget.Texture2D, _frameColorTexture);
-            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, Size.X, Size.Y, 0, PixelFormat.Rgba, PixelType.UnsignedByte, IntPtr.Zero);
-            GL.FramebufferTexture2D(FramebufferTarget.Framebuffer, FramebufferAttachment.ColorAttachment0, TextureTarget.Texture2D, _frameColorTexture, 0);
+            _colorBuffers = new int[2];
+            GL.GenTextures(2, _colorBuffers);
 
-            // create frame depth texture
-            _frameDepthTexture = GL.GenTexture();
-            GL.BindTexture(TextureTarget.Texture2D, _frameDepthTexture);
-            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.DepthComponent24, Size.X, Size.Y, 0, PixelFormat.DepthComponent, PixelType.UnsignedByte, IntPtr.Zero);
-            GL.FramebufferTexture2D(FramebufferTarget.Framebuffer, FramebufferAttachment.DepthAttachment, TextureTarget.Texture2D, _frameDepthTexture, 0);
-
-            foreach (var tex in new int[] { _frameColorTexture, _frameDepthTexture }) 
+            for (int i = 0; i < 2; i++)
             {
-                GL.BindTexture(TextureTarget.Texture2D, tex);
+                GL.BindTexture(TextureTarget.Texture2D, _colorBuffers[i]);
+                GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba16f, Size.X, Size.Y, 0, PixelFormat.Rgba, PixelType.Float, 0);
+
                 GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.ClampToEdge);
                 GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.ClampToEdge);
                 GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
                 GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
+                
+                // attach texture to framebuffer
+                GL.FramebufferTexture2D(FramebufferTarget.Framebuffer, FramebufferAttachment.ColorAttachment0 + i, TextureTarget.Texture2D, _colorBuffers[i], 0);
             }
 
+            var attachments = new DrawBuffersEnum[] { DrawBuffersEnum.ColorAttachment0, DrawBuffersEnum.ColorAttachment1 };
+            GL.DrawBuffers(2, attachments);
+
             // check for errors
-            FramebufferErrorCode status = GL.CheckFramebufferStatus(FramebufferTarget.Framebuffer);
-            if (status != FramebufferErrorCode.FramebufferComplete)
+            if (GL.CheckFramebufferStatus(FramebufferTarget.Framebuffer) != FramebufferErrorCode.FramebufferComplete)
             {
                 throw new Exception("Error creating the Frame Buffer Object.");
             }
+
+
+            _pingpongFBO = new int[2];
+            GL.GenFramebuffers(2, _pingpongFBO);
+
+            _pingpongBuffer = new int[2];
+            GL.GenTextures(2, _pingpongBuffer);
+
+            for (int i = 0; i < 2; i++)
+            {
+                GL.BindFramebuffer(FramebufferTarget.Framebuffer, _pingpongFBO[i]);
+                GL.BindTexture(TextureTarget.Texture2D, _pingpongBuffer[i]);
+                GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba16f, Size.X, Size.Y, 0, PixelFormat.Rgba, PixelType.Float, 0);
+
+                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.ClampToEdge);
+                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.ClampToEdge);
+                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
+                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
+
+                GL.FramebufferTexture2D(FramebufferTarget.Framebuffer, FramebufferAttachment.ColorAttachment0, TextureTarget.Texture2D, _pingpongBuffer[i], 0);
+                
+                // check for errors
+                if (GL.CheckFramebufferStatus(FramebufferTarget.Framebuffer) != FramebufferErrorCode.FramebufferComplete)
+                {
+                    throw new Exception("Error creating the Frame Buffer Object.");
+                }
+            }
+
         }
     }
 }
