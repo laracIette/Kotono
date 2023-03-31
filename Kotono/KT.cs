@@ -152,14 +152,6 @@ namespace Kotono
         public static void SetCameraAspectRatio(int index, float aspectRatio)
             => CameraManager.SetAspectRatio(index, aspectRatio);
 
-        /*
-        public static int CreateShader(Shader shader)
-            => ShaderManager.Create(shader);
-
-        public static void DeleteShader(int index)
-            => ShaderManager.Delete(index);
-        */
-
         public static int GetShaderAttribLocation(ShaderType type, string attribName)
             => ShaderManager.GetAttribLocation(type, attribName);
 

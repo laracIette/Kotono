@@ -1,12 +1,8 @@
 ﻿using Kotono.Graphics;
-using Kotono.Graphics.Objects.Lights;
 using Kotono.Utils;
 using OpenTK.Graphics.OpenGL4;
-using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
-using System;
-using ShaderType = Kotono.Graphics.ShaderType;
 
 namespace Kotono
 {
