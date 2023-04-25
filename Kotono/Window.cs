@@ -1,5 +1,6 @@
 ﻿using Kotono.Graphics;
 using Kotono.Graphics.Objects;
+using Kotono.Graphics.Rects;
 using Kotono.Utils;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Windowing.Common;
@@ -10,6 +11,8 @@ namespace Kotono
     public class Window : GameWindow
     {
         private Image _image;
+
+        private Image _image2;
 
         public Window(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings)
             : base(gameWindowSettings, nativeWindowSettings)
@@ -24,9 +27,11 @@ namespace Kotono
             GL.Enable(EnableCap.DepthTest);
 
             KT.CreateCamera(new Camera());
-            KT.SetCameraAspectRatio(0, (float)Size.X / (float)Size.Y);
+            KT.SetWindowSize(Size.X, Size.Y);
 
-            _image = new("container2.png", new Rect(1.0f, 1.0f, 1.0f, 1.0f));
+            _image = new Image("container2.png", new SRect(0.0f, 0, 640.0f, 360.0f));
+
+            _image2 = new Image("container2_specular.png", new NRect(-0.5f, 0.334f, 0.6f, 0.3f).ScreenSpace);
 
             InputManager.Update(KeyboardState, MouseState);
         }
@@ -46,6 +51,7 @@ namespace Kotono
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
             KT.RenderFrame();
+            _image2.Draw();
             _image.Draw();
 
             base.SwapBuffers();
@@ -84,7 +90,7 @@ namespace Kotono
             base.OnResize(e);
 
             GL.Viewport(0, 0, Size.X, Size.Y);
-            KT.SetCameraAspectRatio(0, (float)Size.X / (float)Size.Y);
+            KT.SetWindowSize(Size.X, Size.Y);
         }
 
         protected override void OnUnload()

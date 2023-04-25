@@ -11,6 +11,9 @@ namespace Kotono
 {
     public sealed class KT
     {
+
+        private static Vector2 _windowSize = new(0.0f);
+
         private KT() { }
 
         public const int MAX_POINT_LIGHTS = PointLightManager.MAX;
@@ -22,6 +25,25 @@ namespace Kotono
         private static CameraManager CameraManager { get; } = new();
 
         private static ShaderManager ShaderManager { get; } = new();
+
+        public static float Width
+        {
+            get => _windowSize.X;
+            private set => _windowSize.X = value;
+        }
+
+        public static float Height
+        {
+            get => _windowSize.Y;
+            private set => _windowSize.Y = value;
+        }
+
+        public static void SetWindowSize(float width, float height)
+        {
+            SetCameraAspectRatio(0, width / height);
+            Width = width;
+            Height = height;
+        }
 
         public static int CreateMesh(IMesh mesh)
             => ObjectManager.CreateMesh(mesh);

@@ -1,6 +1,6 @@
-﻿using OpenTK.Graphics.OpenGL4;
+﻿using Kotono.Graphics.Rects;
+using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
-using System;
 
 namespace Kotono.Graphics.Objects
 {
@@ -24,13 +24,16 @@ namespace Kotono.Graphics.Objects
 
         private static bool _isFirst = true;
 
-        private readonly Rect _dest;
+        private readonly IRect _dest;
 
         private readonly int _texture;
 
-        private Matrix4 Model => Matrix4.Identity * Matrix4.CreateScale(0.5f, 0.5f, 1.0f);
+        private Matrix4 Model =>
+            Matrix4.Identity
+            * Matrix4.CreateScale(_dest.Normalized.Width / 2.0f, _dest.Normalized.Height / 2.0f, 1.0f)
+            * Matrix4.CreateTranslation(_dest.Normalized.X, _dest.Normalized.Y, 0.0f);
 
-        public Image(string path, Rect dest) 
+        public Image(string path, IRect dest) 
         {
             if (_isFirst)
             {

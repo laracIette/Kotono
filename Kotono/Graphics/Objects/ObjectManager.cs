@@ -110,6 +110,7 @@ namespace Kotono.Graphics.Objects
 
         public void Draw()
         {
+            // images here
             MeshManager.Draw();
             HitboxManager.Draw();
             PointLightManager.Draw();
