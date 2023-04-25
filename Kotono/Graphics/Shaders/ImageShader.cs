@@ -1,4 +1,6 @@
-﻿namespace Kotono.Graphics.Shaders
+﻿using OpenTK.Mathematics;
+
+namespace Kotono.Graphics.Shaders
 {
     public class ImageShader : Shader
     {
@@ -8,8 +10,8 @@
 
         public override void Update()
         {
-            SetMatrix4("view", KT.GetCameraViewMatrix(0));
-            SetMatrix4("projection", KT.GetCameraProjectionMatrix(0));
+            SetMatrix4("view", Matrix4.Identity);
+            SetMatrix4("projection", Matrix4.Identity);
         }
     }
 }

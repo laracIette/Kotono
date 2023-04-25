@@ -28,7 +28,7 @@ namespace Kotono.Graphics.Objects
 
         private readonly int _texture;
 
-        private Matrix4 Model => Matrix4.Identity;
+        private Matrix4 Model => Matrix4.Identity * Matrix4.CreateScale(0.5f, 0.5f, 1.0f);
 
         public Image(string path, Rect dest) 
         {
