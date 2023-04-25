@@ -1,4 +1,5 @@
 ﻿using Kotono.Graphics;
+using Kotono.Graphics.Objects;
 using Kotono.Utils;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Windowing.Common;
@@ -8,6 +9,8 @@ namespace Kotono
 {
     public class Window : GameWindow
     {
+        private Image _image;
+
         public Window(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings)
             : base(gameWindowSettings, nativeWindowSettings)
         {
@@ -21,8 +24,9 @@ namespace Kotono
             GL.Enable(EnableCap.DepthTest);
 
             KT.CreateCamera(new Camera());
-
             KT.SetCameraAspectRatio(0, (float)Size.X / (float)Size.Y);
+
+            _image = new("container2.png", new Rect(1.0f, 1.0f, 1.0f, 1.0f));
 
             InputManager.Update(KeyboardState, MouseState);
         }
@@ -42,6 +46,7 @@ namespace Kotono
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
             KT.RenderFrame();
+            _image.Draw();
 
             base.SwapBuffers();
         }

@@ -9,7 +9,8 @@ namespace Kotono.Graphics
         Lighting,
         Hitbox,
         PointLight,
-        Sphere
+        Sphere,
+        Image
     }
 
     public class ShaderManager
@@ -22,6 +23,7 @@ namespace Kotono.Graphics
             _shaders.Add(new HitboxShader());
             _shaders.Add(new PointLightShader());
             _shaders.Add(new SphereShader());
+            _shaders.Add(new ImageShader());
         }
 
         public int GetAttribLocation(ShaderType type, string attribName)

@@ -1,4 +1,6 @@
 ﻿using OpenTK.Graphics.OpenGL4;
+using OpenTK.Mathematics;
+using System;
 
 namespace Kotono.Graphics.Objects
 {
@@ -22,6 +24,12 @@ namespace Kotono.Graphics.Objects
 
         private static bool _isFirst = true;
 
+        private readonly Rect _dest;
+
+        private readonly int _texture;
+
+        private Matrix4 Model => Matrix4.Identity;
+
         public Image(string path, Rect dest) 
         {
             if (_isFirst)
@@ -42,6 +50,21 @@ namespace Kotono.Graphics.Objects
                 GL.EnableVertexAttribArray(1);
                 GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 4 * sizeof(float), 2 * sizeof(float));
             }
+
+            _dest = dest;
+
+            _texture = TextureManager.LoadTexture(path);
+        }
+
+        public void Draw()
+        {
+            TextureManager.UseTexture(_texture, TextureUnit.Texture0);
+            
+            KT.SetShaderMatrix4(ShaderType.Image, "model", Model);
+
+            GL.BindVertexArray(_vertexArrayObject);
+
+            GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
         }
     }
 }
