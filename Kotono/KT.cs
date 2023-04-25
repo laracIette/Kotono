@@ -26,24 +26,19 @@ namespace Kotono
 
         private static ShaderManager ShaderManager { get; } = new();
 
-        public static float Width
-        {
-            get => _windowSize.X;
-            private set => _windowSize.X = value;
-        }
+        public static float Width => _windowSize.X;
 
-        public static float Height
-        {
-            get => _windowSize.Y;
-            private set => _windowSize.Y = value;
-        }
+        public static float Height => _windowSize.Y;
 
         public static void SetWindowSize(float width, float height)
         {
             SetCameraAspectRatio(0, width / height);
-            Width = width;
-            Height = height;
+            _windowSize.X = width;
+            _windowSize.Y = height;
         }
+
+        public static int CreateImage(Image image)
+            => ObjectManager.CreateImage(image);
 
         public static int CreateMesh(IMesh mesh)
             => ObjectManager.CreateMesh(mesh);
@@ -63,6 +58,9 @@ namespace Kotono
         public static void SetMeshColor(int index, Vector3 color)
             => ObjectManager.SetMeshColor(index, color);
 
+        public static void DeleteImage(int index)
+            => ObjectManager.DeleteImage(index);
+
         public static void DeleteMesh(int index) 
             => ObjectManager.DeleteMesh(index);
 
@@ -74,6 +72,9 @@ namespace Kotono
 
         public static void DeleteSpotLight(int index)
             => ObjectManager.DeleteSpotLight(index);
+
+        public static void GetImageRect(int index)
+            => ObjectManager.GetImageRect(index);
 
         public static void SetHitBoxPosition(int index, Vector3 position)
             => ObjectManager.SetHitBoxPosition(index, position);

@@ -10,10 +10,6 @@ namespace Kotono
 {
     public class Window : GameWindow
     {
-        private Image _image;
-
-        private Image _image2;
-
         public Window(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings)
             : base(gameWindowSettings, nativeWindowSettings)
         {
@@ -28,10 +24,6 @@ namespace Kotono
 
             KT.CreateCamera(new Camera());
             KT.SetWindowSize(Size.X, Size.Y);
-
-            _image = new Image("container2.png", new SRect(0.0f, 0, 640.0f, 360.0f));
-
-            _image2 = new Image("container2_specular.png", new NRect(-0.5f, 0.334f, 0.6f, 0.3f).ScreenSpace);
 
             InputManager.Update(KeyboardState, MouseState);
         }
@@ -51,8 +43,6 @@ namespace Kotono
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
             KT.RenderFrame();
-            _image2.Draw();
-            _image.Draw();
 
             base.SwapBuffers();
         }
