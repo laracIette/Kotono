@@ -36,6 +36,7 @@ namespace Kotono
         {
             ShaderManager.Init();
             Printer.Init();
+            SpeechRecognizer.Init();
         }
 
         public static float Width => _windowSize.X;

@@ -1,6 +1,4 @@
 ﻿using Kotono.Graphics;
-using Kotono.Graphics.Objects;
-using Kotono.Graphics.Rects;
 using Kotono.Utils;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Windowing.Common;
@@ -16,7 +14,7 @@ namespace Kotono
         }
 
         protected override void OnLoad()
-        {
+        {            
             base.OnLoad();
 
             GL.ClearColor(0.1f, 0.1f, 0.2f, 1.0f);
