@@ -50,6 +50,18 @@ namespace Kotono.Graphics.Objects
         public IRect GetRect(int index)
             => _images[_indexOffset[index]].Dest;
 
+        public void SetX(int index, float x)
+            => _images[_indexOffset[index]].Dest.X = x;
+        
+        public void SetY(int index, float y)
+            => _images[_indexOffset[index]].Dest.Y = y;
+        
+        public void SetW(int index, float w)
+            => _images[_indexOffset[index]].Dest.W = w;
+        
+        public void SetH(int index, float h)
+            => _images[_indexOffset[index]].Dest.H = h;
+
         //public void SetColor(int index, Vector3 color)
         //{
         //    _images[_indexOffset[index]].Color = color;

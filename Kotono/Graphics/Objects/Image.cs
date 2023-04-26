@@ -32,7 +32,7 @@ namespace Kotono.Graphics.Objects
 
         private Matrix4 Model =>
             Matrix4.Identity
-            * Matrix4.CreateScale(Dest.Normalized.Width / 2.0f, Dest.Normalized.Height / 2.0f, 1.0f)
+            * Matrix4.CreateScale(Dest.Normalized.W / 2.0f, Dest.Normalized.H / 2.0f, 1.0f)
             * Matrix4.CreateTranslation(Dest.Normalized.X, Dest.Normalized.Y, 0.0f);
 
         public Image(string path, IRect dest) 
@@ -79,6 +79,8 @@ namespace Kotono.Graphics.Objects
             GL.BindVertexArray(_vertexArrayObject);
 
             GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
+
+            GL.Enable(EnableCap.DepthTest);
         }
     }
 }

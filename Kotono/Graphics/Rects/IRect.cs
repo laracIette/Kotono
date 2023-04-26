@@ -6,9 +6,9 @@
 
         public float Y { get; set; }
 
-        public float Width { get; set; }
+        public float W { get; set; }
 
-        public float Height { get; set; }
+        public float H { get; set; }
 
         public NRect Normalized { get; }
 

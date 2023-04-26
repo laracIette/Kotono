@@ -9,12 +9,12 @@ namespace Kotono.Graphics.Objects.Meshes
     {
         public PointLightMesh(Vector3 position) 
             : base(
-                  @"assets/sphere.obj",
+                  @"Assets/sphere.obj",
                   position,
                   Vector3.Zero,
                   new Vector3(0.2f),
-                  @"assets/white.png",
-                  @"assets/white.png",
+                  @"Assets/white.png",
+                  @"Assets/white.png",
                   ShaderType.PointLight,
                   Vector3.One,
                   new int[]

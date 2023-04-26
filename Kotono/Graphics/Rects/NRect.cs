@@ -6,16 +6,18 @@
 
         public float Y { get; set; }
 
-        public float Width { get; set; }
+        public float W { get; set; }
 
-        public float Height { get; set; }
+        public float H { get; set; }
+
+        public NRect() { }
 
         public NRect(float x, float y, float width, float height)
         {
             X = x;
             Y = y;
-            Width = width;
-            Height = height;
+            W = width;
+            H = height;
         }
 
         public NRect Normalized => this;
@@ -24,8 +26,8 @@
             new(
                 (X + 1) / 2 * KT.Width,
                 (1 - Y) / 2 * KT.Height,
-                Width * KT.Width / 2,
-                Height * KT.Height / 2
+                W * KT.Width / 2,
+                H * KT.Height / 2
             );
     }
 }

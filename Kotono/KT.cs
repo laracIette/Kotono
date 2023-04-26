@@ -30,9 +30,12 @@ namespace Kotono
 
         private static ShaderManager ShaderManager { get; } = new();
 
+        private static Printer Printer { get; } = new();
+
         public static void Init()
         {
             ShaderManager.Init();
+            Printer.Init();
         }
 
         public static float Width => _windowSize.X;
@@ -84,6 +87,18 @@ namespace Kotono
 
         public static void GetImageRect(int index)
             => ObjectManager.GetImageRect(index);
+
+        public static void SetImageX(int index, float x)
+            => ObjectManager.SetImageX(index, x);
+        
+        public static void SetImageY(int index, float y)
+            => ObjectManager.SetImageY(index, y);
+        
+        public static void SetImageW(int index, float w)
+            => ObjectManager.SetImageW(index, w);
+        
+        public static void SetImageH(int index, float h)
+            => ObjectManager.SetImageH(index, h);
 
         public static void SetHitBoxPosition(int index, Vector3 position)
             => ObjectManager.SetHitBoxPosition(index, position);
@@ -205,11 +220,15 @@ namespace Kotono
         public static void SetShaderVector4(ShaderType type, string name, Vector4 data)
             => ShaderManager.SetVector4(type, name, data);
 
+        public static void Print(string text)
+            => Printer.SetText(text);
+
         public static void Update()
         {
             Time.Update();
             ObjectManager.Update();
             CameraManager.Update();
+            Printer.Update();
         }
 
         public static void RenderFrame()

@@ -59,6 +59,18 @@ namespace Kotono.Graphics.Objects
         public IRect GetImageRect(int index)
             => ImageManager.GetRect(index);
 
+        public void SetImageX(int index, float x)
+            => ImageManager.SetX(index, x);
+
+        public void SetImageY(int index, float y)
+                    => ImageManager.SetY(index, y);
+
+        public void SetImageW(int index, float w)
+                    => ImageManager.SetW(index, w);
+
+        public void SetImageH(int index, float h)
+                    => ImageManager.SetH(index, h);
+
         public void SetHitBoxPosition(int index, Vector3 position)
             => HitboxManager.SetPosition(index, position);
 
@@ -110,11 +122,11 @@ namespace Kotono.Graphics.Objects
 
         public void Draw()
         {
-            ImageManager.Draw();
             MeshManager.Draw();
             HitboxManager.Draw();
             PointLightManager.Draw();
             SpotLightManager.Draw();
+            ImageManager.Draw();
         }
     }
 }
