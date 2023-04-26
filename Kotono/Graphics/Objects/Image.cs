@@ -63,11 +63,15 @@ namespace Kotono.Graphics.Objects
 
         public void Update()
         {
-            _dest.X += 0.001f;
+            
         }
 
         public void Draw()
         {
+            GL.Disable(EnableCap.DepthTest);
+            GL.Enable(EnableCap.Blend);
+            GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+
             TextureManager.UseTexture(_texture, TextureUnit.Texture0);
             
             KT.SetShaderMatrix4(ShaderType.Image, "model", Model);

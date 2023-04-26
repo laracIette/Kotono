@@ -3,7 +3,6 @@ using OpenTK.Mathematics;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Path = Kotono.Utils.Path;
 
 namespace Kotono.Graphics.Shaders
 {
@@ -15,12 +14,12 @@ namespace Kotono.Graphics.Shaders
 
         public Shader(string vertPath, string fragPath)
         {
-            var shaderSource = File.ReadAllText(Path.Kotono + vertPath);
+            var shaderSource = File.ReadAllText(KT.KotonoPath + vertPath);
             var vertexShader = GL.CreateShader(OpenTK.Graphics.OpenGL4.ShaderType.VertexShader);
             GL.ShaderSource(vertexShader, shaderSource);
             CompileShader(vertexShader);
 
-            shaderSource = File.ReadAllText(Path.Kotono + fragPath);
+            shaderSource = File.ReadAllText(KT.KotonoPath + fragPath);
             var fragmentShader = GL.CreateShader(OpenTK.Graphics.OpenGL4.ShaderType.FragmentShader);
             GL.ShaderSource(fragmentShader, shaderSource);
             CompileShader(fragmentShader);

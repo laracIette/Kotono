@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
-using Path = Kotono.Utils.Path;
 
 namespace Kotono.Audio
 {
@@ -132,7 +131,7 @@ namespace Kotono.Audio
         /// <exception cref="NotSupportedException">The file isn't a WAVE file.</exception>
         private static byte[] LoadWav(string filename, out int channels, out int bits, out int rate)
         {
-            var stream = File.OpenRead(Path.Assets + filename) ?? throw new ArgumentNullException(filename);
+            var stream = File.OpenRead(KT.ProjectPath + filename) ?? throw new ArgumentNullException(filename);
 
             using (var reader = new BinaryReader(stream))
             {

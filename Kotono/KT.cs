@@ -18,6 +18,10 @@ namespace Kotono
 
         public const int MAX_POINT_LIGHTS = PointLightManager.MAX;
 
+        public static string KotonoPath { get; set; } = @"C:\Users\nicos\Documents\Visual Studio 2022\Projects\Kotono\Kotono\";
+
+        public static string ProjectPath { get; set; } = "";
+
         private static ObjectManager ObjectManager { get; } = new();
 
         private static SoundManager SoundManager { get; } = new();
@@ -25,6 +29,11 @@ namespace Kotono
         private static CameraManager CameraManager { get; } = new();
 
         private static ShaderManager ShaderManager { get; } = new();
+
+        public static void Init()
+        {
+            ShaderManager.Init();
+        }
 
         public static float Width => _windowSize.X;
 

@@ -5,7 +5,6 @@ using OpenTK.Mathematics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Path = Kotono.Utils.Path;
 using PrimitiveType = OpenTK.Graphics.OpenGL4.PrimitiveType;
 using Random = Kotono.Utils.Random;
 
@@ -37,7 +36,7 @@ namespace Kotono.Graphics.Objects.Meshes
 
                 using (var importer = new AssimpContext())
                 {
-                    var scene = importer.ImportFile(Path.Assets + path, PostProcessSteps.Triangulate);
+                    var scene = importer.ImportFile(KT.ProjectPath + path, PostProcessSteps.Triangulate);
 
                     models = new List<Vertex>[scene.Meshes.Count];
                     indices = new List<int>[scene.Meshes.Count];

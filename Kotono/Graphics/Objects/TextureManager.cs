@@ -2,7 +2,6 @@
 
 using OpenTK.Graphics.OpenGL4;
 
-using Path = Kotono.Utils.Path;
 using System.Collections.Generic;
 using System.IO;
 
@@ -23,7 +22,7 @@ namespace Kotono.Graphics.Objects
 
                 StbImage.stbi_set_flip_vertically_on_load(1);
 
-                using (Stream stream = File.OpenRead(Path.Assets + path))
+                using (Stream stream = File.OpenRead(KT.ProjectPath + path))
                 {
                     ImageResult image = ImageResult.FromStream(stream, ColorComponents.RedGreenBlueAlpha);
 

@@ -19,6 +19,10 @@ namespace Kotono.Graphics
 
         public ShaderManager() 
         {
+        }
+
+        public void Init()
+        {
             _shaders.Add(new LightingShader());
             _shaders.Add(new HitboxShader());
             _shaders.Add(new PointLightShader());

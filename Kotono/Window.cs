@@ -22,6 +22,8 @@ namespace Kotono
             GL.ClearColor(0.1f, 0.1f, 0.2f, 1.0f);
             GL.Enable(EnableCap.DepthTest);
 
+            KT.Init();
+
             KT.CreateCamera(new Camera());
             KT.SetWindowSize(Size.X, Size.Y);
 
