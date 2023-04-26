@@ -29,5 +29,15 @@
             );
 
         public SRect ScreenSpace => this;
+
+        public static bool operator ==(SRect left, SRect right)
+        {
+            return left.X == right.X && left.Y == right.Y && left.W == right.W && left.H == right.H;
+        }
+
+        public static bool operator !=(SRect left, SRect right)
+        {
+            return !(left == right);
+        }
     }
 }

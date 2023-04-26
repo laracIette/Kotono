@@ -29,5 +29,15 @@
                 W * KT.Width / 2,
                 H * KT.Height / 2
             );
+
+        public static bool operator ==(NRect left, NRect right)
+        {
+            return left.X == right.X && left.Y == right.Y && left.W == right.W && left.H == right.H;
+        }
+
+        public static bool operator !=(NRect left, NRect right)
+        {
+            return !(left == right);
+        }
     }
 }

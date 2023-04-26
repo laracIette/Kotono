@@ -32,7 +32,7 @@ namespace Kotono.Graphics.Objects
         {
             if (_images.Count <= 0)
             {
-                throw new Exception($"The number of Mesh is already at 0.");
+                throw new Exception($"The number of Image is already at 0.");
             }
 
             _images.RemoveAt(_indexOffset[index]);

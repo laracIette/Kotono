@@ -16,6 +16,8 @@ namespace Kotono.Graphics.Objects.Lights
 
         private int _shaderIndex;
 
+        private int _tempInt = 0;
+
         private float CutOffAngle
         {
             get => _cutOffAngle;
@@ -38,6 +40,7 @@ namespace Kotono.Graphics.Objects.Lights
             if (InputManager.KeyboardState!.IsKeyPressed(Keys.F))
             {
                 _isOn = !_isOn;
+                KT.Print(_tempInt++.ToString());
             }
 
             if (_isOn)

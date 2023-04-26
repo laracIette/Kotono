@@ -36,7 +36,7 @@ namespace Kotono.Graphics.Objects.Meshes
 
                 using (var importer = new AssimpContext())
                 {
-                    var scene = importer.ImportFile(KT.ProjectPath + path, PostProcessSteps.Triangulate);
+                    var scene = importer.ImportFile(path, PostProcessSteps.Triangulate);
 
                     models = new List<Vertex>[scene.Meshes.Count];
                     indices = new List<int>[scene.Meshes.Count];
