@@ -2,21 +2,17 @@
 using Kotono.Graphics.Rects;
 using System.Collections.Generic;
 
-namespace Kotono.Graphics
+namespace Kotono.Graphics.Print
 {
-    public class Printer
+    public class Text
     {
-        private readonly Dictionary<char, string> _paths = new();
+        private readonly SRect _dest = new(12.5f, 15f, 25f, 30f);
 
         private readonly List<int> _letters = new();
 
-        private readonly SRect _dest = new(640, 360, 50, 60);
+        private readonly static Dictionary<char, string> _paths = new();
 
-        private SRect _oldDest = new(640, 360, 50, 60);
-
-        public Printer() { }
-
-        public void Init()
+        public static void InitPaths()
         {
             _paths['a'] = KT.KotonoPath + @"Assets\Characters\a.png"; TextureManager.LoadTexture(_paths['a']);
             _paths['b'] = KT.KotonoPath + @"Assets\Characters\b.png"; TextureManager.LoadTexture(_paths['b']);
@@ -88,29 +84,11 @@ namespace Kotono.Graphics
             _paths['.'] = KT.KotonoPath + @"Assets\Characters\dot.png"; TextureManager.LoadTexture(_paths['.']);
         }
 
-        public void Update()
-        {
-            if (_dest != _oldDest)
-            {
-                _oldDest = _dest;    
-                                     
-                for (int i = 0; i < _letters.Count; i++)      
-                {
-                    KT.SetImageX(_letters[i], _dest.X - _letters.Count * _dest.W / 2f + _dest.W * i + _dest.W / 2f);
-                    KT.SetImageY(_letters[i], _dest.Y);
-                    KT.SetImageW(_letters[i], _dest.W);
-                    KT.SetImageH(_letters[i], _dest.H);
-                }
-            }
-        }
+        public double Time { get; private set; }
 
-        public void SetText(string text)
+        public Text(string text) 
         {
-            foreach (var letter in _letters)
-            {
-                KT.DeleteImage(letter);
-            }
-            _letters.Clear();
+            Time = Utils.Time.NowS;
 
             for (int i = 0; i < text.Length; i++)
             {
@@ -121,9 +99,30 @@ namespace Kotono.Graphics
 
                 _letters.Add(KT.CreateImage(
                     new Image(path, new SRect(
-                        _dest.X - text.Length * _dest.W / 2f + _dest.W * i + _dest.W / 2f,
-                        _dest.Y, _dest.W, _dest.H))
+                        _dest.X + _dest.W * i / 1.5f,
+                        _dest.Y,
+                        _dest.W,
+                        _dest.H
+                    ))
                 ));
+            }
+        }
+
+        public void Clear()
+        {
+            foreach (var letter in _letters)
+            {
+                KT.DeleteImage(letter);
+            }
+        }
+
+        public void Lower()
+        {
+            _dest.Y += _dest.H;
+
+            foreach (var letter in _letters)
+            {
+                KT.SetImageY(letter, _dest.Y);
             }
         }
     }

@@ -120,10 +120,10 @@ namespace Kotono.Graphics.Objects.Meshes
             var tempPos = Position;
 
             AngleVelocity += Random.Vector3(-0.1f, 0.1f);
-            Angle += AngleVelocity * Time.Delta;
+            Angle += AngleVelocity * Time.DeltaS;
 
             PositionVelocity += Random.Vector3(-0.1f, 0.1f);
-            tempPos += PositionVelocity * Time.Delta;
+            tempPos += PositionVelocity * Time.DeltaS;
 
             foreach (var hitbox in _hitboxes)
             {

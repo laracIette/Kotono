@@ -79,27 +79,27 @@ namespace Kotono.Graphics
 
             if (InputManager.KeyboardState.IsKeyDown(Keys.W))
             {
-                Position += Front * speed * Time.Delta; // Forward
+                Position += Front * speed * Time.DeltaS; // Forward
             }
             if (InputManager.KeyboardState.IsKeyDown(Keys.S))
             {
-                Position -= Front * speed * Time.Delta; // Backwards
+                Position -= Front * speed * Time.DeltaS; // Backwards
             }
             if (InputManager.KeyboardState.IsKeyDown(Keys.A))
             {
-                Position -= Right * speed * Time.Delta; // Left
+                Position -= Right * speed * Time.DeltaS; // Left
             }
             if (InputManager.KeyboardState.IsKeyDown(Keys.D))
             {
-                Position += Right * speed * Time.Delta; // Right
+                Position += Right * speed * Time.DeltaS; // Right
             }
             if (InputManager.KeyboardState.IsKeyDown(Keys.Space))
             {
-                Position += Up * speed * Time.Delta; // Up
+                Position += Up * speed * Time.DeltaS; // Up
             }
             if (InputManager.KeyboardState.IsKeyDown(Keys.LeftControl))
             {
-                Position -= Up * speed * Time.Delta; // Down
+                Position -= Up * speed * Time.DeltaS; // Down
             }
 
             Yaw += InputManager.MouseState!.Delta.X * sensitivity;

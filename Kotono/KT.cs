@@ -4,6 +4,7 @@ using Kotono.Graphics.Objects;
 using Kotono.Graphics.Objects.Hitboxes;
 using Kotono.Graphics.Objects.Lights;
 using Kotono.Graphics.Objects.Meshes;
+using Kotono.Graphics.Print;
 using Kotono.Utils;
 using OpenTK.Mathematics;
 
@@ -35,7 +36,7 @@ namespace Kotono
         public static void Init()
         {
             ShaderManager.Init();
-            Printer.Init();
+            Text.InitPaths();
             SpeechRecognizer.Init();
         }
 
@@ -222,7 +223,7 @@ namespace Kotono
             => ShaderManager.SetVector4(type, name, data);
 
         public static void Print(string text)
-            => Printer.SetText(text);
+            => Printer.Print(text);
 
         public static void Update()
         {
