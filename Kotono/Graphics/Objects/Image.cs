@@ -1,5 +1,4 @@
-﻿using Kotono.Graphics.Rects;
-using Kotono.Utils;
+﻿using Kotono.Utils;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 
@@ -27,22 +26,22 @@ namespace Kotono.Graphics.Objects
 
         private readonly int _texture;
 
-        private SRect _dest;
+        private Rect _dest;
 
-        private SRect _transformation;
+        private Rect _transformation;
 
         private double _startTime = 0f;
 
         private double _endTime = 0f;
 
-        public SRect Dest => _dest;
+        public Rect Dest => _dest;
 
         private Matrix4 Model =>
             Matrix4.Identity
             * Matrix4.CreateScale(Dest.Normalized.W / 2.0f, Dest.Normalized.H / 2.0f, 1.0f)
             * Matrix4.CreateTranslation(Dest.Normalized.X, Dest.Normalized.Y, 0.0f);
 
-        public Image(string path, IRect dest) 
+        public Image(string path, Rect dest) 
         {
             if (_isFirst)
             {
@@ -63,7 +62,7 @@ namespace Kotono.Graphics.Objects
                 GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 4 * sizeof(float), 2 * sizeof(float));
             }
 
-            _dest = dest.ScreenSpace;
+            _dest = dest;
 
             _transformation = new();
 
@@ -95,12 +94,17 @@ namespace Kotono.Graphics.Objects
             GL.Enable(EnableCap.DepthTest);
         }
 
-        public void SetTransform(IRect transformation, double time)
+        public void Transform(Rect transformation, double time)
         {
-            _transformation = transformation.ScreenSpace / (float)time;
+            _transformation = transformation / (float)time;
 
             _startTime = Time.NowS;
             _endTime = _startTime + time;
+        }
+
+        public void TransformTo(Rect dest, double time)
+        {
+            Transform(dest - _dest, time);
         }
     }
 }

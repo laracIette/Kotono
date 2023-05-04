@@ -1,7 +1,6 @@
 ﻿using Kotono.Graphics.Objects.Hitboxes;
 using Kotono.Graphics.Objects.Lights;
 using Kotono.Graphics.Objects.Meshes;
-using Kotono.Graphics.Rects;
 using OpenTK.Mathematics;
 
 namespace Kotono.Graphics.Objects
@@ -56,7 +55,7 @@ namespace Kotono.Graphics.Objects
         public void DeleteSpotLight(int index)
             => SpotLightManager.Delete(index);
 
-        public IRect GetImageRect(int index)
+        public Rect GetImageRect(int index)
             => ImageManager.GetRect(index);
 
         public void SetImageX(int index, float x)
@@ -71,8 +70,11 @@ namespace Kotono.Graphics.Objects
         public void SetImageH(int index, float h)
             => ImageManager.SetH(index, h);
 
-        public void SetImageTransform(int index, IRect transformation, double time)
-            => ImageManager.SetTransform(index, transformation, time);
+        public void TransformImage(int index, Rect transformation, double time)
+            => ImageManager.Transform(index, transformation, time);
+        
+        public void TransformImageTo(int index, Rect dest, double time)
+            => ImageManager.TransformTo(index, dest, time);
 
         public void SetHitBoxPosition(int index, Vector3 position)
             => HitboxManager.SetPosition(index, position);

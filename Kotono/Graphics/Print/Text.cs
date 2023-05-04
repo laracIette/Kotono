@@ -1,12 +1,11 @@
 ﻿using Kotono.Graphics.Objects;
-using Kotono.Graphics.Rects;
 using System.Collections.Generic;
 
 namespace Kotono.Graphics.Print
 {
     public class Text
     {
-        private readonly SRect _dest = new(12.5f, 15f, 25f, 30f);
+        private readonly Rect _dest = new(12.5f, 15f, 25f, 30f);
 
         private readonly List<int> _letters = new();
 
@@ -98,7 +97,7 @@ namespace Kotono.Graphics.Print
                 }
 
                 _letters.Add(KT.CreateImage(
-                    new Image(path, new SRect(
+                    new Image(path, new Rect(
                         _dest.X + _dest.W * i / 1.5f,
                         _dest.Y,
                         _dest.W,

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System;
-using Kotono.Graphics.Rects;
 
 namespace Kotono.Graphics.Objects
 {
@@ -46,7 +45,7 @@ namespace Kotono.Graphics.Objects
             }
         }
 
-        public IRect GetRect(int index)
+        public Rect GetRect(int index)
             => _images[_indexOffset[index]].Dest;
 
         public void SetX(int index, float x)
@@ -61,8 +60,11 @@ namespace Kotono.Graphics.Objects
         public void SetH(int index, float h)
             => _images[_indexOffset[index]].Dest.H = h;
 
-        public void SetTransform(int index, IRect transformation, double time)
-            => _images[_indexOffset[index]].SetTransform(transformation, time);
+        public void Transform(int index, Rect transformation, double time)
+            => _images[_indexOffset[index]].Transform(transformation, time);
+        
+        public void TransformTo(int index, Rect dest, double time)
+            => _images[_indexOffset[index]].TransformTo(dest, time);
 
         //public void SetColor(int index, Vector3 color)
         //{

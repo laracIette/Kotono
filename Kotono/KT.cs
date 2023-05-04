@@ -5,11 +5,8 @@ using Kotono.Graphics.Objects.Hitboxes;
 using Kotono.Graphics.Objects.Lights;
 using Kotono.Graphics.Objects.Meshes;
 using Kotono.Graphics.Print;
-using Kotono.Graphics.Rects;
 using Kotono.Utils;
 using OpenTK.Mathematics;
-using System.Speech.Recognition;
-using SpeechRecognizer = Kotono.Audio.SpeechRecognizer;
 
 namespace Kotono
 {
@@ -104,8 +101,11 @@ namespace Kotono
         public static void SetImageH(int index, float h)
             => ObjectManager.SetImageH(index, h);
 
-        public static void SetImageTransform(int index, IRect transformation, double time)
-            => ObjectManager.SetImageTransform(index, transformation, time);
+        public static void TransformImage(int index, Rect transformation, double time)
+            => ObjectManager.TransformImage(index, transformation, time);
+        
+        public static void TransformImageTo(int index, Rect dest, double time)
+            => ObjectManager.TransformImageTo(index, dest, time);
 
         public static void SetHitBoxPosition(int index, Vector3 position)
             => ObjectManager.SetHitBoxPosition(index, position);
