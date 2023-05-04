@@ -63,13 +63,16 @@ namespace Kotono.Graphics.Objects
             => ImageManager.SetX(index, x);
 
         public void SetImageY(int index, float y)
-                    => ImageManager.SetY(index, y);
+            => ImageManager.SetY(index, y);
 
         public void SetImageW(int index, float w)
-                    => ImageManager.SetW(index, w);
+            => ImageManager.SetW(index, w);
 
         public void SetImageH(int index, float h)
-                    => ImageManager.SetH(index, h);
+            => ImageManager.SetH(index, h);
+
+        public void SetImageTransform(int index, IRect transformation, double time)
+            => ImageManager.SetTransform(index, transformation, time);
 
         public void SetHitBoxPosition(int index, Vector3 position)
             => HitboxManager.SetPosition(index, position);

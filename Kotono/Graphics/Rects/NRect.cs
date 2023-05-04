@@ -10,7 +10,9 @@
 
         public float H { get; set; }
 
-        public NRect() { }
+        public NRect() : this(0f) { }
+        
+        public NRect(float n) : this(n, n, n, n) { }
 
         public NRect(float x, float y, float width, float height)
         {

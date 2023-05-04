@@ -9,17 +9,13 @@ namespace Kotono.Audio
 
         private static readonly SpeechRecognitionEngine _recognizer = new(new System.Globalization.CultureInfo("en-US"));
 
-        public static void Init()
+        public static string Text { get; private set; } = "";
+
+        private static bool _isSpeechRecognized = false;
+
+        public static void Init(GrammarBuilder grammarBuilder)
         {
-            var services = new Choices(new string[] { "restaurant", "hotel", "gas station", "restroom" });
-            var cities = new Choices(new string[] { "Seattle", "Paris", "New York" });
-
-            var findServices = new GrammarBuilder("Find");
-            findServices.Append(services);
-            findServices.Append("near");
-            findServices.Append(cities);
-
-            var servicesGrammar = new Grammar(findServices);
+            var servicesGrammar = new Grammar(grammarBuilder);
 
             // Create and load a dictation grammar.  
             _recognizer.LoadGrammarAsync(servicesGrammar);
@@ -38,7 +34,21 @@ namespace Kotono.Audio
 
         private static void OnSpeechRecognized(object sender, SpeechRecognizedEventArgs e)
         {
-            KT.Print(e.Result.Text);
+            Text = e.Result.Text;
+            _isSpeechRecognized = true;
+        }
+
+        public static bool GetSpeechRecognized()
+        {
+            if (_isSpeechRecognized)
+            {
+                _isSpeechRecognized = false;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

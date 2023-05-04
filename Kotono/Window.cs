@@ -8,9 +8,11 @@ namespace Kotono
 {
     public class Window : GameWindow
     {
-        public Window(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings)
+        public Window(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings, string kotonoPath, string projectPath)
             : base(gameWindowSettings, nativeWindowSettings)
         {
+            KT.KotonoPath = kotonoPath;
+            KT.ProjectPath = projectPath;
         }
 
         protected override void OnLoad()

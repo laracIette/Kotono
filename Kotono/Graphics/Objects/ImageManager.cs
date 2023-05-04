@@ -61,6 +61,9 @@ namespace Kotono.Graphics.Objects
         public void SetH(int index, float h)
             => _images[_indexOffset[index]].Dest.H = h;
 
+        public void SetTransform(int index, IRect transformation, double time)
+            => _images[_indexOffset[index]].SetTransform(transformation, time);
+
         //public void SetColor(int index, Vector3 color)
         //{
         //    _images[_indexOffset[index]].Color = color;

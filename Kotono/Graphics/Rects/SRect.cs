@@ -10,7 +10,9 @@
 
         public float H { get; set; }
 
-        public SRect() { }
+        public SRect() : this(0f) { }
+        
+        public SRect(float n) : this(n, n, n, n) { }
 
         public SRect(float x, float y, float width, float height)
         {
@@ -38,6 +40,41 @@
         public static bool operator !=(SRect left, SRect right)
         {
             return !(left == right);
+        }
+
+        public static SRect operator +(SRect left, SRect right)
+        {
+            return new(left.X + right.X, left.Y + right.Y, left.W + right.W, left.H + right.H);
+        }
+
+        public static SRect operator -(SRect left, SRect right)
+        {
+            return new(left.X - right.X, left.Y - right.Y, left.W - right.W, left.H - right.H);
+        }
+
+        public static SRect operator -(SRect rect)
+        {
+            return new(-rect.X, -rect.Y, -rect.W, -rect.H);
+        }
+
+        public static SRect operator *(SRect left, SRect right)
+        {
+            return new(left.X * right.X, left.Y * right.Y, left.W * right.W, left.H * right.H);
+        }
+
+        public static SRect operator *(SRect rect, float value)
+        {
+            return new(rect.X * value, rect.Y * value, rect.W * value, rect.H * value);
+        }
+
+        public static SRect operator /(SRect left, SRect right)
+        {
+            return new(left.X / right.X, left.Y / right.Y, left.W / right.W, left.H / right.H);
+        }
+
+        public static SRect operator /(SRect rect, float value)
+        {
+            return new(rect.X / value, rect.Y / value, rect.W / value, rect.H / value);
         }
     }
 }
