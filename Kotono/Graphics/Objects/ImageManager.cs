@@ -66,6 +66,12 @@ namespace Kotono.Graphics.Objects
         public void TransformTo(int index, Rect dest, double time)
             => _images[_indexOffset[index]].TransformTo(dest, time);
 
+        public void Show(int index)
+            => _images[_indexOffset[index]].IsDraw = true;
+
+        public void Hide(int index)
+            => _images[_indexOffset[index]].IsDraw = false;
+
         //public void SetColor(int index, Vector3 color)
         //{
         //    _images[_indexOffset[index]].Color = color;
@@ -83,7 +89,10 @@ namespace Kotono.Graphics.Objects
         {
             foreach (var image in _images)
             {
-                image.Draw();
+                if (image.IsDraw)
+                {
+                    image.Draw(); 
+                }
             }
         }
     }

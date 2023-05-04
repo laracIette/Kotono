@@ -41,6 +41,8 @@ namespace Kotono.Graphics.Objects
             * Matrix4.CreateScale(Dest.Normalized.W / 2.0f, Dest.Normalized.H / 2.0f, 1.0f)
             * Matrix4.CreateTranslation(Dest.Normalized.X, Dest.Normalized.Y, 0.0f);
 
+        public bool IsDraw { get; set; } = true;
+
         public Image(string path, Rect dest) 
         {
             if (_isFirst)

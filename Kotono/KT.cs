@@ -107,6 +107,12 @@ namespace Kotono
         public static void TransformImageTo(int index, Rect dest, double time)
             => ObjectManager.TransformImageTo(index, dest, time);
 
+        public static void ShowImage(int index)
+            => ObjectManager.ShowImage(index);
+
+        public static void HideImage(int index)
+            => ObjectManager.HideImage(index);
+
         public static void SetHitBoxPosition(int index, Vector3 position)
             => ObjectManager.SetHitBoxPosition(index, position);
 

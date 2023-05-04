@@ -76,6 +76,12 @@ namespace Kotono.Graphics.Objects
         public void TransformImageTo(int index, Rect dest, double time)
             => ImageManager.TransformTo(index, dest, time);
 
+        public void ShowImage(int index)
+            => ImageManager.Show(index);
+
+        public void HideImage(int index)
+            => ImageManager.Hide(index);
+
         public void SetHitBoxPosition(int index, Vector3 position)
             => HitboxManager.SetPosition(index, position);
 
