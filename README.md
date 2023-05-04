@@ -7,5 +7,7 @@
 3. Clone Kotono in Visual Studio (click "<> Code" then "Open with Visual Studio")
 4. Build Kotono and add Kotono/Kotono/bin/Debug/net7.0/Kotono.dll to your project references
 5. Change Kotono and your project's path in your project's Program.cs
+
 If you want my TestApp for Kotono, clone [Kotono-TestApp](https://github.com/laracIette/Kotono-TestApp) in Visual Studio (and do step 4 for Kotono-TestApp)
+
 Every time a change is made to Kotono, debug it for Kotono.dll to be updated.
