@@ -66,7 +66,7 @@ namespace Kotono.Graphics.Objects.Meshes
                 // create vertex buffer
                 int vertexBufferObject = GL.GenBuffer();
                 GL.BindBuffer(BufferTarget.ArrayBuffer, vertexBufferObject);
-                GL.BufferData(BufferTarget.ArrayBuffer, models[0].Count * Vertex.SizeInBytes, models[0].ToArray(), BufferUsageHint.DynamicDraw);
+                GL.BufferData(BufferTarget.ArrayBuffer, models[0].Count * Vertex.SizeInBytes, models[0].ToArray(), BufferUsageHint.StaticDraw);
 
                 int positionAttributeLocation = KT.GetShaderAttribLocation(shaderType, "aPos");
                 GL.EnableVertexAttribArray(positionAttributeLocation);
@@ -83,7 +83,7 @@ namespace Kotono.Graphics.Objects.Meshes
                 // create element buffer
                 int elementBufferObject = GL.GenBuffer();
                 GL.BindBuffer(BufferTarget.ElementArrayBuffer, elementBufferObject);
-                GL.BufferData(BufferTarget.ElementArrayBuffer, indices[0].Count * sizeof(int), indices[0].ToArray(), BufferUsageHint.DynamicDraw);
+                GL.BufferData(BufferTarget.ElementArrayBuffer, indices[0].Count * sizeof(int), indices[0].ToArray(), BufferUsageHint.StaticDraw);
 
                 _paths[path] = new int[]
                 { 

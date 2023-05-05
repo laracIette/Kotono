@@ -9,7 +9,6 @@ namespace Kotono.Graphics
         Lighting,
         Hitbox,
         PointLight,
-        Sphere,
         Image
     }
 
@@ -26,7 +25,6 @@ namespace Kotono.Graphics
             _shaders.Add(new LightingShader());
             _shaders.Add(new HitboxShader());
             _shaders.Add(new PointLightShader());
-            _shaders.Add(new SphereShader());
             _shaders.Add(new ImageShader());
         }
 
