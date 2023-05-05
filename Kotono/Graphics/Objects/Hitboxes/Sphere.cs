@@ -10,7 +10,7 @@ namespace Kotono.Graphics.Objects.Hitboxes
     {
         private const int SEGMENTS = 64;
 
-        private static readonly Vector3[] _vertices = new Vector3[SEGMENTS + 1];
+        private static readonly Vector3[] _vertices = new Vector3[SEGMENTS];
 
         private static int _vertexArrayObject;
 
@@ -34,7 +34,7 @@ namespace Kotono.Graphics.Objects.Hitboxes
             {
                 _isFirst = false;
 
-                for (int i = 0; i <= SEGMENTS ; i++)
+                for (int i = 0; i < SEGMENTS ; i++)
                 {
                     float angle = i / (float)SEGMENTS * MathHelper.TwoPi;
                     _vertices[i] = new Vector3
@@ -62,6 +62,7 @@ namespace Kotono.Graphics.Objects.Hitboxes
 
         public void Update() 
         {
+            Scale = Vector3.One * 4;
         }
 
         public void Draw()
@@ -73,7 +74,7 @@ namespace Kotono.Graphics.Objects.Hitboxes
 
         private void DrawCircle(Vector3 angle)
         {
-            var Model =
+            var model =
                 Matrix4.CreateScale(Scale)
                 * Matrix4.CreateRotationX(Angle.X + angle.X)
                 * Matrix4.CreateRotationY(Angle.Y + angle.Y)
@@ -81,7 +82,7 @@ namespace Kotono.Graphics.Objects.Hitboxes
                 * Matrix4.CreateTranslation(Position);
 
             KT.SetShaderVector3(ShaderType.Hitbox, "color", Color);
-            KT.SetShaderMatrix4(ShaderType.Hitbox, "model", Model);
+            KT.SetShaderMatrix4(ShaderType.Hitbox, "model", model);
 
             GL.BindVertexArray(_vertexArrayObject);
             GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
