@@ -92,8 +92,14 @@ namespace Kotono.Graphics.Objects.Hitboxes
 
         public void Draw()
         {
-            KT.SetShaderVector3(ShaderType.Hitbox, "color", Color);
-            KT.SetShaderMatrix4(ShaderType.Hitbox, "model", Model);
+            var model =
+                Matrix4.CreateScale(Scale)
+                //* Matrix4.CreateRotationX(Angle.X)
+                //* Matrix4.CreateRotationY(Angle.Y)
+                //* Matrix4.CreateRotationZ(Angle.Z)
+                * Matrix4.CreateTranslation(Position);
+        KT.SetShaderVector3(ShaderType.Hitbox, "color", Color);
+            KT.SetShaderMatrix4(ShaderType.Hitbox, "model", model);
 
             GL.BindVertexArray(_vertexArrayObject);
             GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
@@ -104,12 +110,5 @@ namespace Kotono.Graphics.Objects.Hitboxes
             => (Math.Abs(Position.X - h.Position.X) <= (Scale.X + h.Scale.X) / 2)
             && (Math.Abs(Position.Y - h.Position.Y) <= (Scale.Y + h.Scale.Y) / 2)
             && (Math.Abs(Position.Z - h.Position.Z) <= (Scale.Z + h.Scale.Z) / 2);
-
-        private Matrix4 Model =>
-            Matrix4.CreateScale(Scale)
-            //* Matrix4.CreateRotationX(Angle.X)
-            //* Matrix4.CreateRotationY(Angle.Y)
-            //* Matrix4.CreateRotationZ(Angle.Z)
-            * Matrix4.CreateTranslation(Position);
     }
 }

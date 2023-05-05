@@ -16,9 +16,7 @@ namespace Kotono.Graphics
     {
         private readonly List<Shader> _shaders = new();
 
-        public ShaderManager() 
-        {
-        }
+        public ShaderManager() { }
 
         public void Init()
         {

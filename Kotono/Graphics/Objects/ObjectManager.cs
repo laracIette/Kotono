@@ -5,7 +5,7 @@ using OpenTK.Mathematics;
 
 namespace Kotono.Graphics.Objects
 {
-    public class ObjectManager
+    internal class ObjectManager
     {
         private ImageManager ImageManager { get; } = new();
 
@@ -17,106 +17,106 @@ namespace Kotono.Graphics.Objects
 
         private SpotLightManager SpotLightManager { get; } = new();
 
-        public ObjectManager() { }
+        internal ObjectManager() { }
 
-        public int CreateImage(Image image)
+        internal int CreateImage(Image image)
             => ImageManager.Create(image);
 
-        public int CreateMesh(IMesh mesh)
+        internal int CreateMesh(IMesh mesh)
             => MeshManager.Create(mesh);
         
-        public int CreateHitbox(IHitbox hitbox)
+        internal int CreateHitbox(IHitbox hitbox)
             => HitboxManager.Create(hitbox);
 
-        public int CreatePointLight(PointLight pointLight)
+        internal int CreatePointLight(PointLight pointLight)
             => PointLightManager.Create(pointLight);
 
-        public int CreateSpotLight(SpotLight spotLight)
+        internal int CreateSpotLight(SpotLight spotLight)
             => SpotLightManager.Create(spotLight);
 
-        public Vector3 GetMeshPosition(int index)
+        internal Vector3 GetMeshPosition(int index)
             => MeshManager.GetPosition(index);
 
-        public void SetMeshColor(int index, Vector3 color)
+        internal void SetMeshColor(int index, Vector3 color)
             => MeshManager.SetColor(index, color);
 
-        public void DeleteImage(int index)
+        internal void DeleteImage(int index)
             => ImageManager.Delete(index);
 
-        public void DeleteMesh(int index)
+        internal void DeleteMesh(int index)
             => MeshManager.Delete(index);
 
-        public void DeleteHitbox(int index)
+        internal void DeleteHitbox(int index)
             => HitboxManager.Delete(index);
 
-        public void DeletePointLight(int index)
+        internal void DeletePointLight(int index)
             => PointLightManager.Delete(index);
 
-        public void DeleteSpotLight(int index)
+        internal void DeleteSpotLight(int index)
             => SpotLightManager.Delete(index);
 
-        public Rect GetImageRect(int index)
+        internal Rect GetImageRect(int index)
             => ImageManager.GetRect(index);
 
-        public void SetImageX(int index, float x)
+        internal void SetImageX(int index, float x)
             => ImageManager.SetX(index, x);
 
-        public void SetImageY(int index, float y)
+        internal void SetImageY(int index, float y)
             => ImageManager.SetY(index, y);
 
-        public void SetImageW(int index, float w)
+        internal void SetImageW(int index, float w)
             => ImageManager.SetW(index, w);
 
-        public void SetImageH(int index, float h)
+        internal void SetImageH(int index, float h)
             => ImageManager.SetH(index, h);
 
-        public void TransformImage(int index, Rect transformation, double time)
+        internal void TransformImage(int index, Rect transformation, double time)
             => ImageManager.Transform(index, transformation, time);
         
-        public void TransformImageTo(int index, Rect dest, double time)
+        internal void TransformImageTo(int index, Rect dest, double time)
             => ImageManager.TransformTo(index, dest, time);
 
-        public void ShowImage(int index)
+        internal void ShowImage(int index)
             => ImageManager.Show(index);
 
-        public void HideImage(int index)
+        internal void HideImage(int index)
             => ImageManager.Hide(index);
 
-        public void SetHitBoxPosition(int index, Vector3 position)
+        internal void SetHitBoxPosition(int index, Vector3 position)
             => HitboxManager.SetPosition(index, position);
 
-        public void SetHitBoxAngle(int index, Vector3 angle)
+        internal void SetHitBoxAngle(int index, Vector3 angle)
             => HitboxManager.SetAngle(index, angle);
 
-        public void SetHitBoxScale(int index, Vector3 scale)
+        internal void SetHitBoxScale(int index, Vector3 scale)
             => HitboxManager.SetScale(index, scale);
 
-        public void SetHitBoxColor(int index, Vector3 color)
+        internal void SetHitBoxColor(int index, Vector3 color)
             => HitboxManager.SetColor(index, color);
         
 
-        public void AddHitboxCollision(int index, int hitboxIndex)
+        internal void AddHitboxCollision(int index, int hitboxIndex)
             => HitboxManager.AddCollision(index, hitboxIndex);
 
-        public void AddHitboxCollision(int index, int[] hitboxIndexes)
+        internal void AddHitboxCollision(int index, int[] hitboxIndexes)
             => HitboxManager.AddCollision(index, hitboxIndexes);
 
-        public int[] GetAllHitboxes()
+        internal int[] GetAllHitboxes()
             => HitboxManager.GetAll();
 
-        public bool IsHitboxColliding(int index) 
+        internal bool IsHitboxColliding(int index) 
             => HitboxManager.IsColliding(index);
 
-        public int GetPointLightsCount()
+        internal int GetPointLightsCount()
             => PointLightManager.GetCount();
         
-        public int GetSpotLightsCount()
+        internal int GetSpotLightsCount()
             => SpotLightManager.GetCount();
 
-        public int GetFirstPointLightIndex()
+        internal int GetFirstPointLightIndex()
             => PointLightManager.GetFirstIndex();
 
-        public void Update()
+        internal void Update()
         {
             ImageManager.Update();
             MeshManager.Update();
@@ -125,13 +125,13 @@ namespace Kotono.Graphics.Objects
             SpotLightManager.Update();
         }
 
-        public void UpdateShaders()
+        internal void UpdateShaders()
         {
             PointLightManager.UpdateShaders();
             SpotLightManager.UpdateShaders();
         }
 
-        public void Draw()
+        internal void Draw()
         {
             MeshManager.Draw();
             HitboxManager.Draw();

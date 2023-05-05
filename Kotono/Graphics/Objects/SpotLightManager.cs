@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 namespace Kotono.Graphics.Objects
 {
-    public class SpotLightManager
+    internal class SpotLightManager
     {
-        public const int MAX = 1;
+        internal const int MAX = 1;
 
         private readonly List<SpotLight> _spotLights = new();
 
@@ -18,9 +18,9 @@ namespace Kotono.Graphics.Objects
 
         private int _spotLightIndex = 0;
 
-        public SpotLightManager() { }
+        internal SpotLightManager() { }
 
-        public int Create(SpotLight spotLight)
+        internal int Create(SpotLight spotLight)
         {
             if (_spotLights.Count >= MAX)
             {
@@ -34,7 +34,7 @@ namespace Kotono.Graphics.Objects
             return _spotLightIndex++;
         }
 
-        public void Delete(int index)
+        internal void Delete(int index)
         {
             if (_spotLights.Count <= 0)
             {
@@ -55,7 +55,7 @@ namespace Kotono.Graphics.Objects
             }
         }
 
-        public void Update()
+        internal void Update()
         {
             foreach (var pointLight in _spotLights)
             {
@@ -63,7 +63,7 @@ namespace Kotono.Graphics.Objects
             }
         }
 
-        public void UpdateShaders()
+        internal void UpdateShaders()
         {
             foreach (var pointLight in _spotLights)
             {
@@ -71,10 +71,10 @@ namespace Kotono.Graphics.Objects
             }
         }
 
-        public int GetCount()
+        internal int GetCount()
             => _spotLights.Count;
 
-        public void Draw()
+        internal void Draw()
         {
             foreach (var pointLight in _spotLights)
             {

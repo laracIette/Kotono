@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 
 namespace Kotono.Audio
 {
-    public class SoundManager
+    internal class SoundManager
     {
         private readonly ALDevice _device;
 
@@ -22,7 +22,7 @@ namespace Kotono.Audio
 
         private float _generalVolume = 1.0f;
 
-        public float GeneralVolume
+        internal float GeneralVolume
         {
             get => _generalVolume;
             set
@@ -33,7 +33,7 @@ namespace Kotono.Audio
 
         private int _soundIndex = 0;
 
-        public SoundManager() 
+        internal SoundManager() 
         {
             _device = ALC.OpenDevice(null);
             _context = ALC.CreateContext(_device, Array.Empty<int>());
@@ -41,7 +41,7 @@ namespace Kotono.Audio
             ALC.MakeContextCurrent(_context);
         }
 
-        public int Create(string path)
+        internal int Create(string path)
         {
             int buffer = AL.GenBuffer();
             int source = AL.GenSource();
@@ -65,7 +65,7 @@ namespace Kotono.Audio
             return _soundIndex++;
         }
 
-        public void Delete(int index)
+        internal void Delete(int index)
         {
             if (_sounds.Count <= 0)
             {
@@ -88,31 +88,31 @@ namespace Kotono.Audio
             }
         }
 
-        public void Play(int index)
+        internal void Play(int index)
             => AL.SourcePlay(_sounds[_indexOffset[index]].Source);
 
-        public bool IsPlaying(int index) 
+        internal bool IsPlaying(int index) 
             => AL.GetSourceState(_sounds[_indexOffset[index]].Source) == ALSourceState.Playing;
 
-        public void Pause(int index)
+        internal void Pause(int index)
             => AL.SourcePause(_sounds[_indexOffset[index]].Source);
 
-        public bool IsPaused(int index)
+        internal bool IsPaused(int index)
             => AL.GetSourceState(_sounds[_indexOffset[index]].Source) == ALSourceState.Paused;
 
-        public void Rewind(int index)
+        internal void Rewind(int index)
             => AL.SourceRewind(_sounds[_indexOffset[index]].Source);
 
-        public void Stop(int index)
+        internal void Stop(int index)
             => AL.SourceStop(_sounds[_indexOffset[index]].Source);
 
-        public bool IsStopped(int index)
+        internal bool IsStopped(int index)
             => AL.GetSourceState(_sounds[_indexOffset[index]].Source) == ALSourceState.Stopped;
 
-        public float GetVolume(int index)
+        internal float GetVolume(int index)
             => _sounds[_indexOffset[index]].Volume;
 
-        public void SetVolume(int index, float volume)
+        internal void SetVolume(int index, float volume)
         {
             _sounds[_indexOffset[index]].Volume = volume;
             AL.Source(_sounds[_indexOffset[index]].Source, ALSourcef.Gain, _sounds[_indexOffset[index]].Volume * GeneralVolume);
@@ -190,7 +190,7 @@ namespace Kotono.Audio
             };
         }
 
-        public void Dispose()
+        internal void Dispose()
         {
             foreach (var sound in _sounds)
             {

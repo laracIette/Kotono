@@ -17,9 +17,9 @@ namespace Kotono.Graphics.Objects
 
         private int _meshIndex = 0;
 
-        public MeshManager() { }
+        internal MeshManager() { }
 
-        public int Create(IMesh mesh)
+        internal int Create(IMesh mesh)
         {
             _indexOffset[_meshIndex] = _meshes.Count;
 
@@ -28,7 +28,7 @@ namespace Kotono.Graphics.Objects
             return _meshIndex++;
         }
 
-        public void Delete(int index)
+        internal void Delete(int index)
         {
             if (_meshes.Count <= 0)
             {
@@ -48,15 +48,15 @@ namespace Kotono.Graphics.Objects
             }
         }
 
-        public Vector3 GetPosition(int index)
+        internal Vector3 GetPosition(int index)
             => _meshes[_indexOffset[index]].Position;
 
-        public void SetColor(int index, Vector3 color)
+        internal void SetColor(int index, Vector3 color)
         {
             _meshes[_indexOffset[index]].Color = color;
         }
 
-        public void Update()
+        internal void Update()
         {
             foreach (var mesh in _meshes)
             {
@@ -64,7 +64,7 @@ namespace Kotono.Graphics.Objects
             }
         }
 
-        public void Draw()
+        internal void Draw()
         {
             foreach (var mesh in _meshes)
             {

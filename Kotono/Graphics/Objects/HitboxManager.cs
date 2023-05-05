@@ -18,9 +18,9 @@ namespace Kotono.Graphics.Objects
 
         private int _hitboxIndex = 0;
 
-        public HitboxManager() { }
+        internal HitboxManager() { }
 
-        public int Create(IHitbox mesh)
+        internal int Create(IHitbox mesh)
         {
             _indexOffset[_hitboxIndex] = _hitboxes.Count;
 
@@ -29,7 +29,7 @@ namespace Kotono.Graphics.Objects
             return _hitboxIndex++;
         }
 
-        public void Delete(int index)
+        internal void Delete(int index)
         {
             if (_hitboxes.Count <= 0)
             {
@@ -48,39 +48,39 @@ namespace Kotono.Graphics.Objects
             }
         }
 
-        public void SetPosition(int index, Vector3 position)
+        internal void SetPosition(int index, Vector3 position)
         {
             _hitboxes[_indexOffset[index]].Position = position;
         }
 
-        public void SetAngle(int index, Vector3 angle)
+        internal void SetAngle(int index, Vector3 angle)
         {
             _hitboxes[_indexOffset[index]].Angle = angle;
         }
 
-        public void SetScale(int index, Vector3 scale)
+        internal void SetScale(int index, Vector3 scale)
         {
             _hitboxes[_indexOffset[index]].Scale = scale;
         }
 
-        public void SetColor(int index, Vector3 color)
+        internal void SetColor(int index, Vector3 color)
         {
             _hitboxes[_indexOffset[index]].Color = color;
         }
 
-        public void AddCollision(int index, int hitboxIndex)
+        internal void AddCollision(int index, int hitboxIndex)
             => _hitboxes[_indexOffset[index]].Collisions.Add(hitboxIndex);
 
-        public void AddCollision(int index, int[] hitboxIndexes)
+        internal void AddCollision(int index, int[] hitboxIndexes)
             => _hitboxes[_indexOffset[index]].Collisions.AddRange(hitboxIndexes);
 
-        public int[] GetAll()
+        internal int[] GetAll()
             => _indexOffset.Keys.ToArray();
 
-        public bool IsColliding(int index)
+        internal bool IsColliding(int index)
             => _hitboxes[_indexOffset[index]].Collisions.Any(h => _hitboxes[_indexOffset[index]].Collides(_hitboxes[_indexOffset[h]]));
 
-        public void Update()
+        internal void Update()
         {
             foreach (var hitbox in _hitboxes)
             {
@@ -88,7 +88,7 @@ namespace Kotono.Graphics.Objects
             }
         }
 
-        public void Draw()
+        internal void Draw()
         {
             foreach (var hitbox in _hitboxes)
             {

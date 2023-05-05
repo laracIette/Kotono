@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Kotono.Graphics
 {
-    public class CameraManager
+    internal class CameraManager
     {
         private readonly List<Camera> _cameras = new();
 
@@ -16,11 +16,9 @@ namespace Kotono.Graphics
 
         private int _cameraIndex = 0;
 
-        public CameraManager() 
-        {
-        }
+        internal CameraManager() { }
 
-        public int Create(Camera camera)
+        internal int Create(Camera camera)
         {
             _indexOffset[_cameraIndex] = _cameras.Count;
 
@@ -29,7 +27,7 @@ namespace Kotono.Graphics
             return _cameraIndex++;
         }
 
-        public void Delete(int index)
+        internal void Delete(int index)
         {
             if (_cameras.Count <= 0)
             {
@@ -49,30 +47,30 @@ namespace Kotono.Graphics
             }
         }
 
-        public Vector3 GetPosition(int index)
+        internal Vector3 GetPosition(int index)
             => _cameras[_indexOffset[index]].Position;
 
-        public Matrix4 GetViewMatrix(int index)
+        internal Matrix4 GetViewMatrix(int index)
             => _cameras[_indexOffset[index]].ViewMatrix;
 
-        public Matrix4 GetProjectionMatrix(int index) 
+        internal Matrix4 GetProjectionMatrix(int index) 
             => _cameras[_indexOffset[index]].ProjectionMatrix;
 
-        public Vector3 GetFront(int index)
+        internal Vector3 GetFront(int index)
             => _cameras[_indexOffset[index]].Front;
         
-        public Vector3 GetUp(int index)
+        internal Vector3 GetUp(int index)
             => _cameras[_indexOffset[index]].Up;
 
-        public Vector3 GetRight(int index)
+        internal Vector3 GetRight(int index)
             => _cameras[_indexOffset[index]].Right;
 
-        public void SetAspectRatio(int index, float aspectRatio)
+        internal void SetAspectRatio(int index, float aspectRatio)
         {
             _cameras[_indexOffset[index]].AspectRatio = aspectRatio;
         }
 
-        public void Update()
+        internal void Update()
         {
             foreach (var camera in _cameras)
             {

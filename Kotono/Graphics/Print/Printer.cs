@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 namespace Kotono.Graphics.Print
 {
-    public class Printer
+    internal class Printer
     {
         private readonly List<Text> _texts = new();
 
-        public Printer() { }
+        internal Printer() { }
 
-        public void Update()
+        internal void Update()
         {
             for (int i = _texts.Count - 1; i >= 0; i--)
             {
@@ -21,7 +21,7 @@ namespace Kotono.Graphics.Print
             }
         }
 
-        public void Print(string text)
+        internal void Print(string text)
         {
             foreach (var _text in _texts)
             {

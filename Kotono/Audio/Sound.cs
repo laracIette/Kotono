@@ -2,13 +2,13 @@
 
 namespace Kotono.Audio
 {
-    public class Sound
+    internal class Sound
     {
         private float _volume = 1.0f;
 
-        public int Source { get; set; }
+        internal int Source { get; set; }
 
-        public float Volume
+        internal float Volume
         {
             get => _volume;
             set
@@ -17,7 +17,7 @@ namespace Kotono.Audio
             }
         }
 
-        public Sound(int source) 
+        internal Sound(int source) 
         { 
             Source = source;
         }

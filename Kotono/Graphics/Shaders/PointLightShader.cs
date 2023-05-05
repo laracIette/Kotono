@@ -1,12 +1,12 @@
 ﻿namespace Kotono.Graphics.Shaders
 {
-    public class PointLightShader : Shader
+    internal class PointLightShader : Shader
     {
-        public PointLightShader() 
+        internal PointLightShader() 
             : base("Graphics/Shaders/pointLight.vert", "Graphics/Shaders/pointLight.frag")
         { }
 
-        public override void Update()
+        internal override void Update()
         {
             SetMatrix4("view", KT.GetCameraViewMatrix(0));
             SetMatrix4("projection", KT.GetCameraProjectionMatrix(0));

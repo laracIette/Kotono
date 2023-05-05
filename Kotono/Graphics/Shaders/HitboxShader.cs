@@ -1,12 +1,12 @@
 ﻿namespace Kotono.Graphics.Shaders
 {
-    public class HitboxShader : Shader
+    internal class HitboxShader : Shader
     {
-        public HitboxShader() 
+        internal HitboxShader() 
             : base("Graphics/Shaders/hitbox.vert", "Graphics/Shaders/hitbox.frag")
         { }
 
-        public override void Update()
+        internal override void Update()
         {
             SetMatrix4("view", KT.GetCameraViewMatrix(0));
             SetMatrix4("projection", KT.GetCameraProjectionMatrix(0));

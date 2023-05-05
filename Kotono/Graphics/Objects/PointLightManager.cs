@@ -7,7 +7,7 @@ namespace Kotono.Graphics.Objects
 {
     internal class PointLightManager
     {
-        public const int MAX = 100;
+        internal const int MAX = 100;
 
         private readonly List<PointLight> _pointLights = new();
 
@@ -19,9 +19,9 @@ namespace Kotono.Graphics.Objects
 
         private int _pointLightIndex = 0;
 
-        public PointLightManager() { }
+        internal PointLightManager() { }
 
-        public int Create(PointLight pointLight)
+        internal int Create(PointLight pointLight)
         {
             if (_pointLights.Count >= MAX)
             {
@@ -35,7 +35,7 @@ namespace Kotono.Graphics.Objects
             return _pointLightIndex++;
         }
 
-        public void Delete(int index)
+        internal void Delete(int index)
         {
             if (_pointLights.Count <= 0)
             {
@@ -56,13 +56,13 @@ namespace Kotono.Graphics.Objects
             }
         }
 
-        public int GetCount()
+        internal int GetCount()
             => _pointLights.Count;
 
-        public int GetFirstIndex()
+        internal int GetFirstIndex()
             => _indexOffset.First().Key;
 
-        public void Update()
+        internal void Update()
         {
             foreach (var pointLight in _pointLights)
             {
@@ -70,7 +70,7 @@ namespace Kotono.Graphics.Objects
             }
         }
 
-        public void UpdateShaders()
+        internal void UpdateShaders()
         {
             foreach (var pointLight in _pointLights)
             {
@@ -78,7 +78,7 @@ namespace Kotono.Graphics.Objects
             }
         }
 
-        public void Draw()
+        internal void Draw()
         {
             foreach (var pointLight in _pointLights)
             {

@@ -6,13 +6,13 @@ using System.IO;
 
 namespace Kotono.Graphics.Shaders
 {
-    public class Shader
+    internal class Shader
     {
         private readonly int _handle;
 
         private readonly Dictionary<string, int> _uniformLocations;
 
-        public Shader(string vertPath, string fragPath)
+        internal Shader(string vertPath, string fragPath)
         {
             var shaderSource = File.ReadAllText(KT.KotonoPath + vertPath);
             var vertexShader = GL.CreateShader(OpenTK.Graphics.OpenGL4.ShaderType.VertexShader);
@@ -49,7 +49,7 @@ namespace Kotono.Graphics.Shaders
             }
         }
 
-        public virtual void Update() { }
+        internal virtual void Update() { }
 
         private static void CompileShader(int shader)
         {
@@ -80,40 +80,40 @@ namespace Kotono.Graphics.Shaders
             GL.UseProgram(_handle);
         }
 
-        public int GetAttribLocation(string attribName)
+        internal int GetAttribLocation(string attribName)
         {
             return GL.GetAttribLocation(_handle, attribName);
         }
 
-        public void SetInt(string name, int data)
+        internal void SetInt(string name, int data)
         {
             Use();
             GL.Uniform1(_uniformLocations[name], data);
         }
-        public void SetFloat(string name, float data)
+        internal void SetFloat(string name, float data)
         {
             Use();
             GL.Uniform1(_uniformLocations[name], data);
         }
 
-        public void SetMatrix4(string name, Matrix4 data)
+        internal void SetMatrix4(string name, Matrix4 data)
         {
             Use();
             GL.UniformMatrix4(_uniformLocations[name], true, ref data);
         }
 
-        public void SetVector2(string name, Vector2 data)
+        internal void SetVector2(string name, Vector2 data)
         {
             Use();
             GL.Uniform2(_uniformLocations[name], data);
         }
-        public void SetVector3(string name, Vector3 data)
+        internal void SetVector3(string name, Vector3 data)
         {
             Use();
             GL.Uniform3(_uniformLocations[name], data);
         }
 
-        public void SetVector4(string name, Vector4 data)
+        internal void SetVector4(string name, Vector4 data)
         {
             Use();
             GL.Uniform4(_uniformLocations[name], data);

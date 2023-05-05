@@ -3,7 +3,7 @@ using System;
 
 namespace Kotono.Graphics.Objects
 {
-    public class ImageManager
+    internal class ImageManager
     {
         private readonly List<Image> _images = new();
 
@@ -15,9 +15,9 @@ namespace Kotono.Graphics.Objects
 
         private int _imageIndex = 0;
 
-        public ImageManager() { }
+        internal ImageManager() { }
 
-        public int Create(Image image)
+        internal int Create(Image image)
         {
             _indexOffset[_imageIndex] = _images.Count;
 
@@ -26,7 +26,7 @@ namespace Kotono.Graphics.Objects
             return _imageIndex++;
         }
 
-        public void Delete(int index)
+        internal void Delete(int index)
         {
             if (_images.Count <= 0)
             {
@@ -45,39 +45,39 @@ namespace Kotono.Graphics.Objects
             }
         }
 
-        public Rect GetRect(int index)
+        internal Rect GetRect(int index)
             => _images[_indexOffset[index]].Dest;
 
-        public void SetX(int index, float x)
+        internal void SetX(int index, float x)
             => _images[_indexOffset[index]].Dest.X = x;
         
-        public void SetY(int index, float y)
+        internal void SetY(int index, float y)
             => _images[_indexOffset[index]].Dest.Y = y;
         
-        public void SetW(int index, float w)
+        internal void SetW(int index, float w)
             => _images[_indexOffset[index]].Dest.W = w;
         
-        public void SetH(int index, float h)
+        internal void SetH(int index, float h)
             => _images[_indexOffset[index]].Dest.H = h;
 
-        public void Transform(int index, Rect transformation, double time)
+        internal void Transform(int index, Rect transformation, double time)
             => _images[_indexOffset[index]].Transform(transformation, time);
         
-        public void TransformTo(int index, Rect dest, double time)
+        internal void TransformTo(int index, Rect dest, double time)
             => _images[_indexOffset[index]].TransformTo(dest, time);
 
-        public void Show(int index)
+        internal void Show(int index)
             => _images[_indexOffset[index]].IsDraw = true;
 
-        public void Hide(int index)
+        internal void Hide(int index)
             => _images[_indexOffset[index]].IsDraw = false;
 
-        //public void SetColor(int index, Vector3 color)
+        //internal void SetColor(int index, Vector3 color)
         //{
         //    _images[_indexOffset[index]].Color = color;
         //}
 
-        public void Update()
+        internal void Update()
         {
             foreach (var image in _images)
             {
@@ -85,7 +85,7 @@ namespace Kotono.Graphics.Objects
             }
         }
 
-        public void Draw()
+        internal void Draw()
         {
             foreach (var image in _images)
             {
