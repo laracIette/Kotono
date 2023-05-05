@@ -3,6 +3,7 @@ using Kotono.Utils;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
+using Performance = Kotono.Graphics.Performance;
 
 namespace Kotono
 {
@@ -42,6 +43,8 @@ namespace Kotono
 
             if (!IsFocused) return;
 
+            KT.AddPerformanceWindowFrameTime(e.Time);
+
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
             KT.RenderFrame();
@@ -52,6 +55,8 @@ namespace Kotono
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
             base.OnUpdateFrame(e);
+
+            KT.AddPerformanceWindowUpdateTime(e.Time);
 
             InputManager.Update(KeyboardState, MouseState);
 

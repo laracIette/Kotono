@@ -62,7 +62,6 @@ namespace Kotono.Graphics.Objects.Hitboxes
 
         public void Update() 
         {
-            Scale = Vector3.One * 4;
         }
 
         public void Draw()

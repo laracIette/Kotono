@@ -7,6 +7,8 @@ using Kotono.Graphics.Objects.Meshes;
 using Kotono.Graphics.Print;
 using Kotono.Utils;
 using OpenTK.Mathematics;
+using Performance = Kotono.Graphics.Performance;
+
 
 namespace Kotono
 {
@@ -19,7 +21,7 @@ namespace Kotono
 
         public const int MAX_POINT_LIGHTS = PointLightManager.MAX;
 
-        public static string KotonoPath { get; set; } = @"C:\Users\nicos\Documents\Visual Studio 2022\Projects\Kotono\Kotono\";
+        public static string KotonoPath { get; set; } = "";
 
         public static string ProjectPath { get; set; } = "";
 
@@ -32,6 +34,8 @@ namespace Kotono
         private static ShaderManager ShaderManager { get; } = new();
 
         private static Printer Printer { get; } = new();
+
+        private static Performance.Window PerformanceWindow { get; } = new();
 
         public static void Init()
         {
@@ -175,7 +179,7 @@ namespace Kotono
 
         public static float GetSoundVolume(int index)
             => SoundManager.GetVolume(index);
-        
+
         public static void SetSoundVolume(int index, float volume)
             => SoundManager.SetVolume(index, volume);
 
@@ -236,9 +240,28 @@ namespace Kotono
         public static void Print(string text)
             => Printer.Print(text);
 
+        internal static void AddPerformanceWindowFrameTime(double frameTime)
+            => PerformanceWindow.AddFrameTime(frameTime);
+
+        internal static void AddPerformanceWindowUpdateTime(double updateTime)
+            => PerformanceWindow.AddUpdateTime(updateTime);
+
+        public static double GetPerformanceWindowFrameTime()
+            => PerformanceWindow.FrameTime;
+
+        public static double GetPerformanceWindowUpdateTime()
+            => PerformanceWindow.UpdateTime;
+
+        public static double GetPerformanceWindowFrameRate()
+            => PerformanceWindow.FrameRate;
+
+        public static double GetPerformanceWindowUpdateRate()
+            => PerformanceWindow.UpdateRate;
+
         public static void Update()
         {
             Time.Update();
+            PerformanceWindow.Update();
             ObjectManager.Update();
             CameraManager.Update();
             Printer.Update();
