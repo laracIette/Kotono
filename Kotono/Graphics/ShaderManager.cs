@@ -12,13 +12,13 @@ namespace Kotono.Graphics
         Image
     }
 
-    public class ShaderManager
+    internal class ShaderManager
     {
         private readonly List<Shader> _shaders = new();
 
-        public ShaderManager() { }
+        internal ShaderManager() { }
 
-        public void Init()
+        internal void Init()
         {
             _shaders.Add(new LightingShader());
             _shaders.Add(new HitboxShader());
@@ -26,42 +26,42 @@ namespace Kotono.Graphics
             _shaders.Add(new ImageShader());
         }
 
-        public int GetAttribLocation(ShaderType type, string attribName)
+        internal int GetAttribLocation(ShaderType type, string attribName)
         {
             return _shaders[(int)type].GetAttribLocation(attribName);
         }
 
-        public void SetInt(ShaderType type, string name, int data)
+        internal void SetInt(ShaderType type, string name, int data)
         {
             _shaders[(int)type].SetInt(name, data);
         }
 
-        public void SetFloat(ShaderType type, string name, float data)
+        internal void SetFloat(ShaderType type, string name, float data)
         {
             _shaders[(int)type].SetFloat(name, data);
         }
 
-        public void SetMatrix4(ShaderType type, string name, Matrix4 data)
+        internal void SetMatrix4(ShaderType type, string name, Matrix4 data)
         {
             _shaders[(int)type].SetMatrix4(name, data);
         }
 
-        public void SetVector2(ShaderType type, string name, Vector2 data)
+        internal void SetVector2(ShaderType type, string name, Vector2 data)
         {
             _shaders[(int)type].SetVector2(name, data);
         }
 
-        public void SetVector3(ShaderType type, string name, Vector3 data)
+        internal void SetVector3(ShaderType type, string name, Vector3 data)
         {
             _shaders[(int)type].SetVector3(name, data);
         }
 
-        public void SetVector4(ShaderType type, string name, Vector4 data)
+        internal void SetVector4(ShaderType type, string name, Vector4 data)
         {
             _shaders[(int)type].SetVector4(name, data);
         }
 
-        public void Update()
+        internal void Update()
         {
             foreach (var shader in _shaders)
             {

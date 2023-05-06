@@ -16,12 +16,12 @@ namespace Kotono.Graphics
 
         public Rect(float n) : this(n, n, n, n) { }
 
-        public Rect(float x, float y, float width, float height)
+        public Rect(float x = 0, float y = 0, float w = 0, float h = 0)
         {
             X = x;
             Y = y;
-            W = width;
-            H = height;
+            W = w;
+            H = h;
         }
 
         public Rect Normalized =>
@@ -44,65 +44,37 @@ namespace Kotono.Graphics
 
         public static Rect operator +(Rect left, Rect right)
         {
-            left.X += right.X;
-            left.Y += right.Y;
-            left.W += right.W;
-            left.H += right.H;
-            return left;
+            return new Rect(left.X + right.X, left.Y + right.Y, left.W + right.W, left.H + right.H);
         }
 
         public static Rect operator -(Rect left, Rect right)
         {
-            left.X -= right.X;
-            left.Y -= right.Y;
-            left.W -= right.W;
-            left.H -= right.H;
-            return left;
+            return new Rect(left.X - right.X, left.Y - right.Y, left.W - right.W, left.H - right.H);
         }
 
         public static Rect operator -(Rect rect)
         {
-            rect.X = -rect.X;
-            rect.Y = -rect.Y;
-            rect.W = -rect.W;
-            rect.H = -rect.H;
-            return rect;
+            return new Rect(-rect.X, -rect.Y, -rect.W, -rect.H);
         }
 
         public static Rect operator *(Rect left, Rect right)
         {
-            left.X *= right.X;
-            left.Y *= right.Y;
-            left.W *= right.W;
-            left.H *= right.H;
-            return left;
+            return new Rect(left.X * right.X, left.Y * right.Y, left.W * right.W, left.H * right.H);
         }
 
         public static Rect operator *(Rect rect, float value)
         {
-            rect.X *= value;
-            rect.Y *= value;
-            rect.W *= value;
-            rect.H *= value;
-            return rect;
+            return new Rect(rect.X * value, rect.Y * value, rect.W * value, rect.H * value);
         }
 
         public static Rect operator /(Rect left, Rect right)
         {
-            left.X /= right.X;
-            left.Y /= right.Y;
-            left.W /= right.W;
-            left.H /= right.H;
-            return left;
+            return new Rect(left.X / right.X, left.Y / right.Y, left.W / right.W, left.H / right.H);
         }
 
         public static Rect operator /(Rect rect, float value)
         {
-            rect.X /= value;
-            rect.Y /= value;
-            rect.W /= value;
-            rect.H /= value;
-            return rect;
+            return new Rect(rect.X / value, rect.Y / value, rect.W / value, rect.H / value);
         }
     }
 }

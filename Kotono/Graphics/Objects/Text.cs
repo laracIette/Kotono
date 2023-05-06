@@ -1,17 +1,33 @@
-﻿using Kotono.Graphics.Objects;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace Kotono.Graphics.Print
+namespace Kotono.Graphics.Objects
 {
-    public class Text
+    public enum Position
     {
-        private readonly Rect _dest = new(12.5f, 15f, 25f, 30f);
+        Center,
+        TopLeft,
+    }
 
-        private readonly List<int> _letters = new();
+    internal class Text
+    {
+        protected string _text;
+
+        protected readonly Rect _dest;
+
+        protected Position _position;
+
+        protected float _spacing;
+
+        /// <summary>
+        /// List of images
+        /// </summary>
+        protected readonly List<int> _letters = new();
+
+        internal double Time { get; private set; }
 
         private readonly static Dictionary<char, string> _paths = new();
 
-        public static void InitPaths()
+        internal static void InitPaths()
         {
             _paths['a'] = KT.KotonoPath + @"Assets\Characters\a.png"; TextureManager.LoadTexture(_paths['a']);
             _paths['b'] = KT.KotonoPath + @"Assets\Characters\b.png"; TextureManager.LoadTexture(_paths['b']);
@@ -83,45 +99,103 @@ namespace Kotono.Graphics.Print
             _paths['.'] = KT.KotonoPath + @"Assets\Characters\dot.png"; TextureManager.LoadTexture(_paths['.']);
         }
 
-        public double Time { get; private set; }
+        internal Text(string text, Rect dest, Position position, float spacing = 1.0f) 
+        {
+            _text = text;
+            _dest = dest;
+            _position = position;
+            _spacing = spacing;
+        }
 
-        public Text(string text) 
+        internal void Init()
         {
             Time = Utils.Time.NowS;
 
-            for (int i = 0; i < text.Length; i++)
+            for (int i = 0; i < _text.Length; i++)
             {
-                if (!_paths.TryGetValue(text[i], out string? path))
+                if (!_paths.TryGetValue(_text[i], out string? path))
                 {
                     path = _paths[' '];
                 }
 
-                _letters.Add(KT.CreateImage(
-                    new Image(path, new Rect(
-                        _dest.X + _dest.W * i / 1.5f,
-                        _dest.Y,
-                        _dest.W,
-                        _dest.H
-                    ))
-                ));
+                switch (_position)
+                {
+                    case Position.Center:
+                        _letters.Add(KT.CreateImage(
+                            new Image(path, new Rect(
+                                _dest.X - _dest.W / 2 * (_text.Length - 1) * _spacing + _dest.W * i * _spacing,
+                                _dest.Y,
+                                _dest.W,
+                                _dest.H
+                            ))
+                        ));
+                        break;
+
+                    case Position.TopLeft:
+                        _letters.Add(KT.CreateImage(
+                            new Image(path, new Rect(
+                                _dest.X + _dest.W / 2 + _dest.W * i * _spacing,
+                                _dest.Y + _dest.H / 2,
+                                _dest.W,
+                                _dest.H
+                            ))
+                        ));
+                        break;
+
+                    default: 
+                        break;
+                }
             }
         }
 
-        public void Clear()
+        internal void SetText(string text)
+        {
+            if (text != _text)
+            {
+                _text = text;
+                Clear();
+                Init();
+            }
+        }
+
+        internal void Transform(Rect dest, double time)
+        {
+            foreach (var letter in _letters)
+            {
+                KT.TransformImage(letter, dest, time);
+            }
+        }
+
+        internal void TransformTo(Rect dest, double time)
+        {
+            foreach (var letter in _letters)
+            {
+                KT.TransformImageTo(letter, dest, time);
+            }
+        }
+
+        internal void Clear()
         {
             foreach (var letter in _letters)
             {
                 KT.DeleteImage(letter);
             }
+            _letters.Clear();
         }
 
-        public void Lower()
+        internal void Show()
         {
-            _dest.Y += _dest.H;
-
             foreach (var letter in _letters)
             {
-                KT.SetImageY(letter, _dest.Y);
+                KT.ShowImage(letter);
+            }
+        }
+
+        internal void Hide()
+        {
+            foreach (var letter in _letters)
+            {
+                KT.HideImage(letter);
             }
         }
     }

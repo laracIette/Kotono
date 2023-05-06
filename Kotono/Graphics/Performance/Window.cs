@@ -1,70 +1,69 @@
-﻿namespace Kotono.Graphics.Performance
+﻿using Kotono.Graphics.Objects;
+
+namespace Kotono.Graphics.Performance
 {
     internal class Window
     {
-        internal double FrameRate { get; private set; }
+        private int _background;
 
-        internal double FrameTime { get; private set; }
+        private readonly RateStat _frame;
 
-        private readonly double[] _frameTimes;
+        private readonly RateStat _update;
 
-        private int _frameTimeIndex;
+        private readonly Rect _dest;
 
-        internal double UpdateRate { get; private set; }
+        internal double FrameTime => _frame.Time;
 
-        internal double UpdateTime { get; private set; }
+        internal double FrameRate => _frame.Rate;
 
-        private readonly double[] _updateTimes;
+        internal double UpdateTime => _update.Time;
 
-        private int _updateTimeIndex;
+        internal double UpdateRate => _update.Rate;
 
         internal Window()
         {
-            _frameTimes = new double[30];
-            _frameTimeIndex = 0;
+            _dest = new Rect(1130, 660, 50, 60);
 
-            _updateTimes = new double[30];
-            _updateTimeIndex = 0;
+            _frame = new RateStat(_dest - new Rect(y: _dest.H / 2));
+            _update = new RateStat(_dest + new Rect(y: _dest.H / 2));
+        }
+
+        internal void Init()
+        {
+            _background = KT.CreateImage(new Image(KT.KotonoPath + "Assets/PerformanceWindow/background.png", new Rect(_dest.X, _dest.Y, 300, 120)));
+            
+            _frame.Init();
+            _update.Init();
         }
 
         internal void Update()
         {
-            KT.Print(FrameRate.ToString());
+            _frame.Update();
+            _update.Update();
         }
 
         internal void AddFrameTime(double frameTime)
         {
-            _frameTimes[_frameTimeIndex] = frameTime;
-            _frameTimeIndex = (_frameTimeIndex + 1) % _frameTimes.Length;
-
-            double sum = 0;
-
-            foreach (double time in _frameTimes)
-            {
-                sum += time;
-            }
-
-            FrameTime = sum / _frameTimes.Length;
-
-            FrameRate = 1 / FrameTime;
+            _frame.AddTime(frameTime);
         }
 
         internal void AddUpdateTime(double updateTime)
         {
+            _update.AddTime(updateTime);
+        }
 
-            _updateTimes[_updateTimeIndex] = updateTime;
-            _updateTimeIndex = (_updateTimeIndex + 1) % _updateTimes.Length;
+        internal void Show()
+        {
+            KT.ShowImage(_background);
+            _frame.Show();
+            _update.Show();
+        }
 
-            double sum = 0;
-
-            foreach (double time in _updateTimes)
-            {
-                sum += time;
-            }
-
-            UpdateTime = sum / _updateTimes.Length;
-
-            UpdateRate = 1 / UpdateTime;
+        internal void Hide()
+        {
+            KT.HideImage(_background);
+            _frame.Hide();
+            _update.Hide();
         }
     }
 }

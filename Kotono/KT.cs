@@ -8,7 +8,7 @@ using Kotono.Graphics.Print;
 using Kotono.Utils;
 using OpenTK.Mathematics;
 using Performance = Kotono.Graphics.Performance;
-
+using Text = Kotono.Graphics.Objects.Text;
 
 namespace Kotono
 {
@@ -44,6 +44,7 @@ namespace Kotono
         {
             ShaderManager.Init();
             Text.InitPaths();
+            PerformanceWindow.Init();
         }
 
         public static void SetWindowSize(float width, float height)
@@ -245,25 +246,25 @@ namespace Kotono
         internal static void AddPerformanceWindowUpdateTime(double updateTime)
             => PerformanceWindow.AddUpdateTime(updateTime);
 
-        public static double GetPerformanceWindowFrameTime()
+        public static double GetFrameTime()
             => PerformanceWindow.FrameTime;
 
-        public static double GetPerformanceWindowUpdateTime()
+        public static double GetUpdateTime()
             => PerformanceWindow.UpdateTime;
 
-        public static double GetPerformanceWindowFrameRate()
+        public static double GetFrameRate()
             => PerformanceWindow.FrameRate;
 
-        public static double GetPerformanceWindowUpdateRate()
+        public static double GetUpdateRate()
             => PerformanceWindow.UpdateRate;
 
         public static void Update()
         {
             Time.Update();
-            PerformanceWindow.Update();
             ObjectManager.Update();
             CameraManager.Update();
             Printer.Update();
+            PerformanceWindow.Update();
         }
 
         public static void RenderFrame()

@@ -66,7 +66,7 @@ namespace Kotono.Graphics.Objects
 
             _dest = dest;
 
-            _transformation = new();
+            _transformation = new Rect();
 
             _texture = TextureManager.LoadTexture(path);
         }

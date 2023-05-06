@@ -5,7 +5,7 @@ namespace Kotono.Graphics.Print
 {
     internal class Printer
     {
-        private readonly List<Text> _texts = new();
+        private readonly List<PrinterText> _texts = new();
 
         internal Printer() { }
 
@@ -27,7 +27,7 @@ namespace Kotono.Graphics.Print
             {
                 _text.Lower();
             }
-            _texts.Add(new Text(text));
+            _texts.Add(new PrinterText(text));
         }
     }
 }
