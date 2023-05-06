@@ -86,8 +86,8 @@ namespace Kotono
         {
             base.OnResize(e);
 
-            GL.Viewport(0, 0, Size.X, Size.Y);
-            KT.SetWindowSize(Size.X, Size.Y);
+            GL.Viewport(0, 0, Size.X / 2, Size.Y / 2);
+            KT.SetWindowSize(Size.X / 2, Size.Y / 2);
         }
 
         protected override void OnUnload()
