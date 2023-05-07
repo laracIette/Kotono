@@ -12,11 +12,9 @@ namespace Kotono.Graphics
 
         public float H { get; set; }
 
-        public Rect() : this(0f) { }
+        public Rect() : this(0f, 0f, 0f, 0f) { }
 
-        public Rect(float n) : this(n, n, n, n) { }
-
-        public Rect(float x = 0, float y = 0, float w = 0, float h = 0)
+        public Rect(float x = 0, float y = 0, float w = 0, float h = 0) 
         {
             X = x;
             Y = y;
@@ -26,10 +24,10 @@ namespace Kotono.Graphics
 
         public Rect Normalized =>
             new(
-                2 * X / KT.Width - 1,
-                1 - 2 * Y / KT.Height,
-                W / KT.Width * 2,
-                H / KT.Height * 2
+                2 * X / KT.CurrentViewportWidth - 1,
+                1 - 2 * Y / KT.CurrentViewportHeight,
+                W / KT.CurrentViewportWidth * 2,
+                H / KT.CurrentViewportHeight * 2
             );
 
         public static bool operator ==(Rect left, Rect right)

@@ -85,6 +85,14 @@ namespace Kotono.Graphics.Objects
             }
         }
 
+        internal void UpdateShaders()
+        {
+            foreach (var image in _images)
+            {
+                image.UpdateShaders();
+            }
+        }
+
         internal void Draw()
         {
             foreach (var image in _images)

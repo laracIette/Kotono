@@ -79,6 +79,11 @@ namespace Kotono.Graphics.Objects
             }
         }
 
+        public void UpdateShaders()
+        {
+
+        }
+
         public void Draw()
         {
             GL.Disable(EnableCap.DepthTest);
