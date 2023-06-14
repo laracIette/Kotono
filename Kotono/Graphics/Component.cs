@@ -8,13 +8,13 @@ namespace Kotono.Graphics
         
         private readonly ImageManager _imageManager = new();
 
-        private readonly int _background;
+        private readonly Image _background;
         
         internal Component(Rect dest) 
         { 
             _viewport = new Viewport(dest);
 
-            _background = _imageManager.Create(new Image(KT.KotonoPath + "Assets/PerformanceWindow/background.png", dest * new Rect(0, 0, 1, 1)));
+            //_background = _imageManager.Create(new Image(KT.KotonoPath + "Assets/PerformanceWindow/background.png", dest * new Rect(0, 0, 1, 1)));
         }
 
         internal void Update()

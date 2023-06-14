@@ -1,4 +1,6 @@
 ﻿using Assimp;
+using Kotono.Graphics.Objects.Hitboxes;
+using Kotono.Physics;
 using Kotono.Utils;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
@@ -20,11 +22,11 @@ namespace Kotono.Graphics.Objects.Meshes
 
         private Vector3 _angleVelocity;
 
-        private readonly int[] _hitboxes;
+        private readonly IHitbox[] _hitboxes;
 
         protected readonly ShaderType _shaderType;
 
-        public MeshOBJ(string path, Vector3 position, Vector3 angle, Vector3 scale, string diffusePath, string specularPath, ShaderType shaderType, Vector3 color, int[] hitboxes)
+        public MeshOBJ(string path, Vector3 position, Vector3 angle, Vector3 scale, string diffusePath, string specularPath, ShaderType shaderType, Vector3 color, IHitbox[] hitboxes)
         {
             var diffuseMap = TextureManager.LoadTexture(diffusePath);
             var specularMap = TextureManager.LoadTexture(specularPath);
@@ -108,10 +110,10 @@ namespace Kotono.Graphics.Objects.Meshes
 
             foreach (var hitbox in _hitboxes)
             {
-                KT.SetHitBoxPosition(hitbox, Position);
-                KT.SetHitBoxAngle(hitbox, Vector3.Zero);
-                KT.SetHitBoxScale(hitbox, Scale * 2);
-                KT.SetHitBoxColor(hitbox, Vector3.UnitX);
+                hitbox.Position = Position;
+                hitbox.Angle = Vector3.Zero;
+                hitbox.Scale = Scale * 2;
+                hitbox.Color = Vector3.UnitX;
             }
         }
 
@@ -127,11 +129,11 @@ namespace Kotono.Graphics.Objects.Meshes
 
             foreach (var hitbox in _hitboxes)
             {
-                KT.SetHitBoxPosition(hitbox, tempPos);
+                hitbox.Position = tempPos;
 
-                if (KT.IsHitboxColliding(hitbox))
+                if (hitbox.IsColliding())
                 {
-                    KT.SetHitBoxPosition(hitbox, Position);
+                    hitbox.Position = Position;
                 }
                 else
                 {
@@ -153,6 +155,8 @@ namespace Kotono.Graphics.Objects.Meshes
 
             GL.DrawElements(PrimitiveType.Triangles, IndicesCount, DrawElementsType.UnsignedInt, IntPtr.Zero);
         }
+
+        public CollisionState Collision { get; set; }
 
         public int VertexArrayObject { get; }
 

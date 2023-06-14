@@ -2,14 +2,15 @@
 
 namespace Kotono.Physics
 {
+    public enum CollisionState
+    {
+        None,
+        BlockAll,
+        BlockSelection
+    }
+
     internal sealed class Fiziks
     {
-        internal enum CollisionState
-        {
-            None,
-            BlockAll,
-            BlockSelection
-        }
 
         private Fiziks() { }
 

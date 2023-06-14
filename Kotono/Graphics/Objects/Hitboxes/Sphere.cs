@@ -3,6 +3,7 @@ using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Kotono.Graphics.Objects.Hitboxes
 {
@@ -26,7 +27,7 @@ namespace Kotono.Graphics.Objects.Hitboxes
 
         public Vector3 Color { get; set; } = Vector3.One;
 
-        public List<int> Collisions { get; set; } = new();
+        public List<IHitbox> Collisions { get; set; } = new();
 
         public Sphere()
         {
@@ -89,9 +90,17 @@ namespace Kotono.Graphics.Objects.Hitboxes
         }
 
         public bool Collides(IHitbox h)
-            => (Math.Abs(Position.X - h.Position.X) <= (Scale.X + h.Scale.X) / 2)
-            && (Math.Abs(Position.Y - h.Position.Y) <= (Scale.Y + h.Scale.Y) / 2)
-            && (Math.Abs(Position.Z - h.Position.Z) <= (Scale.Z + h.Scale.Z) / 2);
+        {
+            return (Math.Abs(Position.X - h.Position.X) <= (Scale.X + h.Scale.X) / 2)
+                && (Math.Abs(Position.Y - h.Position.Y) <= (Scale.Y + h.Scale.Y) / 2)
+                && (Math.Abs(Position.Z - h.Position.Z) <= (Scale.Z + h.Scale.Z) / 2);
+        }
+
+
+        public bool IsColliding()
+        {
+            return Collisions.Any(Collides);
+        }
 
     }
 }

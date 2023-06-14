@@ -4,6 +4,7 @@ using Kotono.Graphics.Objects.Meshes;
 using Kotono.Utils;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
+using System.Collections.Generic;
 
 namespace Kotono.Graphics.Objects
 {
@@ -31,115 +32,91 @@ namespace Kotono.Graphics.Objects
 
         #region Mesh
 
-        internal int CreateMesh(IMesh mesh)
-            => _meshManager.Create(mesh);
+        internal void CreateMesh(IMesh mesh)
+        {
+            _meshManager.Create(mesh);
+        }
 
-        internal void DeleteMesh(int index)
-            => _meshManager.Delete(index);
-
-        internal Vector3 GetMeshPosition(int index)
-            => _meshManager.GetPosition(index);
-
-        internal void SetMeshColor(int index, Vector3 color)
-            => _meshManager.SetColor(index, color);
+        internal void DeleteMesh(IMesh mesh)
+        {
+            _meshManager.Delete(mesh);
+        }
 
         #endregion Mesh
 
         #region Hitbox
 
-        internal int CreateHitbox(IHitbox hitbox)
-            => _hitboxManager.Create(hitbox);
+        internal void CreateHitbox(IHitbox hitbox)
+        {
+            _hitboxManager.Create(hitbox);
+        }
 
-        internal void DeleteHitbox(int index)
-            => _hitboxManager.Delete(index);
+        internal void DeleteHitbox(IHitbox hitbox)
+        {
+            _hitboxManager.Delete(hitbox);
+        }
 
-        internal void SetHitBoxPosition(int index, Vector3 position)
-            => _hitboxManager.SetPosition(index, position);
+        internal List<IHitbox> GetAllHitboxes()
+        {
+            return _hitboxManager.GetAll();   
+        }
 
-        internal void SetHitBoxAngle(int index, Vector3 angle)
-            => _hitboxManager.SetAngle(index, angle);
-
-        internal void SetHitBoxScale(int index, Vector3 scale)
-            => _hitboxManager.SetScale(index, scale);
-
-        internal void SetHitBoxColor(int index, Vector3 color)
-            => _hitboxManager.SetColor(index, color);
-
-        internal void AddHitboxCollision(int index, int hitboxIndex)
-            => _hitboxManager.AddCollision(index, hitboxIndex);
-
-        internal void AddHitboxCollision(int index, int[] hitboxIndexes)
-            => _hitboxManager.AddCollision(index, hitboxIndexes);
-
-        internal int[] GetAllHitboxes()
-            => _hitboxManager.GetAll();
-
-        internal bool IsHitboxColliding(int index) 
-            => _hitboxManager.IsColliding(index);
-        
         #endregion Hitbox
 
         #region PointLight
 
-        internal int CreatePointLight(PointLight pointLight)
-            => _pointLightManager.Create(pointLight);
+        internal void CreatePointLight(PointLight pointLight)
+        {
+            _pointLightManager.Create(pointLight);
+        }
 
-        internal void DeletePointLight(int index)
-            => _pointLightManager.Delete(index);
+        internal void DeletePointLight(PointLight pointLight)
+        {
+            _pointLightManager.Delete(pointLight);
+        }
 
         internal int GetPointLightsCount()
-            => _pointLightManager.GetCount();
+        {
+            return _pointLightManager.GetCount();
+        }
 
-        internal int GetFirstPointLightIndex()
-            => _pointLightManager.GetFirstIndex();
+        internal PointLight GetFirstPointLight()
+        {
+            return _pointLightManager.GetFirst();
+        }
 
         #endregion PointLight
 
         #region SpotLight
 
-        internal int CreateSpotLight(SpotLight spotLight)
-            => _spotLightManager.Create(spotLight);
-        internal void DeleteSpotLight(int index)
-            => _spotLightManager.Delete(index);
+        internal void CreateSpotLight(SpotLight spotLight)
+        {
+            _spotLightManager.Create(spotLight);
+        }
+
+        internal void DeleteSpotLight(SpotLight spotLight)
+        {
+            _spotLightManager.Delete(spotLight);
+        }
+
         internal int GetSpotLightsCount()
-            => _spotLightManager.GetCount();
+        {
+            return _spotLightManager.GetCount();
+        }
 
         #endregion SpotLight
 
         #region Image
 
-        internal int CreateImage(Image image)
-            => _imageManager.Create(image);
+        internal void CreateImage(Image image)
+        {
+            _imageManager.Create(image);
+        }
 
-        internal void DeleteImage(int index)
-            => _imageManager.Delete(index);
-
-        internal Rect GetImageRect(int index)
-            => _imageManager.GetRect(index);
-
-        internal void SetImageX(int index, float x)
-            => _imageManager.SetX(index, x);
-
-        internal void SetImageY(int index, float y)
-            => _imageManager.SetY(index, y);
-
-        internal void SetImageW(int index, float w)
-            => _imageManager.SetW(index, w);
-
-        internal void SetImageH(int index, float h)
-            => _imageManager.SetH(index, h);
-
-        internal void TransformImage(int index, Rect transformation, double time)
-            => _imageManager.Transform(index, transformation, time);
-        
-        internal void TransformImageTo(int index, Rect dest, double time)
-            => _imageManager.TransformTo(index, dest, time);
-
-        internal void ShowImage(int index)
-            => _imageManager.Show(index);
-
-        internal void HideImage(int index)
-            => _imageManager.Hide(index);
+        internal void DeleteImage(Image image)
+        {
+            _imageManager.Delete(image);
+        }
 
         #endregion Image
 

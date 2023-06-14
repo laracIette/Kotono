@@ -17,7 +17,7 @@ namespace Kotono.Graphics.Objects.Meshes
                   KT.ProjectPath + @"Assets/white.png",
                   ShaderType.PointLight,
                   Vector3.One,
-                  new int[]
+                  new IHitbox[]
                   {
                       KT.CreateHitbox(new Sphere())
                   }

@@ -11,6 +11,8 @@ namespace Kotono.Graphics.Objects.Hitboxes
 
         public bool Collides(IHitbox b);
 
+        public bool IsColliding();
+
         public Vector3 Position { get; set; }
 
         public Vector3 Angle { get; set; }
@@ -19,6 +21,6 @@ namespace Kotono.Graphics.Objects.Hitboxes
 
         public Vector3 Color { get; set; }
 
-        public List<int> Collisions { get; set; }
+        public List<IHitbox> Collisions { get; set; }
     }
 }

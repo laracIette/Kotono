@@ -7,6 +7,7 @@ using Kotono.Graphics.Objects.Meshes;
 using Kotono.Graphics.Print;
 using Kotono.Utils;
 using OpenTK.Mathematics;
+using System.Collections.Generic;
 using Performance = Kotono.Graphics.Performance;
 using ShaderType = Kotono.Graphics.ShaderType;
 using Text = Kotono.Graphics.Objects.Text;
@@ -71,118 +72,102 @@ namespace Kotono
 
         #region Image
 
-        public static int CreateImage(Image image)
-            => _objectManager.CreateImage(image);
+        public static Image CreateImage(Image image)
+        {
+            _objectManager.CreateImage(image);
+            return image;
+        }
 
-        public static void DeleteImage(int index)
-            => _objectManager.DeleteImage(index);
+        public static Image CreateImage(string path, Rect dest)
+        {
+            return CreateImage(new Image(path, dest));
+        }
 
-        public static void GetImageRect(int index)
-            => _objectManager.GetImageRect(index);
-
-        public static void SetImageX(int index, float x)
-            => _objectManager.SetImageX(index, x);
-
-        public static void SetImageY(int index, float y)
-            => _objectManager.SetImageY(index, y);
-
-        public static void SetImageW(int index, float w)
-            => _objectManager.SetImageW(index, w);
-
-        public static void SetImageH(int index, float h)
-            => _objectManager.SetImageH(index, h);
-
-        public static void TransformImage(int index, Rect transformation, double time)
-            => _objectManager.TransformImage(index, transformation, time);
-
-        public static void TransformImageTo(int index, Rect dest, double time)
-            => _objectManager.TransformImageTo(index, dest, time);
-
-        public static void ShowImage(int index)
-            => _objectManager.ShowImage(index);
-
-        public static void HideImage(int index)
-            => _objectManager.HideImage(index);
+        public static void DeleteImage(Image image)
+        {
+            _objectManager.DeleteImage(image);
+        }
 
         #endregion Image
 
         #region Mesh
 
-        public static int CreateMesh(IMesh mesh)
-            => _objectManager.CreateMesh(mesh);
+        public static IMesh CreateMesh(IMesh mesh)
+        {
+            _objectManager.CreateMesh(mesh);
+            return mesh;
+        }
 
-        public static void DeleteMesh(int index)
-            => _objectManager.DeleteMesh(index);
-
-        public static Vector3 GetMeshPosition(int index)
-            => _objectManager.GetMeshPosition(index);
-
-        public static void SetMeshColor(int index, Vector3 color)
-            => _objectManager.SetMeshColor(index, color);
+        public static void DeleteMesh(IMesh mesh)
+        {
+            _objectManager.DeleteMesh(mesh);
+        }
 
         #endregion Mesh
 
         #region Hitbox
 
-        public static int CreateHitbox(IHitbox hitbox)
-            => _objectManager.CreateHitbox(hitbox);
+        public static IHitbox CreateHitbox(IHitbox hitbox)
+        {
+            _objectManager.CreateHitbox(hitbox);
+            return hitbox;
+        }
 
-        public static void DeleteHitbox(int index)
-            => _objectManager.DeleteHitbox(index);
+        public static void DeleteHitbox(IHitbox hitbox)
+        {
+            _objectManager.DeleteHitbox(hitbox);
+        }
 
-        public static void SetHitBoxPosition(int index, Vector3 position)
-            => _objectManager.SetHitBoxPosition(index, position);
-
-        public static void SetHitBoxAngle(int index, Vector3 angle)
-            => _objectManager.SetHitBoxAngle(index, angle);
-
-        public static void SetHitBoxScale(int index, Vector3 scale)
-            => _objectManager.SetHitBoxScale(index, scale);
-
-        public static void SetHitBoxColor(int index, Vector3 color)
-            => _objectManager.SetHitBoxColor(index, color);
-
-        public static void AddHitboxCollision(int index, int hitboxIndex)
-            => _objectManager.AddHitboxCollision(index, hitboxIndex);
-
-        public static void AddHitboxCollision(int index, int[] hitboxIndexes)
-            => _objectManager.AddHitboxCollision(index, hitboxIndexes);
-
-        public static int[] GetAllHitboxes()
-            => _objectManager.GetAllHitboxes();
-
-        public static bool IsHitboxColliding(int index)
-            => _objectManager.IsHitboxColliding(index);
+        public static List<IHitbox> GetAllHitboxes()
+        {
+            return _objectManager.GetAllHitboxes();
+        }
 
         #endregion Hitbox
 
         #region PointLight
 
-        public static int CreatePointLight(PointLight pointLight)
-            => _objectManager.CreatePointLight(pointLight);
+        public static PointLight CreatePointLight(PointLight pointLight)
+        {
+            _objectManager.CreatePointLight(pointLight);
+            return pointLight;
+        }
 
-        public static void DeletePointLight(int index)
-            => _objectManager.DeletePointLight(index);
+        public static void DeletePointLight(PointLight pointLight)
+        {
+            _objectManager.DeletePointLight(pointLight);
+        }
 
         public static int GetPointLightsCount()
-            => _objectManager.GetPointLightsCount();
+        {
+            return _objectManager.GetPointLightsCount();
+        }
 
-        public static int GetFirstPointLightIndex()
-            => _objectManager.GetFirstPointLightIndex();
+        public static PointLight GetFirstPointLight()
+        {
+            return _objectManager.GetFirstPointLight();
+        }
 
         #endregion PointLight
 
         #region SpotLight
 
-        public static int CreateSpotLight(SpotLight spotLight)
-            => _objectManager.CreateSpotLight(spotLight);
+        public static SpotLight CreateSpotLight(SpotLight spotLight)
+        {
+            _objectManager.CreateSpotLight(spotLight);
+            return spotLight;
+        }
 
-        public static void DeleteSpotLight(int index)
-            => _objectManager.DeleteSpotLight(index);
+        public static void DeleteSpotLight(SpotLight spotLight)
+        { 
+            _objectManager.DeleteSpotLight(spotLight);
+        }
 
         public static int GetSpotLightsCount()
-            => _objectManager.GetSpotLightsCount();
-       
+        {
+            return _objectManager.GetSpotLightsCount();
+        }
+
         #endregion SpotLight
 
         #endregion ObjectManager

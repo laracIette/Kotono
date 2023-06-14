@@ -113,5 +113,15 @@ namespace Kotono.Graphics.Objects
         {
             Transform(dest - _dest, time);
         }
+
+        public void Show()
+        {
+            IsDraw = true;
+        }
+
+        public void Hide()
+        {
+            IsDraw = false;
+        }
     }
 }

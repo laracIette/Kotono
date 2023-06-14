@@ -1,6 +1,6 @@
 ﻿using OpenTK.Mathematics;
 using System;
-using static Kotono.Physics.Fiziks;
+using Kotono.Physics;
 
 namespace Kotono.Graphics.Objects.Meshes
 {
@@ -30,6 +30,6 @@ namespace Kotono.Graphics.Objects.Meshes
 
         public int SpecularMap { get; }
 
-        public CollisionState Collision { get; }
+        public CollisionState Collision { get; set; }
     }
 }

@@ -20,7 +20,7 @@ namespace Kotono.Graphics.Objects.Lights
 
         private int _shaderIndex;
 
-        private readonly int _mesh;
+        private readonly IMesh _mesh;
 
         public PointLight(Vector3 position, Vector3 ambient, Vector3 diffuse, Vector3 specular, float constant, float linear, float quadratic)
         {
@@ -37,7 +37,7 @@ namespace Kotono.Graphics.Objects.Lights
 
         public virtual void Update()
         {
-            KT.SetMeshColor(_mesh, _diffuse);
+            _mesh.Color = _diffuse;
         }
 
         public void UpdateIndex()
@@ -47,7 +47,7 @@ namespace Kotono.Graphics.Objects.Lights
 
         public void UpdateShaders()
         {
-            KT.SetShaderVector3(ShaderType.Lighting, $"pointLights[{_shaderIndex}].position", KT.GetMeshPosition(_mesh));
+            KT.SetShaderVector3(ShaderType.Lighting, $"pointLights[{_shaderIndex}].position", _mesh.Position);
             KT.SetShaderVector3(ShaderType.Lighting, $"pointLights[{_shaderIndex}].ambient", _ambient);
             KT.SetShaderVector3(ShaderType.Lighting, $"pointLights[{_shaderIndex}].diffuse", _diffuse);
             KT.SetShaderVector3(ShaderType.Lighting, $"pointLights[{_shaderIndex}].specular", _specular);

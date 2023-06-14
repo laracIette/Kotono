@@ -10,48 +10,29 @@ namespace Kotono.Graphics.Objects
 
         private readonly List<SpotLight> _spotLights = new();
 
-        /// <summary>
-        /// Key: Direct Index,
-        /// Value: Real Index.
-        /// </summary>
-        private readonly Dictionary<int, int> _indexOffset = new();
-
-        private int _spotLightIndex = 0;
-
         internal SpotLightManager() { }
 
-        internal int Create(SpotLight spotLight)
+        internal void Create(SpotLight spotLight)
         {
             if (_spotLights.Count >= MAX)
             {
-                throw new Exception($"The number of SpotLight is already at its max value: {MAX}.");
+                KT.Print($"The number of SpotLight is already at its max value: {MAX}.");
             }
-
-            _indexOffset[_spotLightIndex] = _spotLights.Count;
-
-            _spotLights.Add(spotLight);
-
-            return _spotLightIndex++;
+            else
+            {
+                _spotLights.Add(spotLight);
+            }
         }
 
-        internal void Delete(int index)
+        internal void Delete(SpotLight spotLight)
         {
             if (_spotLights.Count <= 0)
             {
-                throw new Exception($"The number of SpotLight is already at 0.");
+                KT.Print($"The number of SpotLight is already at 0.");
             }
-
-            _spotLights[_indexOffset[index]].Dispose();
-            _spotLights.RemoveAt(_indexOffset[index]);
-            _indexOffset.Remove(index);
-
-            foreach (var i in _indexOffset.Keys)
+            else
             {
-                if (i > index)
-                {
-                    _indexOffset[i]--;
-                    _spotLights[_indexOffset[i]].UpdateIndex();
-                }
+                _spotLights.Remove(spotLight);
             }
         }
 
@@ -72,7 +53,9 @@ namespace Kotono.Graphics.Objects
         }
 
         internal int GetCount()
-            => _spotLights.Count;
+        {
+            return _spotLights.Count;
+        }
 
         internal void Draw()
         {

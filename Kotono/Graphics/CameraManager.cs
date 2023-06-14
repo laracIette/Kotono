@@ -31,18 +31,20 @@ namespace Kotono.Graphics
         {
             if (_cameras.Count <= 0)
             {
-                throw new Exception($"The number of Camera is already at 0.");
+                KT.Print($"The number of Camera is already at 0.");
             }
-
-            _cameras.RemoveAt(_indexOffset[index]);
-
-            _indexOffset.Remove(index);
-
-            foreach (var i in _indexOffset.Keys)
+            else
             {
-                if (i > index)
+                _cameras.RemoveAt(_indexOffset[index]);
+
+                _indexOffset.Remove(index);
+
+                foreach (var i in _indexOffset.Keys)
                 {
-                    _indexOffset[i]--;
+                    if (i > index)
+                    {
+                        _indexOffset[i]--;
+                    }
                 }
             }
         }
