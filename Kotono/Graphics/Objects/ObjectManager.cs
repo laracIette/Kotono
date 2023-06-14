@@ -24,20 +24,18 @@ namespace Kotono.Graphics.Objects
 
         internal ObjectManager() { }
 
-        internal int CreateImage(Image image)
-            => _imageManager.Create(image);
+        internal void Init()
+        {
+            _viewport.Init();
+        }
+
+        #region Mesh
 
         internal int CreateMesh(IMesh mesh)
             => _meshManager.Create(mesh);
-        
-        internal int CreateHitbox(IHitbox hitbox)
-            => _hitboxManager.Create(hitbox);
 
-        internal int CreatePointLight(PointLight pointLight)
-            => _pointLightManager.Create(pointLight);
-
-        internal int CreateSpotLight(SpotLight spotLight)
-            => _spotLightManager.Create(spotLight);
+        internal void DeleteMesh(int index)
+            => _meshManager.Delete(index);
 
         internal Vector3 GetMeshPosition(int index)
             => _meshManager.GetPosition(index);
@@ -45,20 +43,76 @@ namespace Kotono.Graphics.Objects
         internal void SetMeshColor(int index, Vector3 color)
             => _meshManager.SetColor(index, color);
 
-        internal void DeleteImage(int index)
-            => _imageManager.Delete(index);
+        #endregion Mesh
 
-        internal void DeleteMesh(int index)
-            => _meshManager.Delete(index);
+        #region Hitbox
+
+        internal int CreateHitbox(IHitbox hitbox)
+            => _hitboxManager.Create(hitbox);
 
         internal void DeleteHitbox(int index)
             => _hitboxManager.Delete(index);
 
+        internal void SetHitBoxPosition(int index, Vector3 position)
+            => _hitboxManager.SetPosition(index, position);
+
+        internal void SetHitBoxAngle(int index, Vector3 angle)
+            => _hitboxManager.SetAngle(index, angle);
+
+        internal void SetHitBoxScale(int index, Vector3 scale)
+            => _hitboxManager.SetScale(index, scale);
+
+        internal void SetHitBoxColor(int index, Vector3 color)
+            => _hitboxManager.SetColor(index, color);
+
+        internal void AddHitboxCollision(int index, int hitboxIndex)
+            => _hitboxManager.AddCollision(index, hitboxIndex);
+
+        internal void AddHitboxCollision(int index, int[] hitboxIndexes)
+            => _hitboxManager.AddCollision(index, hitboxIndexes);
+
+        internal int[] GetAllHitboxes()
+            => _hitboxManager.GetAll();
+
+        internal bool IsHitboxColliding(int index) 
+            => _hitboxManager.IsColliding(index);
+        
+        #endregion Hitbox
+
+        #region PointLight
+
+        internal int CreatePointLight(PointLight pointLight)
+            => _pointLightManager.Create(pointLight);
+
         internal void DeletePointLight(int index)
             => _pointLightManager.Delete(index);
 
+        internal int GetPointLightsCount()
+            => _pointLightManager.GetCount();
+
+        internal int GetFirstPointLightIndex()
+            => _pointLightManager.GetFirstIndex();
+
+        #endregion PointLight
+
+        #region SpotLight
+
+        internal int CreateSpotLight(SpotLight spotLight)
+            => _spotLightManager.Create(spotLight);
         internal void DeleteSpotLight(int index)
             => _spotLightManager.Delete(index);
+        internal int GetSpotLightsCount()
+            => _spotLightManager.GetCount();
+
+        #endregion SpotLight
+
+        #region Image
+
+        internal int CreateImage(Image image)
+            => _imageManager.Create(image);
+
+        internal void DeleteImage(int index)
+            => _imageManager.Delete(index);
 
         internal Rect GetImageRect(int index)
             => _imageManager.GetRect(index);
@@ -87,39 +141,7 @@ namespace Kotono.Graphics.Objects
         internal void HideImage(int index)
             => _imageManager.Hide(index);
 
-        internal void SetHitBoxPosition(int index, Vector3 position)
-            => _hitboxManager.SetPosition(index, position);
-
-        internal void SetHitBoxAngle(int index, Vector3 angle)
-            => _hitboxManager.SetAngle(index, angle);
-
-        internal void SetHitBoxScale(int index, Vector3 scale)
-            => _hitboxManager.SetScale(index, scale);
-
-        internal void SetHitBoxColor(int index, Vector3 color)
-            => _hitboxManager.SetColor(index, color);
-        
-
-        internal void AddHitboxCollision(int index, int hitboxIndex)
-            => _hitboxManager.AddCollision(index, hitboxIndex);
-
-        internal void AddHitboxCollision(int index, int[] hitboxIndexes)
-            => _hitboxManager.AddCollision(index, hitboxIndexes);
-
-        internal int[] GetAllHitboxes()
-            => _hitboxManager.GetAll();
-
-        internal bool IsHitboxColliding(int index) 
-            => _hitboxManager.IsColliding(index);
-
-        internal int GetPointLightsCount()
-            => _pointLightManager.GetCount();
-        
-        internal int GetSpotLightsCount()
-            => _spotLightManager.GetCount();
-
-        internal int GetFirstPointLightIndex()
-            => _pointLightManager.GetFirstIndex();
+        #endregion Image
 
         internal void Update()
         {

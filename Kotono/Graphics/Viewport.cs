@@ -44,12 +44,16 @@ namespace Kotono.Graphics
             _dest = dest;
         }
 
+        internal void Init()
+        {
+        }
+
         internal void Use()
         {
             GL.Viewport((int)X, (int)Y, (int)W, (int)H);
-            
-            //KT.SetCameraAspectRatio(0, W / H);
 
+            KT.SetCameraAspectRatio(0, W / H);
+            
             KT.CurrentViewportWidth = W;
             KT.CurrentViewportHeight = H;
         }

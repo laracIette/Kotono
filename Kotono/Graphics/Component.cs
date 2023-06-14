@@ -14,7 +14,7 @@ namespace Kotono.Graphics
         { 
             _viewport = new Viewport(dest);
 
-            _background = _imageManager.Create(new Image(KT.KotonoPath + "Assets/PerformanceWindow/background.png", dest));
+            _background = _imageManager.Create(new Image(KT.KotonoPath + "Assets/PerformanceWindow/background.png", dest * new Rect(0, 0, 1, 1)));
         }
 
         internal void Update()
@@ -29,7 +29,7 @@ namespace Kotono.Graphics
 
         internal void Draw()
         {
-            _viewport.Use();
+            _viewport.Use(); 
 
             _imageManager.Draw();
         }

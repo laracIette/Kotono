@@ -1,5 +1,6 @@
 ﻿using OpenTK.Mathematics;
 using System;
+using static Kotono.Physics.Fiziks;
 
 namespace Kotono.Graphics.Objects.Meshes
 {
@@ -28,5 +29,7 @@ namespace Kotono.Graphics.Objects.Meshes
         public int DiffuseMap { get; }
 
         public int SpecularMap { get; }
+
+        public CollisionState Collision { get; }
     }
 }
