@@ -94,6 +94,9 @@ namespace Kotono.Graphics.Objects
             _paths['/'] = KT.KotonoPath + @"Assets\Characters\fslash.png"; TextureManager.LoadTexture(_paths['/']);
             _paths['\\'] = KT.KotonoPath + @"Assets\Characters\bslash.png"; TextureManager.LoadTexture(_paths['\\']);
             _paths['.'] = KT.KotonoPath + @"Assets\Characters\dot.png"; TextureManager.LoadTexture(_paths['.']);
+            _paths['-'] = KT.KotonoPath + @"Assets\Characters\minus.png"; TextureManager.LoadTexture(_paths['-']);
+            _paths['+'] = KT.KotonoPath + @"Assets\Characters\plus.png"; TextureManager.LoadTexture(_paths['+']);
+            _paths[':'] = KT.KotonoPath + @"Assets\Characters\colon.png"; TextureManager.LoadTexture(_paths[':']);
         }
 
         internal Text(string text, Rect dest, Position position, float spacing = 1.0f) 

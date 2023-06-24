@@ -1,4 +1,5 @@
 ﻿using Kotono.Graphics.Objects.Meshes;
+using Kotono.Utils;
 using OpenTK.Mathematics;
 using System;
 
@@ -6,11 +7,11 @@ namespace Kotono.Graphics.Objects.Lights
 {
     public class PointLight : IDisposable
     {
-        private Vector3 _ambient;
+        private Vector _ambient;
 
-        protected Vector3 _diffuse;
+        protected Vector _diffuse;
 
-        private Vector3 _specular;
+        private Vector _specular;
 
         private float _constant;
 
@@ -22,7 +23,7 @@ namespace Kotono.Graphics.Objects.Lights
 
         private readonly IMesh _mesh;
 
-        public PointLight(Vector3 position, Vector3 ambient, Vector3 diffuse, Vector3 specular, float constant, float linear, float quadratic)
+        public PointLight(Vector position, Vector ambient, Vector diffuse, Vector specular, float constant, float linear, float quadratic)
         {
             _ambient = ambient;
             _diffuse = diffuse;
@@ -47,10 +48,10 @@ namespace Kotono.Graphics.Objects.Lights
 
         public void UpdateShaders()
         {
-            KT.SetShaderVector3(ShaderType.Lighting, $"pointLights[{_shaderIndex}].position", _mesh.Position);
-            KT.SetShaderVector3(ShaderType.Lighting, $"pointLights[{_shaderIndex}].ambient", _ambient);
-            KT.SetShaderVector3(ShaderType.Lighting, $"pointLights[{_shaderIndex}].diffuse", _diffuse);
-            KT.SetShaderVector3(ShaderType.Lighting, $"pointLights[{_shaderIndex}].specular", _specular);
+            KT.SetShaderVector(ShaderType.Lighting, $"pointLights[{_shaderIndex}].position", _mesh.Position);
+            KT.SetShaderVector(ShaderType.Lighting, $"pointLights[{_shaderIndex}].ambient", _ambient);
+            KT.SetShaderVector(ShaderType.Lighting, $"pointLights[{_shaderIndex}].diffuse", _diffuse);
+            KT.SetShaderVector(ShaderType.Lighting, $"pointLights[{_shaderIndex}].specular", _specular);
             KT.SetShaderFloat(ShaderType.Lighting, $"pointLights[{_shaderIndex}].constant", _constant);
             KT.SetShaderFloat(ShaderType.Lighting, $"pointLights[{_shaderIndex}].linear", _linear);
             KT.SetShaderFloat(ShaderType.Lighting, $"pointLights[{_shaderIndex}].quadratic", _quadratic);
@@ -67,5 +68,11 @@ namespace Kotono.Graphics.Objects.Lights
 
             GC.SuppressFinalize(this);
         }
+
+        public bool IsGravity
+        {
+            get => _mesh.IsGravity;
+            set => _mesh.IsGravity = value;
+        } 
     }
 }

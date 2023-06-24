@@ -5,6 +5,7 @@ using Kotono.Graphics.Objects.Hitboxes;
 using Kotono.Graphics.Objects.Lights;
 using Kotono.Graphics.Objects.Meshes;
 using Kotono.Graphics.Print;
+using Kotono.Physics;
 using Kotono.Utils;
 using OpenTK.Mathematics;
 using System.Collections.Generic;
@@ -227,7 +228,7 @@ namespace Kotono
         public static void DeleteCamera(int index) 
             => _cameraManager.Delete(index);
 
-        public static Vector3 GetCameraPosition(int index)
+        public static Vector GetCameraPosition(int index)
             => _cameraManager.GetPosition(index);
 
         public static Matrix4 GetCameraViewMatrix(int index)
@@ -236,13 +237,13 @@ namespace Kotono
         public static Matrix4 GetCameraProjectionMatrix(int index)
             => _cameraManager.GetProjectionMatrix(index);
         
-        public static Vector3 GetCameraFront(int index)
+        public static Vector GetCameraFront(int index)
             => _cameraManager.GetFront(index);
 
-        public static Vector3 GetCameraRight(int index)
+        public static Vector GetCameraRight(int index)
             => _cameraManager.GetRight(index);
 
-        public static Vector3 GetCameraUp(int index)
+        public static Vector GetCameraUp(int index)
             => _cameraManager.GetUp(index);
 
         public static void SetCameraAspectRatio(int index, float aspectRatio)
@@ -266,14 +267,8 @@ namespace Kotono
         public static void SetShaderMatrix4(ShaderType type, string name, Matrix4 data)
             => _shaderManager.SetMatrix4(type, name, data);
 
-        public static void SetShaderVector2(ShaderType type, string name, Vector2 data)
-            => _shaderManager.SetVector2(type, name, data);
-
-        public static void SetShaderVector3(ShaderType type, string name, Vector3 data)
-            => _shaderManager.SetVector3(type, name, data);
-
-        public static void SetShaderVector4(ShaderType type, string name, Vector4 data)
-            => _shaderManager.SetVector4(type, name, data);
+        public static void SetShaderVector(ShaderType type, string name, Vector data)
+            => _shaderManager.SetVector(type, name, data);
 
         #endregion ShaderManager
 
@@ -282,7 +277,9 @@ namespace Kotono
         private static readonly Printer _printer = new();
 
         public static void Print(string text)
-            => _printer.Print(text);
+        {
+            _printer.Print(text);
+        }
 
         #endregion Printer
 
@@ -310,13 +307,13 @@ namespace Kotono
 
         #endregion PerformanceWindow
 
-
         public static void Init()
         {
             _shaderManager.Init();
             Text.InitPaths();
             _performanceWindow.Init();
             _componentManager.Init();
+            Fiziks.Init();
         }
 
         public static void Update()
