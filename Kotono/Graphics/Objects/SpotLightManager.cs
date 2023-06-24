@@ -1,5 +1,4 @@
 ﻿using Kotono.Graphics.Objects.Lights;
-using System;
 using System.Collections.Generic;
 
 namespace Kotono.Graphics.Objects

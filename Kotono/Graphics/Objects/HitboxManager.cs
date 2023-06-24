@@ -1,8 +1,5 @@
 ﻿using Kotono.Graphics.Objects.Hitboxes;
-using OpenTK.Mathematics;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Kotono.Graphics.Objects
 {

@@ -1,7 +1,6 @@
 ﻿using Kotono.Graphics.Objects.Hitboxes;
 using Kotono.Utils;
 using OpenTK.Graphics.OpenGL4;
-using OpenTK.Mathematics;
 using System;
 
 namespace Kotono.Graphics.Objects.Meshes

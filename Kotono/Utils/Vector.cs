@@ -1,5 +1,4 @@
-﻿using Kotono.Graphics;
-using OpenTK.Mathematics;
+﻿using OpenTK.Mathematics;
 using System;
 
 namespace Kotono.Utils

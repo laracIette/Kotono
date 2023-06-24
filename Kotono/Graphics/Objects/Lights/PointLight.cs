@@ -1,6 +1,5 @@
 ﻿using Kotono.Graphics.Objects.Meshes;
 using Kotono.Utils;
-using OpenTK.Mathematics;
 using System;
 
 namespace Kotono.Graphics.Objects.Lights
