@@ -59,11 +59,11 @@ namespace Kotono.Graphics.Objects.Lights
         {
             KT.SetShaderFloat(ShaderType.Lighting, $"spotLights[{_shaderIndex}].cutOff", MathF.Cos(MathHelper.DegreesToRadians(CutOffAngle)));
             KT.SetShaderFloat(ShaderType.Lighting, $"spotLights[{_shaderIndex}].outerCutOff", MathF.Cos(MathHelper.DegreesToRadians(OuterCutOffAngle)));
-            KT.SetShaderVector3(ShaderType.Lighting, $"spotLights[{_shaderIndex}].position", KT.GetCameraPosition(0));
-            KT.SetShaderVector3(ShaderType.Lighting, $"spotLights[{_shaderIndex}].direction", KT.GetCameraFront(0));
-            KT.SetShaderVector3(ShaderType.Lighting, $"spotLights[{_shaderIndex}].ambient", new Vector3(0.0f, 0.0f, 0.0f));
-            KT.SetShaderVector3(ShaderType.Lighting, $"spotLights[{_shaderIndex}].diffuse", new Vector3(1.0f, 1.0f, 1.0f));
-            KT.SetShaderVector3(ShaderType.Lighting, $"spotLights[{ _shaderIndex}].specular", new Vector3(1.0f, 1.0f, 1.0f));
+            KT.SetShaderVector(ShaderType.Lighting, $"spotLights[{_shaderIndex}].position", KT.GetCameraPosition(0));
+            KT.SetShaderVector(ShaderType.Lighting, $"spotLights[{_shaderIndex}].direction", KT.GetCameraFront(0));
+            KT.SetShaderVector(ShaderType.Lighting, $"spotLights[{_shaderIndex}].ambient", new Vector(0.0f, 0.0f, 0.0f));
+            KT.SetShaderVector(ShaderType.Lighting, $"spotLights[{_shaderIndex}].diffuse", new Vector(1.0f, 1.0f, 1.0f));
+            KT.SetShaderVector(ShaderType.Lighting, $"spotLights[{ _shaderIndex}].specular", new Vector(1.0f, 1.0f, 1.0f));
             KT.SetShaderFloat(ShaderType.Lighting, $"spotLights[{_shaderIndex}].constant", 1.0f);
             KT.SetShaderFloat(ShaderType.Lighting, $"spotLights[{_shaderIndex}].linear", 0.09f);
             KT.SetShaderFloat(ShaderType.Lighting, $"spotLights[{_shaderIndex}].quadratic", 0.032f);

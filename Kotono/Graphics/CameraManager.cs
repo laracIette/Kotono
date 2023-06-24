@@ -1,4 +1,5 @@
-﻿using OpenTK.Mathematics;
+﻿using Kotono.Utils;
+using OpenTK.Mathematics;
 using System;
 using System.Collections.Generic;
 
@@ -31,23 +32,25 @@ namespace Kotono.Graphics
         {
             if (_cameras.Count <= 0)
             {
-                throw new Exception($"The number of Camera is already at 0.");
+                KT.Print($"The number of Camera is already at 0.");
             }
-
-            _cameras.RemoveAt(_indexOffset[index]);
-
-            _indexOffset.Remove(index);
-
-            foreach (var i in _indexOffset.Keys)
+            else
             {
-                if (i > index)
+                _cameras.RemoveAt(_indexOffset[index]);
+
+                _indexOffset.Remove(index);
+
+                foreach (var i in _indexOffset.Keys)
                 {
-                    _indexOffset[i]--;
+                    if (i > index)
+                    {
+                        _indexOffset[i]--;
+                    }
                 }
             }
         }
 
-        internal Vector3 GetPosition(int index)
+        internal Vector GetPosition(int index)
             => _cameras[_indexOffset[index]].Position;
 
         internal Matrix4 GetViewMatrix(int index)
@@ -56,13 +59,13 @@ namespace Kotono.Graphics
         internal Matrix4 GetProjectionMatrix(int index) 
             => _cameras[_indexOffset[index]].ProjectionMatrix;
 
-        internal Vector3 GetFront(int index)
+        internal Vector GetFront(int index)
             => _cameras[_indexOffset[index]].Front;
         
-        internal Vector3 GetUp(int index)
+        internal Vector GetUp(int index)
             => _cameras[_indexOffset[index]].Up;
 
-        internal Vector3 GetRight(int index)
+        internal Vector GetRight(int index)
             => _cameras[_indexOffset[index]].Right;
 
         internal void SetAspectRatio(int index, float aspectRatio)

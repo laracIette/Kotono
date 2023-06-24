@@ -69,21 +69,23 @@ namespace Kotono.Audio
         {
             if (_sounds.Count <= 0)
             {
-                throw new Exception($"The number of Sound is already at 0.");
+                KT.Print($"The number of Sound is already at 0.");
             }
-
-            AL.SourceStop(_sounds[_indexOffset[index]].Source);
-            AL.DeleteSource(_sounds[_indexOffset[index]].Source);
-
-            _sounds.RemoveAt(_indexOffset[index]);
-
-            _indexOffset.Remove(index);
-
-            foreach (var i in _indexOffset.Keys)
+            else
             {
-                if (i > index)
+                AL.SourceStop(_sounds[_indexOffset[index]].Source);
+                AL.DeleteSource(_sounds[_indexOffset[index]].Source);
+
+                _sounds.RemoveAt(_indexOffset[index]);
+
+                _indexOffset.Remove(index);
+
+                foreach (var i in _indexOffset.Keys)
                 {
-                    _indexOffset[i]--;
+                    if (i > index)
+                    {
+                        _indexOffset[i]--;
+                    }
                 }
             }
         }

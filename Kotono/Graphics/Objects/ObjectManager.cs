@@ -1,143 +1,178 @@
 ﻿using Kotono.Graphics.Objects.Hitboxes;
 using Kotono.Graphics.Objects.Lights;
 using Kotono.Graphics.Objects.Meshes;
+using Kotono.Utils;
 using OpenTK.Mathematics;
+using OpenTK.Windowing.GraphicsLibraryFramework;
+using System.Collections.Generic;
 
 namespace Kotono.Graphics.Objects
 {
     internal class ObjectManager
     {
-        private ImageManager ImageManager { get; } = new();
+        private readonly ImageManager _imageManager = new();
 
-        private MeshManager MeshManager { get; } = new();
+        private readonly MeshManager _meshManager = new();
 
-        private HitboxManager HitboxManager { get; } = new();
+        private readonly HitboxManager _hitboxManager = new();
 
-        private PointLightManager PointLightManager { get; } = new();
+        private readonly PointLightManager _pointLightManager = new();
 
-        private SpotLightManager SpotLightManager { get; } = new();
+        private readonly SpotLightManager _spotLightManager = new();
+
+        private readonly Viewport _viewport = new(0, 0, 1280, 720);
+
 
         internal ObjectManager() { }
 
-        internal int CreateImage(Image image)
-            => ImageManager.Create(image);
+        internal void Init()
+        {
+            _viewport.Init();
+        }
 
-        internal int CreateMesh(IMesh mesh)
-            => MeshManager.Create(mesh);
-        
-        internal int CreateHitbox(IHitbox hitbox)
-            => HitboxManager.Create(hitbox);
+        #region Mesh
 
-        internal int CreatePointLight(PointLight pointLight)
-            => PointLightManager.Create(pointLight);
+        internal void CreateMesh(IMesh mesh)
+        {
+            _meshManager.Create(mesh);
+        }
 
-        internal int CreateSpotLight(SpotLight spotLight)
-            => SpotLightManager.Create(spotLight);
+        internal void DeleteMesh(IMesh mesh)
+        {
+            _meshManager.Delete(mesh);
+        }
 
-        internal Vector3 GetMeshPosition(int index)
-            => MeshManager.GetPosition(index);
+        #endregion Mesh
 
-        internal void SetMeshColor(int index, Vector3 color)
-            => MeshManager.SetColor(index, color);
+        #region Hitbox
 
-        internal void DeleteImage(int index)
-            => ImageManager.Delete(index);
+        internal void CreateHitbox(IHitbox hitbox)
+        {
+            _hitboxManager.Create(hitbox);
+        }
 
-        internal void DeleteMesh(int index)
-            => MeshManager.Delete(index);
+        internal void DeleteHitbox(IHitbox hitbox)
+        {
+            _hitboxManager.Delete(hitbox);
+        }
 
-        internal void DeleteHitbox(int index)
-            => HitboxManager.Delete(index);
+        internal List<IHitbox> GetAllHitboxes()
+        {
+            return _hitboxManager.GetAll();   
+        }
 
-        internal void DeletePointLight(int index)
-            => PointLightManager.Delete(index);
+        #endregion Hitbox
 
-        internal void DeleteSpotLight(int index)
-            => SpotLightManager.Delete(index);
+        #region PointLight
 
-        internal Rect GetImageRect(int index)
-            => ImageManager.GetRect(index);
+        internal void CreatePointLight(PointLight pointLight)
+        {
+            _pointLightManager.Create(pointLight);
+        }
 
-        internal void SetImageX(int index, float x)
-            => ImageManager.SetX(index, x);
-
-        internal void SetImageY(int index, float y)
-            => ImageManager.SetY(index, y);
-
-        internal void SetImageW(int index, float w)
-            => ImageManager.SetW(index, w);
-
-        internal void SetImageH(int index, float h)
-            => ImageManager.SetH(index, h);
-
-        internal void TransformImage(int index, Rect transformation, double time)
-            => ImageManager.Transform(index, transformation, time);
-        
-        internal void TransformImageTo(int index, Rect dest, double time)
-            => ImageManager.TransformTo(index, dest, time);
-
-        internal void ShowImage(int index)
-            => ImageManager.Show(index);
-
-        internal void HideImage(int index)
-            => ImageManager.Hide(index);
-
-        internal void SetHitBoxPosition(int index, Vector3 position)
-            => HitboxManager.SetPosition(index, position);
-
-        internal void SetHitBoxAngle(int index, Vector3 angle)
-            => HitboxManager.SetAngle(index, angle);
-
-        internal void SetHitBoxScale(int index, Vector3 scale)
-            => HitboxManager.SetScale(index, scale);
-
-        internal void SetHitBoxColor(int index, Vector3 color)
-            => HitboxManager.SetColor(index, color);
-        
-
-        internal void AddHitboxCollision(int index, int hitboxIndex)
-            => HitboxManager.AddCollision(index, hitboxIndex);
-
-        internal void AddHitboxCollision(int index, int[] hitboxIndexes)
-            => HitboxManager.AddCollision(index, hitboxIndexes);
-
-        internal int[] GetAllHitboxes()
-            => HitboxManager.GetAll();
-
-        internal bool IsHitboxColliding(int index) 
-            => HitboxManager.IsColliding(index);
+        internal void DeletePointLight(PointLight pointLight)
+        {
+            _pointLightManager.Delete(pointLight);
+        }
 
         internal int GetPointLightsCount()
-            => PointLightManager.GetCount();
-        
-        internal int GetSpotLightsCount()
-            => SpotLightManager.GetCount();
+        {
+            return _pointLightManager.GetCount();
+        }
 
-        internal int GetFirstPointLightIndex()
-            => PointLightManager.GetFirstIndex();
+        internal PointLight GetFirstPointLight()
+        {
+            return _pointLightManager.GetFirst();
+        }
+
+        #endregion PointLight
+
+        #region SpotLight
+
+        internal void CreateSpotLight(SpotLight spotLight)
+        {
+            _spotLightManager.Create(spotLight);
+        }
+
+        internal void DeleteSpotLight(SpotLight spotLight)
+        {
+            _spotLightManager.Delete(spotLight);
+        }
+
+        internal int GetSpotLightsCount()
+        {
+            return _spotLightManager.GetCount();
+        }
+
+        #endregion SpotLight
+
+        #region Image
+
+        internal void CreateImage(Image image)
+        {
+            _imageManager.Create(image);
+        }
+
+        internal void DeleteImage(Image image)
+        {
+            _imageManager.Delete(image);
+        }
+
+        #endregion Image
 
         internal void Update()
         {
-            ImageManager.Update();
-            MeshManager.Update();
-            HitboxManager.Update();
-            PointLightManager.Update();
-            SpotLightManager.Update();
+            _meshManager.Update();
+            _hitboxManager.Update();
+            _pointLightManager.Update();
+            _spotLightManager.Update();
+            _imageManager.Update();
+
+            if (InputManager.KeyboardState!.IsKeyDown(Keys.Up))
+            {
+                _viewport.Y += 100 * Time.DeltaS;
+            }
+            if (InputManager.KeyboardState!.IsKeyDown(Keys.Down))
+            {
+                _viewport.Y -= 100 * Time.DeltaS;
+            }
+            if (InputManager.KeyboardState!.IsKeyDown(Keys.Left))
+            {
+                _viewport.X -= 100 * Time.DeltaS;
+            }
+            if (InputManager.KeyboardState!.IsKeyDown(Keys.Right))
+            {
+                _viewport.X += 100 * Time.DeltaS;
+            }
+
+            if (InputManager.KeyboardState!.IsKeyDown(Keys.Minus))
+            {
+                _viewport.W -= 16 * Time.DeltaS * 5;
+                _viewport.H -= 9 * Time.DeltaS * 5;
+            }
+            if (InputManager.KeyboardState!.IsKeyDown(Keys.Equal))
+            {
+                _viewport.W += 16 * Time.DeltaS * 5;
+                _viewport.H += 9 * Time.DeltaS * 5;
+            }
         }
 
         internal void UpdateShaders()
         {
-            PointLightManager.UpdateShaders();
-            SpotLightManager.UpdateShaders();
+            _pointLightManager.UpdateShaders();
+            _spotLightManager.UpdateShaders();
+            _imageManager.UpdateShaders();
         }
 
         internal void Draw()
         {
-            MeshManager.Draw();
-            HitboxManager.Draw();
-            PointLightManager.Draw();
-            SpotLightManager.Draw();
-            ImageManager.Draw();
+            _viewport.Use();
+
+            _meshManager.Draw();
+            _hitboxManager.Draw();
+            _pointLightManager.Draw();
+            _spotLightManager.Draw();
+            _imageManager.Draw();
         }
     }
 }

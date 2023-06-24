@@ -1,4 +1,5 @@
-﻿using OpenTK.Mathematics;
+﻿using Kotono.Utils;
+using OpenTK.Mathematics;
 using System.Collections.Generic;
 
 namespace Kotono.Graphics.Objects.Hitboxes
@@ -11,14 +12,16 @@ namespace Kotono.Graphics.Objects.Hitboxes
 
         public bool Collides(IHitbox b);
 
-        public Vector3 Position { get; set; }
+        public bool IsColliding();
 
-        public Vector3 Angle { get; set; }
+        public Vector Position { get; set; }
 
-        public Vector3 Scale { get; set; }
+        public Vector Rotation { get; set; }
 
-        public Vector3 Color { get; set; }
+        public Vector Scale { get; set; }
 
-        public List<int> Collisions { get; set; }
+        public Vector Color { get; set; }
+
+        public List<IHitbox> Collisions { get; set; }
     }
 }

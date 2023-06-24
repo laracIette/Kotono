@@ -4,7 +4,7 @@ namespace Kotono.Graphics.Performance
 {
     internal class Window
     {
-        private int _background;
+        private Image _background;
 
         private readonly RateStat _frame;
 
@@ -30,7 +30,7 @@ namespace Kotono.Graphics.Performance
 
         internal void Init()
         {
-            _background = KT.CreateImage(new Image(KT.KotonoPath + "Assets/PerformanceWindow/background.png", new Rect(_dest.X, _dest.Y, 300, 120)));
+            _background = KT.CreateImage(KT.KotonoPath + "Assets/PerformanceWindow/background.png", new Rect(_dest.X, _dest.Y, 300, 120));
             
             _frame.Init();
             _update.Init();
@@ -54,14 +54,14 @@ namespace Kotono.Graphics.Performance
 
         internal void Show()
         {
-            KT.ShowImage(_background);
+            _background.Show();
             _frame.Show();
             _update.Show();
         }
 
         internal void Hide()
         {
-            KT.HideImage(_background);
+            _background.Hide();
             _frame.Hide();
             _update.Hide();
         }

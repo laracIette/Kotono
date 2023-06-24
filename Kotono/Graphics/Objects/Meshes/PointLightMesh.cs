@@ -1,4 +1,5 @@
 ﻿using Kotono.Graphics.Objects.Hitboxes;
+using Kotono.Utils;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using System;
@@ -7,17 +8,17 @@ namespace Kotono.Graphics.Objects.Meshes
 {
     public class PointLightMesh : MeshOBJ
     {
-        public PointLightMesh(Vector3 position) 
+        public PointLightMesh(Vector position) 
             : base(
                   KT.ProjectPath + @"Assets/sphere.obj",
                   position,
-                  Vector3.Zero,
-                  new Vector3(0.2f),
+                  Vector.Zero,
+                  new Vector(0.2f),
                   KT.ProjectPath + @"Assets/white.png",
                   KT.ProjectPath + @"Assets/white.png",
                   ShaderType.PointLight,
-                  Vector3.One,
-                  new int[]
+                  Vector.One,
+                  new IHitbox[]
                   {
                       KT.CreateHitbox(new Sphere())
                   }
@@ -28,7 +29,7 @@ namespace Kotono.Graphics.Objects.Meshes
         public override void Draw()
         {
             KT.SetShaderMatrix4(_shaderType, "model", Model);
-            KT.SetShaderVector3(_shaderType, "color", Color);
+            KT.SetShaderVector(_shaderType, "color", Color);
 
             GL.BindVertexArray(VertexArrayObject);
             GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);

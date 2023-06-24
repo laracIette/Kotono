@@ -18,10 +18,7 @@ namespace Kotono.Graphics.Objects
 
         protected float _spacing;
 
-        /// <summary>
-        /// List of images
-        /// </summary>
-        protected readonly List<int> _letters = new();
+        protected readonly List<Image> _letters = new();
 
         internal double Time { get; private set; }
 
@@ -97,6 +94,9 @@ namespace Kotono.Graphics.Objects
             _paths['/'] = KT.KotonoPath + @"Assets\Characters\fslash.png"; TextureManager.LoadTexture(_paths['/']);
             _paths['\\'] = KT.KotonoPath + @"Assets\Characters\bslash.png"; TextureManager.LoadTexture(_paths['\\']);
             _paths['.'] = KT.KotonoPath + @"Assets\Characters\dot.png"; TextureManager.LoadTexture(_paths['.']);
+            _paths['-'] = KT.KotonoPath + @"Assets\Characters\minus.png"; TextureManager.LoadTexture(_paths['-']);
+            _paths['+'] = KT.KotonoPath + @"Assets\Characters\plus.png"; TextureManager.LoadTexture(_paths['+']);
+            _paths[':'] = KT.KotonoPath + @"Assets\Characters\colon.png"; TextureManager.LoadTexture(_paths[':']);
         }
 
         internal Text(string text, Rect dest, Position position, float spacing = 1.0f) 
@@ -122,23 +122,23 @@ namespace Kotono.Graphics.Objects
                 {
                     case Position.Center:
                         _letters.Add(KT.CreateImage(
-                            new Image(path, new Rect(
+                            path, new Rect(
                                 _dest.X - _dest.W / 2 * (_text.Length - 1) * _spacing + _dest.W * i * _spacing,
                                 _dest.Y,
                                 _dest.W,
                                 _dest.H
-                            ))
+                            )
                         ));
                         break;
 
                     case Position.TopLeft:
                         _letters.Add(KT.CreateImage(
-                            new Image(path, new Rect(
+                            path, new Rect(
                                 _dest.X + _dest.W / 2 + _dest.W * i * _spacing,
                                 _dest.Y + _dest.H / 2,
                                 _dest.W,
                                 _dest.H
-                            ))
+                            )
                         ));
                         break;
 
@@ -162,7 +162,7 @@ namespace Kotono.Graphics.Objects
         {
             foreach (var letter in _letters)
             {
-                KT.TransformImage(letter, dest, time);
+                letter.Transform(dest, time);
             }
         }
 
@@ -170,7 +170,7 @@ namespace Kotono.Graphics.Objects
         {
             foreach (var letter in _letters)
             {
-                KT.TransformImageTo(letter, dest, time);
+                letter.TransformTo(dest, time);
             }
         }
 
@@ -187,7 +187,7 @@ namespace Kotono.Graphics.Objects
         {
             foreach (var letter in _letters)
             {
-                KT.ShowImage(letter);
+                letter.Show();
             }
         }
 
@@ -195,7 +195,7 @@ namespace Kotono.Graphics.Objects
         {
             foreach (var letter in _letters)
             {
-                KT.HideImage(letter);
+                letter.Hide();
             }
         }
     }

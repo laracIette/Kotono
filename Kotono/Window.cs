@@ -3,7 +3,6 @@ using Kotono.Utils;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
-using Performance = Kotono.Graphics.Performance;
 
 namespace Kotono
 {
@@ -23,10 +22,10 @@ namespace Kotono
             GL.ClearColor(0.1f, 0.1f, 0.2f, 1.0f);
             GL.Enable(EnableCap.DepthTest);
 
-            KT.Init();
-
             KT.CreateCamera(new Camera());
             KT.SetWindowSize(Size.X, Size.Y);
+
+            KT.Init();
 
             InputManager.Update(KeyboardState, MouseState);
         }
@@ -43,7 +42,7 @@ namespace Kotono
 
             if (!IsFocused) return;
 
-            KT.AddPerformanceWindowFrameTime(e.Time);
+            KT.AddFrameTime(e.Time);
 
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
@@ -56,7 +55,7 @@ namespace Kotono
         {
             base.OnUpdateFrame(e);
 
-            KT.AddPerformanceWindowUpdateTime(e.Time);
+            KT.AddUpdateTime(e.Time);
 
             InputManager.Update(KeyboardState, MouseState);
 
@@ -86,7 +85,6 @@ namespace Kotono
         {
             base.OnResize(e);
 
-            GL.Viewport(0, 0, Size.X, Size.Y);
             KT.SetWindowSize(Size.X, Size.Y);
         }
 

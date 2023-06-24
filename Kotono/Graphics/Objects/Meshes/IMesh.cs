@@ -1,5 +1,7 @@
 ﻿using OpenTK.Mathematics;
 using System;
+using Kotono.Physics;
+using Kotono.Utils;
 
 namespace Kotono.Graphics.Objects.Meshes
 {
@@ -9,13 +11,13 @@ namespace Kotono.Graphics.Objects.Meshes
 
         public void Draw();
 
-        public Vector3 Position { get; }
+        public Vector Position { get; }
 
-        public Vector3 Color { get; set; }
+        public Vector Color { get; set; }
 
-        public Vector3 Angle { get; }
+        public Vector Rotation { get; set; }
 
-        public Vector3 Scale { get; }
+        public Vector Scale { get; set; }
 
         public Matrix4 Model { get; }
 
@@ -28,5 +30,16 @@ namespace Kotono.Graphics.Objects.Meshes
         public int DiffuseMap { get; }
 
         public int SpecularMap { get; }
+
+        public CollisionState Collision { get; }
+
+        public bool IsGravity { get; set; }
+
+        public bool IsFiziks { get; set; }
+
+        public Vector Center { get; }
+
+        public Vector[] Vertices { get; }
+
     }
 }

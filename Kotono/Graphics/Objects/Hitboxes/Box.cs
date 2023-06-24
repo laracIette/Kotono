@@ -1,7 +1,9 @@
-﻿using OpenTK.Graphics.OpenGL4;
+﻿using Kotono.Utils;
+using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Kotono.Graphics.Objects.Hitboxes
 {
@@ -54,15 +56,15 @@ namespace Kotono.Graphics.Objects.Hitboxes
 
         private static bool _isFirst = true;
 
-        public Vector3 Position { get; set; } = Vector3.Zero;
+        public Vector Position { get; set; } = Vector.Zero;
 
-        public Vector3 Angle { get; set; } = Vector3.Zero;  
+        public Vector Rotation { get; set; } = Vector.Zero;  
 
-        public Vector3 Scale { get; set; } = Vector3.One;
+        public Vector Scale { get; set; } = Vector.One;
 
-        public Vector3 Color { get; set; } = Vector3.One;
+        public Vector Color { get; set; } = Vector.One;
 
-        public List<int> Collisions { get; set; } = new();
+        public List<IHitbox> Collisions { get; set; } = new();
 
         public Box()
         {
@@ -93,12 +95,13 @@ namespace Kotono.Graphics.Objects.Hitboxes
         public void Draw()
         {
             var model =
-                Matrix4.CreateScale(Scale)
-                //* Matrix4.CreateRotationX(Angle.X)
-                //* Matrix4.CreateRotationY(Angle.Y)
-                //* Matrix4.CreateRotationZ(Angle.Z)
-                * Matrix4.CreateTranslation(Position);
-        KT.SetShaderVector3(ShaderType.Hitbox, "color", Color);
+                Matrix4.CreateScale((Vector3)Scale)
+                //* Matrix4.CreateRotationX(Rotation.X)
+                //* Matrix4.CreateRotationY(Rotation.Y)
+                //* Matrix4.CreateRotationZ(Rotation.Z)
+                * Matrix4.CreateTranslation((Vector3)Position);
+
+            KT.SetShaderVector(ShaderType.Hitbox, "color", Color);
             KT.SetShaderMatrix4(ShaderType.Hitbox, "model", model);
 
             GL.BindVertexArray(_vertexArrayObject);
@@ -107,8 +110,15 @@ namespace Kotono.Graphics.Objects.Hitboxes
         }
 
         public bool Collides(IHitbox h)
-            => (Math.Abs(Position.X - h.Position.X) <= (Scale.X + h.Scale.X) / 2)
-            && (Math.Abs(Position.Y - h.Position.Y) <= (Scale.Y + h.Scale.Y) / 2)
-            && (Math.Abs(Position.Z - h.Position.Z) <= (Scale.Z + h.Scale.Z) / 2);
+        {
+            return (Math.Abs(Position.X - h.Position.X) <= (Scale.X + h.Scale.X) / 2)
+                && (Math.Abs(Position.Y - h.Position.Y) <= (Scale.Y + h.Scale.Y) / 2)
+                && (Math.Abs(Position.Z - h.Position.Z) <= (Scale.Z + h.Scale.Z) / 2);
+        }
+
+        public bool IsColliding()
+        {
+            return Collisions.Any(Collides);
+        }
     }
 }

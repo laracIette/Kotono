@@ -11,56 +11,41 @@ namespace Kotono.Graphics.Objects
 
         private readonly List<PointLight> _pointLights = new();
 
-        /// <summary>
-        /// Key: Direct Index,
-        /// Value: Real Index.
-        /// </summary>
-        private readonly Dictionary<int, int> _indexOffset = new();
-
-        private int _pointLightIndex = 0;
-
         internal PointLightManager() { }
 
-        internal int Create(PointLight pointLight)
+        internal void Create(PointLight pointLight)
         {
             if (_pointLights.Count >= MAX)
             {
-                throw new Exception($"The number of PointLight is already at its max value: {MAX}.");
+                KT.Print($"The number of PointLight is already at its max value: {MAX}.");
             }
-
-            _indexOffset[_pointLightIndex] = _pointLights.Count;
-
-            _pointLights.Add(pointLight);
-
-            return _pointLightIndex++;
+            else
+            {
+                _pointLights.Add(pointLight);
+            }
         }
 
-        internal void Delete(int index)
+        internal void Delete(PointLight pointLight)
         {
             if (_pointLights.Count <= 0)
             {
-                throw new Exception($"The number of PointLight is already at 0.");
+                KT.Print($"The number of PointLight is already at 0.");
             }
-
-            _pointLights[_indexOffset[index]].Dispose();
-            _pointLights.RemoveAt(_indexOffset[index]);
-            _indexOffset.Remove(index);
-
-            foreach (var i in _indexOffset.Keys)
+            else
             {
-                if (i > index)
-                {
-                    _indexOffset[i]--;
-                    _pointLights[_indexOffset[i]].UpdateIndex();
-                }
+                _pointLights.Remove(pointLight);
             }
         }
 
         internal int GetCount()
-            => _pointLights.Count;
+        {
+            return _pointLights.Count;
+        }
 
-        internal int GetFirstIndex()
-            => _indexOffset.First().Key;
+        internal PointLight GetFirst()
+        {
+            return _pointLights.First();
+        }
 
         internal void Update()
         {

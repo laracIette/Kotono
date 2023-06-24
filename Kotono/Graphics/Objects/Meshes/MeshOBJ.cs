@@ -1,4 +1,6 @@
 ﻿using Assimp;
+using Kotono.Graphics.Objects.Hitboxes;
+using Kotono.Physics;
 using Kotono.Utils;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
@@ -12,19 +14,19 @@ namespace Kotono.Graphics.Objects.Meshes
 {
     public class MeshOBJ : IMesh
     {
-        private static readonly Dictionary<string, int[]> _paths = new();
+        private static readonly Dictionary<string, Tuple<int[], Vector, Vector[]>> _paths = new();
 
-        private Vector3 _position;
+        private Vector _position;
 
-        private Vector3 _positionVelocity;
+        private Vector _positionVelocity;
 
-        private Vector3 _angleVelocity;
+        private Vector _angleVelocity;
 
-        private readonly int[] _hitboxes;
+        private readonly IHitbox[] _hitboxes;
 
         protected readonly ShaderType _shaderType;
 
-        public MeshOBJ(string path, Vector3 position, Vector3 angle, Vector3 scale, string diffusePath, string specularPath, ShaderType shaderType, Vector3 color, int[] hitboxes)
+        public MeshOBJ(string path, Vector position, Vector rotation, Vector scale, string diffusePath, string specularPath, ShaderType shaderType, Vector color, IHitbox[] hitboxes)
         {
             var diffuseMap = TextureManager.LoadTexture(diffusePath);
             var specularMap = TextureManager.LoadTexture(specularPath);
@@ -43,20 +45,30 @@ namespace Kotono.Graphics.Objects.Meshes
                     for (int i = 0; i < scene.Meshes.Count; i++)
                     {
                         var mesh = scene.Meshes[i];
-                        var vertices = new List<Vertex>();
+                        var tempVertices = new List<Vertex>();
 
                         for (int j = 0; j < mesh.Vertices.Count; j++)
                         {
-                            var pos = new Vector3(mesh.Vertices[j].X, mesh.Vertices[j].Y, mesh.Vertices[j].Z);
-                            var normal = new Vector3(mesh.Normals[j].X, mesh.Normals[j].Y, mesh.Normals[j].Z);
+                            var pos = new Vector(mesh.Vertices[j].X, mesh.Vertices[j].Y, mesh.Vertices[j].Z);
+                            var normal = new Vector(mesh.Normals[j].X, mesh.Normals[j].Y, mesh.Normals[j].Z);
                             var texCoord = new Vector2(mesh.TextureCoordinateChannels[0][j].X, mesh.TextureCoordinateChannels[0][j].Y);
 
-                            vertices.Add(new Vertex(pos, normal, texCoord));
+                            tempVertices.Add(new Vertex(pos, normal, texCoord));
                         }
 
-                        models[i] = vertices;
+                        models[i] = tempVertices;
                         indices[i] = mesh.GetIndices().ToList();
                     }
+                }
+
+                var center = Vector.Zero;
+                models[0].ForEach(v => center += v.Position);
+                center /= models[0].Count;
+
+                var vertices = new Vector[models[0].Count];
+                for (int i = 0; i < models[0].Count; i++)
+                {
+                    vertices[i] = models[0][i].Position;
                 }
 
                 // create vertex array
@@ -85,19 +97,25 @@ namespace Kotono.Graphics.Objects.Meshes
                 GL.BindBuffer(BufferTarget.ElementArrayBuffer, elementBufferObject);
                 GL.BufferData(BufferTarget.ElementArrayBuffer, indices[0].Count * sizeof(int), indices[0].ToArray(), BufferUsageHint.StaticDraw);
 
-                _paths[path] = new int[]
-                { 
-                    vertexArrayObject, 
-                    vertexBufferObject, 
-                    indices[0].Count 
-                };
+                _paths[path] = Tuple.Create(
+                    new int[]
+                    {
+                        vertexArrayObject,
+                        vertexBufferObject,
+                        indices[0].Count
+                    },
+                    center,
+                    vertices
+                );
             }
 
-            VertexArrayObject = _paths[path][0];
-            VertexBufferObject = _paths[path][1];
-            IndicesCount = _paths[path][2];
+            VertexArrayObject = _paths[path].Item1[0];
+            VertexBufferObject = _paths[path].Item1[1];
+            IndicesCount = _paths[path].Item1[2];
+            Center = _paths[path].Item2;
+            Vertices = _paths[path].Item3;
             Position = position;
-            Angle = angle;
+            Rotation = rotation;
             Scale = scale;
             DiffuseMap = diffuseMap;
             SpecularMap = specularMap;
@@ -108,10 +126,10 @@ namespace Kotono.Graphics.Objects.Meshes
 
             foreach (var hitbox in _hitboxes)
             {
-                KT.SetHitBoxPosition(hitbox, Position);
-                KT.SetHitBoxAngle(hitbox, Vector3.Zero);
-                KT.SetHitBoxScale(hitbox, Scale * 2);
-                KT.SetHitBoxColor(hitbox, Vector3.UnitX);
+                hitbox.Position = Position;
+                hitbox.Rotation = Vector.Zero;
+                hitbox.Scale = Scale * 2;
+                hitbox.Color = Vector.UnitX;
             }
         }
 
@@ -119,19 +137,29 @@ namespace Kotono.Graphics.Objects.Meshes
         {
             var tempPos = Position;
 
-            AngleVelocity += Random.Vector3(-0.1f, 0.1f);
-            Angle += AngleVelocity * Time.DeltaS;
+            //AngleVelocity += Random.Vector(-0.1f, 0.1f);
+            //Rotation += AngleVelocity * Time.DeltaS;
 
-            PositionVelocity += Random.Vector3(-0.1f, 0.1f);
-            tempPos += PositionVelocity * Time.DeltaS;
+            //PositionVelocity += Random.Vector(-0.1f, 0.1f);
+            //tempPos += PositionVelocity * Time.DeltaS;
+
+            if (IsGravity)
+            {
+                tempPos += Fiziks.Gravity * Time.DeltaS;
+            }
+
+            if (IsFiziks)
+            {
+                Fiziks.Update(this);
+            }
 
             foreach (var hitbox in _hitboxes)
             {
-                KT.SetHitBoxPosition(hitbox, tempPos);
+                hitbox.Position = tempPos;
 
-                if (KT.IsHitboxColliding(hitbox))
+                if ((Collision == CollisionState.BlockAll) && hitbox.IsColliding())
                 {
-                    KT.SetHitBoxPosition(hitbox, Position);
+                    hitbox.Position = Position;
                 }
                 else
                 {
@@ -146,13 +174,23 @@ namespace Kotono.Graphics.Objects.Meshes
             TextureManager.UseTexture(SpecularMap, TextureUnit.Texture1);
 
             KT.SetShaderMatrix4(_shaderType, "model", Model);
-            KT.SetShaderVector3(_shaderType, "color", Color);
+            KT.SetShaderVector(_shaderType, "color", Color);
 
             GL.BindVertexArray(VertexArrayObject);
             GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
 
             GL.DrawElements(PrimitiveType.Triangles, IndicesCount, DrawElementsType.UnsignedInt, IntPtr.Zero);
         }
+
+        public Vector[] Vertices { get; }
+        
+        public Vector Center { get; }
+
+        public bool IsFiziks { get; set; }
+
+        public bool IsGravity { get; set; }
+
+        public CollisionState Collision { get; set; }
 
         public int VertexArrayObject { get; }
 
@@ -164,12 +202,12 @@ namespace Kotono.Graphics.Objects.Meshes
 
         public int SpecularMap { get; }
 
-        public Vector3 Color { get; set; }
+        public Vector Color { get; set; }
 
-        public Vector3 Position
+        public Vector Position
         {
             get => _position;
-            private set
+            set
             {
                 _position.X = MathHelper.Clamp(value.X, -20.0f, 20.0f);
                 _position.Y = MathHelper.Clamp(value.Y, -20.0f, 20.0f);
@@ -177,7 +215,7 @@ namespace Kotono.Graphics.Objects.Meshes
             }
         }
 
-        private Vector3 PositionVelocity
+        private Vector PositionVelocity
         {
             get => _positionVelocity;
             set
@@ -188,11 +226,11 @@ namespace Kotono.Graphics.Objects.Meshes
             }
         }
 
-        public Vector3 Angle { get; private set; }
+        public Vector Rotation { get; set; }
 
-        public Vector3 Scale { get; private set; }
+        public Vector Scale { get; set; }
 
-        private Vector3 AngleVelocity
+        private Vector AngleVelocity
         {
             get => _angleVelocity;
             set
@@ -204,11 +242,11 @@ namespace Kotono.Graphics.Objects.Meshes
         }
 
         public Matrix4 Model =>
-            Matrix4.CreateScale(Scale)
-            * Matrix4.CreateRotationX(Angle.X)
-            * Matrix4.CreateRotationY(Angle.Y)
-            * Matrix4.CreateRotationZ(Angle.Z)
-            * Matrix4.CreateTranslation(Position);
+            Matrix4.CreateScale((Vector3)Scale)
+            * Matrix4.CreateRotationX(Rotation.X)
+            * Matrix4.CreateRotationY(Rotation.Y)
+            * Matrix4.CreateRotationZ(Rotation.Z)
+            * Matrix4.CreateTranslation((Vector3)Position);
 
         public void Dispose()
         {

@@ -13,13 +13,13 @@ namespace Kotono.Graphics
 
         private float _fov = MathHelper.PiOver2;
 
-        public Vector3 Front { get; private set; } = -Vector3.UnitZ;
+        public Vector Front { get; private set; } = -Vector.UnitZ;
 
-        public Vector3 Up { get; private set; } = Vector3.UnitY;
+        public Vector Up { get; private set; } = Vector.UnitY;
 
-        public Vector3 Right { get; private set; } = Vector3.UnitX;
+        public Vector Right { get; private set; } = Vector.UnitX;
 
-        public Vector3 Position { get; private set; } = Vector3.Zero;
+        public Vector Position { get; private set; } = Vector.Zero;
 
         public float AspectRatio { private get; set; }
 
@@ -56,7 +56,7 @@ namespace Kotono.Graphics
                 _fov = MathHelper.DegreesToRadians(value);
             }
         }
-        public Matrix4 ViewMatrix => Matrix4.LookAt(Position, Position + Front, Up);
+        public Matrix4 ViewMatrix => Matrix4.LookAt((Vector3)Position, (Vector3)(Position + Front), (Vector3)Up);
 
         public Matrix4 ProjectionMatrix => Matrix4.CreatePerspectiveFieldOfView(_fov, AspectRatio, 0.01f, 100f);
 
@@ -109,16 +109,16 @@ namespace Kotono.Graphics
 
         private void UpdateVectors()
         {
-            Front = new Vector3 
+            Front = new Vector 
             {
                 X = MathF.Cos(_pitch) * MathF.Cos(_yaw),
                 Y = MathF.Sin(_pitch),
                 Z = MathF.Cos(_pitch) * MathF.Sin(_yaw) 
             };
 
-            Front = Vector3.Normalize(Front);
-            Right = Vector3.Normalize(Vector3.Cross(Front, Vector3.UnitY));
-            Up = Vector3.Normalize(Vector3.Cross(Right, Front));
+            Front = Front.Normalized;
+            Right = Vector.Cross(Front, Vector.UnitY).Normalized;
+            Up = Vector.Cross(Right, Front).Normalized;
         }
 
     }

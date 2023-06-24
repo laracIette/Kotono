@@ -77,6 +77,19 @@ namespace Kotono.Graphics.Objects
             {
                 _dest += _transformation * Time.DeltaS;
             }
+
+            // check if Image is out of screen bounds
+            Show();
+            if (((_dest.X + _dest.W) < 0) || (_dest.X > KT.Width) || ((_dest.Y + _dest.H) < 0) || (_dest.Y > KT.Height))
+            {
+                Hide();
+            }
+
+        }
+
+        public void UpdateShaders()
+        {
+
         }
 
         public void Draw()
@@ -107,6 +120,16 @@ namespace Kotono.Graphics.Objects
         public void TransformTo(Rect dest, double time)
         {
             Transform(dest - _dest, time);
+        }
+
+        public void Show()
+        {
+            IsDraw = true;
+        }
+
+        public void Hide()
+        {
+            IsDraw = false;
         }
     }
 }

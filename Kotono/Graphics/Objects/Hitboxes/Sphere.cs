@@ -3,6 +3,7 @@ using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Kotono.Graphics.Objects.Hitboxes
 {
@@ -10,7 +11,7 @@ namespace Kotono.Graphics.Objects.Hitboxes
     {
         private const int SEGMENTS = 64;
 
-        private static readonly Vector3[] _vertices = new Vector3[SEGMENTS];
+        private static readonly Vector[] _vertices = new Vector[SEGMENTS];
 
         private static int _vertexArrayObject;
 
@@ -18,15 +19,15 @@ namespace Kotono.Graphics.Objects.Hitboxes
 
         private static bool _isFirst = true;
 
-        public Vector3 Position { get; set; } = Vector3.Zero;
+        public Vector Position { get; set; } = Vector.Zero;
 
-        public Vector3 Angle { get; set; } = Vector3.Zero;
+        public Vector Rotation { get; set; } = Vector.Zero;
 
-        public Vector3 Scale { get; set; } = Vector3.One;
+        public Vector Scale { get; set; } = Vector.One;
 
-        public Vector3 Color { get; set; } = Vector3.One;
+        public Vector Color { get; set; } = Vector.One;
 
-        public List<int> Collisions { get; set; } = new();
+        public List<IHitbox> Collisions { get; set; } = new();
 
         public Sphere()
         {
@@ -36,11 +37,11 @@ namespace Kotono.Graphics.Objects.Hitboxes
 
                 for (int i = 0; i < SEGMENTS ; i++)
                 {
-                    float angle = i / (float)SEGMENTS * MathHelper.TwoPi;
-                    _vertices[i] = new Vector3
+                    float rotation = i / (float)SEGMENTS * MathHelper.TwoPi;
+                    _vertices[i] = new Vector
                     {
-                        X = 0.5f * (float)Math.Cos(angle),
-                        Y = 0.5f * (float)Math.Sin(angle),
+                        X = 0.5f * (float)Math.Cos(rotation),
+                        Y = 0.5f * (float)Math.Sin(rotation),
                         Z = 0f
                     };
                 }
@@ -52,11 +53,11 @@ namespace Kotono.Graphics.Objects.Hitboxes
                 // create vertex buffer
                 _vertexBufferObject = GL.GenBuffer();
                 GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
-                GL.BufferData(BufferTarget.ArrayBuffer, _vertices.Length * Vector3.SizeInBytes, _vertices, BufferUsageHint.StaticDraw);
+                GL.BufferData(BufferTarget.ArrayBuffer, _vertices.Length * Vector.SizeInBytes, _vertices, BufferUsageHint.StaticDraw);
 
                 int positionAttributeLocation = KT.GetShaderAttribLocation(ShaderType.Hitbox, "aPos");
                 GL.EnableVertexAttribArray(positionAttributeLocation);
-                GL.VertexAttribPointer(positionAttributeLocation, 3, VertexAttribPointerType.Float, false, Vector3.SizeInBytes, 0);
+                GL.VertexAttribPointer(positionAttributeLocation, 3, VertexAttribPointerType.Float, false, Vector.SizeInBytes, 0);
             }
         }
 
@@ -66,21 +67,21 @@ namespace Kotono.Graphics.Objects.Hitboxes
 
         public void Draw()
         {
-            DrawCircle(new Vector3(MathHelper.PiOver2, 0f, 0f));
-            DrawCircle(new Vector3(0f, MathHelper.PiOver2, 0f));
-            DrawCircle(new Vector3(0f, 0f, MathHelper.PiOver2));
+            DrawCircle(new Vector(MathHelper.PiOver2, 0f, 0f));
+            DrawCircle(new Vector(0f, MathHelper.PiOver2, 0f));
+            DrawCircle(new Vector(0f, 0f, MathHelper.PiOver2));
         }
 
-        private void DrawCircle(Vector3 angle)
+        private void DrawCircle(Vector rotation)
         {
             var model =
-                Matrix4.CreateScale(Scale)
-                * Matrix4.CreateRotationX(Angle.X + angle.X)
-                * Matrix4.CreateRotationY(Angle.Y + angle.Y)
-                * Matrix4.CreateRotationZ(Angle.Z + angle.Z)
-                * Matrix4.CreateTranslation(Position);
+                Matrix4.CreateScale((Vector3)Scale)
+                * Matrix4.CreateRotationX(Rotation.X + rotation.X)
+                * Matrix4.CreateRotationY(Rotation.Y + rotation.Y)
+                * Matrix4.CreateRotationZ(Rotation.Z + rotation.Z)
+                * Matrix4.CreateTranslation((Vector3)Position);
 
-            KT.SetShaderVector3(ShaderType.Hitbox, "color", Color);
+            KT.SetShaderVector(ShaderType.Hitbox, "color", Color);
             KT.SetShaderMatrix4(ShaderType.Hitbox, "model", model);
 
             GL.BindVertexArray(_vertexArrayObject);
@@ -89,9 +90,17 @@ namespace Kotono.Graphics.Objects.Hitboxes
         }
 
         public bool Collides(IHitbox h)
-            => (Math.Abs(Position.X - h.Position.X) <= (Scale.X + h.Scale.X) / 2)
-            && (Math.Abs(Position.Y - h.Position.Y) <= (Scale.Y + h.Scale.Y) / 2)
-            && (Math.Abs(Position.Z - h.Position.Z) <= (Scale.Z + h.Scale.Z) / 2);
+        {
+            return (Math.Abs(Position.X - h.Position.X) <= (Scale.X + h.Scale.X) / 2)
+                && (Math.Abs(Position.Y - h.Position.Y) <= (Scale.Y + h.Scale.Y) / 2)
+                && (Math.Abs(Position.Z - h.Position.Z) <= (Scale.Z + h.Scale.Z) / 2);
+        }
+
+
+        public bool IsColliding()
+        {
+            return Collisions.Any(Collides);
+        }
 
     }
 }

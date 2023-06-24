@@ -1,6 +1,7 @@
 ﻿using Kotono.Graphics.Shaders;
 using OpenTK.Mathematics;
 using System.Collections.Generic;
+using Kotono.Utils;
 
 namespace Kotono.Graphics
 {
@@ -46,19 +47,9 @@ namespace Kotono.Graphics
             _shaders[(int)type].SetMatrix4(name, data);
         }
 
-        internal void SetVector2(ShaderType type, string name, Vector2 data)
+        internal void SetVector(ShaderType type, string name, Vector data)
         {
-            _shaders[(int)type].SetVector2(name, data);
-        }
-
-        internal void SetVector3(ShaderType type, string name, Vector3 data)
-        {
-            _shaders[(int)type].SetVector3(name, data);
-        }
-
-        internal void SetVector4(ShaderType type, string name, Vector4 data)
-        {
-            _shaders[(int)type].SetVector4(name, data);
+            _shaders[(int)type].SetVector(name, data);
         }
 
         internal void Update()

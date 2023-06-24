@@ -1,4 +1,5 @@
-﻿using OpenTK.Graphics.OpenGL4;
+﻿using Kotono.Utils;
+using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using System;
 using System.Collections.Generic;
@@ -102,21 +103,10 @@ namespace Kotono.Graphics.Shaders
             GL.UniformMatrix4(_uniformLocations[name], true, ref data);
         }
 
-        internal void SetVector2(string name, Vector2 data)
+        internal void SetVector(string name, Vector data)
         {
             Use();
-            GL.Uniform2(_uniformLocations[name], data);
-        }
-        internal void SetVector3(string name, Vector3 data)
-        {
-            Use();
-            GL.Uniform3(_uniformLocations[name], data);
-        }
-
-        internal void SetVector4(string name, Vector4 data)
-        {
-            Use();
-            GL.Uniform4(_uniformLocations[name], data);
+            GL.Uniform3(_uniformLocations[name], (Vector3)data);
         }
     }
 }
