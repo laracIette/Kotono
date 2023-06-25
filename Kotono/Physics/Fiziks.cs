@@ -28,7 +28,7 @@ namespace Kotono.Physics
             
             foreach (var vertex in mesh.Vertices)
             {
-                if ((vertex.Y + mesh.Position.Y) <= 0)
+                if ((vertex.Y + mesh.Location.Y) <= 0)
                 {
                     collisionCenter += vertex;
                     n++;

@@ -56,13 +56,13 @@ namespace Kotono.Graphics.Objects.Hitboxes
 
         private static bool _isFirst = true;
 
-        public Vector Position { get; set; } = Vector.Zero;
+        public Vector Location { get; set; } = Vector.Zero;
 
         public Vector Rotation { get; set; } = Vector.Zero;  
 
-        public Vector Scale { get; set; } = Vector.One;
+        public Vector Scale { get; set; } = Vector.Unit;
 
-        public Vector Color { get; set; } = Vector.One;
+        public Vector Color { get; set; } = Vector.Unit;
 
         public List<IHitbox> Collisions { get; set; } = new();
 
@@ -81,9 +81,9 @@ namespace Kotono.Graphics.Objects.Hitboxes
                 GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
                 GL.BufferData(BufferTarget.ArrayBuffer, _vertices.Length * sizeof(float), _vertices, BufferUsageHint.StaticDraw);
 
-                int positionAttributeLocation = KT.GetShaderAttribLocation(ShaderType.Hitbox, "aPos");
-                GL.EnableVertexAttribArray(positionAttributeLocation);
-                GL.VertexAttribPointer(positionAttributeLocation, 3, VertexAttribPointerType.Float, false, 0, 0);
+                int locationAttributeLocation = KT.GetShaderAttribLocation(ShaderType.Hitbox, "aPos");
+                GL.EnableVertexAttribArray(locationAttributeLocation);
+                GL.VertexAttribPointer(locationAttributeLocation, 3, VertexAttribPointerType.Float, false, 0, 0);
             }
         }
 
@@ -99,7 +99,7 @@ namespace Kotono.Graphics.Objects.Hitboxes
                 //* Matrix4.CreateRotationX(Rotation.X)
                 //* Matrix4.CreateRotationY(Rotation.Y)
                 //* Matrix4.CreateRotationZ(Rotation.Z)
-                * Matrix4.CreateTranslation((Vector3)Position);
+                * Matrix4.CreateTranslation((Vector3)Location);
 
             KT.SetShaderVector(ShaderType.Hitbox, "color", Color);
             KT.SetShaderMatrix4(ShaderType.Hitbox, "model", model);
@@ -111,9 +111,9 @@ namespace Kotono.Graphics.Objects.Hitboxes
 
         public bool Collides(IHitbox h)
         {
-            return (Math.Abs(Position.X - h.Position.X) <= (Scale.X + h.Scale.X) / 2)
-                && (Math.Abs(Position.Y - h.Position.Y) <= (Scale.Y + h.Scale.Y) / 2)
-                && (Math.Abs(Position.Z - h.Position.Z) <= (Scale.Z + h.Scale.Z) / 2);
+            return (Math.Abs(Location.X - h.Location.X) <= (Scale.X + h.Scale.X) / 2)
+                && (Math.Abs(Location.Y - h.Location.Y) <= (Scale.Y + h.Scale.Y) / 2)
+                && (Math.Abs(Location.Z - h.Location.Z) <= (Scale.Z + h.Scale.Z) / 2);
         }
 
         public bool IsColliding()

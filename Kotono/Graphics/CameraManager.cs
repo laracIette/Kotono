@@ -49,8 +49,8 @@ namespace Kotono.Graphics
             }
         }
 
-        internal Vector GetPosition(int index)
-            => _cameras[_indexOffset[index]].Position;
+        internal Vector GetLocation(int index)
+            => _cameras[_indexOffset[index]].Location;
 
         internal Matrix4 GetViewMatrix(int index)
             => _cameras[_indexOffset[index]].ViewMatrix;

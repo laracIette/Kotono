@@ -55,14 +55,14 @@ namespace Kotono
 
         public static float CurrentViewportWidth
         {
-            get => _currentViewport.W;
-            set => _currentViewport.W = value;
+            get => _currentViewport.Dest.W;
+            set => _currentViewport.Dest.W = value;
         }
         
         public static float CurrentViewportHeight
         {
-            get => _currentViewport.H;
-            set => _currentViewport.H = value;
+            get => _currentViewport.Dest.H;
+            set => _currentViewport.Dest.H = value;
         }
 
         #endregion CurrentViewport
@@ -228,8 +228,8 @@ namespace Kotono
         public static void DeleteCamera(int index) 
             => _cameraManager.Delete(index);
 
-        public static Vector GetCameraPosition(int index)
-            => _cameraManager.GetPosition(index);
+        public static Vector GetCameraLocation(int index)
+            => _cameraManager.GetLocation(index);
 
         public static Matrix4 GetCameraViewMatrix(int index)
             => _cameraManager.GetViewMatrix(index);
@@ -276,13 +276,11 @@ namespace Kotono
         
         private static readonly Printer _printer = new();
 
-        public static void Print(object obj)
-        {
-            var text = obj.ToString();
-            
-            if (text != null)
+        public static void Print(object? obj)
+        {            
+            if (obj != null)
             {
-                _printer.Print(text);
+                _printer.Print(obj.ToString());
             }
         }
 

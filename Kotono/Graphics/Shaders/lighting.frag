@@ -16,7 +16,7 @@ struct DirLight {
 uniform DirLight dirLight;
 
 struct PointLight {
-    vec3 position;
+    vec3 location;
 
     float constant;
     float linear;
@@ -33,7 +33,7 @@ uniform PointLight pointLights[MAX_POINT_LIGHTS];
 uniform int numPointLights;
 
 struct SpotLight{
-    vec3  position;
+    vec3  location;
     vec3  direction;
     float cutOff;
     float outerCutOff;
@@ -112,7 +112,7 @@ vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir)
 
 vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
 {
-    vec3 lightDir = normalize(light.position - fragPos);
+    vec3 lightDir = normalize(light.location - fragPos);
     
     //diffuse shading
     float diff = max(dot(normal, lightDir), 0.0);
@@ -122,7 +122,7 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
     
     //attenuation
-    float distance    = length(light.position - fragPos);
+    float distance    = length(light.location - fragPos);
     float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));
     
     //combine results
@@ -140,7 +140,7 @@ vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
 {
 
     //diffuse shading
-    vec3 lightDir = normalize(light.position - FragPos);
+    vec3 lightDir = normalize(light.location - FragPos);
     float diff = max(dot(normal, lightDir), 0.0);
 
     //specular shading
@@ -148,7 +148,7 @@ vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
 
     //attenuation
-    float distance    = length(light.position - FragPos);
+    float distance    = length(light.location - FragPos);
     float attenuation = 1.0 / (light.constant + light.linear * distance +
     light.quadratic * (distance * distance));
 

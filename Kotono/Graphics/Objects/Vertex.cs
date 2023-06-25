@@ -5,15 +5,15 @@ namespace Kotono.Graphics.Objects
 {
     internal struct Vertex
     {
-        internal Vector Position { get; set; }
+        internal Vector Location { get; set; }
 
         internal Vector Normal { get; set; }
 
         internal Vector2 TexCoord { get; set; }
 
-        internal Vertex(Vector position, Vector normal, Vector2 texCoord)
+        internal Vertex(Vector location, Vector normal, Vector2 texCoord)
         {
-            Position = position;
+            Location = location;
             Normal = normal;
             TexCoord = texCoord;
         }

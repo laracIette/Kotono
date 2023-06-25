@@ -19,7 +19,7 @@ namespace Kotono.Graphics.Performance
             _times = new double[60];
             _timeIndex = 0;
 
-            _text = new Text("0", dest, Position.Center);
+            _text = new Text("0", dest, Location.Center);
         }
 
         internal void Init()

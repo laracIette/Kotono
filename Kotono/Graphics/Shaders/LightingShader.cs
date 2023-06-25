@@ -16,7 +16,7 @@ namespace Kotono.Graphics.Shaders
             SetMatrix4("view", KT.GetCameraViewMatrix(0));
             SetMatrix4("projection", KT.GetCameraProjectionMatrix(0));
 
-            SetVector("viewPos", KT.GetCameraPosition(0));
+            SetVector("viewPos", KT.GetCameraLocation(0));
 
             SetInt("material.diffuse", 0);
             SetInt("material.specular", 1);

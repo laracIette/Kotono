@@ -15,7 +15,7 @@
         { 
             Location = Vector.Zero;
             Rotation = Vector.Zero;
-            Scale = Vector.One;
+            Scale = Vector.Unit;
         }
 
         public Transform(Vector location, Vector rotation, Vector scale)

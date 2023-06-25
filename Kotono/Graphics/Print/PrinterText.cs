@@ -5,7 +5,7 @@ namespace Kotono.Graphics.Print
     internal class PrinterText : Text
     {
         internal PrinterText(string text)
-            : base(text, new Rect(0f, 0f, 25f, 30f), Position.TopLeft, 2 / 3f) 
+            : base(text, new Rect(0f, 0f, 25f, 30f), Location.TopLeft, 2 / 3f) 
         {
             Init();
         }

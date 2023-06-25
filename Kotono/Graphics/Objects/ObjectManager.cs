@@ -129,30 +129,30 @@ namespace Kotono.Graphics.Objects
 
             if (InputManager.KeyboardState!.IsKeyDown(Keys.Up))
             {
-                _viewport.Y += 100 * Time.DeltaS;
+                _viewport.Dest.Y += 100 * Time.DeltaS;
             }
             if (InputManager.KeyboardState!.IsKeyDown(Keys.Down))
             {
-                _viewport.Y -= 100 * Time.DeltaS;
+                _viewport.Dest.Y -= 100 * Time.DeltaS;
             }
             if (InputManager.KeyboardState!.IsKeyDown(Keys.Left))
             {
-                _viewport.X -= 100 * Time.DeltaS;
+                _viewport.Dest.X -= 100 * Time.DeltaS;
             }
             if (InputManager.KeyboardState!.IsKeyDown(Keys.Right))
             {
-                _viewport.X += 100 * Time.DeltaS;
+                _viewport.Dest.X += 100 * Time.DeltaS;
             }
 
             if (InputManager.KeyboardState!.IsKeyDown(Keys.Minus))
             {
-                _viewport.W -= 16 * Time.DeltaS * 5;
-                _viewport.H -= 9 * Time.DeltaS * 5;
+                _viewport.Dest.W -= 16 * Time.DeltaS * 5;
+                _viewport.Dest.H -= 9 * Time.DeltaS * 5;
             }
             if (InputManager.KeyboardState!.IsKeyDown(Keys.Equal))
             {
-                _viewport.W += 16 * Time.DeltaS * 5;
-                _viewport.H += 9 * Time.DeltaS * 5;
+                _viewport.Dest.W += 16 * Time.DeltaS * 5;
+                _viewport.Dest.H += 9 * Time.DeltaS * 5;
             }
         }
 

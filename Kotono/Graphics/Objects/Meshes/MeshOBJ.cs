@@ -4,10 +4,12 @@ using Kotono.Physics;
 using Kotono.Utils;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
+using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using PrimitiveType = OpenTK.Graphics.OpenGL4.PrimitiveType;
+using Random = Kotono.Utils.Random;
 
 namespace Kotono.Graphics.Objects.Meshes
 {
@@ -15,17 +17,17 @@ namespace Kotono.Graphics.Objects.Meshes
     {
         private static readonly Dictionary<string, Tuple<int[], Vector, Vector[]>> _paths = new();
 
-        private Vector _position;
+        private Vector _location;
 
-        private Vector _positionVelocity;
+        private Vector _locationVelocity;
 
-        private Vector _angleVelocity;
+        private Vector _rotationVelocity;
 
         private readonly IHitbox[] _hitboxes;
 
         protected readonly ShaderType _shaderType;
 
-        public MeshOBJ(string path, Vector position, Vector rotation, Vector scale, string diffusePath, string specularPath, ShaderType shaderType, Vector color, IHitbox[] hitboxes)
+        public MeshOBJ(string path, Vector location, Vector rotation, Vector scale, string diffusePath, string specularPath, ShaderType shaderType, Vector color, IHitbox[] hitboxes)
         {
             var diffuseMap = TextureManager.LoadTexture(diffusePath);
             var specularMap = TextureManager.LoadTexture(specularPath);
@@ -61,13 +63,13 @@ namespace Kotono.Graphics.Objects.Meshes
                 }
 
                 var center = Vector.Zero;
-                models[0].ForEach(v => center += v.Position);
+                models[0].ForEach(v => center += v.Location);
                 center /= models[0].Count;
 
                 var vertices = new Vector[models[0].Count];
                 for (int i = 0; i < models[0].Count; i++)
                 {
-                    vertices[i] = models[0][i].Position;
+                    vertices[i] = models[0][i].Location;
                 }
 
                 // create vertex array
@@ -79,9 +81,9 @@ namespace Kotono.Graphics.Objects.Meshes
                 GL.BindBuffer(BufferTarget.ArrayBuffer, vertexBufferObject);
                 GL.BufferData(BufferTarget.ArrayBuffer, models[0].Count * Vertex.SizeInBytes, models[0].ToArray(), BufferUsageHint.StaticDraw);
 
-                int positionAttributeLocation = KT.GetShaderAttribLocation(shaderType, "aPos");
-                GL.EnableVertexAttribArray(positionAttributeLocation);
-                GL.VertexAttribPointer(positionAttributeLocation, 3, VertexAttribPointerType.Float, false, Vertex.SizeInBytes, 0);
+                int locationAttributeLocation = KT.GetShaderAttribLocation(shaderType, "aPos");
+                GL.EnableVertexAttribArray(locationAttributeLocation);
+                GL.VertexAttribPointer(locationAttributeLocation, 3, VertexAttribPointerType.Float, false, Vertex.SizeInBytes, 0);
 
                 int normalAttributeLocation = KT.GetShaderAttribLocation(shaderType, "aNormal");
                 GL.EnableVertexAttribArray(normalAttributeLocation);
@@ -113,7 +115,7 @@ namespace Kotono.Graphics.Objects.Meshes
             IndicesCount = _paths[path].Item1[2];
             Center = _paths[path].Item2;
             Vertices = _paths[path].Item3;
-            Position = position;
+            Location = location;
             Rotation = rotation;
             Scale = scale;
             DiffuseMap = diffuseMap;
@@ -125,26 +127,20 @@ namespace Kotono.Graphics.Objects.Meshes
 
             foreach (var hitbox in _hitboxes)
             {
-                hitbox.Position = Position;
+                hitbox.Location = Location;
                 hitbox.Rotation = Vector.Zero;
                 hitbox.Scale = Scale * 2;
                 hitbox.Color = Vector.UnitX;
             }
         }
 
-        public void Update()
+        public virtual void Update()
         {
-            var tempPos = Position;
-
-            //AngleVelocity += Random.Vector(-0.1f, 0.1f);
-            //Rotation += AngleVelocity * Time.DeltaS;
-
-            //PositionVelocity += Random.Vector(-0.1f, 0.1f);
-            //tempPos += PositionVelocity * Time.DeltaS;
+            var tempLoc = Location;
 
             if (IsGravity)
             {
-                tempPos += Fiziks.Gravity * Time.DeltaS;
+                tempLoc += Fiziks.Gravity * Time.DeltaS;
             }
 
             if (IsFiziks)
@@ -154,15 +150,15 @@ namespace Kotono.Graphics.Objects.Meshes
 
             foreach (var hitbox in _hitboxes)
             {
-                hitbox.Position = tempPos;
+                hitbox.Location = tempLoc;
 
-                if ((Collision == CollisionState.BlockAll) && hitbox.IsColliding())
+                if ((CollisionState == CollisionState.BlockAll) && hitbox.IsColliding())
                 {
-                    hitbox.Position = Position;
+                    hitbox.Location = Location;
                 }
                 else
                 {
-                    Position = tempPos;
+                    Location = tempLoc;
                 }
             }
         }
@@ -189,7 +185,7 @@ namespace Kotono.Graphics.Objects.Meshes
 
         public bool IsGravity { get; set; }
 
-        public CollisionState Collision { get; set; }
+        public CollisionState CollisionState { get; set; }
 
         public int VertexArrayObject { get; }
 
@@ -203,49 +199,30 @@ namespace Kotono.Graphics.Objects.Meshes
 
         public Vector Color { get; set; }
 
-        public Vector Position
-        {
-            get => _position;
-            set
-            {
-                _position.X = MathHelper.Clamp(value.X, -20.0f, 20.0f);
-                _position.Y = MathHelper.Clamp(value.Y, -20.0f, 20.0f);
-                _position.Z = MathHelper.Clamp(value.Z, -20.0f, 20.0f);
-            }
-        }
+        public Vector Location { get; set; }
 
-        private Vector PositionVelocity
+        private Vector LocationVelocity
         {
-            get => _positionVelocity;
-            set
-            {
-                _positionVelocity.X = MathHelper.Clamp(value.X, -1.0f, 1.0f);
-                _positionVelocity.Y = MathHelper.Clamp(value.Y, -1.0f, 1.0f);
-                _positionVelocity.Z = MathHelper.Clamp(value.Z, -1.0f, 1.0f);
-            }
+            get => _locationVelocity; 
+            set => _locationVelocity = value;
         }
 
         public Vector Rotation { get; set; }
 
-        public Vector Scale { get; set; }
-
-        private Vector AngleVelocity
+        private Vector RotationVelocity
         {
-            get => _angleVelocity;
-            set
-            {
-                _angleVelocity.X = MathHelper.Clamp(value.X, -2.5f, 2.5f);
-                _angleVelocity.Y = MathHelper.Clamp(value.Y, -2.5f, 2.5f);
-                _angleVelocity.Z = MathHelper.Clamp(value.Z, -2.5f, 2.5f);
-            }
+            get => _rotationVelocity;
+            set => _rotationVelocity = value;
         }
+
+        public Vector Scale { get; set; }
 
         public Matrix4 Model =>
             Matrix4.CreateScale((Vector3)Scale)
             * Matrix4.CreateRotationX(Rotation.X)
             * Matrix4.CreateRotationY(Rotation.Y)
             * Matrix4.CreateRotationZ(Rotation.Z)
-            * Matrix4.CreateTranslation((Vector3)Position);
+            * Matrix4.CreateTranslation((Vector3)Location);
 
         public void Dispose()
         {

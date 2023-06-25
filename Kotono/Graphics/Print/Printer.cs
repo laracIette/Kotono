@@ -21,13 +21,17 @@ namespace Kotono.Graphics.Print
             }
         }
 
-        internal void Print(string text)
+        internal void Print(string? text)
         {
             foreach (var _text in _texts)
             {
                 _text.Lower();
             }
-            _texts.Add(new PrinterText(text));
+
+            if (text != null)
+            {
+                _texts.Add(new PrinterText(text));
+            }
         }
     }
 }

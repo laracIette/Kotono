@@ -19,7 +19,7 @@ namespace Kotono.Graphics
 
         public Vector Right { get; private set; } = Vector.UnitX;
 
-        public Vector Position { get; private set; } = Vector.Zero;
+        public Vector Location { get; private set; } = Vector.Zero;
 
         public float AspectRatio { private get; set; }
 
@@ -56,7 +56,7 @@ namespace Kotono.Graphics
                 _fov = MathHelper.DegreesToRadians(value);
             }
         }
-        public Matrix4 ViewMatrix => Matrix4.LookAt((Vector3)Position, (Vector3)(Position + Front), (Vector3)Up);
+        public Matrix4 ViewMatrix => Matrix4.LookAt((Vector3)Location, (Vector3)(Location + Front), (Vector3)Up);
 
         public Matrix4 ProjectionMatrix => Matrix4.CreatePerspectiveFieldOfView(_fov, AspectRatio, 0.01f, 100f);
 
@@ -79,27 +79,27 @@ namespace Kotono.Graphics
 
             if (InputManager.KeyboardState.IsKeyDown(Keys.W))
             {
-                Position += Front * speed * Time.DeltaS; // Forward
+                Location += Front * speed * Time.DeltaS; // Forward
             }
             if (InputManager.KeyboardState.IsKeyDown(Keys.S))
             {
-                Position -= Front * speed * Time.DeltaS; // Backwards
+                Location -= Front * speed * Time.DeltaS; // Backwards
             }
             if (InputManager.KeyboardState.IsKeyDown(Keys.A))
             {
-                Position -= Right * speed * Time.DeltaS; // Left
+                Location -= Right * speed * Time.DeltaS; // Left
             }
             if (InputManager.KeyboardState.IsKeyDown(Keys.D))
             {
-                Position += Right * speed * Time.DeltaS; // Right
+                Location += Right * speed * Time.DeltaS; // Right
             }
             if (InputManager.KeyboardState.IsKeyDown(Keys.Space))
             {
-                Position += Up * speed * Time.DeltaS; // Up
+                Location += Up * speed * Time.DeltaS; // Up
             }
             if (InputManager.KeyboardState.IsKeyDown(Keys.LeftControl))
             {
-                Position -= Up * speed * Time.DeltaS; // Down
+                Location -= Up * speed * Time.DeltaS; // Down
             }
 
             Yaw += InputManager.MouseState!.Delta.X * sensitivity;

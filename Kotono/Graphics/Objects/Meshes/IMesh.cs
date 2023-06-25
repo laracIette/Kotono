@@ -11,7 +11,7 @@ namespace Kotono.Graphics.Objects.Meshes
 
         public void Draw();
 
-        public Vector Position { get; }
+        public Vector Location { get; }
 
         public Vector Color { get; set; }
 
@@ -31,7 +31,7 @@ namespace Kotono.Graphics.Objects.Meshes
 
         public int SpecularMap { get; }
 
-        public CollisionState Collision { get; }
+        public CollisionState CollisionState { get; }
 
         public bool IsGravity { get; set; }
 

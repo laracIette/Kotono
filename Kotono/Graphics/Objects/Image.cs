@@ -8,7 +8,7 @@ namespace Kotono.Graphics.Objects
     {
         private static readonly float[] _vertices =
         {           
-            // positions   // texCoords
+            // locations   // texCoords
             -1.0f,  1.0f,  0.0f, 1.0f, 
             -1.0f, -1.0f,  0.0f, 0.0f, 
              1.0f, -1.0f,  1.0f, 0.0f, 
@@ -26,15 +26,13 @@ namespace Kotono.Graphics.Objects
 
         private readonly int _texture;
 
-        private Rect _dest;
+        public Rect Dest;
 
         private Rect _transformation;
 
         private double _startTime = 0f;
 
         private double _endTime = 0f;
-
-        public Rect Dest => _dest;
 
         private Matrix4 Model =>
             Matrix4.Identity
@@ -64,7 +62,7 @@ namespace Kotono.Graphics.Objects
                 GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 4 * sizeof(float), 2 * sizeof(float));
             }
 
-            _dest = dest;
+            Dest = dest;
 
             _transformation = new Rect();
 
@@ -75,12 +73,12 @@ namespace Kotono.Graphics.Objects
         {
             if (Time.NowS < _endTime)
             {
-                _dest += _transformation * Time.DeltaS;
+                Dest += _transformation * Time.DeltaS;
             }
 
             // check if Image is out of screen bounds
             Show();
-            if (((_dest.X + _dest.W) < 0) || (_dest.X > KT.Width) || ((_dest.Y + _dest.H) < 0) || (_dest.Y > KT.Height))
+            if (((Dest.X + Dest.W) < 0) || (Dest.X > KT.Width) || ((Dest.Y + Dest.H) < 0) || (Dest.Y > KT.Height))
             {
                 Hide();
             }
@@ -119,7 +117,7 @@ namespace Kotono.Graphics.Objects
 
         public void TransformTo(Rect dest, double time)
         {
-            Transform(dest - _dest, time);
+            Transform(dest - Dest, time);
         }
 
         public void Show()

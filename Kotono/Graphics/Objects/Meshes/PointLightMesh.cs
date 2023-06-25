@@ -7,16 +7,16 @@ namespace Kotono.Graphics.Objects.Meshes
 {
     public class PointLightMesh : MeshOBJ
     {
-        public PointLightMesh(Vector position) 
+        public PointLightMesh(Vector location) 
             : base(
                   KT.ProjectPath + @"Assets/sphere.obj",
-                  position,
+                  location,
                   Vector.Zero,
                   new Vector(0.2f),
                   KT.ProjectPath + @"Assets/white.png",
                   KT.ProjectPath + @"Assets/white.png",
                   ShaderType.PointLight,
-                  Vector.One,
+                  Vector.Unit,
                   new IHitbox[]
                   {
                       KT.CreateHitbox(new Sphere())

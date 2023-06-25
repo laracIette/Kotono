@@ -2,7 +2,7 @@
 
 namespace Kotono.Graphics.Objects
 {
-    public enum Position
+    public enum Location
     {
         Center,
         TopLeft,
@@ -12,9 +12,9 @@ namespace Kotono.Graphics.Objects
     {
         protected string _text;
 
-        protected readonly Rect _dest;
+        protected Rect _dest;
 
-        protected Position _position;
+        protected Location _location;
 
         protected float _spacing;
 
@@ -99,11 +99,11 @@ namespace Kotono.Graphics.Objects
             _paths[':'] = KT.KotonoPath + @"Assets\Characters\colon.png"; TextureManager.LoadTexture(_paths[':']);
         }
 
-        internal Text(string text, Rect dest, Position position, float spacing = 1.0f) 
+        internal Text(string text, Rect dest, Location location, float spacing = 1.0f) 
         {
             _text = text;
             _dest = dest;
-            _position = position;
+            _location = location;
             _spacing = spacing;
         }
 
@@ -118,9 +118,9 @@ namespace Kotono.Graphics.Objects
                     path = _paths[' '];
                 }
 
-                switch (_position)
+                switch (_location)
                 {
-                    case Position.Center:
+                    case Location.Center:
                         _letters.Add(KT.CreateImage(
                             path, new Rect(
                                 _dest.X - _dest.W / 2 * (_text.Length - 1) * _spacing + _dest.W * i * _spacing,
@@ -131,7 +131,7 @@ namespace Kotono.Graphics.Objects
                         ));
                         break;
 
-                    case Position.TopLeft:
+                    case Location.TopLeft:
                         _letters.Add(KT.CreateImage(
                             path, new Rect(
                                 _dest.X + _dest.W / 2 + _dest.W * i * _spacing,
