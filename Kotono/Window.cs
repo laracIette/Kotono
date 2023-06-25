@@ -3,16 +3,20 @@ using Kotono.Utils;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
+using System;
 
 namespace Kotono
 {
     public class Window : GameWindow
     {
-        public Window(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings, string kotonoPath, string projectPath)
+        private double _stalledTime = 0;
+
+        public Window(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings, string kotonoPath, string projectPath, int maxFrameRate)
             : base(gameWindowSettings, nativeWindowSettings)
         {
             KT.KotonoPath = kotonoPath;
             KT.ProjectPath = projectPath;
+            KT.MaxFrameRate = maxFrameRate;
         }
 
         protected override void OnLoad()
@@ -40,7 +44,14 @@ namespace Kotono
         {
             base.OnRenderFrame(e);
 
-            if (!IsFocused) return;
+            if (!IsFocused || (KT.GetFrameRate() > KT.MaxFrameRate - 1))
+            {
+                _stalledTime += e.Time;
+                KT.AddFrameTime(_stalledTime);
+                return;
+            }
+
+            _stalledTime = 0;
 
             KT.AddFrameTime(e.Time);
 

@@ -276,9 +276,14 @@ namespace Kotono
         
         private static readonly Printer _printer = new();
 
-        public static void Print(string text)
+        public static void Print(object obj)
         {
-            _printer.Print(text);
+            var text = obj.ToString();
+            
+            if (text != null)
+            {
+                _printer.Print(text);
+            }
         }
 
         #endregion Printer
@@ -286,6 +291,8 @@ namespace Kotono
         #region PerformanceWindow
         
         private static readonly Performance.Window _performanceWindow = new();
+
+        public static int MaxFrameRate { get; set; } = 60;
 
         internal static void AddFrameTime(double frameTime)
             => _performanceWindow.AddFrameTime(frameTime);

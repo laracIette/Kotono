@@ -15,8 +15,6 @@ namespace Kotono.Utils
 
         public readonly Vector Normalized => this / Length;
 
-        public readonly string String => $"X: {X}, Y: {Y}, Z: {Z}";
-
         public static Vector UnitX => new Vector(1, 0, 0);
 
         public static Vector UnitXY => new Vector(1, 1, 0);
@@ -66,11 +64,27 @@ namespace Kotono.Utils
             Z = f;
         }
 
+        public Vector(double d)
+        {
+            X = (float)d;
+            Y = (float)d;
+            Z = (float)d;
+        }
+
         public Vector(float x = 0, float y = 0, float z = 0)
         {
             X = x;
             Y = y;
             Z = z;
+        }
+
+        public void RotateAroundAxis(Vector axis, float angle)
+        {
+            // Create a Quaternion representing the rotation
+            var rotation = Quaternion.FromAxisAngle((Vector3)axis, MathHelper.DegreesToRadians(angle));
+
+            // Rotate the vector using the Quaternion
+            this = (Vector)Vector3.Transform((Vector3)this, rotation);
         }
 
         public static Vector Cross(Vector left, Vector right)
@@ -152,6 +166,16 @@ namespace Kotono.Utils
         public static explicit operator Vector3(Vector v)
         {
             return new Vector3(v.X, v.Y, v.Z);
+        }
+
+        public static explicit operator Vector(Vector3 v)
+        {
+            return new Vector(v.X, v.Y, v.Z);
+        }
+
+        public override readonly string ToString()
+        {
+            return $"X: {X}, Y: {Y}, Z: {Z}"; ;
         }
 
     }

@@ -34,7 +34,6 @@ namespace Kotono.Graphics.Performance
 
         internal void AddTime(double newTime)
         {
-
             _times[_timeIndex] = newTime;
             _timeIndex = (_timeIndex + 1) % _times.Length;
 

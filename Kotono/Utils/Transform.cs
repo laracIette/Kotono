@@ -8,6 +8,7 @@
 
         public Vector Scale;
 
+
         public const int SizeInBytes = Vector.SizeInBytes * 3;
 
         public Transform() 
@@ -24,9 +25,5 @@
             Scale = scale;
         }
 
-        public void RotateAroundPoint(Vector point, Vector currentAngle, Vector angle)
-        {
-
-        }
     }
 }
