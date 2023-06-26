@@ -5,14 +5,17 @@ using System;
 
 namespace Kotono.Graphics.Objects.Meshes
 {
-    public class PointLightMesh : MeshOBJ
+    public class PointLightMesh : Mesh
     {
         public PointLightMesh(Vector location) 
             : base(
                   KT.ProjectPath + @"Assets/sphere.obj",
-                  location,
-                  Vector.Zero,
-                  new Vector(0.2f),
+                  new Transform
+                  {
+                      Location = location,
+                      Rotation = Vector.Zero,
+                      Scale = new Vector(0.2f)
+                  },
                   KT.ProjectPath + @"Assets/white.png",
                   KT.ProjectPath + @"Assets/white.png",
                   ShaderType.PointLight,

@@ -25,6 +25,14 @@ namespace Kotono.Graphics.Objects
             }
         }
 
+        internal void Init()
+        {
+            foreach (var image in _images)
+            {
+                image.Init();
+            }
+        }
+
         internal void Update()
         {
             foreach (var image in _images)

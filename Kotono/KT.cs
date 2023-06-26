@@ -93,13 +93,13 @@ namespace Kotono
 
         #region Mesh
 
-        public static IMesh CreateMesh(IMesh mesh)
+        public static Mesh CreateMesh(Mesh mesh)
         {
             _objectManager.CreateMesh(mesh);
             return mesh;
         }
 
-        public static void DeleteMesh(IMesh mesh)
+        public static void DeleteMesh(Mesh mesh)
         {
             _objectManager.DeleteMesh(mesh);
         }
@@ -284,6 +284,11 @@ namespace Kotono
             }
         }
 
+        public static void Print()
+        {
+            Print("");
+        }
+
         #endregion Printer
 
         #region PerformanceWindow
@@ -312,9 +317,24 @@ namespace Kotono
 
         #endregion PerformanceWindow
 
+        #region Gizmo
+
+        private readonly static Gizmo _gizmo = new();
+
+        public static Gizmo Gizmo => _gizmo;
+
+        public static void AttachGizmoTo(Mesh mesh)
+        {
+            _gizmo.AttachTo(mesh);
+        }
+
+        #endregion Gizmo
+
         public static void Init()
         {
             _shaderManager.Init();
+            _gizmo.Init();
+            _objectManager.Init();
             Text.InitPaths();
             _performanceWindow.Init();
             _componentManager.Init();
@@ -324,6 +344,7 @@ namespace Kotono
         public static void Update()
         {
             Time.Update();
+            _gizmo.Update();
             _objectManager.Update();
             _componentManager.Update();
             _cameraManager.Update();

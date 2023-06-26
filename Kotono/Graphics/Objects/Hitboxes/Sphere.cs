@@ -4,6 +4,7 @@ using OpenTK.Mathematics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Math = Kotono.Utils.Math;
 
 namespace Kotono.Graphics.Objects.Hitboxes
 {
@@ -40,8 +41,8 @@ namespace Kotono.Graphics.Objects.Hitboxes
                     float rotation = i / (float)SEGMENTS * MathHelper.TwoPi;
                     _vertices[i] = new Vector
                     {
-                        X = 0.5f * (float)Math.Cos(rotation),
-                        Y = 0.5f * (float)Math.Sin(rotation),
+                        X = 0.5f * Math.Cos(rotation),
+                        Y = 0.5f * Math.Sin(rotation),
                         Z = 0f
                     };
                 }
@@ -60,6 +61,8 @@ namespace Kotono.Graphics.Objects.Hitboxes
                 GL.VertexAttribPointer(locationAttributeLocation, 3, VertexAttribPointerType.Float, false, Vector.SizeInBytes, 0);
             }
         }
+
+        public void Init() { }
 
         public void Update() 
         {

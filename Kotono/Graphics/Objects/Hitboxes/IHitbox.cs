@@ -5,6 +5,8 @@ namespace Kotono.Graphics.Objects.Hitboxes
 {
     public interface IHitbox
     {
+        public void Init();
+
         public void Update();
 
         public void Draw();

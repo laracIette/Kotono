@@ -31,6 +31,14 @@ namespace Kotono.Graphics.Objects
             return _hitboxes; 
         }
 
+        internal void Init()
+        {
+            foreach (var hitbox in _hitboxes)
+            {
+                hitbox.Init();
+            }
+        }
+
         internal void Update()
         {
             foreach (var hitbox in _hitboxes)

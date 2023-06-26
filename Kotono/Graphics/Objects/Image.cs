@@ -69,6 +69,8 @@ namespace Kotono.Graphics.Objects
             _texture = TextureManager.LoadTexture(path);
         }
 
+        public void Init() { }
+
         public void Update()
         {
             if (Time.NowS < _endTime)

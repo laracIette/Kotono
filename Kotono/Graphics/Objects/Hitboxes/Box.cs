@@ -4,6 +4,7 @@ using OpenTK.Mathematics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Math = Kotono.Utils.Math;
 
 namespace Kotono.Graphics.Objects.Hitboxes
 {
@@ -86,6 +87,8 @@ namespace Kotono.Graphics.Objects.Hitboxes
                 GL.VertexAttribPointer(locationAttributeLocation, 3, VertexAttribPointerType.Float, false, 0, 0);
             }
         }
+
+        public void Init() { }
 
         public void Update() 
         {

@@ -20,7 +20,7 @@ namespace Kotono.Graphics.Objects.Lights
 
         private int _shaderIndex;
 
-        private readonly IMesh _mesh;
+        private readonly Mesh _mesh;
 
         public PointLight(Vector location, Vector ambient, Vector diffuse, Vector specular, float constant, float linear, float quadratic)
         {
@@ -34,6 +34,8 @@ namespace Kotono.Graphics.Objects.Lights
 
             _mesh = KT.CreateMesh(new PointLightMesh(location));
         }
+
+        public void Init() { }
 
         public virtual void Update()
         {

@@ -5,16 +5,16 @@ namespace Kotono.Graphics.Objects
 {
     internal class MeshManager
     {
-        private readonly List<IMesh> _meshes = new();
+        private readonly List<Mesh> _meshes = new();
 
         internal MeshManager() { }
 
-        internal void Create(IMesh mesh)
+        internal void Create(Mesh mesh)
         {
             _meshes.Add(mesh);
         }
 
-        internal void Delete(IMesh mesh)
+        internal void Delete(Mesh mesh)
         {
             if (_meshes.Count <= 0)
             {
@@ -23,6 +23,15 @@ namespace Kotono.Graphics.Objects
             else
             {
                 _meshes.Remove(mesh);
+            }
+        }
+
+
+        internal void Init()
+        {
+            foreach (var mesh in _meshes)
+            {
+                mesh.Init();
             }
         }
 

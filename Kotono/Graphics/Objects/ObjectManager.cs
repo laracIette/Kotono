@@ -26,17 +26,22 @@ namespace Kotono.Graphics.Objects
 
         internal void Init()
         {
+            _imageManager.Init();
+            _meshManager.Init();
+            _hitboxManager.Init();
+            _pointLightManager.Init();
+            _spotLightManager.Init();
             _viewport.Init();
         }
 
         #region Mesh
 
-        internal void CreateMesh(IMesh mesh)
+        internal void CreateMesh(Mesh mesh)
         {
             _meshManager.Create(mesh);
         }
 
-        internal void DeleteMesh(IMesh mesh)
+        internal void DeleteMesh(Mesh mesh)
         {
             _meshManager.Delete(mesh);
         }

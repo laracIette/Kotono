@@ -104,26 +104,9 @@ namespace Kotono.Utils
             Z = (float)z;
         }
 
-        public void RotateAroundPoint(Vector point, Vector rotation)
+        public static Vector RotateAroundPoint(Vector v, Vector point, Vector rotation)
         {
-            bool print = InputManager.KeyboardState!.IsKeyDown(Keys.I);
-            
-            if (print) KT.Print("");
-            //var rotation = Quaternion.FromAxisAngle((Vector3)axis, MathHelper.DegreesToRadians(angle));
-            //if (print) KT.Print(rotation);
-
-            //this = (Vector)Vector3.Transform((Vector3)this, rotation);
-            //if (print) KT.Print(this);
-
-            if (print) KT.Print(this);
-
-            //var direction = (Vector3)(this - point);
-            //direction = Quaternion.FromEulerAngles((Vector3)rotation) * direction;
-            //this = (Vector)direction + point;
-
-            this = (Vector)(Quaternion.FromEulerAngles((Vector3)rotation) * (Vector3)(this - point)) + point;
-
-            if (print) KT.Print(this);
+            return (Vector)(Quaternion.FromEulerAngles((Vector3)rotation) * (Vector3)(v - point)) + point;
         }
 
         public static Vector Cross(Vector left, Vector right)

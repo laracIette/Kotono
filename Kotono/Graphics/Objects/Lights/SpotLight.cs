@@ -33,6 +33,8 @@ namespace Kotono.Graphics.Objects.Lights
             _shaderIndex = KT.GetSpotLightsCount();
         }
 
+        public void Init() { }
+
         public void Update()
         {
             if (InputManager.KeyboardState!.IsKeyPressed(Keys.F))

@@ -1,4 +1,5 @@
 ﻿using Kotono.Graphics.Objects.Lights;
+using Newtonsoft.Json.Bson;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -44,6 +45,14 @@ namespace Kotono.Graphics.Objects
         internal PointLight GetFirst()
         {
             return _pointLights.First();
+        }
+
+        internal void Init()
+        {
+            foreach (var pointLight in _pointLights)
+            {
+                pointLight.Init();
+            }
         }
 
         internal void Update()

@@ -4,20 +4,18 @@ using Kotono.Physics;
 using Kotono.Utils;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
-using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using PrimitiveType = OpenTK.Graphics.OpenGL4.PrimitiveType;
-using Random = Kotono.Utils.Random;
 
 namespace Kotono.Graphics.Objects.Meshes
 {
-    public class MeshOBJ : IMesh
+    public class Mesh
     {
         private static readonly Dictionary<string, Tuple<int[], Vector, Vector[]>> _paths = new();
 
-        private Vector _location;
+        private Transform _transform;
 
         private Vector _locationVelocity;
 
@@ -27,7 +25,7 @@ namespace Kotono.Graphics.Objects.Meshes
 
         protected readonly ShaderType _shaderType;
 
-        public MeshOBJ(string path, Vector location, Vector rotation, Vector scale, string diffusePath, string specularPath, ShaderType shaderType, Vector color, IHitbox[] hitboxes)
+        public Mesh(string path, Transform transform, string diffusePath, string specularPath, ShaderType shaderType, Vector color, IHitbox[] hitboxes)
         {
             var diffuseMap = TextureManager.LoadTexture(diffusePath);
             var specularMap = TextureManager.LoadTexture(specularPath);
@@ -50,11 +48,11 @@ namespace Kotono.Graphics.Objects.Meshes
 
                         for (int j = 0; j < mesh.Vertices.Count; j++)
                         {
-                            var pos = new Vector(mesh.Vertices[j].X, mesh.Vertices[j].Y, mesh.Vertices[j].Z);
+                            var loc = new Vector(mesh.Vertices[j].X, mesh.Vertices[j].Y, mesh.Vertices[j].Z);
                             var normal = new Vector(mesh.Normals[j].X, mesh.Normals[j].Y, mesh.Normals[j].Z);
                             var texCoord = new Vector2(mesh.TextureCoordinateChannels[0][j].X, mesh.TextureCoordinateChannels[0][j].Y);
 
-                            tempVertices.Add(new Vertex(pos, normal, texCoord));
+                            tempVertices.Add(new Vertex(loc, normal, texCoord));
                         }
 
                         models[i] = tempVertices;
@@ -66,10 +64,13 @@ namespace Kotono.Graphics.Objects.Meshes
                 models[0].ForEach(v => center += v.Location);
                 center /= models[0].Count;
 
-                var vertices = new Vector[models[0].Count];
-                for (int i = 0; i < models[0].Count; i++)
+                var vertices = new List<Vector>();
+                foreach (var vertex in models[0])
                 {
-                    vertices[i] = models[0][i].Location;
+                    if (!vertices.Any(v => v == vertex.Location))
+                    {
+                        vertices.Add(vertex.Location);
+                    }
                 }
 
                 // create vertex array
@@ -106,7 +107,7 @@ namespace Kotono.Graphics.Objects.Meshes
                         indices[0].Count
                     },
                     center,
-                    vertices
+                    vertices.ToArray()
                 );
             }
 
@@ -115,9 +116,9 @@ namespace Kotono.Graphics.Objects.Meshes
             IndicesCount = _paths[path].Item1[2];
             Center = _paths[path].Item2;
             Vertices = _paths[path].Item3;
-            Location = location;
-            Rotation = rotation;
-            Scale = scale;
+            Location = transform.Location;
+            Rotation = transform.Rotation;
+            Scale = transform.Scale;
             DiffuseMap = diffuseMap;
             SpecularMap = specularMap;
             _shaderType = shaderType;
@@ -133,6 +134,8 @@ namespace Kotono.Graphics.Objects.Meshes
                 hitbox.Color = Vector.UnitX;
             }
         }
+
+        public virtual void Init() { }
 
         public virtual void Update()
         {
@@ -197,25 +200,40 @@ namespace Kotono.Graphics.Objects.Meshes
 
         public int SpecularMap { get; }
 
-        public Vector Color { get; set; }
 
-        public Vector Location { get; set; }
+        public Transform Transform => _transform;
 
-        private Vector LocationVelocity
+        public Vector Location
+        {
+            get => _transform.Location;
+            set => _transform.Location = value;
+        }
+
+        public Vector Rotation
+        {
+            get => _transform.Rotation;
+            set => _transform.Rotation = value;
+        }
+
+        public Vector Scale
+        {
+            get => _transform.Scale;
+            set => _transform.Scale = value;
+        }
+
+        public Vector LocationVelocity
         {
             get => _locationVelocity; 
             set => _locationVelocity = value;
         }
 
-        public Vector Rotation { get; set; }
-
-        private Vector RotationVelocity
+        public Vector RotationVelocity
         {
             get => _rotationVelocity;
             set => _rotationVelocity = value;
         }
-
-        public Vector Scale { get; set; }
+        
+        public Vector Color { get; set; }
 
         public Matrix4 Model =>
             Matrix4.CreateScale((Vector3)Scale)

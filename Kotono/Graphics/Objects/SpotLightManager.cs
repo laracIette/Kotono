@@ -35,6 +35,14 @@ namespace Kotono.Graphics.Objects
             }
         }
 
+        internal void Init()
+        {
+            foreach (var pointLight in _spotLights)
+            {
+                pointLight.Init();
+            }
+        }
+
         internal void Update()
         {
             foreach (var pointLight in _spotLights)
