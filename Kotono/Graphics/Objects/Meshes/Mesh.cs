@@ -13,7 +13,7 @@ namespace Kotono.Graphics.Objects.Meshes
 {
     public class Mesh
     {
-        private static readonly Dictionary<string, Tuple<int[], Vector, Vector[]>> _paths = new();
+        private static readonly Dictionary<string, Tuple<int[], Vector, Vector[], Triangle[]>> _paths = new();
 
         private Transform _transform;
 
@@ -29,6 +29,10 @@ namespace Kotono.Graphics.Objects.Meshes
 
         public bool IsInFront = false;
 
+        public static double MaxIntersectionCheckTime => 0.1f;
+
+        public double IntersectionCheckTime { get; set; } = MaxIntersectionCheckTime;
+
         public Mesh(string path, Transform transform, string diffusePath, string specularPath, ShaderType shaderType, Vector color, IHitbox[] hitboxes)
         {
             var diffuseMap = TextureManager.LoadTexture(diffusePath);
@@ -38,10 +42,22 @@ namespace Kotono.Graphics.Objects.Meshes
             {
                 List<Vertex>[] models;
                 List<int>[] indices;
+                List<Triangle> triangles = new();
 
                 using (var importer = new AssimpContext())
                 {
                     var scene = importer.ImportFile(path, PostProcessSteps.Triangulate);
+
+                    foreach (var face in scene.Meshes[0].Faces)
+                    {
+                        triangles.Add(new Triangle(
+                            (Vector)scene.Meshes[0].Vertices[face.Indices[0]],
+                            (Vector)scene.Meshes[0].Vertices[face.Indices[1]],
+                            (Vector)scene.Meshes[0].Vertices[face.Indices[2]],
+                            new Transform(),
+                            Vector.White
+                        ));
+                    }
 
                     models = new List<Vertex>[scene.Meshes.Count];
                     indices = new List<int>[scene.Meshes.Count];
@@ -111,7 +127,8 @@ namespace Kotono.Graphics.Objects.Meshes
                         indices[0].Count
                     },
                     center,
-                    vertices.ToArray()
+                    vertices.ToArray(),
+                    triangles.ToArray()
                 );
             }
 
@@ -120,6 +137,7 @@ namespace Kotono.Graphics.Objects.Meshes
             IndicesCount = _paths[path].Item1[2];
             Center = _paths[path].Item2;
             Vertices = _paths[path].Item3;
+            Triangles = _paths[path].Item4;
             Location = transform.Location;
             Rotation = transform.Rotation;
             Scale = transform.Scale;
@@ -185,8 +203,10 @@ namespace Kotono.Graphics.Objects.Meshes
             GL.DrawElements(PrimitiveType.Triangles, IndicesCount, DrawElementsType.UnsignedInt, IntPtr.Zero);
         }
 
-        public Vector[] Vertices { get; }
+        public Triangle[] Triangles { get; }
         
+        public Vector[] Vertices { get; }
+
         public Vector Center { get; }
 
         public bool IsFiziks { get; set; }
@@ -228,7 +248,7 @@ namespace Kotono.Graphics.Objects.Meshes
 
         public Vector LocationVelocity
         {
-            get => _locationVelocity; 
+            get => _locationVelocity;
             set => _locationVelocity = value;
         }
 
@@ -237,15 +257,10 @@ namespace Kotono.Graphics.Objects.Meshes
             get => _rotationVelocity;
             set => _rotationVelocity = value;
         }
-        
+
         public Vector Color { get; set; }
 
-        public Matrix4 Model =>
-            Matrix4.CreateScale((Vector3)Scale)
-            * Matrix4.CreateRotationX(Rotation.X)
-            * Matrix4.CreateRotationY(Rotation.Y)
-            * Matrix4.CreateRotationZ(Rotation.Z)
-            * Matrix4.CreateTranslation((Vector3)Location);
+        public Matrix4 Model => Transform.Model;
 
         public void Show()
         {

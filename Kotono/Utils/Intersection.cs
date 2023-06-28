@@ -1,4 +1,5 @@
 ﻿using Kotono.Graphics.Objects;
+using OpenTK.Mathematics;
 
 namespace Kotono.Utils
 {
@@ -8,13 +9,15 @@ namespace Kotono.Utils
         {
             intersectionPoint = Vector.Zero;
 
-            const float epsilon = 0.000001f;
+            var vertex1 = (Vector)Vector3.TransformPosition((Vector3)triangle.Vertex1, triangle.Model);
+            var vertex2 = (Vector)Vector3.TransformPosition((Vector3)triangle.Vertex2, triangle.Model);
+            var vertex3 = (Vector)Vector3.TransformPosition((Vector3)triangle.Vertex3, triangle.Model);
 
-            Vector triangleNormal = Vector.Cross(triangle.Vertex2 - triangle.Vertex1, triangle.Vertex3 - triangle.Vertex1);
-            Vector rayToVertex1 = triangle.Vertex1 - rayOrigin;
+            var triangleNormal = Vector.Cross(vertex2 - vertex1, vertex3 - vertex1);
+            var rayToVertex1 = vertex1 - rayOrigin;
             
             float denominator = Vector.Dot(triangleNormal, rayDirection);
-            if (Math.Abs(denominator) < epsilon)
+            if (Math.Abs(denominator) < float.Epsilon)
             {
                 // Ray is parallel to the triangle's plane or triangle is degenerate
                 return false;
@@ -29,9 +32,9 @@ namespace Kotono.Utils
 
             intersectionPoint = rayOrigin + rayDirection * t;
 
-            Vector v0 = triangle.Vertex2 - triangle.Vertex1;
-            Vector v1 = triangle.Vertex3 - triangle.Vertex1;
-            Vector v2 = intersectionPoint - triangle.Vertex1;
+            var v0 = vertex2 - vertex1;
+            var v1 = vertex3 - vertex1;
+            var v2 = intersectionPoint - vertex1;
 
             float dot00 = Vector.Dot(v0, v0);
             float dot01 = Vector.Dot(v0, v1);

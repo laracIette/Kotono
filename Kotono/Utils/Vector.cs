@@ -1,5 +1,7 @@
-﻿using OpenTK.Mathematics;
+﻿using Assimp;
+using OpenTK.Mathematics;
 using System;
+using Quaternion = OpenTK.Mathematics.Quaternion;
 
 namespace Kotono.Utils
 {
@@ -132,6 +134,24 @@ namespace Kotono.Utils
             return left.X * right.X + left.Y * right.Y + left.Z * right.Z;
         }
 
+        /// <summary> Convert a Vector from degrees to radians </summary>
+        public static Vector Rad(Vector v)
+        {
+            v.X = Math.Rad(v.X);
+            v.Y = Math.Rad(v.Y);
+            v.Z = Math.Rad(v.Z);
+            return v;
+        }
+        
+        /// <summary> Convert a Vector from radians to degrees </summary>
+        public static Vector Deg(Vector v)
+        {
+            v.X = Math.Deg(v.X);
+            v.Y = Math.Deg(v.Y);
+            v.Z = Math.Deg(v.Z);
+            return v;
+        }
+
         public static Vector operator +(Vector left, Vector right)
         {
             left.X += right.X;
@@ -146,6 +166,14 @@ namespace Kotono.Utils
             left.Y -= right.Y;
             left.Z -= right.Z;
             return left;
+        }
+
+        public static Vector operator -(Vector v, float f)
+        {
+            v.X -= f;
+            v.Y -= f;
+            v.Z -= f;
+            return v;
         }
 
         public static Vector operator -(Vector v)
@@ -204,6 +232,16 @@ namespace Kotono.Utils
         }
 
         public static explicit operator Vector(Vector3 v)
+        {
+            return new Vector(v.X, v.Y, v.Z);
+        }
+
+        public static explicit operator Vector3D(Vector v)
+        {
+            return new Vector3D(v.X, v.Y, v.Z);
+        }
+
+        public static explicit operator Vector(Vector3D v)
         {
             return new Vector(v.X, v.Y, v.Z);
         }

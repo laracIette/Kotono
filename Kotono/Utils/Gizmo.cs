@@ -1,7 +1,6 @@
-﻿using Kotono.Graphics.Objects;
-using Kotono.Graphics.Objects.Meshes;
-using Newtonsoft.Json.Linq;
+﻿using Kotono.Graphics.Objects.Meshes;
 using OpenTK.Windowing.Common;
+using OpenTK.Windowing.GraphicsLibraryFramework;
 
 namespace Kotono.Utils
 {
@@ -41,9 +40,9 @@ namespace Kotono.Utils
             }
         }
 
-        private Triangle _triangle;
-
         public bool IsDraw = true;
+
+        private int _selectedMesh = -1;
 
         public Gizmo() { }
 
@@ -61,8 +60,6 @@ namespace Kotono.Utils
             {
                 KT.CreateMesh(mesh);
             }
-
-            _triangle = KT.CreateTriangle(new Triangle(new Vector(1, 1, -3), new Vector(2, 3, -2), new Vector(4, 1, -3), new Transform(), Vector.Blue));
         }
 
         public void Update()
@@ -70,24 +67,57 @@ namespace Kotono.Utils
             Location = _attachMesh.Location;
             Rotation = _attachMesh.Rotation;
 
-            Drag();
+            if (Input.MouseState!.IsButtonPressed(MouseButton.Left))
+            {
+                _selectedMesh = GetSelectedMesh();
+            }
+            else if (Input.MouseState!.IsButtonReleased(MouseButton.Left))
+            {
+                _selectedMesh = -1;
+            }
+
+            switch (_selectedMesh)
+            {
+                case 0:
+                    Location += Transform.Right * Time.DeltaS * 100 * Input.MouseState!.Delta.X;
+                    break;
+
+                case 1:
+                    Location += Transform.Up * Time.DeltaS * 100 * Input.MouseState!.Delta.X;
+                    break;
+
+                case 2:
+                    Location += Transform.Forward * Time.DeltaS * 100 * Input.MouseState!.Delta.X;
+                    break;
+
+                default:
+                    break;
+            }
 
             _attachMesh.Location = Location;
             _attachMesh.Rotation = Rotation;
         }
 
-        private void Drag()
+        private int GetSelectedMesh()
         {
             if (Input.CursorState == CursorState.Grabbed)
             {
-                return;
+                return -1;
             }
 
-            if (Intersection.IntersectRayTriangle(KT.ActiveCamera.Location, Input.GetMouseRay(), _triangle, out Vector intersectionPoint))
+            for (int i = 0; i < _meshes.Length; i++)
             {
-                KT.Print(intersectionPoint);
+                foreach (var triangle in _meshes[i].Triangles)
+                {
+                    triangle.Transform = _meshes[i].Transform;
+                    if (Intersection.IntersectRayTriangle(KT.ActiveCamera.Location, Input.GetMouseRay(), triangle, out _))
+                    {
+                        return i;
+                    }
+                }
             }
 
+            return -1;
         }
 
         public void AttachTo(Mesh mesh)

@@ -1,6 +1,7 @@
 ﻿using Kotono.Utils;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
+using System;
 
 namespace Kotono.Graphics.Objects
 {
@@ -14,7 +15,11 @@ namespace Kotono.Graphics.Objects
 
         private Transform _transform;
 
-        public Transform Transform => _transform;
+        public Transform Transform
+        {
+            get => _transform;
+            set => _transform = value;
+        }
 
         public Vector Location
         {
@@ -35,6 +40,8 @@ namespace Kotono.Graphics.Objects
         }
 
         public Vector Color;
+
+        public Matrix4 Model => Transform.Model;
 
         public bool IsDraw = true;
 
@@ -119,6 +126,34 @@ namespace Kotono.Graphics.Objects
         public void Hide()
         {
             IsDraw = false;
+        }
+
+        public Vector this[int index]
+        {
+            get => index switch
+            {
+                0 => Vertex1,
+                1 => Vertex2,
+                2 => Vertex3,
+                _ => throw new IndexOutOfRangeException("You tried to access this Triangle at index: " + index)
+            };
+            set
+            {
+                switch (index)
+                {
+                    case 0:
+                        Vertex1 = value;
+                        break;
+                    case 1:
+                        Vertex2 = value;
+                        break;
+                    case 2:
+                        Vertex3 = value;
+                        break;
+                    default:
+                        throw new IndexOutOfRangeException("You tried to set this Triangle at index: " + index);
+                }
+            }
         }
     }
 }
