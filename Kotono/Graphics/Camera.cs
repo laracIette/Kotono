@@ -29,35 +29,35 @@ namespace Kotono.Graphics
 
         public float Pitch
         {
-            get => MathHelper.RadiansToDegrees(_pitch);
+            get => Math.Deg(_pitch);
 
             set
             {
                 value = Math.Clamp(value, -89.0f, 89.0f);
-                _pitch = MathHelper.DegreesToRadians(value);
+                _pitch = Math.Rad(value);
                 UpdateVectors();
             }
         }
 
         public float Yaw
         {
-            get => MathHelper.RadiansToDegrees(_yaw);
+            get => Math.Deg(_yaw);
 
             set
             {
-                _yaw = MathHelper.DegreesToRadians(value);
+                _yaw = Math.Rad(value);
                 UpdateVectors();
             }
         }
 
         public float Fov
         {
-            get => MathHelper.RadiansToDegrees(_fov);
+            get => Math.Deg(_fov);
 
             set
             {
                 value = Math.Clamp(value, 1.0f, 90.0f);
-                _fov = MathHelper.DegreesToRadians(value);
+                _fov = Math.Rad(value);
             }
         }
         public Matrix4 ViewMatrix => Matrix4.LookAt((Vector3)Location, (Vector3)(Location + Front), (Vector3)Up);

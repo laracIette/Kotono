@@ -1,5 +1,6 @@
 ﻿using Kotono.Utils;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Kotono.Graphics.Print
 {
@@ -21,16 +22,23 @@ namespace Kotono.Graphics.Print
             }
         }
 
-        internal void Print(string? text)
+        internal void Lower()
         {
             foreach (var _text in _texts)
             {
                 _text.Lower();
             }
+        }
 
+        internal void Print(string? text)
+        {
             if (text != null)
             {
-                _texts.Add(new PrinterText(text));
+                foreach (var token in text.Split('\n'))
+                {
+                    Lower();
+                    _texts.Add(new PrinterText(token));
+                }
             }
         }
     }

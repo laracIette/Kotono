@@ -1,20 +1,53 @@
 ﻿using OpenTK.Mathematics;
+using System.Diagnostics;
+using System.Drawing;
+using System;
 
 namespace Kotono.Utils
 {
     public struct Transform
     {
-        public Vector Location;
+        private Vector _location;
 
-        public Vector Rotation;
+        private Vector _rotation;
 
-        public Vector Scale;
+        private Vector _scale;
 
-        public readonly Vector Right => (Vector)(Quaternion.FromEulerAngles((Vector3)Vector.Deg(Rotation)) * Vector3.UnitX);
-        
-        public readonly Vector Up => (Vector)(Quaternion.FromEulerAngles((Vector3)Vector.Deg(Rotation)) * Vector3.UnitY);
-        
-        public readonly Vector Forward => (Vector)(Quaternion.FromEulerAngles((Vector3)Vector.Deg(Rotation)) * Vector3.UnitZ);
+        public Vector Location
+        {
+            readonly get => _location;
+            set
+            {
+                _location = value;
+            }
+        }
+
+        public Vector Rotation
+        {
+            readonly get => _rotation;
+            set
+            {
+                _rotation = value;
+                UpdateVectors();
+            }
+        }
+
+        public Vector Scale
+        {
+            readonly get => _scale;
+            set
+            {
+                _scale = value;
+            }
+        }
+
+        public Vector Right { get; private set; }
+
+
+        public Vector Up { get; private set; }
+
+
+        public Vector Forward { get; private set; }
 
 
         public const int SizeInBytes = Vector.SizeInBytes * 3;
@@ -39,5 +72,24 @@ namespace Kotono.Utils
             * Matrix4.CreateRotationY(Rotation.Y)
             * Matrix4.CreateRotationZ(Rotation.Z)
             * Matrix4.CreateTranslation((Vector3)Location);
+        
+        private void UpdateVectors()
+        {
+            Forward = new Vector
+            {
+                X = MathF.Cos(Rotation.X) * MathF.Cos(Rotation.Y),
+                Y = MathF.Sin(Rotation.X),
+                Z = MathF.Cos(Rotation.X) * MathF.Sin(Rotation.Y)
+            };
+
+            Forward = Forward.Normalized;
+            Right = Vector.Cross(Forward, Vector.UnitY).Normalized;
+            Up = Vector.Cross(Right, Forward).Normalized;
+        }
+
+        public override string ToString()
+        {
+            return $"Location: {Location}\nRotation: {Rotation}\nScale: {Scale}";
+        }
     }
 }
