@@ -1,7 +1,6 @@
 ﻿using Kotono.Graphics.Objects.Meshes;
 using Kotono.Utils;
 using OpenTK.Mathematics;
-using System;
 using Math = Kotono.Utils.Math;
 
 namespace Kotono.Physics

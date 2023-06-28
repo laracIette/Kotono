@@ -1,5 +1,4 @@
-﻿using System.Numerics;
-using Kotono.Graphics.Objects;
+﻿using Kotono.Graphics.Objects;
 
 namespace Kotono.Utils
 {

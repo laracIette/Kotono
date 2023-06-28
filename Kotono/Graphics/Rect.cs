@@ -1,6 +1,4 @@
-﻿using Assimp;
-
-namespace Kotono.Graphics
+﻿namespace Kotono.Graphics
 {
     public struct Rect
     {

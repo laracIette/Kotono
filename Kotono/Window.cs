@@ -3,7 +3,6 @@ using Kotono.Utils;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
-using System;
 
 namespace Kotono
 {
