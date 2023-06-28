@@ -32,6 +32,15 @@ namespace Kotono.Utils
 
         public static Vector UnitZ => new Vector(0, 0, 1);
 
+        public static Vector White => Unit;
+
+        public static Vector Black => Zero;
+
+        public static Vector Red => UnitX;
+
+        public static Vector Green => UnitY;
+
+        public static Vector Blue => UnitZ;
 
         public const int SizeInBytes = sizeof(float) * 3;
 
@@ -117,6 +126,11 @@ namespace Kotono.Utils
                 Y = left.Z * right.X - left.X * right.Z,
                 Z = left.X * right.Y - left.Y * right.X
             };
+        }
+
+        public static float Dot(Vector left, Vector right)
+        {
+            return left.X * right.X + left.Y * right.Y + left.Z * right.Z;
         }
 
         public static Vector operator +(Vector left, Vector right)

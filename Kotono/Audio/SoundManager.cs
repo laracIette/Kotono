@@ -1,8 +1,10 @@
-﻿using OpenTK.Audio.OpenAL;
+﻿using Kotono.Utils;
+using OpenTK.Audio.OpenAL;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
+using Math = Kotono.Utils.Math;
 
 namespace Kotono.Audio
 {

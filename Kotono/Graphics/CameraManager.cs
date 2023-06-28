@@ -1,5 +1,4 @@
-﻿using Kotono.Utils;
-using OpenTK.Mathematics;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Kotono.Graphics
@@ -8,26 +7,14 @@ namespace Kotono.Graphics
     {
         private readonly List<Camera> _cameras = new();
 
-        /// <summary>
-        /// Key: Direct Index,
-        /// Value: Real Index.
-        /// </summary>
-        private readonly Dictionary<int, int> _indexOffset = new();
-
-        private int _cameraIndex = 0;
-
         internal CameraManager() { }
 
-        internal int Create(Camera camera)
+        internal void Create(Camera camera)
         {
-            _indexOffset[_cameraIndex] = _cameras.Count;
-
             _cameras.Add(camera);
-
-            return _cameraIndex++;
         }
 
-        internal void Delete(int index)
+        internal void Delete(Camera camera)
         {
             if (_cameras.Count <= 0)
             {
@@ -35,41 +22,20 @@ namespace Kotono.Graphics
             }
             else
             {
-                _cameras.RemoveAt(_indexOffset[index]);
-
-                _indexOffset.Remove(index);
-
-                foreach (var i in _indexOffset.Keys)
-                {
-                    if (i > index)
-                    {
-                        _indexOffset[i]--;
-                    }
-                }
+                _cameras.Remove(camera);
             }
         }
 
-        internal Vector GetLocation(int index)
-            => _cameras[_indexOffset[index]].Location;
-
-        internal Matrix4 GetViewMatrix(int index)
-            => _cameras[_indexOffset[index]].ViewMatrix;
-
-        internal Matrix4 GetProjectionMatrix(int index) 
-            => _cameras[_indexOffset[index]].ProjectionMatrix;
-
-        internal Vector GetFront(int index)
-            => _cameras[_indexOffset[index]].Front;
-        
-        internal Vector GetUp(int index)
-            => _cameras[_indexOffset[index]].Up;
-
-        internal Vector GetRight(int index)
-            => _cameras[_indexOffset[index]].Right;
-
-        internal void SetAspectRatio(int index, float aspectRatio)
+        internal Camera Get(int index)
         {
-            _cameras[_indexOffset[index]].AspectRatio = aspectRatio;
+            if (_cameras.Count <= 0)
+            {
+                throw new IndexOutOfRangeException($"The number of Camera is already at 0.");
+            }
+            else
+            {
+                return _cameras[index];
+            }
         }
 
         internal void Update()

@@ -13,10 +13,10 @@ namespace Kotono.Graphics.Shaders
             SetInt("numPointLights", KT.GetPointLightsCount());
             SetInt("numSpotLights", KT.GetSpotLightsCount());
 
-            SetMatrix4("view", KT.GetCameraViewMatrix(0));
-            SetMatrix4("projection", KT.GetCameraProjectionMatrix(0));
+            SetMatrix4("view", KT.ActiveCamera.ViewMatrix);
+            SetMatrix4("projection", KT.ActiveCamera.ProjectionMatrix);
 
-            SetVector("viewPos", KT.GetCameraLocation(0));
+            SetVector("viewPos", KT.ActiveCamera.Location);
 
             SetInt("material.diffuse", 0);
             SetInt("material.specular", 1);

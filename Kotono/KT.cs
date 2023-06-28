@@ -21,15 +21,15 @@ namespace Kotono
 
         public const int MAX_POINT_LIGHTS = PointLightManager.MAX;
 
-        #region Path
-
         public static string KotonoPath { get; set; } = "";
 
         public static string ProjectPath { get; set; } = "";
 
-        #endregion Path
 
         private static readonly ComponentManager _componentManager = new();
+
+
+        public static readonly Viewport CurrentViewport = new();
 
         #region WindowSize
 
@@ -44,28 +44,10 @@ namespace Kotono
             _windowSize.X = width;
             _windowSize.Y = height;
 
-            SetCameraAspectRatio(0, 1280f / 720f);
+            GetCamera(0).AspectRatio = 1280f / 720f;
         }
 
         #endregion WindowSize
-
-        #region CurrentViewport
-
-        private static readonly Viewport _currentViewport = new();
-
-        public static float CurrentViewportWidth
-        {
-            get => _currentViewport.Dest.W;
-            set => _currentViewport.Dest.W = value;
-        }
-        
-        public static float CurrentViewportHeight
-        {
-            get => _currentViewport.Dest.H;
-            set => _currentViewport.Dest.H = value;
-        }
-
-        #endregion CurrentViewport
 
         #region ObjectManager
         
@@ -171,10 +153,25 @@ namespace Kotono
 
         #endregion SpotLight
 
+        #region Triangle
+
+        public static Triangle CreateTriangle(Triangle triangle)
+        {
+            _objectManager.CreateTriangle(triangle);
+            return triangle;
+        }
+
+        public static void DeleteTriangle(Triangle triangle)
+        {
+            _objectManager.DeleteTriangle(triangle);
+        }
+
+        #endregion Triangle
+
         #endregion ObjectManager
 
         #region SoundManager
-        
+
         private static readonly SoundManager _soundManager = new();
 
         public static int CreateSound(string path)
@@ -222,32 +219,24 @@ namespace Kotono
         
         private static readonly CameraManager _cameraManager = new();
 
-        public static int CreateCamera(Camera camera)
-            => _cameraManager.Create(camera);
+        public static Camera ActiveCamera => GetCamera(0);
 
-        public static void DeleteCamera(int index) 
-            => _cameraManager.Delete(index);
+        public static Camera CreateCamera(Camera camera)
+        {
+            _cameraManager.Create(camera);
+            return camera;
+        }
 
-        public static Vector GetCameraLocation(int index)
-            => _cameraManager.GetLocation(index);
+        public static void DeleteCamera(Camera camera)
+        {
+            _cameraManager.Delete(camera);
+        }
 
-        public static Matrix4 GetCameraViewMatrix(int index)
-            => _cameraManager.GetViewMatrix(index);
+        public static Camera GetCamera(int index)
+        {
+            return _cameraManager.Get(index);
+        }
 
-        public static Matrix4 GetCameraProjectionMatrix(int index)
-            => _cameraManager.GetProjectionMatrix(index);
-        
-        public static Vector GetCameraFront(int index)
-            => _cameraManager.GetFront(index);
-
-        public static Vector GetCameraRight(int index)
-            => _cameraManager.GetRight(index);
-
-        public static Vector GetCameraUp(int index)
-            => _cameraManager.GetUp(index);
-
-        public static void SetCameraAspectRatio(int index, float aspectRatio)
-            => _cameraManager.SetAspectRatio(index, aspectRatio);
 
         #endregion CameraManager
 

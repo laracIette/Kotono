@@ -30,5 +30,15 @@
         {
             return (float)MathD.Sin(value);
         }
+
+        public static float Sqrt(double value)
+        {
+            return (float)MathD.Sqrt(value);
+        }
+
+        public static float Clamp(float value, float min, float max)
+        {
+            return (float)MathD.Clamp(value, min, max);
+        }
     }
 }

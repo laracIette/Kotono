@@ -2,6 +2,7 @@
 using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
+using Math = Kotono.Utils.Math;
 
 namespace Kotono.Graphics
 {
@@ -12,6 +13,8 @@ namespace Kotono.Graphics
         private float _yaw = -MathHelper.PiOver2;
 
         private float _fov = MathHelper.PiOver2;
+
+        private float _speed = 1.0f;
 
         public Vector Front { get; private set; } = -Vector.UnitZ;
 
@@ -29,7 +32,7 @@ namespace Kotono.Graphics
 
             set
             {
-                value = MathHelper.Clamp(value, -89.0f, 89.0f);
+                value = Math.Clamp(value, -89.0f, 89.0f);
                 _pitch = MathHelper.DegreesToRadians(value);
                 UpdateVectors();
             }
@@ -52,7 +55,7 @@ namespace Kotono.Graphics
 
             set
             {
-                value = MathHelper.Clamp(value, 1.0f, 90.0f);
+                value = Math.Clamp(value, 1.0f, 90.0f);
                 _fov = MathHelper.DegreesToRadians(value);
             }
         }
@@ -69,42 +72,39 @@ namespace Kotono.Graphics
 
         private void Move()
         {
-            float speed = 1.5f;
             float sensitivity = 0.2f;
+            Yaw += Input.MouseState!.Delta.X * sensitivity;
+            Pitch -= Input.MouseState.Delta.Y * sensitivity;
+            
+            _speed += Input.MouseState.ScrollDelta.Y;
+            _speed = Math.Clamp(_speed, 0, 1000);
 
-            if (InputManager.KeyboardState!.IsKeyDown(Keys.LeftShift))
-            {
-                speed *= 2.0f;
-            }
+            float fast = Input.KeyboardState!.IsKeyDown(Keys.LeftShift) ? 2.0f : 1.0f;
 
-            if (InputManager.KeyboardState.IsKeyDown(Keys.W))
+            if (Input.KeyboardState.IsKeyDown(Keys.W))
             {
-                Location += Front * speed * Time.DeltaS; // Forward
+                Location += Front * _speed * fast * Time.DeltaS; // Forward
             }
-            if (InputManager.KeyboardState.IsKeyDown(Keys.S))
+            if (Input.KeyboardState.IsKeyDown(Keys.S))
             {
-                Location -= Front * speed * Time.DeltaS; // Backwards
+                Location -= Front * _speed * fast * Time.DeltaS; // Backwards
             }
-            if (InputManager.KeyboardState.IsKeyDown(Keys.A))
+            if (Input.KeyboardState.IsKeyDown(Keys.A))
             {
-                Location -= Right * speed * Time.DeltaS; // Left
+                Location -= Right * _speed * fast * Time.DeltaS; // Left
             }
-            if (InputManager.KeyboardState.IsKeyDown(Keys.D))
+            if (Input.KeyboardState.IsKeyDown(Keys.D))
             {
-                Location += Right * speed * Time.DeltaS; // Right
+                Location += Right * _speed * fast * Time.DeltaS; // Right
             }
-            if (InputManager.KeyboardState.IsKeyDown(Keys.Space))
+            if (Input.KeyboardState.IsKeyDown(Keys.E))
             {
-                Location += Up * speed * Time.DeltaS; // Up
+                Location += Up * _speed * fast * Time.DeltaS; // Up
             }
-            if (InputManager.KeyboardState.IsKeyDown(Keys.LeftControl))
+            if (Input.KeyboardState.IsKeyDown(Keys.Q))
             {
-                Location -= Up * speed * Time.DeltaS; // Down
+                Location -= Up * _speed * fast * Time.DeltaS; // Down
             }
-
-            Yaw += InputManager.MouseState!.Delta.X * sensitivity;
-            Pitch -= InputManager.MouseState.Delta.Y * sensitivity;
-            Fov -= InputManager.MouseState.ScrollDelta.Y;
         }
 
         private void UpdateVectors()

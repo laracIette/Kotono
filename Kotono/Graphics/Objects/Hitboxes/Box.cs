@@ -63,7 +63,7 @@ namespace Kotono.Graphics.Objects.Hitboxes
 
         public Vector Scale { get; set; } = Vector.Unit;
 
-        public Vector Color { get; set; } = Vector.Unit;
+        public Vector Color { get; set; } = Vector.White;
 
         public List<IHitbox> Collisions { get; set; } = new();
 

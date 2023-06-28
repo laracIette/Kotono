@@ -3,35 +3,60 @@ using System.Collections.Generic;
 
 namespace Kotono.Graphics
 {
-    internal class Viewport
+    public class Viewport
     {
-        private readonly List<Viewport> connections = new();
+        private readonly List<Viewport> _connections = new();
 
         public Rect Dest;
 
-        internal Viewport()
-            : this(new Rect()) { }
+        public float X
+        {
+            get => Dest.X;
+            set => Dest.X = value;
+        }
+        public float Y
+        {
+            get => Dest.Y;
+            set => Dest.Y = value;
+        }
+        public float W
+        {
+            get => Dest.W;
+            set => Dest.W = value;
+        }
+        public float H
+        {
+            get => Dest.H;
+            set => Dest.H = value;
+        }
 
-        internal Viewport(float x = 0, float y = 0, float w = 0, float h = 0)
-            : this(new Rect(x, y, w, h)) { }
+        public Viewport()
+        {
+            Dest = new Rect();
+        }
 
-        internal Viewport(Rect dest)
+        public Viewport(float x = 0, float y = 0, float w = 0, float h = 0)
+        {
+            Dest = new Rect(x, y, w, h);
+        }
+
+        public Viewport(Rect dest)
         {
             Dest = dest;
         }
 
-        internal void Init()
+        public void Init()
         {
         }
 
-        internal void Use()
+        public void Use()
         {
-            GL.Viewport((int)Dest.X, (int)Dest.Y, (int)Dest.W, (int)Dest.H);
+            GL.Viewport((int)X, (int)Y, (int)W, (int)H);
 
-            KT.SetCameraAspectRatio(0, Dest.W / Dest.H);
+            KT.ActiveCamera.AspectRatio = W / H;
             
-            KT.CurrentViewportWidth = Dest.W;
-            KT.CurrentViewportHeight = Dest.H;
+            KT.CurrentViewport.W = W;
+            KT.CurrentViewport.H = H;
         }
     }
 }

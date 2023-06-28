@@ -131,7 +131,7 @@ namespace Kotono.Graphics.Objects.Meshes
                 hitbox.Location = Location;
                 hitbox.Rotation = Vector.Zero;
                 hitbox.Scale = Scale * 2;
-                hitbox.Color = Vector.UnitX;
+                hitbox.Color = Vector.Red;
             }
         }
 

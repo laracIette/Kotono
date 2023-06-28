@@ -31,7 +31,7 @@ namespace Kotono
 
             KT.Init();
 
-            InputManager.Update(KeyboardState, MouseState);
+            Input.Update(KeyboardState, MouseState);
         }
 
         protected new void Load()
@@ -68,23 +68,23 @@ namespace Kotono
 
             KT.AddUpdateTime(e.Time);
 
-            InputManager.Update(KeyboardState, MouseState);
+            Input.Update(KeyboardState, MouseState);
 
             KT.Update();
 
-            if (InputManager.KeyboardState!.IsKeyDown(InputManager.Escape))
+            if (Input.KeyboardState!.IsKeyDown(Input.Escape))
             {
                 base.Close();
             }
 
-            if (InputManager.KeyboardState.IsKeyPressed(InputManager.Fullscreen))
+            if (Input.KeyboardState.IsKeyPressed(Input.Fullscreen))
             {
                 WindowState = (WindowState == WindowState.Normal) ?
                     WindowState.Fullscreen :
                     WindowState.Normal;
             }
 
-            if (InputManager.KeyboardState.IsKeyPressed(InputManager.GrabMouse))
+            if (Input.KeyboardState.IsKeyPressed(Input.GrabMouse))
             {
                 CursorState = (CursorState == CursorState.Normal) ?
                     CursorState.Grabbed :

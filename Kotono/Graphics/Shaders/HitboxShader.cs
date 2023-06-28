@@ -8,8 +8,8 @@
 
         internal override void Update()
         {
-            SetMatrix4("view", KT.GetCameraViewMatrix(0));
-            SetMatrix4("projection", KT.GetCameraProjectionMatrix(0));
+            SetMatrix4("view", KT.ActiveCamera.ViewMatrix);
+            SetMatrix4("projection", KT.ActiveCamera.ProjectionMatrix);
         }
     }
 }

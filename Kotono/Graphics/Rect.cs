@@ -30,10 +30,10 @@ namespace Kotono.Graphics
 
         public readonly Rect Normalized =>
             new(
-                2 * X / KT.CurrentViewportWidth - 1,
-                1 - 2 * Y / KT.CurrentViewportHeight,
-                W / KT.CurrentViewportWidth * 2,
-                H / KT.CurrentViewportHeight * 2
+                2 * X / KT.CurrentViewport.W - 1,
+                1 - 2 * Y / KT.CurrentViewport.H,
+                W / KT.CurrentViewport.W * 2,
+                H / KT.CurrentViewport.H * 2
             );
 
         public static Rect operator +(Rect left, Rect right)

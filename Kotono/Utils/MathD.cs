@@ -34,5 +34,15 @@
         {
             return System.Math.Sin(value);
         }
+
+        public static double Sqrt(double value)
+        {
+            return System.Math.Sqrt(value);
+        }
+
+        public static double Clamp(double value, double min, double max)
+        {
+            return System.Math.Clamp(value, min, max);
+        }
     }
 }

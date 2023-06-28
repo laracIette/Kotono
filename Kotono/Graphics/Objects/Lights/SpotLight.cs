@@ -3,6 +3,7 @@ using OpenTK.Windowing.GraphicsLibraryFramework;
 
 using Kotono.Utils;
 using System;
+using Math = Kotono.Utils.Math;
 
 namespace Kotono.Graphics.Objects.Lights
 {
@@ -19,13 +20,13 @@ namespace Kotono.Graphics.Objects.Lights
         private float CutOffRotation
         {
             get => _cutOffRotation;
-            set => _cutOffRotation = MathHelper.Clamp(value, 0.0f, 12.5f);
+            set => _cutOffRotation = Math.Clamp(value, 0.0f, 12.5f);
         }
 
         private float OuterCutOffRotation
         {
             get => _outerCutOffRotation;
-            set => _outerCutOffRotation = MathHelper.Clamp(value, 0.0f, 17.5f);
+            set => _outerCutOffRotation = Math.Clamp(value, 0.0f, 17.5f);
         }
 
         public SpotLight()
@@ -37,7 +38,7 @@ namespace Kotono.Graphics.Objects.Lights
 
         public void Update()
         {
-            if (InputManager.KeyboardState!.IsKeyPressed(Keys.F))
+            if (Input.KeyboardState!.IsKeyPressed(Keys.F))
             {
                 _isOn = !_isOn;
             }
@@ -61,8 +62,8 @@ namespace Kotono.Graphics.Objects.Lights
         {
             KT.SetShaderFloat(ShaderType.Lighting, $"spotLights[{_shaderIndex}].cutOff", MathF.Cos(MathHelper.DegreesToRadians(CutOffRotation)));
             KT.SetShaderFloat(ShaderType.Lighting, $"spotLights[{_shaderIndex}].outerCutOff", MathF.Cos(MathHelper.DegreesToRadians(OuterCutOffRotation)));
-            KT.SetShaderVector(ShaderType.Lighting, $"spotLights[{_shaderIndex}].location", KT.GetCameraLocation(0));
-            KT.SetShaderVector(ShaderType.Lighting, $"spotLights[{_shaderIndex}].direction", KT.GetCameraFront(0));
+            KT.SetShaderVector(ShaderType.Lighting, $"spotLights[{_shaderIndex}].location", KT.ActiveCamera.Location);
+            KT.SetShaderVector(ShaderType.Lighting, $"spotLights[{_shaderIndex}].direction", KT.ActiveCamera.Front);
             KT.SetShaderVector(ShaderType.Lighting, $"spotLights[{_shaderIndex}].ambient", new Vector(0.0f, 0.0f, 0.0f));
             KT.SetShaderVector(ShaderType.Lighting, $"spotLights[{_shaderIndex}].diffuse", new Vector(1.0f, 1.0f, 1.0f));
             KT.SetShaderVector(ShaderType.Lighting, $"spotLights[{ _shaderIndex}].specular", new Vector(1.0f, 1.0f, 1.0f));
