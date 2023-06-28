@@ -76,34 +76,35 @@ namespace Kotono.Graphics
             Yaw += Input.MouseState!.Delta.X * sensitivity;
             Pitch -= Input.MouseState.Delta.Y * sensitivity;
             
-            _speed += Input.MouseState.ScrollDelta.Y;
-            _speed = Math.Clamp(_speed, 0, 1000);
+            _speed += Input.MouseState.ScrollDelta.Y * _speed / 10;
+            _speed = Math.Clamp(_speed, 0.1, 100);
 
             float fast = Input.KeyboardState!.IsKeyDown(Keys.LeftShift) ? 2.0f : 1.0f;
+            float slow = Input.KeyboardState.IsKeyDown(Keys.LeftControl) ? 0.5f : 1.0f;
 
             if (Input.KeyboardState.IsKeyDown(Keys.W))
             {
-                Location += Front * _speed * fast * Time.DeltaS; // Forward
+                Location += Front * _speed * fast * slow * Time.DeltaS; // Forward
             }
             if (Input.KeyboardState.IsKeyDown(Keys.S))
             {
-                Location -= Front * _speed * fast * Time.DeltaS; // Backwards
+                Location -= Front * _speed * fast * slow * Time.DeltaS; // Backwards
             }
             if (Input.KeyboardState.IsKeyDown(Keys.A))
             {
-                Location -= Right * _speed * fast * Time.DeltaS; // Left
+                Location -= Right * _speed * fast * slow * Time.DeltaS; // Left
             }
             if (Input.KeyboardState.IsKeyDown(Keys.D))
             {
-                Location += Right * _speed * fast * Time.DeltaS; // Right
+                Location += Right * _speed * fast * slow * Time.DeltaS; // Right
             }
             if (Input.KeyboardState.IsKeyDown(Keys.E))
             {
-                Location += Up * _speed * fast * Time.DeltaS; // Up
+                Location += Up * _speed * fast * slow * Time.DeltaS; // Up
             }
             if (Input.KeyboardState.IsKeyDown(Keys.Q))
             {
-                Location -= Up * _speed * fast * Time.DeltaS; // Down
+                Location -= Up * _speed * fast * slow * Time.DeltaS; // Down
             }
         }
 

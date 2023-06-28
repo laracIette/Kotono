@@ -190,12 +190,12 @@ namespace Kotono.Graphics.Objects
         {
             _viewport.Use();
 
-            _meshManager.Draw();
             _hitboxManager.Draw();
             _pointLightManager.Draw();
             _spotLightManager.Draw();
-            _imageManager.Draw();
             _triangleManager.Draw();
+            _meshManager.Draw();
+            _imageManager.Draw();
         }
     }
 }

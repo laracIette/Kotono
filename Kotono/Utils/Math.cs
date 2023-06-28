@@ -36,7 +36,7 @@
             return (float)MathD.Sqrt(value);
         }
 
-        public static float Clamp(float value, float min, float max)
+        public static float Clamp(double value, double min, double max)
         {
             return (float)MathD.Clamp(value, min, max);
         }

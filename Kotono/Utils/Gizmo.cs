@@ -2,25 +2,45 @@
 using Kotono.Graphics.Objects;
 using Kotono.Graphics.Objects.Hitboxes;
 using Kotono.Graphics.Objects.Meshes;
+using Microsoft.Recognizers.Definitions;
+using System.Drawing;
 
 namespace Kotono.Utils
 {
     public class Gizmo
     {
-        private Mesh _mesh;
+        private Mesh[] _meshes = new Mesh[4];
 
         private Mesh _attachMesh;
 
+        private Transform _transform;
+
+        public Transform Transform => _transform;
+
         public Vector Location
         {
-            get => _mesh.Location;
-            set => _mesh.Location = value;
+            get => _transform.Location;
+            set
+            {
+                _transform.Location = value;
+                foreach (var mesh in _meshes)
+                {
+                    mesh.Location = value;
+                }
+            }
         }
 
         public Vector Rotation
         {
-            get => _mesh.Rotation;
-            set => _mesh.Rotation = value;
+            get => _transform.Rotation;
+            set
+            {
+                _transform.Rotation = value;
+                foreach (var mesh in _meshes)
+                {
+                    mesh.Rotation = value;
+                }
+            }
         }
 
         private Triangle _triangle;
@@ -29,22 +49,18 @@ namespace Kotono.Utils
 
         public void Init()
         {
-            _mesh = new Mesh(
-                KT.KotonoPath + @"Assets/gizmo.obj",
-                new Transform
-                {
-                    Location = Vector.Zero,
-                    Rotation = Vector.Zero,
-                    Scale = new Vector(.2),
-                },
-                KT.KotonoPath + @"Assets/gizmo_diff.png",
-                KT.KotonoPath + @"Assets/gizmo_spec.png",
-                ShaderType.Lighting,
-                Vector.White,
-                new IHitbox[] { }
-            );
-            KT.CreateMesh(_mesh);
-            _mesh.IsInFront = true;
+            _meshes = new Mesh[]
+            {
+                new GizmoMesh("x", Vector.Red),
+                new GizmoMesh("y", Vector.Green),
+                new GizmoMesh("z", Vector.Blue),  
+                new GizmoMesh("sphere", Vector.White)
+            }; 
+
+            foreach (var mesh in _meshes)
+            {
+                KT.CreateMesh(mesh);
+            }
 
             _triangle = KT.CreateTriangle(new Triangle(new Vector(1, 1, -3), new Vector(2, 3, -2), new Vector(4, 1, -3), new Transform(), Vector.Blue));
         }
