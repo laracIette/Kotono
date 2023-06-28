@@ -1,9 +1,7 @@
-﻿using Kotono.Graphics;
-using Kotono.Graphics.Objects;
-using Kotono.Graphics.Objects.Hitboxes;
+﻿using Kotono.Graphics.Objects;
 using Kotono.Graphics.Objects.Meshes;
-using Microsoft.Recognizers.Definitions;
-using System.Drawing;
+using Newtonsoft.Json.Linq;
+using OpenTK.Windowing.Common;
 
 namespace Kotono.Utils
 {
@@ -45,6 +43,8 @@ namespace Kotono.Utils
 
         private Triangle _triangle;
 
+        public bool IsDraw = true;
+
         public Gizmo() { }
 
         public void Init()
@@ -53,9 +53,9 @@ namespace Kotono.Utils
             {
                 new GizmoMesh("x", Vector.Red),
                 new GizmoMesh("y", Vector.Green),
-                new GizmoMesh("z", Vector.Blue),  
+                new GizmoMesh("z", Vector.Blue),
                 new GizmoMesh("sphere", Vector.White)
-            }; 
+            };
 
             foreach (var mesh in _meshes)
             {
@@ -78,6 +78,11 @@ namespace Kotono.Utils
 
         private void Drag()
         {
+            if (Input.CursorState == CursorState.Grabbed)
+            {
+                return;
+            }
+
             if (Intersection.IntersectRayTriangle(KT.ActiveCamera.Location, Input.GetMouseRay(), _triangle, out Vector intersectionPoint))
             {
                 KT.Print(intersectionPoint);
@@ -88,6 +93,24 @@ namespace Kotono.Utils
         public void AttachTo(Mesh mesh)
         {
             _attachMesh = mesh;
+        }
+
+        public void Show()
+        {
+            IsDraw = true;
+            foreach (var mesh in _meshes)
+            {
+                mesh.Show();
+            }
+        }
+
+        public void Hide()
+        {
+            IsDraw = false;
+            foreach (var mesh in _meshes)
+            {
+                mesh.Hide();
+            }
         }
     }
 }

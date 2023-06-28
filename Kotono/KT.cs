@@ -327,11 +327,6 @@ namespace Kotono
 
         public static Gizmo Gizmo => _gizmo;
 
-        public static void AttachGizmoTo(Mesh mesh)
-        {
-            _gizmo.AttachTo(mesh);
-        }
-
         #endregion Gizmo
 
         public static void Init()

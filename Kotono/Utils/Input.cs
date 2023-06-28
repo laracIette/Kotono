@@ -1,5 +1,6 @@
 ﻿using Kotono.Graphics;
 using OpenTK.Mathematics;
+using OpenTK.Windowing.Common;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 
 namespace Kotono.Utils
@@ -11,6 +12,8 @@ namespace Kotono.Utils
         public static Keys Fullscreen { get; set; } = Keys.F11;
 
         public static Keys GrabMouse { get; set; } = Keys.Enter;
+
+        public static CursorState CursorState { get; set; } = CursorState.Normal;
 
         public static KeyboardState? KeyboardState { get; private set; }
 
@@ -30,13 +33,10 @@ namespace Kotono.Utils
                 Y = MouseState.Position.Y,
             }.Normalized;
 
-            Matrix4 invProjMat = Matrix4.Invert(KT.ActiveCamera.ProjectionMatrix);
-            Matrix4 invViewMat = Matrix4.Invert(KT.ActiveCamera.ViewMatrix);
-
             Vector4 rayClip = new Vector4(mouse.X, mouse.Y, -1.0f, 1.0f);
-            Vector4 rayView = invProjMat * rayClip;
-            rayView = new Vector4(rayView.X, rayView.Y, -1.0f, 0.0f);
-            Vector4 rayWorld = invViewMat * rayView;
+            Vector4 rayView = Matrix4.Invert(KT.ActiveCamera.ProjectionMatrix) * rayClip;
+            rayView.Z = -1.0f; rayView.W = 0.0f;
+            Vector4 rayWorld = KT.ActiveCamera.ViewMatrix * rayView;
             
             return ((Vector)rayWorld.Xyz).Normalized;
         }

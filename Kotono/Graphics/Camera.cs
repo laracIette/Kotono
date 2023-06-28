@@ -1,5 +1,6 @@
 ﻿using Kotono.Utils;
 using OpenTK.Mathematics;
+using OpenTK.Windowing.Common;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
 using Math = Kotono.Utils.Math;
@@ -72,10 +73,15 @@ namespace Kotono.Graphics
 
         private void Move()
         {
+            if (Input.CursorState == CursorState.Normal)
+            {
+                return;
+            }
+
             float sensitivity = 0.2f;
+
             Yaw += Input.MouseState!.Delta.X * sensitivity;
             Pitch -= Input.MouseState.Delta.Y * sensitivity;
-            
             _speed += Input.MouseState.ScrollDelta.Y * _speed / 10;
             _speed = Math.Clamp(_speed, 0.1, 100);
 
@@ -106,15 +112,16 @@ namespace Kotono.Graphics
             {
                 Location -= Up * _speed * fast * slow * Time.DeltaS; // Down
             }
+
         }
 
         private void UpdateVectors()
         {
-            Front = new Vector 
+            Front = new Vector
             {
                 X = MathF.Cos(_pitch) * MathF.Cos(_yaw),
                 Y = MathF.Sin(_pitch),
-                Z = MathF.Cos(_pitch) * MathF.Sin(_yaw) 
+                Z = MathF.Cos(_pitch) * MathF.Sin(_yaw)
             };
 
             Front = Front.Normalized;

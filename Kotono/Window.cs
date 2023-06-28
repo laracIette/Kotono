@@ -36,6 +36,7 @@ namespace Kotono
         protected new void Load()
         {
             CursorState = CursorState.Grabbed;
+            Input.CursorState = CursorState;
             IsVisible = true;
         }
 
@@ -88,6 +89,8 @@ namespace Kotono
                 CursorState = (CursorState == CursorState.Normal) ?
                     CursorState.Grabbed :
                     CursorState.Normal;
+                
+                Input.CursorState = CursorState;
             }
         }
 
