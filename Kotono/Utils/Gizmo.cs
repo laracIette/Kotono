@@ -13,13 +13,13 @@ namespace Kotono.Utils
 
         public Vector Location
         {
-            get => _mesh.Location; 
+            get => _mesh.Location;
             set => _mesh.Location = value;
         }
 
         public Vector Rotation
         {
-            get => _mesh.Rotation; 
+            get => _mesh.Rotation;
             set => _mesh.Rotation = value;
         }
 
@@ -44,6 +44,7 @@ namespace Kotono.Utils
                 new IHitbox[] { }
             );
             KT.CreateMesh(_mesh);
+            _mesh.IsInFront = true;
 
             _triangle = KT.CreateTriangle(new Triangle(new Vector(1, 1, -3), new Vector(2, 3, -2), new Vector(4, 1, -3), new Transform(), Vector.Blue));
         }
@@ -69,7 +70,7 @@ namespace Kotono.Utils
         }
 
         public void AttachTo(Mesh mesh)
-        { 
+        {
             _attachMesh = mesh;
         }
     }

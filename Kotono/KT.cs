@@ -34,7 +34,7 @@ namespace Kotono
         #region WindowSize
 
         private static Vector2 _windowSize = new(0.0f);
-        
+
         public static float Width => _windowSize.X;
 
         public static float Height => _windowSize.Y;
@@ -50,7 +50,7 @@ namespace Kotono
         #endregion WindowSize
 
         #region ObjectManager
-        
+
         private static readonly ObjectManager _objectManager = new();
 
         #region Image
@@ -142,7 +142,7 @@ namespace Kotono
         }
 
         public static void DeleteSpotLight(SpotLight spotLight)
-        { 
+        {
             _objectManager.DeleteSpotLight(spotLight);
         }
 
@@ -216,7 +216,7 @@ namespace Kotono
         #endregion SoundManager
 
         #region CameraManager
-        
+
         private static readonly CameraManager _cameraManager = new();
 
         public static Camera ActiveCamera => GetCamera(0);
@@ -241,32 +241,47 @@ namespace Kotono
         #endregion CameraManager
 
         #region ShaderManager
-        
+
         private static readonly ShaderManager _shaderManager = new();
 
         public static int GetShaderAttribLocation(ShaderType type, string attribName)
-            => _shaderManager.GetAttribLocation(type, attribName);
+        { 
+            return _shaderManager.GetAttribLocation(type, attribName); 
+        }
+
+        public static void SetShaderBool(ShaderType type, string name, bool data)
+        { 
+            _shaderManager.SetBool(type, name, data); 
+        }
 
         public static void SetShaderInt(ShaderType type, string name, int data)
-            => _shaderManager.SetInt(type, name, data);
+        { 
+            _shaderManager.SetInt(type, name, data); 
+        }
 
         public static void SetShaderFloat(ShaderType type, string name, float data)
-            => _shaderManager.SetFloat(type, name, data);
+        { 
+            _shaderManager.SetFloat(type, name, data); 
+        }
 
         public static void SetShaderMatrix4(ShaderType type, string name, Matrix4 data)
-            => _shaderManager.SetMatrix4(type, name, data);
+        { 
+            _shaderManager.SetMatrix4(type, name, data); 
+        }
 
         public static void SetShaderVector(ShaderType type, string name, Vector data)
-            => _shaderManager.SetVector(type, name, data);
+        {
+            _shaderManager.SetVector(type, name, data);
+        }
 
         #endregion ShaderManager
 
         #region Printer
-        
+
         private static readonly Printer _printer = new();
 
         public static void Print(object? obj)
-        {            
+        {
             if (obj != null)
             {
                 _printer.Print(obj.ToString());
@@ -281,7 +296,7 @@ namespace Kotono
         #endregion Printer
 
         #region PerformanceWindow
-        
+
         private static readonly Performance.Window _performanceWindow = new();
 
         public static int MaxFrameRate { get; set; } = 60;

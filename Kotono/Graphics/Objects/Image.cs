@@ -9,16 +9,16 @@ namespace Kotono.Graphics.Objects
         private static readonly float[] _vertices =
         {           
             // locations   // texCoords
-            -1.0f,  1.0f,  0.0f, 1.0f, 
-            -1.0f, -1.0f,  0.0f, 0.0f, 
-             1.0f, -1.0f,  1.0f, 0.0f, 
+            -1.0f,  1.0f,  0.0f, 1.0f,
+            -1.0f, -1.0f,  0.0f, 0.0f,
+             1.0f, -1.0f,  1.0f, 0.0f,
 
-            -1.0f,  1.0f,  0.0f, 1.0f, 
-             1.0f, -1.0f,  1.0f, 0.0f, 
-             1.0f,  1.0f,  1.0f, 1.0f  
-        }; 
+            -1.0f,  1.0f,  0.0f, 1.0f,
+             1.0f, -1.0f,  1.0f, 0.0f,
+             1.0f,  1.0f,  1.0f, 1.0f
+        };
 
-        private static int _vertexArrayObject; 
+        private static int _vertexArrayObject;
 
         private static int _vertexBufferObject;
 
@@ -41,7 +41,7 @@ namespace Kotono.Graphics.Objects
 
         public bool IsDraw { get; set; } = true;
 
-        public Image(string path, Rect dest) 
+        public Image(string path, Rect dest)
         {
             if (_isFirst)
             {
@@ -99,7 +99,7 @@ namespace Kotono.Graphics.Objects
             GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
 
             TextureManager.UseTexture(_texture, TextureUnit.Texture0);
-            
+
             KT.SetShaderMatrix4(ShaderType.Image, "model", Model);
 
             GL.BindVertexArray(_vertexArrayObject);

@@ -86,11 +86,18 @@ namespace Kotono.Graphics.Shaders
             return GL.GetAttribLocation(_handle, attribName);
         }
 
+        internal void SetBool(string name, bool data)
+        {
+            Use();
+            GL.Uniform1(_uniformLocations[name], data ? 1 : 0);
+        }
+
         internal void SetInt(string name, int data)
         {
             Use();
             GL.Uniform1(_uniformLocations[name], data);
         }
+
         internal void SetFloat(string name, float data)
         {
             Use();

@@ -1,4 +1,5 @@
 ﻿using Kotono.Graphics.Objects.Meshes;
+using OpenTK.Graphics.OpenGL4;
 using System.Collections.Generic;
 
 namespace Kotono.Graphics.Objects
@@ -47,7 +48,18 @@ namespace Kotono.Graphics.Objects
         {
             foreach (var mesh in _meshes)
             {
-                mesh.Draw();
+                if (!mesh.IsInFront)
+                {
+                    mesh.Draw();
+                }
+            }
+            GL.Clear(ClearBufferMask.DepthBufferBit);
+            foreach (var mesh in _meshes)
+            {
+                if (mesh.IsInFront)
+                {
+                    mesh.Draw();
+                }
             }
         }
     }

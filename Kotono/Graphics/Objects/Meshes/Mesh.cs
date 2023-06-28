@@ -25,6 +25,8 @@ namespace Kotono.Graphics.Objects.Meshes
 
         protected readonly ShaderType _shaderType;
 
+        public bool IsInFront = false;
+
         public Mesh(string path, Transform transform, string diffusePath, string specularPath, ShaderType shaderType, Vector color, IHitbox[] hitboxes)
         {
             var diffuseMap = TextureManager.LoadTexture(diffusePath);
@@ -173,6 +175,7 @@ namespace Kotono.Graphics.Objects.Meshes
 
             KT.SetShaderMatrix4(_shaderType, "model", Model);
             KT.SetShaderVector(_shaderType, "color", Color);
+            KT.SetShaderBool(_shaderType, "isInFront", IsInFront);
 
             GL.BindVertexArray(VertexArrayObject);
             GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
