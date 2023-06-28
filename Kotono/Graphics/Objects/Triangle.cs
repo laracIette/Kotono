@@ -12,13 +12,27 @@ namespace Kotono.Graphics.Objects
 
         public Vector Vertex3;
 
-        public Transform Transform;
+        private Transform _transform;
 
-        public Vector Location => Transform.Location;
+        public Transform Transform => _transform;
 
-        public Vector Rotation => Transform.Rotation;
+        public Vector Location
+        {
+            get => _transform.Location;
+            set => _transform.Location = value;
+        }
 
-        public Vector Scale => Transform.Scale;
+        public Vector Rotation
+        {
+            get => _transform.Rotation;
+            set => _transform.Rotation = value;
+        }
+
+        public Vector Scale
+        {
+            get => _transform.Scale;
+            set => _transform.Scale = value;
+        }
 
         public Vector Color;
 
@@ -35,7 +49,7 @@ namespace Kotono.Graphics.Objects
             Vertex1 = Vector.Zero;
             Vertex2 = Vector.Zero;
             Vertex3 = Vector.Zero;
-            Transform = new Transform();
+            _transform = new Transform();
             Color = Vector.White;
             InitBuffers();
         }
@@ -45,7 +59,7 @@ namespace Kotono.Graphics.Objects
             Vertex1 = vertex1;
             Vertex2 = vertex2;
             Vertex3 = vertex3;
-            Transform = transform;
+            _transform = transform;
             Color = color;
             InitBuffers();
         }

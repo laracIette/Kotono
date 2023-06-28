@@ -57,11 +57,27 @@ namespace Kotono.Graphics.Objects.Hitboxes
 
         private static bool _isFirst = true;
 
-        public Vector Location { get; set; } = Vector.Zero;
+        private Transform _transform;
 
-        public Vector Rotation { get; set; } = Vector.Zero;  
+        public Transform Transform => _transform;
 
-        public Vector Scale { get; set; } = Vector.Unit;
+        public Vector Location 
+        { 
+            get => _transform.Location; 
+            set => _transform.Location = value; 
+        }
+
+        public Vector Rotation 
+        { 
+            get => _transform.Rotation; 
+            set => _transform.Rotation = value; 
+        }
+
+        public Vector Scale 
+        { 
+            get => _transform.Scale; 
+            set => _transform.Scale = value; 
+        }
 
         public Vector Color { get; set; } = Vector.White;
 
@@ -86,6 +102,8 @@ namespace Kotono.Graphics.Objects.Hitboxes
                 GL.EnableVertexAttribArray(locationAttributeLocation);
                 GL.VertexAttribPointer(locationAttributeLocation, 3, VertexAttribPointerType.Float, false, 0, 0);
             }
+
+            _transform = new Transform();
         }
 
         public void Init() { }

@@ -15,6 +15,8 @@ namespace Kotono.Graphics.Objects.Hitboxes
 
         public bool IsColliding();
 
+        public Transform Transform { get; }
+
         public Vector Location { get; set; }
 
         public Vector Rotation { get; set; }
