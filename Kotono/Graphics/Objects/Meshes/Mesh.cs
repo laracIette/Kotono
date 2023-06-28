@@ -25,6 +25,8 @@ namespace Kotono.Graphics.Objects.Meshes
 
         protected readonly ShaderType _shaderType;
 
+        public bool IsDraw = true;
+
         public bool IsInFront = false;
 
         public Mesh(string path, Transform transform, string diffusePath, string specularPath, ShaderType shaderType, Vector color, IHitbox[] hitboxes)
@@ -244,6 +246,16 @@ namespace Kotono.Graphics.Objects.Meshes
             * Matrix4.CreateRotationY(Rotation.Y)
             * Matrix4.CreateRotationZ(Rotation.Z)
             * Matrix4.CreateTranslation((Vector3)Location);
+
+        public void Show()
+        {
+            IsDraw = true;
+        }
+
+        public void Hide()
+        {
+            IsDraw = false;
+        }
 
         public void Dispose()
         {

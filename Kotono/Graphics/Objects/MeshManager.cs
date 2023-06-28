@@ -48,7 +48,7 @@ namespace Kotono.Graphics.Objects
         {
             foreach (var mesh in _meshes)
             {
-                if (!mesh.IsInFront)
+                if (!mesh.IsInFront && mesh.IsDraw)
                 {
                     mesh.Draw();
                 }
@@ -56,7 +56,7 @@ namespace Kotono.Graphics.Objects
             GL.Clear(ClearBufferMask.DepthBufferBit);
             foreach (var mesh in _meshes)
             {
-                if (mesh.IsInFront)
+                if (mesh.IsInFront && mesh.IsDraw)
                 {
                     mesh.Draw();
                 }
