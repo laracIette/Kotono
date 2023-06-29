@@ -1,7 +1,4 @@
 ﻿using OpenTK.Mathematics;
-using System.Diagnostics;
-using System.Drawing;
-using System;
 
 namespace Kotono.Utils
 {
@@ -75,19 +72,12 @@ namespace Kotono.Utils
         
         private void UpdateVectors()
         {
-            Forward = new Vector
-            {
-                X = MathF.Cos(Rotation.X) * MathF.Cos(Rotation.Y),
-                Y = MathF.Sin(Rotation.X),
-                Z = MathF.Cos(Rotation.X) * MathF.Sin(Rotation.Y)
-            };
-
-            Forward = Forward.Normalized;
-            Right = Vector.Cross(Forward, Vector.UnitY).Normalized;
-            Up = Vector.Cross(Right, Forward).Normalized;
+            Right = (Vector)(Quaternion.FromEulerAngles((Vector3)Rotation) * Vector3.UnitX);
+            Up = (Vector)(Quaternion.FromEulerAngles((Vector3)Rotation) * Vector3.UnitY);
+            Forward = (Vector)(Quaternion.FromEulerAngles((Vector3)Rotation) * Vector3.UnitZ);
         }
 
-        public override string ToString()
+        public override readonly string ToString()
         {
             return $"Location: {Location}\nRotation: {Rotation}\nScale: {Scale}";
         }

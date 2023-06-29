@@ -43,6 +43,12 @@ namespace Kotono.Utils
 
         public static Vector Blue => UnitZ;
 
+        public static Vector Right => UnitX;
+
+        public static Vector Up => UnitY;
+
+        public static Vector Forward => UnitZ;
+
         public const int SizeInBytes = sizeof(float) * 3;
 
         public readonly float this[int index] =>

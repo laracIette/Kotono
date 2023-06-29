@@ -119,9 +119,9 @@ namespace Kotono.Graphics
         {
             Front = new Vector
             {
-                X = MathF.Cos(_pitch) * MathF.Cos(_yaw),
-                Y = MathF.Sin(_pitch),
-                Z = MathF.Cos(_pitch) * MathF.Sin(_yaw)
+                X = Math.Cos(_pitch) * Math.Cos(_yaw),
+                Y = Math.Sin(_pitch),
+                Z = Math.Cos(_pitch) * Math.Sin(_yaw)
             };
 
             Front = Front.Normalized;

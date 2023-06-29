@@ -1,9 +1,16 @@
 ﻿using Kotono.Graphics.Objects.Meshes;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.GraphicsLibraryFramework;
+using System.Numerics;
 
 namespace Kotono.Utils
 {
+    public enum TransformSpace
+    {
+        World,
+        Local
+    }
+
     public class Gizmo
     {
         private Mesh[] _meshes = new Mesh[4];
@@ -44,6 +51,8 @@ namespace Kotono.Utils
 
         private int _selectedMesh = -1;
 
+        private TransformSpace _transformSpace = TransformSpace.World;
+
         public Gizmo() { }
 
         public void Init()
@@ -64,30 +73,25 @@ namespace Kotono.Utils
 
         public void Update()
         {
-            Location = _attachMesh.Location;
-            Rotation = _attachMesh.Rotation;
-
             if (Input.MouseState!.IsButtonPressed(MouseButton.Left))
             {
                 _selectedMesh = GetSelectedMesh();
             }
-            else if (Input.MouseState!.IsButtonReleased(MouseButton.Left))
+            else if (Input.MouseState.IsButtonReleased(MouseButton.Left))
             {
                 _selectedMesh = -1;
             }
 
-            switch (_selectedMesh)
+            Location = _attachMesh.Location;
+
+            switch (_transformSpace)
             {
-                case 0:
-                    Location += Transform.Right * Time.DeltaS * 100 * Input.MouseState!.Delta.X;
+                case TransformSpace.World:
+                    MoveWorld();
                     break;
 
-                case 1:
-                    Location += Transform.Up * Time.DeltaS * 100 * Input.MouseState!.Delta.X;
-                    break;
-
-                case 2:
-                    Location += Transform.Forward * Time.DeltaS * 100 * Input.MouseState!.Delta.X;
+                case TransformSpace.Local:
+                    MoveLocal();
                     break;
 
                 default:
@@ -95,7 +99,31 @@ namespace Kotono.Utils
             }
 
             _attachMesh.Location = Location;
-            _attachMesh.Rotation = Rotation;
+        }
+
+        private void MoveWorld()
+        {
+            Rotation = Vector.Zero;
+
+            Location += GetMovement();
+        }
+
+        private void MoveLocal()
+        {
+            Rotation = _attachMesh.Rotation;
+
+            Location += GetMovement();
+        }
+
+        private Vector GetMovement()
+        {
+            return _selectedMesh switch
+            {
+                0 => Transform.Right * Input.MouseState!.Delta.X * .01f,
+                1 => Transform.Up * Input.MouseState!.Delta.X * .01f,
+                2 => Transform.Forward * Input.MouseState!.Delta.X * .01f,
+                _ => Vector.Zero
+            };
         }
 
         private int GetSelectedMesh()
