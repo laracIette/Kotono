@@ -1,17 +1,43 @@
 ﻿using OpenTK.Mathematics;
 using System;
+using System.Globalization;
+using System.Linq;
 
 namespace Kotono.Utils
 {
     public struct Color
     {
-        public float R;
+        private float _r;
 
-        public float G;
+        private float _g;
 
-        public float B;
+        private float _b;
+
+        private float _a;
         
-        public float A;
+        public float R
+        { 
+            readonly get => _r; 
+            set => _r = Math.Clamp(value, 0, 1);
+        }
+
+        public float G
+        { 
+            readonly get => _g; 
+            set => _g = Math.Clamp(value, 0, 1);
+        }
+
+        public float B
+        { 
+            readonly get => _b; 
+            set => _b = Math.Clamp(value, 0, 1);
+        }
+
+        public float A
+        { 
+            readonly get => _a; 
+            set => _a = Math.Clamp(value, 0, 1);
+        }
 
         public static Color Transparent => new Color(0, 0, 0, 0);
 
@@ -90,7 +116,7 @@ namespace Kotono.Utils
         /// <summary>
         /// Initialize a Color with R = r, G = g, B = b, A = a
         /// </summary>
-        public Color(float r = 0, float g = 0, float b = 0, float a = 1)
+        public Color(float r, float g, float b, float a = 1)
         {
             R = r;
             G = g;
@@ -101,14 +127,47 @@ namespace Kotono.Utils
         /// <summary>
         /// Initialize a Color with R = (float)r, G = (float)g, B = (float)b, A = (float)a
         /// </summary>
-        public Color(double r = 0, double g = 0, double b = 0, double a = 1)
+        public Color(double r, double g, double b, double a = 1)
         {
             R = (float)r;
             G = (float)g;
             B = (float)b;
             A = (float)a;
         }
-     
+
+        public static Color FromHex(string hex)
+        {
+            hex = hex.Split('#').Where(s => s != "").FirstOrDefault("");
+
+            return hex.Length switch
+            {
+                1 => new Color(HexToF(hex[0])),
+                3 => new Color(HexToF(hex[0]), HexToF(hex[1]), HexToF(hex[2])),
+                4 => new Color(HexToF(hex[0]), HexToF(hex[1]), HexToF(hex[2]), HexToF(hex[3])),
+                6 => new Color(HexToF(hex[0..2]), HexToF(hex[2..4]), HexToF(hex[4..6])),
+                8 => new Color(HexToF(hex[0..2]), HexToF(hex[2..4]), HexToF(hex[4..6]), HexToF(hex[6..8])),
+                _ => throw new Exception($"error: string Length({hex.Length}) isn't handled")
+            };
+        }
+
+        /// <summary> Inputs a 2 character string and returns it converted from hexadecimal string to float </summary>
+        private static float HexToF(string hex)
+        {
+            if (hex.Length != 2)
+            {
+                throw new Exception($"error: string Length({hex.Length}) must be 2");
+            }
+            else
+            {
+                return byte.Parse(hex, NumberStyles.HexNumber) / 255f;
+            }
+        }
+
+        /// <summary> Inputs a char and returns it converted from hexadecimal char to float </summary>
+        private static float HexToF(char hex)
+        {
+            return HexToF(hex.ToString() + hex.ToString());
+        }     
 
         public static Color operator +(Color left, Color right)
         {
@@ -216,7 +275,7 @@ namespace Kotono.Utils
 
         public override readonly string ToString()
         {
-            return $"R: {R}, G: {G}, B: {B}";
+            return $"R: {R}, G: {G}, B: {B}, A: {A}";
         }
     }
 }
