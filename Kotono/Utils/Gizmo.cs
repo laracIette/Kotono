@@ -1,7 +1,6 @@
 ﻿using Kotono.Graphics.Objects.Meshes;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.GraphicsLibraryFramework;
-using System.Numerics;
 
 namespace Kotono.Utils
 {
@@ -13,7 +12,7 @@ namespace Kotono.Utils
 
     public class Gizmo
     {
-        private Mesh[] _meshes = new Mesh[4];
+        private GizmoMesh[] _meshes = new GizmoMesh[4];
 
         private Mesh _attachMesh;
 
@@ -57,7 +56,7 @@ namespace Kotono.Utils
 
         public void Init()
         {
-            _meshes = new Mesh[]
+            _meshes = new GizmoMesh[]
             {
                 new GizmoMesh("x", Vector.Red),
                 new GizmoMesh("y", Vector.Green),
@@ -73,11 +72,11 @@ namespace Kotono.Utils
 
         public void Update()
         {
-            if (Input.MouseState!.IsButtonPressed(MouseButton.Left))
+            if (Input.MouseState!.IsButtonPressed(MouseButton.Left) && (Input.CursorState == CursorState.Normal))
             {
                 _selectedMesh = GetSelectedMesh();
             }
-            else if (Input.MouseState.IsButtonReleased(MouseButton.Left))
+            else if (Input.MouseState.IsButtonReleased(MouseButton.Left) || (Input.CursorState == CursorState.Grabbed))
             {
                 _selectedMesh = -1;
             }
@@ -87,32 +86,20 @@ namespace Kotono.Utils
             switch (_transformSpace)
             {
                 case TransformSpace.World:
-                    MoveWorld();
+                    Rotation = Vector.Zero;
                     break;
 
                 case TransformSpace.Local:
-                    MoveLocal();
+                    Rotation = _attachMesh.Rotation;
                     break;
 
                 default:
                     break;
             }
 
+            Location += GetMovement();
+
             _attachMesh.Location = Location;
-        }
-
-        private void MoveWorld()
-        {
-            Rotation = Vector.Zero;
-
-            Location += GetMovement();
-        }
-
-        private void MoveLocal()
-        {
-            Rotation = _attachMesh.Rotation;
-
-            Location += GetMovement();
         }
 
         private Vector GetMovement()
@@ -128,24 +115,23 @@ namespace Kotono.Utils
 
         private int GetSelectedMesh()
         {
-            if (Input.CursorState == CursorState.Grabbed)
-            {
-                return -1;
-            }
+            int closestMesh = -1;
+            float closestDistance = float.PositiveInfinity;
 
             for (int i = 0; i < _meshes.Length; i++)
             {
-                foreach (var triangle in _meshes[i].Triangles)
+                if (_meshes[i].IsMouseOn(out _, out float distance))
                 {
-                    triangle.Transform = _meshes[i].Transform;
-                    if (Intersection.IntersectRayTriangle(KT.ActiveCamera.Location, Input.GetMouseRay(), triangle, out _))
+                    // select the mesh that is the closest to the camera
+                    if (distance < closestDistance)
                     {
-                        return i;
+                        closestDistance = distance;
+                        closestMesh = i;
                     }
                 }
             }
 
-            return -1;
+            return closestMesh;
         }
 
         public void AttachTo(Mesh mesh)

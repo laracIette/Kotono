@@ -203,6 +203,22 @@ namespace Kotono.Graphics.Objects.Meshes
             GL.DrawElements(PrimitiveType.Triangles, IndicesCount, DrawElementsType.UnsignedInt, IntPtr.Zero);
         }
 
+        public bool IsMouseOn(out Vector intersectionPoint, out float distance)
+        {
+            foreach (var triangle in Triangles)
+            {
+                triangle.Transform = Transform;
+                if (Intersection.IntersectRayTriangle(KT.ActiveCamera.Location, Input.GetMouseRay(), triangle, out intersectionPoint, out distance))
+                {
+                    return true;
+                }
+            }
+
+            intersectionPoint = Vector.Zero;
+            distance = 0;
+            return false;
+        }
+
         public Triangle[] Triangles { get; }
         
         public Vector[] Vertices { get; }

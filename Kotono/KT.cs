@@ -21,9 +21,9 @@ namespace Kotono
 
         public const int MAX_POINT_LIGHTS = PointLightManager.MAX;
 
-        public static string KotonoPath { get; set; } = "";
+        public static string KotonoPath { get; internal set; } = "";
 
-        public static string ProjectPath { get; set; } = "";
+        public static string ProjectPath { get; internal set; } = "";
 
 
         private static readonly ComponentManager _componentManager = new();

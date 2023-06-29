@@ -5,9 +5,10 @@ namespace Kotono.Utils
 {
     public static class Intersection
     {
-        public static bool IntersectRayTriangle(Vector rayOrigin, Vector rayDirection, Triangle triangle, out Vector intersectionPoint)
+        public static bool IntersectRayTriangle(Vector rayOrigin, Vector rayDirection, Triangle triangle, out Vector intersectionPoint, out float distance)
         {
             intersectionPoint = Vector.Zero;
+            distance = 0;
 
             var vertex1 = (Vector)Vector3.TransformPosition((Vector3)triangle.Vertex1, triangle.Model);
             var vertex2 = (Vector)Vector3.TransformPosition((Vector3)triangle.Vertex2, triangle.Model);
@@ -49,6 +50,7 @@ namespace Kotono.Utils
             if (u >= 0 && v >= 0 && (u + v) <= 1)
             {
                 // Ray intersects the triangle
+                distance = Vector.Distance(rayOrigin, intersectionPoint);
                 return true;
             }
 

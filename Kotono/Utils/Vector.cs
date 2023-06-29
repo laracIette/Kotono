@@ -158,6 +158,11 @@ namespace Kotono.Utils
             return v;
         }
 
+        public static float Distance(Vector left, Vector right)
+        {
+            return Math.Sqrt((right.X - left.X) * (right.X - left.X) + (right.Y - left.Y) * (right.Y - left.Y) + (right.Z - left.Z) * (right.Z - left.Z));
+        }
+
         public static Vector operator +(Vector left, Vector right)
         {
             left.X += right.X;
