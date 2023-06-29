@@ -135,6 +135,7 @@ namespace Kotono.Utils
             A = (float)a;
         }
 
+        /// <summary> Convert a hex string to a Color accepts 1, 3, 4, 6, 8 letters format </summary>
         public static Color FromHex(string hex)
         {
             hex = hex.Split('#').Where(s => s != "").FirstOrDefault("");

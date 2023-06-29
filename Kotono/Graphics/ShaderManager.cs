@@ -9,7 +9,8 @@ namespace Kotono.Graphics
         Lighting,
         Hitbox,
         PointLight,
-        Image
+        Image,
+        Gizmo
     }
 
     internal class ShaderManager
@@ -24,7 +25,8 @@ namespace Kotono.Graphics
                 new LightingShader(),
                 new HitboxShader(),
                 new PointLightShader(),
-                new ImageShader()
+                new ImageShader(),
+                new GizmoShader(),
             };
         }
 

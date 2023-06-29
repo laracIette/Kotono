@@ -1,5 +1,7 @@
 ﻿using Kotono.Graphics.Objects.Hitboxes;
 using Kotono.Utils;
+using OpenTK.Graphics.OpenGL4;
+using System;
 
 namespace Kotono.Graphics.Objects.Meshes
 {
@@ -12,11 +14,10 @@ namespace Kotono.Graphics.Objects.Meshes
                   {
                       Location = Vector.Zero,
                       Rotation = Vector.Zero,
-                      Scale = new Vector(.2),
+                      Scale = new Vector(.1),
                   },
-                  KT.KotonoPath + @"Assets/gizmo_diff.png",
-                  KT.KotonoPath + @"Assets/gizmo_spec.png",
-                  ShaderType.Lighting,
+                  new string[] { KT.KotonoPath + @"Assets/gizmo_diff.png" },
+                  ShaderType.Gizmo,
                   color,
                   new IHitbox[] { }
               )

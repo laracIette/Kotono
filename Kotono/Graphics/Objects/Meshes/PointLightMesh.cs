@@ -16,8 +16,7 @@ namespace Kotono.Graphics.Objects.Meshes
                       Rotation = Vector.Zero,
                       Scale = new Vector(0.2f)
                   },
-                  KT.ProjectPath + @"Assets/white.png",
-                  KT.ProjectPath + @"Assets/white.png",
+                  new string[] { KT.ProjectPath + @"Assets/white.png" },
                   ShaderType.PointLight,
                   Color.White,
                   new IHitbox[]

@@ -33,10 +33,13 @@ namespace Kotono.Graphics.Objects.Meshes
 
         public double IntersectionCheckTime { get; set; } = MaxIntersectionCheckTime;
 
-        public Mesh(string path, Transform transform, string diffusePath, string specularPath, ShaderType shaderType, Color color, IHitbox[] hitboxes)
+        public Mesh(string path, Transform transform, string[] texturePaths, ShaderType shaderType, Color color, IHitbox[] hitboxes)
         {
-            var diffuseMap = TextureManager.LoadTexture(diffusePath);
-            var specularMap = TextureManager.LoadTexture(specularPath);
+            var textures = new int[texturePaths.Length];
+            for (int i = 0; i < texturePaths.Length; i++)
+            {
+                textures[i] = TextureManager.LoadTexture(texturePaths[i]);
+            }
 
             if (!_paths.ContainsKey(path))
             {
@@ -141,8 +144,7 @@ namespace Kotono.Graphics.Objects.Meshes
             Location = transform.Location;
             Rotation = transform.Rotation;
             Scale = transform.Scale;
-            DiffuseMap = diffuseMap;
-            SpecularMap = specularMap;
+            Textures = textures;
             _shaderType = shaderType;
             Color = color;
 
@@ -190,8 +192,10 @@ namespace Kotono.Graphics.Objects.Meshes
 
         public virtual void Draw()
         {
-            TextureManager.UseTexture(DiffuseMap, TextureUnit.Texture0);
-            TextureManager.UseTexture(SpecularMap, TextureUnit.Texture1);
+            for (int i = 0; i < Textures.Length; i++)
+            {
+                TextureManager.UseTexture(Textures[i], TextureUnit.Texture0 + i);
+            }
 
             KT.SetShaderMatrix4(_shaderType, "model", Model);
             KT.SetShaderColor(_shaderType, "color", Color);
@@ -237,9 +241,7 @@ namespace Kotono.Graphics.Objects.Meshes
 
         public int IndicesCount { get; }
 
-        public int DiffuseMap { get; }
-
-        public int SpecularMap { get; }
+        public int[] Textures { get; }
 
 
         public Transform Transform => _transform;
