@@ -19,7 +19,7 @@ namespace Kotono.Graphics.Objects.Meshes
                   KT.ProjectPath + @"Assets/white.png",
                   KT.ProjectPath + @"Assets/white.png",
                   ShaderType.PointLight,
-                  Vector.White,
+                  Color.White,
                   new IHitbox[]
                   {
                       KT.CreateHitbox(new Sphere())
@@ -31,7 +31,7 @@ namespace Kotono.Graphics.Objects.Meshes
         public override void Draw()
         {
             KT.SetShaderMatrix4(_shaderType, "model", Model);
-            KT.SetShaderVector(_shaderType, "color", Color);
+            KT.SetShaderColor(_shaderType, "color", Color);
 
             GL.BindVertexArray(VertexArrayObject);
             GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);

@@ -39,7 +39,7 @@ namespace Kotono.Graphics.Objects
             set => _transform.Scale = value;
         }
 
-        public Vector Color;
+        public Color Color;
 
         public Matrix4 Model => Transform.Model;
 
@@ -57,11 +57,11 @@ namespace Kotono.Graphics.Objects
             Vertex2 = Vector.Zero;
             Vertex3 = Vector.Zero;
             _transform = new Transform();
-            Color = Vector.White;
+            Color = Color.White;
             InitBuffers();
         }
 
-        public Triangle(Vector vertex1, Vector vertex2, Vector vertex3, Transform transform, Vector color)
+        public Triangle(Vector vertex1, Vector vertex2, Vector vertex3, Transform transform, Color color)
         {
             Vertex1 = vertex1;
             Vertex2 = vertex2;
@@ -110,7 +110,7 @@ namespace Kotono.Graphics.Objects
                 * Matrix4.CreateRotationZ(Rotation.Z)
                 * Matrix4.CreateTranslation((Vector3)Location);
 
-            KT.SetShaderVector(ShaderType.Hitbox, "color", Color);
+            KT.SetShaderColor(ShaderType.Hitbox, "color", Color);
             KT.SetShaderMatrix4(ShaderType.Hitbox, "model", model);
 
             GL.BindVertexArray(_vertexArrayObject);

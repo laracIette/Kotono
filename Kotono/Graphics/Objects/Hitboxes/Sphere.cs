@@ -41,7 +41,7 @@ namespace Kotono.Graphics.Objects.Hitboxes
             set => _transform.Scale = value;
         }
 
-        public Vector Color { get; set; } = Vector.White;
+        public Color Color { get; set; } = Color.White;
 
         public List<IHitbox> Collisions { get; set; } = new();
 
@@ -101,7 +101,7 @@ namespace Kotono.Graphics.Objects.Hitboxes
                 * Matrix4.CreateRotationZ(Rotation.Z + rotation.Z)
                 * Matrix4.CreateTranslation((Vector3)Location);
 
-            KT.SetShaderVector(ShaderType.Hitbox, "color", Color);
+            KT.SetShaderColor(ShaderType.Hitbox, "color", Color);
             KT.SetShaderMatrix4(ShaderType.Hitbox, "model", model);
 
             GL.BindVertexArray(_vertexArrayObject);

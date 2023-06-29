@@ -58,10 +58,10 @@ namespace Kotono.Utils
         {
             _meshes = new GizmoMesh[]
             {
-                new GizmoMesh("x", Vector.Red),
-                new GizmoMesh("y", Vector.Green),
-                new GizmoMesh("z", Vector.Blue),
-                new GizmoMesh("sphere", Vector.White)
+                new GizmoMesh("x", Color.Red),
+                new GizmoMesh("y", Color.Green),
+                new GizmoMesh("z", Color.Blue),
+                new GizmoMesh("sphere", Color.White)
             };
 
             foreach (var mesh in _meshes)
@@ -80,7 +80,7 @@ namespace Kotono.Utils
             {
                 _selectedMesh = -1;
             }
-            KT.Print(Transform);
+            
             Location = _attachMesh.Location;
 
             switch (_transformSpace)

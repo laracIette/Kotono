@@ -6,11 +6,11 @@ namespace Kotono.Graphics.Objects.Lights
 {
     public class PointLight : IDisposable
     {
-        private Vector _ambient;
+        private Color _ambient;
 
-        protected Vector _diffuse;
+        protected Color _diffuse;
 
-        private Vector _specular;
+        private Color _specular;
 
         private float _constant;
 
@@ -22,7 +22,7 @@ namespace Kotono.Graphics.Objects.Lights
 
         private readonly Mesh _mesh;
 
-        public PointLight(Vector location, Vector ambient, Vector diffuse, Vector specular, float constant, float linear, float quadratic)
+        public PointLight(Vector location, Color ambient, Color diffuse, Color specular, float constant, float linear, float quadratic)
         {
             _ambient = ambient;
             _diffuse = diffuse;
@@ -50,9 +50,9 @@ namespace Kotono.Graphics.Objects.Lights
         public void UpdateShaders()
         {
             KT.SetShaderVector(ShaderType.Lighting, $"pointLights[{_shaderIndex}].location", _mesh.Location);
-            KT.SetShaderVector(ShaderType.Lighting, $"pointLights[{_shaderIndex}].ambient", _ambient);
-            KT.SetShaderVector(ShaderType.Lighting, $"pointLights[{_shaderIndex}].diffuse", _diffuse);
-            KT.SetShaderVector(ShaderType.Lighting, $"pointLights[{_shaderIndex}].specular", _specular);
+            KT.SetShaderColor(ShaderType.Lighting, $"pointLights[{_shaderIndex}].ambient", _ambient);
+            KT.SetShaderColor(ShaderType.Lighting, $"pointLights[{_shaderIndex}].diffuse", _diffuse);
+            KT.SetShaderColor(ShaderType.Lighting, $"pointLights[{_shaderIndex}].specular", _specular);
             KT.SetShaderFloat(ShaderType.Lighting, $"pointLights[{_shaderIndex}].constant", _constant);
             KT.SetShaderFloat(ShaderType.Lighting, $"pointLights[{_shaderIndex}].linear", _linear);
             KT.SetShaderFloat(ShaderType.Lighting, $"pointLights[{_shaderIndex}].quadratic", _quadratic);

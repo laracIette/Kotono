@@ -33,7 +33,7 @@ namespace Kotono.Graphics.Objects.Meshes
 
         public double IntersectionCheckTime { get; set; } = MaxIntersectionCheckTime;
 
-        public Mesh(string path, Transform transform, string diffusePath, string specularPath, ShaderType shaderType, Vector color, IHitbox[] hitboxes)
+        public Mesh(string path, Transform transform, string diffusePath, string specularPath, ShaderType shaderType, Color color, IHitbox[] hitboxes)
         {
             var diffuseMap = TextureManager.LoadTexture(diffusePath);
             var specularMap = TextureManager.LoadTexture(specularPath);
@@ -55,7 +55,7 @@ namespace Kotono.Graphics.Objects.Meshes
                             (Vector)scene.Meshes[0].Vertices[face.Indices[1]],
                             (Vector)scene.Meshes[0].Vertices[face.Indices[2]],
                             new Transform(),
-                            Vector.White
+                            Color.White
                         ));
                     }
 
@@ -153,7 +153,7 @@ namespace Kotono.Graphics.Objects.Meshes
                 hitbox.Location = Location;
                 hitbox.Rotation = Vector.Zero;
                 hitbox.Scale = Scale * 2;
-                hitbox.Color = Vector.Red;
+                hitbox.Color = Color.Red;
             }
         }
 
@@ -194,7 +194,7 @@ namespace Kotono.Graphics.Objects.Meshes
             TextureManager.UseTexture(SpecularMap, TextureUnit.Texture1);
 
             KT.SetShaderMatrix4(_shaderType, "model", Model);
-            KT.SetShaderVector(_shaderType, "color", Color);
+            KT.SetShaderColor(_shaderType, "color", Color);
             KT.SetShaderBool(_shaderType, "isInFront", IsInFront);
 
             GL.BindVertexArray(VertexArrayObject);
@@ -274,7 +274,7 @@ namespace Kotono.Graphics.Objects.Meshes
             set => _rotationVelocity = value;
         }
 
-        public Vector Color { get; set; }
+        public Color Color { get; set; }
 
         public Matrix4 Model => Transform.Model;
 

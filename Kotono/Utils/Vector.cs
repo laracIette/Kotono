@@ -33,16 +33,6 @@ namespace Kotono.Utils
 
         public static Vector UnitZ => new Vector(0, 0, 1);
 
-        public static Vector White => Unit;
-
-        public static Vector Black => Zero;
-
-        public static Vector Red => UnitX;
-
-        public static Vector Green => UnitY;
-
-        public static Vector Blue => UnitZ;
-
         public static Vector Right => UnitX;
 
         public static Vector Up => UnitY;
@@ -259,7 +249,7 @@ namespace Kotono.Utils
 
         public override readonly string ToString()
         {
-            return $"X: {X}, Y: {Y}, Z: {Z}"; ;
+            return $"X: {X}, Y: {Y}, Z: {Z}";
         }
     }
 }

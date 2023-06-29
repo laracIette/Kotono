@@ -115,5 +115,11 @@ namespace Kotono.Graphics.Shaders
             Use();
             GL.Uniform3(_uniformLocations[name], (Vector3)data);
         }
+
+        internal void SetColor(string name, Color data)
+        {
+            Use();
+            GL.Uniform4(_uniformLocations[name], (Vector4)data);
+        }
     }
 }

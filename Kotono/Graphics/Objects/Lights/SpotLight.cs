@@ -64,9 +64,9 @@ namespace Kotono.Graphics.Objects.Lights
             KT.SetShaderFloat(ShaderType.Lighting, $"spotLights[{_shaderIndex}].outerCutOff", MathF.Cos(MathHelper.DegreesToRadians(OuterCutOffRotation)));
             KT.SetShaderVector(ShaderType.Lighting, $"spotLights[{_shaderIndex}].location", KT.ActiveCamera.Location);
             KT.SetShaderVector(ShaderType.Lighting, $"spotLights[{_shaderIndex}].direction", KT.ActiveCamera.Front);
-            KT.SetShaderVector(ShaderType.Lighting, $"spotLights[{_shaderIndex}].ambient", new Vector(0.0f, 0.0f, 0.0f));
-            KT.SetShaderVector(ShaderType.Lighting, $"spotLights[{_shaderIndex}].diffuse", new Vector(1.0f, 1.0f, 1.0f));
-            KT.SetShaderVector(ShaderType.Lighting, $"spotLights[{ _shaderIndex}].specular", new Vector(1.0f, 1.0f, 1.0f));
+            KT.SetShaderColor(ShaderType.Lighting, $"spotLights[{_shaderIndex}].ambient", Color.Black);
+            KT.SetShaderColor(ShaderType.Lighting, $"spotLights[{_shaderIndex}].diffuse", Color.White);
+            KT.SetShaderColor(ShaderType.Lighting, $"spotLights[{ _shaderIndex}].specular", Color.White);
             KT.SetShaderFloat(ShaderType.Lighting, $"spotLights[{_shaderIndex}].constant", 1.0f);
             KT.SetShaderFloat(ShaderType.Lighting, $"spotLights[{_shaderIndex}].linear", 0.09f);
             KT.SetShaderFloat(ShaderType.Lighting, $"spotLights[{_shaderIndex}].quadratic", 0.032f);

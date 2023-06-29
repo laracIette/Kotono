@@ -61,7 +61,7 @@ namespace Kotono
             return image;
         }
 
-        public static Image CreateImage(string path, Rect dest, Vector color)
+        public static Image CreateImage(string path, Rect dest, Color color)
         {
             return CreateImage(new Image(path, dest, color));
         }
@@ -272,6 +272,11 @@ namespace Kotono
         public static void SetShaderVector(ShaderType type, string name, Vector data)
         {
             _shaderManager.SetVector(type, name, data);
+        }
+
+        public static void SetShaderColor(ShaderType type, string name, Color data)
+        {
+            _shaderManager.SetColor(type, name, data);
         }
 
         #endregion ShaderManager

@@ -28,7 +28,7 @@ namespace Kotono.Graphics.Objects
 
         public Rect Dest;
 
-        public Vector Color;
+        public Color Color;
 
         private Rect _transformation;
 
@@ -43,7 +43,7 @@ namespace Kotono.Graphics.Objects
 
         public bool IsDraw { get; set; } = true;
 
-        public Image(string path, Rect dest, Vector color)
+        public Image(string path, Rect dest, Color color)
         {
             if (_isFirst)
             {
@@ -105,7 +105,7 @@ namespace Kotono.Graphics.Objects
             TextureManager.UseTexture(_texture, TextureUnit.Texture0);
 
             KT.SetShaderMatrix4(ShaderType.Image, "model", Model);
-            KT.SetShaderVector(ShaderType.Image, "color", Color);
+            KT.SetShaderColor(ShaderType.Image, "color", Color);
 
             GL.BindVertexArray(_vertexArrayObject);
 

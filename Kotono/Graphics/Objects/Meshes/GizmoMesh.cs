@@ -5,7 +5,7 @@ namespace Kotono.Graphics.Objects.Meshes
 {
     public class GizmoMesh : Mesh
     {
-        public GizmoMesh(string axis, Vector color)
+        public GizmoMesh(string axis, Color color)
             : base(
                   KT.KotonoPath + @"Assets/gizmo_" + axis + ".obj",
                   new Transform

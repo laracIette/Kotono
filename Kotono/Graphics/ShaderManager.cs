@@ -58,6 +58,11 @@ namespace Kotono.Graphics
             _shaders[(int)type].SetVector(name, data);
         }
 
+        internal void SetColor(ShaderType type, string name, Color data)
+        {
+            _shaders[(int)type].SetColor(name, data);
+        }
+
         internal void Update()
         {
             foreach (var shader in _shaders)

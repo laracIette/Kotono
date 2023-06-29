@@ -119,10 +119,10 @@ namespace Kotono.Graphics.Objects
                     path = _paths[' '];
                 }
 
-                var color = Vector.White;
+                var color = Color.White;
                 if (_text[i] == ':')
                 {
-                    color = Vector.Red;
+                    color = Color.Red;
                 }
 
                 switch (_location)
