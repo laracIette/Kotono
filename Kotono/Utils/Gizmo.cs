@@ -69,7 +69,7 @@ namespace Kotono.Utils
                 KT.CreateMesh(mesh);
             }
         }
-
+        
         public void Update()
         {
             if (Input.MouseState!.IsButtonPressed(MouseButton.Left) && (Input.CursorState == CursorState.Normal))
@@ -80,7 +80,7 @@ namespace Kotono.Utils
             {
                 _selectedMesh = -1;
             }
-
+            KT.Print(Transform);
             Location = _attachMesh.Location;
 
             switch (_transformSpace)

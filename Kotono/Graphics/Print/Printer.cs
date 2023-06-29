@@ -1,32 +1,51 @@
 ﻿using Kotono.Utils;
-using System.Collections.Generic;
+using System;
 using System.Linq;
 
 namespace Kotono.Graphics.Print
 {
     internal class Printer
     {
-        private readonly List<PrinterText> _texts = new();
+        private readonly PrinterText[] _texts = new PrinterText[50];
+
+        private int _currentIndex = 0;
+
+        private int CurrentIndex
+        {
+            get
+            {
+                _currentIndex = (_currentIndex + 1) % _texts.Length;
+                return _currentIndex;
+            }
+        }
 
         internal Printer() { }
 
+        internal void Init()
+        {
+            for (int i = 0; i < _texts.Length; i++)
+            {
+                _texts[i] = new PrinterText("");
+                _texts[i].Init();
+            }
+        }
+
         internal void Update()
         {
-            for (int i = _texts.Count - 1; i >= 0; i--)
+            foreach (var text in _texts)
             {
-                if (Time.NowS - _texts[i].Time > 5f)
+                if ((Time.NowS - text.Time) > 5f)
                 {
-                    _texts[i].Clear();
-                    _texts.RemoveAt(i);
+                    text.Clear();
                 }
             }
         }
 
         internal void Lower()
         {
-            foreach (var _text in _texts)
+            foreach (var text in _texts)
             {
-                _text.Lower();
+                text.Lower();
             }
         }
 
@@ -34,10 +53,11 @@ namespace Kotono.Graphics.Print
         {
             if (text != null)
             {
-                foreach (var token in text.Split('\n'))
+                // Split the text for each line skip, and Reverse the list cause the last element printed gets lowered, so it's by default in wrong order
+                foreach (var token in text.Split('\n').Reverse())
                 {
                     Lower();
-                    _texts.Add(new PrinterText(token));
+                    _texts[CurrentIndex].SetText(token);
                 }
             }
         }

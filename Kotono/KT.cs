@@ -61,9 +61,9 @@ namespace Kotono
             return image;
         }
 
-        public static Image CreateImage(string path, Rect dest)
+        public static Image CreateImage(string path, Rect dest, Vector color)
         {
-            return CreateImage(new Image(path, dest));
+            return CreateImage(new Image(path, dest, color));
         }
 
         public static void DeleteImage(Image image)
@@ -335,6 +335,7 @@ namespace Kotono
             _gizmo.Init();
             _objectManager.Init();
             Text.InitPaths();
+            _printer.Init();
             _performanceWindow.Init();
             _componentManager.Init();
             Fiziks.Init();

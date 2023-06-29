@@ -7,6 +7,14 @@ namespace Kotono.Graphics.Print
         internal PrinterText(string text)
             : base(text, new Rect(0f, 0f, 25f, 30f), Location.TopLeft, 2 / 3f) 
         {
+        }
+
+        internal override void SetText(string text)
+        {   
+            _text = text;
+            Clear();
+
+            _dest = new Rect(0f, 0f, 25f, 30f);
             Init();
         }
 

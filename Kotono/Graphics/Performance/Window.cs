@@ -1,4 +1,5 @@
 ﻿using Kotono.Graphics.Objects;
+using Kotono.Utils;
 
 namespace Kotono.Graphics.Performance
 {
@@ -30,7 +31,7 @@ namespace Kotono.Graphics.Performance
 
         internal void Init()
         {
-            _background = KT.CreateImage(KT.KotonoPath + "Assets/PerformanceWindow/background.png", new Rect(_dest.X, _dest.Y, 300, 120));
+            _background = KT.CreateImage(KT.KotonoPath + "Assets/PerformanceWindow/background.png", new Rect(_dest.X, _dest.Y, 300, 120), Vector.White);
             
             _frame.Init();
             _update.Init();

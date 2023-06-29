@@ -79,7 +79,7 @@ namespace Kotono.Utils
 
         public override readonly string ToString()
         {
-            return $"Location: {Location}\nRotation: {Rotation}\nScale: {Scale}";
+            return $"Location: {Location}\nRotation: {Rotation}\nScale   : {Scale}";
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Kotono.Utils;
+using System.Collections.Generic;
 
 namespace Kotono.Graphics.Objects
 {
@@ -118,27 +119,37 @@ namespace Kotono.Graphics.Objects
                     path = _paths[' '];
                 }
 
+                var color = Vector.White;
+                if (_text[i] == ':')
+                {
+                    color = Vector.Red;
+                }
+
                 switch (_location)
                 {
                     case Location.Center:
                         _letters.Add(KT.CreateImage(
-                            path, new Rect(
+                            path, 
+                            new Rect(
                                 _dest.X - _dest.W / 2 * (_text.Length - 1) * _spacing + _dest.W * i * _spacing,
                                 _dest.Y,
                                 _dest.W,
                                 _dest.H
-                            )
+                            ),
+                            color
                         ));
                         break;
 
                     case Location.TopLeft:
                         _letters.Add(KT.CreateImage(
-                            path, new Rect(
+                            path, 
+                            new Rect(
                                 _dest.X + _dest.W / 2 + _dest.W * i * _spacing,
                                 _dest.Y + _dest.H / 2,
                                 _dest.W,
                                 _dest.H
-                            )
+                            ),
+                            color
                         ));
                         break;
 
@@ -148,7 +159,7 @@ namespace Kotono.Graphics.Objects
             }
         }
 
-        internal void SetText(string text)
+        internal virtual void SetText(string text)
         {
             if (text != _text)
             {
