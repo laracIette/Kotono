@@ -7,6 +7,7 @@ using OpenTK.Windowing.Desktop;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
 using System.Threading;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Kotono
 {
@@ -36,7 +37,10 @@ namespace Kotono
 
             Input.Update(KeyboardState, MouseState);
 
-            PropertiesFile.Parse(KT.KotonoPath + "Assets/cube.ktf");
+            var prop = Properties.Parse(KT.KotonoPath + "Assets/cube.ktf");
+
+            prop.Data.Floats["Mesh.Transform.Location.X"] = 1;
+            prop.WriteFile();
         }
 
         protected new void Load()

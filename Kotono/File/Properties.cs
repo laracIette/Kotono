@@ -1,24 +1,23 @@
-﻿using Mosaik.Core;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using IO = System.IO;
 
 namespace Kotono.File
 {
-    internal class PropertiesFile
+    internal class Properties
     {
         internal string Path { get; }
 
-        private readonly Dictionary<string, float> _floats;
+        internal Data Data { get; }
 
-        internal PropertiesFile(string path) 
+        internal Properties(string path, Data data)
         {
             Path = path;
-            _floats = new();
+            Data = data;
         }
 
-        internal static PropertiesFile Parse(string path) 
+        internal static Properties Parse(string path)
         {
             if (!path.EndsWith(".ktf"))
             {
@@ -32,42 +31,67 @@ namespace Kotono.File
                 throw new Exception($"error: file type must be \"properties\", file must start with \"# Kotono Properties File\"");
             }
 
+            Data data = new();
+            string parent = "";
+
             for (int i = 1; i < tokens.Length; i++)
             {
-                Console.WriteLine(tokens[i]);
-                if (tokens[i].Contains('}')) continue;
-                if (tokens[i] == "") continue;
-                
-                var tuple = GetKeyValue(tokens[i]);
-                if (tuple.Item2 == "string")
+                // if line is empty, skip
+                if (tokens[i] == "")
                 {
-                    Console.WriteLine("string:" + tuple.Item3);
+                    continue;
                 }
-                if (tuple.Item2 == "float")
+
+                // line with '}' should never have anything else, so go back in hierarchy and skip
+                if (tokens[i].Contains('}'))
                 {
-                    Console.WriteLine("float:" + float.Parse(tuple.Item3));
+                    parent = RemoveParent(parent);
+                    continue;
                 }
-                if (tuple.Item2 == "double")
+
+                (var key, var type, var value) = GetKeyValue(tokens[i]);
+                if (type == "array")
                 {
-                    Console.WriteLine("double:" + double.Parse(tuple.Item3));
+                    parent += key + '.';
                 }
-                if (tuple.Item2 == "int")
+
+                if (type == "string")
                 {
-                    Console.WriteLine("int:" + int.Parse(tuple.Item3));
+                    data.Strings[parent + key] = value;
+                }
+                if (type == "float")
+                {
+                    data.Floats[parent + key] = float.Parse(value);
+                }
+                if (type == "double")
+                {
+                    data.Doubles[parent + key] = double.Parse(value);
+                }
+                if (type == "int")
+                {
+                    data.Ints[parent + key] = int.Parse(value);
                 }
             }
 
-            return new PropertiesFile(path);
+            return new Properties(path, data);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="str"></param>
+        private static string RemoveParent(string key)
+        {
+            int dotIndex = 0;
+            for (int i = 0; i < key.Length - 1; i++)
+            {
+                if (key[i] == '.')
+                {
+                    dotIndex = i;
+                }
+            }
+            // if dotIndex == 0, there is no dot so don't ignore the first character
+            return key.Remove(dotIndex + ((dotIndex == 0) ? 0 : 1));
+        }
+
         /// <returns> A tuple with Item1 being the key, Item2 being the type of the value, Item3 being the value </returns>
-        /// <exception cref="FormatException"></exception>
-        /// <exception cref="Exception"></exception>
-        internal static Tuple<string, string, string> GetKeyValue(string str)
+        private static Tuple<string, string, string> GetKeyValue(string str)
         {
             if (!str.Contains(':'))
             {
@@ -80,7 +104,7 @@ namespace Kotono.File
                 throw new Exception($"error: tokens \"{tokens}\" Length \"{tokens.Length}\" must be of \"2\"");
             }
 
-            
+
 
             const string allowedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
             tokens[0] = new string(tokens[0].Where(allowedChars.Contains).ToArray()) ?? throw new Exception($"error: token string must not be empty");
@@ -156,8 +180,8 @@ namespace Kotono.File
                     type = "int";
                 }
             }
-            
-            if (isNegative && ((type == "float") ||(type == "double") ||(type == "int")))
+
+            if (isNegative && ((type == "float") || (type == "double") || (type == "int")))
             {
                 tokens[1] = tokens[1].Insert(0, "-");
             }
@@ -165,21 +189,70 @@ namespace Kotono.File
             return Tuple.Create(tokens[0], type, tokens[1]);
         }
 
-        internal float GetFloat(string name)
+        internal void WriteFile()
         {
-            if (_floats.TryGetValue(name, out float value))
+            string text = "# Kotono Properties File\n";
+
+            var keyValues = Data.ToString().Split('\n').Where(s => s != "").ToArray();
+            Array.Sort(keyValues);
+
+            // contains the parents path already seen
+            var writtenParents = new List<string[]>();
+
+            foreach (var keyValue in keyValues)
             {
-                return value;
+                // parents path, ending with the value
+                var parrents = keyValue.Split('.');
+
+                // if it's not only the value / means if it has parents
+                if (parrents.Length > 1)
+                {
+                    // i from 1 to parents.Length - 1
+                    for (int i = 0; i < parrents.Length - 1; i++)
+                    {
+                        // if parents paths doesn't contain path to i + 1
+                        if (!writtenParents.Where(a => AreEqual(a, parrents[..^(i + 1)])).Any())
+                        {
+                            // add it
+                            writtenParents.Add(parrents[..^(i + 1)]);
+
+                            // indent text
+                            for (int j = 0; j < i; j++)
+                            {
+                                text += '\t';
+                            }
+                            // add it
+                            text += parrents[i] + '\n';
+                        }
+                    }
+
+                }
+
+                for (int i = 0; i < parrents.Length - 1; i++)
+                {
+                    text += '\t';
+                }
+                text += parrents[^1] + '\n';
             }
-            else
-            {
-                throw new Exception($"error: _floats Dictionary doesn't contain the key \"{name}\"");
-            }
+
+            IO.File.WriteAllText(KT.KotonoPath + "Assets/cube.kt", text);
         }
 
-        internal void SetFloat(string name, float data)
+        private static bool AreEqual(string[] a, string[] b)
         {
-            _floats[name] = data;
+            if (a.Length != b.Length)
+            {
+                return false;
+            }
+            for (int i = 0; i < a.Length; i++)
+            {
+                if (a[i] != b[i])
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 }
