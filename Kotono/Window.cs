@@ -1,8 +1,12 @@
-﻿using Kotono.Graphics;
+﻿using Kotono.File;
+using Kotono.Graphics;
 using Kotono.Utils;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
+using OpenTK.Windowing.GraphicsLibraryFramework;
+using System;
+using System.Threading;
 
 namespace Kotono
 {
@@ -31,6 +35,8 @@ namespace Kotono
             KT.Init();
 
             Input.Update(KeyboardState, MouseState);
+
+            //PropertiesFile.Parse(KT.KotonoPath + "Assets/properties.ktp");
         }
 
         protected new void Load()
@@ -69,6 +75,13 @@ namespace Kotono
             KT.AddUpdateTime(e.Time);
 
             Input.Update(KeyboardState, MouseState);
+            if (MouseState.IsButtonDown(MouseButton.Left))
+            {
+                if ((MouseState.X < 0) || (MouseState.X > KT.Width) || (MouseState.Y < 0) || (MouseState.Y > KT.Height))
+                {
+                    //MouseState.Position = MouseState.PreviousPosition;
+                }
+            }
 
             KT.Update();
 

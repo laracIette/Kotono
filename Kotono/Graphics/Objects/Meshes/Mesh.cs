@@ -13,6 +13,10 @@ namespace Kotono.Graphics.Objects.Meshes
 {
     public class Mesh
     {
+        private static int _globalID = 0;
+
+        public readonly int ID = _globalID++;
+
         private static readonly Dictionary<string, Tuple<int[], Vector, Vector[], Triangle[]>> _paths = new();
 
         private Transform _transform;

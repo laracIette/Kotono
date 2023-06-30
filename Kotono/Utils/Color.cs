@@ -147,7 +147,7 @@ namespace Kotono.Utils
                 4 => new Color(HexToF(hex[0]), HexToF(hex[1]), HexToF(hex[2]), HexToF(hex[3])),
                 6 => new Color(HexToF(hex[0..2]), HexToF(hex[2..4]), HexToF(hex[4..6])),
                 8 => new Color(HexToF(hex[0..2]), HexToF(hex[2..4]), HexToF(hex[4..6]), HexToF(hex[6..8])),
-                _ => throw new Exception($"error: string Length({hex.Length}) isn't handled")
+                _ => throw new Exception($"error: string \"{hex}\" Length \"{hex.Length}\" isn't handled")
             };
         }
 
@@ -156,7 +156,7 @@ namespace Kotono.Utils
         {
             if (hex.Length != 2)
             {
-                throw new Exception($"error: string Length({hex.Length}) must be 2");
+                throw new Exception($"error: string \"{hex}\" Length \"{hex.Length}\" must be \"2\"");
             }
             else
             {

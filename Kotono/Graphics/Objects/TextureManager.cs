@@ -1,9 +1,7 @@
-﻿using StbImageSharp;
-
-using OpenTK.Graphics.OpenGL4;
-
+﻿using OpenTK.Graphics.OpenGL4;
+using StbImageSharp;
 using System.Collections.Generic;
-using System.IO;
+using IO = System.IO;
 
 namespace Kotono.Graphics.Objects
 {
@@ -22,7 +20,7 @@ namespace Kotono.Graphics.Objects
 
                 StbImage.stbi_set_flip_vertically_on_load(1);
 
-                using (Stream stream = File.OpenRead(path))
+                using (IO.Stream stream = IO.File.OpenRead(path))
                 {
                     ImageResult image = ImageResult.FromStream(stream, ColorComponents.RedGreenBlueAlpha);
 
