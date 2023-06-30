@@ -20,7 +20,7 @@ namespace Kotono.File
 
         internal static PropertiesFile Parse(string path) 
         {
-            if (!path.EndsWith(".ktp"))
+            if (!path.EndsWith(".ktf"))
             {
                 throw new FormatException($"error: file path \"{path}\" must end with \".ktf\"");
             }
@@ -34,6 +34,7 @@ namespace Kotono.File
             for (int i = 1; i < tokens.Length; i++)
             {
                 Console.WriteLine(tokens[i]);
+                
                 var tuple = GetKeyValue(tokens[i]);
                 if (tuple.Item2 == "string")
                 {
