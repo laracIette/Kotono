@@ -2,8 +2,8 @@
 ID: 0
 Transform: {
 	Location: {
-		X: 0f
-		Y: 2f
+		X: -0.2
+		Y: -2fsd
 		Z: -5f
 	}
 	Rotation: {

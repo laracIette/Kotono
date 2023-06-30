@@ -31,6 +31,7 @@ namespace Kotono.File
             {
                 throw new Exception($"error: file type must be \"properties\", file must start with \"# Kotono Properties File\"");
             }
+
             for (int i = 1; i < tokens.Length; i++)
             {
                 Console.WriteLine(tokens[i]);
@@ -40,23 +41,19 @@ namespace Kotono.File
                 var tuple = GetKeyValue(tokens[i]);
                 if (tuple.Item2 == "string")
                 {
-                    Console.WriteLine("string:" + tuple.Item3.ToString());
+                    Console.WriteLine("string:" + tuple.Item3);
                 }
                 if (tuple.Item2 == "float")
                 {
-                    Console.WriteLine("float:" + float.Parse(tuple.Item3).ToString());
+                    Console.WriteLine("float:" + float.Parse(tuple.Item3));
                 }
                 if (tuple.Item2 == "double")
                 {
-                    Console.WriteLine("double:" + double.Parse(tuple.Item3).ToString());
+                    Console.WriteLine("double:" + double.Parse(tuple.Item3));
                 }
                 if (tuple.Item2 == "int")
                 {
-                    Console.WriteLine("int:" + int.Parse(tuple.Item3).ToString());
-                }
-                if (tuple.Item2 == "undefined")
-                {
-                    Console.WriteLine("undefined:" + tuple.Item3.ToString());
+                    Console.WriteLine("int:" + int.Parse(tuple.Item3));
                 }
             }
 
@@ -83,13 +80,27 @@ namespace Kotono.File
                 throw new Exception($"error: tokens \"{tokens}\" Length \"{tokens.Length}\" must be of \"2\"");
             }
 
+            
+
             const string allowedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
             tokens[0] = new string(tokens[0].Where(allowedChars.Contains).ToArray()) ?? throw new Exception($"error: token string must not be empty");
+            tokens[1] = new string(tokens[1].Where((allowedChars + ".-{").Contains).ToArray()) ?? throw new Exception($"error: token string must not be empty");
+            bool isNegative = false;
+            // if the first character is '-'
+            if (tokens[1][0] == '-')
+            {
+                // if there's only one '-', it's negative
+                if (tokens[1].Where(c => c == '-').ToArray().Length == 1)
+                {
+                    isNegative = true;
+                }
+            }
             tokens[1] = new string(tokens[1].Where((allowedChars + ".{").Contains).ToArray()) ?? throw new Exception($"error: token string must not be empty");
 
             string type;
 
             const string letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
 
             // it's an array
             if (tokens[1].Contains('{'))
@@ -146,6 +157,11 @@ namespace Kotono.File
                 }
             }
             
+            if (isNegative && ((type == "float") ||(type == "double") ||(type == "int")))
+            {
+                tokens[1] = tokens[1].Insert(0, "-");
+            }
+
             return Tuple.Create(tokens[0], type, tokens[1]);
         }
 
