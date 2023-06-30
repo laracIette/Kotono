@@ -18,8 +18,8 @@ Transform: {
 	}
 }
 Color: {
-	R: 1f
+	R: 1.0
 	G: 1f
-	B: 1f
-	A: 1f
+	B: 1d1
+	A: 1
 }

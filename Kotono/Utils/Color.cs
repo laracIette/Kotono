@@ -156,7 +156,7 @@ namespace Kotono.Utils
         {
             if (hex.Length != 2)
             {
-                throw new Exception($"error: string \"{hex}\" Length \"{hex.Length}\" must be \"2\"");
+                throw new Exception($"error: string \"{hex}\" Length \"{hex.Length}\" must be of \"2\"");
             }
             else
             {

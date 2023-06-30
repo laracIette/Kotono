@@ -36,7 +36,7 @@ namespace Kotono
 
             Input.Update(KeyboardState, MouseState);
 
-            //PropertiesFile.Parse(KT.KotonoPath + "Assets/properties.ktp");
+            PropertiesFile.Parse(KT.KotonoPath + "Assets/cube.ktf");
         }
 
         protected new void Load()
