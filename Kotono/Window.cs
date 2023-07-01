@@ -39,7 +39,7 @@ namespace Kotono
 
             var prop = Properties.Parse(KT.KotonoPath + "Assets/cube.ktf");
 
-            prop.Data.Floats["Mesh.Transform.Location.X"] = 1;
+            prop.Data.Floats["Transform.Location.X"] = 1;
             prop.WriteFile();
         }
 

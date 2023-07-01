@@ -1,31 +1,30 @@
 # Kotono Properties File
-Mesh: {
-	ID: 0
-	Transform: {
-		Location: {
-			X: 0f
-			Y: 3f
-			Z: -5f
-		}
-		Rotation: {
-			X: 0f
-			Y: 0f
-			Z: 0f
-		}
-		Scale: {
+
+ID: 0
+Transform: {
+	Location: {
+		X: 0f
+		Y: 3f
+		Z: -5f
+	}
+	Rotation: {
+		X: 0f
+		Y: 0f
+		Z: 0f
+	}
+	Scale: {
+		X: 1f
+		Y: 1f
+		Z: 1f
+		W: {
 			X: 1f
-			Y: 1f
-			Z: 1f
-			W: {
-				X: 1f
-				Y: 3f
-			}
+			Y: 3f
 		}
 	}
-	Color: {
-		R: 1f
-		G: 1f
-		B: 0f
-		A: 1f
-	}
+}
+Color: {
+	R: 1f
+	G: 1f
+	B: 0f
+	A: 1f
 }

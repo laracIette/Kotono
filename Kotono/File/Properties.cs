@@ -193,58 +193,63 @@ namespace Kotono.File
         {
             string text = "# Kotono Properties File\n";
 
-            var keyValues = Data.ToString().Split('\n').Where(s => s != "").ToArray();
-            Array.Sort(keyValues);
+            var keyValues = Data.ToString().Split('\n').Where(s => s != "").ToList();
+            keyValues.Sort();
 
             // contains the parents path already seen
-            var writtenParents = new List<string[]>();
+            var writtenParents = new List<List<string>>();
 
             foreach (var keyValue in keyValues)
             {
-                // parents path, ending with the value
-                var parrents = keyValue.Split('.');
-
-                // if it's not only the value / means if it has parents
-                if (parrents.Length > 1)
+                if (keyValue == "")
                 {
-                    // i from 1 to parents.Length - 1
-                    for (int i = 0; i < parrents.Length - 1; i++)
+                    continue;
+                }
+                
+                // parents path, ending with the value
+                var parents = keyValue.Split('.').ToList();
+
+                // i from 1 to parents.Count / means it has to have at least 1 parent
+                for (int i = 1; i < parents.Count; i++)
+                {
+                    var currentParents = parents.GetRange(0, i);
+
+                    // if parents paths doesn't contain path to i
+                    if (!writtenParents.Any(a => AreEqual(a, currentParents)))
                     {
-                        // if parents paths doesn't contain path to i + 1
-                        if (!writtenParents.Where(a => AreEqual(a, parrents[..^(i + 1)])).Any())
+                        // add it
+                        writtenParents.Add(currentParents);
+
+                        // indent text
+                        for (int j = 0; j < i - 1; j++)
                         {
-                            // add it
-                            writtenParents.Add(parrents[..^(i + 1)]);
-
-                            // indent text
-                            for (int j = 0; j < i; j++)
-                            {
-                                text += '\t';
-                            }
-                            // add it
-                            text += parrents[i] + '\n';
+                            text += '\t';
                         }
-                    }
 
+                        // add last word of current path
+                        text += currentParents.Last() + '\n';
+                    }
                 }
 
-                for (int i = 0; i < parrents.Length - 1; i++)
+                // indent
+                for (int i = 0; i < parents.Count - 1; i++)
                 {
                     text += '\t';
                 }
-                text += parrents[^1] + '\n';
+                // add the value
+                text += parents.Last() + '\n';
             }
 
             IO.File.WriteAllText(KT.KotonoPath + "Assets/cube.kt", text);
         }
 
-        private static bool AreEqual(string[] a, string[] b)
+        private static bool AreEqual(List<string> a, List<string> b)
         {
-            if (a.Length != b.Length)
+            if (a.Count != b.Count)
             {
                 return false;
             }
-            for (int i = 0; i < a.Length; i++)
+            for (int i = 0; i < a.Count; i++)
             {
                 if (a[i] != b[i])
                 {
