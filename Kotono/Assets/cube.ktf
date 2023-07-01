@@ -1,9 +1,15 @@
 # Kotono Properties File
 
+Color: {
+	A: 1f
+	B: 0f
+	G: 1f
+	R: 1f
+}
 ID: 0
 Transform: {
 	Location: {
-		X: 0f
+		X: 1f
 		Y: 3f
 		Z: -5f
 	}
@@ -16,15 +22,5 @@ Transform: {
 		X: 1f
 		Y: 1f
 		Z: 1f
-		W: {
-			X: 1f
-			Y: 3f
-		}
 	}
-}
-Color: {
-	R: 1f
-	G: 1f
-	B: 0f
-	A: 1f
 }

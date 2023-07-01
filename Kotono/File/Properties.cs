@@ -25,7 +25,7 @@ namespace Kotono.File
             }
 
             var fileString = IO.File.ReadAllText(path);
-            var tokens = fileString.Split("\r\n");
+            var tokens = fileString.Split("\n");
             if (tokens[0] != "# Kotono Properties File")
             {
                 throw new Exception($"error: file type must be \"properties\", file must start with \"# Kotono Properties File\"");
@@ -191,7 +191,7 @@ namespace Kotono.File
 
         internal void WriteFile()
         {
-            string text = "# Kotono Properties File\n";
+            string text = "# Kotono Properties File\n\n";
 
             var keyValues = Data.ToString().Split('\n').Where(s => s != "").ToList();
             keyValues.Sort();
@@ -201,11 +201,6 @@ namespace Kotono.File
 
             foreach (var keyValue in keyValues)
             {
-                if (keyValue == "")
-                {
-                    continue;
-                }
-                
                 // parents path, ending with the value
                 var parents = keyValue.Split('.').ToList();
 
@@ -226,8 +221,8 @@ namespace Kotono.File
                             text += '\t';
                         }
 
-                        // add last word of current path
-                        text += currentParents.Last() + '\n';
+                        // add last word of current path and opening brace
+                        text += currentParents.Last() + ": {" + '\n';
                     }
                 }
 
@@ -240,7 +235,30 @@ namespace Kotono.File
                 text += parents.Last() + '\n';
             }
 
-            IO.File.WriteAllText(KT.KotonoPath + "Assets/cube.kt", text);
+            // add closing braces
+            string result = "";
+            var textLines = text.Split('\n');
+            for (int i = 0; i < textLines.Length - 1; i++)
+            {
+                result += textLines[i] + "\n";
+
+                var currentIndent = textLines[i].Count(c => c == '\t');
+                var nextIndent = textLines[i + 1].Count(c => c == '\t');
+
+                if (nextIndent < currentIndent)
+                {
+                    for (int j = currentIndent; j > nextIndent; j--)
+                    {
+                        for (int k = 0; k < j - 1; k++)
+                        {
+                            result += "\t";
+                        }
+                        result += "}\n";
+                    }
+                }
+            }
+
+            IO.File.WriteAllText(Path, result);
         }
 
         private static bool AreEqual(List<string> a, List<string> b)
