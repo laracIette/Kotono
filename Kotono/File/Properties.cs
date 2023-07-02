@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Kotono.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using IO = System.IO;
@@ -50,26 +51,31 @@ namespace Kotono.File
                 }
 
                 (var key, var type, var value) = GetKeyValue(tokens[i]);
-                if (type == "array")
-                {
-                    parent += key + '.';
-                }
 
-                if (type == "string")
+                switch (type)
                 {
-                    data.Strings[parent + key] = value;
-                }
-                if (type == "float")
-                {
-                    data.Floats[parent + key] = float.Parse(value);
-                }
-                if (type == "double")
-                {
-                    data.Doubles[parent + key] = double.Parse(value);
-                }
-                if (type == "int")
-                {
-                    data.Ints[parent + key] = int.Parse(value);
+                    case "array":
+                        parent += key + '.';
+                        break;
+
+                    case "string":
+                        data.Strings[parent + key] = value;
+                        break;
+
+                    case "float":
+                        data.Floats[parent + key] = float.Parse(value);
+                        break;
+
+                    case "double":
+                        data.Doubles[parent + key] = double.Parse(value);
+                        break;
+
+                    case "int":
+                        data.Ints[parent + key] = int.Parse(value);
+                        break;
+
+                    default:
+                        break;
                 }
             }
 
@@ -98,95 +104,137 @@ namespace Kotono.File
                 throw new FormatException($"error: string \"{str}\" must contain \":\" to be a Key / Value string");
             }
 
-            var tokens = str.Split(':');
-            if (tokens.Length != 2)
-            {
-                throw new Exception($"error: tokens \"{tokens}\" Length \"{tokens.Length}\" must be of \"2\"");
-            }
+            //var tokens = str.Split(':');
+            //if (tokens.Length != 2)
+            //{
+            //    throw new Exception($"error: tokens \"{tokens}\" Length \"{tokens.Length}\" must be of \"2\"");
+            //}
 
+            int firstColonIndex = str.IndexOf(':');
 
+            string key = str[..firstColonIndex];
+            string value = str[(firstColonIndex + 1)..];
 
             const string allowedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            tokens[0] = new string(tokens[0].Where(allowedChars.Contains).ToArray()) ?? throw new Exception($"error: token string must not be empty");
-            tokens[1] = new string(tokens[1].Where((allowedChars + ".-{").Contains).ToArray()) ?? throw new Exception($"error: token string must not be empty");
-            bool isNegative = false;
-            // if the first character is '-'
-            if (tokens[1][0] == '-')
+            key = new string(key.Where(allowedChars.Contains).ToArray()) ?? throw new Exception($"error: key string must not be empty");
+
+            // if starts with ' ', remove this first ' ' (should always be true)
+            if (value.StartsWith(' '))
             {
-                // if there's only one '-', it's negative
-                if (tokens[1].Where(c => c == '-').ToArray().Length == 1)
-                {
-                    isNegative = true;
-                }
+                value = value.Remove(0, 1);
             }
-            tokens[1] = new string(tokens[1].Where((allowedChars + ".{").Contains).ToArray()) ?? throw new Exception($"error: token string must not be empty");
+
+            //value = new string(value.Where((allowedChars + ".{").Contains).ToArray()) ?? throw new Exception($"error: token string must not be empty");
 
             string type;
 
-            const string letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            //const string letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
+            bool isNegative = key.First() == '-';
 
             // it's an array
-            if (tokens[1].Contains('{'))
+            if (value == "{")
             {
-                if (tokens[1].Length != 1)
-                {
-                    throw new Exception("error: the only character opening an array should be '{'");
-                }
-                else
-                {
-                    type = "array";
-                }
+                type = "array";
             }
-            // if has more than 1 letter, it's a string
-            else if (tokens[1].Where(letters.Contains).ToArray().Length > 1)
+            // it's a string
+            else if (IsAString(value))
             {
                 type = "string";
             }
-            // if has 1 letter, it can be either a float or a string
-            else if (tokens[1].Where(letters.Contains).ToArray().Length == 1)
+            // if last letter is 'f', it's a float
+            else if (value.Last() == 'f')
             {
-                // it's a float
-                if (tokens[1][^1] == 'f')
-                {
-                    type = "float";
-                    tokens[1] = tokens[1].Remove(tokens[1].Length - 1);
-                }
-                // it's a string
-                else
-                {
-                    type = "string";
-                }
+                type = "float";
+                value = value.Remove(value.Length - 1);
             }
-            // it's a number
+            else if (value.Contains('.'))
+            {
+                // there is more than 1 '.'
+                //if (value.Where(c => c == '.').ToArray().Length != 1)
+                //{
+                    //throw new Exception($"error: supposed number \"{value}\" contains more than 1 '.'");
+                //}
+                // it's a double
+                //else
+                //{
+                    type = "double";
+                //}
+            }
+            // it's an int
             else
             {
-                if (tokens[1].Contains('.'))
-                {
-                    // there is more than 1 '.'
-                    if (tokens[1].Where(c => c == '.').ToArray().Length != 1)
-                    {
-                        throw new Exception($"error: supposed number \"{tokens[1]}\" contains more than 1 '.'");
-                    }
-                    // it's a double
-                    else
-                    {
-                        type = "double";
-                    }
-                }
-                // it's an int
-                else
-                {
-                    type = "int";
-                }
+                type = "int";
             }
 
-            if (isNegative && ((type == "float") || (type == "double") || (type == "int")))
+
+            //if (isNegative && ((type == "float") || (type == "double") || (type == "int")))
+            //{
+                //value = value.Insert(0, "-");
+            //}
+
+            return Tuple.Create(key, type, value);
+        }
+
+        private static bool IsAString(string str)
+        {
+            const string numbers = "0123456789";
+
+            var strNumbers = str.Where(numbers.Contains).ToList();
+
+            // if there is a letter
+            if ((str.Length - strNumbers.Count) > 0)
             {
-                tokens[1] = tokens[1].Insert(0, "-");
+                // if there is 1 letter
+                if ((str.Length - strNumbers.Count) == 1)
+                {
+                    // if the 1 letter is a '.', or a 'f' and it's the last letter, or a '-' and it's the first letter
+                    if (str.Any(c => c == '.') || (str.Last() == 'f') || (str.First() == '-'))
+                    {
+                        // it's not a string
+                        return false;
+                    }
+                }
+                // if there is 2 letters
+                else if ((str.Length - strNumbers.Count) == 2)
+                {
+                    // if there is a dot
+                    if (str.Any(c => c == '.'))
+                    {
+                        // if last is 'f' or first is '-'
+                        if ((str.Last() == 'f') || (str.First() == '-'))
+                        {
+                            // it's not a string
+                            return false;
+                        }
+                    }
+                    // if last is 'f' and first is '-'
+                    else if ((str.Last() == 'f') && (str.First() == '-'))
+                    {
+                        // it's not a string
+                        return false;
+                    }
+                }
+                // if there is 3 letters
+                else if ((str.Length - strNumbers.Count) == 3)
+                {
+                    // if it has a '.' and the last is 'f' and the first is '-'
+                    if (str.Any(c => c == '.') && (str.Last() == 'f') && (str.First() == '-'))
+                    {
+                        // it's not a string
+                        return false;
+                    }
+                }
+
+                // it's a string
+                return true;
             }
 
-            return Tuple.Create(tokens[0], type, tokens[1]);
+            else
+            {
+                // it's not a string
+                return false;
+            }
         }
 
         internal void WriteFile()
@@ -221,7 +269,7 @@ namespace Kotono.File
                             text += '\t';
                         }
 
-                        // add last word of current path and opening brace
+                        // add last parent of current path and opening brace
                         text += currentParents.Last() + ": {" + '\n';
                     }
                 }
@@ -245,7 +293,7 @@ namespace Kotono.File
                 var currentIndent = textLines[i].Count(c => c == '\t');
                 var nextIndent = textLines[i + 1].Count(c => c == '\t');
 
-                if (nextIndent < currentIndent)
+                if (currentIndent > nextIndent)
                 {
                     for (int j = currentIndent; j > nextIndent; j--)
                     {

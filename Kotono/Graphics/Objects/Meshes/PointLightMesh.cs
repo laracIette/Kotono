@@ -9,7 +9,7 @@ namespace Kotono.Graphics.Objects.Meshes
     {
         public PointLightMesh(Vector location) 
             : base(
-                  KT.ProjectPath + @"Assets/sphere.obj",
+                  KT.ProjectPath + @"Assets/Meshes/sphere.obj",
                   new Transform
                   {
                       Location = location,

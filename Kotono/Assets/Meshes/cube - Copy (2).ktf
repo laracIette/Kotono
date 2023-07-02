@@ -1,0 +1,26 @@
+# Kotono Properties File
+
+Color: {
+	A: 1f
+	B: 0f
+	G: 1f
+	R: 1f
+}
+ID: 0
+Transform: {
+	Location: {
+		X: 1f
+		Y: 1f
+		Z: 1f
+	}
+	Scale: {
+		X: 1f
+		Y: 1f
+		Z: 1f
+	}
+	Rotation: {
+		X: 1f
+		Y: 1f
+		Z: 1f
+	}
+}

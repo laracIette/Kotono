@@ -9,14 +9,14 @@ Color: {
 ID: 0
 Transform: {
 	Location: {
-		X: 1f
-		Y: 3f
-		Z: -5f
+		X: 0f
+		Y: 1f
+		Z: 1f
 	}
 	Rotation: {
-		X: 0f
-		Y: 0f
-		Z: 0f
+		X: 1f
+		Y: 1f
+		Z: 1f
 	}
 	Scale: {
 		X: 1f

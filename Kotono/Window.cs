@@ -37,9 +37,9 @@ namespace Kotono
 
             Input.Update(KeyboardState, MouseState);
 
-            var prop = Properties.Parse(KT.KotonoPath + "Assets/cube.ktf");
+            var prop = Properties.Parse(KT.KotonoPath + @"Assets/Meshes/cube.ktf");
 
-            prop.Data.Floats["Transform.Location.X"] = 1;
+            prop.Data.Floats["Transform.Location.X"] = 0;
             prop.WriteFile();
         }
 
