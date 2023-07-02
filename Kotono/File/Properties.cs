@@ -103,13 +103,8 @@ namespace Kotono.File
             {
                 throw new FormatException($"error: string \"{str}\" must contain \":\" to be a Key / Value string");
             }
-
-            //var tokens = str.Split(':');
-            //if (tokens.Length != 2)
-            //{
-            //    throw new Exception($"error: tokens \"{tokens}\" Length \"{tokens.Length}\" must be of \"2\"");
-            //}
-
+            
+            // separate key / value
             int firstColonIndex = str.IndexOf(':');
 
             string key = str[..firstColonIndex];
@@ -124,11 +119,7 @@ namespace Kotono.File
                 value = value.Remove(0, 1);
             }
 
-            //value = new string(value.Where((allowedChars + ".{").Contains).ToArray()) ?? throw new Exception($"error: token string must not be empty");
-
             string type;
-
-            //const string letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
             bool isNegative = key.First() == '-';
 
@@ -148,30 +139,16 @@ namespace Kotono.File
                 type = "float";
                 value = value.Remove(value.Length - 1);
             }
+            // if it has a '.', it's a double
             else if (value.Contains('.'))
             {
-                // there is more than 1 '.'
-                //if (value.Where(c => c == '.').ToArray().Length != 1)
-                //{
-                    //throw new Exception($"error: supposed number \"{value}\" contains more than 1 '.'");
-                //}
-                // it's a double
-                //else
-                //{
-                    type = "double";
-                //}
+                type = "double";
             }
             // it's an int
             else
             {
                 type = "int";
             }
-
-
-            //if (isNegative && ((type == "float") || (type == "double") || (type == "int")))
-            //{
-                //value = value.Insert(0, "-");
-            //}
 
             return Tuple.Create(key, type, value);
         }
@@ -249,8 +226,14 @@ namespace Kotono.File
 
             foreach (var keyValue in keyValues)
             {
+                // separate key / value
+                int firstColonIndex = keyValue.IndexOf(':');
+
+                string key = keyValue[..firstColonIndex];
+                string value = keyValue[firstColonIndex..];
+
                 // parents path, ending with the value
-                var parents = keyValue.Split('.').ToList();
+                var parents = key.Split('.').ToList();
 
                 // i from 1 to parents.Count / means it has to have at least 1 parent
                 for (int i = 1; i < parents.Count; i++)
@@ -280,7 +263,7 @@ namespace Kotono.File
                     text += '\t';
                 }
                 // add the value
-                text += parents.Last() + '\n';
+                text += parents.Last() + value + '\n';
             }
 
             // add closing braces

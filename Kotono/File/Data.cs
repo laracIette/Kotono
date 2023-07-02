@@ -2,7 +2,6 @@
 {
     internal class Data
     {
-
         public readonly DataDict<string> Strings = new();
         public readonly DataDict<float> Floats = new();
         public readonly DataDict<double> Doubles = new();
