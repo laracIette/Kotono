@@ -10,12 +10,20 @@ namespace Kotono.File
     {
         internal string Path { get; }
 
-        internal Data Data { get; }
+        private readonly Data _data;
+
+        internal DataDict<string> Strings => _data.Strings;
+        
+        internal DataDict<float> Floats => _data.Floats;
+        
+        internal DataDict<double> Doubles => _data.Doubles;
+        
+        internal DataDict<int> Ints => _data.Ints;
 
         internal Properties(string path, Data data)
         {
             Path = path;
-            Data = data;
+            _data = data;
         }
 
         internal static Properties Parse(string path)
@@ -218,7 +226,7 @@ namespace Kotono.File
         {
             string text = "# Kotono Properties File\n\n";
 
-            var keyValues = Data.ToString().Split('\n').Where(s => s != "").ToList();
+            var keyValues = _data.ToString().Split('\n').Where(s => s != "").ToList();
             keyValues.Sort();
 
             // contains the parents path already seen

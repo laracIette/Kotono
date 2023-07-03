@@ -58,10 +58,10 @@ namespace Kotono.Utils
         {
             _meshes = new GizmoMesh[]
             {
-                new GizmoMesh("x", Color.Red),
-                new GizmoMesh("y", Color.Green),
-                new GizmoMesh("z", Color.Blue),
-                new GizmoMesh("sphere", Color.White)
+                new GizmoMesh("x"),
+                new GizmoMesh("y"),
+                new GizmoMesh("z"),
+                new GizmoMesh("sphere")
             };
 
             foreach (var mesh in _meshes)

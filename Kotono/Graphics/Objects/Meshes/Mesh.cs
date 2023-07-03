@@ -1,4 +1,5 @@
 ﻿using Assimp;
+using Kotono.File;
 using Kotono.Graphics.Objects.Hitboxes;
 using Kotono.Physics;
 using Kotono.Utils;
@@ -11,12 +12,8 @@ using PrimitiveType = OpenTK.Graphics.OpenGL4.PrimitiveType;
 
 namespace Kotono.Graphics.Objects.Meshes
 {
-    public class Mesh
+    public abstract class Mesh : IDisposable
     {
-        private static int _globalID = 0;
-
-        public readonly int ID = _globalID++;
-
         private static readonly Dictionary<string, Tuple<int[], Vector, Vector[], Triangle[]>> _paths = new();
 
         private Transform _transform;
@@ -33,19 +30,128 @@ namespace Kotono.Graphics.Objects.Meshes
 
         public bool IsInFront = false;
 
+        public Triangle[] Triangles { get; }
+
+        public Vector[] Vertices { get; }
+
+        public Vector Center { get; }
+
+        public bool IsFiziks { get; set; }
+
+        public bool IsGravity { get; set; }
+
+        public CollisionState CollisionState { get; set; }
+
+        public int VertexArrayObject { get; }
+
+        public int VertexBufferObject { get; }
+
+        public int IndicesCount { get; }
+
+        public int[] Textures { get; }
+
+        public Transform Transform => _transform;
+
+        public Vector Location
+        {
+            get => _transform.Location;
+            set => _transform.Location = value;
+        }
+
+        public Vector Rotation
+        {
+            get => _transform.Rotation;
+            set => _transform.Rotation = value;
+        }
+
+        public Vector Scale
+        {
+            get => _transform.Scale;
+            set => _transform.Scale = value;
+        }
+
+        public Vector LocationVelocity
+        {
+            get => _locationVelocity;
+            set => _locationVelocity = value;
+        }
+
+        public Vector RotationVelocity
+        {
+            get => _rotationVelocity;
+            set => _rotationVelocity = value;
+        }
+
+        public Color Color { get; set; }
+
+        public Matrix4 Model => Transform.Model;
+
         public static double MaxIntersectionCheckTime => 0.1f;
 
         public double IntersectionCheckTime { get; set; } = MaxIntersectionCheckTime;
 
-        public Mesh(string path, Transform transform, string[] texturePaths, ShaderType shaderType, Color color, IHitbox[] hitboxes)
+        private readonly Properties _properties;
+
+        public Mesh(string path, IHitbox[] hitboxes)
         {
-            var textures = new int[texturePaths.Length];
-            for (int i = 0; i < texturePaths.Length; i++)
+            _properties = Properties.Parse(path);
+
+            var textureKeys = _properties.Strings.Keys.Where(k => k.StartsWith("Textures")).ToList();
+
+            Textures = new int[textureKeys.Count];
+            for (int i = 0; i < textureKeys.Count; i++)
             {
-                textures[i] = TextureManager.LoadTexture(texturePaths[i]);
+                Textures[i] = TextureManager.LoadTexture(_properties.Strings[textureKeys[i]]);
             }
 
-            if (!_paths.ContainsKey(path))
+            _shaderType = _properties.Strings["ShaderType"] switch
+            {
+                "Lighting" => ShaderType.Lighting,
+                "PointLight" => ShaderType.PointLight,
+                "Gizmo" => ShaderType.Gizmo,
+                _ => throw new Exception($"error: ShaderType \"{_properties.Strings["ShaderType"]}\" isn't valid"),
+            };
+
+            Location = new Vector
+            {
+                X = _properties.Floats["Transform.Location.X"],
+                Y = _properties.Floats["Transform.Location.Y"],
+                Z = _properties.Floats["Transform.Location.Z"]
+            };
+
+            Rotation = new Vector
+            {
+                X = _properties.Floats["Transform.Rotation.X"],
+                Y = _properties.Floats["Transform.Rotation.Y"],
+                Z = _properties.Floats["Transform.Rotation.Z"]
+            };
+
+            Scale = new Vector
+            {
+                X = _properties.Floats["Transform.Scale.X"],
+                Y = _properties.Floats["Transform.Scale.Y"],
+                Z = _properties.Floats["Transform.Scale.Z"]
+            };
+
+            Color = new Color
+            {
+                R = _properties.Floats["Color.R"],
+                G = _properties.Floats["Color.G"],
+                B = _properties.Floats["Color.B"],
+                A = _properties.Floats["Color.A"]
+            };
+
+            _hitboxes = hitboxes;
+
+            foreach (var hitbox in _hitboxes)
+            {
+                hitbox.Location = Location;
+                hitbox.Rotation = Vector.Zero;
+                hitbox.Scale = Scale * 2;
+                hitbox.Color = Color.Red;
+            }
+
+            if (!_paths.ContainsKey(_properties.Strings["Obj"]))
             {
                 List<Vertex>[] models;
                 List<int>[] indices;
@@ -53,7 +159,7 @@ namespace Kotono.Graphics.Objects.Meshes
 
                 using (var importer = new AssimpContext())
                 {
-                    var scene = importer.ImportFile(path, PostProcessSteps.Triangulate);
+                    var scene = importer.ImportFile(_properties.Strings["Obj"], PostProcessSteps.Triangulate);
 
                     foreach (var face in scene.Meshes[0].Faces)
                     {
@@ -109,15 +215,15 @@ namespace Kotono.Graphics.Objects.Meshes
                 GL.BindBuffer(BufferTarget.ArrayBuffer, vertexBufferObject);
                 GL.BufferData(BufferTarget.ArrayBuffer, models[0].Count * Vertex.SizeInBytes, models[0].ToArray(), BufferUsageHint.StaticDraw);
 
-                int locationAttributeLocation = KT.GetShaderAttribLocation(shaderType, "aPos");
+                int locationAttributeLocation = KT.GetShaderAttribLocation(_shaderType, "aPos");
                 GL.EnableVertexAttribArray(locationAttributeLocation);
                 GL.VertexAttribPointer(locationAttributeLocation, 3, VertexAttribPointerType.Float, false, Vertex.SizeInBytes, 0);
 
-                int normalAttributeLocation = KT.GetShaderAttribLocation(shaderType, "aNormal");
+                int normalAttributeLocation = KT.GetShaderAttribLocation(_shaderType, "aNormal");
                 GL.EnableVertexAttribArray(normalAttributeLocation);
                 GL.VertexAttribPointer(normalAttributeLocation, 3, VertexAttribPointerType.Float, false, Vertex.SizeInBytes, sizeof(float) * 3);
 
-                int texCoordAttributeLocation = KT.GetShaderAttribLocation(shaderType, "aTexCoords");
+                int texCoordAttributeLocation = KT.GetShaderAttribLocation(_shaderType, "aTexCoords");
                 GL.EnableVertexAttribArray(texCoordAttributeLocation);
                 GL.VertexAttribPointer(texCoordAttributeLocation, 2, VertexAttribPointerType.Float, false, Vertex.SizeInBytes, sizeof(float) * 6);
 
@@ -126,7 +232,7 @@ namespace Kotono.Graphics.Objects.Meshes
                 GL.BindBuffer(BufferTarget.ElementArrayBuffer, elementBufferObject);
                 GL.BufferData(BufferTarget.ElementArrayBuffer, indices[0].Count * sizeof(int), indices[0].ToArray(), BufferUsageHint.StaticDraw);
 
-                _paths[path] = Tuple.Create(
+                _paths[_properties.Strings["Obj"]] = Tuple.Create(
                     new int[]
                     {
                         vertexArrayObject,
@@ -139,28 +245,12 @@ namespace Kotono.Graphics.Objects.Meshes
                 );
             }
 
-            VertexArrayObject = _paths[path].Item1[0];
-            VertexBufferObject = _paths[path].Item1[1];
-            IndicesCount = _paths[path].Item1[2];
-            Center = _paths[path].Item2;
-            Vertices = _paths[path].Item3;
-            Triangles = _paths[path].Item4;
-            Location = transform.Location;
-            Rotation = transform.Rotation;
-            Scale = transform.Scale;
-            Textures = textures;
-            _shaderType = shaderType;
-            Color = color;
-
-            _hitboxes = hitboxes;
-
-            foreach (var hitbox in _hitboxes)
-            {
-                hitbox.Location = Location;
-                hitbox.Rotation = Vector.Zero;
-                hitbox.Scale = Scale * 2;
-                hitbox.Color = Color.Red;
-            }
+            VertexArrayObject = _paths[_properties.Strings["Obj"]].Item1[0];
+            VertexBufferObject = _paths[_properties.Strings["Obj"]].Item1[1];
+            IndicesCount = _paths[_properties.Strings["Obj"]].Item1[2];
+            Center = _paths[_properties.Strings["Obj"]].Item2;
+            Vertices = _paths[_properties.Strings["Obj"]].Item3;
+            Triangles = _paths[_properties.Strings["Obj"]].Item4;
         }
 
         public virtual void Init() { }
@@ -226,63 +316,6 @@ namespace Kotono.Graphics.Objects.Meshes
             distance = 0;
             return false;
         }
-
-        public Triangle[] Triangles { get; }
-        
-        public Vector[] Vertices { get; }
-
-        public Vector Center { get; }
-
-        public bool IsFiziks { get; set; }
-
-        public bool IsGravity { get; set; }
-
-        public CollisionState CollisionState { get; set; }
-
-        public int VertexArrayObject { get; }
-
-        public int VertexBufferObject { get; }
-
-        public int IndicesCount { get; }
-
-        public int[] Textures { get; }
-
-
-        public Transform Transform => _transform;
-
-        public Vector Location
-        {
-            get => _transform.Location;
-            set => _transform.Location = value;
-        }
-
-        public Vector Rotation
-        {
-            get => _transform.Rotation;
-            set => _transform.Rotation = value;
-        }
-
-        public Vector Scale
-        {
-            get => _transform.Scale;
-            set => _transform.Scale = value;
-        }
-
-        public Vector LocationVelocity
-        {
-            get => _locationVelocity;
-            set => _locationVelocity = value;
-        }
-
-        public Vector RotationVelocity
-        {
-            get => _rotationVelocity;
-            set => _rotationVelocity = value;
-        }
-
-        public Color Color { get; set; }
-
-        public Matrix4 Model => Transform.Model;
 
         public void Show()
         {

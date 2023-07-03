@@ -32,7 +32,8 @@ namespace Kotono.Graphics.Objects.Lights
             _quadratic = quadratic;
             _shaderIndex = KT.GetPointLightsCount();
 
-            _mesh = KT.CreateMesh(new PointLightMesh(location));
+            _mesh = KT.CreateMesh(new PointLightMesh());
+            _mesh.Location = location;
         }
 
         public void Init() { }

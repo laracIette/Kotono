@@ -1,0 +1,29 @@
+# Kotono Properties File
+
+Color: {
+	A: 1f
+	B: 1f
+	G: 1f
+	R: 1f
+}
+Obj: C:\Users\nicos\Documents\Visual Studio 2022\Projects\Kotono-TestApp\Kotono-TestApp\Assets\Meshes\sphere.obj
+Textures: {
+}
+ShaderType: PointLight
+Transform: {
+	Location: {
+		X: 1f
+		Y: 1f
+		Z: 1f
+	}
+	Rotation: {
+		X: 1f
+		Y: 1f
+		Z: 1f
+	}
+	Scale: {
+		X: 1f
+		Y: 1f
+		Z: 1f
+	}
+}

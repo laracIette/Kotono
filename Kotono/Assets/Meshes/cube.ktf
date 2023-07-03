@@ -6,10 +6,12 @@ Color: {
 	G: 1f
 	R: 1f
 }
-DiffusePath: C:\Users\nicos\Documents\Visual Studio 2022\Projects\Kotono-TestApp\Kotono-TestApp\Assets\Meshes\cube_diff.png
-ID: 0
-ObjPath: C:\Users\nicos\Documents\Visual Studio 2022\Projects\Kotono-TestApp\Kotono-TestApp\Assets\Meshes\cube.obj
-SpecularPath: C:\Users\nicos\Documents\Visual Studio 2022\Projects\Kotono-TestApp\Kotono-TestApp\Assets\Meshes\cube_spec.png
+Obj: C:\Users\nicos\Documents\Visual Studio 2022\Projects\Kotono-TestApp\Kotono-TestApp\Assets\Meshes\cube.obj
+ShaderType: Lighting
+Textures: {
+	Diffuse: C:\Users\nicos\Documents\Visual Studio 2022\Projects\Kotono-TestApp\Kotono-TestApp\Assets\Meshes\cube_diff.png
+	Specular: C:\Users\nicos\Documents\Visual Studio 2022\Projects\Kotono-TestApp\Kotono-TestApp\Assets\Meshes\cube_spec.png
+}
 Transform: {
 	Location: {
 		X: 1f

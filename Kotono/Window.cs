@@ -36,10 +36,6 @@ namespace Kotono
             KT.Init();
 
             Input.Update(KeyboardState, MouseState);
-
-            var prop = Properties.Parse(KT.KotonoPath + @"Assets/Meshes/cube.ktf");
-
-            prop.WriteFile();
         }
 
         protected new void Load()

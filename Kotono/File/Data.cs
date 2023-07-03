@@ -1,11 +1,16 @@
-﻿namespace Kotono.File
+﻿using System;
+
+namespace Kotono.File
 {
     internal class Data
     {
-        public readonly DataDict<string> Strings = new();
-        public readonly DataDict<float> Floats = new();
-        public readonly DataDict<double> Doubles = new();
-        public readonly DataDict<int> Ints = new();
+        internal DataDict<string> Strings { get; } = new();
+        
+        internal DataDict<float> Floats { get; } = new();
+        
+        internal DataDict<double> Doubles { get; } = new();
+        
+        internal DataDict<int> Ints { get; } = new();
 
         internal Data() { }
 
