@@ -62,5 +62,13 @@ namespace Kotono.Graphics.Objects
                 }
             }
         }
+
+        internal void Save()
+        {
+            foreach (var mesh in _meshes)
+            {
+                mesh.WriteData();
+            }
+        }
     }
 }

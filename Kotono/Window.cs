@@ -74,15 +74,16 @@ namespace Kotono
             KT.AddUpdateTime(e.Time);
 
             Input.Update(KeyboardState, MouseState);
-            if (MouseState.IsButtonDown(MouseButton.Left))
+
+            KT.Update();
+
+            if (Input.MouseState!.IsButtonDown(MouseButton.Left))
             {
                 if ((MouseState.X < 0) || (MouseState.X > KT.Width) || (MouseState.Y < 0) || (MouseState.Y > KT.Height))
                 {
                     //MouseState.Position = MouseState.PreviousPosition;
                 }
             }
-
-            KT.Update();
 
             if (Input.KeyboardState!.IsKeyDown(Input.Escape))
             {
@@ -103,6 +104,12 @@ namespace Kotono
                     CursorState.Normal;
                 
                 Input.CursorState = CursorState;
+            }
+
+            if (Input.KeyboardState.IsKeyPressed(Keys.S) && Input.KeyboardState.IsKeyDown(Keys.LeftControl))
+            {
+                KT.Save();
+                KT.Print("saved");
             }
         }
 

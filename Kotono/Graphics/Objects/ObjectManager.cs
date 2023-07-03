@@ -197,5 +197,10 @@ namespace Kotono.Graphics.Objects
             _meshManager.Draw();
             _imageManager.Draw();
         }
+
+        internal void Save()
+        {
+            _meshManager.Save();
+        }
     }
 }

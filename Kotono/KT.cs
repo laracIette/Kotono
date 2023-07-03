@@ -371,6 +371,11 @@ namespace Kotono
             _shaderManager.Update();
         }
 
+        public static void Save()
+        {
+            _objectManager.Save();
+        }
+
         public static void Exit()
         {
             _soundManager.Dispose();

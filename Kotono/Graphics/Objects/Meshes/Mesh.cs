@@ -327,6 +327,28 @@ namespace Kotono.Graphics.Objects.Meshes
             IsDraw = false;
         }
 
+        public void WriteData()
+        {
+            _properties.Floats["Color.R"] = Color.R;
+            _properties.Floats["Color.G"] = Color.G;
+            _properties.Floats["Color.B"] = Color.B;
+            _properties.Floats["Color.A"] = Color.A;
+
+            _properties.Floats["Transform.Location.X"] = Location.X;
+            _properties.Floats["Transform.Location.Y"] = Location.Y;
+            _properties.Floats["Transform.Location.Z"] = Location.Z;
+
+            _properties.Floats["Transform.Rotation.X"] = Rotation.X;
+            _properties.Floats["Transform.Rotation.Y"] = Rotation.Y;
+            _properties.Floats["Transform.Rotation.Z"] = Rotation.Z;
+
+            _properties.Floats["Transform.Scale.X"] = Scale.X;
+            _properties.Floats["Transform.Scale.Y"] = Scale.Y;
+            _properties.Floats["Transform.Scale.Z"] = Scale.Z;
+
+            _properties.WriteFile();
+        }
+
         public void Dispose()
         {
             foreach (var hitbox in _hitboxes)
