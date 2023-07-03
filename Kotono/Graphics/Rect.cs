@@ -28,10 +28,10 @@
 
         public readonly Rect Normalized =>
             new(
-                2 * X / KT.CurrentViewport.W - 1,
-                1 - 2 * Y / KT.CurrentViewport.H,
-                W / KT.CurrentViewport.W * 2,
-                H / KT.CurrentViewport.H * 2
+                2 * X / KT.ActiveViewport.W - 1,
+                1 - 2 * Y / KT.ActiveViewport.H,
+                W / KT.ActiveViewport.W * 2,
+                H / KT.ActiveViewport.H * 2
             );
 
         public static Rect operator +(Rect left, Rect right)

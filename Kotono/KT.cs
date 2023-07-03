@@ -29,7 +29,7 @@ namespace Kotono
         private static readonly ComponentManager _componentManager = new();
 
 
-        public static readonly Viewport CurrentViewport = new();
+        public static readonly Viewport ActiveViewport = new();
 
         #region WindowSize
 
@@ -44,7 +44,9 @@ namespace Kotono
             _windowSize.X = width;
             _windowSize.Y = height;
 
-            GetCamera(0).AspectRatio = 1280f / 720f;
+            ActiveCamera.AspectRatio = 1280f / 720f;
+
+            ActiveViewport.SetSize(width, height);  
         }
 
         #endregion WindowSize

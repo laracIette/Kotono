@@ -49,14 +49,15 @@ namespace Kotono.Graphics
         {
         }
 
+        public void SetSize(float w, float h)
+        {
+            W = w; 
+            H = h;
+        }
+
         public void Use()
         {
             GL.Viewport((int)X, (int)Y, (int)W, (int)H);
-
-            KT.ActiveCamera.AspectRatio = W / H;
-            
-            KT.CurrentViewport.W = W;
-            KT.CurrentViewport.H = H;
         }
     }
 }

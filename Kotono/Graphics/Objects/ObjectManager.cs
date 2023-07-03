@@ -21,7 +21,7 @@ namespace Kotono.Graphics.Objects
 
         private readonly TriangleManager _triangleManager = new();
 
-        private readonly Viewport _viewport = new(0, 0, 1280, 720);
+        //private readonly Viewport _viewport = new(0, 0, 1280, 720);
 
 
         internal ObjectManager() { }
@@ -34,7 +34,7 @@ namespace Kotono.Graphics.Objects
             _pointLightManager.Init();
             _spotLightManager.Init();
             _triangleManager.Init();
-            _viewport.Init();
+            //_viewport.Init();
         }
 
         #region Mesh
@@ -149,34 +149,6 @@ namespace Kotono.Graphics.Objects
             _spotLightManager.Update();
             _imageManager.Update();
             _triangleManager.Update();
-
-            if (Input.KeyboardState!.IsKeyDown(Keys.Up))
-            {
-                _viewport.Dest.Y += 100 * Time.DeltaS;
-            }
-            if (Input.KeyboardState!.IsKeyDown(Keys.Down))
-            {
-                _viewport.Dest.Y -= 100 * Time.DeltaS;
-            }
-            if (Input.KeyboardState!.IsKeyDown(Keys.Left))
-            {
-                _viewport.Dest.X -= 100 * Time.DeltaS;
-            }
-            if (Input.KeyboardState!.IsKeyDown(Keys.Right))
-            {
-                _viewport.Dest.X += 100 * Time.DeltaS;
-            }
-
-            if (Input.KeyboardState!.IsKeyDown(Keys.Minus))
-            {
-                _viewport.Dest.W -= 16 * Time.DeltaS * 5;
-                _viewport.Dest.H -= 9 * Time.DeltaS * 5;
-            }
-            if (Input.KeyboardState!.IsKeyDown(Keys.Equal))
-            {
-                _viewport.Dest.W += 16 * Time.DeltaS * 5;
-                _viewport.Dest.H += 9 * Time.DeltaS * 5;
-            }
         }
 
         internal void UpdateShaders()
@@ -188,7 +160,7 @@ namespace Kotono.Graphics.Objects
 
         internal void Draw()
         {
-            _viewport.Use();
+            KT.ActiveViewport.Use();
 
             _hitboxManager.Draw();
             _pointLightManager.Draw();

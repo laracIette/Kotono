@@ -2,18 +2,18 @@
 
 Color: {
 	A: 1f
-	B: 0.9120836f
-	G: 0.07102403f
-	R: 0.44495034f
+	B: 0.99741226f
+	G: 0.24680763f
+	R: 0.21331811f
 	R: 6.4373016E-06f
 }
 Obj: C:\Users\nicos\Documents\Visual Studio 2022\Projects\Kotono-TestApp\Kotono-TestApp\Assets\Meshes\sphere.obj
 ShaderType: PointLight
 Transform: {
 	Location: {
-		X: 3.9289951f
-		Y: -6.8833456f
-		Z: 4.530365f
+		X: 9.976185f
+		Y: 9.764027f
+		Z: -8.423711f
 	}
 	Rotation: {
 		X: 1f
