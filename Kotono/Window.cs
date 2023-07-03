@@ -1,13 +1,9 @@
-﻿using Kotono.File;
-using Kotono.Graphics;
+﻿using Kotono.Graphics;
 using Kotono.Utils;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
 using OpenTK.Windowing.GraphicsLibraryFramework;
-using System;
-using System.Threading;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Kotono
 {
@@ -49,6 +45,7 @@ namespace Kotono
         {
             base.OnRenderFrame(e);
 
+            // don't render frame if current FrameRate > desired FrameRate
             if (!IsFocused || (KT.GetFrameRate() > KT.MaxFrameRate - 1))
             {
                 _stalledTime += e.Time;
@@ -109,7 +106,7 @@ namespace Kotono
             if (Input.KeyboardState.IsKeyPressed(Keys.S) && Input.KeyboardState.IsKeyDown(Keys.LeftControl))
             {
                 KT.Save();
-                KT.Print("saved");
+                KT.Print("saved", Color.FromHex("#88FF10"));
             }
         }
 

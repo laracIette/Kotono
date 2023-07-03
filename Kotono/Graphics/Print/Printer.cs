@@ -10,15 +10,6 @@ namespace Kotono.Graphics.Print
 
         private int _currentIndex = 0;
 
-        private int CurrentIndex
-        {
-            get
-            {
-                _currentIndex = (_currentIndex + 1) % _texts.Length;
-                return _currentIndex;
-            }
-        }
-
         internal Printer() { }
 
         internal void Init()
@@ -49,7 +40,7 @@ namespace Kotono.Graphics.Print
             }
         }
 
-        internal void Print(string? text)
+        internal void Print(string? text, Color color)
         {
             if (text != null)
             {
@@ -57,7 +48,10 @@ namespace Kotono.Graphics.Print
                 foreach (var token in text.Split('\n').Reverse())
                 {
                     Lower();
-                    _texts[CurrentIndex].SetText(token);
+                    _texts[_currentIndex].SetText(token);
+                    _texts[_currentIndex].Color = color;
+
+                    _currentIndex = (_currentIndex + 1) % _texts.Length;
                 }
             }
         }

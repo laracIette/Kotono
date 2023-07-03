@@ -1,11 +1,12 @@
 ﻿using Kotono.Graphics.Objects;
+using Kotono.Utils;
 
 namespace Kotono.Graphics.Print
 {
     internal class PrinterText : Text
     {
         internal PrinterText(string text)
-            : base(text, new Rect(0f, 0f, 25f, 30f), Location.TopLeft, 2 / 3f) 
+            : base(text, new Rect(0f, 0f, 25f, 30f), Location.TopLeft, Color.White, 2 / 3f) 
         {
         }
 

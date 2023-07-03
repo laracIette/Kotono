@@ -1,4 +1,5 @@
 ﻿using Kotono.Graphics.Objects;
+using Kotono.Utils;
 
 namespace Kotono.Graphics.Performance
 {
@@ -19,7 +20,7 @@ namespace Kotono.Graphics.Performance
             _times = new double[60];
             _timeIndex = 0;
 
-            _text = new Text("0", dest, Location.Center);
+            _text = new Text("0", dest, Location.Center, Color.White);
         }
 
         internal void Init()

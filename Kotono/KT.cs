@@ -285,12 +285,17 @@ namespace Kotono
 
         private static readonly Printer _printer = new();
 
-        public static void Print(object? obj)
+        public static void Print(object? obj, Color color)
         {
             if (obj != null)
             {
-                _printer.Print(obj.ToString());
+                _printer.Print(obj.ToString(), color);
             }
+        }
+
+        public static void Print(object? obj)
+        {
+            Print(obj, Color.White);
         }
 
         public static void Print()

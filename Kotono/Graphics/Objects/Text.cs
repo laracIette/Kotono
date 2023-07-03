@@ -25,6 +25,20 @@ namespace Kotono.Graphics.Objects
 
         private readonly static Dictionary<char, string> _paths = new();
 
+        private Color _color;
+
+        internal Color Color {
+            get => _color;
+            set
+            {
+                _color = value;
+                foreach (var letter in _letters)
+                {
+                    letter.Color = value;
+                }
+            }
+        }
+
         internal static void InitPaths()
         {
             _paths['a'] = KT.KotonoPath + @"Assets\Characters\a.png"; TextureManager.LoadTexture(_paths['a']);
@@ -100,12 +114,13 @@ namespace Kotono.Graphics.Objects
             _paths[':'] = KT.KotonoPath + @"Assets\Characters\colon.png"; TextureManager.LoadTexture(_paths[':']);
         }
 
-        internal Text(string text, Rect dest, Location location, float spacing = 1.0f) 
+        internal Text(string text, Rect dest, Location location, Color color, float spacing = 1.0f) 
         {
             _text = text;
             _dest = dest;
             _location = location;
             _spacing = spacing;
+            Color = color;
         }
 
         internal void Init()
@@ -119,10 +134,9 @@ namespace Kotono.Graphics.Objects
                     path = _paths[' '];
                 }
 
-                var color = Color.White;
                 if (_text[i] == ':')
                 {
-                    color = Color.Red;
+                    Color = Color.Red;
                 }
 
                 switch (_location)
@@ -136,7 +150,7 @@ namespace Kotono.Graphics.Objects
                                 _dest.W,
                                 _dest.H
                             ),
-                            color
+                            Color
                         ));
                         break;
 
@@ -149,7 +163,7 @@ namespace Kotono.Graphics.Objects
                                 _dest.W,
                                 _dest.H
                             ),
-                            color
+                            Color
                         ));
                         break;
 
