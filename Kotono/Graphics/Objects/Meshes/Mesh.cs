@@ -1,6 +1,7 @@
 ﻿using Assimp;
 using Kotono.File;
 using Kotono.Graphics.Objects.Hitboxes;
+using Kotono.Input;
 using Kotono.Physics;
 using Kotono.Utils;
 using OpenTK.Graphics.OpenGL4;
@@ -97,6 +98,11 @@ namespace Kotono.Graphics.Objects.Meshes
             _properties = Properties.Parse(path);
 
             var textureKeys = _properties.Strings.Keys.Where(k => k.StartsWith("Textures")).ToList();
+
+            if (textureKeys.Count > 32)
+            {
+                throw new Exception($"error: maximum number of textures for a Mesh is 32");
+            }
 
             Textures = new int[textureKeys.Count];
             for (int i = 0; i < textureKeys.Count; i++)

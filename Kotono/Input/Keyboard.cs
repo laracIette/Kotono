@@ -1,7 +1,7 @@
 ﻿using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
 
-namespace Kotono.Utils
+namespace Kotono.Input
 {
     public static class Keyboard
     {

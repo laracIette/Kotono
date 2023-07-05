@@ -1,4 +1,5 @@
 ﻿using Kotono.Graphics.Objects.Meshes;
+using Kotono.Input;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 
@@ -69,7 +70,7 @@ namespace Kotono.Utils
                 KT.CreateMesh(mesh);
             }
         }
-        
+
         public void Update()
         {
             if (Mouse.IsButtonPressed(MouseButton.Left) && (Mouse.CursorState == CursorState.Normal))
@@ -80,7 +81,7 @@ namespace Kotono.Utils
             {
                 _selectedMesh = -1;
             }
-            
+
             Location = _attachMesh.Location;
 
             switch (_transformSpace)

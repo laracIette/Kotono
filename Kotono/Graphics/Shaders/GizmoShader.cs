@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Kotono.Graphics.Shaders
+﻿namespace Kotono.Graphics.Shaders
 {
     internal class GizmoShader : Shader
     {

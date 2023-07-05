@@ -1,8 +1,8 @@
-﻿using Kotono.Utils;
+﻿using Kotono.Input;
+using Kotono.Utils;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.GraphicsLibraryFramework;
-using System;
 using Math = Kotono.Utils.Math;
 
 namespace Kotono.Graphics

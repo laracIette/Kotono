@@ -3,8 +3,9 @@ using OpenTK.Windowing.Common;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
 using System.Runtime.InteropServices;
+using Kotono.Utils;
 
-namespace Kotono.Utils
+namespace Kotono.Input
 {
     public static partial class Mouse
     {
