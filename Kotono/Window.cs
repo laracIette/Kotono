@@ -92,7 +92,7 @@ namespace Kotono
 
             if (Keyboard.IsKeyPressed(Keys.Enter))
             {
-                Mouse.CursorState++;
+                Mouse.CursorState = (CursorState)(((int)Mouse.CursorState + 1) % 3);
             }
 
             if (Keyboard.IsKeyPressed(Keys.S) && Keyboard.IsKeyDown(Keys.LeftControl))

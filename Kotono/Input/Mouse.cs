@@ -91,42 +91,31 @@ namespace Kotono.Input
             PreviousPosition = Position;
             Position = GetCursorPos();
 
-            switch (CursorState)
+            if (CursorState == CursorState.Confined)
             {
-                case CursorState.Normal:
-                    break;
-
-                case CursorState.Centered: 
-                    break;
-
-                case CursorState.Confined:
-                    var delta = Point.Zero;
-                    if (Position.X < KT.Dest.X)
-                    {
-                        delta.X += KT.Dest.W;
-                    }
-                    else if (Position.X > (KT.Dest.X + KT.Dest.W))
-                    {
-                        delta.X -= KT.Dest.W;
-                    }
-                    if (Position.Y < KT.Dest.Y)
-                    {
-                        delta.Y += KT.Dest.H;
-                    }
-                    else if (Position.Y > (KT.Dest.Y + KT.Dest.H))
-                    {
-                        delta.Y -= KT.Dest.H;
-                    }
-                    if (delta != Point.Zero)
-                    {
-                        PreviousPosition += delta;
-                        Position += delta;
-                        SetCursorPos(Position);
-                    }
-                    break;
-
-                default:
-                    break;
+                var delta = Point.Zero;
+                if (Position.X < KT.Dest.X)
+                {
+                    delta.X += KT.Dest.W;
+                }
+                else if (Position.X > (KT.Dest.X + KT.Dest.W))
+                {
+                    delta.X -= KT.Dest.W;
+                }
+                if (Position.Y < KT.Dest.Y)
+                {
+                    delta.Y += KT.Dest.H;
+                }
+                else if (Position.Y > (KT.Dest.Y + KT.Dest.H))
+                {
+                    delta.Y -= KT.Dest.H;
+                }
+                if (delta != Point.Zero)
+                {
+                    PreviousPosition += delta;
+                    Position += delta;
+                    SetCursorPos(Position);
+                }
             }
 
             Delta = Position - PreviousPosition;
@@ -139,8 +128,11 @@ namespace Kotono.Input
             if (CursorState == CursorState.Centered)
             {
                 var center = new Point(KT.Dest.X + KT.Dest.W / 2, KT.Dest.Y + KT.Dest.H / 2);
-                SetCursorPos(center);
-                Position = center;
+                if (Position != center)
+                {
+                    SetCursorPos(center);
+                    Position = center;
+                }
             }
         }
 
