@@ -31,8 +31,22 @@
             set => Size.Y = value;
         }
 
+        public readonly Rect Normalized =>
+            new Rect(
+                Position.Normalized,
+                Size.Normalized
+            );
 
         public static Rect Zero => new Rect(0, 0, 0, 0);
+
+        public readonly Rect WorldSpace =>
+            new Rect(
+                2 * X / KT.ActiveViewport.W - 1,
+                1 - 2 * Y / KT.ActiveViewport.H,
+                W / KT.ActiveViewport.W * 2,
+                H / KT.ActiveViewport.H * 2
+            );
+
 
         public Rect()
         {
@@ -40,6 +54,18 @@
             Y = 0;
             W = 0;
             H = 0;
+        }
+
+        public Rect(Rect r)
+        {
+            Position = r.Position; 
+            Size = r.Size;
+        }
+
+        public Rect(Point position, Point size)
+        {
+            Position = position;
+            Size = size;
         }
 
         public Rect(float x = 0, float y = 0, float w = 0, float h = 0)
@@ -50,13 +76,13 @@
             H = h;
         }
 
-        public readonly Rect Normalized =>
-            new Rect(
-                2 * X / KT.ActiveViewport.W - 1,
-                1 - 2 * Y / KT.ActiveViewport.H,
-                W / KT.ActiveViewport.W * 2,
-                H / KT.ActiveViewport.H * 2
-            );
+        public Rect(double x = 0, double y = 0, double w = 0, double h = 0)
+        {
+            X = (float)x;
+            Y = (float)y;
+            W = (float)w;
+            H = (float)h;
+        }
 
         public static Rect operator +(Rect left, Rect right)
         {

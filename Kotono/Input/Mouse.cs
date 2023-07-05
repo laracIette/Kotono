@@ -1,18 +1,25 @@
-﻿using OpenTK.Mathematics;
+﻿using Kotono.Utils;
+using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
 using System.Runtime.InteropServices;
-using Kotono.Utils;
 
 namespace Kotono.Input
 {
+    public enum CursorState
+    {
+        Normal,
+        Centered,
+        Confined
+    }
+
     public static partial class Mouse
     {
-        private struct POINT
+        internal struct POINT
         {
-            public int X;
-            public int Y;
+            internal int X;
+            internal int Y;
         }
 
         [LibraryImport("user32.dll")]
@@ -48,9 +55,9 @@ namespace Kotono.Input
         public static Point Delta { get; private set; } = new();
 
         public static Vector Ray { get; private set; } = Vector.Zero;
-        
+
         private static MouseState? _mouseState;
-        
+
         private static MouseState MouseState
         {
             get
@@ -84,36 +91,57 @@ namespace Kotono.Input
             PreviousPosition = Position;
             Position = GetCursorPos();
 
-            if (IsButtonDown(MouseButton.Left))
+            switch (CursorState)
             {
-                var delta = Point.Zero;
-                if (Position.X < KT.Dest.X)
-                {
-                    delta.X += KT.Dest.W;
-                }
-                else if (Position.X > (KT.Dest.X + KT.Dest.W))
-                {
-                    delta.X -= KT.Dest.W;
-                }
-                if (Position.Y < KT.Dest.Y)
-                {
-                    delta.Y += KT.Dest.H;
-                }
-                else if (Position.Y > (KT.Dest.Y + KT.Dest.H))
-                {
-                    delta.Y -= KT.Dest.H;
-                }
-                if (delta != Point.Zero)
-                {
-                    PreviousPosition += delta;
-                    Position += delta;
-                    SetCursorPos(Position);
-                }
+                case CursorState.Normal:
+                    break;
+
+                case CursorState.Centered: 
+                    break;
+
+                case CursorState.Confined:
+                    var delta = Point.Zero;
+                    if (Position.X < KT.Dest.X)
+                    {
+                        delta.X += KT.Dest.W;
+                    }
+                    else if (Position.X > (KT.Dest.X + KT.Dest.W))
+                    {
+                        delta.X -= KT.Dest.W;
+                    }
+                    if (Position.Y < KT.Dest.Y)
+                    {
+                        delta.Y += KT.Dest.H;
+                    }
+                    else if (Position.Y > (KT.Dest.Y + KT.Dest.H))
+                    {
+                        delta.Y -= KT.Dest.H;
+                    }
+                    if (delta != Point.Zero)
+                    {
+                        PreviousPosition += delta;
+                        Position += delta;
+                        SetCursorPos(Position);
+                    }
+                    break;
+
+                default:
+                    break;
             }
 
             Delta = Position - PreviousPosition;
 
-            UpdateRay();
+            if (Delta != Point.Zero)
+            {
+                UpdateRay();
+            }
+
+            if (CursorState == CursorState.Centered)
+            {
+                var center = new Point(KT.Dest.X + KT.Dest.W / 2, KT.Dest.Y + KT.Dest.H / 2);
+                SetCursorPos(center);
+                Position = center;
+            }
         }
 
         private static void UpdateRay()

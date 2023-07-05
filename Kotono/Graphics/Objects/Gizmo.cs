@@ -1,9 +1,11 @@
 ﻿using Kotono.Graphics.Objects.Meshes;
 using Kotono.Input;
+using Kotono.Utils;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.GraphicsLibraryFramework;
+using CursorState = Kotono.Input.CursorState;
 
-namespace Kotono.Utils
+namespace Kotono.Graphics.Objects
 {
     public enum TransformSpace
     {
@@ -73,11 +75,11 @@ namespace Kotono.Utils
 
         public void Update()
         {
-            if (Mouse.IsButtonPressed(MouseButton.Left) && (Mouse.CursorState == CursorState.Normal))
+            if (Mouse.IsButtonPressed(MouseButton.Left) && (Mouse.CursorState == CursorState.Confined))
             {
                 _selectedMesh = GetSelectedMesh();
             }
-            else if (Mouse.IsButtonReleased(MouseButton.Left) || (Mouse.CursorState == CursorState.Grabbed))
+            else if (Mouse.IsButtonReleased(MouseButton.Left) || (Mouse.CursorState != CursorState.Confined))
             {
                 _selectedMesh = -1;
             }

@@ -38,8 +38,8 @@ namespace Kotono.Graphics.Objects
 
         private Matrix4 Model =>
             Matrix4.Identity
-            * Matrix4.CreateScale(Dest.Normalized.W / 2.0f, Dest.Normalized.H / 2.0f, 1.0f)
-            * Matrix4.CreateTranslation(Dest.Normalized.X, Dest.Normalized.Y, 0.0f);
+            * Matrix4.CreateScale(Dest.WorldSpace.W / 2.0f, Dest.WorldSpace.H / 2.0f, 1.0f)
+            * Matrix4.CreateTranslation(Dest.WorldSpace.X, Dest.WorldSpace.Y, 0.0f);
 
         public bool IsDraw { get; set; } = true;
 

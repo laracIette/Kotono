@@ -56,6 +56,13 @@ namespace Kotono.Utils
             Scale = Vector.Unit;
         }
 
+        public Transform(Transform t) 
+        { 
+            Location = t.Location;
+            Rotation = t.Rotation;
+            Scale = t.Scale;
+        }
+
         public Transform(Vector location, Vector rotation, Vector scale)
         {
             Location = location;

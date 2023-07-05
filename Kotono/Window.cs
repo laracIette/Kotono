@@ -5,6 +5,7 @@ using OpenTK.Graphics.OpenGL4;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
 using OpenTK.Windowing.GraphicsLibraryFramework;
+using CursorState = Kotono.Input.CursorState;
 
 namespace Kotono
 {
@@ -40,8 +41,6 @@ namespace Kotono
 
         protected new void Load()
         {
-            CursorState = CursorState.Normal;
-            Mouse.CursorState = CursorState;
             IsVisible = true;
         }
 
@@ -93,12 +92,7 @@ namespace Kotono
 
             if (Keyboard.IsKeyPressed(Keys.Enter))
             {
-                //CursorState = (CursorState == CursorState.Normal) ?
-                    //CursorState.Grabbed :
-                    //CursorState.Normal;
-
-                //TODO: do we rly need to update
-                Mouse.CursorState = CursorState;
+                Mouse.CursorState++;
             }
 
             if (Keyboard.IsKeyPressed(Keys.S) && Keyboard.IsKeyDown(Keys.LeftControl))

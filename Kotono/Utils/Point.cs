@@ -53,13 +53,13 @@ namespace Kotono.Utils
             Y = (float)f;
         }
 
-        public Point(float x, float y)
+        public Point(float x = 0, float y = 0)
         {
             X = x;
             Y = y;
         }
 
-        public Point(double x, double y)
+        public Point(double x = 0, double y = 0)
         {
             X = (float)x;
             Y = (float)y;

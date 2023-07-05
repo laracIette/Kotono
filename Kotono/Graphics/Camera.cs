@@ -3,6 +3,7 @@ using Kotono.Utils;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.GraphicsLibraryFramework;
+using CursorState = Kotono.Input.CursorState;
 using Math = Kotono.Utils.Math;
 
 namespace Kotono.Graphics
@@ -73,9 +74,9 @@ namespace Kotono.Graphics
 
         private void Move()
         {
-            if (Mouse.CursorState == CursorState.Normal)
+            if (Mouse.CursorState != CursorState.Centered)
             {
-                //return;
+                return;
             }
 
             float sensitivity = 0.2f;
