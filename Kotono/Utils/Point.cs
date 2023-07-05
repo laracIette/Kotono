@@ -65,12 +65,6 @@ namespace Kotono.Utils
             Y = (float)y;
         }
 
-        public Point(int x, int y)
-        {
-            X = x;
-            Y = y;
-        }
-
         public static Point operator +(Point left, Point right)
         {
             left.X += right.X;

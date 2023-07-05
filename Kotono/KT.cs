@@ -52,7 +52,7 @@ namespace Kotono
 
             ActiveCamera.AspectRatio = size.X / size.Y;
 
-            ActiveViewport.SetSize(size);  
+            ActiveViewport.SetSize(size);
         }
 
         #endregion WindowSize
@@ -183,43 +183,69 @@ namespace Kotono
         private static readonly SoundManager _soundManager = new();
 
         public static int CreateSound(string path)
-            => _soundManager.Create(path);
+        {
+            return _soundManager.Create(path);
+        }
 
         public static void DeleteSound(int index)
-            => _soundManager.Delete(index);
+        {
+            _soundManager.Delete(index);
+        }
 
         public static void PlaySound(int index)
-            => _soundManager.Play(index);
+        {
+            _soundManager.Play(index);
+        }
 
         public static bool IsSoundPlaying(int index)
-            => _soundManager.IsPlaying(index);
+        {
+            return _soundManager.IsPlaying(index);
+        }
 
         public static void PauseSound(int index)
-            => _soundManager.Pause(index);
+        {
+            _soundManager.Pause(index);
+        }
 
         public static bool IsSoundPaused(int index)
-            => _soundManager.IsPaused(index);
+        {
+            return _soundManager.IsPaused(index);
+        }
 
         public static void RewindSound(int index)
-            => _soundManager.Rewind(index);
+        {
+            _soundManager.Rewind(index);
+        }
 
         public static void StopSound(int index)
-            => _soundManager.Stop(index);
+        {
+            _soundManager.Stop(index);
+        }
 
         public static bool IsSoundStopped(int index)
-            => _soundManager.IsStopped(index);
+        {
+            return _soundManager.IsStopped(index);
+        }
 
         public static float GetSoundVolume(int index)
-            => _soundManager.GetVolume(index);
+        {
+            return _soundManager.GetVolume(index);
+        }
 
         public static void SetSoundVolume(int index, float volume)
-            => _soundManager.SetVolume(index, volume);
+        {
+            _soundManager.SetVolume(index, volume);
+        }
 
         public static float GetGeneralVolume()
-            => _soundManager.GeneralVolume;
+        {
+            return _soundManager.GeneralVolume;
+        }
 
         public static void SetGeneralVolume(float volume)
-            => _soundManager.GeneralVolume = volume;
+        {
+            _soundManager.GeneralVolume = volume;
+        }
 
         #endregion SoundManager
 
@@ -253,28 +279,28 @@ namespace Kotono
         private static readonly ShaderManager _shaderManager = new();
 
         public static int GetShaderAttribLocation(ShaderType type, string attribName)
-        { 
-            return _shaderManager.GetAttribLocation(type, attribName); 
+        {
+            return _shaderManager.GetAttribLocation(type, attribName);
         }
 
         public static void SetShaderBool(ShaderType type, string name, bool data)
-        { 
-            _shaderManager.SetBool(type, name, data); 
+        {
+            _shaderManager.SetBool(type, name, data);
         }
 
         public static void SetShaderInt(ShaderType type, string name, int data)
-        { 
-            _shaderManager.SetInt(type, name, data); 
+        {
+            _shaderManager.SetInt(type, name, data);
         }
 
         public static void SetShaderFloat(ShaderType type, string name, float data)
-        { 
-            _shaderManager.SetFloat(type, name, data); 
+        {
+            _shaderManager.SetFloat(type, name, data);
         }
 
         public static void SetShaderMatrix4(ShaderType type, string name, Matrix4 data)
-        { 
-            _shaderManager.SetMatrix4(type, name, data); 
+        {
+            _shaderManager.SetMatrix4(type, name, data);
         }
 
         public static void SetShaderVector(ShaderType type, string name, Vector data)
@@ -320,22 +346,34 @@ namespace Kotono
         public static int MaxFrameRate { get; set; } = 60;
 
         internal static void AddFrameTime(double frameTime)
-            => _performanceWindow.AddFrameTime(frameTime);
+        { 
+            _performanceWindow.AddFrameTime(frameTime);
+        }
 
         internal static void AddUpdateTime(double updateTime)
-            => _performanceWindow.AddUpdateTime(updateTime);
+        {
+            _performanceWindow.AddUpdateTime(updateTime);
+        }
 
         public static double GetFrameTime()
-            => _performanceWindow.FrameTime;
+        {
+            return _performanceWindow.FrameTime;
+        }
 
         public static double GetUpdateTime()
-            => _performanceWindow.UpdateTime;
+        {
+            return _performanceWindow.UpdateTime;
+        }
 
         public static double GetFrameRate()
-            => _performanceWindow.FrameRate;
+        {
+            return _performanceWindow.FrameRate;
+        }
 
         public static double GetUpdateRate()
-            => _performanceWindow.UpdateRate;
+        {
+            return _performanceWindow.UpdateRate;
+        }
 
         #endregion PerformanceWindow
 
