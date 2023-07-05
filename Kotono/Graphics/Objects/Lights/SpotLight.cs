@@ -38,7 +38,7 @@ namespace Kotono.Graphics.Objects.Lights
 
         public void Update()
         {
-            if (Input.KeyboardState!.IsKeyPressed(Keys.F))
+            if (Keyboard.IsKeyPressed(Keys.F))
             {
                 _isOn = !_isOn;
             }

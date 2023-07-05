@@ -1,4 +1,5 @@
-﻿using Kotono.Graphics.Objects;
+﻿using OpenTK.Mathematics;
+using OpenTK.Windowing.Common;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
 using System.Runtime.InteropServices;
@@ -38,28 +39,43 @@ namespace Kotono.Utils
             SetCursorPos((int)pos.X, (int)pos.Y);
         }
 
-        private static Point _position = new();
 
-        public static Point Position
+        public static Point Position { get; private set; } = new();
+
+        public static Point PreviousPosition { get; private set; } = new();
+
+        public static Point Delta { get; private set; } = new();
+
+        public static Vector Ray { get; private set; } = Vector.Zero;
+        
+        private static MouseState? _mouseState;
+        
+        private static MouseState MouseState
         {
-            get => _position;
-            private set => _position = value;
+            get
+            {
+                if (_mouseState == null)
+                {
+                    throw new Exception($"error: _mouseState must not be null");
+                }
+                else
+                {
+                    return _mouseState;
+                }
+            }
+            set
+            {
+                _mouseState = value;
+            }
         }
 
-        private static Point _previousPosition = new();
+        public static Vector2 ScrollDelta => MouseState.ScrollDelta;
 
-        public static Point PreviousPosition
+        public static CursorState CursorState { get; set; } = CursorState.Normal;
+
+        public static void Init(MouseState mouseState)
         {
-            get => _previousPosition;
-            private set => _previousPosition = value;
-        }
-
-        private static Point _delta = new();
-
-        public static Point Delta
-        {
-            get => _delta;
-            private set => _delta = value;
+            MouseState = mouseState;
         }
 
         public static void Update()
@@ -67,7 +83,7 @@ namespace Kotono.Utils
             PreviousPosition = Position;
             Position = GetCursorPos();
 
-            if (Input.MouseState!.IsButtonDown(MouseButton.Left))
+            if (IsButtonDown(MouseButton.Left))
             {
                 var delta = Point.Zero;
                 if (Position.X < KT.Dest.X)
@@ -95,6 +111,35 @@ namespace Kotono.Utils
             }
 
             Delta = Position - PreviousPosition;
+
+            UpdateRay();
+        }
+
+        private static void UpdateRay()
+        {
+            var mouse = (Position - KT.Position).WorldSpace;
+
+            Vector4 rayClip = new Vector4(mouse.X, mouse.Y, -1.0f, 1.0f);
+            Vector4 rayView = Matrix4.Invert(KT.ActiveCamera.ProjectionMatrix) * rayClip;
+            rayView.Z = -1.0f; rayView.W = 0.0f;
+            Vector4 rayWorld = KT.ActiveCamera.ViewMatrix * rayView;
+
+            Ray = ((Vector)rayWorld.Xyz).Normalized;
+        }
+
+        public static bool IsButtonDown(MouseButton button)
+        {
+            return MouseState.IsButtonDown(button);
+        }
+
+        public static bool IsButtonPressed(MouseButton button)
+        {
+            return MouseState.IsButtonPressed(button);
+        }
+
+        public static bool IsButtonReleased(MouseButton button)
+        {
+            return MouseState.IsButtonReleased(button);
         }
     }
 }

@@ -306,7 +306,7 @@ namespace Kotono.Graphics.Objects.Meshes
             foreach (var triangle in Triangles)
             {
                 triangle.Transform = Transform;
-                if (Intersection.IntersectRayTriangle(KT.ActiveCamera.Location, Input.GetMouseRay(), triangle, out intersectionPoint, out distance))
+                if (Intersection.IntersectRayTriangle(KT.ActiveCamera.Location, Mouse.Ray, triangle, out intersectionPoint, out distance))
                 {
                     return true;
                 }

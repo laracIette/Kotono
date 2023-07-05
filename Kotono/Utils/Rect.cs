@@ -2,13 +2,35 @@
 {
     public struct Rect
     {
-        public float X;
+        public Point Position;
 
-        public float Y;
+        public Point Size;
 
-        public float W;
+        public float X
+        { 
+            readonly get => Position.X;
+            set => Position.X = value;
+        }
 
-        public float H;
+
+        public float Y
+        {
+            readonly get => Position.Y;
+            set => Position.Y = value;
+        }
+
+        public float W
+        {
+            readonly get => Size.X;
+            set => Size.X = value;
+        }
+
+        public float H
+        {
+            readonly get => Size.Y;
+            set => Size.Y = value;
+        }
+
 
         public static Rect Zero => new Rect(0, 0, 0, 0);
 

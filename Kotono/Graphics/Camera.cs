@@ -25,7 +25,7 @@ namespace Kotono.Graphics
 
         public Vector Location { get; private set; } = Vector.Zero;
 
-        public float AspectRatio { private get; set; }
+        public float AspectRatio { private get; set; } = 16f / 9f;
 
         public float Pitch
         {
@@ -73,7 +73,7 @@ namespace Kotono.Graphics
 
         private void Move()
         {
-            if (Input.CursorState == CursorState.Normal)
+            if (Mouse.CursorState == CursorState.Normal)
             {
                 //return;
             }
@@ -82,33 +82,33 @@ namespace Kotono.Graphics
 
             Yaw += Mouse.Delta.X * sensitivity;
             Pitch -= Mouse.Delta.Y * sensitivity;
-            _speed += Input.MouseState!.ScrollDelta.Y * _speed / 10;
+            _speed += Mouse.ScrollDelta.Y * _speed / 10;
             _speed = Math.Clamp(_speed, 0.1, 100);
 
-            float fast = Input.KeyboardState!.IsKeyDown(Keys.LeftShift) ? 2.0f : 1.0f;
-            float slow = Input.KeyboardState.IsKeyDown(Keys.LeftControl) ? 0.5f : 1.0f;
+            float fast = Keyboard.IsKeyDown(Keys.LeftShift) ? 2.0f : 1.0f;
+            float slow = Keyboard.IsKeyDown(Keys.LeftControl) ? 0.5f : 1.0f;
 
-            if (Input.KeyboardState.IsKeyDown(Keys.W))
+            if (Keyboard.IsKeyDown(Keys.W))
             {
                 Location += Front * _speed * fast * slow * Time.DeltaS; // Forward
             }
-            if (Input.KeyboardState.IsKeyDown(Keys.S))
+            if (Keyboard.IsKeyDown(Keys.S))
             {
                 Location -= Front * _speed * fast * slow * Time.DeltaS; // Backwards
             }
-            if (Input.KeyboardState.IsKeyDown(Keys.A))
+            if (Keyboard.IsKeyDown(Keys.A))
             {
                 Location -= Right * _speed * fast * slow * Time.DeltaS; // Left
             }
-            if (Input.KeyboardState.IsKeyDown(Keys.D))
+            if (Keyboard.IsKeyDown(Keys.D))
             {
                 Location += Right * _speed * fast * slow * Time.DeltaS; // Right
             }
-            if (Input.KeyboardState.IsKeyDown(Keys.E))
+            if (Keyboard.IsKeyDown(Keys.E))
             {
                 Location += Up * _speed * fast * slow * Time.DeltaS; // Up
             }
-            if (Input.KeyboardState.IsKeyDown(Keys.Q))
+            if (Keyboard.IsKeyDown(Keys.Q))
             {
                 Location -= Up * _speed * fast * slow * Time.DeltaS; // Down
             }

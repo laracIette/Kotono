@@ -37,20 +37,22 @@ namespace Kotono
 
         public static Rect Dest => _windowDest;
 
-        public static void SetWindowPosition(float x, float y)
+        public static Point Position => _windowDest.Position;
+
+        public static Point Size => _windowDest.Size;
+
+        public static void SetWindowPosition(Point position)
         {
-            _windowDest.X = x;
-            _windowDest.Y = y;
+            _windowDest.Position = position;
         }
 
-        public static void SetWindowSize(float width, float height)
+        public static void SetWindowSize(Point size)
         {
-            _windowDest.W = width;
-            _windowDest.H = height;
+            _windowDest.Size = size;
 
-            ActiveCamera.AspectRatio = width / height;
+            ActiveCamera.AspectRatio = size.X / size.Y;
 
-            ActiveViewport.SetSize(width, height);  
+            ActiveViewport.SetSize(size);  
         }
 
         #endregion WindowSize

@@ -72,11 +72,11 @@ namespace Kotono.Utils
         
         public void Update()
         {
-            if (Input.MouseState!.IsButtonPressed(MouseButton.Left) && (Input.CursorState == CursorState.Normal))
+            if (Mouse.IsButtonPressed(MouseButton.Left) && (Mouse.CursorState == CursorState.Normal))
             {
                 _selectedMesh = GetSelectedMesh();
             }
-            else if (Input.MouseState.IsButtonReleased(MouseButton.Left) || (Input.CursorState == CursorState.Grabbed))
+            else if (Mouse.IsButtonReleased(MouseButton.Left) || (Mouse.CursorState == CursorState.Grabbed))
             {
                 _selectedMesh = -1;
             }

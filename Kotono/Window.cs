@@ -4,6 +4,7 @@ using OpenTK.Graphics.OpenGL4;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
 using OpenTK.Windowing.GraphicsLibraryFramework;
+using System;
 
 namespace Kotono
 {
@@ -28,18 +29,19 @@ namespace Kotono
 
             KT.CreateCamera(new Camera());
 
-            KT.SetWindowPosition(Location.X, Location.Y);
-            KT.SetWindowSize(Size.X, Size.Y);
+            KT.SetWindowPosition((Point)Location);
+            KT.SetWindowSize((Point)Size);
 
             KT.Init();
 
-            Input.Update(KeyboardState, MouseState);
+            Mouse.Init(MouseState);
+            Keyboard.Init(KeyboardState);
         }
 
         protected new void Load()
         {
             CursorState = CursorState.Normal;
-            Input.CursorState = CursorState;
+            Mouse.CursorState = CursorState;
             IsVisible = true;
         }
 
@@ -72,34 +74,34 @@ namespace Kotono
 
             KT.AddUpdateTime(e.Time);
 
-            Input.Update(KeyboardState, MouseState);
-
             Mouse.Update();
+            Keyboard.Update();
 
             KT.Update();
 
-            if (KeyboardState.IsKeyDown(Input.Escape))
+            if (Keyboard.IsKeyDown(Keys.Escape))
             {
                 base.Close();
             }
 
-            if (KeyboardState.IsKeyPressed(Input.Fullscreen))
+            if (Keyboard.IsKeyPressed(Keys.F11))
             {
                 WindowState = (WindowState == WindowState.Normal) ?
                     WindowState.Fullscreen :
                     WindowState.Normal;
             }
 
-            if (KeyboardState.IsKeyPressed(Input.GrabMouse))
+            if (Keyboard.IsKeyPressed(Keys.Enter))
             {
                 //CursorState = (CursorState == CursorState.Normal) ?
                     //CursorState.Grabbed :
                     //CursorState.Normal;
 
-                Input.CursorState = CursorState;
+                //TODO: do we rly need to update
+                Mouse.CursorState = CursorState;
             }
 
-            if (KeyboardState.IsKeyPressed(Keys.S) && KeyboardState.IsKeyDown(Keys.LeftControl))
+            if (Keyboard.IsKeyPressed(Keys.S) && Keyboard.IsKeyDown(Keys.LeftControl))
             {
                 KT.Save();
                 KT.Print("saved", Color.FromHex("#88FF10"));
@@ -110,23 +112,15 @@ namespace Kotono
         {
             base.OnResize(e);
 
-            KT.SetWindowPosition(Location.X, Location.Y);
-            KT.SetWindowSize(Size.X, Size.Y);
+            KT.SetWindowPosition((Point)Location);
+            KT.SetWindowSize((Point)Size);
         }
-        bool first = true;
+
         protected override void OnMove(WindowPositionEventArgs e)
         {
             base.OnMove(e);
 
-            KT.SetWindowPosition(Location.X, Location.Y);
-            if (first)
-            {
-                first = false;
-            }
-            else
-            {
-                KT.Print(Location);
-            }
+            KT.SetWindowPosition((Point)Location);
         }
 
         protected override void OnUnload()

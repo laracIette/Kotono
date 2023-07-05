@@ -50,10 +50,9 @@ namespace Kotono.Graphics
         {
         }
 
-        public void SetSize(float w, float h)
+        public void SetSize(Point size)
         {
-            W = w; 
-            H = h;
+            Dest.Size = size;
         }
 
         public void Use()

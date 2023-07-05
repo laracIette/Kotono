@@ -11,6 +11,8 @@ namespace Kotono.Utils
 
         public readonly float Length => MathF.Sqrt(X * X + Y * Y);
 
+        public readonly Point Normalized => this / Length;
+
         public static Point Zero => new Point(0, 0);
 
         public static Point Unit => new Point(1, 1);
@@ -21,7 +23,7 @@ namespace Kotono.Utils
 
         public const int SizeInBytes = sizeof(float) * 2;
 
-        public readonly Point Normalized =>
+        public readonly Point WorldSpace =>
             new Point(
                 2 * X / KT.ActiveViewport.W - 1,
                 1 - 2 * Y / KT.ActiveViewport.H
@@ -90,6 +92,20 @@ namespace Kotono.Utils
             return p;
         }
 
+        public static Point operator /(Point left, Point right)
+        {
+            left.X /= right.X;
+            left.Y /= right.Y;
+            return left;
+        }
+
+        public static Point operator /(Point p, float f)
+        {
+            p.X /= f;
+            p.Y /= f;
+            return p;
+        }
+
         public static bool operator ==(Point left, Point right)
         {
             return (left.X == right.X) && (left.Y == right.Y);
@@ -106,6 +122,16 @@ namespace Kotono.Utils
         }
 
         public static explicit operator Point(Vector2 v)
+        {
+            return new Point(v.X, v.Y);
+        }
+
+        public static explicit operator Vector2i(Point v)
+        {
+            return new Vector2i((int)v.X, (int)v.Y);
+        }
+
+        public static explicit operator Point(Vector2i v)
         {
             return new Point(v.X, v.Y);
         }
