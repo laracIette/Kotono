@@ -12,13 +12,21 @@ namespace Kotono.File
 
         private readonly Data _data;
 
-        internal DataDict<string> Strings => _data.Strings;
-        
-        internal DataDict<float> Floats => _data.Floats;
-        
-        internal DataDict<double> Doubles => _data.Doubles;
-        
-        internal DataDict<int> Ints => _data.Ints;
+        //internal DataDict<string> Strings => _data.Strings;
+
+        //internal DataDict<float> Floats => _data.Floats;
+
+        //internal DataDict<double> Doubles => _data.Doubles;
+
+        //internal DataDict<int> Ints => _data.Ints;
+
+        internal Dictionary<string, string> Strings => _data.Strings;
+
+        internal Dictionary<string, float> Floats => _data.Floats;
+
+        internal Dictionary<string, double> Doubles => _data.Doubles;
+
+        internal Dictionary<string, int> Ints => _data.Ints;
 
         internal Properties(string path, Data data)
         {

@@ -27,11 +27,7 @@ namespace Kotono.Utils
 
         public static Vector GetMouseRay()
         {
-            var mouse = new Rect
-            {
-                X = MouseState!.Position.X,
-                Y = MouseState.Position.Y,
-            }.Normalized;
+            var mouse = ((Point)MouseState!.Position).Normalized;
 
             Vector4 rayClip = new Vector4(mouse.X, mouse.Y, -1.0f, 1.0f);
             Vector4 rayView = Matrix4.Invert(KT.ActiveCamera.ProjectionMatrix) * rayClip;

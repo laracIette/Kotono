@@ -1,4 +1,4 @@
-﻿namespace Kotono.Graphics
+﻿namespace Kotono.Utils
 {
     public struct Rect
     {
@@ -10,15 +10,17 @@
 
         public float H;
 
-        public Rect() 
-        { 
+        public static Rect Zero => new Rect(0, 0, 0, 0);
+
+        public Rect()
+        {
             X = 0;
             Y = 0;
             W = 0;
             H = 0;
         }
 
-        public Rect(float x = 0, float y = 0, float w = 0, float h = 0) 
+        public Rect(float x = 0, float y = 0, float w = 0, float h = 0)
         {
             X = x;
             Y = y;
@@ -27,7 +29,7 @@
         }
 
         public readonly Rect Normalized =>
-            new(
+            new Rect(
                 2 * X / KT.ActiveViewport.W - 1,
                 1 - 2 * Y / KT.ActiveViewport.H,
                 W / KT.ActiveViewport.W * 2,
@@ -100,7 +102,7 @@
 
         public static bool operator ==(Rect left, Rect right)
         {
-            return (left.X == right.X) && (left.Y == right.Y) && (left.W == right.W) && (left.H == right.H);
+            return left.X == right.X && left.Y == right.Y && left.W == right.W && left.H == right.H;
         }
 
         public static bool operator !=(Rect left, Rect right)

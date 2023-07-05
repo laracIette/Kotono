@@ -104,12 +104,14 @@ namespace Kotono.Utils
 
         private Vector GetMovement()
         {
+            float speed = 0.01f;
+
             return _selectedMesh switch
             {
-                0 => Transform.Right * Input.MouseState!.Delta.X * .01f,
-                1 => Transform.Up * -Input.MouseState!.Delta.Y * .01f,
-                2 => Transform.Forward * Input.MouseState!.Delta.X * .01f,
-                3 => (Transform.Right * Input.MouseState!.Delta.X + Transform.Up * -Input.MouseState!.Delta.Y) * .01f,
+                0 => Transform.Right * Mouse.Delta.X * speed,
+                1 => Transform.Up * -Mouse.Delta.Y * speed,
+                2 => Transform.Forward * Mouse.Delta.X * speed,
+                3 => (Transform.Right * Mouse.Delta.X + Transform.Up * -Mouse.Delta.Y) * speed,
                 _ => Vector.Zero
             };
         }

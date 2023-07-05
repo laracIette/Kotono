@@ -1,4 +1,5 @@
-﻿using OpenTK.Graphics.OpenGL4;
+﻿using Kotono.Utils;
+using OpenTK.Graphics.OpenGL4;
 using System.Collections.Generic;
 
 namespace Kotono.Graphics

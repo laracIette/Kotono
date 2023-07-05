@@ -2,7 +2,7 @@
 {
     public static class Math
     {
-        public const float PI = 3.1415927f;
+        public const float PI = (float)MathD.PI;
 
         /// <summary> Converts degrees to radians </summary>
         public static float Rad(double degrees)
@@ -39,6 +39,11 @@
         public static float Clamp(double value, double min, double max)
         {
             return (float)MathD.Clamp(value, min, max);
+        }
+
+        public static float Lerp(double start, double end, double interpolation)
+        {
+            return (float)MathD.Lerp(start, end, interpolation);
         }
     }
 }

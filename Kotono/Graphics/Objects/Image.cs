@@ -84,7 +84,7 @@ namespace Kotono.Graphics.Objects
 
             // check if Image is out of screen bounds
             Show();
-            if (((Dest.X + Dest.W) < 0) || (Dest.X > KT.Width) || ((Dest.Y + Dest.H) < 0) || (Dest.Y > KT.Height))
+            if (((Dest.X + Dest.W) < 0) || (Dest.X > KT.Dest.W) || ((Dest.Y + Dest.H) < 0) || (Dest.Y > KT.Dest.H))
             {
                 Hide();
             }

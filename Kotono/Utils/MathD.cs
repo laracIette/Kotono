@@ -44,5 +44,10 @@
         {
             return System.Math.Clamp(value, min, max);
         }
+
+        public static double Lerp(double start, double end, double interpolation)
+        {
+            return start + (end - start) * interpolation;
+        }
     }
 }

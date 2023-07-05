@@ -9,9 +9,9 @@ namespace Kotono.Graphics.Objects
 
         internal Vector Normal { get; set; }
 
-        internal Vector2 TexCoord { get; set; }
+        internal Point TexCoord { get; set; }
 
-        internal Vertex(Vector location, Vector normal, Vector2 texCoord)
+        internal Vertex(Vector location, Vector normal, Point texCoord)
         {
             Location = location;
             Normal = normal;

@@ -33,18 +33,22 @@ namespace Kotono
 
         #region WindowSize
 
-        private static Vector2 _windowSize = new(0.0f);
+        private static Rect _windowDest = Rect.Zero;
 
-        public static float Width => _windowSize.X;
+        public static Rect Dest => _windowDest;
 
-        public static float Height => _windowSize.Y;
+        public static void SetWindowPosition(float x, float y)
+        {
+            _windowDest.X = x;
+            _windowDest.Y = y;
+        }
 
         public static void SetWindowSize(float width, float height)
         {
-            _windowSize.X = width;
-            _windowSize.Y = height;
+            _windowDest.W = width;
+            _windowDest.H = height;
 
-            ActiveCamera.AspectRatio = 1280f / 720f;
+            ActiveCamera.AspectRatio = width / height;
 
             ActiveViewport.SetSize(width, height);  
         }

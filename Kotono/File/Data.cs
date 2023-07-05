@@ -1,16 +1,24 @@
-﻿using System;
+﻿using System.Collections.Generic;
 
 namespace Kotono.File
 {
     internal class Data
     {
-        internal DataDict<string> Strings { get; } = new();
+        //internal DataDict<string> Strings { get; } = new();
         
-        internal DataDict<float> Floats { get; } = new();
+        //internal DataDict<float> Floats { get; } = new();
         
-        internal DataDict<double> Doubles { get; } = new();
+        //internal DataDict<double> Doubles { get; } = new();
         
-        internal DataDict<int> Ints { get; } = new();
+        //internal DataDict<int> Ints { get; } = new();
+
+        internal Dictionary<string, string> Strings { get; } = new();
+
+        internal Dictionary<string, float> Floats { get; } = new();
+
+        internal Dictionary<string, double> Doubles { get; } = new();
+
+        internal Dictionary<string, int> Ints { get; } = new();
 
         internal Data() { }
 
@@ -18,21 +26,21 @@ namespace Kotono.File
         {
             string result = "";
 
-            foreach (var key in Strings.Keys)
+            foreach (var pair in Strings)
             {
-                result += $"{key}: {Strings[key]}\n";
+                result += $"{pair.Key}: {pair.Value}\n";
             }
-            foreach (var key in Floats.Keys)
+            foreach (var pair in Floats)
             {
-                result += $"{key}: {Floats[key]}f\n";
+                result += $"{pair.Key}: {pair.Value}f\n";
             }
-            foreach (var key in Doubles.Keys)
+            foreach (var pair in Doubles)
             {
-                result += $"{key}: {Doubles[key]}\n";
+                result += $"{pair.Key}: {pair.Value}\n";
             }
-            foreach (var key in Ints.Keys)
+            foreach (var pair in Ints)
             {
-                result += $"{key}: {Ints[key]}\n";
+                result += $"{pair.Key}: {pair.Value}\n";
             }
 
             return result;

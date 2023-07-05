@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kotono", "Kotono\Kotono.csproj", "{DA470AD5-3E89-45B2-A2CA-B0A31C074D65}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kotono-TestApp", "..\Kotono-TestApp\Kotono-TestApp\Kotono-TestApp.csproj", "{4596ADC5-1EED-48B2-BAB8-484572BF08BD}"
+	ProjectSection(ProjectDependencies) = postProject
+		{DA470AD5-3E89-45B2-A2CA-B0A31C074D65} = {DA470AD5-3E89-45B2-A2CA-B0A31C074D65}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1A0FA9AD-4073-4BDF-A312-A4349AB86C50}"
 	ProjectSection(SolutionItems) = preProject

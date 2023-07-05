@@ -75,14 +75,14 @@ namespace Kotono.Graphics
         {
             if (Input.CursorState == CursorState.Normal)
             {
-                return;
+                //return;
             }
 
             float sensitivity = 0.2f;
 
-            Yaw += Input.MouseState!.Delta.X * sensitivity;
-            Pitch -= Input.MouseState.Delta.Y * sensitivity;
-            _speed += Input.MouseState.ScrollDelta.Y * _speed / 10;
+            Yaw += Mouse.Delta.X * sensitivity;
+            Pitch -= Mouse.Delta.Y * sensitivity;
+            _speed += Input.MouseState!.ScrollDelta.Y * _speed / 10;
             _speed = Math.Clamp(_speed, 0.1, 100);
 
             float fast = Input.KeyboardState!.IsKeyDown(Keys.LeftShift) ? 2.0f : 1.0f;
