@@ -43,7 +43,7 @@ namespace Kotono.Graphics.Objects
 
         public Matrix4 Model => Transform.Model;
 
-        public bool IsDraw = true;
+        public bool IsDraw { get; private set; } = true;
 
         private int _vertexArrayObject;
 

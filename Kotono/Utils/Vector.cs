@@ -247,6 +247,11 @@ namespace Kotono.Utils
             return new Vector(v.X, v.Y, v.Z);
         }
 
+        public static explicit operator Vector(float f)
+        {
+            return new Vector(f, f, f);
+        }
+
         public override readonly string ToString()
         {
             return $"X: {X}, Y: {Y}, Z: {Z}";

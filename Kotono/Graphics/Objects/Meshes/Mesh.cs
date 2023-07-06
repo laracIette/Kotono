@@ -27,7 +27,7 @@ namespace Kotono.Graphics.Objects.Meshes
 
         protected readonly ShaderType _shaderType;
 
-        public bool IsDraw = true;
+        public bool IsDraw { get; private set; } = true;
 
         public bool IsInFront = false;
 
@@ -43,7 +43,7 @@ namespace Kotono.Graphics.Objects.Meshes
 
         public CollisionState CollisionState { get; set; }
 
-        public int VertexArrayObject { get; }
+        public int VertexArrayObject { get; set; }
 
         public int VertexBufferObject { get; }
 
@@ -258,6 +258,7 @@ namespace Kotono.Graphics.Objects.Meshes
             Vertices = _paths[_properties.Strings["Obj"]].Item3;
             Triangles = _paths[_properties.Strings["Obj"]].Item4;
         }
+
 
         public virtual void Init() { }
 

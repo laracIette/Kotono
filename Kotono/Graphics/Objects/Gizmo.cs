@@ -1,7 +1,6 @@
 ﻿using Kotono.Graphics.Objects.Meshes;
 using Kotono.Input;
 using Kotono.Utils;
-using OpenTK.Windowing.Common;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using CursorState = Kotono.Input.CursorState;
 
@@ -49,7 +48,20 @@ namespace Kotono.Graphics.Objects
             }
         }
 
-        public bool IsDraw = true;
+        public Vector Scale
+        {
+            get => _transform.Scale;
+            set
+            {
+                _transform.Scale = value;
+                foreach (var mesh in _meshes)
+                {
+                    mesh.Scale = value;
+                }
+            }
+        }
+
+        public bool IsDraw { get; private set; } = true;
 
         private int _selectedMesh = -1;
 
@@ -103,6 +115,8 @@ namespace Kotono.Graphics.Objects
             Location += GetMovement();
 
             _attachMesh.Location = Location;
+
+            Scale = (Vector)(Vector.Distance(Location, KT.ActiveCamera.Location) / 75);
         }
 
         private Vector GetMovement()

@@ -73,9 +73,6 @@ namespace Kotono
 
             KT.AddUpdateTime(e.Time);
 
-            Mouse.Update();
-            Keyboard.Update();
-
             KT.Update();
 
             if (Keyboard.IsKeyDown(Keys.Escape))

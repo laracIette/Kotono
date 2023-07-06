@@ -5,6 +5,7 @@ using Kotono.Graphics.Objects.Hitboxes;
 using Kotono.Graphics.Objects.Lights;
 using Kotono.Graphics.Objects.Meshes;
 using Kotono.Graphics.Print;
+using Kotono.Input;
 using Kotono.Physics;
 using Kotono.Utils;
 using OpenTK.Mathematics;
@@ -400,6 +401,8 @@ namespace Kotono
         public static void Update()
         {
             Time.Update();
+            Mouse.Update();
+            Keyboard.Update();
             _gizmo.Update();
             _objectManager.Update();
             _componentManager.Update();

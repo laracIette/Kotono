@@ -79,7 +79,7 @@ namespace Kotono.Input
 
         public static Vector2 ScrollDelta => MouseState.ScrollDelta;
 
-        public static CursorState CursorState { get; set; } = CursorState.Normal;
+        public static CursorState CursorState { get; set; } = CursorState.Centered;
 
         public static void Init(MouseState mouseState)
         {

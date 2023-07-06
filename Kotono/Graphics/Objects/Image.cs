@@ -41,7 +41,7 @@ namespace Kotono.Graphics.Objects
             * Matrix4.CreateScale(Dest.WorldSpace.W / 2.0f, Dest.WorldSpace.H / 2.0f, 1.0f)
             * Matrix4.CreateTranslation(Dest.WorldSpace.X, Dest.WorldSpace.Y, 0.0f);
 
-        public bool IsDraw { get; set; } = true;
+        public bool IsDraw { get; private set; } = true;
 
         public Image(string path, Rect dest, Color color)
         {
