@@ -16,7 +16,7 @@ namespace Kotono.Graphics.Objects
     {
         private GizmoMesh[] _meshes = new GizmoMesh[4];
 
-        private Mesh _attachMesh;
+        private Mesh? _attachMesh = null;
 
         private Transform _transform;
 
@@ -78,15 +78,15 @@ namespace Kotono.Graphics.Objects
                 new GizmoMesh("z"),
                 new GizmoMesh("sphere")
             };
-
-            foreach (var mesh in _meshes)
-            {
-                KT.CreateMesh(mesh);
-            }
         }
 
         public void Update()
         {
+            if (_attachMesh == null)
+            {
+                return;
+            }
+
             if (Mouse.IsButtonPressed(MouseButton.Left) && (Mouse.CursorState == CursorState.Confined))
             {
                 _selectedMesh = GetSelectedMesh();
@@ -157,6 +157,11 @@ namespace Kotono.Graphics.Objects
         public void AttachTo(Mesh mesh)
         {
             _attachMesh = mesh;
+        }
+
+        public void Detach()
+        {
+            _attachMesh = null;
         }
 
         public void Show()

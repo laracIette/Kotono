@@ -14,7 +14,7 @@ Textures: {
 }
 Transform: {
 	Location: {
-		X: -3.639991f
+		X: 4.1699395f
 		Y: 1.94f
 		Z: -5.0800114f
 	}
@@ -24,8 +24,8 @@ Transform: {
 		Z: 0f
 	}
 	Scale: {
-		X: 0.1f
-		Y: 0.1f
-		Z: 0.1f
+		X: 0.09136838f
+		Y: 0.09136838f
+		Z: 0.09136838f
 	}
 }

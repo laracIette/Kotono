@@ -4,6 +4,7 @@ using Kotono.Graphics.Objects.Hitboxes;
 using Kotono.Input;
 using Kotono.Physics;
 using Kotono.Utils;
+using NAudio.Wave;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using System;
@@ -257,6 +258,8 @@ namespace Kotono.Graphics.Objects.Meshes
             Center = _paths[_properties.Strings["Obj"]].Item2;
             Vertices = _paths[_properties.Strings["Obj"]].Item3;
             Triangles = _paths[_properties.Strings["Obj"]].Item4;
+
+            KT.CreateMesh(this);
         }
 
 
