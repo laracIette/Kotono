@@ -14,18 +14,18 @@ Textures: {
 }
 Transform: {
 	Location: {
-		X: 4.1699395f
-		Y: 1.94f
-		Z: -5.0800114f
+		X: 0f
+		Y: -1f
+		Z: 0f
 	}
 	Rotation: {
-		X: 1f
-		Y: 1f
-		Z: 1f
+		X: 0f
+		Y: 0f
+		Z: 0f
 	}
 	Scale: {
-		X: 1f
+		X: 10f
 		Y: 1f
-		Z: 1f
+		Z: 10f
 	}
 }

@@ -19,21 +19,21 @@ namespace Kotono.File
         {
             string result = "";
 
-            foreach (var pair in Strings)
+            foreach ((var key, var value) in Strings)
             {
-                result += $"{pair.Key}: {pair.Value}\n";
+                result += $"{key}: {value}\n";
             }
-            foreach (var pair in Floats)
+            foreach ((var key, var value) in Floats)
             {
-                result += $"{pair.Key}: {pair.Value}f\n";
+                result += $"{key}: {value}f\n";
             }
-            foreach (var pair in Doubles)
+            foreach ((var key, var value) in Doubles)
             {
-                result += $"{pair.Key}: {pair.Value}\n";
+                result += $"{key}: {value}\n";
             }
-            foreach (var pair in Ints)
+            foreach ((var key, var value) in Ints)
             {
-                result += $"{pair.Key}: {pair.Value}\n";
+                result += $"{key}: {value}\n";
             }
 
             return result;
