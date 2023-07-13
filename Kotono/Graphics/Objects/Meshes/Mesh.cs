@@ -4,12 +4,12 @@ using Kotono.Graphics.Objects.Hitboxes;
 using Kotono.Input;
 using Kotono.Physics;
 using Kotono.Utils;
-using NAudio.Wave;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Math = Kotono.Utils.Math;
 using PrimitiveType = OpenTK.Graphics.OpenGL4.PrimitiveType;
 
 namespace Kotono.Graphics.Objects.Meshes
@@ -30,7 +30,7 @@ namespace Kotono.Graphics.Objects.Meshes
 
         public bool IsDraw { get; private set; } = true;
 
-        public bool IsInFront = false;
+        public bool IsInFront { get; set; } = false;
 
         public Triangle[] Triangles { get; }
 
@@ -38,9 +38,9 @@ namespace Kotono.Graphics.Objects.Meshes
 
         public Vector Center { get; }
 
-        public bool IsFiziks { get; set; }
+        public bool IsFiziks { get; set; } = false;
 
-        public bool IsGravity { get; set; }
+        public bool IsGravity { get; set; } = false;
 
         public CollisionState CollisionState { get; set; }
 
@@ -62,8 +62,8 @@ namespace Kotono.Graphics.Objects.Meshes
 
         public Vector Rotation
         {
-            get => _transform.Rotation;
-            set => _transform.Rotation = value;
+            get => Vector.Deg(_transform.Rotation);
+            set => _transform.Rotation = Vector.Rad(value);
         }
 
         public Vector Scale
@@ -80,8 +80,8 @@ namespace Kotono.Graphics.Objects.Meshes
 
         public Vector RotationVelocity
         {
-            get => _rotationVelocity;
-            set => _rotationVelocity = value;
+            get => Vector.Deg(_rotationVelocity);
+            set => _rotationVelocity = Vector.Rad(value);
         }
 
         public Color Color { get; set; }
@@ -271,12 +271,12 @@ namespace Kotono.Graphics.Objects.Meshes
 
             if (IsGravity)
             {
-                tempLoc += Fiziks.Gravity * Time.DeltaS;
+                tempLoc += Fizix.Gravity * Time.DeltaS;
             }
 
             if (IsFiziks)
             {
-                Fiziks.Update(this);
+                Fizix.Update(this);
             }
 
             foreach (var hitbox in _hitboxes)

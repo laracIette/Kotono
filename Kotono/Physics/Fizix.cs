@@ -12,9 +12,9 @@ namespace Kotono.Physics
         BlockSelection
     }
 
-    public sealed class Fiziks
+    public sealed class Fizix
     {
-        private Fiziks() { }
+        private Fizix() { }
 
         public static Vector Gravity { get; set; }
 
@@ -44,7 +44,7 @@ namespace Kotono.Physics
                 float roll = Math.Rad(mesh.Rotation.X);
                 float pitch = Math.Rad(mesh.Rotation.Y);
                 float yaw = Math.Rad(mesh.Rotation.Z);
-                MathHelper.RadiansToDegrees(roll);
+                
                 var up = new Vector
                 {
                     X = Math.Cos(roll) * Math.Sin(pitch),

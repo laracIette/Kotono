@@ -1,4 +1,5 @@
 ﻿using Kotono.Audio;
+using Kotono.Engine;
 using Kotono.Graphics;
 using Kotono.Graphics.Objects;
 using Kotono.Graphics.Objects.Hitboxes;
@@ -386,6 +387,14 @@ namespace Kotono
 
         #endregion Gizmo
 
+        #region UserMode
+
+        private static readonly Mode _mode = new();
+
+        public static UserMode UserMode => _mode.UserMode;
+
+        #endregion UserMode
+
         public static void Init()
         {
             _shaderManager.Init();
@@ -395,7 +404,8 @@ namespace Kotono
             _printer.Init();
             _performanceWindow.Init();
             _componentManager.Init();
-            Fiziks.Init();
+            Fizix.Init();
+            _mode.Init();
         }
 
         public static void Update()
@@ -409,6 +419,7 @@ namespace Kotono
             _cameraManager.Update();
             _printer.Update();
             _performanceWindow.Update();
+            _mode.Update();
         }
 
         public static void RenderFrame()

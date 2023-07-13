@@ -1,6 +1,6 @@
-﻿using Kotono.Utils;
+﻿using Kotono.Engine;
+using Kotono.Utils;
 using OpenTK.Mathematics;
-using OpenTK.Windowing.Common;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
 using System.Runtime.InteropServices;
@@ -54,6 +54,8 @@ namespace Kotono.Input
 
         public static Point Delta { get; private set; } = new();
 
+        public static Point RelativePosition => Position - KT.Position;
+
         public static Vector Ray { get; private set; } = Vector.Zero;
 
         private static MouseState? _mouseState;
@@ -62,14 +64,7 @@ namespace Kotono.Input
         {
             get
             {
-                if (_mouseState == null)
-                {
-                    throw new Exception($"error: _mouseState must not be null");
-                }
-                else
-                {
-                    return _mouseState;
-                }
+                return _mouseState ?? throw new Exception($"error: _mouseState must not be null");
             }
             set
             {
@@ -77,7 +72,7 @@ namespace Kotono.Input
             }
         }
 
-        public static Vector2 ScrollDelta => MouseState.ScrollDelta;
+        public static Point ScrollDelta => (Point)MouseState.ScrollDelta;
 
         public static CursorState CursorState { get; set; } = CursorState.Centered;
 
@@ -88,25 +83,30 @@ namespace Kotono.Input
 
         public static void Update()
         {
+            if (KT.UserMode == UserMode.Play)
+            {
+                CursorState = CursorState.Centered;
+            }
+
             PreviousPosition = Position;
             Position = GetCursorPos();
 
             if (CursorState == CursorState.Confined)
             {
                 var delta = Point.Zero;
-                if (Position.X < KT.Dest.X)
+                if (RelativePosition.X < 0)
                 {
                     delta.X += KT.Dest.W;
                 }
-                else if (Position.X > (KT.Dest.X + KT.Dest.W))
+                else if (RelativePosition.X > KT.Dest.W)
                 {
                     delta.X -= KT.Dest.W;
                 }
-                if (Position.Y < KT.Dest.Y)
+                if (RelativePosition.Y < 0)
                 {
                     delta.Y += KT.Dest.H;
                 }
-                else if (Position.Y > (KT.Dest.Y + KT.Dest.H))
+                else if (RelativePosition.Y > KT.Dest.H)
                 {
                     delta.Y -= KT.Dest.H;
                 }

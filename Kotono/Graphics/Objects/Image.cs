@@ -1,4 +1,5 @@
-﻿using Kotono.Utils;
+﻿using Kotono.Input;
+using Kotono.Utils;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 
@@ -75,7 +76,7 @@ namespace Kotono.Graphics.Objects
 
         public void Init() { }
 
-        public void Update()
+        public virtual void Update()
         {
             if (Time.NowS < _endTime)
             {
@@ -88,7 +89,6 @@ namespace Kotono.Graphics.Objects
             {
                 Hide();
             }
-
         }
 
         public void UpdateShaders()
@@ -125,6 +125,11 @@ namespace Kotono.Graphics.Objects
         public void TransformTo(Rect dest, double time)
         {
             Transform(dest - Dest, time);
+        }
+
+        public bool IsMouseOn()
+        {
+            return (Math.Abs(Mouse.RelativePosition.X - Dest.X) < Dest.W / 2) && (Math.Abs(Mouse.RelativePosition.Y - Dest.Y) < Dest.H / 2);
         }
 
         public void Show()

@@ -1,17 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using Kotono.Tests;
+using System.Collections.Generic;
 
 namespace Kotono.File
 {
     internal class Data
     {
-        //internal DataDict<string> Strings { get; } = new();
-        
-        //internal DataDict<float> Floats { get; } = new();
-        
-        //internal DataDict<double> Doubles { get; } = new();
-        
-        //internal DataDict<int> Ints { get; } = new();
-
         internal Dictionary<string, string> Strings { get; } = new();
 
         internal Dictionary<string, float> Floats { get; } = new();
@@ -20,8 +13,10 @@ namespace Kotono.File
 
         internal Dictionary<string, int> Ints { get; } = new();
 
-        internal Data() { }
+        internal Dictionary<string, MultiType> KeyValues { get; } = new();
 
+        internal Data() { }
+        
         public override string ToString()
         {
             string result = "";
@@ -45,5 +40,6 @@ namespace Kotono.File
 
             return result;
         }
+
     }
 }

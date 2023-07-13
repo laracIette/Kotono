@@ -11,14 +11,7 @@ namespace Kotono.Input
         {
             get
             {
-                if (_keyboardState == null)
-                {
-                    throw new Exception($"error: _keyboardState must not be null");
-                }
-                else
-                {
-                    return _keyboardState;
-                }
+                return _keyboardState ?? throw new Exception($"error: _keyboardState must not be null");
             }
             set
             {

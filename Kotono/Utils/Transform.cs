@@ -84,6 +84,16 @@ namespace Kotono.Utils
             Forward = (Vector)(Quaternion.FromEulerAngles((Vector3)Rotation) * Vector3.UnitZ);
         }
 
+        public static bool operator ==(Transform left, Transform right)
+        {
+            return (left.Location == right.Location) && (left.Rotation == right.Rotation) && (left.Scale == right.Scale);
+        }
+
+        public static bool operator !=(Transform left, Transform right)
+        {
+            return !(left == right);
+        }
+
         public override readonly string ToString()
         {
             return $"Location: {Location}\nRotation: {Rotation}\nScale   : {Scale}";
