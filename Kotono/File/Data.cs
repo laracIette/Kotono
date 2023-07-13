@@ -13,8 +13,6 @@ namespace Kotono.File
 
         internal Dictionary<string, int> Ints { get; } = new();
 
-        internal Dictionary<string, MultiType> KeyValues { get; } = new();
-
         internal Data() { }
         
         public override string ToString()
