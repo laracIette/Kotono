@@ -11,14 +11,6 @@ namespace Kotono.File
 
         private readonly Data _data;
 
-        //internal DataDict<string> Strings => _data.Strings;
-
-        //internal DataDict<float> Floats => _data.Floats;
-
-        //internal DataDict<double> Doubles => _data.Doubles;
-
-        //internal DataDict<int> Ints => _data.Ints;
-
         internal Dictionary<string, string> Strings => _data.Strings;
 
         internal Dictionary<string, float> Floats => _data.Floats;
@@ -58,8 +50,8 @@ namespace Kotono.File
                     continue;
                 }
 
-                // line with '}' should never have anything else, so go back in hierarchy and skip
-                if (tokens[i].Contains('}'))
+                // line with only '}' goes to the precedent parent
+                if ((tokens[i].Where(c => !"\t\n\r".Contains(c)).Count() == 1) && tokens[i].Contains('}'))
                 {
                     parent = RemoveParent(parent);
                     continue;

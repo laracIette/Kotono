@@ -7,7 +7,7 @@ namespace Kotono.Audio
     {
         private float _volume;
 
-        public int Source { get; set; }
+        public int Source { get; private set; }
 
         public float Volume
         {
