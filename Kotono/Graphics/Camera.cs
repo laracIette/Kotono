@@ -1,7 +1,6 @@
 ﻿using Kotono.Input;
 using Kotono.Utils;
 using OpenTK.Mathematics;
-using OpenTK.Windowing.Common;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using CursorState = Kotono.Input.CursorState;
 using Math = Kotono.Utils.Math;

@@ -1,25 +1,59 @@
 ﻿using Kotono.Utils;
+using OpenTK.Audio.OpenAL;
 
 namespace Kotono.Audio
 {
-    internal class Sound
+    public class Sound
     {
-        private float _volume = 1.0f;
+        private float _volume;
 
-        internal int Source { get; set; }
+        public int Source { get; set; }
 
-        internal float Volume
+        public float Volume
         {
             get => _volume;
-            set
+            private set
             {
                 _volume = Math.Clamp(value, 0.0f, 1.0f);
             }
         }
+        
+        public bool IsPlaying => AL.GetSourceState(Source) == ALSourceState.Playing;
 
-        internal Sound(int source) 
-        { 
+        public bool IsPaused => AL.GetSourceState(Source) == ALSourceState.Paused;
+        
+        public bool IsStopped => AL.GetSourceState(Source) == ALSourceState.Stopped;
+
+        public Sound(int source)
+        {
             Source = source;
+            SetVolume(1.0f);
+        }
+
+        public void Play()
+        {
+            AL.SourcePlay(Source);
+        }
+
+        public void Pause()
+        {
+            AL.SourcePause(Source);
+        }
+
+        public void Rewind()
+        {
+            AL.SourceRewind(Source);
+        }
+
+        public void Stop()
+        {
+            AL.SourceStop(Source);
+        }
+
+        public void SetVolume(float volume)
+        {
+            Volume = volume;
+            AL.Source(Source, ALSourcef.Gain, Volume * SoundManager.GeneralVolume);
         }
     }
 }

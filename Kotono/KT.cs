@@ -184,69 +184,14 @@ namespace Kotono
 
         private static readonly SoundManager _soundManager = new();
 
-        public static int CreateSound(string path)
+        public static Sound CreateSound(string path)
         {
             return _soundManager.Create(path);
         }
 
-        public static void DeleteSound(int index)
+        public static void DeleteSound(Sound sound)
         {
-            _soundManager.Delete(index);
-        }
-
-        public static void PlaySound(int index)
-        {
-            _soundManager.Play(index);
-        }
-
-        public static bool IsSoundPlaying(int index)
-        {
-            return _soundManager.IsPlaying(index);
-        }
-
-        public static void PauseSound(int index)
-        {
-            _soundManager.Pause(index);
-        }
-
-        public static bool IsSoundPaused(int index)
-        {
-            return _soundManager.IsPaused(index);
-        }
-
-        public static void RewindSound(int index)
-        {
-            _soundManager.Rewind(index);
-        }
-
-        public static void StopSound(int index)
-        {
-            _soundManager.Stop(index);
-        }
-
-        public static bool IsSoundStopped(int index)
-        {
-            return _soundManager.IsStopped(index);
-        }
-
-        public static float GetSoundVolume(int index)
-        {
-            return _soundManager.GetVolume(index);
-        }
-
-        public static void SetSoundVolume(int index, float volume)
-        {
-            _soundManager.SetVolume(index, volume);
-        }
-
-        public static float GetGeneralVolume()
-        {
-            return _soundManager.GeneralVolume;
-        }
-
-        public static void SetGeneralVolume(float volume)
-        {
-            _soundManager.GeneralVolume = volume;
+            _soundManager.Delete(sound);
         }
 
         #endregion SoundManager

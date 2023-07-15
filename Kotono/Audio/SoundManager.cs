@@ -1,13 +1,14 @@
 ﻿using OpenTK.Audio.OpenAL;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using IO = System.IO;
 using Math = Kotono.Utils.Math;
 
 namespace Kotono.Audio
 {
-    internal class SoundManager
+    public class SoundManager
     {
         private readonly ALDevice _device;
 
@@ -15,15 +16,9 @@ namespace Kotono.Audio
 
         private readonly List<Sound> _sounds = new();
 
-        /// <summary>
-        /// Key: Direct Index,
-        /// Value: Real Index.
-        /// </summary>
-        private readonly Dictionary<int, int> _indexOffset = new();
+        private static float _generalVolume = 1.0f;
 
-        private float _generalVolume = 1.0f;
-
-        internal float GeneralVolume
+        public static float GeneralVolume
         {
             get => _generalVolume;
             set
@@ -32,9 +27,7 @@ namespace Kotono.Audio
             }
         }
 
-        private int _soundIndex = 0;
-
-        internal SoundManager() 
+        public SoundManager()
         {
             _device = ALC.OpenDevice(null);
             _context = ALC.CreateContext(_device, Array.Empty<int>());
@@ -42,7 +35,7 @@ namespace Kotono.Audio
             ALC.MakeContextCurrent(_context);
         }
 
-        internal int Create(string path)
+        public Sound Create(string path)
         {
             int buffer = AL.GenBuffer();
             int source = AL.GenSource();
@@ -58,69 +51,18 @@ namespace Kotono.Audio
 
             AL.DeleteBuffer(buffer);
 
-            _indexOffset[_soundIndex] = _sounds.Count;
-
             _sounds.Add(new Sound(source));
-            SetVolume(_soundIndex, GeneralVolume);
 
-            return _soundIndex++;
+            return _sounds.Last();
         }
 
-        internal void Delete(int index)
+        public void Delete(Sound sound)
         {
-            if (_sounds.Count <= 0)
-            {
-                KT.Print($"The number of Sound is already at 0.");
-            }
-            else
-            {
-                AL.SourceStop(_sounds[_indexOffset[index]].Source);
-                AL.DeleteSource(_sounds[_indexOffset[index]].Source);
+            AL.SourceStop(sound.Source);
+            AL.DeleteSource(sound.Source);
 
-                _sounds.RemoveAt(_indexOffset[index]);
-
-                _indexOffset.Remove(index);
-
-                foreach (var i in _indexOffset.Keys)
-                {
-                    if (i > index)
-                    {
-                        _indexOffset[i]--;
-                    }
-                }
-            }
+            _sounds.Remove(sound);
         }
-
-        internal void Play(int index)
-            => AL.SourcePlay(_sounds[_indexOffset[index]].Source);
-
-        internal bool IsPlaying(int index) 
-            => AL.GetSourceState(_sounds[_indexOffset[index]].Source) == ALSourceState.Playing;
-
-        internal void Pause(int index)
-            => AL.SourcePause(_sounds[_indexOffset[index]].Source);
-
-        internal bool IsPaused(int index)
-            => AL.GetSourceState(_sounds[_indexOffset[index]].Source) == ALSourceState.Paused;
-
-        internal void Rewind(int index)
-            => AL.SourceRewind(_sounds[_indexOffset[index]].Source);
-
-        internal void Stop(int index)
-            => AL.SourceStop(_sounds[_indexOffset[index]].Source);
-
-        internal bool IsStopped(int index)
-            => AL.GetSourceState(_sounds[_indexOffset[index]].Source) == ALSourceState.Stopped;
-
-        internal float GetVolume(int index)
-            => _sounds[_indexOffset[index]].Volume;
-
-        internal void SetVolume(int index, float volume)
-        {
-            _sounds[_indexOffset[index]].Volume = volume;
-            AL.Source(_sounds[_indexOffset[index]].Source, ALSourcef.Gain, _sounds[_indexOffset[index]].Volume * GeneralVolume);
-        }
-
 
         /// <summary>
         /// 
@@ -191,7 +133,7 @@ namespace Kotono.Audio
             };
         }
 
-        internal void Dispose()
+        public void Dispose()
         {
             foreach (var sound in _sounds)
             {
