@@ -26,8 +26,8 @@ namespace Kotono.Utils
 
         public static void Update()
         {
-            // Current Time in milliseconds
-            var now = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond; 
+            // current Time in milliseconds
+            long now = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond; 
 
             if (Now != 0)
             {

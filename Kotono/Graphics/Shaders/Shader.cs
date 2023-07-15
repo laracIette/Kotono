@@ -11,7 +11,7 @@ namespace Kotono.Graphics.Shaders
     {
         private readonly int _handle;
 
-        private readonly Dictionary<string, int> _uniformLocations;
+        private readonly Dictionary<string, int> _uniformLocations = new();
 
         internal Shader(string vertPath, string fragPath)
         {
@@ -37,10 +37,7 @@ namespace Kotono.Graphics.Shaders
             GL.DeleteShader(fragmentShader);
             GL.DeleteShader(vertexShader);
 
-
             GL.GetProgram(_handle, GetProgramParameterName.ActiveUniforms, out var numberOfUniforms);
-
-            _uniformLocations = new Dictionary<string, int>();
 
             for (var i = 0; i < numberOfUniforms; i++)
             {

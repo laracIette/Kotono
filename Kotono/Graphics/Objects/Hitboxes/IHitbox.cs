@@ -11,9 +11,9 @@ namespace Kotono.Graphics.Objects.Hitboxes
 
         public void Draw();
 
-        public bool Collides(IHitbox b);
+        public bool Collides(IHitbox h);
 
-        public bool IsColliding();
+        public bool IsColliding { get; }
 
         public Transform Transform { get; }
 

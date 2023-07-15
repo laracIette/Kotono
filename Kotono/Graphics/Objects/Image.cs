@@ -33,13 +33,12 @@ namespace Kotono.Graphics.Objects
 
         private Rect _transformation;
 
-        private double _startTime = 0f;
+        private double _startTime = 0;
 
-        private double _endTime = 0f;
+        private double _endTime = 0;
 
         private Matrix4 Model =>
-            Matrix4.Identity
-            * Matrix4.CreateScale(Dest.WorldSpace.W / 2.0f, Dest.WorldSpace.H / 2.0f, 1.0f)
+            Matrix4.CreateScale(Dest.WorldSpace.W, Dest.WorldSpace.H, 1.0f)
             * Matrix4.CreateTranslation(Dest.WorldSpace.X, Dest.WorldSpace.Y, 0.0f);
 
         public bool IsDraw { get; private set; } = true;
@@ -72,6 +71,8 @@ namespace Kotono.Graphics.Objects
             _transformation = new Rect();
 
             _texture = TextureManager.LoadTexture(path);
+
+            KT.CreateImage(this);
         }
 
         public void Init() { }
@@ -84,10 +85,13 @@ namespace Kotono.Graphics.Objects
             }
 
             // check if Image is out of screen bounds
-            Show();
             if (((Dest.X + Dest.W) < 0) || (Dest.X > KT.Dest.W) || ((Dest.Y + Dest.H) < 0) || (Dest.Y > KT.Dest.H))
             {
                 Hide();
+            }
+            else
+            {
+                Show();
             }
         }
 

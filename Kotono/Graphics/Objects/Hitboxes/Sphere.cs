@@ -77,6 +77,8 @@ namespace Kotono.Graphics.Objects.Hitboxes
             }
 
             _transform = new Transform();
+
+            KT.CreateHitbox(this);
         }
 
         public void Init() { }
@@ -116,11 +118,6 @@ namespace Kotono.Graphics.Objects.Hitboxes
                 && (Math.Abs(Location.Z - h.Location.Z) <= (Scale.Z + h.Scale.Z) / 2);
         }
 
-
-        public bool IsColliding()
-        {
-            return Collisions.Any(Collides);
-        }
-
+        public bool IsColliding => Collisions.Any(Collides);
     }
 }

@@ -25,7 +25,7 @@ namespace Kotono.Graphics.Print
         {
             foreach (var text in _texts)
             {
-                if ((Time.NowS - text.Time) > 5f)
+                if ((Time.NowS - text.Time) > 5)
                 {
                     text.Clear();
                 }

@@ -5,7 +5,6 @@ namespace Kotono.Graphics.Objects
 {
     internal class SpotLightManager
     {
-        internal const int MAX = 1;
 
         private readonly List<SpotLight> _spotLights = new();
 
@@ -13,26 +12,21 @@ namespace Kotono.Graphics.Objects
 
         internal void Create(SpotLight spotLight)
         {
-            if (_spotLights.Count >= MAX)
+            if (SpotLight.Count >= SpotLight.MAX_COUNT)
             {
-                KT.Print($"The number of SpotLight is already at its max value: {MAX}.");
+                KT.Print($"The number of SpotLight is already at its max value: {SpotLight.MAX_COUNT}.");
             }
             else
             {
                 _spotLights.Add(spotLight);
+                SpotLight.Count++;
             }
         }
 
         internal void Delete(SpotLight spotLight)
         {
-            if (_spotLights.Count <= 0)
-            {
-                KT.Print($"The number of SpotLight is already at 0.");
-            }
-            else
-            {
-                _spotLights.Remove(spotLight);
-            }
+            spotLight.Dispose();
+            _spotLights.Remove(spotLight);
         }
 
         internal void Init()

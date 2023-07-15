@@ -21,17 +21,19 @@ namespace Kotono
     {
         private KT() { }
 
-        public const int MAX_POINT_LIGHTS = PointLightManager.MAX;
-
         public static string KotonoPath { get; internal set; } = "";
 
         public static string ProjectPath { get; internal set; } = "";
 
-
         private static readonly ComponentManager _componentManager = new();
+       
+        #region Viewport
 
+        public static readonly Viewport _viewport = new(); 
+        
+        public static Viewport ActiveViewport => _viewport;
 
-        public static readonly Viewport ActiveViewport = new();
+        #endregion Viewport
 
         #region WindowSize
 
@@ -69,11 +71,6 @@ namespace Kotono
         {
             _objectManager.CreateImage(image);
             return image;
-        }
-
-        public static Image CreateImage(string path, Rect dest, Color color)
-        {
-            return CreateImage(new Image(path, dest, color));
         }
 
         public static void DeleteImage(Image image)
@@ -129,11 +126,6 @@ namespace Kotono
         public static void DeletePointLight(PointLight pointLight)
         {
             _objectManager.DeletePointLight(pointLight);
-        }
-
-        public static int GetPointLightsCount()
-        {
-            return _objectManager.GetPointLightsCount();
         }
 
         public static PointLight GetFirstPointLight()

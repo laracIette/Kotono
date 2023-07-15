@@ -103,6 +103,8 @@ namespace Kotono.Graphics.Objects.Hitboxes
             }
 
             _transform = new Transform();
+
+            KT.CreateHitbox(this);
         }
 
         public void Init() { }
@@ -116,9 +118,9 @@ namespace Kotono.Graphics.Objects.Hitboxes
         {
             var model =
                 Matrix4.CreateScale((Vector3)Scale)
-                //* Matrix4.CreateRotationX(Rotation.X)
-                //* Matrix4.CreateRotationY(Rotation.Y)
-                //* Matrix4.CreateRotationZ(Rotation.Z)
+                * Matrix4.CreateRotationX(Rotation.X)
+                * Matrix4.CreateRotationY(Rotation.Y)
+                * Matrix4.CreateRotationZ(Rotation.Z)
                 * Matrix4.CreateTranslation((Vector3)Location);
 
             KT.SetShaderColor(ShaderType.Hitbox, "color", Color);
@@ -136,9 +138,6 @@ namespace Kotono.Graphics.Objects.Hitboxes
                 && (Math.Abs(Location.Z - h.Location.Z) <= (Scale.Z + h.Scale.Z) / 2);
         }
 
-        public bool IsColliding()
-        {
-            return Collisions.Any(Collides);
-        }
+        public bool IsColliding => Collisions.Any(Collides);
     }
 }

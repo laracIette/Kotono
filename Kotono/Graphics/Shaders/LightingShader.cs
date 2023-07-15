@@ -1,4 +1,5 @@
-﻿using Kotono.Utils;
+﻿using Kotono.Graphics.Objects.Lights;
+using Kotono.Utils;
 
 namespace Kotono.Graphics.Shaders
 {
@@ -10,7 +11,7 @@ namespace Kotono.Graphics.Shaders
 
         internal override void Update()
         {
-            SetInt("numPointLights", KT.GetPointLightsCount());
+            SetInt("numPointLights", PointLight.Count);
             SetInt("numSpotLights", KT.GetSpotLightsCount());
 
             SetMatrix4("view", KT.ActiveCamera.ViewMatrix);

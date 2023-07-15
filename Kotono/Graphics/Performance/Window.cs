@@ -31,7 +31,7 @@ namespace Kotono.Graphics.Performance
 
         internal void Init()
         {
-            _background = KT.CreateImage(KT.KotonoPath + "Assets/PerformanceWindow/background.png", new Rect(_dest.X, _dest.Y, 300, 120), Color.FromHex("#273f45"));
+            _background = new Image(KT.KotonoPath + "Assets/PerformanceWindow/background.png", new Rect(_dest.X, _dest.Y, 300, 120), Color.FromHex("#273f45"));
             
             _frame.Init();
             _update.Init();

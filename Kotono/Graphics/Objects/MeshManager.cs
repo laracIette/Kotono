@@ -17,16 +17,8 @@ namespace Kotono.Graphics.Objects
 
         internal void Delete(Mesh mesh)
         {
-            if (_meshes.Count <= 0)
-            {
-                KT.Print($"The number of Mesh is already at 0.");
-            }
-            else
-            {
-                _meshes.Remove(mesh);
-            }
+            _meshes.Remove(mesh);
         }
-
 
         internal void Init()
         {

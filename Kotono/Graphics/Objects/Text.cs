@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Kotono.Graphics.Objects
 {
-    public enum Location
+    public enum Position
     {
         Center,
         TopLeft,
@@ -15,7 +15,7 @@ namespace Kotono.Graphics.Objects
 
         protected Rect _dest;
 
-        protected Location _location;
+        protected Position _position;
 
         protected float _spacing;
 
@@ -114,11 +114,11 @@ namespace Kotono.Graphics.Objects
             _paths[':'] = KT.KotonoPath + @"Assets\Characters\colon.png"; TextureManager.LoadTexture(_paths[':']);
         }
 
-        internal Text(string text, Rect dest, Location location, Color color, float spacing = 1.0f) 
+        internal Text(string text, Rect dest, Position position, Color color, float spacing = 1.0f) 
         {
             _text = text;
             _dest = dest;
-            _location = location;
+            _position = position;
             _spacing = spacing;
             Color = color;
         }
@@ -139,10 +139,10 @@ namespace Kotono.Graphics.Objects
                     Color = Color.Red;
                 }
 
-                switch (_location)
+                switch (_position)
                 {
-                    case Location.Center:
-                        _letters.Add(KT.CreateImage(
+                    case Position.Center:
+                        _letters.Add(new Image(
                             path, 
                             new Rect(
                                 _dest.X - _dest.W / 2 * (_text.Length - 1) * _spacing + _dest.W * i * _spacing,
@@ -154,8 +154,8 @@ namespace Kotono.Graphics.Objects
                         ));
                         break;
 
-                    case Location.TopLeft:
-                        _letters.Add(KT.CreateImage(
+                    case Position.TopLeft:
+                        _letters.Add(new Image(
                             path, 
                             new Rect(
                                 _dest.X + _dest.W / 2 + _dest.W * i * _spacing,

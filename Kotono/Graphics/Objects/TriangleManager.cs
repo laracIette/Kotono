@@ -15,14 +15,7 @@ namespace Kotono.Graphics.Objects
 
         internal void Delete(Triangle triangle)
         {
-            if (_triangles.Count <= 0)
-            {
-                KT.Print($"The number of Triangle is already at 0.");
-            }
-            else
-            {
-                _triangles.Remove(triangle);
-            }
+            _triangles.Remove(triangle);
         }
 
         internal void Init()

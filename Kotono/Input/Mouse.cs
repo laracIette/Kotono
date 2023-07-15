@@ -110,6 +110,7 @@ namespace Kotono.Input
                 {
                     delta.Y -= KT.Dest.H;
                 }
+
                 if (delta != Point.Zero)
                 {
                     PreviousPosition += delta;

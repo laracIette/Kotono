@@ -12,7 +12,6 @@
             set => Position.X = value;
         }
 
-
         public float Y
         {
             readonly get => Position.Y;
@@ -43,8 +42,8 @@
             new Rect(
                 2 * X / KT.ActiveViewport.W - 1,
                 1 - 2 * Y / KT.ActiveViewport.H,
-                W / KT.ActiveViewport.W * 2,
-                H / KT.ActiveViewport.H * 2
+                W / KT.ActiveViewport.W,
+                H / KT.ActiveViewport.H
             );
 
 

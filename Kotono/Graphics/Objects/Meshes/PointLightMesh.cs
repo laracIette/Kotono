@@ -1,20 +1,33 @@
 ﻿using Kotono.Graphics.Objects.Hitboxes;
+using Kotono.Graphics.Objects.Lights;
 using OpenTK.Graphics.OpenGL4;
 using System;
+using Kotono.Utils;
 
 namespace Kotono.Graphics.Objects.Meshes
 {
     public class PointLightMesh : Mesh
     {
-        public PointLightMesh() 
+        private readonly PointLight _pointLight;
+
+        public PointLightMesh(Vector location, PointLight pointLight) 
             : base(
                   KT.KotonoPath + "Assets/Meshes/pointLight.ktf",
                   new IHitbox[]
                   {
-                      KT.CreateHitbox(new Sphere())
+                      new Sphere()
                   }
               )
         {
+            Location = location;
+            _pointLight = pointLight;
+        }
+
+        public override void Update()
+        {
+            base.Update();
+
+            Color = _pointLight.Diffuse;
         }
 
         public override void Draw()

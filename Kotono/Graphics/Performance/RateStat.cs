@@ -1,5 +1,6 @@
 ﻿using Kotono.Graphics.Objects;
 using Kotono.Utils;
+using System.Linq;
 
 namespace Kotono.Graphics.Performance
 {
@@ -20,7 +21,7 @@ namespace Kotono.Graphics.Performance
             _times = new double[60];
             _timeIndex = 0;
 
-            _text = new Text("0", dest, Location.Center, Color.White);
+            _text = new Text("0", dest, Position.Center, Color.White);
         }
 
         internal void Init()
@@ -38,14 +39,7 @@ namespace Kotono.Graphics.Performance
             _times[_timeIndex] = newTime;
             _timeIndex = (_timeIndex + 1) % _times.Length;
 
-            double sum = 0;
-
-            foreach (double time in _times)
-            {
-                sum += time;
-            }
-
-            Time = sum / _times.Length;
+            Time = _times.Sum() / _times.Length;
 
             Rate = 1 / Time;
 

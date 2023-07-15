@@ -11,9 +11,9 @@ namespace Kotono.Graphics
     {
         private float _pitch = 0.0f;
 
-        private float _yaw = -MathHelper.PiOver2;
+        private float _yaw = -Math.PI / 2;
 
-        private float _fov = MathHelper.PiOver2;
+        private float _fov = Math.PI / 2;
 
         private float _speed = 1.0f;
 
@@ -30,7 +30,6 @@ namespace Kotono.Graphics
         public float Pitch
         {
             get => Math.Deg(_pitch);
-
             set
             {
                 value = Math.Clamp(value, -89.0f, 89.0f);
@@ -42,7 +41,6 @@ namespace Kotono.Graphics
         public float Yaw
         {
             get => Math.Deg(_yaw);
-
             set
             {
                 _yaw = Math.Rad(value);
@@ -53,7 +51,6 @@ namespace Kotono.Graphics
         public float Fov
         {
             get => Math.Deg(_fov);
-
             set
             {
                 value = Math.Clamp(value, 1.0f, 90.0f);

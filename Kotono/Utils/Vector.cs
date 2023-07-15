@@ -50,9 +50,7 @@ namespace Kotono.Utils
                 _ => throw new IndexOutOfRangeException("You tried to access this Vector at index: " + index)
             };
             
-        /// <summary>
-        /// Initialize a Vector with X = 0, Y = 0, Z = 0
-        /// </summary>
+        /// <summary> Initialize a Vector with X = 0, Y = 0, Z = 0 </summary>
         public Vector()
         {
             X = 0;
@@ -60,9 +58,7 @@ namespace Kotono.Utils
             Z = 0;
         }
 
-        /// <summary>
-        /// Initialize a Vector with X = v.X, Y = v.Y, Z = v.Z
-        /// </summary>
+        /// <summary> Initialize a Vector with X = v.X, Y = v.Y, Z = v.Z </summary>
         public Vector(Vector v)
         {
             X = v.X;
@@ -70,9 +66,7 @@ namespace Kotono.Utils
             Z = v.Z;
         }
 
-        /// <summary>
-        /// Initialize a Vector with X = f, Y = f, Z = f
-        /// </summary>
+        /// <summary> Initialize a Vector with X = f, Y = f, Z = f </summary>
         public Vector(float f)
         {
             X = f;
@@ -80,9 +74,7 @@ namespace Kotono.Utils
             Z = f;
         }
 
-        /// <summary>
-        /// Initialize a Vector with X = (float)d, Y = (float)d, Z = (float)d
-        /// </summary>
+        /// <summary> Initialize a Vector with X = (float)d, Y = (float)d, Z = (float)d </summary>
         public Vector(double d)
         {
             X = (float)d;
@@ -90,9 +82,7 @@ namespace Kotono.Utils
             Z = (float)d;
         }
 
-        /// <summary>
-        /// Initialize a Vector with X = x, Y = y, Z = z
-        /// </summary>
+        /// <summary> Initialize a Vector with X = x, Y = y, Z = z </summary>
         public Vector(float x = 0, float y = 0, float z = 0)
         {
             X = x;
@@ -100,9 +90,7 @@ namespace Kotono.Utils
             Z = z;
         }
 
-        /// <summary>
-        /// Initialize a Vector with X = (float)x, Y = (float)y, Z = (float)z
-        /// </summary>
+        /// <summary> Initialize a Vector with X = (float)x, Y = (float)y, Z = (float)z </summary>
         public Vector(double x = 0, double y = 0, double z = 0)
         {
             X = (float)x;

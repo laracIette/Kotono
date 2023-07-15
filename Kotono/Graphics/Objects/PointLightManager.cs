@@ -6,39 +6,27 @@ namespace Kotono.Graphics.Objects
 {
     internal class PointLightManager
     {
-        internal const int MAX = 100;
-
         private readonly List<PointLight> _pointLights = new();
 
         internal PointLightManager() { }
 
         internal void Create(PointLight pointLight)
         {
-            if (_pointLights.Count >= MAX)
+            if (PointLight.Count >= PointLight.MAX_COUNT)
             {
-                KT.Print($"The number of PointLight is already at its max value: {MAX}.");
+                KT.Print($"The number of PointLight is already at its max value: {PointLight.MAX_COUNT}.");
             }
             else
             {
                 _pointLights.Add(pointLight);
+                PointLight.Count++;
             }
         }
 
         internal void Delete(PointLight pointLight)
         {
-            if (_pointLights.Count <= 0)
-            {
-                KT.Print($"The number of PointLight is already at 0.");
-            }
-            else
-            {
-                _pointLights.Remove(pointLight);
-            }
-        }
-
-        internal int GetCount()
-        {
-            return _pointLights.Count;
+            pointLight.Dispose();
+            _pointLights.Remove(pointLight);
         }
 
         internal PointLight GetFirst()

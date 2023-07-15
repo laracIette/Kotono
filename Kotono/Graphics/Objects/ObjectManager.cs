@@ -80,11 +80,6 @@ namespace Kotono.Graphics.Objects
             _pointLightManager.Delete(pointLight);
         }
 
-        internal int GetPointLightsCount()
-        {
-            return _pointLightManager.GetCount();
-        }
-
         internal PointLight GetFirstPointLight()
         {
             return _pointLightManager.GetFirst();

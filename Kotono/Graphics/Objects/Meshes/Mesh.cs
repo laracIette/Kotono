@@ -15,9 +15,7 @@ namespace Kotono.Graphics.Objects.Meshes
 {
     public abstract class Mesh : IDisposable
     {
-        private static readonly Dictionary<string, Tuple<int[], Vector, Vector[], Triangle[]>> _paths = new();
-
-        private Transform _transform;
+        private static readonly Dictionary<string, MeshProperties> _paths = new();
 
         private Vector _locationVelocity;
 
@@ -31,25 +29,29 @@ namespace Kotono.Graphics.Objects.Meshes
 
         public bool IsInFront { get; set; } = false;
 
-        public Triangle[] Triangles { get; }
-
-        public Vector[] Vertices { get; }
-
-        public Vector Center { get; }
-
         public bool IsFiziks { get; set; } = false;
 
         public bool IsGravity { get; set; } = false;
 
         public CollisionState CollisionState { get; set; }
 
-        public int VertexArrayObject { get; set; }
+        private readonly MeshProperties _meshProperties;
 
-        public int VertexBufferObject { get; }
+        public int VertexArrayObject => _meshProperties.VertexArrayObject;
 
-        public int IndicesCount { get; }
+        public int VertexBufferObject => _meshProperties.VertexBufferObject;
+
+        public int IndicesCount => _meshProperties.IndicesCount;
+
+        public Vector Center => _meshProperties.Center;
+
+        public Vector[] Vertices => _meshProperties.Vertices;
+
+        public Triangle[] Triangles => _meshProperties.Triangles;
 
         public int[] Textures { get; }
+
+        private Transform _transform;
 
         public Transform Transform => _transform;
 
@@ -87,9 +89,9 @@ namespace Kotono.Graphics.Objects.Meshes
 
         public Matrix4 Model => Transform.Model;
 
-        public static double MaxIntersectionCheckTime => 0.1f;
+        public static double MaxIntersectionCheckTime => 0.1;
 
-        public double IntersectionCheckTime { get; set; } = MaxIntersectionCheckTime;
+        public double IntersectionCheckTime { get; internal set; } = MaxIntersectionCheckTime;
 
         private readonly Properties _properties;
 
@@ -238,25 +240,18 @@ namespace Kotono.Graphics.Objects.Meshes
                 GL.BindBuffer(BufferTarget.ElementArrayBuffer, elementBufferObject);
                 GL.BufferData(BufferTarget.ElementArrayBuffer, indices[0].Count * sizeof(int), indices[0].ToArray(), BufferUsageHint.StaticDraw);
 
-                _paths[_properties.Strings["Obj"]] = Tuple.Create(
-                    new int[]
-                    {
-                        vertexArrayObject,
-                        vertexBufferObject,
-                        indices[0].Count
-                    },
-                    center,
-                    vertices.ToArray(),
-                    triangles.ToArray()
-                );
+                _paths[_properties.Strings["Obj"]] = new MeshProperties
+                {
+                    VertexArrayObject = vertexArrayObject,
+                    VertexBufferObject = vertexBufferObject,
+                    IndicesCount = indices[0].Count,
+                    Center = center,
+                    Vertices = vertices.ToArray(),
+                    Triangles = triangles.ToArray()
+                };
             }
 
-            VertexArrayObject = _paths[_properties.Strings["Obj"]].Item1[0];
-            VertexBufferObject = _paths[_properties.Strings["Obj"]].Item1[1];
-            IndicesCount = _paths[_properties.Strings["Obj"]].Item1[2];
-            Center = _paths[_properties.Strings["Obj"]].Item2;
-            Vertices = _paths[_properties.Strings["Obj"]].Item3;
-            Triangles = _paths[_properties.Strings["Obj"]].Item4;
+            _meshProperties = _paths[_properties.Strings["Obj"]];
 
             KT.CreateMesh(this);
         }
@@ -282,7 +277,7 @@ namespace Kotono.Graphics.Objects.Meshes
             {
                 hitbox.Location = tempLoc;
 
-                if ((CollisionState == CollisionState.BlockAll) && hitbox.IsColliding())
+                if ((CollisionState == CollisionState.BlockAll) && hitbox.IsColliding)
                 {
                     hitbox.Location = Location;
                 }

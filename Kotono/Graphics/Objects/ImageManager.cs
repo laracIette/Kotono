@@ -15,14 +15,7 @@ namespace Kotono.Graphics.Objects
 
         internal void Delete(Image image)
         {
-            if (_images.Count <= 0)
-            {
-                KT.Print($"The number of Image is already at 0.");
-            }
-            else
-            {
-                _images.Remove(image);
-            }
+            _images.Remove(image);
         }
 
         internal void Init()

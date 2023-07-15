@@ -10,29 +10,33 @@ namespace Kotono.Graphics.Objects.Lights
 {
     public class SpotLight : IDisposable
     {
-        private float _cutOffRotation = 12.5f;
+        private float _cutOffAngle = 12.5f;
 
-        private float _outerCutOffRotation = 17.5f;
+        private float _outerCutOffAngle = 17.5f;
 
         private bool _isOn = true;
 
         private int _shaderIndex;
 
-        private float CutOffRotation
+        private float CutOffAngle
         {
-            get => _cutOffRotation;
-            set => _cutOffRotation = Math.Clamp(value, 0.0f, 12.5f);
+            get => _cutOffAngle;
+            set => _cutOffAngle = Math.Clamp(value, 0.0f, 12.5f);
         }
 
-        private float OuterCutOffRotation
+        private float OuterCutOffAngle
         {
-            get => _outerCutOffRotation;
-            set => _outerCutOffRotation = Math.Clamp(value, 0.0f, 17.5f);
+            get => _outerCutOffAngle;
+            set => _outerCutOffAngle = Math.Clamp(value, 0.0f, 17.5f);
         }
+
+        public const int MAX_COUNT = 1;
+
+        public static int Count { get; internal set; }
 
         public SpotLight()
         {
-            _shaderIndex = KT.GetSpotLightsCount();
+            _shaderIndex = Count;
         }
 
         public void Init() { }
@@ -46,23 +50,23 @@ namespace Kotono.Graphics.Objects.Lights
 
             if (_isOn)
             {
-                if (OuterCutOffRotation >= 5.0f)
+                if (OuterCutOffAngle >= 5.0f)
                 {
-                    CutOffRotation += 100.0f * Time.DeltaS;
+                    CutOffAngle += 100.0f * Time.DeltaS;
                 }
-                OuterCutOffRotation += 100.0f * Time.DeltaS;
+                OuterCutOffAngle += 100.0f * Time.DeltaS;
             }
             else
             {
-                CutOffRotation -= 100.0f * Time.DeltaS;
-                OuterCutOffRotation -= 100.0f * Time.DeltaS;
+                CutOffAngle -= 100.0f * Time.DeltaS;
+                OuterCutOffAngle -= 100.0f * Time.DeltaS;
             }
         }
 
         public void UpdateShaders()
         {
-            KT.SetShaderFloat(ShaderType.Lighting, $"spotLights[{_shaderIndex}].cutOff", MathF.Cos(MathHelper.DegreesToRadians(CutOffRotation)));
-            KT.SetShaderFloat(ShaderType.Lighting, $"spotLights[{_shaderIndex}].outerCutOff", MathF.Cos(MathHelper.DegreesToRadians(OuterCutOffRotation)));
+            KT.SetShaderFloat(ShaderType.Lighting, $"spotLights[{_shaderIndex}].cutOff", Math.Cos(Math.Rad(CutOffAngle)));
+            KT.SetShaderFloat(ShaderType.Lighting, $"spotLights[{_shaderIndex}].outerCutOff", Math.Cos(Math.Rad(OuterCutOffAngle)));
             KT.SetShaderVector(ShaderType.Lighting, $"spotLights[{_shaderIndex}].location", KT.ActiveCamera.Location);
             KT.SetShaderVector(ShaderType.Lighting, $"spotLights[{_shaderIndex}].direction", KT.ActiveCamera.Front);
             KT.SetShaderColor(ShaderType.Lighting, $"spotLights[{_shaderIndex}].ambient", Color.Black);
@@ -85,6 +89,7 @@ namespace Kotono.Graphics.Objects.Lights
 
         public void Dispose()
         {
+            Count--;
             GC.SuppressFinalize(this);
         }
     }

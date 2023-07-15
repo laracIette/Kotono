@@ -16,14 +16,7 @@ namespace Kotono.Graphics.Objects
 
         internal void Delete(IHitbox hitbox)
         {
-            if (_hitboxes.Count <= 0)
-            {
-                KT.Print($"The number of Hitbox is already at 0.");
-            }
-            else
-            {
-                _hitboxes.Remove(hitbox);
-            }
+            _hitboxes.Remove(hitbox);
         }
 
         internal List<IHitbox> GetAll()

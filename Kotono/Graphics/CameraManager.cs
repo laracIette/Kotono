@@ -16,14 +16,7 @@ namespace Kotono.Graphics
 
         internal void Delete(Camera camera)
         {
-            if (_cameras.Count <= 0)
-            {
-                KT.Print($"The number of Camera is already at 0.");
-            }
-            else
-            {
-                _cameras.Remove(camera);
-            }
+            _cameras.Remove(camera);
         }
 
         internal Camera Get(int index)
