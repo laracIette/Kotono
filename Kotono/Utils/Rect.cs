@@ -1,4 +1,6 @@
-﻿namespace Kotono.Utils
+﻿using OpenTK.Mathematics;
+
+namespace Kotono.Utils
 {
     public struct Rect
     {
@@ -37,6 +39,16 @@
             );
 
         public static Rect Zero => new Rect(0, 0, 0, 0);
+        
+        public static Rect Unit => new Rect(1, 1, 1, 1);
+       
+        public static Rect UnitX => new Rect(1, 0, 0, 0);
+
+        public static Rect UnitY => new Rect(0, 1, 0, 0);
+        
+        public static Rect UnitW => new Rect(0, 0, 1, 0);
+        
+        public static Rect UnitH => new Rect(0, 0, 0, 1);
 
         public readonly Rect WorldSpace =>
             new Rect(
@@ -155,6 +167,16 @@
         public static bool operator !=(Rect left, Rect right)
         {
             return !(left == right);
+        }
+
+        public static explicit operator Vector4(Rect r)
+        {
+            return new Vector4(r.X, r.Y, r.W, r.H);
+        }
+
+        public static explicit operator Rect(Vector4 v)
+        {
+            return new Rect(v.X, v.Y, v.Z, v.W);
         }
 
         public override readonly string ToString()

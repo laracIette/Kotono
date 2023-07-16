@@ -80,6 +80,21 @@ namespace Kotono
 
         #endregion Image
 
+        #region BoxRoundedCorners
+
+        public static BoxRoundedCorners CreateBoxRoundedCorners(BoxRoundedCorners box)
+        {
+            _objectManager.CreateBoxRoundedCorners(box);
+            return box;
+        }
+
+        public static void DeleteBoxRoundedCorners(BoxRoundedCorners box)
+        {
+            _objectManager.DeleteBoxRoundedCorners(box);
+        }
+
+        #endregion BoxRoundedCorners
+
         #region Mesh
 
         public static Mesh CreateMesh(Mesh mesh)
@@ -250,6 +265,11 @@ namespace Kotono
         public static void SetShaderColor(ShaderType type, string name, Color data)
         {
             _shaderManager.SetColor(type, name, data);
+        }
+
+        public static void SetShaderRect(ShaderType type, string name, Rect data)
+        {
+            _shaderManager.SetRect(type, name, data);
         }
 
         #endregion ShaderManager

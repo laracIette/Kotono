@@ -17,6 +17,7 @@ namespace Kotono.Graphics.Objects
 
         internal void Delete(Mesh mesh)
         {
+            mesh.Dispose();
             _meshes.Remove(mesh);
         }
 

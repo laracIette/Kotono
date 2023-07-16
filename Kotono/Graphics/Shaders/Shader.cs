@@ -118,5 +118,11 @@ namespace Kotono.Graphics.Shaders
             Use();
             GL.Uniform4(_uniformLocations[name], (Vector4)data);
         }
+
+        internal void SetRect(string name, Rect data)
+        {
+            Use();
+            GL.Uniform4(_uniformLocations[name], (Vector4)data);
+        }
     }
 }

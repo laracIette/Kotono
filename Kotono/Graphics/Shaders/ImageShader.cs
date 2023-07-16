@@ -10,8 +10,6 @@ namespace Kotono.Graphics.Shaders
 
         internal override void Update()
         {
-            SetMatrix4("view", Matrix4.Identity);
-            SetMatrix4("projection", Matrix4.Identity);
         }
     }
 }

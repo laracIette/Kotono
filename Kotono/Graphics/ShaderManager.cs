@@ -10,12 +10,13 @@ namespace Kotono.Graphics
         Hitbox,
         PointLight,
         Image,
-        Gizmo
+        Gizmo,
+        BoxRoundedCorners
     }
 
     internal class ShaderManager
     {
-        private Shader[] _shaders = new Shader[4];
+        private Shader[] _shaders = new Shader[6];
 
         internal ShaderManager() { }
 
@@ -27,6 +28,7 @@ namespace Kotono.Graphics
                 new PointLightShader(),
                 new ImageShader(),
                 new GizmoShader(),
+                new BoxRoundedCornersShader()
             };
         }
 
@@ -63,6 +65,11 @@ namespace Kotono.Graphics
         internal void SetColor(ShaderType type, string name, Color data)
         {
             _shaders[(int)type].SetColor(name, data);
+        }
+
+        internal void SetRect(ShaderType type, string name, Rect data)
+        {
+            _shaders[(int)type].SetRect(name, data);
         }
 
         internal void Update()

@@ -19,6 +19,8 @@ namespace Kotono.Graphics.Objects
 
         private readonly TriangleManager _triangleManager = new();
 
+        private readonly BoxRoundedCornersManager _boxRoundedCornersManager = new();
+
         //private readonly Viewport _viewport = new(0, 0, 1280, 720);
 
 
@@ -32,6 +34,7 @@ namespace Kotono.Graphics.Objects
             _pointLightManager.Init();
             _spotLightManager.Init();
             _triangleManager.Init();
+            _boxRoundedCornersManager.Init();
             //_viewport.Init();
         }
 
@@ -120,6 +123,20 @@ namespace Kotono.Graphics.Objects
 
         #endregion Image
 
+        #region BoxRoundedCorners
+
+        internal void CreateBoxRoundedCorners(BoxRoundedCorners box)
+        {
+            _boxRoundedCornersManager.Create(box);
+        }
+
+        internal void DeleteBoxRoundedCorners(BoxRoundedCorners box)
+        {
+            _boxRoundedCornersManager.Delete(box);
+        }
+
+        #endregion BoxRoundedCorners
+
         #region Triangle
 
         internal void CreateTriangle(Triangle triangle)
@@ -142,6 +159,7 @@ namespace Kotono.Graphics.Objects
             _spotLightManager.Update();
             _imageManager.Update();
             _triangleManager.Update();
+            _boxRoundedCornersManager.Update();
         }
 
         internal void UpdateShaders()
@@ -149,6 +167,7 @@ namespace Kotono.Graphics.Objects
             _pointLightManager.UpdateShaders();
             _spotLightManager.UpdateShaders();
             _imageManager.UpdateShaders();
+            _boxRoundedCornersManager.UpdateShaders();
         }
 
         internal void Draw()
@@ -161,6 +180,7 @@ namespace Kotono.Graphics.Objects
             _triangleManager.Draw();
             _meshManager.Draw();
             _imageManager.Draw();
+            _boxRoundedCornersManager.Draw();
         }
 
         internal void Save()

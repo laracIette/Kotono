@@ -359,7 +359,7 @@ namespace Kotono.Graphics.Objects.Meshes
             {
                 KT.DeleteHitbox(hitbox);
             }
-
+            
             GC.SuppressFinalize(this);
         }
     }
