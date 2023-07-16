@@ -2,11 +2,11 @@
 {
     public struct Vertex
     {
-        public Vector Location { get; set; }
+        public Vector Location;
 
-        public Vector Normal { get; set; }
+        public Vector Normal;
 
-        public Point TexCoord { get; set; }
+        public Point TexCoord;
 
         public Vertex(Vector location, Vector normal, Point texCoord)
         {

@@ -213,7 +213,6 @@ namespace Kotono.File
                 // it's a string
                 return true;
             }
-
             else
             {
                 // it's not a string

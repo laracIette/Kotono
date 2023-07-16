@@ -43,13 +43,15 @@ namespace Kotono.Graphics.Objects
 
         public Matrix4 Model => Transform.Model;
 
-        public bool IsDraw { get; private set; } = true;
+        public bool IsDraw { get; private set; } = false;
 
         private int _vertexArrayObject;
 
         private int _vertexBufferObject;
 
         private readonly Vector[] _vertices = new Vector[3];
+
+        private bool _isInitBuffers = false;
 
         public Triangle()
         {
@@ -58,7 +60,6 @@ namespace Kotono.Graphics.Objects
             Vertex3 = Vector.Zero;
             _transform = new Transform();
             Color = Color.White;
-            InitBuffers();
         }
 
         public Triangle(Vector vertex1, Vector vertex2, Vector vertex3, Transform transform, Color color)
@@ -68,7 +69,37 @@ namespace Kotono.Graphics.Objects
             Vertex3 = vertex3;
             _transform = transform;
             Color = color;
-            InitBuffers();
+        }
+
+        public void Init()
+        {
+
+        }
+
+        public void Update()
+        {
+            if (!_isInitBuffers && IsDraw)
+            {
+                _isInitBuffers = true;
+                InitBuffers();
+            }
+        }
+
+        public void Draw()
+        {
+            var model =
+                Matrix4.CreateScale((Vector3)Scale)
+                * Matrix4.CreateRotationX(Rotation.X)
+                * Matrix4.CreateRotationY(Rotation.Y)
+                * Matrix4.CreateRotationZ(Rotation.Z)
+                * Matrix4.CreateTranslation((Vector3)Location);
+
+            KT.SetShaderColor(ShaderType.Hitbox, "color", Color);
+            KT.SetShaderMatrix4(ShaderType.Hitbox, "model", model);
+
+            GL.BindVertexArray(_vertexArrayObject);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
+            GL.DrawArrays(PrimitiveType.LineLoop, 0, _vertices.Length);
         }
 
         private void InitBuffers()
@@ -89,33 +120,6 @@ namespace Kotono.Graphics.Objects
             int locationAttributeLocation = KT.GetShaderAttribLocation(ShaderType.Hitbox, "aPos");
             GL.EnableVertexAttribArray(locationAttributeLocation);
             GL.VertexAttribPointer(locationAttributeLocation, 3, VertexAttribPointerType.Float, false, Vector.SizeInBytes, 0);
-        }
-
-        public void Init()
-        {
-
-        }
-
-        public void Update()
-        {
-
-        }
-
-        public void Draw()
-        {
-            var model =
-                Matrix4.CreateScale((Vector3)Scale)
-                * Matrix4.CreateRotationX(Rotation.X)
-                * Matrix4.CreateRotationY(Rotation.Y)
-                * Matrix4.CreateRotationZ(Rotation.Z)
-                * Matrix4.CreateTranslation((Vector3)Location);
-
-            KT.SetShaderColor(ShaderType.Hitbox, "color", Color);
-            KT.SetShaderMatrix4(ShaderType.Hitbox, "model", model);
-
-            GL.BindVertexArray(_vertexArrayObject);
-            GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
-            GL.DrawArrays(PrimitiveType.LineLoop, 0, _vertices.Length);
         }
 
         public void Show()
