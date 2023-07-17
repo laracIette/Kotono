@@ -28,7 +28,7 @@ namespace Kotono.Graphics.Objects
 
         public Color Color { get; set; }
 
-        public float FallOff { get; set; } = 20;
+        public float FallOff { get; set; } 
 
         public bool IsDraw { get; private set; } = true;
         
@@ -36,7 +36,7 @@ namespace Kotono.Graphics.Objects
             Matrix4.CreateScale((Dest + new Rect(w: FallOff * 2)).WorldSpace.W, (Dest + new Rect(h: FallOff * 2)).WorldSpace.H, 1.0f)
             * Matrix4.CreateTranslation(Dest.WorldSpace.X, Dest.WorldSpace.Y, 0.0f);
 
-        public BoxRoundedCorners(Rect dest, Color color) 
+        public BoxRoundedCorners(Rect dest, Color color, float fallOff) 
         {
             if (_isFirst)
             {
@@ -59,6 +59,7 @@ namespace Kotono.Graphics.Objects
 
             Dest = dest;
             Color = color;
+            FallOff = fallOff;
 
             KT.CreateBoxRoundedCorners(this);
         }
@@ -82,14 +83,22 @@ namespace Kotono.Graphics.Objects
         {
             KT.SetShaderMatrix4(ShaderType.BoxRoundedCorners, "model", Model);
             KT.SetShaderColor(ShaderType.BoxRoundedCorners, "color", Color);
-            KT.SetShaderRect(ShaderType.BoxRoundedCorners, "dest", Dest);
+            KT.SetShaderRect(ShaderType.BoxRoundedCorners, "dest", new Rect(Dest.X, KT.Size.Y - Dest.Y, Dest.W, Dest.H));
             KT.SetShaderFloat(ShaderType.BoxRoundedCorners, "fallOff", FallOff);
 
             GL.BindVertexArray(_vertexArrayObject);
 
             GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
+        }
 
-            GL.Enable(EnableCap.DepthTest);
+        public void Show()
+        {
+            IsDraw = true;
+        }
+
+        public void Hide()
+        {
+            IsDraw = false;
         }
     }
 }

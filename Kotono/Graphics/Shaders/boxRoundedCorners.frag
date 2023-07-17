@@ -25,42 +25,47 @@ void main()
 
     float dist = 0;
 
-    bool isLeft = gl_FragCoord.x < (newDest.x - newDest.w / 2);
-    bool isRight = gl_FragCoord.x > (newDest.x + newDest.w / 2);
-    bool isTop = gl_FragCoord.y > (newDest.y + newDest.h / 2);
-    bool isBottom = gl_FragCoord.y < (newDest.y - newDest.h / 2);
+    float left = newDest.x - newDest.w / 2;
+    float right = newDest.x + newDest.w / 2;
+    float top = newDest.y + newDest.h / 2;
+    float bottom = newDest.y - newDest.h / 2;
+
+    bool isLeft = gl_FragCoord.x < left;
+    bool isRight = gl_FragCoord.x > right;
+    bool isTop = gl_FragCoord.y > top;
+    bool isBottom = gl_FragCoord.y < bottom;
 
     if (isLeft && isTop)
     {
-        dist = distance(vec2(gl_FragCoord), vec2(newDest.x - newDest.w / 2, newDest.y + newDest.h / 2));
+        dist = distance(vec2(gl_FragCoord), vec2(left, top));
     }
     else if (isRight && isTop)
     {
-        dist = distance(vec2(gl_FragCoord), vec2(newDest.x + newDest.w / 2, newDest.y + newDest.h / 2));
+        dist = distance(vec2(gl_FragCoord), vec2(right, top));
     }
     else if (isLeft && isBottom)
     {
-        dist = distance(vec2(gl_FragCoord), vec2(newDest.x - newDest.w / 2, newDest.y - newDest.h / 2));
+        dist = distance(vec2(gl_FragCoord), vec2(left, bottom));
     }
     else if (isRight && isBottom)
     {
-        dist = distance(vec2(gl_FragCoord), vec2(newDest.x + newDest.w / 2, newDest.y - newDest.h / 2));
+        dist = distance(vec2(gl_FragCoord), vec2(right, bottom));
     }
     else if (isLeft)
     {
-        dist = (newDest.x - newDest.w / 2) - gl_FragCoord.x;
+        dist = left - gl_FragCoord.x;
     }
     else if (isRight)
     {
-        dist = gl_FragCoord.x - (newDest.x + newDest.w / 2);
+        dist = gl_FragCoord.x - right;
     }
     else if (isTop)
     {
-        dist = gl_FragCoord.y - (newDest.y + newDest.h / 2);
+        dist = gl_FragCoord.y - top;
     }
     else if (isBottom)
     {
-        dist = (newDest.y - newDest.h / 2) - gl_FragCoord.y;
+        dist = bottom - gl_FragCoord.y;
     }
     
     float ratio = dist / fallOff;

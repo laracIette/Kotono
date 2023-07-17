@@ -5,7 +5,7 @@ namespace Kotono.Graphics.Performance
 {
     internal class Window
     {
-        private Image _background;
+        private readonly BoxRoundedCorners _background;
 
         private readonly RateStat _frame;
 
@@ -27,12 +27,12 @@ namespace Kotono.Graphics.Performance
 
             _frame = new RateStat(_dest - new Rect(y: _dest.H / 2));
             _update = new RateStat(_dest + new Rect(y: _dest.H / 2));
+            
+            _background = new BoxRoundedCorners(new Rect(_dest.X, _dest.Y, 300, 120), Color.FromHex("#273f45"), 2);
         }
 
         internal void Init()
         {
-            _background = new Image(KT.KotonoPath + "Assets/PerformanceWindow/background.png", new Rect(_dest.X, _dest.Y, 300, 120), Color.FromHex("#273f45"));
-            
             _frame.Init();
             _update.Init();
         }
