@@ -2,18 +2,18 @@
 
 namespace Kotono.Graphics.Objects
 {
-    internal class BoxRoundedCornersManager
+    internal class RoundedBoxManager
     {
-        private readonly List<BoxRoundedCorners> _boxes = new();
+        private readonly List<RoundedBox> _boxes = new();
 
-        internal BoxRoundedCornersManager() { }
+        internal RoundedBoxManager() { }
 
-        internal void Create(BoxRoundedCorners box)
+        internal void Create(RoundedBox box)
         {
             _boxes.Add(box);
         }
 
-        internal void Delete(BoxRoundedCorners box)
+        internal void Delete(RoundedBox box)
         {
             _boxes.Remove(box);
         }

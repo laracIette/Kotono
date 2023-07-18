@@ -4,7 +4,7 @@ using OpenTK.Mathematics;
 
 namespace Kotono.Graphics.Objects
 {
-    public class BoxRoundedCorners
+    public class RoundedBox
     {
         private static readonly float[] _vertices =
         {           
@@ -30,13 +30,15 @@ namespace Kotono.Graphics.Objects
 
         public float FallOff { get; set; } 
 
+        public float CornerSize { get; set; } 
+
         public bool IsDraw { get; private set; } = true;
         
         private Matrix4 Model =>
             Matrix4.CreateScale((Dest + new Rect(w: FallOff * 2)).WorldSpace.W, (Dest + new Rect(h: FallOff * 2)).WorldSpace.H, 1.0f)
             * Matrix4.CreateTranslation(Dest.WorldSpace.X, Dest.WorldSpace.Y, 0.0f);
 
-        public BoxRoundedCorners(Rect dest, Color color, float fallOff) 
+        public RoundedBox(Rect dest, Color color, float fallOff, float cornerSize) 
         {
             if (_isFirst)
             {
@@ -60,6 +62,7 @@ namespace Kotono.Graphics.Objects
             Dest = dest;
             Color = color;
             FallOff = fallOff;
+            CornerSize = cornerSize;
 
             KT.CreateBoxRoundedCorners(this);
         }
@@ -81,10 +84,11 @@ namespace Kotono.Graphics.Objects
 
         public void Draw()
         {
-            KT.SetShaderMatrix4(ShaderType.BoxRoundedCorners, "model", Model);
-            KT.SetShaderColor(ShaderType.BoxRoundedCorners, "color", Color);
-            KT.SetShaderRect(ShaderType.BoxRoundedCorners, "dest", new Rect(Dest.X, KT.Size.Y - Dest.Y, Dest.W, Dest.H));
-            KT.SetShaderFloat(ShaderType.BoxRoundedCorners, "fallOff", FallOff);
+            KT.SetShaderMatrix4(ShaderType.RoundedBox, "model", Model);
+            KT.SetShaderColor(ShaderType.RoundedBox, "color", Color);
+            KT.SetShaderRect(ShaderType.RoundedBox, "dest", new Rect(Dest.X, KT.Size.Y - Dest.Y, Dest.W, Dest.H));
+            KT.SetShaderFloat(ShaderType.RoundedBox, "fallOff", FallOff);
+            KT.SetShaderFloat(ShaderType.RoundedBox, "cornerSize", CornerSize);
 
             GL.BindVertexArray(_vertexArrayObject);
 

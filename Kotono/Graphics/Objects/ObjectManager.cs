@@ -19,7 +19,7 @@ namespace Kotono.Graphics.Objects
 
         private readonly TriangleManager _triangleManager = new();
 
-        private readonly BoxRoundedCornersManager _boxRoundedCornersManager = new();
+        private readonly RoundedBoxManager _boxRoundedCornersManager = new();
 
         //private readonly Viewport _viewport = new(0, 0, 1280, 720);
 
@@ -125,12 +125,12 @@ namespace Kotono.Graphics.Objects
 
         #region BoxRoundedCorners
 
-        internal void CreateBoxRoundedCorners(BoxRoundedCorners box)
+        internal void CreateBoxRoundedCorners(RoundedBox box)
         {
             _boxRoundedCornersManager.Create(box);
         }
 
-        internal void DeleteBoxRoundedCorners(BoxRoundedCorners box)
+        internal void DeleteBoxRoundedCorners(RoundedBox box)
         {
             _boxRoundedCornersManager.Delete(box);
         }

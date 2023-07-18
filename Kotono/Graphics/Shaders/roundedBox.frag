@@ -10,46 +10,45 @@ struct Rect {
 uniform vec4 color;
 uniform vec4 dest;
 uniform float fallOff;
+uniform float cornerSize;
 
 out vec4 FragColor;
 
 void main()
 {
-    Rect newDest;
-    newDest.x = dest.x;
-    newDest.y = dest.y;
-    newDest.w = dest.z;
-    newDest.h = dest.w;
-
-    vec4 result = color;
-
-    float dist = 0;
+    Rect newDest = Rect(dest.x, dest.y, dest.z, dest.w);
 
     float left = newDest.x - newDest.w / 2;
     float right = newDest.x + newDest.w / 2;
     float top = newDest.y + newDest.h / 2;
     float bottom = newDest.y - newDest.h / 2;
 
-    bool isLeft = gl_FragCoord.x < left;
-    bool isRight = gl_FragCoord.x > right;
-    bool isTop = gl_FragCoord.y > top;
-    bool isBottom = gl_FragCoord.y < bottom;
+    bool isLeft = gl_FragCoord.x < left + cornerSize;
+    bool isRight = gl_FragCoord.x > right - cornerSize;
+    bool isTop = gl_FragCoord.y > top - cornerSize;
+    bool isBottom = gl_FragCoord.y < bottom + cornerSize;
+
+    float dist = 0;
 
     if (isLeft && isTop)
     {
-        dist = distance(vec2(gl_FragCoord), vec2(left, top));
+        dist = distance(vec2(gl_FragCoord), vec2(left + cornerSize, top - cornerSize));
+        dist -= cornerSize;
     }
     else if (isRight && isTop)
     {
-        dist = distance(vec2(gl_FragCoord), vec2(right, top));
+        dist = distance(vec2(gl_FragCoord), vec2(right - cornerSize, top - cornerSize));
+        dist -= cornerSize;
     }
     else if (isLeft && isBottom)
     {
-        dist = distance(vec2(gl_FragCoord), vec2(left, bottom));
+        dist = distance(vec2(gl_FragCoord), vec2(left + cornerSize, bottom + cornerSize));
+        dist -= cornerSize;
     }
     else if (isRight && isBottom)
     {
-        dist = distance(vec2(gl_FragCoord), vec2(right, bottom));
+        dist = distance(vec2(gl_FragCoord), vec2(right - cornerSize, bottom + cornerSize));
+        dist -= cornerSize;
     }
     else if (isLeft)
     {
@@ -68,6 +67,7 @@ void main()
         dist = bottom - gl_FragCoord.y;
     }
     
+    vec4 result = color;
     float ratio = dist / fallOff;
     result.a -= ratio;
 

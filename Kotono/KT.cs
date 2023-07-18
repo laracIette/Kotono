@@ -82,13 +82,13 @@ namespace Kotono
 
         #region BoxRoundedCorners
 
-        public static BoxRoundedCorners CreateBoxRoundedCorners(BoxRoundedCorners box)
+        public static RoundedBox CreateBoxRoundedCorners(RoundedBox box)
         {
             _objectManager.CreateBoxRoundedCorners(box);
             return box;
         }
 
-        public static void DeleteBoxRoundedCorners(BoxRoundedCorners box)
+        public static void DeleteBoxRoundedCorners(RoundedBox box)
         {
             _objectManager.DeleteBoxRoundedCorners(box);
         }

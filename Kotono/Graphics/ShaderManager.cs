@@ -11,7 +11,7 @@ namespace Kotono.Graphics
         PointLight,
         Image,
         Gizmo,
-        BoxRoundedCorners
+        RoundedBox
     }
 
     internal class ShaderManager
@@ -28,7 +28,7 @@ namespace Kotono.Graphics
                 new PointLightShader(),
                 new ImageShader(),
                 new GizmoShader(),
-                new BoxRoundedCornersShader()
+                new RoundedBoxShader()
             };
         }
 
