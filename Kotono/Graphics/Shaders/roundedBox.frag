@@ -27,7 +27,7 @@ void main()
     bool isRight = gl_FragCoord.x > right - cornerSize;
     bool isTop = gl_FragCoord.y > top - cornerSize;
     bool isBottom = gl_FragCoord.y < bottom + cornerSize;
-
+    
     float dist = 0;
 
     if (isLeft && isTop)

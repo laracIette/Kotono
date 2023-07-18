@@ -45,5 +45,15 @@
         {
             return (float)MathD.Lerp(start, end, interpolation);
         }
+
+        public static float Min(double left, double right)
+        {
+            return (float)MathD.Min(left, right);
+        }
+
+        public static float Max(double left, double right)
+        {
+            return (float)MathD.Max(left, right);
+        }
     }
 }

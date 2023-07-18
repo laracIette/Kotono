@@ -28,9 +28,23 @@ namespace Kotono.Graphics.Objects
 
         public Color Color { get; set; }
 
-        public float FallOff { get; set; } 
+        private float _fallOff;
 
-        public float CornerSize { get; set; } 
+        public float FallOff 
+        {
+            get => _fallOff;
+            // _fallOff has a minimum value of 0.000001 so that there is no division by 0 in glsl
+            set => _fallOff = Math.Clamp(value, 0.000001, float.PositiveInfinity);
+        }
+
+        private float _cornerSize;
+
+        public float CornerSize 
+        {
+            get => _cornerSize;
+            // _cornerSize has a maximum value of the smallest value between the box's width and height divided by 2
+            set => _cornerSize = Math.Clamp(value, 0, Math.Min(Dest.W, Dest.H) / 2);
+        } 
 
         public bool IsDraw { get; private set; } = true;
         

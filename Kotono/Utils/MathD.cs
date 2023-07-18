@@ -1,4 +1,6 @@
-﻿namespace Kotono.Utils
+﻿using Newtonsoft.Json.Linq;
+
+namespace Kotono.Utils
 {
     public static class MathD
     {
@@ -44,6 +46,16 @@
         public static double Lerp(double start, double end, double interpolation)
         {
             return start + (end - start) * interpolation;
+        }
+
+        public static double Min(double left, double right)
+        {
+            return (left < right) ? left : right;
+        }
+
+        public static double Max(double left, double right)
+        {
+            return (left > right) ? left : right;
         }
     }
 }
