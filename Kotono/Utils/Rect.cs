@@ -23,13 +23,13 @@ namespace Kotono.Utils
         public float W
         {
             readonly get => Size.X;
-            set => Size.X = value;
+            set => Size.X = Math.Clamp(value, 0, float.PositiveInfinity);
         }
 
         public float H
         {
             readonly get => Size.Y;
-            set => Size.Y = value;
+            set => Size.Y = Math.Clamp(value, 0, float.PositiveInfinity);
         }
 
         public readonly Rect Normalized =>
