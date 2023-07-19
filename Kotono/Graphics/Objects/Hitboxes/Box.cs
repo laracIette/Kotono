@@ -57,6 +57,8 @@ namespace Kotono.Graphics.Objects.Hitboxes
 
         private static bool _isFirst = true;
 
+        public bool IsDraw { get; set; }
+
         private Transform _transform;
 
         public Transform Transform => _transform;
@@ -115,6 +117,11 @@ namespace Kotono.Graphics.Objects.Hitboxes
 
         }
 
+        public void UpdateShaders()
+        {
+
+        }
+
         public void Draw()
         {
             var model =
@@ -140,5 +147,15 @@ namespace Kotono.Graphics.Objects.Hitboxes
         }
 
         public bool IsColliding => Collisions.Any(Collides);
+
+        public void Save()
+        {
+
+        }
+
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
+        }
     }
 }

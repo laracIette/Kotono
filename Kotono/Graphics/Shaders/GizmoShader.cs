@@ -1,12 +1,12 @@
 ﻿namespace Kotono.Graphics.Shaders
 {
-    internal class GizmoShader : Shader
+    public class GizmoShader : Shader
     {
-        internal GizmoShader() 
+        public GizmoShader() 
             : base("Graphics/Shaders/gizmo.vert", "Graphics/Shaders/gizmo.frag")
         { }
 
-        internal override void Update()
+        public override void Update()
         {
             SetMatrix4("view", KT.ActiveCamera.ViewMatrix);
             SetMatrix4("projection", KT.ActiveCamera.ProjectionMatrix);

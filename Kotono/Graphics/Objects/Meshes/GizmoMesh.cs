@@ -2,7 +2,7 @@
 
 namespace Kotono.Graphics.Objects.Meshes
 {
-    public class GizmoMesh : Mesh
+    public class GizmoMesh : FrontMesh
     {
         public GizmoMesh(string axis)
             : base(
@@ -10,7 +10,6 @@ namespace Kotono.Graphics.Objects.Meshes
                   new IHitbox[] { }
               )
         {
-            IsInFront = true;
         }
     }
 }

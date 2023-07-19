@@ -1,6 +1,7 @@
 ﻿using Kotono.Utils;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Math = Kotono.Utils.Math;
@@ -18,6 +19,8 @@ namespace Kotono.Graphics.Objects.Hitboxes
         private static int _vertexBufferObject;
 
         private static bool _isFirst = true;
+
+        public bool IsDraw { get; set; }
 
         private Transform _transform;
 
@@ -85,6 +88,12 @@ namespace Kotono.Graphics.Objects.Hitboxes
 
         public void Update() 
         {
+
+        }
+
+        public void UpdateShaders() 
+        {
+
         }
 
         public void Draw()
@@ -119,5 +128,15 @@ namespace Kotono.Graphics.Objects.Hitboxes
         }
 
         public bool IsColliding => Collisions.Any(Collides);
+
+        public void Save()
+        {
+
+        }
+
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
+        }
     }
 }

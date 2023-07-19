@@ -2,17 +2,17 @@
 
 namespace Kotono.File
 {
-    internal class Data
+    public class Data
     {
-        internal Dictionary<string, string> Strings { get; } = new();
+        public Dictionary<string, string> Strings { get; } = new();
 
-        internal Dictionary<string, float> Floats { get; } = new();
+        public Dictionary<string, float> Floats { get; } = new();
 
-        internal Dictionary<string, double> Doubles { get; } = new();
+        public Dictionary<string, double> Doubles { get; } = new();
 
-        internal Dictionary<string, int> Ints { get; } = new();
+        public Dictionary<string, int> Ints { get; } = new();
 
-        internal Data() { }
+        public Data() { }
         
         public override string ToString()
         {

@@ -10,21 +10,21 @@ namespace Kotono.Engine
         Play
     }
 
-    internal class Mode
+    public class Mode
     {
-        internal UserMode UserMode { get; private set; }
+        public UserMode UserMode { get; private set; }
 
-        internal Mode()
+        public Mode()
         {
             UserMode = UserMode.Navigate;
         }
 
-        internal void Init()
+        public void Init()
         {
 
         }
 
-        internal void Update()
+        public void Update()
         {
             if (Mouse.IsButtonDown(MouseButton.Right))
             {

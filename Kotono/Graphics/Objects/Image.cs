@@ -1,11 +1,14 @@
-﻿using Kotono.Input;
+﻿using Kotono.Graphics.Objects.Managers;
+using Kotono.Input;
 using Kotono.Utils;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
+using System;
+using Math = Kotono.Utils.Math;
 
 namespace Kotono.Graphics.Objects
 {
-    public class Image
+    public class Image : IDrawable
     {
         private static readonly float[] _vertices =
         {           
@@ -144,6 +147,16 @@ namespace Kotono.Graphics.Objects
         public void Hide()
         {
             IsDraw = false;
+        }
+
+        public void Save()
+        {
+
+        }
+
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
         }
     }
 }

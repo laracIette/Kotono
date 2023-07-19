@@ -1,9 +1,10 @@
 ﻿using Kotono.Graphics.Objects;
+using Kotono.Graphics.Objects.Managers;
 using Kotono.Utils;
 
 namespace Kotono.Graphics
 {
-    internal class Component
+    public class Component
     {
         private readonly Viewport _viewport;
         
@@ -11,24 +12,24 @@ namespace Kotono.Graphics
 
         private readonly Image _background;
         
-        internal Component(Rect dest) 
+        public Component(Rect dest) 
         { 
             _viewport = new Viewport(dest);
 
             //_background = _imageManager.Create(new Image(KT.KotonoPath + "Assets/PerformanceWindow/background.png", dest * new Rect(0, 0, 1, 1)));
         }
 
-        internal void Update()
+        public void Update()
         {
             _imageManager.Update();
         }
 
-        internal void UpdateShaders()
+        public void UpdateShaders()
         {
             _imageManager.UpdateShaders();
         }
 
-        internal void Draw()
+        public void Draw()
         {
             _viewport.Use(); 
 

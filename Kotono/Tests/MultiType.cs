@@ -2,11 +2,11 @@
 
 namespace Kotono.Tests
 {
-    internal class MultiType
+    public class MultiType
     {
         private object? _value = null;
 
-        internal object Value
+        public object Value
         {
             get
             {

@@ -1,4 +1,5 @@
-﻿using Kotono.Utils;
+﻿using Kotono.Graphics.Objects.Managers;
+using Kotono.Utils;
 using System.Collections.Generic;
 
 namespace Kotono.Graphics.Objects
@@ -9,7 +10,7 @@ namespace Kotono.Graphics.Objects
         TopLeft,
     }
 
-    internal class Text
+    public class Text
     {
         protected string _text;
 
@@ -21,13 +22,13 @@ namespace Kotono.Graphics.Objects
 
         protected readonly List<Image> _letters = new();
 
-        internal double Time { get; private set; }
+        public double Time { get; private set; }
 
         private readonly static Dictionary<char, string> _paths = new();
 
         private Color _color;
 
-        internal Color Color {
+        public Color Color {
             get => _color;
             set
             {
@@ -39,7 +40,7 @@ namespace Kotono.Graphics.Objects
             }
         }
 
-        internal static void InitPaths()
+        public static void InitPaths()
         {
             _paths['a'] = KT.KotonoPath + @"Assets\Characters\a.png"; TextureManager.LoadTexture(_paths['a']);
             _paths['b'] = KT.KotonoPath + @"Assets\Characters\b.png"; TextureManager.LoadTexture(_paths['b']);
@@ -114,7 +115,7 @@ namespace Kotono.Graphics.Objects
             _paths[':'] = KT.KotonoPath + @"Assets\Characters\colon.png"; TextureManager.LoadTexture(_paths[':']);
         }
 
-        internal Text(string text, Rect dest, Position position, Color color, float spacing = 1.0f) 
+        public Text(string text, Rect dest, Position position, Color color, float spacing = 1.0f) 
         {
             _text = text;
             _dest = dest;
@@ -123,7 +124,7 @@ namespace Kotono.Graphics.Objects
             Color = color;
         }
 
-        internal void Init()
+        public void Init()
         {
             Time = Utils.Time.NowS;
 
@@ -173,7 +174,7 @@ namespace Kotono.Graphics.Objects
             }
         }
 
-        internal virtual void SetText(string text)
+        public virtual void SetText(string text)
         {
             if (text != _text)
             {
@@ -183,7 +184,7 @@ namespace Kotono.Graphics.Objects
             }
         }
 
-        internal void Transform(Rect dest, double time)
+        public void Transform(Rect dest, double time)
         {
             foreach (var letter in _letters)
             {
@@ -191,7 +192,7 @@ namespace Kotono.Graphics.Objects
             }
         }
 
-        internal void TransformTo(Rect dest, double time)
+        public void TransformTo(Rect dest, double time)
         {
             foreach (var letter in _letters)
             {
@@ -199,7 +200,7 @@ namespace Kotono.Graphics.Objects
             }
         }
 
-        internal void Clear()
+        public void Clear()
         {
             foreach (var letter in _letters)
             {
@@ -208,7 +209,7 @@ namespace Kotono.Graphics.Objects
             _letters.Clear();
         }
 
-        internal void Show()
+        public void Show()
         {
             foreach (var letter in _letters)
             {
@@ -216,7 +217,7 @@ namespace Kotono.Graphics.Objects
             }
         }
 
-        internal void Hide()
+        public void Hide()
         {
             foreach (var letter in _letters)
             {

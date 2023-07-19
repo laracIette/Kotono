@@ -3,7 +3,7 @@ using StbImageSharp;
 using System.Collections.Generic;
 using IO = System.IO;
 
-namespace Kotono.Graphics.Objects
+namespace Kotono.Graphics.Objects.Managers
 {
     public static class TextureManager
     {

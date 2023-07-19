@@ -8,8 +8,10 @@ using Kotono.Input;
 
 namespace Kotono.Graphics.Objects.Lights
 {
-    public class SpotLight : IDisposable
+    public class SpotLight : IDrawable
     {
+        public bool IsDraw { get; set; }
+
         private float _cutOffAngle = 12.5f;
 
         private float _outerCutOffAngle = 17.5f;
@@ -83,6 +85,11 @@ namespace Kotono.Graphics.Objects.Lights
         }
 
         public void Draw()
+        {
+
+        }
+
+        public void Save()
         {
 
         }

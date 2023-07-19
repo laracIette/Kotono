@@ -16,10 +16,10 @@ namespace Kotono.Input
 
     public static partial class Mouse
     {
-        internal struct POINT
+        public struct POINT
         {
-            internal int X;
-            internal int Y;
+            public int X;
+            public int Y;
         }
 
         [LibraryImport("user32.dll")]

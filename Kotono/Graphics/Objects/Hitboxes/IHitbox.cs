@@ -1,17 +1,10 @@
 ﻿using Kotono.Utils;
-using System;
 using System.Collections.Generic;
 
 namespace Kotono.Graphics.Objects.Hitboxes
 {
-    public interface IHitbox
+    public interface IHitbox : IDrawable
     {
-        public void Init();
-
-        public void Update();
-
-        public void Draw();
-
         public bool Collides(IHitbox h);
 
         public bool IsColliding { get; }

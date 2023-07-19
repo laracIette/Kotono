@@ -57,8 +57,6 @@ uniform vec3 viewPos;
 
 uniform vec4 color;
 
-uniform bool isInFront;
-
 out vec4 FragColor;
 
 in vec3 Normal;
@@ -71,12 +69,6 @@ vec4 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir);
 
 void main()
 {
-    // Compare depth value with stored depth in the depth buffer
-    if (isInFront && (gl_FragCoord.z < gl_FragDepth))
-    {
-        discard;
-    }
-
     //properties
     vec3 norm = normalize(Normal);
     vec3 viewDir = normalize(viewPos - FragPos);

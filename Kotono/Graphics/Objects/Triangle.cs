@@ -5,7 +5,7 @@ using System;
 
 namespace Kotono.Graphics.Objects
 {
-    public class Triangle
+    public class Triangle : IDrawable
     {
         public Vector Vertex1;
 
@@ -85,6 +85,11 @@ namespace Kotono.Graphics.Objects
             }
         }
 
+        public void UpdateShaders()
+        {
+
+        }
+
         public void Draw()
         {
             var model =
@@ -158,6 +163,16 @@ namespace Kotono.Graphics.Objects
                         throw new IndexOutOfRangeException("You tried to set this Triangle at index: " + index);
                 }
             }
+        }
+
+        public void Save()
+        {
+
+        }
+
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
         }
     }
 }

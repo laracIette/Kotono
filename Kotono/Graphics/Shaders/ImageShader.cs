@@ -2,13 +2,13 @@
 
 namespace Kotono.Graphics.Shaders
 {
-    internal class ImageShader : Shader
+    public class ImageShader : Shader
     {
-        internal ImageShader()
+        public ImageShader()
             : base("Graphics/Shaders/image.vert", "Graphics/Shaders/image.frag")
         { }
 
-        internal override void Update()
+        public override void Update()
         {
         }
     }

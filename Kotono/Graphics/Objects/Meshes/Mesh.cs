@@ -1,6 +1,7 @@
 ﻿using Assimp;
 using Kotono.File;
 using Kotono.Graphics.Objects.Hitboxes;
+using Kotono.Graphics.Objects.Managers;
 using Kotono.Input;
 using Kotono.Physics;
 using Kotono.Utils;
@@ -13,7 +14,7 @@ using PrimitiveType = OpenTK.Graphics.OpenGL4.PrimitiveType;
 
 namespace Kotono.Graphics.Objects.Meshes
 {
-    public abstract class Mesh : IDisposable
+    public abstract class Mesh : IDrawable
     {
         private static readonly Dictionary<string, MeshProperties> _paths = new();
 
@@ -26,8 +27,6 @@ namespace Kotono.Graphics.Objects.Meshes
         protected readonly ShaderType _shaderType;
 
         public bool IsDraw { get; private set; } = true;
-
-        public bool IsInFront { get; set; } = false;
 
         public bool IsFiziks { get; set; } = false;
 
@@ -253,9 +252,13 @@ namespace Kotono.Graphics.Objects.Meshes
 
             _meshProperties = _paths[_properties.Strings["Obj"]];
 
-            KT.CreateMesh(this);
+            Create();
         }
 
+        protected virtual void Create()
+        {
+            KT.CreateMesh(this);
+        }
 
         public virtual void Init() { }
 
@@ -288,6 +291,8 @@ namespace Kotono.Graphics.Objects.Meshes
             }
         }
 
+        public void UpdateShaders() { }
+
         public virtual void Draw()
         {
             for (int i = 0; i < Textures.Length; i++)
@@ -297,7 +302,6 @@ namespace Kotono.Graphics.Objects.Meshes
 
             KT.SetShaderMatrix4(_shaderType, "model", Model);
             KT.SetShaderColor(_shaderType, "color", Color);
-            KT.SetShaderBool(_shaderType, "isInFront", IsInFront);
 
             GL.BindVertexArray(VertexArrayObject);
             GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
@@ -331,7 +335,12 @@ namespace Kotono.Graphics.Objects.Meshes
             IsDraw = false;
         }
 
-        public void WriteData()
+        public void Save()
+        {
+            WriteData();
+        }
+
+        private void WriteData()
         {
             _properties.Floats["Color.R"] = Color.R;
             _properties.Floats["Color.G"] = Color.G;

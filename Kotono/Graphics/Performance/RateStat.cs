@@ -4,11 +4,11 @@ using System.Linq;
 
 namespace Kotono.Graphics.Performance
 {
-    internal class RateStat
+    public class RateStat
     {
-        internal double Rate { get; private set; }
+        public double Rate { get; private set; }
 
-        internal double Time { get; private set; }
+        public double Time { get; private set; }
 
         private readonly double[] _times;
 
@@ -16,7 +16,7 @@ namespace Kotono.Graphics.Performance
 
         private readonly Text _text;
 
-        internal RateStat(Rect dest)
+        public RateStat(Rect dest)
         {
             _times = new double[60];
             _timeIndex = 0;
@@ -24,17 +24,17 @@ namespace Kotono.Graphics.Performance
             _text = new Text("0", dest, Position.Center, Color.White);
         }
 
-        internal void Init()
+        public void Init()
         {
             _text.Init();
         }
 
-        internal void Update() 
+        public void Update() 
         {
 
         }
 
-        internal void AddTime(double newTime)
+        public void AddTime(double newTime)
         {
             _times[_timeIndex] = newTime;
             _timeIndex = (_timeIndex + 1) % _times.Length;
@@ -46,12 +46,12 @@ namespace Kotono.Graphics.Performance
             _text.SetText(Rate.ToString("0.00"));
         }
 
-        internal void Show()
+        public void Show()
         {
             _text.Show();
         }
 
-        internal void Hide()
+        public void Hide()
         {
             _text.Hide();
         }

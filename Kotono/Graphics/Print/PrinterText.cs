@@ -3,14 +3,14 @@ using Kotono.Utils;
 
 namespace Kotono.Graphics.Print
 {
-    internal class PrinterText : Text
+    public class PrinterText : Text
     {
-        internal PrinterText(string text)
+        public PrinterText(string text)
             : base(text, new Rect(0f, 0f, 25f, 30f), Position.TopLeft, Color.White, 2 / 3f) 
         {
         }
 
-        internal override void SetText(string text)
+        public override void SetText(string text)
         {   
             _text = text;
             Clear();
@@ -19,7 +19,7 @@ namespace Kotono.Graphics.Print
             Init();
         }
 
-        internal void Lower()
+        public void Lower()
         {
             _dest.Y += _dest.H;
 

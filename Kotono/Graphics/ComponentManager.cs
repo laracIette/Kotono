@@ -2,20 +2,20 @@
 
 namespace Kotono.Graphics
 {
-    internal class ComponentManager
+    public class ComponentManager
     {
         private readonly List<Component> _components = new();
 
-        internal ComponentManager() 
+        public ComponentManager() 
         {
         }
 
-        internal void Init()
+        public void Init()
         {
             //_components.Add(new Component(new Rect(200, 180, 200, 300)));
         }
 
-        internal void Update()
+        public void Update()
         {
             foreach (var component in _components)
             {
@@ -23,7 +23,7 @@ namespace Kotono.Graphics
             }
         }
 
-        internal void UpdateShaders()
+        public void UpdateShaders()
         {
             foreach (var component in _components)
             {
@@ -31,7 +31,7 @@ namespace Kotono.Graphics
             }
         }
 
-        internal void Draw()
+        public void Draw()
         {
             foreach (var component in _components) 
             { 

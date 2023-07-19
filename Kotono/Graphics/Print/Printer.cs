@@ -4,15 +4,15 @@ using System.Linq;
 
 namespace Kotono.Graphics.Print
 {
-    internal class Printer
+    public class Printer
     {
         private readonly PrinterText[] _texts = new PrinterText[50];
 
         private int _currentIndex = 0;
 
-        internal Printer() { }
+        public Printer() { }
 
-        internal void Init()
+        public void Init()
         {
             for (int i = 0; i < _texts.Length; i++)
             {
@@ -21,7 +21,7 @@ namespace Kotono.Graphics.Print
             }
         }
 
-        internal void Update()
+        public void Update()
         {
             foreach (var text in _texts)
             {
@@ -32,7 +32,7 @@ namespace Kotono.Graphics.Print
             }
         }
 
-        internal void Lower()
+        public void Lower()
         {
             foreach (var text in _texts)
             {
@@ -40,7 +40,7 @@ namespace Kotono.Graphics.Print
             }
         }
 
-        internal void Print(string? text, Color color)
+        public void Print(string? text, Color color)
         {
             if (text != null)
             {

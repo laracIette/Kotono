@@ -4,6 +4,7 @@ using Kotono.Graphics;
 using Kotono.Graphics.Objects;
 using Kotono.Graphics.Objects.Hitboxes;
 using Kotono.Graphics.Objects.Lights;
+using Kotono.Graphics.Objects.Managers;
 using Kotono.Graphics.Objects.Meshes;
 using Kotono.Graphics.Print;
 using Kotono.Input;
@@ -84,13 +85,13 @@ namespace Kotono
 
         public static RoundedBox CreateBoxRoundedCorners(RoundedBox box)
         {
-            _objectManager.CreateBoxRoundedCorners(box);
+            _objectManager.CreateRoundedBox(box);
             return box;
         }
 
         public static void DeleteBoxRoundedCorners(RoundedBox box)
         {
-            _objectManager.DeleteBoxRoundedCorners(box);
+            _objectManager.DeleteRoundedBox(box);
         }
 
         #endregion BoxRoundedCorners
@@ -109,6 +110,21 @@ namespace Kotono
         }
 
         #endregion Mesh
+
+        #region FrontMesh
+
+        public static FrontMesh CreateFrontMesh(FrontMesh frontMesh)
+        {
+            _objectManager.CreateFrontMesh(frontMesh);
+            return frontMesh;
+        }
+
+        public static void DeleteFrontMesh(FrontMesh frontMesh)
+        {
+            _objectManager.DeleteFrontMesh(frontMesh);
+        }
+
+        #endregion FrontMesh
 
         #region Hitbox
 
@@ -304,12 +320,12 @@ namespace Kotono
 
         public static int MaxFrameRate { get; set; } = 60;
 
-        internal static void AddFrameTime(double frameTime)
+        public static void AddFrameTime(double frameTime)
         { 
             _performanceWindow.AddFrameTime(frameTime);
         }
 
-        internal static void AddUpdateTime(double updateTime)
+        public static void AddUpdateTime(double updateTime)
         {
             _performanceWindow.AddUpdateTime(updateTime);
         }

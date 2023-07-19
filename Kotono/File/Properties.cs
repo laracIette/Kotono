@@ -5,27 +5,27 @@ using IO = System.IO;
 
 namespace Kotono.File
 {
-    internal class Properties
+    public class Properties
     {
-        internal string Path { get; }
+        public string Path { get; }
 
         private readonly Data _data;
 
-        internal Dictionary<string, string> Strings => _data.Strings;
+        public Dictionary<string, string> Strings => _data.Strings;
 
-        internal Dictionary<string, float> Floats => _data.Floats;
+        public Dictionary<string, float> Floats => _data.Floats;
 
-        internal Dictionary<string, double> Doubles => _data.Doubles;
+        public Dictionary<string, double> Doubles => _data.Doubles;
 
-        internal Dictionary<string, int> Ints => _data.Ints;
+        public Dictionary<string, int> Ints => _data.Ints;
 
-        internal Properties(string path, Data data)
+        public Properties(string path, Data data)
         {
             Path = path;
             _data = data;
         }
 
-        internal static Properties Parse(string path)
+        public static Properties Parse(string path)
         {
             if (!path.EndsWith(".ktf"))
             {
@@ -220,7 +220,7 @@ namespace Kotono.File
             }
         }
 
-        internal void WriteFile()
+        public void WriteFile()
         {
             string text = "# Kotono Properties File\n\n";
 

@@ -3,13 +3,13 @@ using Kotono.Utils;
 
 namespace Kotono.Graphics.Shaders
 {
-    internal class LightingShader : Shader
+    public class LightingShader : Shader
     {
-        internal LightingShader() 
+        public LightingShader() 
             : base("Graphics/Shaders/lighting.vert", "Graphics/Shaders/lighting.frag")
         { }
 
-        internal override void Update()
+        public override void Update()
         {
             SetInt("numPointLights", PointLight.Count);
             SetInt("numSpotLights", KT.GetSpotLightsCount());

@@ -4,8 +4,16 @@ using System;
 
 namespace Kotono.Graphics.Objects.Lights
 {
-    public class PointLight : IDisposable
+    public class PointLight : IDrawable
     {
+        public bool IsDraw { get; set; }
+
+        public bool IsGravity
+        {
+            get => _mesh.IsGravity;
+            set => _mesh.IsGravity = value;
+        }
+
         public Color Diffuse { get; protected set; }
        
         private Color _ambient;
@@ -66,6 +74,11 @@ namespace Kotono.Graphics.Objects.Lights
             
         }
 
+        public void Save()
+        {
+
+        }
+
         public void Dispose()
         {
             KT.DeleteMesh(_mesh);
@@ -74,11 +87,5 @@ namespace Kotono.Graphics.Objects.Lights
 
             GC.SuppressFinalize(this);
         }
-
-        public bool IsGravity
-        {
-            get => _mesh.IsGravity;
-            set => _mesh.IsGravity = value;
-        } 
     }
 }
