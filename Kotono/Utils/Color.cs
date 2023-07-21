@@ -39,7 +39,7 @@ namespace Kotono.Utils
             set => _a = Math.Clamp(value, 0, 1);
         }
 
-        public static Color Transparent => new Color(0, 0, 0, 0);
+        public static Color Transparent => new Color(1, 1, 1, 0);
 
         public static Color Black => new Color(0, 0, 0, 1);
         
@@ -69,9 +69,7 @@ namespace Kotono.Utils
                 _ => throw new IndexOutOfRangeException("You tried to access this Color at index: " + index)
             };
 
-        /// <summary>
-        /// Initialize a Color with R = 0, G = 0, B = 0, A = 1
-        /// </summary>
+        /// <summary> Initialize a Color with R = 0, G = 0, B = 0, A = 1 </summary>
         public Color()
         {
             R = 0;
@@ -80,9 +78,7 @@ namespace Kotono.Utils
             A = 1;
         }
 
-        /// <summary>
-        /// Initialize a Color with R = c.R, G = c.G, B = c.B, A = c.A
-        /// </summary>
+        /// <summary> Initialize a Color with R = c.R, G = c.G, B = c.B, A = c.A </summary>
         public Color(Color c)
         {
             R = c.R;
@@ -91,9 +87,7 @@ namespace Kotono.Utils
             A = c.A;
         }
 
-        /// <summary>
-        /// Initialize a Color with R = f, G = f, B = f, A = a
-        /// </summary>
+        /// <summary> Initialize a Color with R = f, G = f, B = f, A = a </summary>
         public Color(float f, float a = 1)
         {
             R = f;
@@ -102,9 +96,7 @@ namespace Kotono.Utils
             A = a;
         }
 
-        /// <summary>
-        /// Initialize a Color with R = (float)d, G = (float)d, B = (float)d, A = (float)a
-        /// </summary>
+        /// <summary> Initialize a Color with R = (float)d, G = (float)d, B = (float)d, A = (float)a </summary>
         public Color(double d, double a = 1)
         {
             R = (float)d;
@@ -113,9 +105,7 @@ namespace Kotono.Utils
             A = (float)a;
         }
 
-        /// <summary>
-        /// Initialize a Color with R = r, G = g, B = b, A = a
-        /// </summary>
+        /// <summary> Initialize a Color with R = r, G = g, B = b, A = a </summary>
         public Color(float r, float g, float b, float a = 1)
         {
             R = r;
@@ -124,9 +114,7 @@ namespace Kotono.Utils
             A = a;
         }
 
-        /// <summary>
-        /// Initialize a Color with R = (float)r, G = (float)g, B = (float)b, A = (float)a
-        /// </summary>
+        /// <summary> Initialize a Color with R = (float)r, G = (float)g, B = (float)b, A = (float)a </summary>
         public Color(double r, double g, double b, double a = 1)
         {
             R = (float)r;
@@ -169,6 +157,18 @@ namespace Kotono.Utils
         {
             return HexToF(hex.ToString() + hex.ToString());
         }     
+
+        public static string ToHex(Color c)
+        {
+            string result = "#";
+
+            result += ((int)(c.R * 255)).ToString("X");
+            result += ((int)(c.G * 255)).ToString("X");
+            result += ((int)(c.B * 255)).ToString("X");
+            result += ((int)(c.A * 255)).ToString("X");
+                       
+            return result;
+        }
 
         public static Color operator +(Color left, Color right)
         {

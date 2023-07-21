@@ -113,6 +113,7 @@ namespace Kotono.Graphics.Objects
             _paths['-'] = KT.KotonoPath + @"Assets\Characters\minus.png"; TextureManager.LoadTexture(_paths['-']);
             _paths['+'] = KT.KotonoPath + @"Assets\Characters\plus.png"; TextureManager.LoadTexture(_paths['+']);
             _paths[':'] = KT.KotonoPath + @"Assets\Characters\colon.png"; TextureManager.LoadTexture(_paths[':']);
+            _paths['#'] = KT.KotonoPath + @"Assets\Characters\#.png"; TextureManager.LoadTexture(_paths['#']);
         }
 
         public Text(string text, Rect dest, Position position, Color color, float spacing = 1.0f) 

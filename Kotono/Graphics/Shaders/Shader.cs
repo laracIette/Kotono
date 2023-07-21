@@ -7,20 +7,30 @@ using IO = System.IO;
 
 namespace Kotono.Graphics.Shaders
 {
-    public class Shader
+    public abstract class Shader
     {
-        private readonly int _handle;
+        private int _handle;
 
         private readonly Dictionary<string, int> _uniformLocations = new();
 
+        private readonly string _vertPath;
+        
+        private readonly string _fragPath;
+
         public Shader(string vertPath, string fragPath)
-        {
-            var shaderSource = IO.File.ReadAllText(KT.KotonoPath + vertPath);
+        { 
+            _vertPath = vertPath;
+            _fragPath = fragPath;
+        }
+
+        public void Init() 
+        { 
+            var shaderSource = IO.File.ReadAllText(KT.KotonoPath + _vertPath);
             var vertexShader = GL.CreateShader(OpenTK.Graphics.OpenGL4.ShaderType.VertexShader);
             GL.ShaderSource(vertexShader, shaderSource);
             CompileShader(vertexShader);
 
-            shaderSource = IO.File.ReadAllText(KT.KotonoPath + fragPath);
+            shaderSource = IO.File.ReadAllText(KT.KotonoPath + _fragPath);
             var fragmentShader = GL.CreateShader(OpenTK.Graphics.OpenGL4.ShaderType.FragmentShader);
             GL.ShaderSource(fragmentShader, shaderSource);
             CompileShader(fragmentShader);

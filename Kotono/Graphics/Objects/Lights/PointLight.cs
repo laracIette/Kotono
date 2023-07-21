@@ -14,17 +14,17 @@ namespace Kotono.Graphics.Objects.Lights
             set => _mesh.IsGravity = value;
         }
 
-        public Color Diffuse { get; protected set; }
+        public Color Color { get; protected set; }
        
-        private Color _ambient;
+        public Color Ambient { get; protected set; }
 
-        private Color _specular;
+        public Color Specular { get; protected set; }
 
-        private float _constant;
+        public float Constant { get; protected set; }
 
-        private float _linear;
+        public float Linear { get; protected set; }
 
-        private float _quadratic;
+        public float Quadratic { get; protected set; }
 
         private int _shaderIndex;
 
@@ -36,12 +36,12 @@ namespace Kotono.Graphics.Objects.Lights
 
         public PointLight(Vector location, Color ambient, Color diffuse, Color specular, float constant, float linear, float quadratic)
         {
-            _ambient = ambient;
-            Diffuse = diffuse;
-            _specular = specular;
-            _constant = constant;
-            _linear = linear;
-            _quadratic = quadratic;
+            Ambient = ambient;
+            Color = diffuse;
+            Specular = specular;
+            Constant = constant;
+            Linear = linear;
+            Quadratic = quadratic;
             _shaderIndex = Count;
 
             _mesh = new PointLightMesh(location, this);
@@ -61,12 +61,12 @@ namespace Kotono.Graphics.Objects.Lights
         public void UpdateShaders()
         {
             KT.SetShaderVector(ShaderType.Lighting, $"pointLights[{_shaderIndex}].location", _mesh.Location);
-            KT.SetShaderColor(ShaderType.Lighting, $"pointLights[{_shaderIndex}].ambient", _ambient);
-            KT.SetShaderColor(ShaderType.Lighting, $"pointLights[{_shaderIndex}].diffuse", Diffuse);
-            KT.SetShaderColor(ShaderType.Lighting, $"pointLights[{_shaderIndex}].specular", _specular);
-            KT.SetShaderFloat(ShaderType.Lighting, $"pointLights[{_shaderIndex}].constant", _constant);
-            KT.SetShaderFloat(ShaderType.Lighting, $"pointLights[{_shaderIndex}].linear", _linear);
-            KT.SetShaderFloat(ShaderType.Lighting, $"pointLights[{_shaderIndex}].quadratic", _quadratic);
+            KT.SetShaderColor(ShaderType.Lighting, $"pointLights[{_shaderIndex}].ambient", Ambient);
+            KT.SetShaderColor(ShaderType.Lighting, $"pointLights[{_shaderIndex}].diffuse", Color);
+            KT.SetShaderColor(ShaderType.Lighting, $"pointLights[{_shaderIndex}].specular", Specular);
+            KT.SetShaderFloat(ShaderType.Lighting, $"pointLights[{_shaderIndex}].constant", Constant);
+            KT.SetShaderFloat(ShaderType.Lighting, $"pointLights[{_shaderIndex}].linear", Linear);
+            KT.SetShaderFloat(ShaderType.Lighting, $"pointLights[{_shaderIndex}].quadratic", Quadratic);
         }
 
         public void Draw()

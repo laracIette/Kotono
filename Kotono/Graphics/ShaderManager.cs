@@ -11,25 +11,31 @@ namespace Kotono.Graphics
         PointLight,
         Image,
         Gizmo,
-        RoundedBox
+        RoundedBox,
+        RoundedBorder
     }
 
     public class ShaderManager
     {
-        private Shader[] _shaders = new Shader[6];
+        private readonly Shader[] _shaders =
+        {
+            new LightingShader(),
+            new HitboxShader(),
+            new PointLightShader(),
+            new ImageShader(),
+            new GizmoShader(),
+            new RoundedBoxShader(),
+            new RoundedBorderShader()
+        };
 
         public ShaderManager() { }
 
         public void Init()
         {
-            _shaders = new Shader[] {
-                new LightingShader(),
-                new HitboxShader(),
-                new PointLightShader(),
-                new ImageShader(),
-                new GizmoShader(),
-                new RoundedBoxShader()
-            };
+            foreach (var shader in _shaders)
+            {
+                shader.Init();
+            }
         }
 
         public int GetAttribLocation(ShaderType type, string attribName)

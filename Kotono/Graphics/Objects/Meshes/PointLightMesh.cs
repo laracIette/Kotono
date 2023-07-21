@@ -27,7 +27,7 @@ namespace Kotono.Graphics.Objects.Meshes
         {
             base.Update();
 
-            Color = _pointLight.Diffuse;
+            Color = _pointLight.Color;
         }
 
         public override void Draw()

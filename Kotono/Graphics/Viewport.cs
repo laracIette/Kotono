@@ -48,6 +48,7 @@ namespace Kotono.Graphics
 
         public void Init()
         {
+
         }
 
         public void SetSize(Point size)

@@ -24,8 +24,8 @@ Transform: {
 		Z: 0f
 	}
 	Scale: {
-		X: 10f
+		X: 1f
 		Y: 1f
-		Z: 10f
+		Z: 1f
 	}
 }

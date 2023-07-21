@@ -5,9 +5,5 @@
         public RoundedBoxShader() 
             : base("Graphics/Shaders/roundedBox.vert", "Graphics/Shaders/roundedBox.frag")
         { }
-
-        public override void Update()
-        {
-        }
     }
 }

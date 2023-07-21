@@ -7,9 +7,5 @@ namespace Kotono.Graphics.Shaders
         public ImageShader()
             : base("Graphics/Shaders/image.vert", "Graphics/Shaders/image.frag")
         { }
-
-        public override void Update()
-        {
-        }
     }
 }

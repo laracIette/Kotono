@@ -18,20 +18,18 @@ using Text = Kotono.Graphics.Objects.Text;
 
 namespace Kotono
 {
-    public sealed class KT
+    public static class KT
     {
-        private KT() { }
-
         public static string KotonoPath { get; internal set; } = "";
 
         public static string ProjectPath { get; internal set; } = "";
 
         private static readonly ComponentManager _componentManager = new();
-       
+
         #region Viewport
 
-        public static readonly Viewport _viewport = new(); 
-        
+        public static readonly Viewport _viewport = new();
+
         public static Viewport ActiveViewport => _viewport;
 
         #endregion Viewport
@@ -80,21 +78,6 @@ namespace Kotono
         }
 
         #endregion Image
-
-        #region BoxRoundedCorners
-
-        public static RoundedBox CreateBoxRoundedCorners(RoundedBox box)
-        {
-            _objectManager.CreateRoundedBox(box);
-            return box;
-        }
-
-        public static void DeleteBoxRoundedCorners(RoundedBox box)
-        {
-            _objectManager.DeleteRoundedBox(box);
-        }
-
-        #endregion BoxRoundedCorners
 
         #region Mesh
 
@@ -200,6 +183,36 @@ namespace Kotono
         }
 
         #endregion Triangle
+
+        #region RoundedBox
+
+        public static RoundedBox CreateRoundedBox(RoundedBox box)
+        {
+            _objectManager.CreateRoundedBox(box);
+            return box;
+        }
+
+        public static void DeleteRoundedBox(RoundedBox box)
+        {
+            _objectManager.DeleteRoundedBox(box);
+        }
+
+        #endregion RoundedBox
+
+        #region RoundedBorder
+
+        public static RoundedBox CreateRoundedBorder(RoundedBorder border)
+        {
+            _objectManager.CreateRoundedBorder(border);
+            return border;
+        }
+
+        public static void DeleteRoundedBorder(RoundedBorder border)
+        {
+            _objectManager.DeleteRoundedBorder(border);
+        }
+
+        #endregion RoundedBorder
 
         #endregion ObjectManager
 
@@ -321,7 +334,7 @@ namespace Kotono
         public static int MaxFrameRate { get; set; } = 60;
 
         public static void AddFrameTime(double frameTime)
-        { 
+        {
             _performanceWindow.AddFrameTime(frameTime);
         }
 
@@ -371,6 +384,7 @@ namespace Kotono
         public static void Init()
         {
             _shaderManager.Init();
+            SquareVertices.Init();
             _gizmo.Init();
             _objectManager.Init();
             Text.InitPaths();

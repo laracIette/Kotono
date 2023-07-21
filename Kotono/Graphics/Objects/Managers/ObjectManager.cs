@@ -22,6 +22,8 @@ namespace Kotono.Graphics.Objects.Managers
         private readonly TriangleManager _triangleManager = new();
 
         private readonly RoundedBoxManager _roundedBoxManager = new();
+        
+        private readonly RoundedBorderManager _roundedBorderManager = new();
 
         //private readonly Viewport _viewport = new(0, 0, 1280, 720);
 
@@ -38,6 +40,7 @@ namespace Kotono.Graphics.Objects.Managers
             _spotLightManager.Init();
             _triangleManager.Init();
             _roundedBoxManager.Init();
+            _roundedBorderManager.Init();
             //_viewport.Init();
         }
 
@@ -168,6 +171,20 @@ namespace Kotono.Graphics.Objects.Managers
 
         #endregion RoundedBox
 
+        #region RoundedBorder
+
+        public void CreateRoundedBorder(RoundedBorder border)
+        {
+            _roundedBorderManager.Create(border);
+        }
+
+        public void DeleteRoundedBorder(RoundedBorder border)
+        {
+            _roundedBorderManager.Delete(border);
+        }
+
+        #endregion RoundedBorder
+
         public void Update()
         {
             _imageManager.Update();
@@ -178,6 +195,7 @@ namespace Kotono.Graphics.Objects.Managers
             _spotLightManager.Update();
             _triangleManager.Update();
             _roundedBoxManager.Update();
+            _roundedBorderManager.Update();
         }
 
         public void UpdateShaders()
@@ -190,6 +208,7 @@ namespace Kotono.Graphics.Objects.Managers
             _spotLightManager.UpdateShaders();
             _triangleManager.UpdateShaders();
             _roundedBoxManager.UpdateShaders();
+            _roundedBorderManager.UpdateShaders();
         }
 
         public void Draw()
@@ -203,6 +222,7 @@ namespace Kotono.Graphics.Objects.Managers
             _meshManager.Draw();
             _frontMeshManager.Draw();
             _roundedBoxManager.Draw();
+            _roundedBorderManager.Draw();
             _imageManager.Draw();
         }
 
@@ -216,6 +236,7 @@ namespace Kotono.Graphics.Objects.Managers
             _spotLightManager.Save();
             _triangleManager.Save();
             _roundedBoxManager.Save();
+            _roundedBorderManager.Save();
         }
     }
 }
