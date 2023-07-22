@@ -8,13 +8,13 @@ using Math = Kotono.Utils.Math;
 
 namespace Kotono.Audio
 {
-    public class SoundManager
+    public static class SoundManager
     {
-        private readonly ALDevice _device;
+        private static ALDevice _device;
 
-        private readonly ALContext _context;
+        private static ALContext _context;
 
-        private readonly List<Sound> _sounds = new();
+        private static readonly List<Sound> _sounds = new();
 
         private static float _generalVolume = 1.0f;
 
@@ -27,7 +27,7 @@ namespace Kotono.Audio
             }
         }
 
-        public SoundManager()
+        public static void Init()
         {
             _device = ALC.OpenDevice(null);
             _context = ALC.CreateContext(_device, Array.Empty<int>());
@@ -35,7 +35,7 @@ namespace Kotono.Audio
             ALC.MakeContextCurrent(_context);
         }
 
-        public Sound Create(string path)
+        public static Sound Create(string path)
         {
             int buffer = AL.GenBuffer();
             int source = AL.GenSource();
@@ -56,7 +56,7 @@ namespace Kotono.Audio
             return _sounds.Last();
         }
 
-        public void Delete(Sound sound)
+        public static void Delete(Sound sound)
         {
             AL.SourceStop(sound.Source);
             AL.DeleteSource(sound.Source);
@@ -65,7 +65,7 @@ namespace Kotono.Audio
         }
 
         /// <summary>
-        /// 
+        /// Creates an array of byte from a WAV file
         /// </summary>
         /// <param name="filename"></param>
         /// <param name="channels"></param>
@@ -133,7 +133,7 @@ namespace Kotono.Audio
             };
         }
 
-        public void Dispose()
+        public static void Dispose()
         {
             foreach (var sound in _sounds)
             {

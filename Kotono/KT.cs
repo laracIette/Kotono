@@ -2,17 +2,12 @@
 using Kotono.Engine;
 using Kotono.Graphics;
 using Kotono.Graphics.Objects;
-using Kotono.Graphics.Objects.Hitboxes;
-using Kotono.Graphics.Objects.Lights;
 using Kotono.Graphics.Objects.Managers;
-using Kotono.Graphics.Objects.Meshes;
 using Kotono.Graphics.Print;
 using Kotono.Input;
 using Kotono.Physics;
 using Kotono.Utils;
 using OpenTK.Windowing.GraphicsLibraryFramework;
-using System.Collections.Generic;
-using Image = Kotono.Graphics.Objects.Image;
 using Performance = Kotono.Graphics.Performance;
 using Text = Kotono.Graphics.Objects.Text;
 
@@ -58,181 +53,7 @@ namespace Kotono
             ActiveViewport.SetSize(size);
         }
 
-        #endregion WindowSize 
-        /*
-
-        #region ObjectManager
-
-        private static readonly ObjectManager _objectManager = new();
-
-        #region Image
-
-        public static Image CreateImage(Image image)
-        {
-            _objectManager.CreateImage(image);
-            return image;
-        }
-
-        public static void DeleteImage(Image image)
-        {
-            _objectManager.DeleteImage(image);
-        }
-
-        #endregion Image
-
-        #region Mesh
-
-        public static Mesh CreateMesh(Mesh mesh)
-        {
-            _objectManager.CreateMesh(mesh);
-            return mesh;
-        }
-
-        public static void DeleteMesh(Mesh mesh)
-        {
-            _objectManager.DeleteMesh(mesh);
-        }
-
-        #endregion Mesh
-
-        #region FrontMesh
-
-        public static FrontMesh CreateFrontMesh(FrontMesh frontMesh)
-        {
-            _objectManager.CreateFrontMesh(frontMesh);
-            return frontMesh;
-        }
-
-        public static void DeleteFrontMesh(FrontMesh frontMesh)
-        {
-            _objectManager.DeleteFrontMesh(frontMesh);
-        }
-
-        #endregion FrontMesh
-
-        #region Hitbox
-
-        public static IHitbox CreateHitbox(IHitbox hitbox)
-        {
-            _objectManager.CreateHitbox(hitbox);
-            return hitbox;
-        }
-
-        public static void DeleteHitbox(IHitbox hitbox)
-        {
-            _objectManager.DeleteHitbox(hitbox);
-        }
-
-        public static List<IHitbox> GetAllHitboxes()
-        {
-            return _objectManager.GetAllHitboxes();
-        }
-
-        #endregion Hitbox
-
-        #region PointLight
-
-        public static PointLight CreatePointLight(PointLight pointLight)
-        {
-            _objectManager.CreatePointLight(pointLight);
-            return pointLight;
-        }
-
-        public static void DeletePointLight(PointLight pointLight)
-        {
-            _objectManager.DeletePointLight(pointLight);
-        }
-
-        public static PointLight GetFirstPointLight()
-        {
-            return _objectManager.GetFirstPointLight();
-        }
-
-        #endregion PointLight
-
-        #region SpotLight
-
-        public static SpotLight CreateSpotLight(SpotLight spotLight)
-        {
-            _objectManager.CreateSpotLight(spotLight);
-            return spotLight;
-        }
-
-        public static void DeleteSpotLight(SpotLight spotLight)
-        {
-            _objectManager.DeleteSpotLight(spotLight);
-        }
-
-        public static int GetSpotLightsCount()
-        {
-            return _objectManager.GetSpotLightsCount();
-        }
-
-        #endregion SpotLight
-
-        #region Triangle
-
-        public static Triangle CreateTriangle(Triangle triangle)
-        {
-            _objectManager.CreateTriangle(triangle);
-            return triangle;
-        }
-
-        public static void DeleteTriangle(Triangle triangle)
-        {
-            _objectManager.DeleteTriangle(triangle);
-        }
-
-        #endregion Triangle
-
-        #region RoundedBox
-
-        public static RoundedBox CreateRoundedBox(RoundedBox box)
-        {
-            _objectManager.CreateRoundedBox(box);
-            return box;
-        }
-
-        public static void DeleteRoundedBox(RoundedBox box)
-        {
-            _objectManager.DeleteRoundedBox(box);
-        }
-
-        #endregion RoundedBox
-
-        #region RoundedBorder
-
-        public static RoundedBorder CreateRoundedBorder(RoundedBorder border)
-        {
-            _objectManager.CreateRoundedBorder(border);
-            return border;
-        }
-
-        public static void DeleteRoundedBorder(RoundedBorder border)
-        {
-            _objectManager.DeleteRoundedBorder(border);
-        }
-
-        #endregion RoundedBorder
-
-        #endregion ObjectManager 
-        */
-
-        #region SoundManager
-
-        private static readonly SoundManager _soundManager = new();
-
-        public static Sound CreateSound(string path)
-        {
-            return _soundManager.Create(path);
-        }
-
-        public static void DeleteSound(Sound sound)
-        {
-            _soundManager.Delete(sound);
-        }
-
-        #endregion SoundManager
+        #endregion WindowSize
 
         #region Printer
 
@@ -316,6 +137,7 @@ namespace Kotono
             _componentManager.Init();
             Fizix.Init();
             _mode.Init();
+            SoundManager.Init();
         }
 
         public static void Update()
@@ -353,7 +175,7 @@ namespace Kotono
 
         public static void Exit()
         {
-            _soundManager.Dispose();
+            SoundManager.Dispose();
         }
     }
 }
