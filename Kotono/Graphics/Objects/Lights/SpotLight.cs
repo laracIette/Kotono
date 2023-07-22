@@ -1,10 +1,10 @@
-﻿using OpenTK.Mathematics;
-using OpenTK.Windowing.GraphicsLibraryFramework;
+﻿using OpenTK.Windowing.GraphicsLibraryFramework;
 
 using Kotono.Utils;
 using System;
 using Math = Kotono.Utils.Math;
 using Kotono.Input;
+using Kotono.Graphics.Objects.Managers;
 
 namespace Kotono.Graphics.Objects.Lights
 {
@@ -67,16 +67,16 @@ namespace Kotono.Graphics.Objects.Lights
 
         public void UpdateShaders()
         {
-            KT.SetShaderFloat(ShaderType.Lighting, $"spotLights[{_shaderIndex}].cutOff", Math.Cos(Math.Rad(CutOffAngle)));
-            KT.SetShaderFloat(ShaderType.Lighting, $"spotLights[{_shaderIndex}].outerCutOff", Math.Cos(Math.Rad(OuterCutOffAngle)));
-            KT.SetShaderVector(ShaderType.Lighting, $"spotLights[{_shaderIndex}].location", KT.ActiveCamera.Location);
-            KT.SetShaderVector(ShaderType.Lighting, $"spotLights[{_shaderIndex}].direction", KT.ActiveCamera.Front);
-            KT.SetShaderColor(ShaderType.Lighting, $"spotLights[{_shaderIndex}].ambient", Color.Black);
-            KT.SetShaderColor(ShaderType.Lighting, $"spotLights[{_shaderIndex}].diffuse", Color.White);
-            KT.SetShaderColor(ShaderType.Lighting, $"spotLights[{ _shaderIndex}].specular", Color.White);
-            KT.SetShaderFloat(ShaderType.Lighting, $"spotLights[{_shaderIndex}].constant", 1.0f);
-            KT.SetShaderFloat(ShaderType.Lighting, $"spotLights[{_shaderIndex}].linear", 0.09f);
-            KT.SetShaderFloat(ShaderType.Lighting, $"spotLights[{_shaderIndex}].quadratic", 0.032f);
+            ShaderManager.SetFloat(ShaderType.Lighting, $"spotLights[{_shaderIndex}].cutOff", Math.Cos(Math.Rad(CutOffAngle)));
+            ShaderManager.SetFloat(ShaderType.Lighting, $"spotLights[{_shaderIndex}].outerCutOff", Math.Cos(Math.Rad(OuterCutOffAngle)));
+            ShaderManager.SetVector(ShaderType.Lighting, $"spotLights[{_shaderIndex}].location", CameraManager.ActiveCamera.Location);
+            ShaderManager.SetVector(ShaderType.Lighting, $"spotLights[{_shaderIndex}].direction", CameraManager.ActiveCamera.Front);
+            ShaderManager.SetColor(ShaderType.Lighting, $"spotLights[{_shaderIndex}].ambient", Color.Black);
+            ShaderManager.SetColor(ShaderType.Lighting, $"spotLights[{_shaderIndex}].diffuse", Color.White);
+            ShaderManager.SetColor(ShaderType.Lighting, $"spotLights[{ _shaderIndex}].specular", Color.White);
+            ShaderManager.SetFloat(ShaderType.Lighting, $"spotLights[{_shaderIndex}].constant", 1.0f);
+            ShaderManager.SetFloat(ShaderType.Lighting, $"spotLights[{_shaderIndex}].linear", 0.09f);
+            ShaderManager.SetFloat(ShaderType.Lighting, $"spotLights[{_shaderIndex}].quadratic", 0.032f);
         }
 
         public void UpdateIndex()

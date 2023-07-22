@@ -1,4 +1,5 @@
 ﻿using Kotono.Graphics.Objects.Lights;
+using Kotono.Graphics.Objects.Managers;
 using Kotono.Utils;
 
 namespace Kotono.Graphics.Shaders
@@ -12,12 +13,12 @@ namespace Kotono.Graphics.Shaders
         public override void Update()
         {
             SetInt("numPointLights", PointLight.Count);
-            SetInt("numSpotLights", KT.GetSpotLightsCount());
+            SetInt("numSpotLights", ObjectManager.GetSpotLightsCount());
 
-            SetMatrix4("view", KT.ActiveCamera.ViewMatrix);
-            SetMatrix4("projection", KT.ActiveCamera.ProjectionMatrix);
+            SetMatrix4("view", CameraManager.ActiveCamera.ViewMatrix);
+            SetMatrix4("projection", CameraManager.ActiveCamera.ProjectionMatrix);
 
-            SetVector("viewPos", KT.ActiveCamera.Location);
+            SetVector("viewPos", CameraManager.ActiveCamera.Location);
 
             SetInt("material.diffuse", 0);
             SetInt("material.specular", 1);

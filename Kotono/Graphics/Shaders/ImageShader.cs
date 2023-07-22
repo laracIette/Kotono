@@ -1,6 +1,4 @@
-﻿using OpenTK.Mathematics;
-
-namespace Kotono.Graphics.Shaders
+﻿namespace Kotono.Graphics.Shaders
 {
     public class ImageShader : Shader
     {

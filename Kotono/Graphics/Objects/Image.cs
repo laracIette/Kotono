@@ -38,7 +38,7 @@ namespace Kotono.Graphics.Objects
 
             _texture = TextureManager.LoadTexture(path);
 
-            KT.CreateImage(this);
+            ObjectManager.CreateImage(this);
         }
 
         public void Init() { }
@@ -74,8 +74,8 @@ namespace Kotono.Graphics.Objects
 
             TextureManager.UseTexture(_texture, TextureUnit.Texture0);
 
-            KT.SetShaderMatrix4(ShaderType.Image, "model", Model);
-            KT.SetShaderColor(ShaderType.Image, "color", Color);
+            ShaderManager.SetMatrix4(ShaderType.Image, "model", Model);
+            ShaderManager.SetColor(ShaderType.Image, "color", Color);
 
             GL.BindVertexArray(SquareVertices.VertexArrayObject);
 

@@ -32,8 +32,8 @@ namespace Kotono.Graphics.Objects.Meshes
 
         public override void Draw()
         {
-            KT.SetShaderMatrix4(_shaderType, "model", Model);
-            KT.SetShaderColor(_shaderType, "color", Color);
+            ShaderManager.SetMatrix4(_shaderType, "model", Model);
+            ShaderManager.SetColor(_shaderType, "color", Color);
 
             GL.BindVertexArray(VertexArrayObject);
             GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);

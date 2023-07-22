@@ -2,18 +2,18 @@
 
 namespace Kotono.Graphics.Objects.Managers
 {
-    public abstract class DrawableManager
+    public abstract class DrawableManager<T> where T : IDrawable
     {
-        protected readonly List<IDrawable> _drawables = new();
+        protected readonly List<T> _drawables = new();
 
         public DrawableManager() { }
 
-        public virtual void Create(IDrawable drawable)
+        public virtual void Create(T drawable)
         {
             _drawables.Add(drawable);
         }
 
-        public virtual void Delete(IDrawable drawable)
+        public virtual void Delete(T drawable)
         {
             drawable.Dispose();
             _drawables.Remove(drawable);

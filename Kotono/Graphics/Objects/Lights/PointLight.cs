@@ -1,4 +1,5 @@
-﻿using Kotono.Graphics.Objects.Meshes;
+﻿using Kotono.Graphics.Objects.Managers;
+using Kotono.Graphics.Objects.Meshes;
 using Kotono.Utils;
 using System;
 
@@ -60,13 +61,13 @@ namespace Kotono.Graphics.Objects.Lights
 
         public void UpdateShaders()
         {
-            KT.SetShaderVector(ShaderType.Lighting, $"pointLights[{_shaderIndex}].location", _mesh.Location);
-            KT.SetShaderColor(ShaderType.Lighting, $"pointLights[{_shaderIndex}].ambient", Ambient);
-            KT.SetShaderColor(ShaderType.Lighting, $"pointLights[{_shaderIndex}].diffuse", Color);
-            KT.SetShaderColor(ShaderType.Lighting, $"pointLights[{_shaderIndex}].specular", Specular);
-            KT.SetShaderFloat(ShaderType.Lighting, $"pointLights[{_shaderIndex}].constant", Constant);
-            KT.SetShaderFloat(ShaderType.Lighting, $"pointLights[{_shaderIndex}].linear", Linear);
-            KT.SetShaderFloat(ShaderType.Lighting, $"pointLights[{_shaderIndex}].quadratic", Quadratic);
+            ShaderManager.SetVector(ShaderType.Lighting, $"pointLights[{_shaderIndex}].location", _mesh.Location);
+            ShaderManager.SetColor(ShaderType.Lighting, $"pointLights[{_shaderIndex}].ambient", Ambient);
+            ShaderManager.SetColor(ShaderType.Lighting, $"pointLights[{_shaderIndex}].diffuse", Color);
+            ShaderManager.SetColor(ShaderType.Lighting, $"pointLights[{_shaderIndex}].specular", Specular);
+            ShaderManager.SetFloat(ShaderType.Lighting, $"pointLights[{_shaderIndex}].constant", Constant);
+            ShaderManager.SetFloat(ShaderType.Lighting, $"pointLights[{_shaderIndex}].linear", Linear);
+            ShaderManager.SetFloat(ShaderType.Lighting, $"pointLights[{_shaderIndex}].quadratic", Quadratic);
         }
 
         public void Draw()
@@ -81,7 +82,7 @@ namespace Kotono.Graphics.Objects.Lights
 
         public void Dispose()
         {
-            KT.DeleteMesh(_mesh);
+            ObjectManager.DeleteMesh(_mesh);
 
             Count--;
 

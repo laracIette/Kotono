@@ -15,9 +15,9 @@ namespace Kotono.Graphics
         RoundedBorder
     }
 
-    public class ShaderManager
+    public static class ShaderManager
     {
-        private readonly Shader[] _shaders =
+        private static readonly Shader[] _shaders =
         {
             new LightingShader(),
             new HitboxShader(),
@@ -28,9 +28,7 @@ namespace Kotono.Graphics
             new RoundedBorderShader()
         };
 
-        public ShaderManager() { }
-
-        public void Init()
+        public static void Init()
         {
             foreach (var shader in _shaders)
             {
@@ -38,47 +36,47 @@ namespace Kotono.Graphics
             }
         }
 
-        public int GetAttribLocation(ShaderType type, string attribName)
+        public static int GetAttribLocation(ShaderType type, string attribName)
         {
             return _shaders[(int)type].GetAttribLocation(attribName);
         }
 
-        public void SetBool(ShaderType type, string name, bool data)
+        public static void SetBool(ShaderType type, string name, bool data)
         {
             _shaders[(int)type].SetBool(name, data);
         }
 
-        public void SetInt(ShaderType type, string name, int data)
+        public static void SetInt(ShaderType type, string name, int data)
         {
             _shaders[(int)type].SetInt(name, data);
         }
 
-        public void SetFloat(ShaderType type, string name, float data)
+        public static void SetFloat(ShaderType type, string name, float data)
         {
             _shaders[(int)type].SetFloat(name, data);
         }
 
-        public void SetMatrix4(ShaderType type, string name, Matrix4 data)
+        public static void SetMatrix4(ShaderType type, string name, Matrix4 data)
         {
             _shaders[(int)type].SetMatrix4(name, data);
         }
 
-        public void SetVector(ShaderType type, string name, Vector data)
+        public static void SetVector(ShaderType type, string name, Vector data)
         {
             _shaders[(int)type].SetVector(name, data);
         }
 
-        public void SetColor(ShaderType type, string name, Color data)
+        public static void SetColor(ShaderType type, string name, Color data)
         {
             _shaders[(int)type].SetColor(name, data);
         }
 
-        public void SetRect(ShaderType type, string name, Rect data)
+        public static void SetRect(ShaderType type, string name, Rect data)
         {
             _shaders[(int)type].SetRect(name, data);
         }
 
-        public void Update()
+        public static void Update()
         {
             foreach (var shader in _shaders)
             {

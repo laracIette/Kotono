@@ -1,4 +1,5 @@
 ﻿using Kotono.Graphics.Objects.Hitboxes;
+using Kotono.Graphics.Objects.Managers;
 
 namespace Kotono.Graphics.Objects.Meshes
 {
@@ -10,7 +11,7 @@ namespace Kotono.Graphics.Objects.Meshes
 
         protected override void Create()
         {
-            KT.CreateFrontMesh(this);
+            ObjectManager.CreateFrontMesh(this);
         }
     }
 }

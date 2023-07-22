@@ -5,7 +5,7 @@ using OpenTK.Windowing.GraphicsLibraryFramework;
 using CursorState = Kotono.Input.CursorState;
 using Math = Kotono.Utils.Math;
 
-namespace Kotono.Graphics
+namespace Kotono.Graphics.Objects
 {
     public class Camera
     {

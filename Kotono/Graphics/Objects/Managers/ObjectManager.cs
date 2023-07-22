@@ -5,32 +5,29 @@ using System.Collections.Generic;
 
 namespace Kotono.Graphics.Objects.Managers
 {
-    public class ObjectManager
+    public static class ObjectManager
     {
-        private readonly ImageManager _imageManager = new();
+        private static readonly ImageManager _imageManager = new();
 
-        private readonly MeshManager _meshManager = new();
+        private static readonly MeshManager _meshManager = new();
 
-        private readonly FrontMeshManager _frontMeshManager = new();
+        private static readonly FrontMeshManager _frontMeshManager = new();
 
-        private readonly HitboxManager _hitboxManager = new();
+        private static readonly HitboxManager _hitboxManager = new();
 
-        private readonly PointLightManager _pointLightManager = new();
+        private static readonly PointLightManager _pointLightManager = new();
 
-        private readonly SpotLightManager _spotLightManager = new();
+        private static readonly SpotLightManager _spotLightManager = new();
 
-        private readonly TriangleManager _triangleManager = new();
+        private static readonly TriangleManager _triangleManager = new();
 
-        private readonly RoundedBoxManager _roundedBoxManager = new();
+        private static readonly RoundedBoxManager _roundedBoxManager = new();
         
-        private readonly RoundedBorderManager _roundedBorderManager = new();
+        private static readonly RoundedBorderManager _roundedBorderManager = new();
 
-        //private readonly Viewport _viewport = new(0, 0, 1280, 720);
+        //private static readonly Viewport _viewport = new(0, 0, 1280, 720);
 
-
-        public ObjectManager() { }
-
-        public void Init()
+        public static void Init()
         {
             _imageManager.Init();
             _meshManager.Init();
@@ -46,12 +43,13 @@ namespace Kotono.Graphics.Objects.Managers
 
         #region Image
 
-        public void CreateImage(Image image)
+        public static Image CreateImage(Image image)
         {
             _imageManager.Create(image);
+            return image;
         }
 
-        public void DeleteImage(Image image)
+        public static void DeleteImage(Image image)
         {
             _imageManager.Delete(image);
         }
@@ -60,12 +58,13 @@ namespace Kotono.Graphics.Objects.Managers
 
         #region Mesh
 
-        public void CreateMesh(Mesh mesh)
+        public static Mesh CreateMesh(Mesh mesh)
         {
             _meshManager.Create(mesh);
+            return mesh;
         }
 
-        public void DeleteMesh(Mesh mesh)
+        public static void DeleteMesh(Mesh mesh)
         {
             _meshManager.Delete(mesh);
         }
@@ -74,12 +73,13 @@ namespace Kotono.Graphics.Objects.Managers
 
         #region FrontMesh
 
-        public void CreateFrontMesh(FrontMesh frontMesh)
+        public static FrontMesh CreateFrontMesh(FrontMesh frontMesh)
         {
             _frontMeshManager.Create(frontMesh);
+            return frontMesh;
         }
 
-        public void DeleteFrontMesh(FrontMesh frontMesh)
+        public static void DeleteFrontMesh(FrontMesh frontMesh)
         {
             _frontMeshManager.Delete(frontMesh);
         }
@@ -88,17 +88,18 @@ namespace Kotono.Graphics.Objects.Managers
 
         #region Hitbox
 
-        public void CreateHitbox(IHitbox hitbox)
+        public static IHitbox CreateHitbox(IHitbox hitbox)
         {
             _hitboxManager.Create(hitbox);
+            return hitbox;
         }
 
-        public void DeleteHitbox(IHitbox hitbox)
+        public static void DeleteHitbox(IHitbox hitbox)
         {
             _hitboxManager.Delete(hitbox);
         }
 
-        public List<IHitbox> GetAllHitboxes()
+        public static List<IHitbox> GetAllHitboxes()
         {
             return _hitboxManager.GetAll();
         }
@@ -107,17 +108,18 @@ namespace Kotono.Graphics.Objects.Managers
 
         #region PointLight
 
-        public void CreatePointLight(PointLight pointLight)
+        public static PointLight CreatePointLight(PointLight pointLight)
         {
             _pointLightManager.Create(pointLight);
+            return pointLight;
         }
 
-        public void DeletePointLight(PointLight pointLight)
+        public static void DeletePointLight(PointLight pointLight)
         {
             _pointLightManager.Delete(pointLight);
         }
 
-        public PointLight GetFirstPointLight()
+        public static PointLight GetFirstPointLight()
         {
             return _pointLightManager.GetFirst();
         }
@@ -126,17 +128,18 @@ namespace Kotono.Graphics.Objects.Managers
 
         #region SpotLight
 
-        public void CreateSpotLight(SpotLight spotLight)
+        public static SpotLight CreateSpotLight(SpotLight spotLight)
         {
             _spotLightManager.Create(spotLight);
+            return spotLight;
         }
 
-        public void DeleteSpotLight(SpotLight spotLight)
+        public static void DeleteSpotLight(SpotLight spotLight)
         {
             _spotLightManager.Delete(spotLight);
         }
 
-        public int GetSpotLightsCount()
+        public static int GetSpotLightsCount()
         {
             return _spotLightManager.GetCount();
         }
@@ -145,12 +148,13 @@ namespace Kotono.Graphics.Objects.Managers
 
         #region Triangle
 
-        public void CreateTriangle(Triangle triangle)
+        public static Triangle CreateTriangle(Triangle triangle)
         {
             _triangleManager.Create(triangle);
+            return triangle;
         }
 
-        public void DeleteTriangle(Triangle triangle)
+        public static void DeleteTriangle(Triangle triangle)
         {
             _triangleManager.Delete(triangle);
         }
@@ -159,12 +163,13 @@ namespace Kotono.Graphics.Objects.Managers
 
         #region RoundedBox
 
-        public void CreateRoundedBox(RoundedBox box)
+        public static RoundedBox CreateRoundedBox(RoundedBox box)
         {
             _roundedBoxManager.Create(box);
+            return box;
         }
 
-        public void DeleteRoundedBox(RoundedBox box)
+        public static void DeleteRoundedBox(RoundedBox box)
         {
             _roundedBoxManager.Delete(box);
         }
@@ -173,19 +178,20 @@ namespace Kotono.Graphics.Objects.Managers
 
         #region RoundedBorder
 
-        public void CreateRoundedBorder(RoundedBorder border)
+        public static RoundedBorder CreateRoundedBorder(RoundedBorder border)
         {
             _roundedBorderManager.Create(border);
+            return border;
         }
 
-        public void DeleteRoundedBorder(RoundedBorder border)
+        public static void DeleteRoundedBorder(RoundedBorder border)
         {
             _roundedBorderManager.Delete(border);
         }
 
         #endregion RoundedBorder
 
-        public void Update()
+        public static void Update()
         {
             _imageManager.Update();
             _meshManager.Update();
@@ -198,7 +204,7 @@ namespace Kotono.Graphics.Objects.Managers
             _roundedBorderManager.Update();
         }
 
-        public void UpdateShaders()
+        public static void UpdateShaders()
         {
             _imageManager.UpdateShaders();
             _meshManager.UpdateShaders();
@@ -211,7 +217,7 @@ namespace Kotono.Graphics.Objects.Managers
             _roundedBorderManager.UpdateShaders();
         }
 
-        public void Draw()
+        public static void Draw()
         {
             KT.ActiveViewport.Use();
 
@@ -226,7 +232,7 @@ namespace Kotono.Graphics.Objects.Managers
             _imageManager.Draw();
         }
 
-        public void Save()
+        public static void Save()
         {
             _imageManager.Save();
             _meshManager.Save();

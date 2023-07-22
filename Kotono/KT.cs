@@ -10,10 +10,10 @@ using Kotono.Graphics.Print;
 using Kotono.Input;
 using Kotono.Physics;
 using Kotono.Utils;
-using OpenTK.Mathematics;
+using OpenTK.Windowing.GraphicsLibraryFramework;
 using System.Collections.Generic;
+using Image = Kotono.Graphics.Objects.Image;
 using Performance = Kotono.Graphics.Performance;
-using ShaderType = Kotono.Graphics.ShaderType;
 using Text = Kotono.Graphics.Objects.Text;
 
 namespace Kotono
@@ -53,12 +53,13 @@ namespace Kotono
         {
             _windowDest.Size = size;
 
-            ActiveCamera.AspectRatio = size.X / size.Y;
+            CameraManager.ActiveCamera.AspectRatio = size.X / size.Y;
 
             ActiveViewport.SetSize(size);
         }
 
-        #endregion WindowSize
+        #endregion WindowSize 
+        /*
 
         #region ObjectManager
 
@@ -201,7 +202,7 @@ namespace Kotono
 
         #region RoundedBorder
 
-        public static RoundedBox CreateRoundedBorder(RoundedBorder border)
+        public static RoundedBorder CreateRoundedBorder(RoundedBorder border)
         {
             _objectManager.CreateRoundedBorder(border);
             return border;
@@ -214,7 +215,8 @@ namespace Kotono
 
         #endregion RoundedBorder
 
-        #endregion ObjectManager
+        #endregion ObjectManager 
+        */
 
         #region SoundManager
 
@@ -232,86 +234,13 @@ namespace Kotono
 
         #endregion SoundManager
 
-        #region CameraManager
-
-        private static readonly CameraManager _cameraManager = new();
-
-        public static Camera ActiveCamera => GetCamera(0);
-
-        public static Camera CreateCamera(Camera camera)
-        {
-            _cameraManager.Create(camera);
-            return camera;
-        }
-
-        public static void DeleteCamera(Camera camera)
-        {
-            _cameraManager.Delete(camera);
-        }
-
-        public static Camera GetCamera(int index)
-        {
-            return _cameraManager.Get(index);
-        }
-
-
-        #endregion CameraManager
-
-        #region ShaderManager
-
-        private static readonly ShaderManager _shaderManager = new();
-
-        public static int GetShaderAttribLocation(ShaderType type, string attribName)
-        {
-            return _shaderManager.GetAttribLocation(type, attribName);
-        }
-
-        public static void SetShaderBool(ShaderType type, string name, bool data)
-        {
-            _shaderManager.SetBool(type, name, data);
-        }
-
-        public static void SetShaderInt(ShaderType type, string name, int data)
-        {
-            _shaderManager.SetInt(type, name, data);
-        }
-
-        public static void SetShaderFloat(ShaderType type, string name, float data)
-        {
-            _shaderManager.SetFloat(type, name, data);
-        }
-
-        public static void SetShaderMatrix4(ShaderType type, string name, Matrix4 data)
-        {
-            _shaderManager.SetMatrix4(type, name, data);
-        }
-
-        public static void SetShaderVector(ShaderType type, string name, Vector data)
-        {
-            _shaderManager.SetVector(type, name, data);
-        }
-
-        public static void SetShaderColor(ShaderType type, string name, Color data)
-        {
-            _shaderManager.SetColor(type, name, data);
-        }
-
-        public static void SetShaderRect(ShaderType type, string name, Rect data)
-        {
-            _shaderManager.SetRect(type, name, data);
-        }
-
-        #endregion ShaderManager
-
         #region Printer
-
-        private static readonly Printer _printer = new();
 
         public static void Print(object? obj, Color color)
         {
             if (obj != null)
             {
-                _printer.Print(obj.ToString(), color);
+                Printer.Print(obj.ToString(), color);
             }
         }
 
@@ -365,14 +294,6 @@ namespace Kotono
 
         #endregion PerformanceWindow
 
-        #region Gizmo
-
-        private readonly static Gizmo _gizmo = new();
-
-        public static Gizmo Gizmo => _gizmo;
-
-        #endregion Gizmo
-
         #region UserMode
 
         private static readonly Mode _mode = new();
@@ -381,14 +302,16 @@ namespace Kotono
 
         #endregion UserMode
 
-        public static void Init()
+        public static void Init(MouseState mouseState, KeyboardState keyboardState)
         {
-            _shaderManager.Init();
+            Mouse.Init(mouseState);
+            Keyboard.Init(keyboardState);
+            ShaderManager.Init();
             SquareVertices.Init();
-            _gizmo.Init();
-            _objectManager.Init();
+            Gizmo.Init();
+            ObjectManager.Init();
             Text.InitPaths();
-            _printer.Init();
+            Printer.Init();
             _performanceWindow.Init();
             _componentManager.Init();
             Fizix.Init();
@@ -400,11 +323,11 @@ namespace Kotono
             Time.Update();
             Mouse.Update();
             Keyboard.Update();
-            _gizmo.Update();
-            _objectManager.Update();
+            Gizmo.Update();
+            ObjectManager.Update();
             _componentManager.Update();
-            _cameraManager.Update();
-            _printer.Update();
+            CameraManager.Update();
+            Printer.Update();
             _performanceWindow.Update();
             _mode.Update();
         }
@@ -412,20 +335,20 @@ namespace Kotono
         public static void RenderFrame()
         {
             UpdateShaders();
-            _objectManager.Draw();
+            ObjectManager.Draw();
             _componentManager.Draw();
         }
 
         private static void UpdateShaders()
         {
-            _objectManager.UpdateShaders();
+            ObjectManager.UpdateShaders();
             _componentManager.UpdateShaders();
-            _shaderManager.Update();
+            ShaderManager.Update();
         }
 
         public static void Save()
         {
-            _objectManager.Save();
+            ObjectManager.Save();
         }
 
         public static void Exit()

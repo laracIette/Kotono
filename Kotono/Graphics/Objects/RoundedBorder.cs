@@ -14,6 +14,8 @@ namespace Kotono.Graphics.Objects
             set => _thickness = Math.Clamp(value, 0, float.PositiveInfinity);
         }
 
+
+
         protected override Matrix4 Model =>
             Matrix4.CreateScale((Dest + new Rect(w: FallOff * 2 + Thickness)).WorldSpace.W, (Dest + new Rect(h: FallOff * 2 + Thickness)).WorldSpace.H, 1.0f)
             * Matrix4.CreateTranslation(Dest.WorldSpace.X, Dest.WorldSpace.Y, 0.0f);
@@ -26,12 +28,12 @@ namespace Kotono.Graphics.Objects
 
         public override void Draw()
         {
-            KT.SetShaderMatrix4(ShaderType.RoundedBorder, "model", Model);
-            KT.SetShaderColor(ShaderType.RoundedBorder, "color", Color);
-            KT.SetShaderRect(ShaderType.RoundedBorder, "dest", new Rect(Dest.X, KT.Size.Y - Dest.Y, Dest.W, Dest.H));
-            KT.SetShaderFloat(ShaderType.RoundedBorder, "fallOff", FallOff);
-            KT.SetShaderFloat(ShaderType.RoundedBorder, "cornerSize", CornerSize);
-            KT.SetShaderFloat(ShaderType.RoundedBorder, "thickness", Thickness);
+            ShaderManager.SetMatrix4(ShaderType.RoundedBorder, "model", Model);
+            ShaderManager.SetColor(ShaderType.RoundedBorder, "color", Color);
+            ShaderManager.SetRect(ShaderType.RoundedBorder, "dest", new Rect(Dest.X, KT.Size.Y - Dest.Y, Dest.W, Dest.H));
+            ShaderManager.SetFloat(ShaderType.RoundedBorder, "fallOff", FallOff);
+            ShaderManager.SetFloat(ShaderType.RoundedBorder, "cornerSize", CornerSize);
+            ShaderManager.SetFloat(ShaderType.RoundedBorder, "thickness", Thickness);
 
             GL.BindVertexArray(SquareVertices.VertexArrayObject);
 

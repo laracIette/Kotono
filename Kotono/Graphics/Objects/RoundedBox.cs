@@ -1,4 +1,5 @@
-﻿using Kotono.Utils;
+﻿using Kotono.Graphics.Objects.Managers;
+using Kotono.Utils;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using System;
@@ -54,7 +55,7 @@ namespace Kotono.Graphics.Objects
             FallOff = fallOff;
             CornerSize = cornerSize;
 
-            KT.CreateRoundedBox(this);
+            ObjectManager.CreateRoundedBox(this);
         }
 
         public void Init()
@@ -74,11 +75,11 @@ namespace Kotono.Graphics.Objects
 
         public virtual void Draw()
         {
-            KT.SetShaderMatrix4(ShaderType.RoundedBox, "model", Model);
-            KT.SetShaderColor(ShaderType.RoundedBox, "color", Color);
-            KT.SetShaderRect(ShaderType.RoundedBox, "dest", new Rect(Dest.X, KT.Size.Y - Dest.Y, Dest.W, Dest.H));
-            KT.SetShaderFloat(ShaderType.RoundedBox, "fallOff", FallOff);
-            KT.SetShaderFloat(ShaderType.RoundedBox, "cornerSize", CornerSize);
+            ShaderManager.SetMatrix4(ShaderType.RoundedBox, "model", Model);
+            ShaderManager.SetColor(ShaderType.RoundedBox, "color", Color);
+            ShaderManager.SetRect(ShaderType.RoundedBox, "dest", new Rect(Dest.X, KT.Size.Y - Dest.Y, Dest.W, Dest.H));
+            ShaderManager.SetFloat(ShaderType.RoundedBox, "fallOff", FallOff);
+            ShaderManager.SetFloat(ShaderType.RoundedBox, "cornerSize", CornerSize);
 
             GL.BindVertexArray(SquareVertices.VertexArrayObject);
 

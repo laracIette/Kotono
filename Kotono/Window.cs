@@ -1,4 +1,5 @@
-﻿using Kotono.Graphics;
+﻿using Kotono.Graphics.Objects;
+using Kotono.Graphics.Objects.Managers;
 using Kotono.Input;
 using Kotono.Utils;
 using OpenTK.Graphics.OpenGL4;
@@ -28,15 +29,12 @@ namespace Kotono
             GL.ClearColor(0.1f, 0.1f, 0.2f, 1.0f);
             GL.Enable(EnableCap.DepthTest);
 
-            KT.CreateCamera(new Camera());
+            CameraManager.Create(new Camera());
 
             KT.SetWindowPosition((Point)Location);
             KT.SetWindowSize((Point)Size);
 
-            KT.Init();
-
-            Mouse.Init(MouseState);
-            Keyboard.Init(KeyboardState);
+            KT.Init(MouseState, KeyboardState);
         }
 
         protected new void Load()

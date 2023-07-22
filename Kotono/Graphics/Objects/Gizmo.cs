@@ -1,4 +1,5 @@
-﻿using Kotono.Graphics.Objects.Meshes;
+﻿using Kotono.Graphics.Objects.Managers;
+using Kotono.Graphics.Objects.Meshes;
 using Kotono.Input;
 using Kotono.Utils;
 using OpenTK.Windowing.GraphicsLibraryFramework;
@@ -12,17 +13,17 @@ namespace Kotono.Graphics.Objects
         Local
     }
 
-    public class Gizmo
+    public static class Gizmo
     {
-        private GizmoMesh[] _meshes = new GizmoMesh[4];
+        private static GizmoMesh[] _meshes = new GizmoMesh[4];
 
-        private Mesh? _attachMesh = null;
+        private static Mesh? _attachMesh = null;
 
-        private Transform _transform;
+        private static Transform _transform;
 
-        public Transform Transform => _transform;
+        public static Transform Transform => _transform;
 
-        public Vector Location
+        public static Vector Location
         {
             get => _transform.Location;
             set
@@ -35,7 +36,7 @@ namespace Kotono.Graphics.Objects
             }
         }
 
-        public Vector Rotation
+        public static Vector Rotation
         {
             get => _transform.Rotation;
             set
@@ -48,7 +49,7 @@ namespace Kotono.Graphics.Objects
             }
         }
 
-        public Vector Scale
+        public static Vector Scale
         {
             get => _transform.Scale;
             set
@@ -61,15 +62,13 @@ namespace Kotono.Graphics.Objects
             }
         }
 
-        public bool IsDraw { get; private set; } = true;
+        public static bool IsDraw { get; private set; } = true;
 
-        private int _selectedMesh = -1;
+        private static int _selectedMesh = -1;
 
-        private TransformSpace _transformSpace = TransformSpace.World;
+        private static TransformSpace _transformSpace = TransformSpace.World;
 
-        public Gizmo() { }
-
-        public void Init()
+        public static void Init()
         {
             _meshes = new GizmoMesh[]
             {
@@ -80,7 +79,7 @@ namespace Kotono.Graphics.Objects
             };
         }
 
-        public void Update()
+        public static void Update()
         {
             if (_attachMesh == null)
             {
@@ -116,10 +115,10 @@ namespace Kotono.Graphics.Objects
 
             _attachMesh.Location = Location;
 
-            Scale = (Vector)(Vector.Distance(Location, KT.ActiveCamera.Location) / 75);
+            Scale = (Vector)(Vector.Distance(Location, CameraManager.Get(0).Location) / 75);
         }
 
-        private Vector GetMovement()
+        private static Vector GetMovement()
         {
             float speed = 0.01f;
 
@@ -133,7 +132,7 @@ namespace Kotono.Graphics.Objects
             };
         }
 
-        private int GetSelectedMesh()
+        private static int GetSelectedMesh()
         {
             int closestMesh = -1;
             float closestDistance = float.PositiveInfinity;
@@ -154,17 +153,17 @@ namespace Kotono.Graphics.Objects
             return closestMesh;
         }
 
-        public void AttachTo(Mesh mesh)
+        public static void AttachTo(Mesh mesh)
         {
             _attachMesh = mesh;
         }
 
-        public void Detach()
+        public static void Detach()
         {
             _attachMesh = null;
         }
 
-        public void Show()
+        public static void Show()
         {
             IsDraw = true;
             foreach (var mesh in _meshes)
@@ -173,7 +172,7 @@ namespace Kotono.Graphics.Objects
             }
         }
 
-        public void Hide()
+        public static void Hide()
         {
             IsDraw = false;
             foreach (var mesh in _meshes)

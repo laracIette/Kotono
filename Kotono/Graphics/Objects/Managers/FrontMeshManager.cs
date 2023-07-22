@@ -1,8 +1,9 @@
-﻿using OpenTK.Graphics.OpenGL4;
+﻿using Kotono.Graphics.Objects.Meshes;
+using OpenTK.Graphics.OpenGL4;
 
 namespace Kotono.Graphics.Objects.Managers
 {
-    public class FrontMeshManager : DrawableManager
+    public class FrontMeshManager : DrawableManager<FrontMesh>
     {
         public FrontMeshManager()
             : base() { }

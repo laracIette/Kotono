@@ -1,6 +1,8 @@
-﻿namespace Kotono.Graphics.Objects.Managers
+﻿using Kotono.Graphics.Objects.Meshes;
+
+namespace Kotono.Graphics.Objects.Managers
 {
-    public class MeshManager : DrawableManager
+    public class MeshManager : DrawableManager<Mesh>
     {
         public MeshManager()
             : base() { }

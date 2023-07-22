@@ -1,17 +1,13 @@
 ﻿using Kotono.Graphics.Objects.Lights;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Kotono.Graphics.Objects.Managers
 {
-    public class SpotLightManager : DrawableManager
+    public class SpotLightManager : DrawableManager<SpotLight>
     {
-        private readonly List<SpotLight> _spotLights = new();
-
         public SpotLightManager()
             : base() { }
 
-        public void Create(SpotLight spotLight)
+        public override void Create(SpotLight spotLight)
         {
             if (SpotLight.Count >= SpotLight.MAX_COUNT)
             {
@@ -19,22 +15,20 @@ namespace Kotono.Graphics.Objects.Managers
             }
             else
             {
-                _spotLights.Add(spotLight);
                 base.Create(spotLight);
                 SpotLight.Count++;
             }
         }
 
-        public void Delete(SpotLight spotLight)
+        public override void Delete(SpotLight spotLight)
         {
-            _spotLights.Remove(spotLight);
-            _spotLights.ForEach(p => p.UpdateIndex());
+            _drawables.ForEach(p => p.UpdateIndex());
             base.Delete(spotLight);
         }
 
         public int GetCount()
         {
-            return _spotLights.Count;
+            return _drawables.Count;
         }
     }
 }

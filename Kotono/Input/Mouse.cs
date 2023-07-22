@@ -1,4 +1,5 @@
 ﻿using Kotono.Engine;
+using Kotono.Graphics.Objects.Managers;
 using Kotono.Utils;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
@@ -142,9 +143,9 @@ namespace Kotono.Input
             var mouse = (Position - KT.Position).WorldSpace;
 
             Vector4 rayClip = new Vector4(mouse.X, mouse.Y, -1.0f, 1.0f);
-            Vector4 rayView = Matrix4.Invert(KT.ActiveCamera.ProjectionMatrix) * rayClip;
+            Vector4 rayView = Matrix4.Invert(CameraManager.Get(0).ProjectionMatrix) * rayClip;
             rayView.Z = -1.0f; rayView.W = 0.0f;
-            Vector4 rayWorld = KT.ActiveCamera.ViewMatrix * rayView;
+            Vector4 rayWorld = CameraManager.Get(0).ViewMatrix * rayView;
 
             Ray = ((Vector)rayWorld.Xyz).Normalized;
         }

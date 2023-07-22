@@ -1,8 +1,6 @@
-﻿using System.Collections.Generic;
-
-namespace Kotono.Graphics.Objects.Managers
+﻿namespace Kotono.Graphics.Objects.Managers
 {
-    public class ImageManager : DrawableManager
+    public class ImageManager : DrawableManager<Image>
     {
         public ImageManager()
             : base() { }

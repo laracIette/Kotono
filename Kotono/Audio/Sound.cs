@@ -12,9 +12,10 @@ namespace Kotono.Audio
         public float Volume
         {
             get => _volume;
-            private set
+            set
             {
                 _volume = Math.Clamp(value, 0.0f, 1.0f);
+                AL.Source(Source, ALSourcef.Gain, _volume * SoundManager.GeneralVolume);
             }
         }
         
@@ -27,7 +28,7 @@ namespace Kotono.Audio
         public Sound(int source)
         {
             Source = source;
-            SetVolume(1.0f);
+            Volume = 1.0f;
         }
 
         public void Play()
@@ -48,12 +49,6 @@ namespace Kotono.Audio
         public void Stop()
         {
             AL.SourceStop(Source);
-        }
-
-        public void SetVolume(float volume)
-        {
-            Volume = volume;
-            AL.Source(Source, ALSourcef.Gain, Volume * SoundManager.GeneralVolume);
         }
     }
 }

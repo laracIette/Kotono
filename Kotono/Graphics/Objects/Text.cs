@@ -205,7 +205,7 @@ namespace Kotono.Graphics.Objects
         {
             foreach (var letter in _letters)
             {
-                KT.DeleteImage(letter);
+                ObjectManager.DeleteImage(letter);
             }
             _letters.Clear();
         }

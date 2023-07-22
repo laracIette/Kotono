@@ -222,15 +222,15 @@ namespace Kotono.Graphics.Objects.Meshes
                 GL.BindBuffer(BufferTarget.ArrayBuffer, vertexBufferObject);
                 GL.BufferData(BufferTarget.ArrayBuffer, models[0].Count * Vertex.SizeInBytes, models[0].ToArray(), BufferUsageHint.StaticDraw);
 
-                int locationAttributeLocation = KT.GetShaderAttribLocation(_shaderType, "aPos");
+                int locationAttributeLocation = ShaderManager.GetAttribLocation(_shaderType, "aPos");
                 GL.EnableVertexAttribArray(locationAttributeLocation);
                 GL.VertexAttribPointer(locationAttributeLocation, 3, VertexAttribPointerType.Float, false, Vertex.SizeInBytes, 0);
 
-                int normalAttributeLocation = KT.GetShaderAttribLocation(_shaderType, "aNormal");
+                int normalAttributeLocation = ShaderManager.GetAttribLocation(_shaderType, "aNormal");
                 GL.EnableVertexAttribArray(normalAttributeLocation);
                 GL.VertexAttribPointer(normalAttributeLocation, 3, VertexAttribPointerType.Float, false, Vertex.SizeInBytes, sizeof(float) * 3);
 
-                int texCoordAttributeLocation = KT.GetShaderAttribLocation(_shaderType, "aTexCoords");
+                int texCoordAttributeLocation = ShaderManager.GetAttribLocation(_shaderType, "aTexCoords");
                 GL.EnableVertexAttribArray(texCoordAttributeLocation);
                 GL.VertexAttribPointer(texCoordAttributeLocation, 2, VertexAttribPointerType.Float, false, Vertex.SizeInBytes, sizeof(float) * 6);
 
@@ -257,7 +257,7 @@ namespace Kotono.Graphics.Objects.Meshes
 
         protected virtual void Create()
         {
-            KT.CreateMesh(this);
+            ObjectManager.CreateMesh(this);
         }
 
         public virtual void Init() { }
@@ -300,8 +300,8 @@ namespace Kotono.Graphics.Objects.Meshes
                 TextureManager.UseTexture(Textures[i], TextureUnit.Texture0 + i);
             }
 
-            KT.SetShaderMatrix4(_shaderType, "model", Model);
-            KT.SetShaderColor(_shaderType, "color", Color);
+            ShaderManager.SetMatrix4(_shaderType, "model", Model);
+            ShaderManager.SetColor(_shaderType, "color", Color);
 
             GL.BindVertexArray(VertexArrayObject);
             GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
@@ -314,7 +314,7 @@ namespace Kotono.Graphics.Objects.Meshes
             foreach (var triangle in Triangles)
             {
                 triangle.Transform = Transform;
-                if (Intersection.IntersectRayTriangle(KT.ActiveCamera.Location, Mouse.Ray, triangle, out intersectionPoint, out distance))
+                if (Intersection.IntersectRayTriangle(CameraManager.ActiveCamera.Location, Mouse.Ray, triangle, out intersectionPoint, out distance))
                 {
                     return true;
                 }
@@ -366,7 +366,7 @@ namespace Kotono.Graphics.Objects.Meshes
         {
             foreach (var hitbox in _hitboxes)
             {
-                KT.DeleteHitbox(hitbox);
+                ObjectManager.DeleteHitbox(hitbox);
             }
             
             GC.SuppressFinalize(this);
