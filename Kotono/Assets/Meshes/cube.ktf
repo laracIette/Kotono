@@ -7,7 +7,7 @@ Color: {
 	R: 1f
 }
 Obj: C:\Users\nicos\Documents\Visual Studio 2022\Projects\Kotono-TestApp\Kotono-TestApp\Assets\Meshes\cube.obj
-ShaderType: Lighting
+Shader: Lighting
 Textures: {
 	Diffuse: C:\Users\nicos\Documents\Visual Studio 2022\Projects\Kotono-TestApp\Kotono-TestApp\Assets\Meshes\cube_diff.png
 	Specular: C:\Users\nicos\Documents\Visual Studio 2022\Projects\Kotono-TestApp\Kotono-TestApp\Assets\Meshes\cube_spec.png

@@ -2,6 +2,7 @@
 using Kotono.File;
 using Kotono.Graphics.Objects.Hitboxes;
 using Kotono.Graphics.Objects.Managers;
+using Kotono.Graphics.Shaders;
 using Kotono.Input;
 using Kotono.Physics;
 using Kotono.Utils;
@@ -24,7 +25,7 @@ namespace Kotono.Graphics.Objects.Meshes
 
         private readonly IHitbox[] _hitboxes;
 
-        protected readonly ShaderType _shaderType;
+        protected readonly Shader _shader;
 
         public bool IsDraw { get; private set; } = true;
 
@@ -111,12 +112,12 @@ namespace Kotono.Graphics.Objects.Meshes
                 Textures[i] = TextureManager.LoadTexture(_properties.Strings[textureKeys[i]]);
             }
 
-            _shaderType = _properties.Strings["ShaderType"] switch
+            _shader = _properties.Strings["Shader"] switch
             {
-                "Lighting" => ShaderType.Lighting,
-                "PointLight" => ShaderType.PointLight,
-                "Gizmo" => ShaderType.Gizmo,
-                _ => throw new Exception($"error: ShaderType \"{_properties.Strings["ShaderType"]}\" isn't valid"),
+                "Lighting" => ShaderManager.Lighting,
+                "PointLight" => ShaderManager.PointLight,
+                "Gizmo" => ShaderManager.Gizmo,
+                _ => throw new Exception($"error: Shader \"{_properties.Strings["Shader"]}\" isn't valid"),
             };
 
             Location = new Vector
@@ -222,15 +223,15 @@ namespace Kotono.Graphics.Objects.Meshes
                 GL.BindBuffer(BufferTarget.ArrayBuffer, vertexBufferObject);
                 GL.BufferData(BufferTarget.ArrayBuffer, models[0].Count * Vertex.SizeInBytes, models[0].ToArray(), BufferUsageHint.StaticDraw);
 
-                int locationAttributeLocation = ShaderManager.GetAttribLocation(_shaderType, "aPos");
+                int locationAttributeLocation = _shader.GetAttribLocation("aPos");
                 GL.EnableVertexAttribArray(locationAttributeLocation);
                 GL.VertexAttribPointer(locationAttributeLocation, 3, VertexAttribPointerType.Float, false, Vertex.SizeInBytes, 0);
 
-                int normalAttributeLocation = ShaderManager.GetAttribLocation(_shaderType, "aNormal");
+                int normalAttributeLocation = _shader.GetAttribLocation("aNormal");
                 GL.EnableVertexAttribArray(normalAttributeLocation);
                 GL.VertexAttribPointer(normalAttributeLocation, 3, VertexAttribPointerType.Float, false, Vertex.SizeInBytes, sizeof(float) * 3);
 
-                int texCoordAttributeLocation = ShaderManager.GetAttribLocation(_shaderType, "aTexCoords");
+                int texCoordAttributeLocation = _shader.GetAttribLocation("aTexCoords");
                 GL.EnableVertexAttribArray(texCoordAttributeLocation);
                 GL.VertexAttribPointer(texCoordAttributeLocation, 2, VertexAttribPointerType.Float, false, Vertex.SizeInBytes, sizeof(float) * 6);
 
@@ -300,8 +301,8 @@ namespace Kotono.Graphics.Objects.Meshes
                 TextureManager.UseTexture(Textures[i], TextureUnit.Texture0 + i);
             }
 
-            ShaderManager.SetMatrix4(_shaderType, "model", Model);
-            ShaderManager.SetColor(_shaderType, "color", Color);
+            _shader.SetMatrix4("model", Model);
+            _shader.SetColor("color", Color);
 
             GL.BindVertexArray(VertexArrayObject);
             GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);

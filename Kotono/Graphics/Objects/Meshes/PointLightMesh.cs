@@ -12,7 +12,7 @@ namespace Kotono.Graphics.Objects.Meshes
 
         public PointLightMesh(Vector location, PointLight pointLight) 
             : base(
-                  KT.KotonoPath + "Assets/Meshes/pointLight.ktf",
+                  Path.Kotono + "Assets/Meshes/pointLight.ktf",
                   new IHitbox[]
                   {
                       new Sphere()
@@ -32,8 +32,8 @@ namespace Kotono.Graphics.Objects.Meshes
 
         public override void Draw()
         {
-            ShaderManager.SetMatrix4(_shaderType, "model", Model);
-            ShaderManager.SetColor(_shaderType, "color", Color);
+            _shader.SetMatrix4("model", Model);
+            _shader.SetColor("color", Color);
 
             GL.BindVertexArray(VertexArrayObject);
             GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);

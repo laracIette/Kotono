@@ -74,8 +74,8 @@ namespace Kotono.Graphics.Objects
 
             TextureManager.UseTexture(_texture, TextureUnit.Texture0);
 
-            ShaderManager.SetMatrix4(ShaderType.Image, "model", Model);
-            ShaderManager.SetColor(ShaderType.Image, "color", Color);
+            ShaderManager.Image.SetMatrix4("model", Model);
+            ShaderManager.Image.SetColor("color", Color);
 
             GL.BindVertexArray(SquareVertices.VertexArrayObject);
 

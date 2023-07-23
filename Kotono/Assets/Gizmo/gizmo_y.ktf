@@ -7,7 +7,7 @@ Color: {
 	R: 0f
 }
 Obj: C:\Users\nicos\Documents\Visual Studio 2022\Projects\Kotono\Kotono\Assets\Gizmo\gizmo_y.obj
-ShaderType: Gizmo
+Shader: Gizmo
 Textures: {
 	Diffuse: C:\Users\nicos\Documents\Visual Studio 2022\Projects\Kotono\Kotono\Assets\Gizmo\gizmo_diff.png
 	Specular: C:\Users\nicos\Documents\Visual Studio 2022\Projects\Kotono\Kotono\Assets\Gizmo\gizmo_spec.png

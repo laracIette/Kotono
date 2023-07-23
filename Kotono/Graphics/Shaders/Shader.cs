@@ -13,9 +13,9 @@ namespace Kotono.Graphics.Shaders
 
         private readonly Dictionary<string, int> _uniformLocations = new();
 
-        private readonly string _vertPath;
+        protected readonly string _vertPath;
         
-        private readonly string _fragPath;
+        protected readonly string _fragPath;
 
         public Shader(string vertPath, string fragPath)
         { 
@@ -25,12 +25,12 @@ namespace Kotono.Graphics.Shaders
 
         public void Init() 
         { 
-            var shaderSource = IO.File.ReadAllText(KT.KotonoPath + _vertPath);
+            var shaderSource = IO.File.ReadAllText(Path.Kotono + _vertPath);
             var vertexShader = GL.CreateShader(OpenTK.Graphics.OpenGL4.ShaderType.VertexShader);
             GL.ShaderSource(vertexShader, shaderSource);
             CompileShader(vertexShader);
 
-            shaderSource = IO.File.ReadAllText(KT.KotonoPath + _fragPath);
+            shaderSource = IO.File.ReadAllText(Path.Kotono + _fragPath);
             var fragmentShader = GL.CreateShader(OpenTK.Graphics.OpenGL4.ShaderType.FragmentShader);
             GL.ShaderSource(fragmentShader, shaderSource);
             CompileShader(fragmentShader);

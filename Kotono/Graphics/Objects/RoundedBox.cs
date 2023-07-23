@@ -75,11 +75,11 @@ namespace Kotono.Graphics.Objects
 
         public virtual void Draw()
         {
-            ShaderManager.SetMatrix4(ShaderType.RoundedBox, "model", Model);
-            ShaderManager.SetColor(ShaderType.RoundedBox, "color", Color);
-            ShaderManager.SetRect(ShaderType.RoundedBox, "dest", new Rect(Dest.X, KT.Size.Y - Dest.Y, Dest.W, Dest.H));
-            ShaderManager.SetFloat(ShaderType.RoundedBox, "fallOff", FallOff);
-            ShaderManager.SetFloat(ShaderType.RoundedBox, "cornerSize", CornerSize);
+            ShaderManager.RoundedBox.SetMatrix4("model", Model);
+            ShaderManager.RoundedBox.SetColor("color", Color);
+            ShaderManager.RoundedBox.SetRect("dest", new Rect(Dest.X, KT.Size.Y - Dest.Y, Dest.W, Dest.H));
+            ShaderManager.RoundedBox.SetFloat("fallOff", FallOff);
+            ShaderManager.RoundedBox.SetFloat("cornerSize", CornerSize);
 
             GL.BindVertexArray(SquareVertices.VertexArrayObject);
 

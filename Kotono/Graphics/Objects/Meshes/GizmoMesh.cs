@@ -1,4 +1,5 @@
 ﻿using Kotono.Graphics.Objects.Hitboxes;
+using Kotono.Utils;
 
 namespace Kotono.Graphics.Objects.Meshes
 {
@@ -6,7 +7,7 @@ namespace Kotono.Graphics.Objects.Meshes
     {
         public GizmoMesh(string axis)
             : base(
-                  KT.KotonoPath + "Assets/Gizmo/gizmo_" + axis + ".ktf",
+                  Path.Kotono + "Assets/Gizmo/gizmo_" + axis + ".ktf",
                   new IHitbox[] { }
               )
         {

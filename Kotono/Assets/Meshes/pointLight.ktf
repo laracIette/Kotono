@@ -7,7 +7,7 @@ Color: {
 	R: 0.14649707f
 }
 Obj: C:\Users\nicos\Documents\Visual Studio 2022\Projects\Kotono-TestApp\Kotono-TestApp\Assets\Meshes\sphere.obj
-ShaderType: PointLight
+Shader: PointLight
 Transform: {
 	Location: {
 		X: 19.24385f

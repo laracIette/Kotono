@@ -28,12 +28,12 @@ namespace Kotono.Graphics.Objects
 
         public override void Draw()
         {
-            ShaderManager.SetMatrix4(ShaderType.RoundedBorder, "model", Model);
-            ShaderManager.SetColor(ShaderType.RoundedBorder, "color", Color);
-            ShaderManager.SetRect(ShaderType.RoundedBorder, "dest", new Rect(Dest.X, KT.Size.Y - Dest.Y, Dest.W, Dest.H));
-            ShaderManager.SetFloat(ShaderType.RoundedBorder, "fallOff", FallOff);
-            ShaderManager.SetFloat(ShaderType.RoundedBorder, "cornerSize", CornerSize);
-            ShaderManager.SetFloat(ShaderType.RoundedBorder, "thickness", Thickness);
+            ShaderManager.RoundedBorder.SetMatrix4("model", Model);
+            ShaderManager.RoundedBorder.SetColor("color", Color);
+            ShaderManager.RoundedBorder.SetRect("dest", new Rect(Dest.X, KT.Size.Y - Dest.Y, Dest.W, Dest.H));
+            ShaderManager.RoundedBorder.SetFloat("fallOff", FallOff);
+            ShaderManager.RoundedBorder.SetFloat("cornerSize", CornerSize);
+            ShaderManager.RoundedBorder.SetFloat("thickness", Thickness);
 
             GL.BindVertexArray(SquareVertices.VertexArrayObject);
 

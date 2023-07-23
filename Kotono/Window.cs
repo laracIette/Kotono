@@ -17,8 +17,8 @@ namespace Kotono
         public Window(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings, string kotonoPath, string projectPath, int maxFrameRate)
             : base(gameWindowSettings, nativeWindowSettings)
         {
-            KT.KotonoPath = kotonoPath;
-            KT.ProjectPath = projectPath;
+            Path.Kotono = kotonoPath;
+            Path.Project = projectPath;
             KT.MaxFrameRate = maxFrameRate;
         }
 

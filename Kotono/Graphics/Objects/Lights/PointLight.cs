@@ -61,13 +61,13 @@ namespace Kotono.Graphics.Objects.Lights
 
         public void UpdateShaders()
         {
-            ShaderManager.SetVector(ShaderType.Lighting, $"pointLights[{_shaderIndex}].location", _mesh.Location);
-            ShaderManager.SetColor(ShaderType.Lighting, $"pointLights[{_shaderIndex}].ambient", Ambient);
-            ShaderManager.SetColor(ShaderType.Lighting, $"pointLights[{_shaderIndex}].diffuse", Color);
-            ShaderManager.SetColor(ShaderType.Lighting, $"pointLights[{_shaderIndex}].specular", Specular);
-            ShaderManager.SetFloat(ShaderType.Lighting, $"pointLights[{_shaderIndex}].constant", Constant);
-            ShaderManager.SetFloat(ShaderType.Lighting, $"pointLights[{_shaderIndex}].linear", Linear);
-            ShaderManager.SetFloat(ShaderType.Lighting, $"pointLights[{_shaderIndex}].quadratic", Quadratic);
+            ShaderManager.Lighting.SetVector($"pointLights[{_shaderIndex}].location", _mesh.Location);
+            ShaderManager.Lighting.SetColor($"pointLights[{_shaderIndex}].ambient", Ambient);
+            ShaderManager.Lighting.SetColor($"pointLights[{_shaderIndex}].diffuse", Color);
+            ShaderManager.Lighting.SetColor($"pointLights[{_shaderIndex}].specular", Specular);
+            ShaderManager.Lighting.SetFloat($"pointLights[{_shaderIndex}].constant", Constant);
+            ShaderManager.Lighting.SetFloat($"pointLights[{_shaderIndex}].linear", Linear);
+            ShaderManager.Lighting.SetFloat($"pointLights[{_shaderIndex}].quadratic", Quadratic);
         }
 
         public void Draw()

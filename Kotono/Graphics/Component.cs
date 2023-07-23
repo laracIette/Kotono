@@ -7,33 +7,27 @@ namespace Kotono.Graphics
     public class Component
     {
         private readonly Viewport _viewport;
-        
-        private readonly ImageManager _imageManager = new();
 
-        private readonly Image _background;
+        private readonly RoundedBox _background;
         
         public Component(Rect dest) 
         { 
             _viewport = new Viewport(dest);
 
-            //_background = _imageManager.Create(new Image(KT.KotonoPath + "Assets/PerformanceWindow/background.png", dest * new Rect(0, 0, 1, 1)));
+            _background = ObjectManager.CreateRoundedBox(new RoundedBox(dest, Color.White, 3, 10));
         }
 
         public void Update()
         {
-            _imageManager.Update();
         }
 
         public void UpdateShaders()
         {
-            _imageManager.UpdateShaders();
         }
 
         public void Draw()
         {
-            _viewport.Use(); 
-
-            _imageManager.Draw();
+            _viewport.Use();
         }
     }
 }
