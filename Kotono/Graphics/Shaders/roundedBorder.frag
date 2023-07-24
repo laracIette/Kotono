@@ -34,7 +34,8 @@ void main()
 {
     bool isInside = (gl_FragCoord.x > left) && (gl_FragCoord.x < right) && (gl_FragCoord.y > bottom) && (gl_FragCoord.y < top);
 
-    FragColor = (isInside) ? getInside() : getOutside();
+    //FragColor = (isInside) ? getInside() : getOutside();
+    FragColor = getInside();
 }
 
 vec4 getInside()
@@ -85,7 +86,7 @@ float getDist(float initialDist, float left, float right, float top, float botto
     bool isTop =    gl_FragCoord.y > top - cornerSize;
     bool isBottom = gl_FragCoord.y < bottom + cornerSize;
     
-    float dist = initialDist;
+    float dist = INFINITY;
 
     if (isLeft && isTop)
     {
