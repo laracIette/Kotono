@@ -7,7 +7,7 @@ using Math = Kotono.Utils.Math;
 
 namespace Kotono.Graphics.Objects
 {
-    public class RoundedBox : IDrawable
+    public class RoundedBox : IDrawable, IObject2D
     {
         private Rect _dest;
 
@@ -43,15 +43,18 @@ namespace Kotono.Graphics.Objects
         } 
 
         public bool IsDraw { get; private set; } = true;
+
+        public int Layer { get; set; } = 0;
         
         protected virtual Matrix4 Model =>
             Matrix4.CreateScale((Dest + new Rect(w: FallOff * 2)).WorldSpace.W, (Dest + new Rect(h: FallOff * 2)).WorldSpace.H, 1.0f)
             * Matrix4.CreateTranslation(Dest.WorldSpace.X, Dest.WorldSpace.Y, 0.0f);
 
-        public RoundedBox(Rect dest, Color color, float fallOff, float cornerSize) 
+        public RoundedBox(Rect dest, Color color, int layer, float fallOff, float cornerSize) 
         {
             Dest = dest;
             Color = color;
+            Layer = layer;
             FallOff = fallOff;
             CornerSize = cornerSize;
 

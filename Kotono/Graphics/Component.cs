@@ -14,7 +14,7 @@ namespace Kotono.Graphics
         { 
             _viewport = new Viewport(dest);
 
-            _background = ObjectManager.CreateRoundedBox(new RoundedBox(dest, Color.White, 3, 10));
+            _background = ObjectManager.CreateRoundedBox(new RoundedBox(dest, Color.White, 0, 3, 10));
         }
 
         public void Update()

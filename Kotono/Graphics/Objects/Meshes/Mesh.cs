@@ -15,7 +15,7 @@ using PrimitiveType = OpenTK.Graphics.OpenGL4.PrimitiveType;
 
 namespace Kotono.Graphics.Objects.Meshes
 {
-    public abstract class Mesh : IDrawable
+    public abstract class Mesh : IDrawable, IObject3D
     {
         private static readonly Dictionary<string, MeshProperties> _paths = new();
 
@@ -53,7 +53,11 @@ namespace Kotono.Graphics.Objects.Meshes
 
         private Transform _transform;
 
-        public Transform Transform => _transform;
+        public Transform Transform
+        {
+            get => _transform;
+            set => _transform = value;
+        }
 
         public Vector Location
         {

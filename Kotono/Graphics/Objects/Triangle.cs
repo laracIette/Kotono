@@ -5,7 +5,7 @@ using System;
 
 namespace Kotono.Graphics.Objects
 {
-    public class Triangle : IDrawable
+    public class Triangle : IDrawable, IObject3D
     {
         public Vector Vertex1;
 

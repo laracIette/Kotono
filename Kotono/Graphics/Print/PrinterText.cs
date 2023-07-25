@@ -25,7 +25,7 @@ namespace Kotono.Graphics.Print
 
             foreach (var letter in _letters)
             {
-                letter.Dest.Y = _dest.Y + _dest.H / 2;
+                letter.Y = _dest.Y + _dest.H / 2;
             }
         }
     }

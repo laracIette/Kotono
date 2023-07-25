@@ -4,8 +4,8 @@ namespace Kotono.Graphics.Objects
 {
     public class EditableImage : Image
     {
-        public EditableImage(string path, Rect dest, Color color)
-            : base(path, dest, color)
+        public EditableImage(string path, Rect dest, Color color, int layer)
+            : base(path, dest, color, layer)
         {
 
         }

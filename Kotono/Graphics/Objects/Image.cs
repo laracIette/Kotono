@@ -8,11 +8,41 @@ using Math = Kotono.Utils.Math;
 
 namespace Kotono.Graphics.Objects
 {
-    public class Image : IDrawable
+    public class Image : IDrawable, IObject2D
     {
         private readonly int _texture;
 
-        public Rect Dest;
+        private Rect _dest;
+
+        public Rect Dest 
+        {
+            get => _dest;
+            set => _dest = value;
+        }
+
+        public float X 
+        {
+            get => _dest.X;
+            set => _dest.X = value;
+        }
+
+        public float Y
+        {
+            get => _dest.Y;
+            set => _dest.Y = value;
+        }
+
+        public float W 
+        {
+            get => _dest.W;
+            set => _dest.W = value;
+        }
+
+        public float H
+        {
+            get => _dest.H;
+            set => _dest.H = value;
+        }
 
         public Color Color;
 
@@ -28,11 +58,15 @@ namespace Kotono.Graphics.Objects
 
         public bool IsDraw { get; private set; } = true;
 
-        public Image(string path, Rect dest, Color color)
+        public int Layer { get; set; } = 0;
+
+        public Image(string path, Rect dest, Color color, int layer)
         {
             Dest = dest;
 
             Color = color;
+
+            Layer = layer;
 
             _transformation = new Rect();
 

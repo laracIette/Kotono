@@ -88,7 +88,7 @@ namespace Kotono.Utils
         }
 
         /// <summary> Initialize a Color with R = f, G = f, B = f, A = a </summary>
-        public Color(float f, float a = 1)
+        public Color(float f = 0, float a = 1)
         {
             R = f;
             G = f;
@@ -97,7 +97,7 @@ namespace Kotono.Utils
         }
 
         /// <summary> Initialize a Color with R = (float)d, G = (float)d, B = (float)d, A = (float)a </summary>
-        public Color(double d, double a = 1)
+        public Color(double d = 0, double a = 1)
         {
             R = (float)d;
             G = (float)d;

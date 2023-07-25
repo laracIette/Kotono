@@ -14,14 +14,12 @@ namespace Kotono.Graphics.Objects
             set => _thickness = Math.Clamp(value, 0, float.PositiveInfinity);
         }
 
-
-
         protected override Matrix4 Model =>
             Matrix4.CreateScale((Dest + new Rect(w: FallOff * 2 + Thickness)).WorldSpace.W, (Dest + new Rect(h: FallOff * 2 + Thickness)).WorldSpace.H, 1.0f)
             * Matrix4.CreateTranslation(Dest.WorldSpace.X, Dest.WorldSpace.Y, 0.0f);
 
-        public RoundedBorder(Rect dest, Color color, float fallOff, float cornerSize, float thickness)
-            : base(dest, color, fallOff, cornerSize)
+        public RoundedBorder(Rect dest, Color color, int layer, float fallOff, float cornerSize, float thickness)
+            : base(dest, color, layer, fallOff, cornerSize)
         {
             _thickness = thickness;
         }

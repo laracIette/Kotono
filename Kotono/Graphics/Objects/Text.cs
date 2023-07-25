@@ -152,7 +152,8 @@ namespace Kotono.Graphics.Objects
                                 _dest.W,
                                 _dest.H
                             ),
-                            Color
+                            Color, 
+                            0
                         ));
                         break;
 
@@ -165,7 +166,8 @@ namespace Kotono.Graphics.Objects
                                 _dest.W,
                                 _dest.H
                             ),
-                            Color
+                            Color,
+                            0
                         ));
                         break;
 
