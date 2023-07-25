@@ -8,7 +8,7 @@ using Math = Kotono.Utils.Math;
 
 namespace Kotono.Graphics.Objects
 {
-    public class Image : IDrawable, IObject2D
+    public class Image : IObject2D
     {
         private readonly int _texture;
 
@@ -102,8 +102,6 @@ namespace Kotono.Graphics.Objects
 
         public void Draw()
         {
-            GL.Disable(EnableCap.DepthTest);
-            GL.Enable(EnableCap.Blend);
             GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
 
             TextureManager.UseTexture(_texture, TextureUnit.Texture0);
@@ -114,8 +112,6 @@ namespace Kotono.Graphics.Objects
             GL.BindVertexArray(SquareVertices.VertexArrayObject);
 
             GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
-
-            GL.Enable(EnableCap.DepthTest);
         }
 
         public void Transform(Rect transformation, double time)

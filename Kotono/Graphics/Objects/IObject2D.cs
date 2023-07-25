@@ -2,7 +2,7 @@
 
 namespace Kotono.Graphics.Objects
 {
-    public interface IObject2D
+    public interface IObject2D : IDrawable
     {
         public Rect Dest { get; set; }
 

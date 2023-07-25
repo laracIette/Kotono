@@ -15,7 +15,7 @@ using PrimitiveType = OpenTK.Graphics.OpenGL4.PrimitiveType;
 
 namespace Kotono.Graphics.Objects.Meshes
 {
-    public abstract class Mesh : IDrawable, IObject3D
+    public abstract class Mesh : IObject3D
     {
         private static readonly Dictionary<string, MeshProperties> _paths = new();
 

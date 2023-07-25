@@ -7,8 +7,6 @@ namespace Kotono.Graphics.Objects.Managers
 {
     public static class ObjectManager
     {
-        private static readonly ImageManager _imageManager = new();
-
         private static readonly MeshManager _meshManager = new();
 
         private static readonly FrontMeshManager _frontMeshManager = new();
@@ -21,37 +19,21 @@ namespace Kotono.Graphics.Objects.Managers
 
         private static readonly TriangleManager _triangleManager = new();
 
-        private static readonly RoundedBoxManager _roundedBoxManager = new();
-        
-        private static readonly RoundedBorderManager _roundedBorderManager = new();
+        private static readonly Object2DManager _object2DManager = new();
 
         //private static readonly Viewport _viewport = new(0, 0, 1280, 720);
-
-        public static void Init()
-        {
-            _imageManager.Init();
-            _meshManager.Init();
-            _frontMeshManager.Init();
-            _hitboxManager.Init();
-            _pointLightManager.Init();
-            _spotLightManager.Init();
-            _triangleManager.Init();
-            _roundedBoxManager.Init();
-            _roundedBorderManager.Init();
-            //_viewport.Init();
-        }
 
         #region Image
 
         public static Image CreateImage(Image image)
         {
-            _imageManager.Create(image);
+            _object2DManager.Create(image);
             return image;
         }
 
         public static void DeleteImage(Image image)
         {
-            _imageManager.Delete(image);
+            _object2DManager.Delete(image);
         }
 
         #endregion Image
@@ -165,13 +147,13 @@ namespace Kotono.Graphics.Objects.Managers
 
         public static RoundedBox CreateRoundedBox(RoundedBox box)
         {
-            _roundedBoxManager.Create(box);
+            _object2DManager.Create(box);
             return box;
         }
 
         public static void DeleteRoundedBox(RoundedBox box)
         {
-            _roundedBoxManager.Delete(box);
+            _object2DManager.Delete(box);
         }
 
         #endregion RoundedBox
@@ -180,41 +162,49 @@ namespace Kotono.Graphics.Objects.Managers
 
         public static RoundedBorder CreateRoundedBorder(RoundedBorder border)
         {
-            _roundedBorderManager.Create(border);
+            _object2DManager.Create(border);
             return border;
         }
 
         public static void DeleteRoundedBorder(RoundedBorder border)
         {
-            _roundedBorderManager.Delete(border);
+            _object2DManager.Delete(border);
         }
 
         #endregion RoundedBorder
 
+        public static void Init()
+        {
+            _meshManager.Init();
+            _frontMeshManager.Init();
+            _hitboxManager.Init();
+            _pointLightManager.Init();
+            _spotLightManager.Init();
+            _triangleManager.Init();
+            _object2DManager.Init();
+            //_viewport.Init();
+        }
+
         public static void Update()
         {
-            _imageManager.Update();
             _meshManager.Update();
             _frontMeshManager.Update();
             _hitboxManager.Update();
             _pointLightManager.Update();
             _spotLightManager.Update();
             _triangleManager.Update();
-            _roundedBoxManager.Update();
-            _roundedBorderManager.Update();
+            _object2DManager.Update();
         }
 
         public static void UpdateShaders()
         {
-            _imageManager.UpdateShaders();
             _meshManager.UpdateShaders();
             _frontMeshManager.UpdateShaders();
             _hitboxManager.UpdateShaders();
             _pointLightManager.UpdateShaders();
             _spotLightManager.UpdateShaders();
             _triangleManager.UpdateShaders();
-            _roundedBoxManager.UpdateShaders();
-            _roundedBorderManager.UpdateShaders();
+            _object2DManager.UpdateShaders();
         }
 
         public static void Draw()
@@ -227,22 +217,18 @@ namespace Kotono.Graphics.Objects.Managers
             _triangleManager.Draw();
             _meshManager.Draw();
             _frontMeshManager.Draw();
-            _roundedBoxManager.Draw();
-            _roundedBorderManager.Draw();
-            _imageManager.Draw();
+            _object2DManager.Draw();
         }
 
         public static void Save()
         {
-            _imageManager.Save();
             _meshManager.Save();
             _frontMeshManager.Save();
             _hitboxManager.Save();
             _pointLightManager.Save();
             _spotLightManager.Save();
             _triangleManager.Save();
-            _roundedBoxManager.Save();
-            _roundedBorderManager.Save();
+            _object2DManager.Save();
         }
     }
 }

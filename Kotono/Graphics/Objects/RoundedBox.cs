@@ -7,7 +7,7 @@ using Math = Kotono.Utils.Math;
 
 namespace Kotono.Graphics.Objects
 {
-    public class RoundedBox : IDrawable, IObject2D
+    public class RoundedBox : IObject2D
     {
         private Rect _dest;
 
