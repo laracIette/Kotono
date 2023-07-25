@@ -62,7 +62,7 @@ namespace Kotono.Graphics.Objects
             }
         }
 
-        public static bool IsDraw { get; private set; } = true;
+        public static bool IsDraw { get; private set; } = false;
 
         private static int _selectedMesh = -1;
 
@@ -77,6 +77,8 @@ namespace Kotono.Graphics.Objects
                 new GizmoMesh("z"),
                 new GizmoMesh("sphere")
             };
+
+            Hide();
         }
 
         public static void Update()

@@ -17,7 +17,7 @@ namespace Kotono.Graphics.Objects.Meshes
 {
     public abstract class Mesh : IObject3D
     {
-        private static readonly Dictionary<string, MeshProperties> _paths = new();
+        private static readonly Dictionary<string, MeshSettings> _paths = new();
 
         private Vector _locationVelocity;
 
@@ -35,7 +35,7 @@ namespace Kotono.Graphics.Objects.Meshes
 
         public CollisionState CollisionState { get; set; }
 
-        private readonly MeshProperties _meshProperties;
+        private readonly MeshSettings _meshProperties;
 
         public int VertexArrayObject => _meshProperties.VertexArrayObject;
 
@@ -244,7 +244,7 @@ namespace Kotono.Graphics.Objects.Meshes
                 GL.BindBuffer(BufferTarget.ElementArrayBuffer, elementBufferObject);
                 GL.BufferData(BufferTarget.ElementArrayBuffer, indices[0].Count * sizeof(int), indices[0].ToArray(), BufferUsageHint.StaticDraw);
 
-                _paths[_properties.Strings["Obj"]] = new MeshProperties
+                _paths[_properties.Strings["Obj"]] = new MeshSettings
                 {
                     VertexArrayObject = vertexArrayObject,
                     VertexBufferObject = vertexBufferObject,

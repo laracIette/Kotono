@@ -2,7 +2,7 @@
 
 namespace Kotono.Graphics.Objects.Meshes
 {
-    public struct MeshProperties
+    public struct MeshSettings
     {
         public int VertexArrayObject;
         

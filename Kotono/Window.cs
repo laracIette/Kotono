@@ -3,10 +3,10 @@ using Kotono.Graphics.Objects.Managers;
 using Kotono.Input;
 using Kotono.Utils;
 using OpenTK.Graphics.OpenGL4;
+using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
 using OpenTK.Windowing.GraphicsLibraryFramework;
-using CursorState = Kotono.Input.CursorState;
 
 namespace Kotono
 {
@@ -14,12 +14,23 @@ namespace Kotono
     {
         private double _stalledTime = 0;
 
-        public Window(GameWindowSettings gameWindowSettings, NativeWindowSettings nativeWindowSettings, string kotonoPath, string projectPath, int maxFrameRate)
-            : base(gameWindowSettings, nativeWindowSettings)
+        public Window(WindowSettings windowSettings)
+            : base(
+                  GameWindowSettings.Default, 
+                  new NativeWindowSettings()
+                  { 
+                      Size = new Vector2i(windowSettings.Width, windowSettings.Height),
+                      Title = windowSettings.WindowTitle,
+                      StartVisible = false,
+                      Location = new Vector2i((1920 - windowSettings.Width) / 2, (1080 - windowSettings.Height) / 2),
+                      NumberOfSamples = 1
+                  }
+              )
         {
-            Path.Kotono = kotonoPath;
-            Path.Project = projectPath;
-            KT.MaxFrameRate = maxFrameRate;
+            KT.MaxFrameRate = windowSettings.MaxFrameRate;
+            Path.Kotono = windowSettings.KotonoPath;
+            Path.Project = windowSettings.ProjectPath;
+            Mouse.CursorState = windowSettings.CursorState;
         }
 
         protected override void OnLoad()
@@ -83,17 +94,6 @@ namespace Kotono
                 WindowState = (WindowState == WindowState.Normal) ?
                     WindowState.Fullscreen :
                     WindowState.Normal;
-            }
-
-            if (Keyboard.IsKeyPressed(Keys.Enter))
-            {
-                Mouse.CursorState = (CursorState)(((int)Mouse.CursorState + 1) % 3);
-            }
-
-            if (Keyboard.IsKeyPressed(Keys.S) && Keyboard.IsKeyDown(Keys.LeftControl))
-            {
-                KT.Save();
-                KT.Print("saved", Color.FromHex("#88FF10"));
             }
         }
 
