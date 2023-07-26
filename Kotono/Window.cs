@@ -31,13 +31,13 @@ namespace Kotono
             Path.Kotono = windowSettings.KotonoPath;
             Path.Project = windowSettings.ProjectPath;
             Mouse.CursorState = windowSettings.CursorState;
+            GL.ClearColor(windowSettings.ClearColor.R, windowSettings.ClearColor.G, windowSettings.ClearColor.B, windowSettings.ClearColor.A);
         }
 
         protected override void OnLoad()
         {
             base.OnLoad();
 
-            GL.ClearColor(0.1f, 0.1f, 0.2f, 1.0f);
             GL.Enable(EnableCap.DepthTest);
 
             CameraManager.Create(new Camera());

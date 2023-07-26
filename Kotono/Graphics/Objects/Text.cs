@@ -121,8 +121,8 @@ namespace Kotono.Graphics.Objects
             _text = text;
             _dest = dest;
             _position = position;
-            _spacing = spacing;
             Color = color;
+            _spacing = spacing;
         }
 
         public void Init()
@@ -134,11 +134,6 @@ namespace Kotono.Graphics.Objects
                 if (!_paths.TryGetValue(_text[i], out string? path))
                 {
                     path = _paths[' '];
-                }
-
-                if (_text[i] == ':')
-                {
-                    Color = Color.Red;
                 }
 
                 switch (_position)
