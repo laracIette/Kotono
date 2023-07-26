@@ -9,20 +9,20 @@ namespace Kotono.File
     {
         public string Path { get; }
 
-        private readonly Data _data;
+        public Data Data { get; }
 
-        public Dictionary<string, string> Strings => _data.Strings;
+        public Dictionary<string, string> Strings => Data.Strings;
 
-        public Dictionary<string, float> Floats => _data.Floats;
+        public Dictionary<string, float> Floats => Data.Floats;
 
-        public Dictionary<string, double> Doubles => _data.Doubles;
+        public Dictionary<string, double> Doubles => Data.Doubles;
 
-        public Dictionary<string, int> Ints => _data.Ints;
+        public Dictionary<string, int> Ints => Data.Ints;
 
-        public Properties(string path, Data data)
+        private Properties(string path, Data data)
         {
             Path = path;
-            _data = data;
+            Data = data;
         }
 
         public static Properties Parse(string path)
@@ -32,14 +32,14 @@ namespace Kotono.File
                 throw new FormatException($"error: file path \"{path}\" must end with \".ktf\"");
             }
 
-            var fileString = IO.File.ReadAllText(path);
+            var fileString = IO.File.ReadAllText(path).Replace("\r", "");
             var tokens = fileString.Split("\n");
             if (tokens[0] != "# Kotono Properties File")
             {
                 throw new Exception($"error: file type must be \"properties\", file must start with \"# Kotono Properties File\"");
             }
 
-            Data data = new();
+            var data = new Data();
             string parent = "";
 
             for (int i = 1; i < tokens.Length; i++)
@@ -224,7 +224,7 @@ namespace Kotono.File
         {
             string text = "# Kotono Properties File\n\n";
 
-            var keyValues = _data.ToString().Split('\n').Where(s => s != "").ToList();
+            var keyValues = Data.ToString().Split('\n').Where(s => s != "").ToList();
             keyValues.Sort();
 
             // contains the parents path already seen

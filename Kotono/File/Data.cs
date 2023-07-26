@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Kotono.File
 {
@@ -38,5 +39,38 @@ namespace Kotono.File
             return result;
         }
 
+        public List<string> GetAllKeys()
+        {
+            var result = new List<string>();
+
+            result.AddRange(Strings.Keys);
+            result.AddRange(Floats.Keys);
+            result.AddRange(Doubles.Keys);
+            result.AddRange(Ints.Keys);
+
+            return result;
+        }
+
+        public object GetValue(string key)
+        {
+            if (Strings.TryGetValue(key, out string? str))
+            {
+                return str;
+            }
+            if (Floats.TryGetValue(key, out float f))
+            {
+                return f;
+            }
+            if (Doubles.TryGetValue(key, out double d))
+            {
+                return d;
+            }
+            if (Ints.TryGetValue(key, out int i))
+            {
+                return i;
+            }
+
+            throw new Exception($"Value for key: \"{key}\" not found");
+        }
     }
 }
