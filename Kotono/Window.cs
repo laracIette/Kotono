@@ -28,15 +28,13 @@ namespace Kotono
               )
         {
             KT.MaxFrameRate = windowSettings.MaxFrameRate;
+
             Path.Kotono = windowSettings.KotonoPath;
             Path.Project = windowSettings.ProjectPath;
-            Mouse.CursorState = windowSettings.CursorState;
-            GL.ClearColor(windowSettings.ClearColor.R, windowSettings.ClearColor.G, windowSettings.ClearColor.B, windowSettings.ClearColor.A);
-        }
 
-        protected override void OnLoad()
-        {
-            base.OnLoad();
+            Mouse.CursorState = windowSettings.CursorState;
+
+            GL.ClearColor(windowSettings.ClearColor.R, windowSettings.ClearColor.G, windowSettings.ClearColor.B, windowSettings.ClearColor.A);
 
             GL.Enable(EnableCap.DepthTest);
 
@@ -48,8 +46,10 @@ namespace Kotono
             KT.Init(MouseState, KeyboardState);
         }
 
-        protected new void Load()
+        protected override void OnLoad()
         {
+            base.OnLoad();
+
             IsVisible = true;
         }
 
