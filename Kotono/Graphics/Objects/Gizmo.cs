@@ -7,12 +7,6 @@ using CursorState = Kotono.Input.CursorState;
 
 namespace Kotono.Graphics.Objects
 {
-    public enum TransformSpace
-    {
-        World,
-        Local
-    }
-
     public static class Gizmo
     {
         private static GizmoMesh[] _meshes = new GizmoMesh[4];
@@ -66,7 +60,7 @@ namespace Kotono.Graphics.Objects
 
         private static int _selectedMesh = -1;
 
-        private static TransformSpace _transformSpace = TransformSpace.World;
+        private static GizmoTransformSpace _transformSpace = GizmoTransformSpace.World;
 
         public static void Init()
         {
@@ -101,11 +95,11 @@ namespace Kotono.Graphics.Objects
 
             switch (_transformSpace)
             {
-                case TransformSpace.World:
+                case GizmoTransformSpace.World:
                     Rotation = Vector.Zero;
                     break;
 
-                case TransformSpace.Local:
+                case GizmoTransformSpace.Local:
                     Rotation = _attachMesh.Rotation;
                     break;
 
@@ -117,7 +111,7 @@ namespace Kotono.Graphics.Objects
 
             _attachMesh.Location = Location;
 
-            Scale = (Vector)(Vector.Distance(Location, CameraManager.Get(0).Location) / 75);
+            Scale = (Vector)(Vector.Distance(Location, CameraManager.ActiveCamera.Location) / 75);
         }
 
         private static Vector GetMovement()

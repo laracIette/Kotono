@@ -19,55 +19,55 @@ out vec4 FragColor;
 
 void main()
 {
-    float newLeft =   left + halfThick;
-    float newRight =  right - halfThick;
-    float newTop =    top - halfThick;
-    float newBottom = bottom + halfThick;
+    float leftDist =   abs(gl_FragCoord.x - left);
+    float rightDist =  abs(gl_FragCoord.x - right);
+    float topDist =    abs(gl_FragCoord.y - top);
+    float bottomDist = abs(gl_FragCoord.y - bottom);
 
-    float newCornerSize = cornerSize * ((dest.x - newLeft) / (dest.x - left));
-    //TODO: THIS AINT RIGHT maybe
-    bool isLeft =   gl_FragCoord.x < newLeft + newCornerSize;
-    bool isRight =  gl_FragCoord.x > newRight - newCornerSize;
-    bool isTop =    gl_FragCoord.y > newTop - newCornerSize;
-    bool isBottom = gl_FragCoord.y < newBottom + newCornerSize;
+    float value = halfThick + fallOff + cornerSize;
     
+    bool isLeft =   leftDist   < value;
+    bool isRight =  rightDist  < value;
+    bool isTop =    topDist    < value;
+    bool isBottom = bottomDist < value;
+
     float dist = INFINITY;
 
     if (isLeft && isTop)
     {
-        dist = distance(vec2(gl_FragCoord), vec2(newLeft + cornerSize, newTop - cornerSize));
-        dist -= cornerSize;
+        dist = distance(vec2(gl_FragCoord), vec2(left + value, top - value));
+        dist -= value;
     }
     else if (isRight && isTop)
     {
-        dist = distance(vec2(gl_FragCoord), vec2(newRight - cornerSize, newTop - cornerSize));
-        dist -= cornerSize;
+        dist = distance(vec2(gl_FragCoord), vec2(right - value, top - value));
+        dist -= value;
     }
     else if (isLeft && isBottom)
     {
-        dist = distance(vec2(gl_FragCoord), vec2(newLeft + cornerSize, newBottom + cornerSize));
-        dist -= cornerSize;
+        dist = distance(vec2(gl_FragCoord), vec2(left + value, bottom + value));
+        dist -= value;
     }
     else if (isRight && isBottom)
     {
-        dist = distance(vec2(gl_FragCoord), vec2(newRight - cornerSize, newBottom + cornerSize));
-        dist -= cornerSize;
+        dist = distance(vec2(gl_FragCoord), vec2(right - value, bottom + value));
+        dist -= value;
     }
     else if (isLeft)
     {
-        dist = gl_FragCoord.x - newLeft;
+        dist = leftDist;
     }
     else if (isRight)
     {
-        dist = gl_FragCoord.x - newRight;
+        dist = rightDist;
     }
     else if (isTop)
     {
-        dist = gl_FragCoord.y - newTop;
+        dist = topDist;
     }
     else if (isBottom)
     {
-        dist = gl_FragCoord.y - newBottom;
+        dist = bottomDist;
     }
 
     dist = abs(dist);
@@ -77,5 +77,10 @@ void main()
     vec4 result = color;
     result.a -= ratio;
 
-    FragColor = result + vec4(.1);
+    if (gl_FragCoord.x < dest.x)
+    {
+        //result += vec4(.1);
+    }
+
+    FragColor = result;
 }

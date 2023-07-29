@@ -3,13 +3,6 @@ using OpenTK.Windowing.GraphicsLibraryFramework;
 
 namespace Kotono.Engine
 {
-    public enum UserMode
-    {
-        Navigate,
-        Edit,
-        Play
-    }
-
     public class Mode
     {
         public UserMode UserMode { get; private set; }

@@ -1,26 +1,29 @@
 ﻿using Kotono.Graphics.Objects.Managers;
+using Kotono.Input;
 using Kotono.Utils;
+using System;
 using System.Collections.Generic;
+using Math = Kotono.Utils.Math;
 
 namespace Kotono.Graphics.Objects
 {
-    public enum Position
-    {
-        Center,
-        TopLeft,
-    }
-
     public class Text
     {
         protected string _text;
 
-        protected Rect _dest;
+        protected Rect _lettersDest;
 
-        protected Position _position;
+        protected Anchor _anchor;
 
         protected float _spacing;
 
         protected readonly List<Image> _letters = new();
+
+        public Rect Dest =>
+            Rect.FromAnchor(
+                new Rect(_lettersDest.X, _lettersDest.Y, _lettersDest.W * _text.Length, _lettersDest.H),
+                Anchor.TopLeft
+            );
 
         public double Time { get; private set; }
 
@@ -39,6 +42,10 @@ namespace Kotono.Graphics.Objects
                 }
             }
         }
+
+        public bool IsDraw { get; private set; } = true;
+
+        public int Layer { get; set; }
 
         public static void InitPaths()
         {
@@ -116,13 +123,14 @@ namespace Kotono.Graphics.Objects
             _paths['#'] = Path.Kotono + @"Assets\Characters\#.png"; TextureManager.LoadTexture(_paths['#']);
         }
 
-        public Text(string text, Rect dest, Position position, Color color, float spacing = 1.0f) 
+        public Text(string text, Rect lettersDest, Anchor position, Color color, float spacing, int layer) 
         {
             _text = text;
-            _dest = dest;
-            _position = position;
+            _lettersDest = lettersDest;
+            _anchor = position;
             Color = color;
             _spacing = spacing;
+            Layer = layer;
         }
 
         public void Init()
@@ -136,33 +144,34 @@ namespace Kotono.Graphics.Objects
                     path = _paths[' '];
                 }
 
-                switch (_position)
+                switch (_anchor)
                 {
-                    case Position.Center:
+                    case Anchor.Center:
                         _letters.Add(new Image(
                             path, 
                             new Rect(
-                                _dest.X - _dest.W / 2 * (_text.Length - 1) * _spacing + _dest.W * i * _spacing,
-                                _dest.Y,
-                                _dest.W,
-                                _dest.H
+                                _lettersDest.X - _lettersDest.W / 2 * (_text.Length - 1) * _spacing + _lettersDest.W * i * _spacing,
+                                _lettersDest.Y,
+                                _lettersDest.Size
                             ),
                             Color, 
-                            layer: 1
+                            Layer
                         ));
                         break;
 
-                    case Position.TopLeft:
+                    case Anchor.TopLeft:
                         _letters.Add(new Image(
                             path, 
-                            new Rect(
-                                _dest.X + _dest.W / 2 + _dest.W * i * _spacing,
-                                _dest.Y + _dest.H / 2,
-                                _dest.W,
-                                _dest.H
+                            Rect.FromAnchor(
+                                new Rect(
+                                    _lettersDest.X + _lettersDest.W / 2 + _lettersDest.W * i * _spacing,
+                                    _lettersDest.Y + _lettersDest.H / 2,
+                                    _lettersDest.Size
+                                ),
+                                Anchor.Center
                             ),
                             Color,
-                            layer: 1
+                            Layer
                         ));
                         break;
 
@@ -174,11 +183,20 @@ namespace Kotono.Graphics.Objects
 
         public virtual void SetText(string text)
         {
-            if (text != _text)
+            if (IsDraw && (text != _text))
             {
                 _text = text;
                 Clear();
                 Init();
+            }
+        }
+
+        public void Transform(Rect dest)
+        {
+            _lettersDest += dest;
+            foreach (var letter in _letters)
+            {
+                letter.Transform(dest);
             }
         }
 
@@ -207,8 +225,14 @@ namespace Kotono.Graphics.Objects
             _letters.Clear();
         }
 
+        public bool IsMouseOn()
+        {
+            return Rect.Overlaps(Dest, Mouse.RelativePosition);
+        }
+
         public void Show()
         {
+            IsDraw = true;
             foreach (var letter in _letters)
             {
                 letter.Show();
@@ -217,6 +241,7 @@ namespace Kotono.Graphics.Objects
 
         public void Hide()
         {
+            IsDraw = false;
             foreach (var letter in _letters)
             {
                 letter.Hide();

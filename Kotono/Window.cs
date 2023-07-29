@@ -58,16 +58,16 @@ namespace Kotono
             base.OnRenderFrame(e);
 
             // don't render frame if current FrameRate > desired FrameRate
-            if (!IsFocused || (KT.GetFrameRate() > KT.MaxFrameRate - 1))
+            if (!IsFocused || (KT.PerformanceWindow.FrameRate > KT.MaxFrameRate - 1))
             {
                 _stalledTime += e.Time;
-                KT.AddFrameTime(_stalledTime);
+                KT.PerformanceWindow.AddFrameTime(_stalledTime);
                 return;
             }
 
             _stalledTime = 0;
 
-            KT.AddFrameTime(e.Time);
+            KT.PerformanceWindow.AddFrameTime(e.Time);
 
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
@@ -80,7 +80,7 @@ namespace Kotono
         {
             base.OnUpdateFrame(e);
 
-            KT.AddUpdateTime(e.Time);
+            KT.PerformanceWindow.AddUpdateTime(e.Time);
 
             KT.Update();
 

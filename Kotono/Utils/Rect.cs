@@ -1,4 +1,7 @@
-﻿using OpenTK.Mathematics;
+﻿using Assimp;
+using Kotono.Input;
+using OpenTK.Mathematics;
+using System;
 
 namespace Kotono.Utils
 {
@@ -38,6 +41,12 @@ namespace Kotono.Utils
                 Size.Normalized
             );
 
+        public readonly Rect TopLeft =>
+            new Rect(
+                Position - Size / 2,
+                Size
+            );
+
         public static Rect Zero => new Rect(0, 0, 0, 0);
         
         public static Rect Unit => new Rect(1, 1, 1, 1);
@@ -69,14 +78,34 @@ namespace Kotono.Utils
 
         public Rect(Rect r)
         {
-            Position = r.Position; 
-            Size = r.Size;
+            X = r.X;
+            Y = r.Y;
+            W = r.W;
+            H = r.H;
         }
 
         public Rect(Point position, Point size)
         {
-            Position = position;
-            Size = size;
+            X = position.X;
+            Y = position.Y;
+            W = size.X;
+            H = size.Y;
+        }
+
+        public Rect(Point position, float w, float h)
+        {
+            X = position.X;
+            Y = position.Y;
+            W = w;
+            H = h;
+        }
+
+        public Rect(float x, float y, Point size)
+        {
+            X = x; 
+            Y = y;
+            W = size.X;
+            H = size.Y;
         }
 
         public Rect(float x = 0, float y = 0, float w = 0, float h = 0)
@@ -93,6 +122,29 @@ namespace Kotono.Utils
             Y = (float)y;
             W = (float)w;
             H = (float)h;
+        }
+
+        /// <summary> Creates a Rect given an Anchor </summary>
+        public static Rect FromAnchor(Rect r, Anchor a)
+        {
+            return a switch
+            {
+                Anchor.Center => r,
+                Anchor.TopLeft => new Rect(r.Position + r.Size / 2, r.Size),
+                _ => throw new Exception($"error: Rect.FromAnchor() doesn't handle \"{a}\"")
+            };
+        }
+
+        /// <summary> Checks if left is overlapping with right </summary>
+        public static bool Overlaps(Rect left, Rect right)
+        {
+            return (Math.Abs(left.X - right.X) < (left.W + right.W) / 2) && (Math.Abs(left.Y - right.Y) < (left.H + right.H) / 2);
+        }
+
+        /// <summary> Checks if r is overlapping with p </summary>
+        public static bool Overlaps(Rect r, Point p)
+        {
+            return (Math.Abs(r.X - p.X) < r.W / 2) && (Math.Abs(r.Y - p.Y) < r.H / 2);
         }
 
         public static Rect operator +(Rect left, Rect right)
@@ -115,7 +167,6 @@ namespace Kotono.Utils
 
         public static Rect operator -(Rect r)
         {
-
             r.X += -r.X;
             r.Y += -r.Y;
             r.W += -r.W;

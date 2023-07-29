@@ -5,7 +5,7 @@ namespace Kotono.Audio
 {
     public class Sound
     {
-        private float _volume;
+        private float _volume = 1.0f;
 
         public int Source { get; private set; }
 
@@ -28,7 +28,6 @@ namespace Kotono.Audio
         public Sound(int source)
         {
             Source = source;
-            Volume = 1.0f;
         }
 
         public void Play()

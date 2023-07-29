@@ -77,37 +77,9 @@ namespace Kotono
 
         private static readonly Performance.Window _performanceWindow = new();
 
+        public static Performance.Window PerformanceWindow => _performanceWindow;
+
         public static int MaxFrameRate { get; set; } = 60;
-
-        public static void AddFrameTime(double frameTime)
-        {
-            _performanceWindow.AddFrameTime(frameTime);
-        }
-
-        public static void AddUpdateTime(double updateTime)
-        {
-            _performanceWindow.AddUpdateTime(updateTime);
-        }
-
-        public static double GetFrameTime()
-        {
-            return _performanceWindow.FrameTime;
-        }
-
-        public static double GetUpdateTime()
-        {
-            return _performanceWindow.UpdateTime;
-        }
-
-        public static double GetFrameRate()
-        {
-            return _performanceWindow.FrameRate;
-        }
-
-        public static double GetUpdateRate()
-        {
-            return _performanceWindow.UpdateRate;
-        }
 
         #endregion PerformanceWindow
 
@@ -129,7 +101,7 @@ namespace Kotono
             ObjectManager.Init();
             Text.InitPaths();
             Printer.Init();
-            _performanceWindow.Init();
+            PerformanceWindow.Init();
             //_componentManager.Init();
             Fizix.Init();
             _mode.Init();
@@ -146,7 +118,7 @@ namespace Kotono
             //_componentManager.Update();
             CameraManager.Update();
             Printer.Update();
-            _performanceWindow.Update();
+            PerformanceWindow.Update();
             _mode.Update();
         }
 

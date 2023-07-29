@@ -23,12 +23,12 @@ namespace Kotono.Graphics.Performance
 
         public Window()
         {
-            _dest = new Rect(1130, 660, 50, 60);
+            _dest = new Rect(1080, 660, 50, 60);
 
             _frame = new RateStat(_dest - new Rect(y: _dest.H / 2));
             _update = new RateStat(_dest + new Rect(y: _dest.H / 2));
             
-            _background = new RoundedBox(new Rect(_dest.X, _dest.Y, 300, 120), Color.FromHex("#273f45"), layer: 0, fallOff: 1, cornerSize: 10);
+            _background = new RoundedBox(new Rect(_dest.X, _dest.Y, 400, 120), Color.FromHex("#273f45"), layer: 0, fallOff: 1, cornerSize: 10);
         }
 
         public void Init()

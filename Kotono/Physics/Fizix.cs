@@ -5,13 +5,6 @@ using Math = Kotono.Utils.Math;
 
 namespace Kotono.Physics
 {
-    public enum CollisionState
-    {
-        None,
-        BlockAll,
-        BlockSelection
-    }
-
     public sealed class Fizix
     {
         private Fizix() { }

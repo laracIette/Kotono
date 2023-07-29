@@ -8,13 +8,6 @@ using System.Runtime.InteropServices;
 
 namespace Kotono.Input
 {
-    public enum CursorState
-    {
-        Normal,
-        Centered,
-        Confined
-    }
-
     public static partial class Mouse
     {
         public struct POINT
@@ -63,14 +56,8 @@ namespace Kotono.Input
 
         private static MouseState MouseState
         {
-            get
-            {
-                return _mouseState ?? throw new Exception($"error: _mouseState must not be null");
-            }
-            set
-            {
-                _mouseState = value;
-            }
+            get => _mouseState ?? throw new Exception($"error: _mouseState must not be null");
+            set => _mouseState = value;
         }
 
         public static Point ScrollDelta => (Point)MouseState.ScrollDelta;
@@ -143,9 +130,9 @@ namespace Kotono.Input
             var mouse = (Position - KT.Position).WorldSpace;
 
             Vector4 rayClip = new Vector4(mouse.X, mouse.Y, -1.0f, 1.0f);
-            Vector4 rayView = Matrix4.Invert(CameraManager.Get(0).ProjectionMatrix) * rayClip;
+            Vector4 rayView = Matrix4.Invert(CameraManager.ActiveCamera.ProjectionMatrix) * rayClip;
             rayView.Z = -1.0f; rayView.W = 0.0f;
-            Vector4 rayWorld = CameraManager.Get(0).ViewMatrix * rayView;
+            Vector4 rayWorld = CameraManager.ActiveCamera.ViewMatrix * rayView;
 
             Ray = ((Vector)rayWorld.Xyz).Normalized;
         }

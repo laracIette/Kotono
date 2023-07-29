@@ -4,7 +4,6 @@ using Kotono.Utils;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using System;
-using Math = Kotono.Utils.Math;
 
 namespace Kotono.Graphics.Objects
 {
@@ -44,7 +43,7 @@ namespace Kotono.Graphics.Objects
             set => _dest.H = value;
         }
 
-        public Color Color;
+        public Color Color { get; set; }
 
         private Rect _transformation;
 
@@ -63,13 +62,9 @@ namespace Kotono.Graphics.Objects
         public Image(string path, Rect dest, Color color, int layer)
         {
             Dest = dest;
-
             Color = color;
-
             Layer = layer;
-
             _transformation = new Rect();
-
             _texture = TextureManager.LoadTexture(path);
 
             ObjectManager.CreateImage(this);
@@ -79,19 +74,30 @@ namespace Kotono.Graphics.Objects
 
         public virtual void Update()
         {
-            if (Time.NowS < _endTime)
+            if (Time.NowS >= _endTime)
             {
-                Dest += _transformation * Time.DeltaS;
+                _transformation = Rect.Zero;
             }
+            
+            Dest += _transformation * Time.DeltaS;
 
-            // check if Image is out of screen bounds
-            if (((Dest.X + Dest.W) < 0) || (Dest.X > KT.Dest.W) || ((Dest.Y + Dest.H) < 0) || (Dest.Y > KT.Dest.H))
+            // check if Image is in or out of screen bounds
+            if (Rect.Overlaps(Dest, new Rect(Point.Zero, KT.Size)))
             {
-                Hide();
+                Show();
             }
             else
             {
-                Show();
+                Hide();
+            }
+
+            if (IsMouseOn())
+            {
+                Color = Color.Red;
+            }
+            else
+            {
+                Color = Color.White;
             }
         }
 
@@ -114,9 +120,14 @@ namespace Kotono.Graphics.Objects
             GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
         }
 
+        public void Transform(Rect transformation)
+        {
+            Dest += transformation;
+        }
+
         public void Transform(Rect transformation, double time)
         {
-            _transformation = transformation / (float)time;
+            _transformation += transformation / (float)time;
 
             _startTime = Time.NowS;
             _endTime = _startTime + time;
@@ -129,7 +140,7 @@ namespace Kotono.Graphics.Objects
 
         public bool IsMouseOn()
         {
-            return (Math.Abs(Mouse.RelativePosition.X - Dest.X) < Dest.W / 2) && (Math.Abs(Mouse.RelativePosition.Y - Dest.Y) < Dest.H / 2);
+            return Rect.Overlaps(Dest, Mouse.RelativePosition);
         }
 
         public void Show()

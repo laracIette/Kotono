@@ -1,7 +1,9 @@
-﻿using OpenTK.Mathematics;
+﻿using Kotono.File;
+using OpenTK.Mathematics;
 using System;
 using System.Globalization;
 using System.Linq;
+using System.Xml.Linq;
 
 namespace Kotono.Utils
 {
@@ -123,6 +125,24 @@ namespace Kotono.Utils
             A = (float)a;
         }
 
+        /// <summary> Initialize a Color with R = c.R, G = c.G, B = c.B, A = a </summary>
+        public Color(Color c, float a)
+        {
+            R = c.R;
+            G = c.G;
+            B = c.B;
+            A = a;
+        }
+
+        /// <summary> Initialize a Color with R = c.R, G = c.G, B = c.B, A = (float)a </summary>
+        public Color(Color c, double a)
+        {
+            R = c.R;
+            G = c.G;
+            B = c.B;
+            A = (float)a;
+        }
+
         /// <summary> Convert a hex string to a Color accepts 1, 3, 4, 6, 8 letters format </summary>
         public static Color FromHex(string hex)
         {
@@ -168,6 +188,17 @@ namespace Kotono.Utils
             result += ((int)(c.A * 255)).ToString("X");
                        
             return result;
+        }
+
+        public static Color FromProperties(Properties properties, string parent)
+        {
+            return new Color
+            {
+                R = properties.Floats[parent + ".Color.R"],
+                G = properties.Floats[parent + ".Color.G"],
+                B = properties.Floats[parent + ".Color.B"],
+                A = properties.Floats[parent + ".Color.A"]
+            };
         }
 
         public static Color operator +(Color left, Color right)

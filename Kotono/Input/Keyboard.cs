@@ -9,14 +9,8 @@ namespace Kotono.Input
 
         private static KeyboardState KeyboardState
         {
-            get
-            {
-                return _keyboardState ?? throw new Exception($"error: _keyboardState must not be null");
-            }
-            set
-            {
-                _keyboardState = value;
-            }
+            get => _keyboardState ?? throw new Exception($"error: _keyboardState must not be null");
+            set => _keyboardState = value;
         }
 
         public static void Init(KeyboardState keyboardState)
