@@ -1,31 +1,22 @@
 #version 430 core
 
-struct Rect {
-    float x;
-    float y;
-    float w;
-    float h;
-};
-
 uniform vec4 color;
 uniform vec4 dest;
 uniform float fallOff;
 uniform float cornerSize;
 
+const float left =   dest.x - dest.z / 2;
+const float right =  dest.x + dest.z / 2;
+const float top =    dest.y + dest.w / 2;
+const float bottom = dest.y - dest.w / 2;
+
 out vec4 FragColor;
 
 void main()
 {
-    Rect newDest = Rect(dest.x, dest.y, dest.z, dest.w);
-
-    float left = newDest.x - newDest.w / 2;
-    float right = newDest.x + newDest.w / 2;
-    float top = newDest.y + newDest.h / 2;
-    float bottom = newDest.y - newDest.h / 2;
-
-    bool isLeft = gl_FragCoord.x < left + cornerSize;
-    bool isRight = gl_FragCoord.x > right - cornerSize;
-    bool isTop = gl_FragCoord.y > top - cornerSize;
+    bool isLeft =   gl_FragCoord.x < left + cornerSize;
+    bool isRight =  gl_FragCoord.x > right - cornerSize;
+    bool isTop =    gl_FragCoord.y > top - cornerSize;
     bool isBottom = gl_FragCoord.y < bottom + cornerSize;
     
     float dist = 0;

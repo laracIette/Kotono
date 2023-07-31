@@ -33,9 +33,9 @@ namespace Kotono.Graphics.Objects
             set => _fallOff = Math.Clamp(value, 0.000001, float.PositiveInfinity);
         }
 
-        private float _cornerSize;
+        protected float _cornerSize;
 
-        public float CornerSize 
+        public virtual float CornerSize 
         {
             get => _cornerSize;
             // _cornerSize has a maximum value of the smallest value between the box's width and height divided by 2

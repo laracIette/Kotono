@@ -23,35 +23,33 @@ void main()
     float rightDist =  abs(gl_FragCoord.x - right);
     float topDist =    abs(gl_FragCoord.y - top);
     float bottomDist = abs(gl_FragCoord.y - bottom);
-
-    float value = halfThick + fallOff + cornerSize;
     
-    bool isLeft =   leftDist   < value;
-    bool isRight =  rightDist  < value;
-    bool isTop =    topDist    < value;
-    bool isBottom = bottomDist < value;
+    bool isLeft =   (leftDist <= rightDist) && (leftDist   < cornerSize);
+    bool isRight =  !isLeft                 && (rightDist  < cornerSize);
+    bool isTop =    (topDist <= bottomDist) && (topDist    < cornerSize);
+    bool isBottom = !isTop                  && (bottomDist < cornerSize);
 
     float dist = INFINITY;
 
     if (isLeft && isTop)
     {
-        dist = distance(vec2(gl_FragCoord), vec2(left + value, top - value));
-        dist -= value;
+        dist = distance(vec2(gl_FragCoord), vec2(left + cornerSize, top - cornerSize));
+        dist -= cornerSize;
     }
     else if (isRight && isTop)
     {
-        dist = distance(vec2(gl_FragCoord), vec2(right - value, top - value));
-        dist -= value;
+        dist = distance(vec2(gl_FragCoord), vec2(right - cornerSize, top - cornerSize));
+        dist -= cornerSize;
     }
     else if (isLeft && isBottom)
     {
-        dist = distance(vec2(gl_FragCoord), vec2(left + value, bottom + value));
-        dist -= value;
+        dist = distance(vec2(gl_FragCoord), vec2(left + cornerSize, bottom + cornerSize));
+        dist -= cornerSize;
     }
     else if (isRight && isBottom)
     {
-        dist = distance(vec2(gl_FragCoord), vec2(right - value, bottom + value));
-        dist -= value;
+        dist = distance(vec2(gl_FragCoord), vec2(right - cornerSize, bottom + cornerSize));
+        dist -= cornerSize;
     }
     else if (isLeft)
     {
@@ -76,11 +74,6 @@ void main()
     
     vec4 result = color;
     result.a -= ratio;
-
-    if (gl_FragCoord.x < dest.x)
-    {
-        //result += vec4(.1);
-    }
 
     FragColor = result;
 }

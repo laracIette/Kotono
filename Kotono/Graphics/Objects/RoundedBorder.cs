@@ -11,7 +11,14 @@ namespace Kotono.Graphics.Objects
         public float Thickness
         {
             get => _thickness;
-            set => _thickness = Math.Clamp(value, 0, float.PositiveInfinity);
+            set => _thickness = Math.Clamp(value, 0, Math.Min(Dest.W, Dest.H) - FallOff * 2);
+        }
+
+        public override float CornerSize
+        {
+            get => _cornerSize;
+            // _cornerSize has a minimum value of Thickness / 2 + FallOff and a maximum value of the smallest value between the box's width and height divided by 2
+            set => _cornerSize = Math.Clamp(value, Thickness / 2 + FallOff, Math.Min(Dest.W, Dest.H) / 2);
         }
 
         protected override Matrix4 Model =>
