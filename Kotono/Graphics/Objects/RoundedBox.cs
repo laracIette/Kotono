@@ -1,5 +1,6 @@
 ﻿using Kotono.Graphics.Objects.Managers;
 using Kotono.Utils;
+using Newtonsoft.Json.Linq;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using System;
@@ -17,30 +18,35 @@ namespace Kotono.Graphics.Objects
             set
             {
                 _dest = value;
-                // check if corner should be resized
-                CornerSize = _cornerSize;
+                UpdateValues();
             }
         }
-
-        public Color Color { get; set; }
 
         private float _fallOff;
 
         public float FallOff 
         {
             get => _fallOff;
-            // _fallOff has a minimum value of 0.000001 so that there is no division by 0 in glsl
-            set => _fallOff = Math.Clamp(value, 0.000001, float.PositiveInfinity);
+            set
+            {
+                _fallOff = value;
+                UpdateValues();
+            }
         }
 
-        protected float _cornerSize;
+        private float _cornerSize;
 
-        public virtual float CornerSize 
+        public float CornerSize 
         {
             get => _cornerSize;
-            // _cornerSize has a maximum value of the smallest value between the box's width and height divided by 2
-            set => _cornerSize = Math.Clamp(value, 0, Math.Min(Dest.W, Dest.H) / 2);
+            set
+            {
+                _cornerSize = value;
+                UpdateValues();
+            }
         } 
+
+        public Color Color { get; set; }
 
         public bool IsDraw { get; private set; } = true;
 
@@ -69,6 +75,19 @@ namespace Kotono.Graphics.Objects
         public void Update()
         {
 
+        }
+
+        protected virtual void UpdateValues()
+        {
+            /// CornerSize has : 
+            ///     a minimum value of 0,
+            ///     a maximum value of the smallest value between the box's width and height divided by 2
+            CornerSize = Math.Clamp(CornerSize, 0, Math.Min(Dest.W, Dest.H) / 2);
+
+            /// FallOff has :
+            ///     a minimum value of 0.000001 so that there is no division by 0 in glsl,
+            ///     a maximum value of Infinity
+            FallOff = Math.Clamp(FallOff, 0.000001, float.PositiveInfinity);
         }
 
         public void UpdateShaders()

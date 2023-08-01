@@ -1,4 +1,5 @@
 ﻿using Kotono.Utils;
+using Newtonsoft.Json.Linq;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
 
@@ -11,14 +12,11 @@ namespace Kotono.Graphics.Objects
         public float Thickness
         {
             get => _thickness;
-            set => _thickness = Math.Clamp(value, 0, Math.Min(Dest.W, Dest.H) - FallOff * 2);
-        }
-
-        public override float CornerSize
-        {
-            get => _cornerSize;
-            // _cornerSize has a minimum value of Thickness / 2 + FallOff and a maximum value of the smallest value between the box's width and height divided by 2
-            set => _cornerSize = Math.Clamp(value, Thickness / 2 + FallOff, Math.Min(Dest.W, Dest.H) / 2);
+            set
+            {
+                _thickness = value;
+                UpdateValues();
+            }
         }
 
         protected override Matrix4 Model =>
@@ -28,7 +26,22 @@ namespace Kotono.Graphics.Objects
         public RoundedBorder(Rect dest, Color color, int layer, float fallOff, float cornerSize, float thickness)
             : base(dest, color, layer, fallOff, cornerSize)
         {
-            _thickness = thickness;
+            Thickness = thickness;
+        }
+
+        protected override void UpdateValues()
+        {
+            /// CornerSize has :
+            ///     a minimum value of Thickness / 2 + FallOff,
+            ///     a maximum value of the smallest value between the box's width and height divided by 2
+            CornerSize = Math.Clamp(CornerSize, Thickness / 2 + FallOff, Math.Min(Dest.W, Dest.H) / 2);
+
+            Thickness = Math.Clamp(Thickness, 0, Math.Min(Dest.W, Dest.H) - FallOff * 2);
+            
+            /// FallOff has : 
+            ///     a minimum value of 0.000001 so that there is no division by 0 in glsl,
+            ///     a maximum value of width / 2 - Thickness
+            FallOff = Math.Clamp(FallOff, 0.000001, Dest.W / 2 - Thickness);
         }
 
         public override void Draw()
