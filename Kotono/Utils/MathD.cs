@@ -38,7 +38,21 @@
 
         public static double Clamp(double value, double min, double max)
         {
-            return System.Math.Clamp(value, min, max);
+            if (min > max)
+            {
+                (min, max) = (max, min);
+            }
+
+            if (value < min)
+            {
+                return min;
+            }
+            else if (value > max)
+            {
+                return max;
+            }
+
+            return value;
         }
 
         public static double Lerp(double start, double end, double interpolation)

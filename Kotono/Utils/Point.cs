@@ -65,6 +65,21 @@ namespace Kotono.Utils
             Y = (float)y;
         }
 
+        public static float Distance(Point left, Point right)
+        {
+            return (left - right).Length;
+        }
+
+        public static float Min(Point p)
+        {
+            return Math.Min(p.X, p.Y);
+        }
+
+        public static float Max(Point p)
+        {
+            return Math.Max(p.X, p.Y);
+        }
+
         public static Point operator +(Point left, Point right)
         {
             left.X += right.X;

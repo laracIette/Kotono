@@ -31,17 +31,22 @@ namespace Kotono.Graphics.Objects
 
         protected override void UpdateValues()
         {
-            /// CornerSize has :
-            ///     a minimum value of Thickness / 2 + FallOff,
-            ///     a maximum value of the smallest value between the box's width and height divided by 2
-            CornerSize = Math.Clamp(CornerSize, Thickness / 2 + FallOff, Math.Min(Dest.W, Dest.H) / 2);
+            float minSize = Point.Min(Dest.Size);
 
-            Thickness = Math.Clamp(Thickness, 0, Math.Min(Dest.W, Dest.H) - FallOff * 2);
+            /// Thickness has :
+            ///     a minimum value of 0,
+            ///     a maximum value of the smallest value between the border's Width and Height
+            _thickness = Math.Clamp(Thickness, 0, minSize);
+
+            /// CornerSize has :
+            ///     a minimum value of the border's Thickness / 2 + its FallOff,
+            ///     a maximum value of the smallest value between the border's Width and Height divided by 2
+            _cornerSize = Math.Clamp(CornerSize, Thickness / 2 + FallOff, minSize / 2);
             
             /// FallOff has : 
             ///     a minimum value of 0.000001 so that there is no division by 0 in glsl,
-            ///     a maximum value of width / 2 - Thickness
-            FallOff = Math.Clamp(FallOff, 0.000001, Dest.W / 2 - Thickness);
+            ///     a maximum value of the border's Width - its Thickness
+            _fallOff = Math.Clamp(FallOff, 0.000001, Dest.W - Thickness);
         }
 
         public override void Draw()

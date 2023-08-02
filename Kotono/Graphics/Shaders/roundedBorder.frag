@@ -6,10 +6,6 @@ uniform float fallOff;
 uniform float cornerSize;
 uniform float thickness;
 
-const float INFINITY = 1.0 / 0.0;
-
-const float halfThick = thickness / 2;
-
 const float left =   dest.x - dest.z / 2;
 const float right =  dest.x + dest.z / 2;
 const float top =    dest.y + dest.w / 2;
@@ -29,7 +25,7 @@ void main()
     bool isTop =    (topDist <= bottomDist) && (topDist    < cornerSize);
     bool isBottom = !isTop                  && (bottomDist < cornerSize);
 
-    float dist = INFINITY;
+    float dist = 0;
 
     if (isLeft && isTop)
     {
@@ -67,9 +63,13 @@ void main()
     {
         dist = bottomDist;
     }
+    else 
+    {
+        discard;
+    }
 
     dist = abs(dist);
-    dist -= halfThick;
+    dist -= thickness / 2;
     float ratio = clamp(dist / fallOff, 0.0, 1.0);
     
     vec4 result = color;

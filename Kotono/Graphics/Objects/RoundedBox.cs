@@ -22,7 +22,7 @@ namespace Kotono.Graphics.Objects
             }
         }
 
-        private float _fallOff;
+        protected float _fallOff;
 
         public float FallOff 
         {
@@ -34,7 +34,7 @@ namespace Kotono.Graphics.Objects
             }
         }
 
-        private float _cornerSize;
+        protected float _cornerSize;
 
         public float CornerSize 
         {
@@ -82,12 +82,12 @@ namespace Kotono.Graphics.Objects
             /// CornerSize has : 
             ///     a minimum value of 0,
             ///     a maximum value of the smallest value between the box's width and height divided by 2
-            CornerSize = Math.Clamp(CornerSize, 0, Math.Min(Dest.W, Dest.H) / 2);
+            _cornerSize = Math.Clamp(CornerSize, 0, Math.Min(Dest.W, Dest.H) / 2);
 
             /// FallOff has :
             ///     a minimum value of 0.000001 so that there is no division by 0 in glsl,
             ///     a maximum value of Infinity
-            FallOff = Math.Clamp(FallOff, 0.000001, float.PositiveInfinity);
+            _fallOff = Math.Clamp(FallOff, 0.000001, float.PositiveInfinity);
         }
 
         public void UpdateShaders()

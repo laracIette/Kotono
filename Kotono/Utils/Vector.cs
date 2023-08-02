@@ -138,7 +138,17 @@ namespace Kotono.Utils
 
         public static float Distance(Vector left, Vector right)
         {
-            return Math.Sqrt((right.X - left.X) * (right.X - left.X) + (right.Y - left.Y) * (right.Y - left.Y) + (right.Z - left.Z) * (right.Z - left.Z));
+            return (left - right).Length;
+        }
+
+        public static float Min(Vector v)
+        {
+            return Math.Min(Math.Min(v.X, v.Y), v.Z);
+        }
+
+        public static float Max(Vector v)
+        {
+            return Math.Max(Math.Max(v.X, v.Y), v.Z);
         }
 
         public static Vector operator +(Vector left, Vector right)
