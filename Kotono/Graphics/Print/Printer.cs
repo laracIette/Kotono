@@ -14,7 +14,7 @@ namespace Kotono.Graphics.Print
         {
             for (int i = 0; i < _texts.Length; i++)
             {
-                _texts[i] = new PrinterText("");
+                _texts[i] = new PrinterText();
                 _texts[i].Init();
             }
         }

@@ -5,9 +5,11 @@ namespace Kotono.Graphics.Print
 {
     public class PrinterText : Text
     {
-        public PrinterText(string text)
-            : base(text, new Rect(0f, 0f, 25f, 30f), Anchor.TopLeft, Color.White, 2 / 3f, int.MaxValue) 
-        {
+        private static readonly Rect _dest = new(0f, 0f, 25f, 30f);
+
+        public PrinterText()
+            : base("", _dest, Anchor.TopLeft, Color.White, 2 / 3f, int.MaxValue)
+        { 
         }
 
         public override void SetText(string text)
@@ -15,7 +17,7 @@ namespace Kotono.Graphics.Print
             _text = text;
             Clear();
 
-            _lettersDest = new Rect(0f, 0f, 25f, 30f);
+            _lettersDest = _dest;
             Init();
         }
 

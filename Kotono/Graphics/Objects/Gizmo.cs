@@ -60,7 +60,7 @@ namespace Kotono.Graphics.Objects
 
         private static int _selectedMesh = -1;
 
-        private static GizmoTransformSpace _transformSpace = GizmoTransformSpace.World;
+        private static TransformSpace _transformSpace = TransformSpace.World;
 
         public static void Init()
         {
@@ -95,11 +95,11 @@ namespace Kotono.Graphics.Objects
 
             switch (_transformSpace)
             {
-                case GizmoTransformSpace.World:
+                case TransformSpace.World:
                     Rotation = Vector.Zero;
                     break;
 
-                case GizmoTransformSpace.Local:
+                case TransformSpace.Local:
                     Rotation = _attachMesh.Rotation;
                     break;
 

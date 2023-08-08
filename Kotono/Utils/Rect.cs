@@ -147,6 +147,24 @@ namespace Kotono.Utils
             return (Math.Abs(r.X - p.X) < r.W / 2) && (Math.Abs(r.Y - p.Y) < r.H / 2);
         }
 
+        public static Rect Add(Rect r, float x = 0, float y = 0, float w = 0, float h = 0)
+        {
+            r.X += x;
+            r.Y += y;
+            r.W += w;
+            r.H += h;
+            return r;
+        }
+
+        public static Rect Substract(Rect r, float x = 0, float y = 0, float w = 0, float h = 0)
+        {
+            r.X -= x;
+            r.Y -= y;
+            r.W -= w;
+            r.H -= h;
+            return r;
+        }
+
         public static Rect operator +(Rect left, Rect right)
         {
             left.X += right.X;

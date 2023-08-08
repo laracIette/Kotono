@@ -201,6 +201,26 @@ namespace Kotono.Utils
             };
         }
 
+        /// <summary> Adds right to left, considering alpha </summary>
+        public static Color Add(Color left, Color right)
+        {
+            left.R += right.R;
+            left.G += right.G;
+            left.B += right.B;
+            left.A += right.A;
+            return left;
+        }
+
+        /// <summary> Substracts right to left, considering alpha </summary>
+        public static Color Substract(Color left, Color right)
+        {
+            left.R -= right.R;
+            left.G -= right.G;
+            left.B -= right.B;
+            left.A -= right.A;
+            return left;
+        }
+
         public static Color operator +(Color left, Color right)
         {
             left.R += right.R;

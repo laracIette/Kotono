@@ -1,6 +1,5 @@
 ﻿using Kotono.Graphics.Objects.Managers;
 using Kotono.Utils;
-using Newtonsoft.Json.Linq;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using System;
@@ -18,6 +17,46 @@ namespace Kotono.Graphics.Objects
             set
             {
                 _dest = value;
+                UpdateValues();
+            }
+        }
+
+        public float X
+        {
+            get => _dest.X;
+            set
+            {
+                _dest.X = value;
+                UpdateValues();
+            }
+        }
+
+        public float Y
+        {
+            get => _dest.Y;
+            set
+            {
+                _dest.Y = value;
+                UpdateValues();
+            }
+        }
+
+        public float W
+        {
+            get => _dest.W;
+            set 
+            {
+                _dest.W = value;
+                UpdateValues();
+            }
+        }
+
+        public float H
+        {
+            get => _dest.H;
+            set 
+            {
+                _dest.H = value;
                 UpdateValues();
             }
         }
@@ -81,7 +120,7 @@ namespace Kotono.Graphics.Objects
         {
             /// CornerSize has : 
             ///     a minimum value of 0,
-            ///     a maximum value of the smallest value between the box's width and height divided by 2
+            ///     a maximum value of the smallest value between the box's Width and Height divided by 2
             _cornerSize = Math.Clamp(CornerSize, 0, Math.Min(Dest.W, Dest.H) / 2);
 
             /// FallOff has :

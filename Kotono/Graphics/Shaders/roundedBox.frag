@@ -57,9 +57,14 @@ void main()
     {
         dist = bottom - gl_FragCoord.y;
     }
+    else
+    {
+        FragColor = color;
+        return;
+    }
     
     vec4 result = color;
-    float ratio = dist / fallOff;
+    float ratio = clamp(dist / fallOff, 0.0, 1.0);
     result.a -= ratio;
 
     FragColor = result;

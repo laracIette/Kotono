@@ -1,6 +1,6 @@
 ﻿namespace Kotono.Graphics.Objects
 {
-    public enum GizmoTransformSpace
+    public enum TransformSpace
     {
         World,
         Local

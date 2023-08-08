@@ -21,7 +21,7 @@ namespace Kotono.Graphics.Performance
             _times = new double[60];
             _timeIndex = 0;
 
-            _text = new Text("0", dest, Anchor.Center, Color.White, 1f, 1);
+            _text = new Text("0", dest, Anchor.Center, Color.White, spacing: 1, layer: 1);
         }
 
         public void Init()
