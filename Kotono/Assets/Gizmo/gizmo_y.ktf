@@ -6,11 +6,11 @@ Color: {
 	G: 1f
 	R: 0f
 }
-Obj: C:\Users\nicos\Documents\Visual Studio 2022\Projects\Kotono\Kotono\Assets\Gizmo\gizmo_y.obj
+Obj: W:\Visual Studio\Projects\Kotono\Kotono\Assets\Gizmo\gizmo_y.obj
 Shader: Gizmo
 Textures: {
-	Diffuse: C:\Users\nicos\Documents\Visual Studio 2022\Projects\Kotono\Kotono\Assets\Gizmo\gizmo_diff.png
-	Specular: C:\Users\nicos\Documents\Visual Studio 2022\Projects\Kotono\Kotono\Assets\Gizmo\gizmo_spec.png
+	Diffuse: W:\Visual Studio\Projects\Kotono\Kotono\Assets\Gizmo\gizmo_diff.png
+	Specular: W:\Visual Studio\Projects\Kotono\Kotono\Assets\Gizmo\gizmo_spec.png
 }
 Transform: {
 	Location: {
