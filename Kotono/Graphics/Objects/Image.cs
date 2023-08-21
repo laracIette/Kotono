@@ -90,7 +90,10 @@ namespace Kotono.Graphics.Objects
             {
                 Hide();
             }
+        }
 
+        public void UpdateShaders()
+        {
             if (IsMouseOn())
             {
                 Color = Color.Red;
@@ -99,11 +102,6 @@ namespace Kotono.Graphics.Objects
             {
                 Color = Color.White;
             }
-        }
-
-        public void UpdateShaders()
-        {
-
         }
 
         public void Draw()

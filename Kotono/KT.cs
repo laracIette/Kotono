@@ -114,10 +114,10 @@ namespace Kotono
             Mouse.Update();
             Keyboard.Update();
             Gizmo.Update();
+            Printer.Update();
             ObjectManager.Update();
             //_componentManager.Update();
             CameraManager.Update();
-            Printer.Update();
             PerformanceWindow.Update();
             _mode.Update();
         }

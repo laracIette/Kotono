@@ -63,8 +63,9 @@ void main()
         return;
     }
     
+    float ratio = clamp(dist / fallOff, 0.0, 1.0) * color.a;
+    
     vec4 result = color;
-    float ratio = clamp(dist / fallOff, 0.0, 1.0);
     result.a -= ratio;
 
     FragColor = result;
