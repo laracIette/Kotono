@@ -3,12 +3,20 @@ using OpenTK.Mathematics;
 using System;
 using System.Globalization;
 using System.Linq;
-using System.Xml.Linq;
 
 namespace Kotono.Utils
 {
     public struct Color
     {
+        public ColorComponent R;
+
+        public ColorComponent G;
+
+        public ColorComponent B;
+
+        public ColorComponent A;
+
+        /*
         private float _r;
 
         private float _g;
@@ -40,6 +48,7 @@ namespace Kotono.Utils
             readonly get => _a; 
             set => _a = Math.Clamp(value, 0, 1);
         }
+        */
 
         public static Color Transparent => new Color(1, 1, 1, 0);
 
