@@ -1,9 +1,10 @@
-﻿using Kotono.Utils;
-using OpenTK.Audio.OpenAL;
+﻿using OpenTK.Audio.OpenAL;
+using System;
+using Math = Kotono.Utils.Math;
 
 namespace Kotono.Audio
 {
-    public class Sound
+    public class Sound : IDisposable
     {
         private float _volume = 1.0f;
 
@@ -25,9 +26,9 @@ namespace Kotono.Audio
         
         public bool IsStopped => AL.GetSourceState(Source) == ALSourceState.Stopped;
 
-        public Sound(int source)
+        public Sound(string path)
         {
-            Source = source;
+            Source = SoundManager.GetSource(path);
         }
 
         public void Play()
@@ -48,6 +49,14 @@ namespace Kotono.Audio
         public void Stop()
         {
             AL.SourceStop(Source);
+        }
+
+        public void Dispose()
+        {
+            Stop();
+            AL.DeleteSource(Source);
+
+            GC.SuppressFinalize(this);
         }
     }
 }

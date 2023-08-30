@@ -1,13 +1,11 @@
 ﻿using Kotono.Graphics.Objects.Managers;
 using Kotono.Input;
 using Kotono.Utils;
-using System;
 using System.Collections.Generic;
-using Math = Kotono.Utils.Math;
 
 namespace Kotono.Graphics.Objects
 {
-    public class Text
+    public class Text : ISelectable
     {
         protected string _text;
 
@@ -46,6 +44,10 @@ namespace Kotono.Graphics.Objects
         public bool IsDraw { get; private set; } = true;
 
         public int Layer { get; set; }
+
+        public bool IsSelected { get; }
+
+        public bool IsActive { get; }
 
         public static void InitPaths()
         {
@@ -179,6 +181,11 @@ namespace Kotono.Graphics.Objects
                         break;
                 }
             }
+        }
+
+        public void Update()
+        {
+
         }
 
         public virtual void SetText(string text)

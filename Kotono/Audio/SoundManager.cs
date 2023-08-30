@@ -1,7 +1,6 @@
 ﻿using OpenTK.Audio.OpenAL;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
 using IO = System.IO;
 using Math = Kotono.Utils.Math;
@@ -14,7 +13,7 @@ namespace Kotono.Audio
 
         private static ALContext _context;
 
-        private static readonly List<Sound> _sounds = new();
+        private static readonly Dictionary<string, int> _sources = new();
 
         private static float _generalVolume = 1.0f;
 
@@ -35,33 +34,30 @@ namespace Kotono.Audio
             ALC.MakeContextCurrent(_context);
         }
 
-        public static Sound Create(string path)
+        public static int GetSource(string path)
         {
-            int buffer = AL.GenBuffer();
-            int source = AL.GenSource();
 
-            var data = LoadWav(path, out int channels, out int bits, out int rate);
+            if (_sources.ContainsKey(path))
+            {
+            }
+            else
+            {
+                int buffer = AL.GenBuffer();
+                _sources[path] = AL.GenSource();
 
-            nint dataPtr = Marshal.AllocHGlobal(data.Length * sizeof(byte));
-            Marshal.Copy(data, 0, dataPtr, data.Length);
+                var data = LoadWav(path, out int channels, out int bits, out int rate);
 
-            AL.BufferData(buffer, GetSoundFormat(channels, bits), dataPtr, data.Length, rate);
+                nint dataPtr = Marshal.AllocHGlobal(data.Length * sizeof(byte));
+                Marshal.Copy(data, 0, dataPtr, data.Length);
 
-            AL.Source(source, ALSourcei.Buffer, buffer);
+                AL.BufferData(buffer, GetSoundFormat(channels, bits), dataPtr, data.Length, rate);
 
-            AL.DeleteBuffer(buffer);
+                AL.Source(_sources[path], ALSourcei.Buffer, buffer);
 
-            _sounds.Add(new Sound(source));
+                AL.DeleteBuffer(buffer);
+            }
 
-            return _sounds.Last();
-        }
-
-        public static void Delete(Sound sound)
-        {
-            AL.SourceStop(sound.Source);
-            AL.DeleteSource(sound.Source);
-
-            _sounds.Remove(sound);
+            return _sources[path];
         }
 
         /// <summary>
@@ -135,12 +131,6 @@ namespace Kotono.Audio
 
         public static void Dispose()
         {
-            foreach (var sound in _sounds)
-            {
-                AL.SourceStop(sound.Source);
-                AL.DeleteSource(sound.Source);
-            }
-
             if (_context != ALContext.Null)
             {
                 ALC.MakeContextCurrent(ALContext.Null);
