@@ -11,12 +11,26 @@ namespace Kotono.Graphics.Objects
     {
         private readonly int _texture;
 
+        public string Path { get; }
+
         private Rect _dest;
 
         public Rect Dest 
         {
             get => _dest;
             set => _dest = value;
+        }
+
+        public Point Position
+        {
+            get => _dest.Position;
+            set => _dest.Position = value;
+        }
+
+        public Point Size
+        {
+            get => _dest.Size;
+            set => _dest.Size = value;
         }
 
         public float X 
@@ -61,6 +75,7 @@ namespace Kotono.Graphics.Objects
 
         public Image(string path, Rect dest, Color color, int layer)
         {
+            Path = path;
             Dest = dest;
             Color = color;
             Layer = layer;
@@ -82,7 +97,7 @@ namespace Kotono.Graphics.Objects
             Dest += _transformation * Time.DeltaS;
 
             // check if Image is in or out of screen bounds
-            if (Rect.Overlaps(Dest, new Rect(Point.Zero, KT.Size)))
+            if (Rect.Overlaps(Dest, Rect.FromAnchor(new Rect(Point.Zero, KT.Size), Anchor.TopLeft)))
             {
                 Show();
             }
@@ -94,14 +109,7 @@ namespace Kotono.Graphics.Objects
 
         public void UpdateShaders()
         {
-            if (IsMouseOn())
-            {
-                Color = Color.Red;
-            }
-            else
-            {
-                Color = Color.White;
-            }
+
         }
 
         public void Draw()

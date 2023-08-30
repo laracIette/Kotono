@@ -4,5 +4,7 @@
     {
         Center,
         TopLeft,
+        Top,
+        Bottom
     }
 }

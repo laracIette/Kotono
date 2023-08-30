@@ -25,9 +25,9 @@ namespace Kotono.Graphics.Performance
         {
             _dest = new Rect(1080, 660, 50, 60);
 
-            _frame = new RateStat(_dest - new Rect(y: _dest.H / 2));
-            _update = new RateStat(_dest + new Rect(y: _dest.H / 2));
-            
+            _frame = new RateStat(_dest, Anchor.Bottom);
+            _update = new RateStat(_dest, Anchor.Top);
+
             _background = new RoundedBox(
                 new Rect(_dest.X, _dest.Y, 400, 120), 
                 Color.FromHex("#273f45"), 

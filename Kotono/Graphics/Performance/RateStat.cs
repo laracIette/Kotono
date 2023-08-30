@@ -16,12 +16,12 @@ namespace Kotono.Graphics.Performance
 
         private readonly Text _text;
 
-        public RateStat(Rect dest)
+        public RateStat(Rect dest, Anchor anchor)
         {
             _times = new double[60];
             _timeIndex = 0;
 
-            _text = new Text("0", dest, Anchor.Center, Color.White, spacing: 1, layer: 1);
+            _text = new Text("0", dest, anchor, Color.White, spacing: 1, layer: 1);
         }
 
         public void Init()

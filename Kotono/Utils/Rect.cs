@@ -1,4 +1,5 @@
 ﻿using Assimp;
+using Kotono.Graphics.Objects;
 using Kotono.Input;
 using OpenTK.Mathematics;
 using System;
@@ -145,6 +146,12 @@ namespace Kotono.Utils
         public static bool Overlaps(Rect r, Point p)
         {
             return (Math.Abs(r.X - p.X) < r.W / 2) && (Math.Abs(r.Y - p.Y) < r.H / 2);
+        }
+
+        /// <summary> Checks if left is overlapping with right </summary>
+        public static bool Overlaps(Image left, Image right)
+        {
+            return Overlaps(left.Dest, right.Dest);
         }
 
         public static Rect Add(Rect r, float x = 0, float y = 0, float w = 0, float h = 0)

@@ -123,6 +123,7 @@ namespace Kotono.Graphics.Objects
             _paths['+'] = Path.Kotono + @"Assets\Characters\plus.png"; TextureManager.LoadTexture(_paths['+']);
             _paths[':'] = Path.Kotono + @"Assets\Characters\colon.png"; TextureManager.LoadTexture(_paths[':']);
             _paths['#'] = Path.Kotono + @"Assets\Characters\#.png"; TextureManager.LoadTexture(_paths['#']);
+            _paths['\''] = Path.Kotono + @"Assets\Characters\'.png"; TextureManager.LoadTexture(_paths['\'']);
         }
 
         public Text(string text, Rect lettersDest, Anchor position, Color color, float spacing, int layer) 
@@ -168,6 +169,38 @@ namespace Kotono.Graphics.Objects
                                 new Rect(
                                     _lettersDest.X + _lettersDest.W / 2 + _lettersDest.W * i * _spacing,
                                     _lettersDest.Y + _lettersDest.H / 2,
+                                    _lettersDest.Size
+                                ),
+                                Anchor.Center
+                            ),
+                            Color,
+                            Layer
+                        ));
+                        break;
+
+                    case Anchor.Top:
+                        _letters.Add(new Image(
+                            path,
+                            Rect.FromAnchor(
+                                new Rect(
+                                    _lettersDest.X - _lettersDest.W / 2 * (_text.Length - 1) * _spacing + _lettersDest.W * i * _spacing,
+                                    _lettersDest.Y + _lettersDest.H / 2,
+                                    _lettersDest.Size
+                                ),
+                                Anchor.Center
+                            ),
+                            Color,
+                            Layer
+                        ));
+                        break;
+
+                    case Anchor.Bottom:
+                        _letters.Add(new Image(
+                            path,
+                            Rect.FromAnchor(
+                                new Rect(
+                                    _lettersDest.X - _lettersDest.W / 2 * (_text.Length - 1) * _spacing + _lettersDest.W * i * _spacing,
+                                    _lettersDest.Y - _lettersDest.H / 2,
                                     _lettersDest.Size
                                 ),
                                 Anchor.Center
