@@ -18,6 +18,10 @@ namespace Kotono.Input
 
         [LibraryImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
+        private static partial bool ShowCursor([MarshalAs(UnmanagedType.Bool)] bool bShow);
+
+        [LibraryImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
         private static partial bool SetCursorPos(int x, int y);
 
         [LibraryImport("user32.dll")]
@@ -67,6 +71,7 @@ namespace Kotono.Input
         public static void Init(MouseState mouseState)
         {
             MouseState = mouseState;
+            HideCursor();
         }
 
         public static void Update()
@@ -150,6 +155,16 @@ namespace Kotono.Input
         public static bool IsButtonReleased(MouseButton button)
         {
             return MouseState.IsButtonReleased(button);
+        }
+
+        public static void ShowCursor()
+        {
+            ShowCursor(true);
+        }
+
+        public static void HideCursor()
+        {
+            ShowCursor(false);
         }
     }
 }
