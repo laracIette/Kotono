@@ -139,7 +139,6 @@ namespace Kotono.Utils
                 Anchor.TopRight => new Rect(r.X - r.W / 2, r.Y + r.H / 2, r.Size),
                 Anchor.BottomLeft => new Rect(r.X + r.W / 2, r.Y - r.H / 2, r.Size),
                 Anchor.BottomRight => new Rect(r.X - r.W / 2, r.Y - r.H / 2, r.Size),
-
                 _ => throw new Exception($"error: Rect.FromAnchor() doesn't handle \"{a}\"")
             };
         }

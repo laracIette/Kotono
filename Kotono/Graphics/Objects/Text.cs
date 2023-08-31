@@ -1,6 +1,7 @@
 ﻿using Kotono.Graphics.Objects.Managers;
 using Kotono.Input;
 using Kotono.Utils;
+using System;
 using System.Collections.Generic;
 
 namespace Kotono.Graphics.Objects
@@ -29,7 +30,8 @@ namespace Kotono.Graphics.Objects
 
         private Color _color;
 
-        public Color Color {
+        public Color Color
+        {
             get => _color;
             set
             {
@@ -126,7 +128,7 @@ namespace Kotono.Graphics.Objects
             _paths['\''] = Path.Kotono + @"Assets\Characters\'.png"; TextureManager.LoadTexture(_paths['\'']);
         }
 
-        public Text(string text, Rect lettersDest, Anchor position, Color color, float spacing, int layer) 
+        public Text(string text, Rect lettersDest, Anchor position, Color color, float spacing, int layer)
         {
             _text = text;
             _lettersDest = lettersDest;
@@ -151,27 +153,11 @@ namespace Kotono.Graphics.Objects
                 {
                     case Anchor.Center:
                         _letters.Add(new Image(
-                            path, 
+                            path,
                             new Rect(
                                 _lettersDest.X - _lettersDest.W / 2 * (_text.Length - 1) * _spacing + _lettersDest.W * i * _spacing,
                                 _lettersDest.Y,
                                 _lettersDest.Size
-                            ),
-                            Color, 
-                            Layer
-                        ));
-                        break;
-
-                    case Anchor.TopLeft:
-                        _letters.Add(new Image(
-                            path, 
-                            Rect.FromAnchor(
-                                new Rect(
-                                    _lettersDest.X + _lettersDest.W / 2 + _lettersDest.W * i * _spacing,
-                                    _lettersDest.Y + _lettersDest.H / 2,
-                                    _lettersDest.Size
-                                ),
-                                Anchor.Center
                             ),
                             Color,
                             Layer
@@ -181,13 +167,10 @@ namespace Kotono.Graphics.Objects
                     case Anchor.Top:
                         _letters.Add(new Image(
                             path,
-                            Rect.FromAnchor(
-                                new Rect(
-                                    _lettersDest.X - _lettersDest.W / 2 * (_text.Length - 1) * _spacing + _lettersDest.W * i * _spacing,
-                                    _lettersDest.Y + _lettersDest.H / 2,
-                                    _lettersDest.Size
-                                ),
-                                Anchor.Center
+                            new Rect(
+                                _lettersDest.X - _lettersDest.W / 2 * (_text.Length - 1) * _spacing + _lettersDest.W * i * _spacing,
+                                _lettersDest.Y + _lettersDest.H / 2,
+                                _lettersDest.Size
                             ),
                             Color,
                             Layer
@@ -197,21 +180,96 @@ namespace Kotono.Graphics.Objects
                     case Anchor.Bottom:
                         _letters.Add(new Image(
                             path,
-                            Rect.FromAnchor(
-                                new Rect(
-                                    _lettersDest.X - _lettersDest.W / 2 * (_text.Length - 1) * _spacing + _lettersDest.W * i * _spacing,
-                                    _lettersDest.Y - _lettersDest.H / 2,
-                                    _lettersDest.Size
-                                ),
-                                Anchor.Center
+                            new Rect(
+                                _lettersDest.X - _lettersDest.W / 2 * (_text.Length - 1) * _spacing + _lettersDest.W * i * _spacing,
+                                _lettersDest.Y - _lettersDest.H / 2,
+                                _lettersDest.Size
                             ),
                             Color,
                             Layer
                         ));
                         break;
 
-                    default: 
+                    case Anchor.Left:
+                        _letters.Add(new Image(
+                            path,
+                            new Rect(
+                                _lettersDest.X + _lettersDest.W / 2 + _lettersDest.W * i * _spacing,
+                                _lettersDest.Y,
+                                _lettersDest.Size
+                            ),
+                            Color,
+                            Layer
+                        ));
                         break;
+
+                    case Anchor.Right:
+                        _letters.Add(new Image(
+                            path,
+                            new Rect(
+                                _lettersDest.X - _lettersDest.W / 2 - _lettersDest.W * (_text.Length - 1 - i) * _spacing,
+                                _lettersDest.Y,
+                                _lettersDest.Size
+                            ),
+                            Color,
+                            Layer
+                        ));
+                        break;
+
+                    case Anchor.TopLeft:
+                        _letters.Add(new Image(
+                            path,
+                            new Rect(
+                                _lettersDest.X + _lettersDest.W / 2 + _lettersDest.W * i * _spacing,
+                                _lettersDest.Y + _lettersDest.H / 2,
+                                _lettersDest.Size
+                            ),
+                            Color,
+                            Layer
+                        ));
+                        break;
+
+                    case Anchor.TopRight:
+                        _letters.Add(new Image(
+                            path,
+                            new Rect(
+                                _lettersDest.X - _lettersDest.W / 2 - _lettersDest.W * (_text.Length - 1 - i) * _spacing,
+                                _lettersDest.Y + _lettersDest.H / 2,
+                                _lettersDest.Size
+                            ),
+                            Color,
+                            Layer
+                        ));
+                        break;
+
+                    case Anchor.BottomLeft:
+                        _letters.Add(new Image(
+                            path,
+                            new Rect(
+                                _lettersDest.X + _lettersDest.W / 2 + _lettersDest.W * i * _spacing,
+                                _lettersDest.Y - _lettersDest.H / 2,
+                                _lettersDest.Size
+                            ),
+                            Color,
+                            Layer
+                        ));
+                        break;
+
+                    case Anchor.BottomRight:
+                        _letters.Add(new Image(
+                            path,
+                            new Rect(
+                                _lettersDest.X - _lettersDest.W / 2 - _lettersDest.W * (_text.Length - 1 - i) * _spacing,
+                                _lettersDest.Y - _lettersDest.H / 2,
+                                _lettersDest.Size
+                            ),
+                            Color,
+                            Layer
+                        ));
+                        break;
+
+                    default:
+                        throw new Exception($"error: Text.Init()'s switch on Anchor doesn't handle \"{_anchor}\"");
                 }
             }
         }
