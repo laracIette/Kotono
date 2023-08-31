@@ -131,7 +131,15 @@ namespace Kotono.Utils
             return a switch
             {
                 Anchor.Center => r,
-                Anchor.TopLeft => new Rect(r.Position + r.Size / 2, r.Size),
+                Anchor.Left => new Rect(r.X + r.W / 2, r.Y, r.Size),
+                Anchor.Right => new Rect(r.X - r.W / 2, r.Y, r.Size),
+                Anchor.Top => new Rect(r.X, r.Y + r.H / 2, r.Size),
+                Anchor.Bottom => new Rect(r.X, r.Y - r.H / 2, r.Size),
+                Anchor.TopLeft => new Rect(r.X + r.W / 2, r.Y + r.H / 2, r.Size),
+                Anchor.TopRight => new Rect(r.X - r.W / 2, r.Y + r.H / 2, r.Size),
+                Anchor.BottomLeft => new Rect(r.X + r.W / 2, r.Y - r.H / 2, r.Size),
+                Anchor.BottomRight => new Rect(r.X - r.W / 2, r.Y - r.H / 2, r.Size),
+
                 _ => throw new Exception($"error: Rect.FromAnchor() doesn't handle \"{a}\"")
             };
         }
