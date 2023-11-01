@@ -14,8 +14,8 @@ Textures: {
 }
 Transform: {
 	Location: {
-		X: 15.530019f
-		Y: 3.2681508f
+		X: 4.8300214f
+		Y: 3.1834548f
 		Z: -2.319966f
 	}
 	Rotation: {
