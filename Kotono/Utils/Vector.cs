@@ -1,4 +1,6 @@
 ﻿using Assimp;
+using Kotono.Graphics.Objects;
+using Kotono.Graphics.Objects.Hitboxes;
 using OpenTK.Mathematics;
 using System;
 using Quaternion = OpenTK.Mathematics.Quaternion;
@@ -139,6 +141,19 @@ namespace Kotono.Utils
         public static float Distance(Vector left, Vector right)
         {
             return (left - right).Length;
+        }
+
+        public static float Distance(IObject3D left, IObject3D right)
+        {
+            return Distance(left.Location, right.Location);
+        }
+
+        public static Vector Abs(Vector v)
+        {
+            v.X = Math.Abs(v.X);
+            v.Y = Math.Abs(v.Y);
+            v.Z = Math.Abs(v.Z);
+            return v;
         }
 
         public static float Min(Vector v)

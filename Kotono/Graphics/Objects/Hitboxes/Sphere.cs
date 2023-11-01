@@ -21,7 +21,7 @@ namespace Kotono.Graphics.Objects.Hitboxes
 
         private static bool _isFirst = true;
 
-        public bool IsDraw { get; set; }
+        public bool IsDraw { get; set; } = true;
 
         private Transform _transform;
 
@@ -49,9 +49,13 @@ namespace Kotono.Graphics.Objects.Hitboxes
             set => _transform.Scale = value;
         }
 
+        public float Radius => Scale.X;
+
+        public Vector Velocity { get; set; }
+
         public Color Color { get; set; } = Color.White;
 
-        public List<IHitbox> Collisions { get; set; } = new();
+        public List<Sphere> Collisions { get; set; } = new();
 
         public Sphere()
         {
@@ -59,7 +63,7 @@ namespace Kotono.Graphics.Objects.Hitboxes
             {
                 _isFirst = false;
 
-                for (int i = 0; i < SEGMENTS ; i++)
+                for (int i = 0; i < SEGMENTS; i++)
                 {
                     float rotation = i / (float)SEGMENTS * MathHelper.TwoPi;
                     _vertices[i] = new Vector
@@ -91,12 +95,12 @@ namespace Kotono.Graphics.Objects.Hitboxes
 
         public void Init() { }
 
-        public void Update() 
+        public void Update()
         {
-
+            Location += Velocity * Time.DeltaS;
         }
 
-        public void UpdateShaders() 
+        public void UpdateShaders()
         {
 
         }
@@ -127,9 +131,14 @@ namespace Kotono.Graphics.Objects.Hitboxes
 
         public bool Collides(IHitbox h)
         {
-            return (Math.Abs(Location.X - h.Location.X) <= (Scale.X + h.Scale.X) / 2)
-                && (Math.Abs(Location.Y - h.Location.Y) <= (Scale.Y + h.Scale.Y) / 2)
-                && (Math.Abs(Location.Z - h.Location.Z) <= (Scale.Z + h.Scale.Z) / 2);
+            return (Math.Abs(Location.X - h.Location.X) < (Scale.X + h.Scale.X) / 2)
+                && (Math.Abs(Location.Y - h.Location.Y) < (Scale.Y + h.Scale.Y) / 2)
+                && (Math.Abs(Location.Z - h.Location.Z) < (Scale.Z + h.Scale.Z) / 2);
+        }
+
+        public bool Collides(Sphere s)
+        {
+            return Vector.Distance(this, s) < (Scale.X + s.Scale.X) / 2;
         }
 
         public bool IsColliding => Collisions.Any(Collides);
