@@ -11,6 +11,6 @@ namespace Kotono.Graphics.Objects.Hitboxes
 
         public Color Color { get; set; }
 
-        public List<IHitbox> Collisions { get; set; }
+        public List<Sphere> Collisions { get; set; }
     }
 }
