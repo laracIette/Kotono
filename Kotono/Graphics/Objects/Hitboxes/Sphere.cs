@@ -21,7 +21,7 @@ namespace Kotono.Graphics.Objects.Hitboxes
 
         private static bool _isFirst = true;
 
-        public bool IsDraw { get; set; } = true;
+        public bool IsDraw { get; private set; } = true;
 
         private Transform _transform;
 
@@ -146,6 +146,16 @@ namespace Kotono.Graphics.Objects.Hitboxes
         public void Save()
         {
 
+        }
+
+        public void Show()
+        {
+            IsDraw = true;
+        }
+
+        public void Hide()
+        {
+            IsDraw = false;
         }
 
         public void Dispose()

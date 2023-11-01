@@ -10,7 +10,7 @@ namespace Kotono.Graphics.Objects.Lights
 {
     public class SpotLight : IDrawable
     {
-        public bool IsDraw { get; set; }
+        public bool IsDraw { get; private set; }
 
         private float _cutOffAngle = 12.5f;
 
@@ -92,6 +92,16 @@ namespace Kotono.Graphics.Objects.Lights
         public void Save()
         {
 
+        }
+
+        public void Show()
+        {
+            IsDraw = true;
+        }
+
+        public void Hide()
+        {
+            IsDraw = false;
         }
 
         public void Dispose()
