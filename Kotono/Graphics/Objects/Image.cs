@@ -57,6 +57,8 @@ namespace Kotono.Graphics.Objects
             set => _dest.H = value;
         }
 
+        public bool IsRender { get; set; } = true;
+
         public Color Color { get; set; }
 
         private Rect _transformation;
@@ -99,11 +101,11 @@ namespace Kotono.Graphics.Objects
             // check if Image is in or out of screen bounds
             if (Rect.Overlaps(Dest, Rect.FromAnchor(new Rect(Point.Zero, KT.Size), Anchor.TopLeft)))
             {
-                Show();
+                IsRender = true;
             }
             else
             {
-                Hide();
+                IsRender = false;
             }
         }
 
@@ -114,16 +116,19 @@ namespace Kotono.Graphics.Objects
 
         public void Draw()
         {
-            GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+            if (IsRender && IsDraw)
+            {
+                GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
 
-            TextureManager.UseTexture(_texture, TextureUnit.Texture0);
+                TextureManager.UseTexture(_texture, TextureUnit.Texture0);
 
-            ShaderManager.Image.SetMatrix4("model", Model);
-            ShaderManager.Image.SetColor("color", Color);
+                ShaderManager.Image.SetMatrix4("model", Model);
+                ShaderManager.Image.SetColor("color", Color);
 
-            GL.BindVertexArray(SquareVertices.VertexArrayObject);
+                GL.BindVertexArray(SquareVertices.VertexArrayObject);
 
-            GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
+                GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
+            }
         }
 
         public void Transform(Rect transformation)

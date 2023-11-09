@@ -17,7 +17,7 @@ namespace Kotono.Graphics.Objects
 
         private double _lastFrameTime;
 
-        private bool _isPlaying = false;
+        public bool IsPlaying { get; private set; } = false;
 
         public Rect Dest { get; set; }
 
@@ -44,16 +44,17 @@ namespace Kotono.Graphics.Objects
         {
             _startTime = Time.NowS;
             _lastFrameTime = _startTime;
-            _isPlaying = true;
+            IsPlaying = true;
         }
 
         public void Pause()
         {
+            IsPlaying = false;
         }
 
         public void Update()
         {
-            if (_isPlaying)
+            if (IsPlaying)
             {
                 if ((Time.NowS - _lastFrameTime) > DeltaS)
                 {
