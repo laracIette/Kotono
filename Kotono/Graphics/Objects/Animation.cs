@@ -1,59 +1,44 @@
 ﻿using Kotono.Utils;
 using System;
+using System.Collections.Generic;
+using Math = Kotono.Utils.Math;
 
 namespace Kotono.Graphics.Objects
 {
-    public class Animation : IObject2D
+    public class Animation : ImageList
     {
-        private readonly Image[] _frames;
-
         private readonly int _frameRate;
 
         private double DeltaS => 1 / (double)_frameRate;
 
         private int _currentFrame = 0;
 
+        public int CurrentFrame
+        {
+            get => _currentFrame;
+            set => _currentFrame = (int)Math.Loop(value, 0, Count);
+        }
+
         private double _startTime;
 
         private double _lastFrameTime;
 
+        private double _pausedTime = 0;
+
         public bool IsPlaying { get; private set; } = false;
 
-        public Rect Dest 
-        {
-            get => (_frames.Length > 0) ? _frames[0].Dest : throw new Exception("error: cannot access _frames[0].Dest, _frames is empty.");
-            set
-            {
-                foreach (var frame in _frames)
-                {
-                    frame.Dest = value;
-                }
-            } 
-        }
-
-        public int Layer { get; set; }
-
-        public bool IsDraw { get; private set; } = true;
-
-        public Animation(Image[] frames, int frameRate) 
+        public Animation(List<Image> frames, int frameRate) 
+            : base(frames)
         { 
-            _frames = frames;
             _frameRate = frameRate;
-
-            foreach (var frame in _frames)
-            {
-                frame.Hide();
-            }
-        }
-
-        public void Init()
-        {
         }
 
         public void Start()
         {
             _startTime = Time.NowS;
             _lastFrameTime = _startTime;
+            _images[0].Show();
+
             IsPlaying = true;
         }
 
@@ -62,54 +47,36 @@ namespace Kotono.Graphics.Objects
             IsPlaying = false;
         }
 
-        public void Update()
+        public override void Update()
         {
+            base.Update();
+
             if (IsPlaying)
             {
-                if ((Time.NowS - _lastFrameTime) > DeltaS)
+                if ((Time.NowS - (_lastFrameTime + _pausedTime)) > DeltaS)
                 {
                     _lastFrameTime = Time.NowS;
+                    _pausedTime = 0;
 
-                    _frames[_currentFrame].Hide();
-                    _currentFrame = (_currentFrame + 1) % _frames.Length;
-                    _frames[_currentFrame].Show();
+                    Next();
                 }
             }
-        }
-
-        public void UpdateShaders()
-        {
-        }
-
-        public void Draw()
-        {
-        }
-
-        public void Save()
-        {
-        }
-
-        public void Show()
-        {
-            IsDraw = true;
-            foreach (var frame in _frames)
+            else
             {
-                frame.Show();
+                //_pausedTime += Time.DeltaS;
             }
         }
 
-        public void Hide()
+        public void Next()
         {
-            IsDraw = false;
-            foreach (var frame in _frames)
-            {
-                frame.Hide();
-            }
+            _images[CurrentFrame++].Hide();
+            _images[CurrentFrame].Show();
         }
 
-        public void Dispose()
+        public void Previous()
         {
-            GC.SuppressFinalize(this);
+            _images[CurrentFrame--].Hide();
+            _images[CurrentFrame].Show();
         }
     }
 }
