@@ -57,7 +57,7 @@ namespace Kotono.Graphics.Objects
             set => _dest.H = value;
         }
 
-        public bool IsRender { get; set; } = true;
+        public bool IsRender { get; private set; } = true;
 
         public Color Color { get; set; }
 

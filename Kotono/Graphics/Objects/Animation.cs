@@ -19,7 +19,17 @@ namespace Kotono.Graphics.Objects
 
         public bool IsPlaying { get; private set; } = false;
 
-        public Rect Dest { get; set; }
+        public Rect Dest 
+        {
+            get => (_frames.Length > 0) ? _frames[0].Dest : throw new Exception("error: cannot access _frames[0].Dest, _frames is empty.");
+            set
+            {
+                foreach (var frame in _frames)
+                {
+                    frame.Dest = value;
+                }
+            } 
+        }
 
         public int Layer { get; set; }
 
@@ -82,11 +92,19 @@ namespace Kotono.Graphics.Objects
         public void Show()
         {
             IsDraw = true;
+            foreach (var frame in _frames)
+            {
+                frame.Show();
+            }
         }
 
         public void Hide()
         {
             IsDraw = false;
+            foreach (var frame in _frames)
+            {
+                frame.Hide();
+            }
         }
 
         public void Dispose()
