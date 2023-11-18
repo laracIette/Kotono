@@ -1,4 +1,5 @@
-﻿using OpenTK.Graphics.OpenGL4;
+﻿using Kotono.Utils;
+using OpenTK.Graphics.OpenGL4;
 
 namespace Kotono.Graphics.Objects.Managers
 {
@@ -30,7 +31,13 @@ namespace Kotono.Graphics.Objects.Managers
             GL.Disable(EnableCap.DepthTest);
             GL.Enable(EnableCap.Blend);
 
-            base.Draw();
+            foreach (var drawable in _drawables)
+            {
+                if (drawable.IsDraw && Rect.Overlaps(drawable.Dest, Rect.FromAnchor(new Rect(Point.Zero, KT.Size), Anchor.TopLeft)))
+                {
+                    drawable.Draw();
+                }
+            }
 
             GL.Disable(EnableCap.Blend);
             GL.Enable(EnableCap.DepthTest);

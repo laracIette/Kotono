@@ -1,6 +1,4 @@
-﻿using Assimp;
-
-namespace Kotono.Utils
+﻿namespace Kotono.Utils
 {
     public static class Math
     {

@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-
-namespace Kotono.Utils
+﻿namespace Kotono.Utils
 {
     public static class MathD
     {

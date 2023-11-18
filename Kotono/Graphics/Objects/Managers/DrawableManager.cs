@@ -29,9 +29,9 @@ namespace Kotono.Graphics.Objects.Managers
 
         public virtual void Update()
         {
-            foreach (var drawable in _drawables)
+            for (int i = 0; i < _drawables.Count; i++)
             {
-                drawable.Update();
+                _drawables[i].Update();
             }
         }
 

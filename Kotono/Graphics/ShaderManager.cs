@@ -1,6 +1,4 @@
 ﻿using Kotono.Graphics.Shaders;
-using Kotono.Utils;
-using OpenTK.Mathematics;
 
 namespace Kotono.Graphics
 {
