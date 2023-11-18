@@ -35,6 +35,7 @@ namespace Kotono.Graphics.Objects
                 }
             }
         }
+
         private readonly int _frameRate;
 
         private double DeltaS => 1 / (double)_frameRate;
@@ -44,28 +45,36 @@ namespace Kotono.Graphics.Objects
         public int CurrentFrame
         {
             get => _currentFrame;
-            private set 
+            private set
             {
                 _frames[_currentFrame].Hide();
-                _currentFrame = (int)Math.Loop(value, 0, Count); 
+                _currentFrame = (int)Math.Loop(value, 0, Count);
                 _frames[_currentFrame].Show();
             }
         }
 
-        private double _startTime;
+        private readonly double _startTime;
+
+        private readonly double _duration;
 
         private double _lastFrameTime;
 
         private double _pausedTime = 0;
 
+        private double EndTime => _startTime + _duration;
+
+        private bool _isStarted = false;
+
         public bool IsPlaying { get; private set; } = false;
 
         public bool IsDraw { get; private set; } = true;
 
-        public Animation(List<Image> frames, int frameRate)
-        { 
+        public Animation(List<Image> frames, int frameRate, double startTime, double duration)
+        {
             _frames = frames;
             _frameRate = frameRate;
+            _startTime = startTime;
+            _duration = duration;
         }
 
         public void Init()
@@ -75,7 +84,15 @@ namespace Kotono.Graphics.Objects
 
         public void Update()
         {
-            if (IsPlaying)
+            if (!_isStarted && (Time.NowS >= _startTime))
+            {
+                _isStarted = true;
+                IsPlaying = true;
+                _lastFrameTime = Time.NowS;
+                _frames[0].Show();
+            }
+
+            if (IsPlaying && (Time.NowS <= EndTime))
             {
                 if ((Time.NowS - (_lastFrameTime + _pausedTime)) > DeltaS)
                 {
@@ -93,10 +110,6 @@ namespace Kotono.Graphics.Objects
 
         public void Play()
         {
-            _startTime = Time.NowS;
-            _lastFrameTime = _startTime;
-            CurrentFrame = 0;
-
             IsPlaying = true;
         }
 

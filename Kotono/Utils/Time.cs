@@ -12,7 +12,7 @@ namespace Kotono.Utils
         /// <summary>
         /// Current Time in seconds
         /// </summary>
-        public static double NowS { get; private set; }
+        public static double NowS => Now / 1000.0;
 
         /// <summary>
         /// Delta Time in milliseconds
@@ -22,21 +22,21 @@ namespace Kotono.Utils
         /// <summary>
         /// Delta Time in seconds
         /// </summary>
-        public static float DeltaS { get; private set; }
+        public static float DeltaS => Delta / 1000f;
+
+        public static void Init()
+        {
+            Now = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+        }
 
         public static void Update()
         {
             // current Time in milliseconds
             long now = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond; 
 
-            if (Now != 0)
-            {
-                Delta = now - Now;
-                DeltaS = Delta / 1000f;
-            }
+            Delta = now - Now;
 
             Now = now;
-            NowS = Now / 1000.0;
         }
     }
 }
