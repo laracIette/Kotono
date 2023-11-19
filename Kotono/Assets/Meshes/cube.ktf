@@ -1,10 +1,10 @@
 # Kotono Properties File
 
 Color: {
-	A: 1f
-	B: 0f
-	G: 1f
-	R: 1f
+	A: 1.00f
+	B: 0.00f
+	G: 1.00f
+	R: 1.00f
 }
 Obj: W:\Visual Studio\Projects\Kotono-TestApp\Kotono-TestApp\Assets\Meshes\cube.obj
 Shader: Lighting
@@ -14,18 +14,18 @@ Textures: {
 }
 Transform: {
 	Location: {
-		X: 7.4799933f
-		Y: 2.2590225f
-		Z: -2.319966f
+		X: 2.39f
+		Y: 0.12f
+		Z: -2.32f
 	}
 	Rotation: {
-		X: 0f
-		Y: 0f
-		Z: 0f
+		X: 0.00f
+		Y: 0.00f
+		Z: 0.00f
 	}
 	Scale: {
-		X: 1f
-		Y: 1f
-		Z: 1f
+		X: 1.00f
+		Y: 1.00f
+		Z: 1.00f
 	}
 }

@@ -5,7 +5,7 @@ namespace Kotono.Graphics.Objects.Managers
 {
     public class Object2DManager : DrawableManager<IObject2D>
     {
-        public Object2DManager() 
+        public Object2DManager()
             : base() { }
 
         public override void Create(IObject2D obj)
@@ -31,11 +31,11 @@ namespace Kotono.Graphics.Objects.Managers
             GL.Disable(EnableCap.DepthTest);
             GL.Enable(EnableCap.Blend);
 
-            foreach (var drawable in _drawables)
+            for (int i = 0; i < _drawables.Count; i++)
             {
-                if (drawable.IsDraw && Rect.Overlaps(drawable.Dest, Rect.FromAnchor(new Rect(Point.Zero, KT.Size), Anchor.TopLeft)))
+                if (_drawables[i].IsDraw && Rect.Overlaps(_drawables[i].Dest, Rect.FromAnchor(new Rect(Point.Zero, KT.Size), Anchor.TopLeft)))
                 {
-                    drawable.Draw();
+                    _drawables[i].Draw();
                 }
             }
 

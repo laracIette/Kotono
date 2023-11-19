@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Kotono.File
 {
@@ -13,6 +15,12 @@ namespace Kotono.File
 
         public Dictionary<string, int> Ints { get; } = new();
 
+        public List<string> Keys => Strings.Keys
+            .Concat(Floats.Keys)
+            .Concat(Doubles.Keys)
+            .Concat(Ints.Keys)
+            .ToList();
+
         public Data() { }
         
         public override string ToString()
@@ -25,28 +33,16 @@ namespace Kotono.File
             }
             foreach ((var key, var value) in Floats)
             {
-                result += $"{key}: {value}f\n";
+                result += $"{key}: {value:F}f\n";
             }
             foreach ((var key, var value) in Doubles)
             {
-                result += $"{key}: {value}\n";
+                result += $"{key}: {value:F}\n";
             }
             foreach ((var key, var value) in Ints)
             {
                 result += $"{key}: {value}\n";
             }
-
-            return result;
-        }
-
-        public List<string> GetAllKeys()
-        {
-            var result = new List<string>();
-
-            result.AddRange(Strings.Keys);
-            result.AddRange(Floats.Keys);
-            result.AddRange(Doubles.Keys);
-            result.AddRange(Ints.Keys);
 
             return result;
         }

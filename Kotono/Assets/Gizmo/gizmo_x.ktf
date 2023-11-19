@@ -1,10 +1,10 @@
 # Kotono Properties File
 
 Color: {
-	A: 1f
-	B: 0f
-	G: 0f
-	R: 1f
+	A: 1.00f
+	B: 0.00f
+	G: 0.00f
+	R: 1.00f
 }
 Obj: W:\Visual Studio\Projects\Kotono\Kotono\Assets\Gizmo\gizmo_x.obj
 Shader: Gizmo
@@ -14,18 +14,18 @@ Textures: {
 }
 Transform: {
 	Location: {
-		X: 7.4799933f
-		Y: 2.2591224f
-		Z: -2.319966f
+		X: 2.39f
+		Y: 0.12f
+		Z: -2.32f
 	}
 	Rotation: {
-		X: 0f
-		Y: 0f
-		Z: 0f
+		X: 0.00f
+		Y: 0.00f
+		Z: 0.00f
 	}
 	Scale: {
-		X: 0.05745491f
-		Y: 0.05745491f
-		Z: 0.05745491f
+		X: 0.04f
+		Y: 0.04f
+		Z: 0.04f
 	}
 }

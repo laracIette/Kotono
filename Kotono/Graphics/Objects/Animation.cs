@@ -61,7 +61,7 @@ namespace Kotono.Graphics.Objects
 
         private double _pausedTime = 0;
 
-        private double EndTime => _startTime + _duration;
+        private double EndTime => _startTime + _duration + _pausedTime;
 
         private bool _isStarted = false;
 
@@ -92,19 +92,21 @@ namespace Kotono.Graphics.Objects
                 _frames[0].Show();
             }
 
-            if (IsPlaying && (Time.NowS <= EndTime))
+            if (Time.NowS <= EndTime)
             {
-                if ((Time.NowS - (_lastFrameTime + _pausedTime)) > DeltaS)
+                if (IsPlaying)
                 {
-                    _lastFrameTime = Time.NowS;
-                    _pausedTime = 0;
+                    if ((Time.NowS - _pausedTime - _lastFrameTime) > DeltaS)
+                    {
+                        _lastFrameTime = Time.NowS - _pausedTime;
 
-                    Next();
+                        Next();
+                    }
                 }
-            }
-            else
-            {
-                //_pausedTime += Time.DeltaS;
+                else if (_isStarted)
+                {
+                    _pausedTime += Time.DeltaS;
+                }
             }
         }
 
