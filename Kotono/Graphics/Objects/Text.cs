@@ -199,7 +199,15 @@ namespace Kotono.Graphics.Objects
                     _ => throw new Exception($"error: Text.Init()'s switch on Anchor doesn't handle \"{_anchor}\""),
                 };
 
-                _letters.Add(new Image(path, dest, Color, Layer));
+                _letters.Add(new Image(
+                    new ImageSettings
+                    {
+                        Path = path, 
+                        Dest = dest, 
+                        Color = Color, 
+                        Layer = Layer
+                    }
+                ));
             }
         }
 

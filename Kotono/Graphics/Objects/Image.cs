@@ -73,14 +73,16 @@ namespace Kotono.Graphics.Objects
 
         public int Layer { get; set; } = 0;
 
-        public Image(string path, Rect dest, Color color, int layer)
+        public Image(ImageSettings settings)
         {
-            Path = path;
-            Dest = dest;
-            Color = color;
-            Layer = layer;
+            Path = settings.Path;
+            Dest = settings.Dest;
+            Color = settings.Color;
+            Layer = settings.Layer;
+
             _transformation = new Rect();
-            _texture = TextureManager.LoadTexture(path);
+
+            _texture = TextureManager.LoadTexture(Path);
 
             ObjectManager.CreateImage(this);
         }

@@ -71,7 +71,7 @@ namespace Kotono.Graphics.Objects
         public bool IsDraw { get; private set; } = true;
 
         /// <summary> Create an Animation from files in a directory </summary>
-        public Animation(string path, Rect dest, Color color, int layer, int frameRate, double startTime, double duration)
+        public Animation(string path, ImageSettings settings, int frameRate, double startTime, double duration)
         {
             string[] filePaths;
 
@@ -86,7 +86,8 @@ namespace Kotono.Graphics.Objects
 
             foreach (var filePath in filePaths)
             {
-                _frames.Add(new Image(filePath, dest, color, layer));
+                settings.Path = filePath;
+                _frames.Add(new Image(settings));
             }
 
             _frameRate = frameRate;
