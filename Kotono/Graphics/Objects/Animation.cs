@@ -2,6 +2,7 @@
 using Kotono.Utils;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Math = Kotono.Utils.Math;
 
 namespace Kotono.Graphics.Objects
@@ -42,10 +43,10 @@ namespace Kotono.Graphics.Objects
 
         private int _currentFrame = 0;
 
-        public int CurrentFrame
+        private int CurrentFrame
         {
             get => _currentFrame;
-            private set
+            set
             {
                 _frames[_currentFrame].Hide();
                 _currentFrame = (int)Math.Loop(value, 0, Count);
@@ -69,6 +70,31 @@ namespace Kotono.Graphics.Objects
 
         public bool IsDraw { get; private set; } = true;
 
+        /// <summary> Create an Animation from files in a directory </summary>
+        public Animation(string path, Rect dest, Color color, int layer, int frameRate, double startTime, double duration)
+        {
+            string[] filePaths;
+
+            if (Directory.Exists(path))
+            {
+                filePaths = Directory.GetFiles(path);
+            }
+            else
+            {
+                throw new DirectoryNotFoundException($"error: couldn't find directory at \"{path}\"");
+            }
+
+            foreach (var filePath in filePaths)
+            {
+                _frames.Add(new Image(filePath, dest, color, layer));
+            }
+
+            _frameRate = frameRate;
+            _startTime = startTime;
+            _duration = duration;
+        }
+
+        /// <summary> Create an Animation from a List of Image </summary>
         public Animation(List<Image> frames, int frameRate, double startTime, double duration)
         {
             _frames = frames;
@@ -92,7 +118,7 @@ namespace Kotono.Graphics.Objects
                 _frames[0].Show();
             }
 
-            if (Time.NowS <= EndTime)
+            if (_isStarted && (Time.NowS <= EndTime))
             {
                 if (IsPlaying)
                 {
@@ -103,7 +129,7 @@ namespace Kotono.Graphics.Objects
                         Next();
                     }
                 }
-                else if (_isStarted)
+                else
                 {
                     _pausedTime += Time.DeltaS;
                 }
