@@ -4,30 +4,38 @@ namespace Kotono.File
 {
     public class MeshProperties : Properties
     {
+        public Transform Transform
+        {
+            get => Transform.FromProperties(this);
+            set 
+            {
+                Floats["Transform.Location.X"] = value.Location.X;
+                Floats["Transform.Location.Y"] = value.Location.Y;
+                Floats["Transform.Location.Z"] = value.Location.Z;
+
+                Floats["Transform.Rotation.X"] = value.Rotation.X;
+                Floats["Transform.Rotation.Y"] = value.Rotation.Y;
+                Floats["Transform.Rotation.Z"] = value.Rotation.Z;
+
+                Floats["Transform.Scale.X"] = value.Scale.X;
+                Floats["Transform.Scale.Y"] = value.Scale.Y;
+                Floats["Transform.Scale.Z"] = value.Scale.Z;
+            }
+        }
+
+        public Color Color 
+        { 
+            get => Color.FromProperties(this);
+            set
+            {
+                Floats["Color.R"] = value.R;
+                Floats["Color.G"] = value.G;
+                Floats["Color.B"] = value.B;
+                Floats["Color.A"] = value.A;
+            }
+        }
+
         public MeshProperties(string path) 
             : base(path) { }
-
-        public void SetTransform(Transform t)
-        {
-            Floats["Transform.Location.X"] = t.Location.X;
-            Floats["Transform.Location.Y"] = t.Location.Y;
-            Floats["Transform.Location.Z"] = t.Location.Z;
-
-            Floats["Transform.Rotation.X"] = t.Rotation.X;
-            Floats["Transform.Rotation.Y"] = t.Rotation.Y;
-            Floats["Transform.Rotation.Z"] = t.Rotation.Z;
-
-            Floats["Transform.Scale.X"] = t.Scale.X;
-            Floats["Transform.Scale.Y"] = t.Scale.Y;
-            Floats["Transform.Scale.Z"] = t.Scale.Z;
-        }
-
-        public void SetColor(Color c)
-        {
-            Floats["Color.R"] = c.R;
-            Floats["Color.G"] = c.G;
-            Floats["Color.B"] = c.B;
-            Floats["Color.A"] = c.A;
-        }
     }
 }

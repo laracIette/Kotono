@@ -1,4 +1,5 @@
-﻿using Kotono.Graphics.Objects;
+﻿using Kotono.File;
+using Kotono.Graphics.Objects;
 using OpenTK.Mathematics;
 using System;
 
@@ -175,6 +176,17 @@ namespace Kotono.Utils
             r.W -= w;
             r.H -= h;
             return r;
+        }
+
+        public static Rect FromProperties(Properties p)
+        {
+            return new Rect
+            {
+                X = p.Floats["Dest.X"],
+                Y = p.Floats["Dest.Y"],
+                W = p.Floats["Dest.W"],
+                H = p.Floats["Dest.H"]
+            };
         }
 
         public static Rect operator +(Rect left, Rect right)

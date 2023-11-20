@@ -8,6 +8,7 @@ using Kotono.Physics;
 using Kotono.Utils;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
+using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -124,9 +125,9 @@ namespace Kotono.Graphics.Objects.Meshes
                 _ => throw new Exception($"error: Shader \"{_properties.Strings["Shader"]}\" isn't valid"),
             };
 
-            Transform = Transform.FromProperties(_properties);
+            Transform = _properties.Transform;
 
-            Color = Color.FromProperties(_properties);
+            Color = _properties.Color;
 
             _hitboxes = hitboxes;
 
@@ -269,6 +270,11 @@ namespace Kotono.Graphics.Objects.Meshes
                     Location = tempLoc;
                 }
             }
+
+            if (Mouse.IsButtonPressed(MouseButton.Left) && IsMouseOn(out _, out _))
+            {
+                Gizmo.AttachTo(this);
+            }
         }
 
         public void UpdateShaders() { }
@@ -322,8 +328,8 @@ namespace Kotono.Graphics.Objects.Meshes
 
         private void WriteData()
         {
-            _properties.SetTransform(Transform);
-            _properties.SetColor(Color);
+            _properties.Transform = Transform;
+            _properties.Color = Color;
 
             _properties.WriteFile();
         }

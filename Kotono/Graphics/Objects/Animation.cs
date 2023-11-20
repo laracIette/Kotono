@@ -1,4 +1,5 @@
-﻿using Kotono.Graphics.Objects.Managers;
+﻿using Kotono.File;
+using Kotono.Graphics.Objects.Managers;
 using Kotono.Utils;
 using System;
 using System.Collections.Generic;
@@ -70,29 +71,43 @@ namespace Kotono.Graphics.Objects
 
         public bool IsDraw { get; private set; } = true;
 
+        private readonly AnimationProperties _properties;
+
         /// <summary> Create an Animation from files in a directory </summary>
-        public Animation(AnimationSettings settings)
+        public Animation(string path)
         {
+            _properties = new AnimationProperties(path);
+
             string[] filePaths;
 
-            if (Directory.Exists(settings.Path))
+            if (Directory.Exists(_properties.Directory))
             {
-                filePaths = Directory.GetFiles(settings.Path);
+                filePaths = Directory.GetFiles(_properties.Directory);
             }
             else
             {
-                throw new DirectoryNotFoundException($"error: couldn't find directory at \"{settings.Path}\"");
+                throw new DirectoryNotFoundException($"error: couldn't find directory at \"{_properties.Directory}\"");
             }
 
             foreach (var filePath in filePaths)
             {
-                settings.ImageSettings.Path = filePath;
-                _frames.Add(new Image(settings.ImageSettings));
+                if (filePath.EndsWith(".png"))
+                {
+                    _frames.Add(new Image(
+                        new ImageSettings
+                        {
+                            Path = filePath,
+                            Dest = _properties.Dest,
+                            Color = _properties.Color,
+                            Layer = _properties.Layer
+                        }
+                    ));
+                }
             }
 
-            _frameRate = settings.FrameRate;
-            _startTime = settings.StartTime;
-            _duration = settings.Duration;
+            _frameRate = _properties.FrameRate;
+            _startTime = Time.NowS + _properties.StartTime;
+            _duration = _properties.Duration;
         }
 
         public void Init()
@@ -184,7 +199,15 @@ namespace Kotono.Graphics.Objects
 
         public void Save()
         {
+            WriteData();
+        }
 
+        private void WriteData()
+        {
+            _properties.Dest = Dest;
+            _properties.Layer = Layer;
+
+            _properties.WriteFile();
         }
 
         public void Dispose()
