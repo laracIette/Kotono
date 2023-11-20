@@ -149,128 +149,65 @@ namespace Kotono.Graphics.Objects
                     path = _paths[' '];
                 }
 
-                switch (_anchor)
+                var dest = _anchor switch
                 {
-                    case Anchor.Center:
-                        _letters.Add(new Image(
-                            path,
-                            new Rect(
-                                _lettersDest.X - _lettersDest.W / 2 * (_text.Length - 1) * _spacing + _lettersDest.W * i * _spacing,
-                                _lettersDest.Y,
-                                _lettersDest.Size
-                            ),
-                            Color,
-                            Layer
-                        ));
-                        break;
+                    Anchor.Center => new Rect(
+                        _lettersDest.X - _lettersDest.W / 2 * (_text.Length - 1) * _spacing + _lettersDest.W * i * _spacing,
+                        _lettersDest.Y,
+                        _lettersDest.Size
+                    ),
+                    Anchor.Top => new Rect(
+                        _lettersDest.X - _lettersDest.W / 2 * (_text.Length - 1) * _spacing + _lettersDest.W * i * _spacing,
+                        _lettersDest.Y + _lettersDest.H / 2,
+                        _lettersDest.Size
+                    ),
+                    Anchor.Bottom => new Rect(
+                        _lettersDest.X - _lettersDest.W / 2 * (_text.Length - 1) * _spacing + _lettersDest.W * i * _spacing,
+                        _lettersDest.Y - _lettersDest.H / 2,
+                        _lettersDest.Size
+                    ),
+                    Anchor.Left => new Rect(
+                        _lettersDest.X + _lettersDest.W / 2 + _lettersDest.W * i * _spacing,
+                        _lettersDest.Y,
+                        _lettersDest.Size
+                    ),
+                    Anchor.Right => new Rect(
+                        _lettersDest.X - _lettersDest.W / 2 - _lettersDest.W * (_text.Length - 1 - i) * _spacing,
+                        _lettersDest.Y,
+                        _lettersDest.Size
+                    ),
+                    Anchor.TopLeft => new Rect(
+                        _lettersDest.X + _lettersDest.W / 2 + _lettersDest.W * i * _spacing,
+                        _lettersDest.Y + _lettersDest.H / 2,
+                        _lettersDest.Size
+                    ),
+                    Anchor.TopRight => new Rect(
+                        _lettersDest.X - _lettersDest.W / 2 - _lettersDest.W * (_text.Length - 1 - i) * _spacing,
+                        _lettersDest.Y + _lettersDest.H / 2,
+                        _lettersDest.Size
+                    ),
+                    Anchor.BottomLeft => new Rect(
+                        _lettersDest.X + _lettersDest.W / 2 + _lettersDest.W * i * _spacing,
+                        _lettersDest.Y - _lettersDest.H / 2,
+                        _lettersDest.Size
+                    ),
+                    Anchor.BottomRight => new Rect(
+                        _lettersDest.X - _lettersDest.W / 2 - _lettersDest.W * (_text.Length - 1 - i) * _spacing,
+                        _lettersDest.Y - _lettersDest.H / 2,
+                        _lettersDest.Size
+                    ),
+                    _ => throw new Exception($"error: Text.Init()'s switch on Anchor doesn't handle \"{_anchor}\""),
+                };
 
-                    case Anchor.Top:
-                        _letters.Add(new Image(
-                            path,
-                            new Rect(
-                                _lettersDest.X - _lettersDest.W / 2 * (_text.Length - 1) * _spacing + _lettersDest.W * i * _spacing,
-                                _lettersDest.Y + _lettersDest.H / 2,
-                                _lettersDest.Size
-                            ),
-                            Color,
-                            Layer
-                        ));
-                        break;
-
-                    case Anchor.Bottom:
-                        _letters.Add(new Image(
-                            path,
-                            new Rect(
-                                _lettersDest.X - _lettersDest.W / 2 * (_text.Length - 1) * _spacing + _lettersDest.W * i * _spacing,
-                                _lettersDest.Y - _lettersDest.H / 2,
-                                _lettersDest.Size
-                            ),
-                            Color,
-                            Layer
-                        ));
-                        break;
-
-                    case Anchor.Left:
-                        _letters.Add(new Image(
-                            path,
-                            new Rect(
-                                _lettersDest.X + _lettersDest.W / 2 + _lettersDest.W * i * _spacing,
-                                _lettersDest.Y,
-                                _lettersDest.Size
-                            ),
-                            Color,
-                            Layer
-                        ));
-                        break;
-
-                    case Anchor.Right:
-                        _letters.Add(new Image(
-                            path,
-                            new Rect(
-                                _lettersDest.X - _lettersDest.W / 2 - _lettersDest.W * (_text.Length - 1 - i) * _spacing,
-                                _lettersDest.Y,
-                                _lettersDest.Size
-                            ),
-                            Color,
-                            Layer
-                        ));
-                        break;
-
-                    case Anchor.TopLeft:
-                        _letters.Add(new Image(
-                            path,
-                            new Rect(
-                                _lettersDest.X + _lettersDest.W / 2 + _lettersDest.W * i * _spacing,
-                                _lettersDest.Y + _lettersDest.H / 2,
-                                _lettersDest.Size
-                            ),
-                            Color,
-                            Layer
-                        ));
-                        break;
-
-                    case Anchor.TopRight:
-                        _letters.Add(new Image(
-                            path,
-                            new Rect(
-                                _lettersDest.X - _lettersDest.W / 2 - _lettersDest.W * (_text.Length - 1 - i) * _spacing,
-                                _lettersDest.Y + _lettersDest.H / 2,
-                                _lettersDest.Size
-                            ),
-                            Color,
-                            Layer
-                        ));
-                        break;
-
-                    case Anchor.BottomLeft:
-                        _letters.Add(new Image(
-                            path,
-                            new Rect(
-                                _lettersDest.X + _lettersDest.W / 2 + _lettersDest.W * i * _spacing,
-                                _lettersDest.Y - _lettersDest.H / 2,
-                                _lettersDest.Size
-                            ),
-                            Color,
-                            Layer
-                        ));
-                        break;
-
-                    case Anchor.BottomRight:
-                        _letters.Add(new Image(
-                            path,
-                            new Rect(
-                                _lettersDest.X - _lettersDest.W / 2 - _lettersDest.W * (_text.Length - 1 - i) * _spacing,
-                                _lettersDest.Y - _lettersDest.H / 2,
-                                _lettersDest.Size
-                            ),
-                            Color,
-                            Layer
-                        ));
-                        break;
-
-                    default:
-                        throw new Exception($"error: Text.Init()'s switch on Anchor doesn't handle \"{_anchor}\"");
-                }
+                _letters.Add(new Image(
+                    new ImageSettings
+                    {
+                        Path = path, 
+                        Dest = dest, 
+                        Color = Color, 
+                        Layer = Layer
+                    }
+                ));
             }
         }
 

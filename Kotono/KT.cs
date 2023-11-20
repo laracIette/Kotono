@@ -93,6 +93,7 @@ namespace Kotono
 
         public static void Init(MouseState mouseState, KeyboardState keyboardState)
         {
+            Time.Init();
             Mouse.Init(mouseState);
             Keyboard.Init(keyboardState);
             ShaderManager.Init();

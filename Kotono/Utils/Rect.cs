@@ -1,6 +1,5 @@
-﻿using Assimp;
+﻿using Kotono.File;
 using Kotono.Graphics.Objects;
-using Kotono.Input;
 using OpenTK.Mathematics;
 using System;
 
@@ -27,13 +26,13 @@ namespace Kotono.Utils
         public float W
         {
             readonly get => Size.X;
-            set => Size.X = Math.Clamp(value, 0, float.PositiveInfinity);
+            set => Size.X = Math.Max(0, value);
         }
 
         public float H
         {
             readonly get => Size.Y;
-            set => Size.Y = Math.Clamp(value, 0, float.PositiveInfinity);
+            set => Size.Y = Math.Max(0, value);
         }
 
         public readonly Rect Normalized =>
@@ -177,6 +176,17 @@ namespace Kotono.Utils
             r.W -= w;
             r.H -= h;
             return r;
+        }
+
+        public static Rect FromProperties(Properties p)
+        {
+            return new Rect
+            {
+                X = p.Floats["Dest.X"],
+                Y = p.Floats["Dest.Y"],
+                W = p.Floats["Dest.W"],
+                H = p.Floats["Dest.H"]
+            };
         }
 
         public static Rect operator +(Rect left, Rect right)

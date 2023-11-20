@@ -38,6 +38,21 @@ namespace Kotono.Graphics.Objects.Managers
 
         #endregion Image
 
+        #region Animation
+
+        public static Animation CreateAnimation(Animation animation)
+        {
+            _object2DManager.Create(animation);
+            return animation;
+        }
+
+        public static void DeleteAnimation(Animation animation)
+        {
+            _object2DManager.Delete(animation);
+        }
+
+        #endregion Image
+
         #region Mesh
 
         public static Mesh CreateMesh(Mesh mesh)

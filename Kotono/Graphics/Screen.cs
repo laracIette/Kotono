@@ -1,7 +1,6 @@
 ﻿using Kotono.Utils;
 using System;
 using System.Runtime.InteropServices;
-using System.Windows;
 
 namespace Kotono.Graphics
 {

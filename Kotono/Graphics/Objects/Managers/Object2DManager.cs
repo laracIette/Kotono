@@ -1,10 +1,11 @@
-﻿using OpenTK.Graphics.OpenGL4;
+﻿using Kotono.Utils;
+using OpenTK.Graphics.OpenGL4;
 
 namespace Kotono.Graphics.Objects.Managers
 {
     public class Object2DManager : DrawableManager<IObject2D>
     {
-        public Object2DManager() 
+        public Object2DManager()
             : base() { }
 
         public override void Create(IObject2D obj)
@@ -30,7 +31,13 @@ namespace Kotono.Graphics.Objects.Managers
             GL.Disable(EnableCap.DepthTest);
             GL.Enable(EnableCap.Blend);
 
-            base.Draw();
+            for (int i = 0; i < _drawables.Count; i++)
+            {
+                if (_drawables[i].IsDraw && Rect.Overlaps(_drawables[i].Dest, Rect.FromAnchor(new Rect(Point.Zero, KT.Size), Anchor.TopLeft)))
+                {
+                    _drawables[i].Draw();
+                }
+            }
 
             GL.Disable(EnableCap.Blend);
             GL.Enable(EnableCap.DepthTest);

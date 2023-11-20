@@ -55,5 +55,11 @@
         {
             return (float)MathD.Max(left, right);
         }
+
+        /// <summary> Loops a number in range [min, max) </summary>
+        public static float Loop(double value, double min, double max)
+        {
+            return (float)MathD.Loop(value, min, max);
+        }
     }
 }

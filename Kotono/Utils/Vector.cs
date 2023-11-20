@@ -1,6 +1,5 @@
 ﻿using Assimp;
 using Kotono.Graphics.Objects;
-using Kotono.Graphics.Objects.Hitboxes;
 using OpenTK.Mathematics;
 using System;
 using Quaternion = OpenTK.Mathematics.Quaternion;

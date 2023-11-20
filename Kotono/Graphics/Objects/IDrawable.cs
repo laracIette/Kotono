@@ -15,5 +15,9 @@ namespace Kotono.Graphics.Objects
         public void Draw();
 
         public void Save();
+
+        public void Show();
+
+        public void Hide();
     }
 }

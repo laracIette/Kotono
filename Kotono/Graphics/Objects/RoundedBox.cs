@@ -124,9 +124,8 @@ namespace Kotono.Graphics.Objects
             _cornerSize = Math.Clamp(CornerSize, 0, Math.Min(Dest.W, Dest.H) / 2);
 
             /// FallOff has :
-            ///     a minimum value of 0.000001 so that there is no division by 0 in glsl,
-            ///     a maximum value of Infinity
-            _fallOff = Math.Clamp(FallOff, 0.000001, float.PositiveInfinity);
+            ///     a minimum value of 0.000001 so that there is no division by 0 in glsl
+            _fallOff = Math.Max(0.000001, FallOff);
         }
 
         public void UpdateShaders()

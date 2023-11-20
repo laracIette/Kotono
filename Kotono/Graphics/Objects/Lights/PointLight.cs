@@ -7,7 +7,7 @@ namespace Kotono.Graphics.Objects.Lights
 {
     public class PointLight : IDrawable
     {
-        public bool IsDraw { get; set; }
+        public bool IsDraw { get; private set; }
 
         public bool IsGravity
         {
@@ -78,6 +78,16 @@ namespace Kotono.Graphics.Objects.Lights
         public void Save()
         {
 
+        }
+
+        public void Show()
+        {
+            IsDraw = true;
+        }
+
+        public void Hide()
+        {
+            IsDraw = false;
         }
 
         public void Dispose()

@@ -29,9 +29,10 @@ namespace Kotono.Graphics.Objects.Managers
 
         public virtual void Update()
         {
-            foreach (var drawable in _drawables)
+            // List can change during IDrawable.Update() calls
+            for (int i = 0; i < _drawables.Count; i++)
             {
-                drawable.Update();
+                _drawables[i].Update();
             }
         }
 
@@ -45,11 +46,12 @@ namespace Kotono.Graphics.Objects.Managers
 
         public virtual void Draw()
         {
-            foreach (var drawable in _drawables)
+            // List shouldn't change during IDrawable.Draw() calls, TODO: use foreach when development done
+            for (int i = 0; i < _drawables.Count; i++)
             {
-                if (drawable.IsDraw)
+                if (_drawables[i].IsDraw)
                 {
-                    drawable.Draw();
+                    _drawables[i].Draw();
                 }
             }
         }

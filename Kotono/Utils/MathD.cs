@@ -69,5 +69,25 @@
         {
             return (left > right) ? left : right;
         }
+
+        /// <summary> Loops a number in range [min, max) </summary>
+        public static double Loop(double value, double min, double max)
+        {
+            if (min > max)
+            {
+                (min, max) = (max, min);
+            }
+
+            if (value >= max)
+            {
+                value = (value - min) % (max - min) + min;
+            }
+            else if (value < min)
+            {
+                value = (value - min) % (max - min) + max;
+            }
+
+            return value;
+        }
     }
 }

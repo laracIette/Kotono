@@ -1,4 +1,5 @@
-﻿using OpenTK.Mathematics;
+﻿using Kotono.File;
+using OpenTK.Mathematics;
 
 namespace Kotono.Utils
 {
@@ -49,15 +50,15 @@ namespace Kotono.Utils
 
         public const int SizeInBytes = Vector.SizeInBytes * 3;
 
-        public Transform() 
-        { 
+        public Transform()
+        {
             Location = Vector.Zero;
             Rotation = Vector.Zero;
             Scale = Vector.Unit;
         }
 
-        public Transform(Transform t) 
-        { 
+        public Transform(Transform t)
+        {
             Location = t.Location;
             Rotation = t.Rotation;
             Scale = t.Scale;
@@ -76,12 +77,37 @@ namespace Kotono.Utils
             * Matrix4.CreateRotationY(Rotation.Y)
             * Matrix4.CreateRotationZ(Rotation.Z)
             * Matrix4.CreateTranslation((Vector3)Location);
-        
+
         private void UpdateVectors()
         {
             Right = (Vector)(Quaternion.FromEulerAngles((Vector3)Rotation) * Vector3.UnitX);
             Up = (Vector)(Quaternion.FromEulerAngles((Vector3)Rotation) * Vector3.UnitY);
             Forward = (Vector)(Quaternion.FromEulerAngles((Vector3)Rotation) * Vector3.UnitZ);
+        }
+
+        public static Transform FromProperties(Properties properties)
+        {
+            return new Transform
+            {
+                Location = new Vector
+                {
+                    X = properties.Floats["Transform.Location.X"],
+                    Y = properties.Floats["Transform.Location.Y"],
+                    Z = properties.Floats["Transform.Location.Z"]
+                },
+                Rotation = new Vector
+                {
+                    X = properties.Floats["Transform.Rotation.X"],
+                    Y = properties.Floats["Transform.Rotation.Y"],
+                    Z = properties.Floats["Transform.Rotation.Z"]
+                },
+                Scale = new Vector
+                {
+                    X = properties.Floats["Transform.Scale.X"],
+                    Y = properties.Floats["Transform.Scale.Y"],
+                    Z = properties.Floats["Transform.Scale.Z"]
+                }
+            };
         }
 
         public static bool operator ==(Transform left, Transform right)

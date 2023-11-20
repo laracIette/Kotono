@@ -16,40 +16,6 @@ namespace Kotono.Utils
 
         public ColorComponent A;
 
-        /*
-        private float _r;
-
-        private float _g;
-
-        private float _b;
-
-        private float _a;
-        
-        public float R
-        { 
-            readonly get => _r; 
-            set => _r = Math.Clamp(value, 0, 1);
-        }
-
-        public float G
-        { 
-            readonly get => _g; 
-            set => _g = Math.Clamp(value, 0, 1);
-        }
-
-        public float B
-        { 
-            readonly get => _b; 
-            set => _b = Math.Clamp(value, 0, 1);
-        }
-
-        public float A
-        { 
-            readonly get => _a; 
-            set => _a = Math.Clamp(value, 0, 1);
-        }
-        */
-
         public static Color Transparent => new Color(1, 1, 1, 0);
 
         public static Color Black => new Color(0, 0, 0, 1);
@@ -199,14 +165,25 @@ namespace Kotono.Utils
             return result;
         }
 
-        public static Color FromProperties(Properties properties, string parent)
+        public static Color FromProperties(Properties p)
         {
             return new Color
             {
-                R = properties.Floats[parent + ".Color.R"],
-                G = properties.Floats[parent + ".Color.G"],
-                B = properties.Floats[parent + ".Color.B"],
-                A = properties.Floats[parent + ".Color.A"]
+                R = p.Floats["Color.R"],
+                G = p.Floats["Color.G"],
+                B = p.Floats["Color.B"],
+                A = p.Floats["Color.A"]
+            };
+        }
+
+        public static Color FromProperties(Properties p, string parent)
+        {
+            return new Color
+            {
+                R = p.Floats[parent + ".Color.R"],
+                G = p.Floats[parent + ".Color.G"],
+                B = p.Floats[parent + ".Color.B"],
+                A = p.Floats[parent + ".Color.A"]
             };
         }
 

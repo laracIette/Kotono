@@ -19,13 +19,7 @@ namespace Kotono.File
 
         public Dictionary<string, int> Ints => Data.Ints;
 
-        private Properties(string path, Data data)
-        {
-            Path = path;
-            Data = data;
-        }
-
-        public static Properties Parse(string path)
+        public Properties(string path)
         {
             if (!path.EndsWith(".ktf"))
             {
@@ -86,7 +80,8 @@ namespace Kotono.File
                 }
             }
 
-            return new Properties(path, data);
+            Path = path;
+            Data = data;
         }
 
         private static string RemoveParent(string key)

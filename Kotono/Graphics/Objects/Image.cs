@@ -73,14 +73,16 @@ namespace Kotono.Graphics.Objects
 
         public int Layer { get; set; } = 0;
 
-        public Image(string path, Rect dest, Color color, int layer)
+        public Image(ImageSettings settings)
         {
-            Path = path;
-            Dest = dest;
-            Color = color;
-            Layer = layer;
+            Path = settings.Path;
+            Dest = settings.Dest;
+            Color = settings.Color;
+            Layer = settings.Layer;
+
             _transformation = new Rect();
-            _texture = TextureManager.LoadTexture(path);
+
+            _texture = TextureManager.LoadTexture(Path);
 
             ObjectManager.CreateImage(this);
         }
@@ -95,16 +97,6 @@ namespace Kotono.Graphics.Objects
             }
             
             Dest += _transformation * Time.DeltaS;
-
-            // check if Image is in or out of screen bounds
-            if (Rect.Overlaps(Dest, Rect.FromAnchor(new Rect(Point.Zero, KT.Size), Anchor.TopLeft)))
-            {
-                Show();
-            }
-            else
-            {
-                Hide();
-            }
         }
 
         public void UpdateShaders()

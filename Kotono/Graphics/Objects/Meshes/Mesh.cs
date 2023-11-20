@@ -8,6 +8,7 @@ using Kotono.Physics;
 using Kotono.Utils;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
+using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,19 +36,19 @@ namespace Kotono.Graphics.Objects.Meshes
 
         public CollisionState CollisionState { get; set; }
 
-        private readonly MeshSettings _meshProperties;
+        private readonly MeshSettings _meshSettings;
 
-        public int VertexArrayObject => _meshProperties.VertexArrayObject;
+        public int VertexArrayObject => _meshSettings.VertexArrayObject;
 
-        public int VertexBufferObject => _meshProperties.VertexBufferObject;
+        public int VertexBufferObject => _meshSettings.VertexBufferObject;
 
-        public int IndicesCount => _meshProperties.IndicesCount;
+        public int IndicesCount => _meshSettings.IndicesCount;
 
-        public Vector Center => _meshProperties.Center;
+        public Vector Center => _meshSettings.Center;
 
-        public Vector[] Vertices => _meshProperties.Vertices;
+        public Vector[] Vertices => _meshSettings.Vertices;
 
-        public Triangle[] Triangles => _meshProperties.Triangles;
+        public Triangle[] Triangles => _meshSettings.Triangles;
 
         public int[] Textures { get; }
 
@@ -97,11 +98,11 @@ namespace Kotono.Graphics.Objects.Meshes
 
         public double IntersectionCheckTime { get; internal set; } = MaxIntersectionCheckTime;
 
-        private readonly Properties _properties;
+        private readonly MeshProperties _properties;
 
         public Mesh(string path, IHitbox[] hitboxes)
         {
-            _properties = Properties.Parse(path);
+            _properties = new MeshProperties(path);
 
             var textureKeys = _properties.Strings.Keys.Where(k => k.StartsWith("Textures")).ToList();
 
@@ -124,34 +125,9 @@ namespace Kotono.Graphics.Objects.Meshes
                 _ => throw new Exception($"error: Shader \"{_properties.Strings["Shader"]}\" isn't valid"),
             };
 
-            Location = new Vector
-            {
-                X = _properties.Floats["Transform.Location.X"],
-                Y = _properties.Floats["Transform.Location.Y"],
-                Z = _properties.Floats["Transform.Location.Z"]
-            };
+            Transform = _properties.Transform;
 
-            Rotation = new Vector
-            {
-                X = _properties.Floats["Transform.Rotation.X"],
-                Y = _properties.Floats["Transform.Rotation.Y"],
-                Z = _properties.Floats["Transform.Rotation.Z"]
-            };
-
-            Scale = new Vector
-            {
-                X = _properties.Floats["Transform.Scale.X"],
-                Y = _properties.Floats["Transform.Scale.Y"],
-                Z = _properties.Floats["Transform.Scale.Z"]
-            };
-
-            Color = new Color
-            {
-                R = _properties.Floats["Color.R"],
-                G = _properties.Floats["Color.G"],
-                B = _properties.Floats["Color.B"],
-                A = _properties.Floats["Color.A"]
-            };
+            Color = _properties.Color;
 
             _hitboxes = hitboxes;
 
@@ -255,7 +231,7 @@ namespace Kotono.Graphics.Objects.Meshes
                 };
             }
 
-            _meshProperties = _paths[_properties.Strings["Obj"]];
+            _meshSettings = _paths[_properties.Strings["Obj"]];
 
             Create();
         }
@@ -293,6 +269,11 @@ namespace Kotono.Graphics.Objects.Meshes
                 {
                     Location = tempLoc;
                 }
+            }
+
+            if (Mouse.IsButtonPressed(MouseButton.Left) && IsMouseOn(out _, out _))
+            {
+                Gizmo.AttachTo(this);
             }
         }
 
@@ -347,22 +328,8 @@ namespace Kotono.Graphics.Objects.Meshes
 
         private void WriteData()
         {
-            _properties.Floats["Color.R"] = Color.R;
-            _properties.Floats["Color.G"] = Color.G;
-            _properties.Floats["Color.B"] = Color.B;
-            _properties.Floats["Color.A"] = Color.A;
-
-            _properties.Floats["Transform.Location.X"] = Location.X;
-            _properties.Floats["Transform.Location.Y"] = Location.Y;
-            _properties.Floats["Transform.Location.Z"] = Location.Z;
-
-            _properties.Floats["Transform.Rotation.X"] = Rotation.X;
-            _properties.Floats["Transform.Rotation.Y"] = Rotation.Y;
-            _properties.Floats["Transform.Rotation.Z"] = Rotation.Z;
-
-            _properties.Floats["Transform.Scale.X"] = Scale.X;
-            _properties.Floats["Transform.Scale.Y"] = Scale.Y;
-            _properties.Floats["Transform.Scale.Z"] = Scale.Z;
+            _properties.Transform = Transform;
+            _properties.Color = Color;
 
             _properties.WriteFile();
         }
