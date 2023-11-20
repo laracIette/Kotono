@@ -89,5 +89,11 @@
 
             return value;
         }
+
+        /// <summary> Loops a number in range [0, max) </summary>
+        public static double Loop(double value, double max)
+        {
+            return Loop(value, 0, max);
+        }
     }
 }

@@ -50,7 +50,7 @@ namespace Kotono.Graphics.Objects
             set
             {
                 _frames[_currentFrame].Hide();
-                _currentFrame = (int)Math.Loop(value, 0, Count);
+                _currentFrame = (int)Math.Loop(value, Count);
                 _frames[_currentFrame].Show();
             }
         }
