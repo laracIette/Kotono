@@ -71,37 +71,28 @@ namespace Kotono.Graphics.Objects
         public bool IsDraw { get; private set; } = true;
 
         /// <summary> Create an Animation from files in a directory </summary>
-        public Animation(string path, ImageSettings settings, int frameRate, double startTime, double duration)
+        public Animation(AnimationSettings settings)
         {
             string[] filePaths;
 
-            if (Directory.Exists(path))
+            if (Directory.Exists(settings.Path))
             {
-                filePaths = Directory.GetFiles(path);
+                filePaths = Directory.GetFiles(settings.Path);
             }
             else
             {
-                throw new DirectoryNotFoundException($"error: couldn't find directory at \"{path}\"");
+                throw new DirectoryNotFoundException($"error: couldn't find directory at \"{settings.Path}\"");
             }
 
             foreach (var filePath in filePaths)
             {
-                settings.Path = filePath;
-                _frames.Add(new Image(settings));
+                settings.ImageSettings.Path = filePath;
+                _frames.Add(new Image(settings.ImageSettings));
             }
 
-            _frameRate = frameRate;
-            _startTime = startTime;
-            _duration = duration;
-        }
-
-        /// <summary> Create an Animation from a List of Image </summary>
-        public Animation(List<Image> frames, int frameRate, double startTime, double duration)
-        {
-            _frames = frames;
-            _frameRate = frameRate;
-            _startTime = startTime;
-            _duration = duration;
+            _frameRate = settings.FrameRate;
+            _startTime = settings.StartTime;
+            _duration = settings.Duration;
         }
 
         public void Init()
