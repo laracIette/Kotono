@@ -84,7 +84,7 @@ namespace Kotono.Graphics.Objects
 
             _texture = TextureManager.LoadTexture(Path);
 
-            ObjectManager.CreateImage(this);
+            ObjectManager.Create(this);
         }
 
         public void Init() { }
@@ -154,6 +154,11 @@ namespace Kotono.Graphics.Objects
         public void Save()
         {
 
+        }
+
+        public void Delete()
+        {
+            ObjectManager.Delete(this);
         }
 
         public void Dispose()

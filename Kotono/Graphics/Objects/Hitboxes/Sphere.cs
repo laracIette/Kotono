@@ -90,7 +90,7 @@ namespace Kotono.Graphics.Objects.Hitboxes
 
             _transform = new Transform();
 
-            ObjectManager.CreateHitbox(this);
+            ObjectManager.Create(this);
         }
 
         public void Init() { }
@@ -156,6 +156,11 @@ namespace Kotono.Graphics.Objects.Hitboxes
         public void Hide()
         {
             IsDraw = false;
+        }
+
+        public void Delete()
+        {
+            ObjectManager.Delete(this);
         }
 
         public void Dispose()

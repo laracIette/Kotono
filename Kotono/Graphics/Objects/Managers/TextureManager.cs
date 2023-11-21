@@ -5,11 +5,11 @@ using IO = System.IO;
 
 namespace Kotono.Graphics.Objects.Managers
 {
-    public static class TextureManager
+    internal static class TextureManager
     {
         private static readonly Dictionary<string, int> _textures = new();
 
-        public static int LoadTexture(string path)
+        internal static int LoadTexture(string path)
         {
             if (!_textures.ContainsKey(path))
             {
@@ -41,7 +41,7 @@ namespace Kotono.Graphics.Objects.Managers
             return _textures[path];
         }
 
-        public static void UseTexture(int handle, TextureUnit unit)
+        internal static void UseTexture(int handle, TextureUnit unit)
         {
             GL.ActiveTexture(unit);
             GL.BindTexture(TextureTarget.Texture2D, handle);

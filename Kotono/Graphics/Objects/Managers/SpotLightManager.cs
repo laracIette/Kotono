@@ -2,12 +2,12 @@
 
 namespace Kotono.Graphics.Objects.Managers
 {
-    public class SpotLightManager : DrawableManager<SpotLight>
+    internal class SpotLightManager : DrawableManager<SpotLight>
     {
-        public SpotLightManager()
+        internal SpotLightManager()
             : base() { }
 
-        public override void Create(SpotLight spotLight)
+        internal override void Create(SpotLight spotLight)
         {
             if (SpotLight.Count >= SpotLight.MAX_COUNT)
             {
@@ -20,13 +20,13 @@ namespace Kotono.Graphics.Objects.Managers
             }
         }
 
-        public override void Delete(SpotLight spotLight)
+        internal override void Delete(SpotLight spotLight)
         {
             _drawables.ForEach(p => p.UpdateIndex());
             base.Delete(spotLight);
         }
 
-        public int GetCount()
+        internal int GetCount()
         {
             return _drawables.Count;
         }

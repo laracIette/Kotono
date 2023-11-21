@@ -38,7 +38,7 @@ namespace Kotono
 
             GL.Enable(EnableCap.DepthTest);
 
-            CameraManager.Create(new Camera());
+            new Camera();
 
             KT.SetWindowPosition((Point)Location);
             KT.SetWindowSize((Point)Size);

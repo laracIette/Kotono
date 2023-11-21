@@ -3,12 +3,12 @@ using OpenTK.Graphics.OpenGL4;
 
 namespace Kotono.Graphics.Objects.Managers
 {
-    public class FrontMeshManager : DrawableManager<FrontMesh>
+    internal class FrontMeshManager : DrawableManager<FrontMesh>
     {
-        public FrontMeshManager()
+        internal FrontMeshManager()
             : base() { }
 
-        public override void Draw()
+        internal override void Draw()
         {
             GL.Clear(ClearBufferMask.DepthBufferBit);
 

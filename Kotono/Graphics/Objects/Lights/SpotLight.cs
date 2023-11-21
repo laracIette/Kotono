@@ -39,6 +39,8 @@ namespace Kotono.Graphics.Objects.Lights
         public SpotLight()
         {
             _shaderIndex = Count;
+
+            ObjectManager.Create(this);
         }
 
         public void Init() { }
@@ -102,6 +104,11 @@ namespace Kotono.Graphics.Objects.Lights
         public void Hide()
         {
             IsDraw = false;
+        }
+
+        public void Delete()
+        {
+            ObjectManager.Delete(this);
         }
 
         public void Dispose()

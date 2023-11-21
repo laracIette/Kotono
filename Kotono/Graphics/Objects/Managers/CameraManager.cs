@@ -2,29 +2,31 @@
 
 namespace Kotono.Graphics.Objects.Managers
 {
-    public static class CameraManager
+    internal static class CameraManager
     {
         private static readonly List<Camera> _cameras = new();
 
-        public static Camera ActiveCamera => _cameras[0];
+        internal static Camera ActiveCamera => _cameras[0];
 
-        public static Camera Create(Camera camera)
+        internal static void Create(Camera camera)
         {
-            _cameras.Add(camera);
-            return camera;
+            if (!_cameras.Contains(camera))
+            {
+                _cameras.Add(camera);
+            }
         }
 
-        public static void Delete(Camera camera)
+        internal static void Delete(Camera camera)
         {
             _cameras.Remove(camera);
         }
 
-        public static Camera Get(int index)
+        internal static Camera Get(int index)
         {
             return _cameras[index];
         }
 
-        public static void Update()
+        internal static void Update()
         {
             foreach (var camera in _cameras)
             {

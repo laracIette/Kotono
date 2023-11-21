@@ -3,12 +3,12 @@ using System.Linq;
 
 namespace Kotono.Graphics.Objects.Managers
 {
-    public class PointLightManager : DrawableManager<PointLight>
+    internal class PointLightManager : DrawableManager<PointLight>
     {
-        public PointLightManager()
+        internal PointLightManager()
             : base() { }
 
-        public override void Create(PointLight pointLight)
+        internal override void Create(PointLight pointLight)
         {
             if (PointLight.Count >= PointLight.MAX_COUNT)
             {
@@ -21,13 +21,13 @@ namespace Kotono.Graphics.Objects.Managers
             }
         }
 
-        public override void Delete(PointLight pointLight)
+        internal override void Delete(PointLight pointLight)
         {
             _drawables.ForEach(p => p.UpdateIndex());
             base.Delete(pointLight);
         }
 
-        public PointLight GetFirst()
+        internal PointLight GetFirst()
         {
             return _drawables.First();
         }

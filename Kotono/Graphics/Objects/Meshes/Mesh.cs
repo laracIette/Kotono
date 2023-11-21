@@ -238,7 +238,7 @@ namespace Kotono.Graphics.Objects.Meshes
 
         protected virtual void Create()
         {
-            ObjectManager.CreateMesh(this);
+            ObjectManager.Create(this);
         }
 
         public virtual void Init() { }
@@ -334,11 +334,16 @@ namespace Kotono.Graphics.Objects.Meshes
             _properties.WriteFile();
         }
 
+        public void Delete()
+        {
+            ObjectManager.Delete(this);
+        }
+
         public void Dispose()
         {
             foreach (var hitbox in _hitboxes)
             {
-                ObjectManager.DeleteHitbox(hitbox);
+                ObjectManager.Delete(hitbox);
             }
             
             GC.SuppressFinalize(this);

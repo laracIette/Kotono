@@ -103,7 +103,7 @@ namespace Kotono.Graphics.Objects
             FallOff = fallOff;
             CornerSize = cornerSize;
 
-            ObjectManager.CreateRoundedBox(this);
+            ObjectManager.Create(this);
         }
 
         public void Init()
@@ -159,6 +159,11 @@ namespace Kotono.Graphics.Objects
         public void Save()
         {
 
+        }
+
+        public void Delete()
+        {
+            ObjectManager.Delete(this);
         }
 
         public void Dispose()
