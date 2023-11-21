@@ -3,7 +3,6 @@ using Kotono.Input;
 using Kotono.Utils;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
-using System.Runtime.Serialization;
 using CursorState = Kotono.Input.CursorState;
 using Math = Kotono.Utils.Math;
 

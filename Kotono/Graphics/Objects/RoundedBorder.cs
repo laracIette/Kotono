@@ -1,5 +1,4 @@
 ﻿using Kotono.Utils;
-using Newtonsoft.Json.Linq;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
 

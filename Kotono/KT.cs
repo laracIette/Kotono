@@ -16,7 +16,7 @@ namespace Kotono
 {
     public static class KT
     {
-        //private static readonly ComponentManager _componentManager = new();
+        private static readonly ComponentManager _componentManager = new();
 
         #region Viewport
 
@@ -104,7 +104,7 @@ namespace Kotono
             Text.InitPaths();
             Printer.Init();
             PerformanceWindow.Init();
-            //_componentManager.Init();
+            _componentManager.Init();
             Fizix.Init();
             _mode.Init();
             SoundManager.Init();
@@ -119,7 +119,7 @@ namespace Kotono
             Gizmo.Update();
             Printer.Update();
             ObjectManager.Update();
-            //_componentManager.Update();
+            _componentManager.Update();
             CameraManager.Update();
             PerformanceWindow.Update();
             _mode.Update();
@@ -135,14 +135,14 @@ namespace Kotono
         private static void UpdateShaders()
         {
             ObjectManager.UpdateShaders();
-            //_componentManager.UpdateShaders();
+            _componentManager.UpdateShaders();
             ShaderManager.Update();
         }
 
         private static void Draw()
         {
             ObjectManager.Draw();
-            //_componentManager.Draw();
+            _componentManager.Draw();
         }
 
         public static void Save()

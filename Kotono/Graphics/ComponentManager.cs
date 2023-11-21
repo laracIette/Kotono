@@ -12,7 +12,7 @@ namespace Kotono.Graphics
 
         public void Init()
         {
-            //_components.Add(new Component(new Rect(200, 180, 200, 300)));
+            //_components.Add(new Component(new Rect(600, 300, 300, 300)));
         }
 
         public void Update()
