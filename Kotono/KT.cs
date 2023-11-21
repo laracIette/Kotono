@@ -1,5 +1,6 @@
 ﻿using Kotono.Audio;
 using Kotono.Engine;
+using Kotono.Engine.Interface;
 using Kotono.Graphics;
 using Kotono.Graphics.Objects;
 using Kotono.Graphics.Objects.Managers;
@@ -107,6 +108,7 @@ namespace Kotono
             Fizix.Init();
             _mode.Init();
             SoundManager.Init();
+            AddMenu.Init();
         }
 
         public static void Update()
@@ -121,6 +123,7 @@ namespace Kotono
             CameraManager.Update();
             PerformanceWindow.Update();
             _mode.Update();
+            AddMenu.Update();
         }
 
         public static void RenderFrame()
