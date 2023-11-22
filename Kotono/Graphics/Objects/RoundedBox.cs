@@ -21,6 +21,16 @@ namespace Kotono.Graphics.Objects
             }
         }
 
+        public Point Position
+        {
+            get => _dest.Position;
+            set
+            {
+                _dest.Position = value;
+                UpdateValues();
+            }
+        }
+
         public float X
         {
             get => _dest.X;
@@ -111,7 +121,7 @@ namespace Kotono.Graphics.Objects
 
         }
 
-        public void Update()
+        public virtual void Update()
         {
 
         }

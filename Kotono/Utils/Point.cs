@@ -94,6 +94,13 @@ namespace Kotono.Utils
             return p;
         }
 
+        public static Point operator +(Point p, (float, float) t)
+        {
+            p.X += t.Item1;
+            p.Y += t.Item2;
+            return p;
+        }
+
         public static Point operator -(Point left, Point right)
         {
             left.X -= right.X;

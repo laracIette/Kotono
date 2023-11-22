@@ -124,6 +124,7 @@ namespace Kotono.Utils
             H = (float)h;
         }
 
+        // TODO: add offset that moves the Rect in a direction depending on the Anchor, for example Anchor.TopLeft : X + offset, Y + offset
         /// <summary> Creates a Rect given an Anchor </summary>
         public static Rect FromAnchor(Rect r, Anchor a)
         {
