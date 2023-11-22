@@ -1,13 +1,15 @@
 ﻿using Kotono.Input;
 using Kotono.Utils;
 using OpenTK.Windowing.GraphicsLibraryFramework;
+using System;
 
 namespace Kotono.Graphics.Objects
 {
     public class Button : RoundedBox
     {
-        // TODO: replace by event ?
         public bool IsPressed { get; private set; }
+
+        public event EventHandler? Pressed;
 
         public Button(Rect dest, Color color, int layer, float fallOff, float cornerSize) :
             base(dest, color, layer, fallOff, cornerSize)
@@ -17,7 +19,15 @@ namespace Kotono.Graphics.Objects
         {
             base.Update();
 
-            IsPressed = Mouse.IsButtonPressed(MouseButton.Left) && Rect.Overlaps(Dest, Mouse.RelativePosition);
+            if (Mouse.IsButtonPressed(MouseButton.Left) && Rect.Overlaps(Dest, Mouse.RelativePosition))
+            {
+                OnPressed();
+            }
+        }
+
+        protected virtual void OnPressed()
+        {
+            Pressed?.Invoke(this, EventArgs.Empty);
         }
     }
 }

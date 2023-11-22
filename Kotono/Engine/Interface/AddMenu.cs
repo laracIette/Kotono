@@ -2,6 +2,7 @@
 using Kotono.Input;
 using Kotono.Utils;
 using OpenTK.Windowing.GraphicsLibraryFramework;
+using System;
 
 namespace Kotono.Engine.Interface
 {
@@ -34,6 +35,10 @@ namespace Kotono.Engine.Interface
 
         public static void Init()
         {
+            _buttons[0].Pressed += On2DObjectsButtonPressed;
+            _buttons[1].Pressed += On3DObjectsButtonPressed;
+            _buttons[2].Pressed += OnLightsButtonPressed;
+            _buttons[3].Pressed += OnTriggersButtonPressed;
         }
 
         public static void Update()
@@ -50,15 +55,6 @@ namespace Kotono.Engine.Interface
                 {
                     Hide();
                 }
-
-                foreach (var button in _buttons)
-                {
-                    if (button.IsPressed)
-                    {
-                        KT.Print("oui");
-                        break;
-                    }
-                }
             }
         }
 
@@ -70,6 +66,26 @@ namespace Kotono.Engine.Interface
         private static void Hide()
         {
             _backgroundBox.Hide();
+        }
+
+        private static void On2DObjectsButtonPressed(object? sender, EventArgs e)
+        {
+            KT.Print("2dobjects");
+        }
+
+        private static void On3DObjectsButtonPressed(object? sender, EventArgs e)
+        {
+            KT.Print("3dobjects");
+        }
+
+        private static void OnLightsButtonPressed(object? sender, EventArgs e)
+        {
+            KT.Print("lights");
+        }
+
+        private static void OnTriggersButtonPressed(object? sender, EventArgs e)
+        {
+            KT.Print("triggers");
         }
     }
 }
