@@ -6,6 +6,7 @@ using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
 using OpenTK.Windowing.GraphicsLibraryFramework;
+using System.Globalization;
 
 namespace Kotono
 {
@@ -26,6 +27,9 @@ namespace Kotono
                   }
               )
         {
+            CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
+            CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
+
             KT.MaxFrameRate = windowSettings.MaxFrameRate;
 
             Path.Kotono = windowSettings.KotonoPath;

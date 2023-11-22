@@ -99,7 +99,7 @@ namespace Kotono.File
         }
 
         /// <returns> A tuple with Item1 being the key, Item2 being the type of the value, Item3 being the value </returns>
-        private static Tuple<string, string, string> GetKeyValue(string str)
+        private static (string, string, string) GetKeyValue(string str)
         {
             if (!str.Contains(':'))
             {
@@ -152,7 +152,7 @@ namespace Kotono.File
                 type = "int";
             }
 
-            return Tuple.Create(key, type, value);
+            return (key, type, value);
         }
 
         private static bool IsAString(string str)
