@@ -7,19 +7,17 @@ namespace Kotono.Graphics.Objects
 {
     public class Button : RoundedBox
     {
-        public bool IsPressed { get; private set; }
-
         public event EventHandler? Pressed;
 
-        public Button(Rect dest, Color color, int layer, float fallOff, float cornerSize) :
-            base(dest, color, layer, fallOff, cornerSize)
+        public Button(Rect dest, Color color, int layer, float fallOff, float cornerSize) 
+            : base(dest, color, layer, fallOff, cornerSize)
         { }
 
         public override void Update()
         {
             base.Update();
 
-            if (Mouse.IsButtonPressed(MouseButton.Left) && Rect.Overlaps(Dest, Mouse.RelativePosition))
+            if (IsDraw && Mouse.IsButtonPressed(MouseButton.Left) && Rect.Overlaps(Dest, Mouse.RelativePosition))
             {
                 OnPressed();
             }

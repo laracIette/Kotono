@@ -317,6 +317,16 @@ namespace Kotono.Utils
             return new Color(v.X, v.Y, v.Z, v.W);
         }
 
+        public static explicit operator Color4(Color c)
+        {
+            return new Color4(c.R, c.G, c.B, c.A);
+        }
+
+        public static explicit operator Color(Color4 c)
+        {
+            return new Color(c.R, c.G, c.B, c.A);
+        }
+
         public override readonly string ToString()
         {
             return $"R: {R}, G: {G}, B: {B}, A: {A}";

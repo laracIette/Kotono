@@ -37,8 +37,8 @@ namespace Kotono
 
             Mouse.CursorState = windowSettings.CursorState;
 
-            GL.ClearColor(windowSettings.ClearColor.R, windowSettings.ClearColor.G, windowSettings.ClearColor.B, windowSettings.ClearColor.A);
-
+            GL.ClearColor((Color4)windowSettings.ClearColor);
+            
             GL.Enable(EnableCap.DepthTest);
 
             new Camera();

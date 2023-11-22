@@ -10,12 +10,12 @@ namespace Kotono.Engine.Interface
     {
         private static readonly RoundedBox _backgroundBox = new(new Rect(0, 0, 300, 300), Color.DarkGray, 0, 5, 30);
 
-        private static readonly Button[] _buttons =
+        private static readonly TextButton[] _buttons =
         {
-            new(Rect.FromAnchor(new Rect(0, 0, 140, 140), Anchor.BottomRight), Color.Gray, 1, 2, 25), // 2D Objects
-            new(Rect.FromAnchor(new Rect(0, 0, 140, 140), Anchor.BottomLeft),  Color.Gray, 1, 2, 25), // 3D Objects
-            new(Rect.FromAnchor(new Rect(0, 0, 140, 140), Anchor.TopRight),    Color.Gray, 1, 2, 25), // Lights
-            new(Rect.FromAnchor(new Rect(0, 0, 140, 140), Anchor.TopLeft),     Color.Gray, 1, 2, 25)  // Trigger
+            new(Rect.FromAnchor(new Rect(0, 0, 140, 140), Anchor.BottomRight), Color.Gray, 1, 2, 25, "2D Objects"),
+            new(Rect.FromAnchor(new Rect(0, 0, 140, 140), Anchor.BottomLeft),  Color.Gray, 1, 2, 25, "3D Objects"), 
+            new(Rect.FromAnchor(new Rect(0, 0, 140, 140), Anchor.TopRight),    Color.Gray, 1, 2, 25, "Lights"), 
+            new(Rect.FromAnchor(new Rect(0, 0, 140, 140), Anchor.TopLeft),     Color.Gray, 1, 2, 25, "Triggers")  
         };
 
         public static bool IsDraw => _backgroundBox.IsDraw;
@@ -35,10 +35,18 @@ namespace Kotono.Engine.Interface
 
         public static void Init()
         {
+            _backgroundBox.Hide();
+
             _buttons[0].Pressed += On2DObjectsButtonPressed;
             _buttons[1].Pressed += On3DObjectsButtonPressed;
             _buttons[2].Pressed += OnLightsButtonPressed;
             _buttons[3].Pressed += OnTriggersButtonPressed;
+
+            foreach (var button in _buttons)
+            {
+                button.Init();
+                button.Hide();
+            }
         }
 
         public static void Update()
@@ -61,11 +69,19 @@ namespace Kotono.Engine.Interface
         private static void Show()
         {
             _backgroundBox.Show();
+            foreach (var button in _buttons)
+            {
+                button.Show();
+            }
         }
 
         private static void Hide()
         {
             _backgroundBox.Hide();
+            foreach (var button in _buttons)
+            {
+                button.Hide();
+            }
         }
 
         private static void On2DObjectsButtonPressed(object? sender, EventArgs e)

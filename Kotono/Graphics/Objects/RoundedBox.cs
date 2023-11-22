@@ -11,7 +11,7 @@ namespace Kotono.Graphics.Objects
     {
         private Rect _dest;
 
-        public Rect Dest 
+        public virtual Rect Dest 
         {
             get => _dest;
             set
@@ -27,46 +27,6 @@ namespace Kotono.Graphics.Objects
             set
             {
                 _dest.Position = value;
-                UpdateValues();
-            }
-        }
-
-        public float X
-        {
-            get => _dest.X;
-            set
-            {
-                _dest.X = value;
-                UpdateValues();
-            }
-        }
-
-        public float Y
-        {
-            get => _dest.Y;
-            set
-            {
-                _dest.Y = value;
-                UpdateValues();
-            }
-        }
-
-        public float W
-        {
-            get => _dest.W;
-            set 
-            {
-                _dest.W = value;
-                UpdateValues();
-            }
-        }
-
-        public float H
-        {
-            get => _dest.H;
-            set 
-            {
-                _dest.H = value;
                 UpdateValues();
             }
         }
@@ -116,7 +76,7 @@ namespace Kotono.Graphics.Objects
             ObjectManager.Create(this);
         }
 
-        public void Init()
+        public virtual void Init()
         {
 
         }
@@ -156,12 +116,12 @@ namespace Kotono.Graphics.Objects
             GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
         }
 
-        public void Show()
+        public virtual void Show()
         {
             IsDraw = true;
         }
 
-        public void Hide()
+        public virtual void Hide()
         {
             IsDraw = false;
         }

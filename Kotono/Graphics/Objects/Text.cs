@@ -243,6 +243,14 @@ namespace Kotono.Graphics.Objects
             }
         }
 
+        public void TransformTo(Rect dest)
+        {
+            foreach (var letter in _letters)
+            {
+                letter.TransformTo(dest);
+            }
+        }
+
         public void TransformTo(Rect dest, double time)
         {
             foreach (var letter in _letters)
