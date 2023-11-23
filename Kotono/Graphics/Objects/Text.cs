@@ -18,11 +18,21 @@ namespace Kotono.Graphics.Objects
 
         protected readonly List<Image> _letters = new();
 
-        public Rect Dest =>
-            Rect.FromAnchor(
+        public Rect Dest
+        {
+            get => Rect.FromAnchor(
                 new Rect(_lettersDest.X, _lettersDest.Y, _lettersDest.W * _text.Length, _lettersDest.H),
                 Anchor.TopLeft
             );
+            set
+            {
+                _lettersDest.Position = value.Position;
+                for (int i = 0; i < _letters.Count; i++)
+                {
+                    _letters[i].Dest = GetDest(i);
+                }
+            }
+        }
 
         public double Time { get; private set; }
 
@@ -149,55 +159,7 @@ namespace Kotono.Graphics.Objects
                     path = _paths[' '];
                 }
 
-                var dest = _anchor switch
-                {
-                    Anchor.Center => new Rect(
-                        _lettersDest.X - _lettersDest.W / 2 * (_text.Length - 1) * _spacing + _lettersDest.W * i * _spacing,
-                        _lettersDest.Y,
-                        _lettersDest.Size
-                    ),
-                    Anchor.Top => new Rect(
-                        _lettersDest.X - _lettersDest.W / 2 * (_text.Length - 1) * _spacing + _lettersDest.W * i * _spacing,
-                        _lettersDest.Y + _lettersDest.H / 2,
-                        _lettersDest.Size
-                    ),
-                    Anchor.Bottom => new Rect(
-                        _lettersDest.X - _lettersDest.W / 2 * (_text.Length - 1) * _spacing + _lettersDest.W * i * _spacing,
-                        _lettersDest.Y - _lettersDest.H / 2,
-                        _lettersDest.Size
-                    ),
-                    Anchor.Left => new Rect(
-                        _lettersDest.X + _lettersDest.W / 2 + _lettersDest.W * i * _spacing,
-                        _lettersDest.Y,
-                        _lettersDest.Size
-                    ),
-                    Anchor.Right => new Rect(
-                        _lettersDest.X - _lettersDest.W / 2 - _lettersDest.W * (_text.Length - 1 - i) * _spacing,
-                        _lettersDest.Y,
-                        _lettersDest.Size
-                    ),
-                    Anchor.TopLeft => new Rect(
-                        _lettersDest.X + _lettersDest.W / 2 + _lettersDest.W * i * _spacing,
-                        _lettersDest.Y + _lettersDest.H / 2,
-                        _lettersDest.Size
-                    ),
-                    Anchor.TopRight => new Rect(
-                        _lettersDest.X - _lettersDest.W / 2 - _lettersDest.W * (_text.Length - 1 - i) * _spacing,
-                        _lettersDest.Y + _lettersDest.H / 2,
-                        _lettersDest.Size
-                    ),
-                    Anchor.BottomLeft => new Rect(
-                        _lettersDest.X + _lettersDest.W / 2 + _lettersDest.W * i * _spacing,
-                        _lettersDest.Y - _lettersDest.H / 2,
-                        _lettersDest.Size
-                    ),
-                    Anchor.BottomRight => new Rect(
-                        _lettersDest.X - _lettersDest.W / 2 - _lettersDest.W * (_text.Length - 1 - i) * _spacing,
-                        _lettersDest.Y - _lettersDest.H / 2,
-                        _lettersDest.Size
-                    ),
-                    _ => throw new Exception($"error: Text.Init()'s switch on Anchor doesn't handle \"{_anchor}\""),
-                };
+                var dest = GetDest(i);
 
                 _letters.Add(new Image(
                     new ImageSettings
@@ -209,6 +171,59 @@ namespace Kotono.Graphics.Objects
                     }
                 ));
             }
+        }
+
+        public Rect GetDest(int index)
+        {
+            return _anchor switch
+            {
+                Anchor.Center => new Rect(
+                    _lettersDest.X - _lettersDest.W / 2 * (_text.Length - 1) * _spacing + _lettersDest.W * index * _spacing,
+                    _lettersDest.Y,
+                    _lettersDest.Size
+                ),
+                Anchor.Top => new Rect(
+                    _lettersDest.X - _lettersDest.W / 2 * (_text.Length - 1) * _spacing + _lettersDest.W * index * _spacing,
+                    _lettersDest.Y + _lettersDest.H / 2,
+                    _lettersDest.Size
+                ),
+                Anchor.Bottom => new Rect(
+                    _lettersDest.X - _lettersDest.W / 2 * (_text.Length - 1) * _spacing + _lettersDest.W * index * _spacing,
+                    _lettersDest.Y - _lettersDest.H / 2,
+                    _lettersDest.Size
+                ),
+                Anchor.Left => new Rect(
+                    _lettersDest.X + _lettersDest.W / 2 + _lettersDest.W * index * _spacing,
+                    _lettersDest.Y,
+                    _lettersDest.Size
+                ),
+                Anchor.Right => new Rect(
+                    _lettersDest.X - _lettersDest.W / 2 - _lettersDest.W * (_text.Length - 1 - index) * _spacing,
+                    _lettersDest.Y,
+                    _lettersDest.Size
+                ),
+                Anchor.TopLeft => new Rect(
+                    _lettersDest.X + _lettersDest.W / 2 + _lettersDest.W * index * _spacing,
+                    _lettersDest.Y + _lettersDest.H / 2,
+                    _lettersDest.Size
+                ),
+                Anchor.TopRight => new Rect(
+                    _lettersDest.X - _lettersDest.W / 2 - _lettersDest.W * (_text.Length - 1 - index) * _spacing,
+                    _lettersDest.Y + _lettersDest.H / 2,
+                    _lettersDest.Size
+                ),
+                Anchor.BottomLeft => new Rect(
+                    _lettersDest.X + _lettersDest.W / 2 + _lettersDest.W * index * _spacing,
+                    _lettersDest.Y - _lettersDest.H / 2,
+                    _lettersDest.Size
+                ),
+                Anchor.BottomRight => new Rect(
+                    _lettersDest.X - _lettersDest.W / 2 - _lettersDest.W * (_text.Length - 1 - index) * _spacing,
+                    _lettersDest.Y - _lettersDest.H / 2,
+                    _lettersDest.Size
+                ),
+                _ => throw new Exception($"error: Text.Init()'s switch on Anchor doesn't handle \"{_anchor}\""),
+            };
         }
 
         public void Update()

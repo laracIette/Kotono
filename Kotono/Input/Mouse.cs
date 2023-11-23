@@ -124,8 +124,8 @@ namespace Kotono.Input
                 var center = new Point(KT.Dest.X + KT.Dest.W / 2, KT.Dest.Y + KT.Dest.H / 2);
                 if (Position != center)
                 {
-                    SetCursorPos(center);
-                    Position = center;
+                    //SetCursorPos(center);
+                    //Position = center;
                 }
             }
         }

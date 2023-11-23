@@ -12,7 +12,10 @@ namespace Kotono.Graphics.Objects
             set
             {
                 base.Dest = value;
-                _text?.TransformTo(value);
+                if (_text != null)
+                {
+                    _text.Dest = value;
+                }
             }
         }
 
