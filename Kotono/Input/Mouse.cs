@@ -46,13 +46,15 @@ namespace Kotono.Input
         }
 
 
-        public static Point Position { get; private set; } = new();
+        public static Point PositionFromOrigin { get; private set; } = new();
 
-        public static Point PreviousPosition { get; private set; } = new();
+        public static Point PreviousPositionFromOrigin { get; private set; } = new();
 
         public static Point Delta { get; private set; } = new();
 
-        public static Point RelativePosition => Position - KT.Position;
+        public static Point Position => PositionFromOrigin - KT.Position;
+
+        public static Point PreviousPosition => PreviousPositionFromOrigin - KT.Position;
 
         public static Vector Ray { get; private set; } = Vector.Zero;
 
@@ -81,38 +83,38 @@ namespace Kotono.Input
                 CursorState = CursorState.Centered;
             }
 
-            PreviousPosition = Position;
-            Position = GetCursorPos();
+            PreviousPositionFromOrigin = PositionFromOrigin;
+            PositionFromOrigin = GetCursorPos();
 
             if (CursorState == CursorState.Confined)
             {
                 var delta = Point.Zero;
-                if (RelativePosition.X < 0)
+                if (Position.X < 0)
                 {
                     delta.X += KT.Dest.W;
                 }
-                else if (RelativePosition.X > KT.Dest.W)
+                else if (Position.X > KT.Dest.W)
                 {
                     delta.X -= KT.Dest.W;
                 }
-                if (RelativePosition.Y < 0)
+                if (Position.Y < 0)
                 {
                     delta.Y += KT.Dest.H;
                 }
-                else if (RelativePosition.Y > KT.Dest.H)
+                else if (Position.Y > KT.Dest.H)
                 {
                     delta.Y -= KT.Dest.H;
                 }
 
                 if (delta != Point.Zero)
                 {
-                    PreviousPosition += delta;
-                    Position += delta;
-                    SetCursorPos(Position);
+                    PreviousPositionFromOrigin += delta;
+                    PositionFromOrigin += delta;
+                    SetCursorPos(PositionFromOrigin);
                 }
             }
 
-            Delta = Position - PreviousPosition;
+            Delta = PositionFromOrigin - PreviousPositionFromOrigin;
 
             if (Delta != Point.Zero)
             {
@@ -122,7 +124,7 @@ namespace Kotono.Input
             if (CursorState == CursorState.Centered)
             {
                 var center = new Point(KT.Dest.X + KT.Dest.W / 2, KT.Dest.Y + KT.Dest.H / 2);
-                if (Position != center)
+                if (PositionFromOrigin != center)
                 {
                     //SetCursorPos(center);
                     //Position = center;
@@ -132,7 +134,7 @@ namespace Kotono.Input
 
         private static void UpdateRay()
         {
-            var mouse = (Position - KT.Position).WorldSpace;
+            var mouse = (PositionFromOrigin - KT.Position).WorldSpace;
 
             Vector4 rayClip = new Vector4(mouse.X, mouse.Y, -1.0f, 1.0f);
             Vector4 rayView = Matrix4.Invert(CameraManager.ActiveCamera.ProjectionMatrix) * rayClip;

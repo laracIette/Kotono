@@ -17,7 +17,7 @@ namespace Kotono.Graphics.Objects
         {
             base.Update();
 
-            if (IsDraw && Mouse.IsButtonPressed(MouseButton.Left) && Rect.Overlaps(Dest, Mouse.RelativePosition))
+            if (IsDraw && Mouse.IsButtonPressed(MouseButton.Left) && Rect.Overlaps(Dest, Mouse.Position))
             {
                 OnPressed();
             }

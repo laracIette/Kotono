@@ -59,7 +59,7 @@ namespace Kotono.Graphics.Objects
 
         public bool IsDraw { get; private set; } = true;
 
-        public int Layer { get; set; } = 0;
+        public int Layer { get; set; }
         
         protected virtual Matrix4 Model =>
             Matrix4.CreateScale((Dest + new Rect(w: FallOff * 2)).WorldSpace.W, (Dest + new Rect(h: FallOff * 2)).WorldSpace.H, 1.0f)

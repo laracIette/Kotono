@@ -8,7 +8,7 @@ namespace Kotono.Engine.Interface
 {
     public static class AddMenu
     {
-        private static readonly RoundedBox _backgroundBox = new(new Rect(0, 0, 300, 300), Color.DarkGray, 0, 5, 30);
+        private static readonly RoundedBox _backgroundBox = new(new Rect(0, 0, 300, 300), Color.DarkGray, 0, 2, 30);
 
         private static readonly TextButton[] _buttons =
         {
@@ -53,13 +53,13 @@ namespace Kotono.Engine.Interface
         {
             if (Keyboard.IsKeyPressed(Keys.A) && Keyboard.IsKeyDown(Keys.LeftShift))
             {
-                Position = Mouse.RelativePosition;
+                Position = Mouse.Position;
                 Show();
             }
 
             if (IsDraw)
             {
-                if (Mouse.IsButtonPressed(MouseButton.Left) && !Rect.Overlaps(_backgroundBox.Dest, Mouse.RelativePosition))
+                if (Mouse.IsButtonPressed(MouseButton.Left) && !Rect.Overlaps(_backgroundBox.Dest, Mouse.Position))
                 {
                     Hide();
                 }

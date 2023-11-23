@@ -143,7 +143,7 @@ namespace Kotono.Graphics.Objects
 
         public bool IsMouseOn()
         {
-            return Rect.Overlaps(Dest, Mouse.RelativePosition);
+            return Rect.Overlaps(Dest, Mouse.Position);
         }
 
         public void Show()
