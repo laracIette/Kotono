@@ -46,11 +46,11 @@ namespace Kotono.Input
         }
 
 
-        public static Point PositionFromOrigin { get; private set; } = new();
+        public static Point PositionFromOrigin { get; private set; } = Point.Zero;
 
-        public static Point PreviousPositionFromOrigin { get; private set; } = new();
+        public static Point PreviousPositionFromOrigin { get; private set; } = Point.Zero;
 
-        public static Point Delta { get; private set; } = new();
+        public static Point Delta { get; private set; } = Point.Zero;
 
         public static Point Position => PositionFromOrigin - KT.Position;
 
@@ -126,8 +126,8 @@ namespace Kotono.Input
                 var center = new Point(KT.Dest.X + KT.Dest.W / 2, KT.Dest.Y + KT.Dest.H / 2);
                 if (PositionFromOrigin != center)
                 {
-                    //SetCursorPos(center);
-                    //Position = center;
+                    SetCursorPos(center);
+                    PositionFromOrigin = center;
                 }
             }
         }

@@ -21,13 +21,13 @@ namespace Kotono.Utils
 
         public static Point UnitY => new Point(0, 1);
 
-        public const int SizeInBytes = sizeof(float) * 2;
-
         public readonly Point WorldSpace =>
             new Point(
                 2 * X / KT.ActiveViewport.W - 1,
                 1 - 2 * Y / KT.ActiveViewport.H
             );
+
+        public const int SizeInBytes = sizeof(float) * 2;
 
         public Point()
         {

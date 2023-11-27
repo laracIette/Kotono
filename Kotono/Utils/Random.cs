@@ -25,7 +25,6 @@
             return (float)Double(min, max);
         }
 
-
         /// <returns>A Vector with all values between min and max.</returns>
         public static Vector Vector(float min, float max)
         {
@@ -36,7 +35,6 @@
             );
         }
 
-
         /// <returns>A Vector with the X value between minX and maxX, the Y value between minY and maxY and the Z value between minZ and maxZ.</returns>
         public static Vector Vector(float minX, float maxX, float minY, float maxY, float minZ, float maxZ)
         {
@@ -46,6 +44,21 @@
                 Float(minZ, maxZ)
             );
         }
-        
+
+        /// <returns>A Color with all values apart from A between min and max.</returns>
+        public static Color Color(float min, float max)
+        {
+            return new Color(
+                Float(min, max),
+                Float(min, max),
+                Float(min, max)
+            );
+        }
+
+        /// <returns>A Color with all values apart from A between 0 and 1.</returns>
+        public static Color Color()
+        {
+            return Color(0, 1);
+        }
     }
 }

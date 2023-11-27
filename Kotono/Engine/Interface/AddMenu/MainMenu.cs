@@ -1,21 +1,22 @@
-﻿using Kotono.Graphics.Objects;
+﻿using Kotono.Engine.Interface.AddMenu.MainButtons;
+using Kotono.Graphics.Objects;
 using Kotono.Input;
 using Kotono.Utils;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
 
-namespace Kotono.Engine.Interface
+namespace Kotono.Engine.Interface.AddMenu
 {
-    public static class AddMenu
+    public static class MainMenu
     {
         private static readonly RoundedBox _backgroundBox = new(new Rect(0, 0, 300, 300), Color.DarkGray, 0, 2, 30);
 
-        private static readonly TextButton[] _buttons =
+        private static readonly MainButton[] _buttons =
         {
-            new(Rect.FromAnchor(new Rect(0, 0, 140, 140), Anchor.BottomRight), Color.Gray, 1, 2, 25, "2D Objects"),
-            new(Rect.FromAnchor(new Rect(0, 0, 140, 140), Anchor.BottomLeft),  Color.Gray, 1, 2, 25, "3D Objects"), 
-            new(Rect.FromAnchor(new Rect(0, 0, 140, 140), Anchor.TopRight),    Color.Gray, 1, 2, 25, "Lights"), 
-            new(Rect.FromAnchor(new Rect(0, 0, 140, 140), Anchor.TopLeft),     Color.Gray, 1, 2, 25, "Triggers")  
+            new Objects2DButton(),
+            new Objects3DButton(),
+            new LightsButton(),
+            new TriggersButton()
         };
 
         public static bool IsDraw => _backgroundBox.IsDraw;
@@ -36,11 +37,6 @@ namespace Kotono.Engine.Interface
         public static void Init()
         {
             _backgroundBox.Hide();
-
-            _buttons[0].Pressed += On2DObjectsButtonPressed;
-            _buttons[1].Pressed += On3DObjectsButtonPressed;
-            _buttons[2].Pressed += OnLightsButtonPressed;
-            _buttons[3].Pressed += OnTriggersButtonPressed;
 
             foreach (var button in _buttons)
             {
@@ -82,26 +78,6 @@ namespace Kotono.Engine.Interface
             {
                 button.Hide();
             }
-        }
-
-        private static void On2DObjectsButtonPressed(object? sender, EventArgs e)
-        {
-            KT.Print("2dobjects");
-        }
-
-        private static void On3DObjectsButtonPressed(object? sender, EventArgs e)
-        {
-            KT.Print("3dobjects");
-        }
-
-        private static void OnLightsButtonPressed(object? sender, EventArgs e)
-        {
-            KT.Print("lights");
-        }
-
-        private static void OnTriggersButtonPressed(object? sender, EventArgs e)
-        {
-            KT.Print("triggers");
         }
     }
 }

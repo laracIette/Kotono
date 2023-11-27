@@ -93,6 +93,7 @@ namespace Kotono.Graphics.Objects
 
         public void Draw()
         {
+            // TODO: useless ?
             var model =
                 Matrix4.CreateScale((Vector3)Scale)
                 * Matrix4.CreateRotationX(Rotation.X)

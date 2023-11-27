@@ -4,7 +4,7 @@ namespace Kotono.Graphics.Objects
 {
     public class TextButton : Button
     {
-        private readonly Text _text;
+        protected readonly Text _text;
 
         public override Rect Dest
         {

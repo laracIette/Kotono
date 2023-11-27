@@ -18,10 +18,7 @@ namespace Kotono.Graphics.Objects
 
         protected readonly List<Image> _letters = new();
 
-        public Rect Dest => Rect.FromAnchor(
-            new Rect(_lettersDest.X, _lettersDest.Y, _lettersDest.W * _text.Length, _lettersDest.H),
-            Anchor.TopLeft
-        );
+        public Rect Dest => new Rect(_lettersDest.X, _lettersDest.Y, _lettersDest.W * _text.Length, _lettersDest.H);
 
         public Rect LettersDest => _lettersDest;
 
@@ -51,6 +48,8 @@ namespace Kotono.Graphics.Objects
         public bool IsSelected { get; }
 
         public bool IsActive { get; }
+
+        public bool IsMouseOn => Rect.Overlaps(Dest, Mouse.Position);
 
         public static void InitPaths()
         {
@@ -219,7 +218,10 @@ namespace Kotono.Graphics.Objects
 
         public void Update()
         {
-
+            if (IsMouseOn)
+            {
+                KT.Print(_text);
+            }
         }
 
         public virtual void SetText(string text)
@@ -274,11 +276,6 @@ namespace Kotono.Graphics.Objects
             _letters.Clear();
         }
 
-        public bool IsMouseOn()
-        {
-            return Rect.Overlaps(Dest, Mouse.Position);
-        }
-
         public void Show()
         {
             IsDraw = true;
@@ -295,6 +292,11 @@ namespace Kotono.Graphics.Objects
             {
                 letter.Hide();
             }
+        }
+
+        public override string ToString()
+        {
+            return _text;
         }
     }
 }

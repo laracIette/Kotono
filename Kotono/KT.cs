@@ -1,6 +1,6 @@
 ﻿using Kotono.Audio;
 using Kotono.Engine;
-using Kotono.Engine.Interface;
+using Kotono.Engine.Interface.AddMenu;
 using Kotono.Graphics;
 using Kotono.Graphics.Objects;
 using Kotono.Graphics.Objects.Managers;
@@ -64,7 +64,7 @@ namespace Kotono
 
         public static void Print(object? obj)
         {
-            Print(obj, Color.White);
+            Print(obj, Random.Color());
         }
 
         public static void Print()
@@ -108,7 +108,7 @@ namespace Kotono
             Fizix.Init();
             _mode.Init();
             SoundManager.Init();
-            AddMenu.Init();
+            MainMenu.Init();
         }
 
         public static void Update()
@@ -123,7 +123,7 @@ namespace Kotono
             CameraManager.Update();
             PerformanceWindow.Update();
             _mode.Update();
-            AddMenu.Update();
+            MainMenu.Update();
         }
 
         public static void RenderFrame()

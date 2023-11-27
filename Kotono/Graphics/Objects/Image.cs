@@ -80,7 +80,7 @@ namespace Kotono.Graphics.Objects
             Color = settings.Color;
             Layer = settings.Layer;
 
-            _transformation = new Rect();
+            _transformation = Rect.Zero;
 
             _texture = TextureManager.LoadTexture(Path);
 
