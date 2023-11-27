@@ -109,11 +109,6 @@ namespace Kotono.Graphics.Objects.Managers
             _spotLightManager.Delete(spotLight);
         }
 
-        internal static int GetSpotLightsCount()
-        {
-            return _spotLightManager.GetCount();
-        }
-
         #endregion SpotLight
 
         #region Triangle

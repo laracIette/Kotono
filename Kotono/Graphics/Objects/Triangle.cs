@@ -70,6 +70,8 @@ namespace Kotono.Graphics.Objects
             Vertex3 = vertex3;
             _transform = transform;
             Color = color;
+
+            ObjectManager.Create(this);
         }
 
         public void Init()
