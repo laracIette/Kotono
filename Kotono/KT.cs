@@ -20,9 +20,7 @@ namespace Kotono
 
         #region Viewport
 
-        public static readonly Viewport _viewport = new();
-
-        public static Viewport ActiveViewport => _viewport;
+        internal static Viewport ActiveViewport { get; } = new();
 
         #endregion Viewport
 
@@ -76,11 +74,9 @@ namespace Kotono
 
         #region PerformanceWindow
 
-        private static readonly Performance.Window _performanceWindow = new();
+        internal static Performance.Window PerformanceWindow { get; } = new();
 
-        public static Performance.Window PerformanceWindow => _performanceWindow;
-
-        public static int MaxFrameRate { get; set; } = 60;
+        internal static int MaxFrameRate { get; set; } = 60;
 
         #endregion PerformanceWindow
 
@@ -99,8 +95,8 @@ namespace Kotono
             Keyboard.Init(keyboardState);
             ShaderManager.Init();
             SquareVertices.Init();
-            Gizmo.Init();
             Text.InitPaths();
+            Gizmo.Init();
             ObjectManager.Init();
             Printer.Init();
             PerformanceWindow.Init();
