@@ -100,8 +100,8 @@ namespace Kotono
             ShaderManager.Init();
             SquareVertices.Init();
             Gizmo.Init();
-            ObjectManager.Init();
             Text.InitPaths();
+            ObjectManager.Init();
             Printer.Init();
             PerformanceWindow.Init();
             _componentManager.Init();

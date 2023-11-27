@@ -185,7 +185,7 @@ namespace Kotono.Graphics.Objects
         {
             foreach (var frame in _frames)
             {
-                ObjectManager.Delete(frame);
+                frame.Delete();
             }
             _frames.Clear();
         }

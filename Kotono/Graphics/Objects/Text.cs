@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace Kotono.Graphics.Objects
 {
-    public class Text : ISelectable
+    public class Text : IObject2D, ISelectable
     {
         protected string _text;
 
@@ -18,11 +18,15 @@ namespace Kotono.Graphics.Objects
 
         protected readonly List<Image> _letters = new();
 
-        public Rect Dest => new Rect(_lettersDest.X, _lettersDest.Y, _lettersDest.W * _text.Length, _lettersDest.H);
+        public Rect Dest
+        {
+            get => new Rect(_lettersDest.X, _lettersDest.Y, _lettersDest.W * _text.Length, _lettersDest.H);
+            set { }
+        }
 
         public Rect LettersDest => _lettersDest;
 
-        public double Time { get; private set; }
+        public double StartTime { get; private set; }
 
         private readonly static Dictionary<char, string> _paths = new();
 
@@ -136,11 +140,15 @@ namespace Kotono.Graphics.Objects
             Color = color;
             _spacing = spacing;
             Layer = layer;
+
+            ObjectManager.Create(this);
         }
 
         public void Init()
         {
-            Time = Utils.Time.NowS;
+            Clear();
+
+            StartTime = Time.NowS;
 
             for (int i = 0; i < _text.Length; i++)
             {
@@ -154,9 +162,9 @@ namespace Kotono.Graphics.Objects
                 _letters.Add(new Image(
                     new ImageSettings
                     {
-                        Path = path, 
-                        Dest = dest, 
-                        Color = Color, 
+                        Path = path,
+                        Dest = dest,
+                        Color = Color,
                         Layer = Layer
                     }
                 ));
@@ -229,7 +237,6 @@ namespace Kotono.Graphics.Objects
             if (IsDraw && (text != _text))
             {
                 _text = text;
-                Clear();
                 Init();
             }
         }
@@ -271,7 +278,7 @@ namespace Kotono.Graphics.Objects
         {
             foreach (var letter in _letters)
             {
-                ObjectManager.Delete(letter);
+                letter.Delete();
             }
             _letters.Clear();
         }
@@ -294,9 +301,34 @@ namespace Kotono.Graphics.Objects
             }
         }
 
+        public void UpdateShaders()
+        {
+
+        }
+
+        public void Draw()
+        {
+
+        }
+
+        public void Save()
+        {
+
+        }
+
         public override string ToString()
         {
             return _text;
+        }
+
+        public void Delete()
+        {
+            ObjectManager.Delete(this);
+        }
+
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
         }
     }
 }

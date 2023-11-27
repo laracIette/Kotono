@@ -24,9 +24,10 @@ namespace Kotono.Graphics.Objects.Managers
 
         internal virtual void Init()
         {
-            foreach (var drawable in _drawables)
+            // List can change during IDrawable.Init() calls
+            for (int i = 0; i < _drawables.Count; i++)
             {
-                drawable.Init();
+                _drawables[i].Init();
             }
         }
 

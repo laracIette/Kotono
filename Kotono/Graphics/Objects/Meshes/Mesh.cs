@@ -343,7 +343,7 @@ namespace Kotono.Graphics.Objects.Meshes
         {
             foreach (var hitbox in _hitboxes)
             {
-                ObjectManager.Delete(hitbox);
+                hitbox.Delete();
             }
             
             GC.SuppressFinalize(this);
