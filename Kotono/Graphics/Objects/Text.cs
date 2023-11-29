@@ -11,21 +11,36 @@ namespace Kotono.Graphics.Objects
     {
         protected string _text;
 
-        protected Rect _lettersDest;
-
         protected Anchor _anchor;
 
         protected float _spacing;
 
         protected readonly List<Image> _letters = new();
 
+        public Rect LettersDest;
+
+        private readonly RoundedBorder _roundedBorder;
+
         public Rect Dest
         {
-            get => new Rect(_lettersDest.X, _lettersDest.Y, _lettersDest.W * _text.Length, _lettersDest.H);
-            set { }
-        }
+            get => new Rect(LettersDest.X, LettersDest.Y, LettersDest.W * _text.Length * _spacing, LettersDest.H);
+            set 
+            { 
+                LettersDest = value;
+                /// Don't divide by 0
+                //LettersDest.W /= Math.Max(1, _text.Length);
 
-        public Rect LettersDest => _lettersDest;
+                for (int i = 0; i < _letters.Count; i++)
+                {
+                    _letters[i].Dest = GetLetterDest(i, value);
+                }
+
+                if (_roundedBorder != null)
+                {
+                    _roundedBorder.Dest = Dest;
+                }
+            }
+        }
 
         public double StartTime { get; private set; }
 
@@ -136,11 +151,13 @@ namespace Kotono.Graphics.Objects
         public Text(string text, Rect lettersDest, Anchor position, Color color, float spacing, int layer)
         {
             _text = text;
-            _lettersDest = lettersDest;
+            Dest = lettersDest;
             _anchor = position;
             Color = color;
             _spacing = spacing;
             Layer = layer;
+
+            _roundedBorder = new RoundedBorder(Dest, Color.Red, 2, 0, 0, 1);
 
             ObjectManager.Create(this);
         }
@@ -155,7 +172,7 @@ namespace Kotono.Graphics.Objects
             {
                 string path = _paths.TryGetValue(_text[i], out string? tempPath) ? tempPath : _paths[' '];
 
-                var dest = GetLetterDest(i, _lettersDest);
+                var dest = GetLetterDest(i, LettersDest);
 
                 _letters.Add(new Image(
                     new ImageSettings
@@ -241,7 +258,7 @@ namespace Kotono.Graphics.Objects
 
         public void Transform(Rect dest)
         {
-            _lettersDest += dest;
+            LettersDest += dest;
             foreach (var letter in _letters)
             {
                 letter.Transform(dest);
@@ -253,22 +270,6 @@ namespace Kotono.Graphics.Objects
             foreach (var letter in _letters)
             {
                 letter.Transform(dest, time);
-            }
-        }
-
-        public void TransformTo(Rect dest)
-        {
-            for (int i = 0; i < _letters.Count; i++)
-            {
-                _letters[i].TransformTo(GetLetterDest(i, dest));
-            }
-        }
-
-        public void TransformTo(Rect dest, double time)
-        {
-            for (int i = 0; i < _letters.Count; i++)
-            {
-                _letters[i].TransformTo(GetLetterDest(i, dest), time);
             }
         }
 

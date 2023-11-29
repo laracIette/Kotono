@@ -2,6 +2,7 @@
 using Kotono.File;
 using Kotono.Graphics.Objects.Hitboxes;
 using Kotono.Graphics.Objects.Managers;
+using Kotono.Graphics.Objects.Shapes;
 using Kotono.Graphics.Shaders;
 using Kotono.Input;
 using Kotono.Physics;
@@ -151,10 +152,12 @@ namespace Kotono.Graphics.Objects.Meshes
 
                     foreach (var face in scene.Meshes[0].Faces)
                     {
-                        triangles.Add(new Triangle(
-                            (Vector)scene.Meshes[0].Vertices[face.Indices[0]],
-                            (Vector)scene.Meshes[0].Vertices[face.Indices[1]],
-                            (Vector)scene.Meshes[0].Vertices[face.Indices[2]],
+                        triangles.Add(new Triangle(new Vector[]
+                            {
+                                (Vector)scene.Meshes[0].Vertices[face.Indices[0]],
+                                (Vector)scene.Meshes[0].Vertices[face.Indices[1]],
+                                (Vector)scene.Meshes[0].Vertices[face.Indices[2]]
+                            },
                             new Transform(),
                             Color.White
                         ));
@@ -345,7 +348,7 @@ namespace Kotono.Graphics.Objects.Meshes
             {
                 hitbox.Delete();
             }
-            
+
             GC.SuppressFinalize(this);
         }
     }

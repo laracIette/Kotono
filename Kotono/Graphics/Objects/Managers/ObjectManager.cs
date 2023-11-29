@@ -1,6 +1,7 @@
 ﻿using Kotono.Graphics.Objects.Hitboxes;
 using Kotono.Graphics.Objects.Lights;
 using Kotono.Graphics.Objects.Meshes;
+using Kotono.Graphics.Objects.Shapes;
 
 namespace Kotono.Graphics.Objects.Managers
 {

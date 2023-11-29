@@ -16,17 +16,17 @@ namespace Kotono.Graphics.Print
         {   
             _text = text;
 
-            _lettersDest = _dest;
+            Dest = _dest;
             Init();
         }
 
         public void Lower()
         {
-            _lettersDest.Y += _lettersDest.H;
+            LettersDest.Y += LettersDest.H;
 
             foreach (var letter in _letters)
             {
-                letter.Y = _lettersDest.Y + _lettersDest.H / 2;
+                letter.Y = LettersDest.Y + LettersDest.H / 2;
             }
         }
     }

@@ -131,16 +131,6 @@ namespace Kotono.Graphics.Objects
             _endTime = _startTime + time;
         }
 
-        public void TransformTo(Rect dest)
-        {
-            Transform(dest - Dest);
-        }
-
-        public void TransformTo(Rect dest, double time)
-        {
-            Transform(dest - Dest, time);
-        }
-
         public bool IsMouseOn()
         {
             return Rect.Overlaps(Dest, Mouse.Position);
