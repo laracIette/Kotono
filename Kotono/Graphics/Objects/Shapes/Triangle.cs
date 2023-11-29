@@ -136,30 +136,8 @@ namespace Kotono.Graphics.Objects.Shapes
 
         public Vector this[int index]
         {
-            get => index switch
-            {
-                0 => Vertices[0],
-                1 => Vertices[1],
-                2 => Vertices[2],
-                _ => throw new IndexOutOfRangeException("You tried to access this Triangle at index: " + index)
-            };
-            set
-            {
-                switch (index)
-                {
-                    case 0:
-                        Vertices[0] = value;
-                        break;
-                    case 1:
-                        Vertices[1] = value;
-                        break;
-                    case 2:
-                        Vertices[2] = value;
-                        break;
-                    default:
-                        throw new IndexOutOfRangeException("You tried to set this Triangle at index: " + index);
-                }
-            }
+            get => Vertices[index];
+            set => Vertices[index] = value;
         }
 
         public void Save()
