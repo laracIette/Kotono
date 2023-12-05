@@ -15,9 +15,8 @@ namespace Kotono.Graphics.Print
         public override void SetText(string text)
         {   
             _text = text;
-            Clear();
 
-            _lettersDest = _dest;
+            Position = _dest.Position;
             Init();
         }
 

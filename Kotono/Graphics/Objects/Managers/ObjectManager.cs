@@ -1,6 +1,7 @@
 ﻿using Kotono.Graphics.Objects.Hitboxes;
 using Kotono.Graphics.Objects.Lights;
 using Kotono.Graphics.Objects.Meshes;
+using Kotono.Graphics.Objects.Shapes;
 
 namespace Kotono.Graphics.Objects.Managers
 {
@@ -16,7 +17,7 @@ namespace Kotono.Graphics.Objects.Managers
 
         private static readonly SpotLightManager _spotLightManager = new();
 
-        private static readonly TriangleManager _triangleManager = new();
+        private static readonly ShapeManager _shapeManager = new();
 
         private static readonly Object2DManager _object2DManager = new();
 
@@ -109,26 +110,21 @@ namespace Kotono.Graphics.Objects.Managers
             _spotLightManager.Delete(spotLight);
         }
 
-        internal static int GetSpotLightsCount()
-        {
-            return _spotLightManager.GetCount();
-        }
-
         #endregion SpotLight
 
-        #region Triangle
+        #region Shape
 
-        internal static void Create(Triangle triangle)
+        internal static void Create(IShape shape)
         {
-            _triangleManager.Create(triangle);
+            _shapeManager.Create(shape);
         }
 
-        internal static void Delete(Triangle triangle)
+        internal static void Delete(IShape shape)
         {
-            _triangleManager.Delete(triangle);
+            _shapeManager.Delete(shape);
         }
 
-        #endregion Triangle
+        #endregion Shape
 
         internal static void Init()
         {
@@ -137,7 +133,7 @@ namespace Kotono.Graphics.Objects.Managers
             _hitboxManager.Init();
             _pointLightManager.Init();
             _spotLightManager.Init();
-            _triangleManager.Init();
+            _shapeManager.Init();
             _object2DManager.Init();
             //_viewport.Init();
         }
@@ -149,7 +145,7 @@ namespace Kotono.Graphics.Objects.Managers
             _hitboxManager.Update();
             _pointLightManager.Update();
             _spotLightManager.Update();
-            _triangleManager.Update();
+            _shapeManager.Update();
             _object2DManager.Update();
         }
 
@@ -160,7 +156,7 @@ namespace Kotono.Graphics.Objects.Managers
             _hitboxManager.UpdateShaders();
             _pointLightManager.UpdateShaders();
             _spotLightManager.UpdateShaders();
-            _triangleManager.UpdateShaders();
+            _shapeManager.UpdateShaders();
             _object2DManager.UpdateShaders();
         }
 
@@ -171,7 +167,7 @@ namespace Kotono.Graphics.Objects.Managers
             _hitboxManager.Draw();
             _pointLightManager.Draw();
             _spotLightManager.Draw();
-            _triangleManager.Draw();
+            _shapeManager.Draw();
             _meshManager.Draw();
             _frontMeshManager.Draw();
             _object2DManager.Draw();
@@ -184,7 +180,7 @@ namespace Kotono.Graphics.Objects.Managers
             _hitboxManager.Save();
             _pointLightManager.Save();
             _spotLightManager.Save();
-            _triangleManager.Save();
+            _shapeManager.Save();
             _object2DManager.Save();
         }
     }

@@ -102,7 +102,7 @@ namespace Kotono.Graphics.Objects.Lights
 
         public void Dispose()
         {
-            ObjectManager.Delete(_mesh);
+            _mesh.Delete();
 
             Count--;
 

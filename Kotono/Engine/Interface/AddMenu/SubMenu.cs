@@ -17,7 +17,7 @@ namespace Kotono.Engine.Interface.AddMenu
             {
                 for (int i = 0; i < _options.Count; i++)
                 {
-                    _options[i].TransformTo(GetTextDest(i, value));
+                    _options[i].Position = GetTextDest(i, value).Position;
                 }
             }
         }

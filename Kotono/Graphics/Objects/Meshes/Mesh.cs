@@ -2,6 +2,7 @@
 using Kotono.File;
 using Kotono.Graphics.Objects.Hitboxes;
 using Kotono.Graphics.Objects.Managers;
+using Kotono.Graphics.Objects.Shapes;
 using Kotono.Graphics.Shaders;
 using Kotono.Input;
 using Kotono.Physics;
@@ -50,7 +51,7 @@ namespace Kotono.Graphics.Objects.Meshes
 
         public Triangle[] Triangles => _meshSettings.Triangles;
 
-        public int[] Textures { get; }
+        private readonly Texture[] _textures;
 
         private Transform _transform;
 
@@ -108,13 +109,13 @@ namespace Kotono.Graphics.Objects.Meshes
 
             if (textureKeys.Count > 32)
             {
-                throw new Exception($"error: maximum number of textures for a Mesh is 32");
+                throw new Exception($"error: maximum number of Texture for a Mesh is 32");
             }
 
-            Textures = new int[textureKeys.Count];
+            _textures = new Texture[textureKeys.Count];
             for (int i = 0; i < textureKeys.Count; i++)
             {
-                Textures[i] = TextureManager.LoadTexture(_properties.Strings[textureKeys[i]]);
+                _textures[i] = Texture.Load(_properties.Strings[textureKeys[i]], TextureUnit.Texture0 + i);
             }
 
             _shader = _properties.Strings["Shader"] switch
@@ -281,9 +282,9 @@ namespace Kotono.Graphics.Objects.Meshes
 
         public virtual void Draw()
         {
-            for (int i = 0; i < Textures.Length; i++)
+            foreach (var texture in _textures)
             {
-                TextureManager.UseTexture(Textures[i], TextureUnit.Texture0 + i);
+                texture.Use();
             }
 
             _shader.SetMatrix4("model", Model);
@@ -343,9 +344,9 @@ namespace Kotono.Graphics.Objects.Meshes
         {
             foreach (var hitbox in _hitboxes)
             {
-                ObjectManager.Delete(hitbox);
+                hitbox.Delete();
             }
-            
+
             GC.SuppressFinalize(this);
         }
     }

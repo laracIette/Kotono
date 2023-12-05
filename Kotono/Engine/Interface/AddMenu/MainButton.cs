@@ -45,10 +45,10 @@ namespace Kotono.Engine.Interface.AddMenu
             _subMenu.Show();
             _subMenu.Position = _anchor switch
             {
-                Anchor.TopLeft => new Point(Dest.X + Dest.W, Dest.Y),
-                Anchor.TopRight => new Point(Dest.X - Dest.W, Dest.Y),
-                Anchor.BottomLeft => new Point(Dest.X + Dest.W, Dest.Y),
-                Anchor.BottomRight => new Point(Dest.X - Dest.W, Dest.Y),
+                Anchor.TopLeft => new Point(Dest.X + Dest.W / 2, Dest.Y - Dest.H / 2),
+                Anchor.TopRight => new Point(Dest.X - Dest.W / 2, Dest.Y - Dest.H / 2),
+                Anchor.BottomLeft => new Point(Dest.X + Dest.W / 2, Dest.Y + Dest.H / 2),
+                Anchor.BottomRight => new Point(Dest.X - Dest.W / 2, Dest.Y + Dest.H / 2),
                 _ => throw new Exception($"error: Anchor \"{_anchor}\" isn't supported")
             };
         }

@@ -13,7 +13,7 @@ namespace Kotono.Graphics.Shaders
         public override void Update()
         {
             SetInt("numPointLights", PointLight.Count);
-            SetInt("numSpotLights", ObjectManager.GetSpotLightsCount());
+            SetInt("numSpotLights", SpotLight.Count);
 
             SetMatrix4("view", CameraManager.ActiveCamera.ViewMatrix);
             SetMatrix4("projection", CameraManager.ActiveCamera.ProjectionMatrix);

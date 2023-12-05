@@ -20,9 +20,7 @@ namespace Kotono
 
         #region Viewport
 
-        public static readonly Viewport _viewport = new();
-
-        public static Viewport ActiveViewport => _viewport;
+        internal static Viewport ActiveViewport { get; } = new();
 
         #endregion Viewport
 
@@ -76,11 +74,9 @@ namespace Kotono
 
         #region PerformanceWindow
 
-        private static readonly Performance.Window _performanceWindow = new();
+        internal static Performance.Window PerformanceWindow { get; } = new();
 
-        public static Performance.Window PerformanceWindow => _performanceWindow;
-
-        public static int MaxFrameRate { get; set; } = 60;
+        internal static int MaxFrameRate { get; set; } = 60;
 
         #endregion PerformanceWindow
 
@@ -92,16 +88,16 @@ namespace Kotono
 
         #endregion UserMode
 
-        public static void Init(MouseState mouseState, KeyboardState keyboardState)
+        internal static void Init(MouseState mouseState, KeyboardState keyboardState)
         {
             Time.Init();
             Mouse.Init(mouseState);
             Keyboard.Init(keyboardState);
             ShaderManager.Init();
             SquareVertices.Init();
+            Text.InitPaths();
             Gizmo.Init();
             ObjectManager.Init();
-            Text.InitPaths();
             Printer.Init();
             PerformanceWindow.Init();
             _componentManager.Init();
@@ -111,7 +107,7 @@ namespace Kotono
             MainMenu.Init();
         }
 
-        public static void Update()
+        internal static void Update()
         {
             Time.Update();
             Mouse.Update();
@@ -126,7 +122,7 @@ namespace Kotono
             MainMenu.Update();
         }
 
-        public static void RenderFrame()
+        internal static void RenderFrame()
         {
             UpdateShaders();
             Draw();
@@ -150,7 +146,7 @@ namespace Kotono
             ObjectManager.Save();
         }
 
-        public static void Exit()
+        internal static void Exit()
         {
             SoundManager.Dispose();
         }

@@ -25,10 +25,5 @@ namespace Kotono.Graphics.Objects.Managers
             _drawables.ForEach(p => p.UpdateIndex());
             base.Delete(spotLight);
         }
-
-        internal int GetCount()
-        {
-            return _drawables.Count;
-        }
     }
 }

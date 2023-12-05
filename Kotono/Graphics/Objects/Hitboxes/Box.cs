@@ -100,7 +100,7 @@ namespace Kotono.Graphics.Objects.Hitboxes
                 _vertexArrayObject = GL.GenVertexArray();
                 GL.BindVertexArray(_vertexArrayObject);
 
-                // create vertex buffer
+                // Create vertex buffer
                 _vertexBufferObject = GL.GenBuffer();
                 GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
                 GL.BufferData(BufferTarget.ArrayBuffer, _vertices.Length * sizeof(float), _vertices, BufferUsageHint.StaticDraw);
