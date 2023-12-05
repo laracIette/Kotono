@@ -17,22 +17,26 @@ namespace Kotono.Graphics.Objects
 
         protected readonly List<Image> _letters = new();
 
-        public Rect LettersDest;
+        protected Rect _lettersDest;
 
         private readonly RoundedBorder _roundedBorder;
 
         public Rect Dest
         {
-            get => new Rect(LettersDest.X, LettersDest.Y, LettersDest.W * _text.Length * _spacing, LettersDest.H);
-            set 
-            { 
-                LettersDest = value;
-                /// Don't divide by 0
-                //LettersDest.W /= Math.Max(1, _text.Length);
+            get => Rect.FromAnchor(new Rect(_lettersDest.X, _lettersDest.Y, _lettersDest.W * _text.Length * _spacing, _lettersDest.H), _anchor);
+            set => _lettersDest = value;
+        }
+
+        public Point Position
+        {
+            get => Dest.Position;
+            set
+            {
+                _lettersDest.Position = value;
 
                 for (int i = 0; i < _letters.Count; i++)
                 {
-                    _letters[i].Dest = GetLetterDest(i, value);
+                    _letters[i].Dest = GetLetterDest(i, _lettersDest);
                 }
 
                 if (_roundedBorder != null)
@@ -151,7 +155,7 @@ namespace Kotono.Graphics.Objects
         public Text(string text, Rect lettersDest, Anchor position, Color color, float spacing, int layer)
         {
             _text = text;
-            Dest = lettersDest;
+            _lettersDest = lettersDest;
             _anchor = position;
             Color = color;
             _spacing = spacing;
@@ -170,9 +174,8 @@ namespace Kotono.Graphics.Objects
 
             for (int i = 0; i < _text.Length; i++)
             {
-                string path = _paths.TryGetValue(_text[i], out string? tempPath) ? tempPath : _paths[' '];
-
-                var dest = GetLetterDest(i, LettersDest);
+                string path = _paths[_text[i]] ?? _paths[' '];
+                Rect dest = GetLetterDest(i, _lettersDest);
 
                 _letters.Add(new Image(
                     new ImageSettings
@@ -206,32 +209,32 @@ namespace Kotono.Graphics.Objects
                     dest.Size
                 ),
                 Anchor.Left => new Rect(
-                    dest.X + dest.W / 2 + dest.W * index * _spacing,
+                    dest.X + (dest.W / 2 + dest.W * index) * _spacing,
                     dest.Y,
                     dest.Size
                 ),
                 Anchor.Right => new Rect(
-                    dest.X - dest.W / 2 - dest.W * (_text.Length - 1 - index) * _spacing,
+                    dest.X - dest.W / 2 * _spacing - dest.W * (_text.Length - 1 - index) * _spacing,
                     dest.Y,
                     dest.Size
                 ),
                 Anchor.TopLeft => new Rect(
-                    dest.X + dest.W / 2 + dest.W * index * _spacing,
+                    dest.X + (dest.W / 2 + dest.W * index) * _spacing,
                     dest.Y + dest.H / 2,
                     dest.Size
                 ),
                 Anchor.TopRight => new Rect(
-                    dest.X - dest.W / 2 - dest.W * (_text.Length - 1 - index) * _spacing,
+                    dest.X - dest.W / 2 * _spacing - dest.W * (_text.Length - 1 - index) * _spacing,
                     dest.Y + dest.H / 2,
                     dest.Size
                 ),
                 Anchor.BottomLeft => new Rect(
-                    dest.X + dest.W / 2 + dest.W * index * _spacing,
+                    dest.X + (dest.W / 2 + dest.W * index) * _spacing,
                     dest.Y - dest.H / 2,
                     dest.Size
                 ),
                 Anchor.BottomRight => new Rect(
-                    dest.X - dest.W / 2 - dest.W * (_text.Length - 1 - index) * _spacing,
+                    dest.X - dest.W / 2 * _spacing - dest.W * (_text.Length - 1 - index) * _spacing,
                     dest.Y - dest.H / 2,
                     dest.Size
                 ),
@@ -243,7 +246,7 @@ namespace Kotono.Graphics.Objects
         {
             if (IsMouseOn)
             {
-                //KT.Print(_text);
+                KT.Print(_text);
             }
         }
 
@@ -258,7 +261,7 @@ namespace Kotono.Graphics.Objects
 
         public void Transform(Rect dest)
         {
-            LettersDest += dest;
+            _lettersDest += dest;
             foreach (var letter in _letters)
             {
                 letter.Transform(dest);

@@ -14,7 +14,7 @@ namespace Kotono.Graphics.Objects
                 base.Dest = value;
                 if (_text != null)
                 {
-                    _text.Dest = new Rect(value.Position, _text.LettersDest.Size);
+                    _text.Position = value.Position;
                 }
             }
         }
