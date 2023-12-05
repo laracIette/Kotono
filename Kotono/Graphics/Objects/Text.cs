@@ -243,7 +243,7 @@ namespace Kotono.Graphics.Objects
         {
             if (IsMouseOn)
             {
-                KT.Print(_text);
+                //KT.Print(_text);
             }
         }
 

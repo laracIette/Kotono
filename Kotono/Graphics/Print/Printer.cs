@@ -23,7 +23,7 @@ namespace Kotono.Graphics.Print
         {
             foreach (var text in _texts)
             {
-                if ((Time.NowS - text.StartTime) > 5)
+                if ((Time.NowS - text.StartTime) > 3)
                 {
                     text.Clear();
                 }

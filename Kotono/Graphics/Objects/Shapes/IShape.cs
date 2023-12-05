@@ -2,7 +2,7 @@
 
 namespace Kotono.Graphics.Objects.Shapes
 {
-    internal interface IShape
+    internal interface IShape : IDrawable
     {
         public Vector[] Vertices { get; }
     }

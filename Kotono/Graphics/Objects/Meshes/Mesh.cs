@@ -152,12 +152,10 @@ namespace Kotono.Graphics.Objects.Meshes
 
                     foreach (var face in scene.Meshes[0].Faces)
                     {
-                        triangles.Add(new Triangle(new Vector[]
-                            {
-                                (Vector)scene.Meshes[0].Vertices[face.Indices[0]],
-                                (Vector)scene.Meshes[0].Vertices[face.Indices[1]],
-                                (Vector)scene.Meshes[0].Vertices[face.Indices[2]]
-                            },
+                        triangles.Add(new Triangle(
+                            (Vector)scene.Meshes[0].Vertices[face.Indices[0]],
+                            (Vector)scene.Meshes[0].Vertices[face.Indices[1]],
+                            (Vector)scene.Meshes[0].Vertices[face.Indices[2]],
                             new Transform(),
                             Color.White
                         ));
