@@ -162,6 +162,7 @@ namespace Kotono.Graphics.Objects
             Layer = layer;
 
             _roundedBorder = new RoundedBorder(Dest, Color.Red, 2, 0, 0, 1);
+            _roundedBorder.Hide();
 
             ObjectManager.Create(this);
         }
@@ -244,10 +245,7 @@ namespace Kotono.Graphics.Objects
 
         public void Update()
         {
-            if (IsMouseOn)
-            {
-                KT.Print(_text);
-            }
+            
         }
 
         public virtual void SetText(string text)
