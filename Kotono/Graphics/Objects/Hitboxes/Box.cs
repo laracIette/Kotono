@@ -100,7 +100,7 @@ namespace Kotono.Graphics.Objects.Hitboxes
                 _vertexArrayObject = GL.GenVertexArray();
                 GL.BindVertexArray(_vertexArrayObject);
 
-                // create vertex buffer
+                // Create vertex buffer
                 _vertexBufferObject = GL.GenBuffer();
                 GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
                 GL.BufferData(BufferTarget.ArrayBuffer, _vertices.Length * sizeof(float), _vertices, BufferUsageHint.StaticDraw);
@@ -112,7 +112,7 @@ namespace Kotono.Graphics.Objects.Hitboxes
 
             _transform = new Transform();
 
-            ObjectManager.CreateHitbox(this);
+            ObjectManager.Create(this);
         }
 
         public void Init() { }
@@ -166,6 +166,11 @@ namespace Kotono.Graphics.Objects.Hitboxes
         public void Hide()
         {
             IsDraw = false;
+        }
+
+        public void Delete()
+        {
+            ObjectManager.Delete(this);
         }
 
         public void Dispose()

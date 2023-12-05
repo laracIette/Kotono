@@ -3,12 +3,12 @@ using System.Collections.Generic;
 
 namespace Kotono.Graphics.Objects.Managers
 {
-    public class HitboxManager : DrawableManager<IHitbox>
+    internal class HitboxManager : DrawableManager<IHitbox>
     {
-        public HitboxManager()
+        internal HitboxManager()
             : base() { }
 
-        public List<IHitbox> GetAll()
+        internal List<IHitbox> GetAll()
         {
             return _drawables;
         }

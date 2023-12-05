@@ -3,7 +3,7 @@ using Kotono.Utils;
 
 namespace Kotono.Graphics.Performance
 {
-    public class Window
+    internal class Window
     {
         private readonly RoundedBox _background;
 
@@ -13,15 +13,15 @@ namespace Kotono.Graphics.Performance
 
         private readonly Rect _dest;
 
-        public double FrameTime => _frame.Time;
+        internal double FrameTime => _frame.Time;
 
-        public double FrameRate => _frame.Rate;
+        internal double FrameRate => _frame.Rate;
 
-        public double UpdateTime => _update.Time;
+        internal double UpdateTime => _update.Time;
 
-        public double UpdateRate => _update.Rate;
+        internal double UpdateRate => _update.Rate;
 
-        public Window()
+        internal Window()
         {
             _dest = new Rect(1080, 660, 50, 60);
 
@@ -37,36 +37,36 @@ namespace Kotono.Graphics.Performance
             );
         }
 
-        public void Init()
+        internal void Init()
         {
             _frame.Init();
             _update.Init();
         }
 
-        public void Update()
+        internal void Update()
         {
             _frame.Update();
             _update.Update();
         }
 
-        public void AddFrameTime(double frameTime)
+        internal void AddFrameTime(double frameTime)
         {
             _frame.AddTime(frameTime);
         }
 
-        public void AddUpdateTime(double updateTime)
+        internal void AddUpdateTime(double updateTime)
         {
             _update.AddTime(updateTime);
         }
 
-        public void Show()
+        internal void Show()
         {
             _background.Show();
             _frame.Show();
             _update.Show();
         }
 
-        public void Hide()
+        internal void Hide()
         {
             _background.Hide();
             _frame.Hide();

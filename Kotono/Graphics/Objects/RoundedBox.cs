@@ -11,7 +11,7 @@ namespace Kotono.Graphics.Objects
     {
         private Rect _dest;
 
-        public Rect Dest 
+        public virtual Rect Dest 
         {
             get => _dest;
             set
@@ -21,42 +21,12 @@ namespace Kotono.Graphics.Objects
             }
         }
 
-        public float X
+        public Point Position
         {
-            get => _dest.X;
+            get => _dest.Position;
             set
             {
-                _dest.X = value;
-                UpdateValues();
-            }
-        }
-
-        public float Y
-        {
-            get => _dest.Y;
-            set
-            {
-                _dest.Y = value;
-                UpdateValues();
-            }
-        }
-
-        public float W
-        {
-            get => _dest.W;
-            set 
-            {
-                _dest.W = value;
-                UpdateValues();
-            }
-        }
-
-        public float H
-        {
-            get => _dest.H;
-            set 
-            {
-                _dest.H = value;
+                _dest.Position = value;
                 UpdateValues();
             }
         }
@@ -89,7 +59,7 @@ namespace Kotono.Graphics.Objects
 
         public bool IsDraw { get; private set; } = true;
 
-        public int Layer { get; set; } = 0;
+        public int Layer { get; set; }
         
         protected virtual Matrix4 Model =>
             Matrix4.CreateScale((Dest + new Rect(w: FallOff * 2)).WorldSpace.W, (Dest + new Rect(h: FallOff * 2)).WorldSpace.H, 1.0f)
@@ -103,15 +73,15 @@ namespace Kotono.Graphics.Objects
             FallOff = fallOff;
             CornerSize = cornerSize;
 
-            ObjectManager.CreateRoundedBox(this);
+            ObjectManager.Create(this);
         }
 
-        public void Init()
+        public virtual void Init()
         {
 
         }
 
-        public void Update()
+        public virtual void Update()
         {
 
         }
@@ -146,12 +116,12 @@ namespace Kotono.Graphics.Objects
             GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
         }
 
-        public void Show()
+        public virtual void Show()
         {
             IsDraw = true;
         }
 
-        public void Hide()
+        public virtual void Hide()
         {
             IsDraw = false;
         }
@@ -159,6 +129,11 @@ namespace Kotono.Graphics.Objects
         public void Save()
         {
 
+        }
+
+        public void Delete()
+        {
+            ObjectManager.Delete(this);
         }
 
         public void Dispose()

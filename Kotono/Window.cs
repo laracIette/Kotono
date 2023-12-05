@@ -1,5 +1,4 @@
 ﻿using Kotono.Graphics.Objects;
-using Kotono.Graphics.Objects.Managers;
 using Kotono.Input;
 using Kotono.Utils;
 using OpenTK.Graphics.OpenGL4;
@@ -7,6 +6,7 @@ using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
 using OpenTK.Windowing.GraphicsLibraryFramework;
+using System.Globalization;
 
 namespace Kotono
 {
@@ -27,6 +27,9 @@ namespace Kotono
                   }
               )
         {
+            CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
+            CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
+
             KT.MaxFrameRate = windowSettings.MaxFrameRate;
 
             Path.Kotono = windowSettings.KotonoPath;
@@ -34,11 +37,11 @@ namespace Kotono
 
             Mouse.CursorState = windowSettings.CursorState;
 
-            GL.ClearColor(windowSettings.ClearColor.R, windowSettings.ClearColor.G, windowSettings.ClearColor.B, windowSettings.ClearColor.A);
-
+            GL.ClearColor((Color4)windowSettings.ClearColor);
+            
             GL.Enable(EnableCap.DepthTest);
 
-            CameraManager.Create(new Camera());
+            new Camera();
 
             KT.SetWindowPosition((Point)Location);
             KT.SetWindowSize((Point)Size);

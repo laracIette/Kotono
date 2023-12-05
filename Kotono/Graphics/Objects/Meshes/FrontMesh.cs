@@ -11,7 +11,7 @@ namespace Kotono.Graphics.Objects.Meshes
 
         protected override void Create()
         {
-            ObjectManager.CreateFrontMesh(this);
+            ObjectManager.Create(this);
         }
     }
 }

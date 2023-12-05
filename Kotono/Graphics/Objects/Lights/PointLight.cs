@@ -35,6 +35,9 @@ namespace Kotono.Graphics.Objects.Lights
 
         public static int Count { get; internal set; }
 
+        // temporary, TODO: get rid of that
+        public static PointLight First => ObjectManager.GetFirstPointLight();
+
         public PointLight(Vector location, Color ambient, Color diffuse, Color specular, float constant, float linear, float quadratic)
         {
             Ambient = ambient;
@@ -46,6 +49,8 @@ namespace Kotono.Graphics.Objects.Lights
             _shaderIndex = Count;
 
             _mesh = new PointLightMesh(location, this);
+
+            ObjectManager.Create(this);
         }
 
         public void Init() { }
@@ -90,9 +95,14 @@ namespace Kotono.Graphics.Objects.Lights
             IsDraw = false;
         }
 
+        public void Delete()
+        {
+            ObjectManager.Delete(this);
+        }
+
         public void Dispose()
         {
-            ObjectManager.DeleteMesh(_mesh);
+            _mesh.Delete();
 
             Count--;
 

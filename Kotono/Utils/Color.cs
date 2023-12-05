@@ -16,23 +16,29 @@ namespace Kotono.Utils
 
         public ColorComponent A;
 
-        public static Color Transparent => new Color(1, 1, 1, 0);
+        public static Color Black => FromHex("#000000FF");
 
-        public static Color Black => new Color(0, 0, 0, 1);
+        public static Color Blue => FromHex("#0000FFFF");
         
-        public static Color White => new Color(1, 1, 1, 1);
+        public static Color Cyan => FromHex("#00FFFFFF");
 
-        public static Color Red => new Color(1, 0, 0, 1);
+        public static Color DarkGray => FromHex("#404040FF");
 
-        public static Color Yellow => new Color(1, 1, 0, 1);
+        public static Color Gray => FromHex("#808080FF");
 
-        public static Color Magenta => new Color(1, 0, 1, 1);
+        public static Color Green => FromHex("#00FF00FF");
+        
+        public static Color LightGray => FromHex("#C0C0C0FF");
 
-        public static Color Green => new Color(0, 1, 0, 1);
+        public static Color Magenta => FromHex("#FF00FFFF");
 
-        public static Color Cyan => new Color(0, 1, 1, 1);
+        public static Color Red => FromHex("#FF0000FF");
 
-        public static Color Blue => new Color(0, 0, 1, 1);
+        public static Color Transparent => FromHex("#FFFFFF00");
+
+        public static Color White => FromHex("#FFFFFFFF");
+
+        public static Color Yellow => FromHex("#FFFF00FF");
 
         public const int SizeInBytes = sizeof(float) * 4;
 
@@ -309,6 +315,16 @@ namespace Kotono.Utils
         public static explicit operator Color(Vector4 v)
         {
             return new Color(v.X, v.Y, v.Z, v.W);
+        }
+
+        public static explicit operator Color4(Color c)
+        {
+            return new Color4(c.R, c.G, c.B, c.A);
+        }
+
+        public static explicit operator Color(Color4 c)
+        {
+            return new Color(c.R, c.G, c.B, c.A);
         }
 
         public override readonly string ToString()

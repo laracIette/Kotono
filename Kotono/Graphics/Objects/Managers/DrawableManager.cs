@@ -2,32 +2,36 @@
 
 namespace Kotono.Graphics.Objects.Managers
 {
-    public abstract class DrawableManager<T> where T : IDrawable
+    internal abstract class DrawableManager<T> where T : IDrawable
     {
         protected readonly List<T> _drawables = new();
 
-        public DrawableManager() { }
+        internal DrawableManager() { }
 
-        public virtual void Create(T drawable)
+        internal virtual void Create(T drawable)
         {
-            _drawables.Add(drawable);
+            if (!_drawables.Contains(drawable))
+            {
+                _drawables.Add(drawable);
+            }
         }
 
-        public virtual void Delete(T drawable)
+        internal virtual void Delete(T drawable)
         {
             drawable.Dispose();
             _drawables.Remove(drawable);
         }
 
-        public virtual void Init()
+        internal virtual void Init()
         {
-            foreach (var drawable in _drawables)
+            // List can change during IDrawable.Init() calls
+            for (int i = 0; i < _drawables.Count; i++)
             {
-                drawable.Init();
+                _drawables[i].Init();
             }
         }
 
-        public virtual void Update()
+        internal virtual void Update()
         {
             // List can change during IDrawable.Update() calls
             for (int i = 0; i < _drawables.Count; i++)
@@ -36,7 +40,7 @@ namespace Kotono.Graphics.Objects.Managers
             }
         }
 
-        public virtual void UpdateShaders()
+        internal virtual void UpdateShaders()
         {
             foreach (var drawable in _drawables)
             {
@@ -44,7 +48,7 @@ namespace Kotono.Graphics.Objects.Managers
             }
         }
 
-        public virtual void Draw()
+        internal virtual void Draw()
         {
             // List shouldn't change during IDrawable.Draw() calls, TODO: use foreach when development done
             for (int i = 0; i < _drawables.Count; i++)
@@ -56,7 +60,7 @@ namespace Kotono.Graphics.Objects.Managers
             }
         }
 
-        public virtual void Save()
+        internal virtual void Save()
         {
             foreach (var drawable in _drawables)
             {

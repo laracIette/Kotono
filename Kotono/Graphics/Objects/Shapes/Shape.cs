@@ -1,17 +1,14 @@
-﻿using Kotono.Utils;
+﻿using Kotono.Graphics.Objects.Managers;
+using Kotono.Utils;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using System;
 
-namespace Kotono.Graphics.Objects
+namespace Kotono.Graphics.Objects.Shapes
 {
-    public class Triangle : IObject3D
-    {
-        public Vector Vertex1;
-
-        public Vector Vertex2;
-
-        public Vector Vertex3;
+    public class Shape : IShape, IObject3D
+    { 
+        public Vector[] Vertices { get; }
 
         private Transform _transform;
 
@@ -49,26 +46,24 @@ namespace Kotono.Graphics.Objects
 
         private int _vertexBufferObject;
 
-        private readonly Vector[] _vertices = new Vector[3];
+        private bool _hasInitBuffers = false;
 
-        private bool _isInitBuffers = false;
-
-        public Triangle()
+        public Shape()
         {
-            Vertex1 = Vector.Zero;
-            Vertex2 = Vector.Zero;
-            Vertex3 = Vector.Zero;
+            Vertices = Array.Empty<Vector>();
             _transform = new Transform();
             Color = Color.White;
+
+            ObjectManager.Create(this);
         }
 
-        public Triangle(Vector vertex1, Vector vertex2, Vector vertex3, Transform transform, Color color)
+        public Shape(Vector[] vertices, Transform transform, Color color)
         {
-            Vertex1 = vertex1;
-            Vertex2 = vertex2;
-            Vertex3 = vertex3;
+            Vertices = vertices;
             _transform = transform;
             Color = color;
+
+            ObjectManager.Create(this);
         }
 
         public void Init()
@@ -78,9 +73,9 @@ namespace Kotono.Graphics.Objects
 
         public void Update()
         {
-            if (!_isInitBuffers && IsDraw)
+            if (!_hasInitBuffers && IsDraw)
             {
-                _isInitBuffers = true;
+                _hasInitBuffers = true;
                 InitBuffers();
             }
         }
@@ -104,15 +99,11 @@ namespace Kotono.Graphics.Objects
 
             GL.BindVertexArray(_vertexArrayObject);
             GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
-            GL.DrawArrays(PrimitiveType.LineLoop, 0, _vertices.Length);
+            GL.DrawArrays(PrimitiveType.LineLoop, 0, Vertices.Length);
         }
 
         private void InitBuffers()
         {
-            _vertices[0] = Vertex1;
-            _vertices[1] = Vertex2;
-            _vertices[2] = Vertex3;
-
             // Create vertex array
             _vertexArrayObject = GL.GenVertexArray();
             GL.BindVertexArray(_vertexArrayObject);
@@ -120,7 +111,7 @@ namespace Kotono.Graphics.Objects
             // create vertex buffer
             _vertexBufferObject = GL.GenBuffer();
             GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
-            GL.BufferData(BufferTarget.ArrayBuffer, _vertices.Length * Vector.SizeInBytes, _vertices, BufferUsageHint.StaticDraw);
+            GL.BufferData(BufferTarget.ArrayBuffer, Vertices.Length * Vector.SizeInBytes, Vertices, BufferUsageHint.StaticDraw);
 
             int locationAttributeLocation = ShaderManager.Hitbox.GetAttribLocation("aPos");
             GL.EnableVertexAttribArray(locationAttributeLocation);
@@ -137,37 +128,14 @@ namespace Kotono.Graphics.Objects
             IsDraw = false;
         }
 
-        public Vector this[int index]
-        {
-            get => index switch
-            {
-                0 => Vertex1,
-                1 => Vertex2,
-                2 => Vertex3,
-                _ => throw new IndexOutOfRangeException("You tried to access this Triangle at index: " + index)
-            };
-            set
-            {
-                switch (index)
-                {
-                    case 0:
-                        Vertex1 = value;
-                        break;
-                    case 1:
-                        Vertex2 = value;
-                        break;
-                    case 2:
-                        Vertex3 = value;
-                        break;
-                    default:
-                        throw new IndexOutOfRangeException("You tried to set this Triangle at index: " + index);
-                }
-            }
-        }
-
         public void Save()
         {
 
+        }
+
+        public void Delete()
+        {
+            ObjectManager.Delete(this);
         }
 
         public void Dispose()

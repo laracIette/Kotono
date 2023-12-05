@@ -1,5 +1,9 @@
-﻿using Kotono.File;
+﻿using Assimp.Unmanaged;
+using Kotono.File;
+using Kotono.Graphics;
 using Kotono.Graphics.Objects;
+using Kotono.Graphics.Objects.Managers;
+using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using System;
 
@@ -67,6 +71,7 @@ namespace Kotono.Utils
                 H / KT.ActiveViewport.H
             );
 
+        public const int SizeInBytes = sizeof(float) * 4;
 
         public Rect()
         {
@@ -82,6 +87,14 @@ namespace Kotono.Utils
             Y = r.Y;
             W = r.W;
             H = r.H;
+        }
+
+        public Rect(float f)
+        {
+            X = f;
+            Y = f;
+            W = f;
+            H = f;
         }
 
         public Rect(Point position, Point size)
@@ -124,6 +137,7 @@ namespace Kotono.Utils
             H = (float)h;
         }
 
+        // TODO: add offset that moves the Rect in a direction depending on the Anchor, for example Anchor.TopLeft : X + offset, Y + offset
         /// <summary> Creates a Rect given an Anchor </summary>
         public static Rect FromAnchor(Rect r, Anchor a)
         {

@@ -1,5 +1,4 @@
 ﻿using Kotono.Graphics.Objects;
-using Kotono.Graphics.Objects.Managers;
 using Kotono.Utils;
 
 namespace Kotono.Graphics
@@ -14,7 +13,7 @@ namespace Kotono.Graphics
         { 
             _viewport = new Viewport(dest);
 
-            _background = ObjectManager.CreateRoundedBox(new RoundedBox(dest, Color.White, 0, 3, 10));
+            _background = new RoundedBox(dest, Color.White, 0, 3, 10);
         }
 
         public void Update()

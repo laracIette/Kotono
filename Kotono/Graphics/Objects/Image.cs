@@ -9,7 +9,7 @@ namespace Kotono.Graphics.Objects
 {
     public class Image : IObject2D
     {
-        private readonly int _texture;
+        private readonly Texture _texture;
 
         public string Path { get; }
 
@@ -80,11 +80,11 @@ namespace Kotono.Graphics.Objects
             Color = settings.Color;
             Layer = settings.Layer;
 
-            _transformation = new Rect();
+            _transformation = Rect.Zero;
 
-            _texture = TextureManager.LoadTexture(Path);
+            _texture = Texture.Load(Path, TextureUnit.Texture0);
 
-            ObjectManager.CreateImage(this);
+            ObjectManager.Create(this);
         }
 
         public void Init() { }
@@ -108,7 +108,7 @@ namespace Kotono.Graphics.Objects
         {
             GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
 
-            TextureManager.UseTexture(_texture, TextureUnit.Texture0);
+            _texture.Use();
 
             ShaderManager.Image.SetMatrix4("model", Model);
             ShaderManager.Image.SetColor("color", Color);
@@ -131,14 +131,9 @@ namespace Kotono.Graphics.Objects
             _endTime = _startTime + time;
         }
 
-        public void TransformTo(Rect dest, double time)
-        {
-            Transform(dest - Dest, time);
-        }
-
         public bool IsMouseOn()
         {
-            return Rect.Overlaps(Dest, Mouse.RelativePosition);
+            return Rect.Overlaps(Dest, Mouse.Position);
         }
 
         public void Show()
@@ -154,6 +149,11 @@ namespace Kotono.Graphics.Objects
         public void Save()
         {
 
+        }
+
+        public void Delete()
+        {
+            ObjectManager.Delete(this);
         }
 
         public void Dispose()

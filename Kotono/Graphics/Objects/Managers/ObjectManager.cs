@@ -1,11 +1,11 @@
 ﻿using Kotono.Graphics.Objects.Hitboxes;
 using Kotono.Graphics.Objects.Lights;
 using Kotono.Graphics.Objects.Meshes;
-using System.Collections.Generic;
+using Kotono.Graphics.Objects.Shapes;
 
 namespace Kotono.Graphics.Objects.Managers
 {
-    public static class ObjectManager
+    internal static class ObjectManager
     {
         private static readonly MeshManager _meshManager = new();
 
@@ -17,51 +17,34 @@ namespace Kotono.Graphics.Objects.Managers
 
         private static readonly SpotLightManager _spotLightManager = new();
 
-        private static readonly TriangleManager _triangleManager = new();
+        private static readonly ShapeManager _shapeManager = new();
 
         private static readonly Object2DManager _object2DManager = new();
 
         //private static readonly Viewport _viewport = new(0, 0, 1280, 720);
 
-        #region Image
+        #region Object2D
 
-        public static Image CreateImage(Image image)
+        internal static void Create(IObject2D obj)
         {
-            _object2DManager.Create(image);
-            return image;
+            _object2DManager.Create(obj);
         }
 
-        public static void DeleteImage(Image image)
+        internal static void Delete(IObject2D obj)
         {
-            _object2DManager.Delete(image);
+            _object2DManager.Delete(obj);
         }
 
-        #endregion Image
-
-        #region Animation
-
-        public static Animation CreateAnimation(Animation animation)
-        {
-            _object2DManager.Create(animation);
-            return animation;
-        }
-
-        public static void DeleteAnimation(Animation animation)
-        {
-            _object2DManager.Delete(animation);
-        }
-
-        #endregion Image
+        #endregion Object2D
 
         #region Mesh
 
-        public static Mesh CreateMesh(Mesh mesh)
+        internal static void Create(Mesh mesh)
         {
             _meshManager.Create(mesh);
-            return mesh;
         }
 
-        public static void DeleteMesh(Mesh mesh)
+        internal static void Delete(Mesh mesh)
         {
             _meshManager.Delete(mesh);
         }
@@ -70,13 +53,12 @@ namespace Kotono.Graphics.Objects.Managers
 
         #region FrontMesh
 
-        public static FrontMesh CreateFrontMesh(FrontMesh frontMesh)
+        internal static void Create(FrontMesh frontMesh)
         {
             _frontMeshManager.Create(frontMesh);
-            return frontMesh;
         }
 
-        public static void DeleteFrontMesh(FrontMesh frontMesh)
+        internal static void Delete(FrontMesh frontMesh)
         {
             _frontMeshManager.Delete(frontMesh);
         }
@@ -85,38 +67,31 @@ namespace Kotono.Graphics.Objects.Managers
 
         #region Hitbox
 
-        public static IHitbox CreateHitbox(IHitbox hitbox)
+        internal static void Create(IHitbox hitbox)
         {
             _hitboxManager.Create(hitbox);
-            return hitbox;
         }
 
-        public static void DeleteHitbox(IHitbox hitbox)
+        internal static void Delete(IHitbox hitbox)
         {
             _hitboxManager.Delete(hitbox);
-        }
-
-        public static List<IHitbox> GetAllHitboxes()
-        {
-            return _hitboxManager.GetAll();
         }
 
         #endregion Hitbox
 
         #region PointLight
 
-        public static PointLight CreatePointLight(PointLight pointLight)
+        internal static void Create(PointLight pointLight)
         {
             _pointLightManager.Create(pointLight);
-            return pointLight;
         }
 
-        public static void DeletePointLight(PointLight pointLight)
+        internal static void Delete(PointLight pointLight)
         {
             _pointLightManager.Delete(pointLight);
         }
 
-        public static PointLight GetFirstPointLight()
+        internal static PointLight GetFirstPointLight()
         {
             return _pointLightManager.GetFirst();
         }
@@ -125,124 +100,87 @@ namespace Kotono.Graphics.Objects.Managers
 
         #region SpotLight
 
-        public static SpotLight CreateSpotLight(SpotLight spotLight)
+        internal static void Create(SpotLight spotLight)
         {
             _spotLightManager.Create(spotLight);
-            return spotLight;
         }
 
-        public static void DeleteSpotLight(SpotLight spotLight)
+        internal static void Delete(SpotLight spotLight)
         {
             _spotLightManager.Delete(spotLight);
         }
 
-        public static int GetSpotLightsCount()
-        {
-            return _spotLightManager.GetCount();
-        }
-
         #endregion SpotLight
 
-        #region Triangle
+        #region Shape
 
-        public static Triangle CreateTriangle(Triangle triangle)
+        internal static void Create(IShape shape)
         {
-            _triangleManager.Create(triangle);
-            return triangle;
+            _shapeManager.Create(shape);
         }
 
-        public static void DeleteTriangle(Triangle triangle)
+        internal static void Delete(IShape shape)
         {
-            _triangleManager.Delete(triangle);
+            _shapeManager.Delete(shape);
         }
 
-        #endregion Triangle
+        #endregion Shape
 
-        #region RoundedBox
-
-        public static RoundedBox CreateRoundedBox(RoundedBox box)
-        {
-            _object2DManager.Create(box);
-            return box;
-        }
-
-        public static void DeleteRoundedBox(RoundedBox box)
-        {
-            _object2DManager.Delete(box);
-        }
-
-        #endregion RoundedBox
-
-        #region RoundedBorder
-
-        public static RoundedBorder CreateRoundedBorder(RoundedBorder border)
-        {
-            _object2DManager.Create(border);
-            return border;
-        }
-
-        public static void DeleteRoundedBorder(RoundedBorder border)
-        {
-            _object2DManager.Delete(border);
-        }
-
-        #endregion RoundedBorder
-
-        public static void Init()
+        internal static void Init()
         {
             _meshManager.Init();
             _frontMeshManager.Init();
             _hitboxManager.Init();
             _pointLightManager.Init();
             _spotLightManager.Init();
-            _triangleManager.Init();
+            _shapeManager.Init();
             _object2DManager.Init();
             //_viewport.Init();
         }
 
-        public static void Update()
+        internal static void Update()
         {
             _meshManager.Update();
             _frontMeshManager.Update();
             _hitboxManager.Update();
             _pointLightManager.Update();
             _spotLightManager.Update();
-            _triangleManager.Update();
+            _shapeManager.Update();
             _object2DManager.Update();
         }
 
-        public static void UpdateShaders()
+        internal static void UpdateShaders()
         {
             _meshManager.UpdateShaders();
             _frontMeshManager.UpdateShaders();
             _hitboxManager.UpdateShaders();
             _pointLightManager.UpdateShaders();
             _spotLightManager.UpdateShaders();
-            _triangleManager.UpdateShaders();
+            _shapeManager.UpdateShaders();
             _object2DManager.UpdateShaders();
         }
 
-        public static void Draw()
+        internal static void Draw()
         {
             KT.ActiveViewport.Use();
 
             _hitboxManager.Draw();
             _pointLightManager.Draw();
             _spotLightManager.Draw();
-            _triangleManager.Draw();
+            _shapeManager.Draw();
             _meshManager.Draw();
             _frontMeshManager.Draw();
             _object2DManager.Draw();
         }
 
-        public static void Save()
+        internal static void Save()
         {
             _meshManager.Save();
             _frontMeshManager.Save();
             _hitboxManager.Save();
             _pointLightManager.Save();
             _spotLightManager.Save();
-            _triangleManager.Save();
+            _shapeManager.Save();
             _object2DManager.Save();
         }
     }

@@ -111,7 +111,7 @@ namespace Kotono.Graphics.Objects
             
             Hide();
 
-            ObjectManager.CreateAnimation(this);
+            ObjectManager.Create(this);
         }
 
         public void Init()
@@ -185,7 +185,7 @@ namespace Kotono.Graphics.Objects
         {
             foreach (var frame in _frames)
             {
-                ObjectManager.DeleteImage(frame);
+                frame.Delete();
             }
             _frames.Clear();
         }
@@ -211,6 +211,11 @@ namespace Kotono.Graphics.Objects
             _properties.Layer = Layer;
 
             _properties.WriteFile();
+        }
+
+        public void Delete()
+        {
+            ObjectManager.Delete(this);
         }
 
         public void Dispose()

@@ -1,4 +1,5 @@
-﻿using Kotono.Input;
+﻿using Kotono.Graphics.Objects.Managers;
+using Kotono.Input;
 using Kotono.Utils;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
@@ -61,7 +62,10 @@ namespace Kotono.Graphics.Objects
 
         public Matrix4 ProjectionMatrix => Matrix4.CreatePerspectiveFieldOfView(_fov, AspectRatio, 0.01f, 1000f);
 
-        public Camera() { }
+        public Camera() 
+        {
+            CameraManager.Create(this);
+        }
 
         public void Update()
         {

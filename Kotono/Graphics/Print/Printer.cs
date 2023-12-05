@@ -4,13 +4,13 @@ using System.Linq;
 
 namespace Kotono.Graphics.Print
 {
-    public static class Printer
+    internal static class Printer
     {
         private static readonly PrinterText[] _texts = new PrinterText[50];
 
         private static int _currentIndex = 0;
 
-        public static void Init()
+        internal static void Init()
         {
             for (int i = 0; i < _texts.Length; i++)
             {
@@ -19,18 +19,18 @@ namespace Kotono.Graphics.Print
             }
         }
 
-        public static void Update()
+        internal static void Update()
         {
             foreach (var text in _texts)
             {
-                if ((Time.NowS - text.Time) > 5)
+                if ((Time.NowS - text.StartTime) > 3)
                 {
                     text.Clear();
                 }
             }
         }
 
-        public static void Lower()
+        internal static void Lower()
         {
             foreach (var text in _texts)
             {
@@ -38,7 +38,7 @@ namespace Kotono.Graphics.Print
             }
         }
 
-        public static void Print(string? text, Color color)
+        internal static void Print(string? text, Color color)
         {
             if (text != null)
             {
