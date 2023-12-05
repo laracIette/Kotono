@@ -3,7 +3,7 @@
     public class ImageShader : Shader
     {
         public ImageShader()
-            : base("Graphics/Shaders/image.vert", "Graphics/Shaders/image.frag")
+            : base("image")
         { }
     }
 }

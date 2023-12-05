@@ -3,34 +3,22 @@
 namespace Kotono.Graphics
 {
     public static class ShaderManager
-    {
-        private static readonly LightingShader _lightingShader = new();
+    {        
+        public static LightingShader Lighting { get; } = new();
+        
+        public static HitboxShader Hitbox { get; } = new();
 
-        private static readonly HitboxShader _hitboxShader = new();
+        public static PointLightShader PointLight { get; } = new();
         
-        private static readonly PointLightShader _pointLightShader = new();
+        public static ImageShader Image { get; } = new();
         
-        private static readonly ImageShader _imageShader = new();
+        public static GizmoShader Gizmo { get; } = new();
 
-        private static readonly GizmoShader _gizmoShader = new();
+        public static RoundedBoxShader RoundedBox { get; } = new();
         
-        private static readonly RoundedBoxShader _roundedBoxShader = new();
+        public static RoundedBorderShader RoundedBorder { get; } = new();
         
-        private static readonly RoundedBorderShader _roundedBorderShader = new();
-        
-        public static LightingShader Lighting => _lightingShader;
-        
-        public static HitboxShader Hitbox => _hitboxShader;
-
-        public static PointLightShader PointLight => _pointLightShader;
-        
-        public static ImageShader Image => _imageShader;
-        
-        public static GizmoShader Gizmo => _gizmoShader;
-
-        public static RoundedBoxShader RoundedBox => _roundedBoxShader;
-        
-        public static RoundedBorderShader RoundedBorder => _roundedBorderShader;
+        public static OutlineShader Outline { get; } = new();
 
         public static void Init()
         {
@@ -41,6 +29,7 @@ namespace Kotono.Graphics
             Gizmo.Init();
             RoundedBox.Init();
             RoundedBorder.Init();
+            Outline.Init();
         }
 
         public static void Update()
@@ -52,6 +41,7 @@ namespace Kotono.Graphics
             Gizmo.Update();
             RoundedBox.Update();
             RoundedBorder.Update();
+            Outline.Update();
         }
     }
 }

@@ -7,7 +7,7 @@ namespace Kotono.Graphics.Shaders
     public class LightingShader : Shader
     {
         public LightingShader() 
-            : base("Graphics/Shaders/lighting.vert", "Graphics/Shaders/lighting.frag")
+            : base("lighting")
         { }
 
         public override void Update()

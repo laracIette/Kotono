@@ -5,7 +5,7 @@ namespace Kotono.Graphics.Shaders
     public class GizmoShader : Shader
     {
         public GizmoShader() 
-            : base("Graphics/Shaders/gizmo.vert", "Graphics/Shaders/gizmo.frag")
+            : base("gizmo")
         { }
 
         public override void Update()
