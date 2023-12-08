@@ -105,7 +105,7 @@ namespace Kotono.Graphics.Objects.Meshes
         {
             _properties = new MeshProperties(path);
 
-            var textureKeys = _properties.Strings.Keys.Where(k => k.StartsWith("Textures")).ToList();
+            var textureKeys = _properties.Data.Dict.Keys.Where(k => k.StartsWith("Textures")).ToList();
 
             if (textureKeys.Count > 32)
             {
@@ -115,15 +115,15 @@ namespace Kotono.Graphics.Objects.Meshes
             _textures = new Texture[textureKeys.Count];
             for (int i = 0; i < textureKeys.Count; i++)
             {
-                _textures[i] = Texture.Load(_properties.Strings[textureKeys[i]], TextureUnit.Texture0 + i);
+                _textures[i] = Texture.Load(_properties.Data[textureKeys[i]], TextureUnit.Texture0 + i);
             }
 
-            _shader = _properties.Strings["Shader"] switch
+            _shader = _properties.Data["Shader"] switch
             {
                 "Lighting" => ShaderManager.Lighting,
                 "PointLight" => ShaderManager.PointLight,
                 "Gizmo" => ShaderManager.Gizmo,
-                _ => throw new Exception($"error: Shader \"{_properties.Strings["Shader"]}\" isn't valid"),
+                _ => throw new Exception($"error: Shader \"{_properties.Data["Shader"]}\" isn't valid"),
             };
 
             Transform = _properties.Transform;
@@ -140,7 +140,7 @@ namespace Kotono.Graphics.Objects.Meshes
                 hitbox.Color = Color.Red;
             }
 
-            if (!_paths.ContainsKey(_properties.Strings["Obj"]))
+            if (!_paths.ContainsKey(_properties.Data["Obj"]))
             {
                 List<Vertex>[] models;
                 List<int>[] indices;
@@ -148,7 +148,7 @@ namespace Kotono.Graphics.Objects.Meshes
 
                 using (var importer = new AssimpContext())
                 {
-                    var scene = importer.ImportFile(_properties.Strings["Obj"], PostProcessSteps.Triangulate);
+                    var scene = importer.ImportFile(_properties.Data["Obj"], PostProcessSteps.Triangulate);
 
                     foreach (var face in scene.Meshes[0].Faces)
                     {
@@ -221,7 +221,7 @@ namespace Kotono.Graphics.Objects.Meshes
                 GL.BindBuffer(BufferTarget.ElementArrayBuffer, elementBufferObject);
                 GL.BufferData(BufferTarget.ElementArrayBuffer, indices[0].Count * sizeof(int), indices[0].ToArray(), BufferUsageHint.StaticDraw);
 
-                _paths[_properties.Strings["Obj"]] = new MeshSettings
+                _paths[_properties.Data["Obj"]] = new MeshSettings
                 {
                     VertexArrayObject = vertexArrayObject,
                     VertexBufferObject = vertexBufferObject,
@@ -232,7 +232,7 @@ namespace Kotono.Graphics.Objects.Meshes
                 };
             }
 
-            _meshSettings = _paths[_properties.Strings["Obj"]];
+            _meshSettings = _paths[_properties.Data["Obj"]];
 
             Create();
         }

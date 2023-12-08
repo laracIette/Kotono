@@ -196,10 +196,10 @@ namespace Kotono.Utils
         {
             return new Rect
             {
-                X = p.Floats["Dest.X"],
-                Y = p.Floats["Dest.Y"],
-                W = p.Floats["Dest.W"],
-                H = p.Floats["Dest.H"]
+                X = float.Parse(p.Data["Dest.X"]),
+                Y = float.Parse(p.Data["Dest.Y"]),
+                W = float.Parse(p.Data["Dest.W"]),
+                H = float.Parse(p.Data["Dest.H"])
             };
         }
 

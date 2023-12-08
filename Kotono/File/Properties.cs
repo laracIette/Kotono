@@ -11,14 +11,6 @@ namespace Kotono.File
 
         public Data Data { get; }
 
-        public Dictionary<string, string> Strings => Data.Strings;
-
-        public Dictionary<string, float> Floats => Data.Floats;
-
-        public Dictionary<string, double> Doubles => Data.Doubles;
-
-        public Dictionary<string, int> Ints => Data.Ints;
-
         public Properties(string path)
         {
             if (!path.EndsWith(".ktf"))
@@ -45,38 +37,19 @@ namespace Kotono.File
                 }
 
                 // line with only '}' goes to the precedent parent
-                if ((tokens[i].Where(c => !"\t\n\r".Contains(c)).Count() == 1) && tokens[i].Contains('}'))
+                if ((tokens[i].Count(c => !"\t\n\r".Contains(c)) == 1) && tokens[i].Contains('}'))
                 {
                     parent = RemoveParent(parent);
                     continue;
                 }
 
-                (var key, var type, var value) = GetKeyValue(tokens[i]);
-
-                switch (type)
+                if (IsPair(tokens[i], out string key, out string value))
                 {
-                    case "array":
-                        parent += key + '.';
-                        break;
-
-                    case "string":
-                        data.Strings[parent + key] = value;
-                        break;
-
-                    case "float":
-                        data.Floats[parent + key] = float.Parse(value);
-                        break;
-
-                    case "double":
-                        data.Doubles[parent + key] = double.Parse(value);
-                        break;
-
-                    case "int":
-                        data.Ints[parent + key] = int.Parse(value);
-                        break;
-
-                    default:
-                        break;
+                    data[parent + key] = value;
+                }
+                else
+                {
+                    parent += key + '.';
                 }
             }
 
@@ -98,8 +71,16 @@ namespace Kotono.File
             return key.Remove(dotIndex + ((dotIndex == 0) ? 0 : 1));
         }
 
-        /// <returns> A tuple with Item1 being the key, Item2 being the type of the value, Item3 being the value </returns>
-        private static (string, string, string) GetKeyValue(string str)
+        /// <summary>
+        /// Determines if the passed string is a pair or opening an array
+        /// </summary>
+        /// <param name="str">The string to analyze</param>
+        /// <param name="key">The key if the function returns true, else an empty string</param>
+        /// <param name="value">The value if the function returns true, else an empty string</param>
+        /// <returns>true if the passed string is a pair, false if the passed string is opening an array</returns>
+        /// <exception cref="FormatException"></exception>
+        /// <exception cref="Exception"></exception>
+        private static bool IsPair(string str, out string key, out string value)
         {
             if (!str.Contains(':'))
             {
@@ -109,8 +90,8 @@ namespace Kotono.File
             // separate key / value
             int firstColonIndex = str.IndexOf(':');
 
-            string key = str[..firstColonIndex];
-            string value = str[(firstColonIndex + 1)..];
+            key = str[..firstColonIndex];
+            value = str[(firstColonIndex + 1)..];
 
             const string allowedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
             key = new string(key.Where(allowedChars.Contains).ToArray()) ?? throw new Exception($"error: key string must not be empty");
@@ -121,98 +102,13 @@ namespace Kotono.File
                 value = value.Remove(0, 1);
             }
 
-            string type;
-
-            bool isNegative = key.First() == '-';
-
             // it's an array
             if (value == "{")
             {
-                type = "array";
-            }
-            // it's a string
-            else if (IsAString(value))
-            {
-                type = "string";
-            }
-            // if last letter is 'f', it's a float
-            else if (value.Last() == 'f')
-            {
-                type = "float";
-                value = value.Remove(value.Length - 1);
-            }
-            // if it has a '.', it's a double
-            else if (value.Contains('.'))
-            {
-                type = "double";
-            }
-            // it's an int
-            else
-            {
-                type = "int";
-            }
-
-            return (key, type, value);
-        }
-
-        private static bool IsAString(string str)
-        {
-            const string numbers = "0123456789";
-
-            var strNumbers = str.Where(numbers.Contains).ToList();
-
-            // if there is a letter
-            if ((str.Length - strNumbers.Count) > 0)
-            {
-                // if there is 1 letter
-                if ((str.Length - strNumbers.Count) == 1)
-                {
-                    // if the 1 letter is a '.', or a 'f' and it's the last letter, or a '-' and it's the first letter
-                    if (str.Any(c => c == '.') || (str.Last() == 'f') || (str.First() == '-'))
-                    {
-                        // it's not a string
-                        return false;
-                    }
-                }
-                // if there is 2 letters
-                else if ((str.Length - strNumbers.Count) == 2)
-                {
-                    // if there is a dot
-                    if (str.Any(c => c == '.'))
-                    {
-                        // if last is 'f' or first is '-'
-                        if ((str.Last() == 'f') || (str.First() == '-'))
-                        {
-                            // it's not a string
-                            return false;
-                        }
-                    }
-                    // if last is 'f' and first is '-'
-                    else if ((str.Last() == 'f') && (str.First() == '-'))
-                    {
-                        // it's not a string
-                        return false;
-                    }
-                }
-                // if there is 3 letters
-                else if ((str.Length - strNumbers.Count) == 3)
-                {
-                    // if it has a '.' and the last is 'f' and the first is '-'
-                    if (str.Any(c => c == '.') && (str.Last() == 'f') && (str.First() == '-'))
-                    {
-                        // it's not a string
-                        return false;
-                    }
-                }
-
-                // it's a string
-                return true;
-            }
-            else
-            {
-                // it's not a string
                 return false;
             }
+
+            return true;
         }
 
         public void WriteFile()

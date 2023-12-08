@@ -29,5 +29,10 @@
         {
             return new ColorComponent(f);
         }
+
+        public override readonly string ToString()
+        {
+            return Value.ToString();
+        }
     }
 }

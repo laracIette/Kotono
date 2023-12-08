@@ -9,17 +9,17 @@ namespace Kotono.File
             get => Transform.FromProperties(this);
             set 
             {
-                Floats["Transform.Location.X"] = value.Location.X;
-                Floats["Transform.Location.Y"] = value.Location.Y;
-                Floats["Transform.Location.Z"] = value.Location.Z;
+                Data["Transform.Location.X"] = value.Location.X.ToString();
+                Data["Transform.Location.Y"] = value.Location.Y.ToString();
+                Data["Transform.Location.Z"] = value.Location.Z.ToString();
 
-                Floats["Transform.Rotation.X"] = value.Rotation.X;
-                Floats["Transform.Rotation.Y"] = value.Rotation.Y;
-                Floats["Transform.Rotation.Z"] = value.Rotation.Z;
+                Data["Transform.Rotation.X"] = value.Rotation.X.ToString();
+                Data["Transform.Rotation.Y"] = value.Rotation.Y.ToString();
+                Data["Transform.Rotation.Z"] = value.Rotation.Z.ToString();
 
-                Floats["Transform.Scale.X"] = value.Scale.X;
-                Floats["Transform.Scale.Y"] = value.Scale.Y;
-                Floats["Transform.Scale.Z"] = value.Scale.Z;
+                Data["Transform.Scale.X"] = value.Scale.X.ToString();
+                Data["Transform.Scale.Y"] = value.Scale.Y.ToString();
+                Data["Transform.Scale.Z"] = value.Scale.Z.ToString();
             }
         }
 
@@ -28,10 +28,10 @@ namespace Kotono.File
             get => Color.FromProperties(this);
             set
             {
-                Floats["Color.R"] = value.R;
-                Floats["Color.G"] = value.G;
-                Floats["Color.B"] = value.B;
-                Floats["Color.A"] = value.A;
+                Data["Color.R"] = value.R.ToString();
+                Data["Color.G"] = value.G.ToString();
+                Data["Color.B"] = value.B.ToString();
+                Data["Color.A"] = value.A.ToString();
             }
         }
 
