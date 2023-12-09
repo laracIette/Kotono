@@ -175,10 +175,10 @@ namespace Kotono.Utils
         {
             return new Color
             {
-                R = float.Parse(p.Data["Color.R"]),
-                G = float.Parse(p.Data["Color.G"]),
-                B = float.Parse(p.Data["Color.B"]),
-                A = float.Parse(p.Data["Color.A"])
+                R = float.Parse(p["Color.R"]),
+                G = float.Parse(p["Color.G"]),
+                B = float.Parse(p["Color.B"]),
+                A = float.Parse(p["Color.A"])
             };
         }
 
@@ -186,10 +186,10 @@ namespace Kotono.Utils
         {
             return new Color
             {
-                R = float.Parse(p.Data[parent + ".Color.R"]),
-                G = float.Parse(p.Data[parent + ".Color.G"]),
-                B = float.Parse(p.Data[parent + ".Color.B"]),
-                A = float.Parse(p.Data[parent + ".Color.A"])
+                R = float.Parse(p[parent + ".Color.R"]),
+                G = float.Parse(p[parent + ".Color.G"]),
+                B = float.Parse(p[parent + ".Color.B"]),
+                A = float.Parse(p[parent + ".Color.A"])
             };
         }
 

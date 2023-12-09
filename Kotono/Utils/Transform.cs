@@ -91,21 +91,21 @@ namespace Kotono.Utils
             {
                 Location = new Vector
                 {
-                    X = float.Parse(properties.Data["Transform.Location.X"]),
-                    Y = float.Parse(properties.Data["Transform.Location.Y"]),
-                    Z = float.Parse(properties.Data["Transform.Location.Z"])
+                    X = float.Parse(properties["Transform.Location.X"]),
+                    Y = float.Parse(properties["Transform.Location.Y"]),
+                    Z = float.Parse(properties["Transform.Location.Z"])
                 },
                 Rotation = new Vector
                 {
-                    X = float.Parse(properties.Data["Transform.Rotation.X"]),
-                    Y = float.Parse(properties.Data["Transform.Rotation.Y"]),
-                    Z = float.Parse(properties.Data["Transform.Rotation.Z"])
+                    X = float.Parse(properties["Transform.Rotation.X"]),
+                    Y = float.Parse(properties["Transform.Rotation.Y"]),
+                    Z = float.Parse(properties["Transform.Rotation.Z"])
                 },
                 Scale = new Vector
                 {
-                    X = float.Parse(properties.Data["Transform.Scale.X"]),
-                    Y = float.Parse(properties.Data["Transform.Scale.Y"]),
-                    Z = float.Parse(properties.Data["Transform.Scale.Z"])
+                    X = float.Parse(properties["Transform.Scale.X"]),
+                    Y = float.Parse(properties["Transform.Scale.Y"]),
+                    Z = float.Parse(properties["Transform.Scale.Z"])
                 }
             };
         }

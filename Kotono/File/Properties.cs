@@ -11,6 +11,12 @@ namespace Kotono.File
 
         public Data Data { get; }
 
+        public string this[string key]
+        {
+            get => Data[key];
+            set => Data[key] = value;
+        }
+
         public Properties(string path)
         {
             if (!path.EndsWith(".ktf"))
