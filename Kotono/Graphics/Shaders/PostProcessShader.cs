@@ -1,9 +1,9 @@
 ﻿namespace Kotono.Graphics.Shaders
 {
-    public class OutlineShader : Shader
+    public class PostProcessShader : Shader
     {
-        public OutlineShader() 
-            : base("outline")
+        public PostProcessShader() 
+            : base("postProcess")
         { }
 
         public override void Update()

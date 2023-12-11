@@ -144,7 +144,6 @@ namespace Kotono
                 GL.ClearColor(1.0f, 1.0f, 1.0f, 1.0f);
                 GL.Clear(ClearBufferMask.ColorBufferBit);
 
-                ShaderManager.Outline.Update();
                 GL.BindVertexArray(SquareVertices.VertexArrayObject);
                 GL.Disable(EnableCap.DepthTest);
                 GL.BindTexture(TextureTarget.Texture2D, _textureColorBuffer);
