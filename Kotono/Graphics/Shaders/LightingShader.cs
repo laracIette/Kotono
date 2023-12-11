@@ -12,6 +12,8 @@ namespace Kotono.Graphics.Shaders
 
         public override void Update()
         {
+            base.Update();
+
             SetInt("numPointLights", PointLight.Count);
             SetInt("numSpotLights", SpotLight.Count);
 

@@ -54,7 +54,10 @@ namespace Kotono.Graphics.Shaders
             }
         }
 
-        public virtual void Update() { }
+        public virtual void Update() 
+        {
+            Use();
+        }
 
         private static void CompileShader(int shader)
         {

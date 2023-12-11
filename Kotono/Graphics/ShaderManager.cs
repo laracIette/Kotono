@@ -41,7 +41,7 @@ namespace Kotono.Graphics
             Gizmo.Update();
             RoundedBox.Update();
             RoundedBorder.Update();
-            Outline.Update();
+            //Outline.Update();
         }
     }
 }
