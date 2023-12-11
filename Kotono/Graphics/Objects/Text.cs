@@ -175,7 +175,11 @@ namespace Kotono.Graphics.Objects
 
             for (int i = 0; i < _text.Length; i++)
             {
-                string path = _paths[_text[i]] ?? _paths[' '];
+                if (!_paths.TryGetValue(_text[i], out string? path))
+                {
+                    path = _paths[' '];
+                }
+                //string path = _paths[_text[i]] ?? _paths[' '];
                 Rect dest = GetLetterDest(i, _lettersDest);
 
                 _letters.Add(new Image(

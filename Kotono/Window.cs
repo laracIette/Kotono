@@ -13,6 +13,8 @@ namespace Kotono
     public class Window : GameWindow
     {
         private double _stalledTime = 0;
+        
+        private bool ShouldRenderFrame => IsFocused && (KT.PerformanceWindow.FrameRate < KT.MaxFrameRate);
 
         public Window(WindowSettings windowSettings)
             : base(
@@ -60,23 +62,24 @@ namespace Kotono
         {
             base.OnRenderFrame(e);
 
-            // don't render frame if current FrameRate > desired FrameRate
-            if (!IsFocused || (KT.PerformanceWindow.FrameRate > KT.MaxFrameRate - 1))
+            // DRender frame if Window is focused and current FrameRate < desired FrameRate
+            if (ShouldRenderFrame)
+            {
+                _stalledTime = 0;
+
+                KT.PerformanceWindow.AddFrameTime(e.Time);
+
+                GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+
+                KT.RenderFrame();
+
+                base.SwapBuffers();
+            }
+            else
             {
                 _stalledTime += e.Time;
                 KT.PerformanceWindow.AddFrameTime(_stalledTime);
-                return;
             }
-
-            _stalledTime = 0;
-
-            KT.PerformanceWindow.AddFrameTime(e.Time);
-
-            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-
-            KT.RenderFrame();
-
-            base.SwapBuffers();
         }
 
         protected override void OnUpdateFrame(FrameEventArgs e)

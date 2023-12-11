@@ -140,7 +140,7 @@ namespace Kotono.Graphics.Objects.Meshes
                 hitbox.Color = Color.Red;
             }
 
-            if (!_paths.ContainsKey(_properties["Obj"]))
+            if (!_paths.TryGetValue(_properties["Obj"], out MeshSettings value))
             {
                 List<Vertex>[] models;
                 List<int>[] indices;
@@ -220,8 +220,7 @@ namespace Kotono.Graphics.Objects.Meshes
                 int elementBufferObject = GL.GenBuffer();
                 GL.BindBuffer(BufferTarget.ElementArrayBuffer, elementBufferObject);
                 GL.BufferData(BufferTarget.ElementArrayBuffer, indices[0].Count * sizeof(int), indices[0].ToArray(), BufferUsageHint.StaticDraw);
-
-                _paths[_properties["Obj"]] = new MeshSettings
+                value = new MeshSettings
                 {
                     VertexArrayObject = vertexArrayObject,
                     VertexBufferObject = vertexBufferObject,
@@ -230,9 +229,10 @@ namespace Kotono.Graphics.Objects.Meshes
                     Vertices = vertices.ToArray(),
                     Triangles = triangles.ToArray()
                 };
+                _paths[_properties["Obj"]] = value;
             }
 
-            _meshSettings = _paths[_properties["Obj"]];
+            _meshSettings = value;
 
             Create();
         }

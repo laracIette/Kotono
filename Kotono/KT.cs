@@ -62,7 +62,15 @@ namespace Kotono
 
         public static void Print(object? obj)
         {
-            Print(obj, Random.Color());
+            Print(
+                obj, 
+                new Color
+                {
+                    R = (Math.Sin(0.01 * Time.Now + 0.0) * 0.5f) + 0.5f,
+                    G = (Math.Sin(0.01 * Time.Now + 2.0) * 0.5f) + 0.5f,
+                    B = (Math.Sin(0.01 * Time.Now + 4.0) * 0.5f) + 0.5f
+                }
+            );
         }
 
         public static void Print()
