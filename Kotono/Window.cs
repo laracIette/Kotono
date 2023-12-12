@@ -122,7 +122,7 @@ namespace Kotono
 
                 // first pass
                 GL.BindFramebuffer(FramebufferTarget.Framebuffer, _frameBuffer);
-                GL.ClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+                GL.ClearColor(0.1f, 0.1f, 0.2f, 1.0f);
                 GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
                 GL.Enable(EnableCap.DepthTest);
                 
