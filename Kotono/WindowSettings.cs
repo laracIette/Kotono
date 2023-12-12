@@ -1,5 +1,4 @@
 ﻿using Kotono.Input;
-using Kotono.Utils;
 
 namespace Kotono
 {
@@ -18,7 +17,5 @@ namespace Kotono
         public string ProjectPath { get; set; } = "";
 
         public CursorState CursorState { get; set; } = CursorState.Normal;
-
-        public Color ClearColor { get; set; } = Color.White;
     }
 }

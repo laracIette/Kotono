@@ -6,8 +6,8 @@ namespace Kotono.File
     {
         public string Directory
         {
-            get => Strings["Directory"];
-            set => Strings["Directory"] = value;
+            get => this["Directory"];
+            set => this["Directory"] = value;
         }
 
         public Rect Dest
@@ -15,10 +15,10 @@ namespace Kotono.File
             get => Rect.FromProperties(this);
             set 
             {
-                Floats["Dest.X"] = value.X;
-                Floats["Dest.Y"] = value.Y;
-                Floats["Dest.W"] = value.W;
-                Floats["Dest.H"] = value.H;
+                this["Dest.X"] = value.X.ToString();
+                this["Dest.Y"] = value.Y.ToString();
+                this["Dest.W"] = value.W.ToString();
+                this["Dest.H"] = value.H.ToString();
             }
         }
 
@@ -27,35 +27,35 @@ namespace Kotono.File
             get => Color.FromProperties(this);
             set
             {
-                Floats["Color.R"] = value.R;
-                Floats["Color.G"] = value.G;
-                Floats["Color.B"] = value.B;
-                Floats["Color.A"] = value.A;
+                this["Color.R"] = value.R.ToString();
+                this["Color.G"] = value.G.ToString();
+                this["Color.B"] = value.B.ToString();
+                this["Color.A"] = value.A.ToString();
             }
         }
 
         public int Layer
         {
-            get => Ints["Layer"];
-            set => Ints["Layer"] = value;
+            get => int.Parse(this["Layer"]);
+            set => this["Layer"] = value.ToString();
         }
 
         public int FrameRate
         {
-            get => Ints["FrameRate"];
-            set => Ints["FrameRate"] = value;
+            get => int.Parse(this["FrameRate"]);
+            set => this["FrameRate"] = value.ToString();
         }
 
         public double StartTime
         {
-            get => Doubles["StartTime"];
-            set => Doubles["StartTime"] = value;
+            get => double.Parse(this["StartTime"]);
+            set => this["StartTime"] = value.ToString();
         }
 
         public double Duration
         {
-            get => Doubles["Duration"];
-            set => Doubles["Duration"] = value;
+            get => double.Parse(this["Duration"]);
+            set => this["Duration"] = value.ToString();
         }
 
         public AnimationProperties(string path) 

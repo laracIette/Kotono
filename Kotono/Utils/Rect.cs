@@ -1,9 +1,5 @@
-﻿using Assimp.Unmanaged;
-using Kotono.File;
-using Kotono.Graphics;
+﻿using Kotono.File;
 using Kotono.Graphics.Objects;
-using Kotono.Graphics.Objects.Managers;
-using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using System;
 
@@ -196,10 +192,10 @@ namespace Kotono.Utils
         {
             return new Rect
             {
-                X = p.Floats["Dest.X"],
-                Y = p.Floats["Dest.Y"],
-                W = p.Floats["Dest.W"],
-                H = p.Floats["Dest.H"]
+                X = float.Parse(p["Dest.X"]),
+                Y = float.Parse(p["Dest.Y"]),
+                W = float.Parse(p["Dest.W"]),
+                H = float.Parse(p["Dest.H"])
             };
         }
 

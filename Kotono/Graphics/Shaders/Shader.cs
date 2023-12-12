@@ -13,25 +13,22 @@ namespace Kotono.Graphics.Shaders
 
         private readonly Dictionary<string, int> _uniformLocations = new();
 
-        protected readonly string _vertPath;
-        
-        protected readonly string _fragPath;
+        private readonly string _name;
 
-        public Shader(string vertPath, string fragPath)
+        public Shader(string name)
         { 
-            _vertPath = vertPath;
-            _fragPath = fragPath;
+            _name = name;
         }
 
         public void Init() 
         { 
-            var shaderSource = IO.File.ReadAllText(Path.Kotono + _vertPath);
-            var vertexShader = GL.CreateShader(OpenTK.Graphics.OpenGL4.ShaderType.VertexShader);
+            var shaderSource = IO.File.ReadAllText(Path.Kotono + "Graphics/Shaders/" + _name + ".vert");
+            var vertexShader = GL.CreateShader(ShaderType.VertexShader);
             GL.ShaderSource(vertexShader, shaderSource);
             CompileShader(vertexShader);
 
-            shaderSource = IO.File.ReadAllText(Path.Kotono + _fragPath);
-            var fragmentShader = GL.CreateShader(OpenTK.Graphics.OpenGL4.ShaderType.FragmentShader);
+            shaderSource = IO.File.ReadAllText(Path.Kotono + "Graphics/Shaders/" + _name + ".frag");
+            var fragmentShader = GL.CreateShader(ShaderType.FragmentShader);
             GL.ShaderSource(fragmentShader, shaderSource);
             CompileShader(fragmentShader);
 
@@ -57,7 +54,10 @@ namespace Kotono.Graphics.Shaders
             }
         }
 
-        public virtual void Update() { }
+        public virtual void Update() 
+        {
+            Use();
+        }
 
         private static void CompileShader(int shader)
         {
@@ -83,7 +83,7 @@ namespace Kotono.Graphics.Shaders
             }
         }
 
-        private void Use()
+        public void Use()
         {
             GL.UseProgram(_handle);
         }

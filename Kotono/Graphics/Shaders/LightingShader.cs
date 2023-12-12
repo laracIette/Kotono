@@ -7,11 +7,13 @@ namespace Kotono.Graphics.Shaders
     public class LightingShader : Shader
     {
         public LightingShader() 
-            : base("Graphics/Shaders/lighting.vert", "Graphics/Shaders/lighting.frag")
+            : base("lighting")
         { }
 
         public override void Update()
         {
+            base.Update();
+
             SetInt("numPointLights", PointLight.Count);
             SetInt("numSpotLights", SpotLight.Count);
 

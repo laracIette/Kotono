@@ -3,7 +3,7 @@
     public class RoundedBoxShader : Shader
     {
         public RoundedBoxShader() 
-            : base("Graphics/Shaders/roundedBox.vert", "Graphics/Shaders/roundedBox.frag")
+            : base("roundedBox")
         { }
     }
 }

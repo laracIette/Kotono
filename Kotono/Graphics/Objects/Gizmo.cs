@@ -58,7 +58,7 @@ namespace Kotono.Graphics.Objects
 
         public static bool IsDraw { get; private set; } = false;
 
-        private static int _selectedMesh = -1;
+        private static int _selectedMeshIndex = -1;
 
         private static TransformSpace _transformSpace = TransformSpace.World;
 
@@ -84,11 +84,11 @@ namespace Kotono.Graphics.Objects
 
             if (Mouse.IsButtonPressed(MouseButton.Left) && (Mouse.CursorState == CursorState.Confined))
             {
-                _selectedMesh = GetSelectedMesh();
+                _selectedMeshIndex = GetSelectedMeshIndex();
             }
             else if (Mouse.IsButtonReleased(MouseButton.Left) || (Mouse.CursorState != CursorState.Confined))
             {
-                _selectedMesh = -1;
+                _selectedMeshIndex = -1;
             }
 
             Location = _attachMesh.Location;
@@ -108,17 +108,18 @@ namespace Kotono.Graphics.Objects
             }
 
             Location += GetMovement();
-
             _attachMesh.Location = Location;
+
+            KT.Print(_attachMesh.Location);
 
             Scale = (Vector)(Vector.Distance(Location, CameraManager.ActiveCamera.Location) / 75);
         }
 
         private static Vector GetMovement()
         {
-            float speed = 0.01f;
+            float speed = .01f;
 
-            return _selectedMesh switch
+            return _selectedMeshIndex switch
             {
                 0 => Transform.Right * Mouse.Delta.X * speed,
                 1 => Transform.Up * -Mouse.Delta.Y * speed,
@@ -128,7 +129,7 @@ namespace Kotono.Graphics.Objects
             };
         }
 
-        private static int GetSelectedMesh()
+        private static int GetSelectedMeshIndex()
         {
             int closestMesh = -1;
             float closestDistance = float.PositiveInfinity;
