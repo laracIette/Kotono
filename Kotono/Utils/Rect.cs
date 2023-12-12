@@ -1,9 +1,5 @@
-﻿using Assimp.Unmanaged;
-using Kotono.File;
-using Kotono.Graphics;
+﻿using Kotono.File;
 using Kotono.Graphics.Objects;
-using Kotono.Graphics.Objects.Managers;
-using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using System;
 

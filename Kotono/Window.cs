@@ -20,6 +20,8 @@ namespace Kotono
 
         private int _textureColorBuffer;
 
+        private int _textureDepthStencilBuffer;
+
         private bool ShouldRenderFrame => IsFocused && (KT.PerformanceWindow.FrameRate < KT.MaxFrameRate);
 
         public Window(WindowSettings windowSettings)
@@ -77,23 +79,19 @@ namespace Kotono
             // Attach texture to framebuffer
             GL.FramebufferTexture2D(FramebufferTarget.Framebuffer, FramebufferAttachment.ColorAttachment0, TextureTarget.Texture2D, _textureColorBuffer, 0);
 
-            // Creating the renderbuffer
-            int renderBuffer = GL.GenRenderbuffer();
-            GL.BindRenderbuffer(RenderbufferTarget.Renderbuffer, renderBuffer);
-            GL.RenderbufferStorage(RenderbufferTarget.Renderbuffer, RenderbufferStorage.Depth24Stencil8, (int)KT.Dest.W, (int)KT.Dest.H);
-            GL.BindRenderbuffer(RenderbufferTarget.Renderbuffer, 0);
+            // Creating the depth and stencil texture
+            _textureDepthStencilBuffer = GL.GenTexture();
+            GL.BindTexture(TextureTarget.Texture2D, _textureDepthStencilBuffer);
             
-            // Attach renderbuffer to framebuffer
-            GL.FramebufferRenderbuffer(FramebufferTarget.Framebuffer, FramebufferAttachment.DepthStencilAttachment, RenderbufferTarget.Renderbuffer, renderBuffer);
+            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Depth24Stencil8, (int)KT.Dest.W, (int)KT.Dest.H, 0, PixelFormat.DepthStencil, PixelType.UnsignedInt248, IntPtr.Zero);
 
-            /* // Depth and stencil buffer
-            GL.TexImage2D(
-                TextureTarget.Texture2D, 0, PixelInternalFormat.Depth24Stencil8, (int)KT.Dest.W, (int)KT.Dest.H, 0,
-                PixelFormat.DepthStencil, PixelType.UnsignedInt248, IntPtr.Zero
-            );
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
 
-            GL.FramebufferTexture2D(FramebufferTarget.Framebuffer, FramebufferAttachment.DepthStencilAttachment, TextureTarget.Texture2D, texture, 0);
-            */
+            GL.BindTexture(TextureTarget.Texture2D, 0);
+
+            // Attach texture to framebuffer
+            GL.FramebufferTexture2D(FramebufferTarget.Framebuffer, FramebufferAttachment.DepthStencilAttachment, TextureTarget.Texture2D, _textureDepthStencilBuffer, 0);
 
             // Check framebuffer completion
             if (GL.CheckFramebufferStatus(FramebufferTarget.Framebuffer) != FramebufferErrorCode.FramebufferComplete)
@@ -121,33 +119,23 @@ namespace Kotono
                 _stalledTime = 0;
 
                 KT.PerformanceWindow.AddFrameTime(e.Time);
-                /* old
-
-                GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-
-                KT.Draw();
-                KT.UpdateShaders();
-
-                base.SwapBuffers();
-                */
 
                 // first pass
                 GL.BindFramebuffer(FramebufferTarget.Framebuffer, _frameBuffer);
                 GL.ClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-                GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit); // we're not using the stencil buffer now
+                GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
                 GL.Enable(EnableCap.DepthTest);
+                
                 KT.Draw();
                 KT.UpdateShaders();
 
                 // second pass
                 GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0); // back to default
                 GL.ClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-                GL.Clear(ClearBufferMask.ColorBufferBit);
+                GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
-                GL.BindVertexArray(SquareVertices.VertexArrayObject);
-                GL.Disable(EnableCap.DepthTest);
-                GL.BindTexture(TextureTarget.Texture2D, _textureColorBuffer);
-                GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
+                ShaderManager.Color.Draw(_textureColorBuffer);
+                ShaderManager.Outline.Draw(_textureDepthStencilBuffer);
                 
                 base.SwapBuffers();
             }

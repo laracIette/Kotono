@@ -1,5 +1,4 @@
 ﻿using Kotono.Input;
-using Kotono.Utils;
 
 namespace Kotono
 {

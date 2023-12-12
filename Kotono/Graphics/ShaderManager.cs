@@ -18,7 +18,11 @@ namespace Kotono.Graphics
         
         public static RoundedBorderShader RoundedBorder { get; } = new();
         
-        public static PostProcessShader PostProcessShader { get; } = new();
+        public static ColorShader Color { get; } = new();
+
+        public static BlurShader Blur { get; } = new();
+        
+        public static OutlineShader Outline { get; } = new();
 
         public static void Init()
         {
@@ -29,8 +33,9 @@ namespace Kotono.Graphics
             Gizmo.Init();
             RoundedBox.Init();
             RoundedBorder.Init();
-
-            PostProcessShader.Init();
+            Color.Init();
+            Blur.Init();
+            Outline.Init();
         }
 
         public static void Update()
@@ -42,8 +47,9 @@ namespace Kotono.Graphics
             Gizmo.Update();
             RoundedBox.Update();
             RoundedBorder.Update();
-
-            PostProcessShader.Update();
+            Color.Update();
+            Blur.Update();
+            Outline.Update();
         }
     }
 }

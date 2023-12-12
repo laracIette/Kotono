@@ -83,7 +83,7 @@ namespace Kotono.Graphics.Shaders
             }
         }
 
-        private void Use()
+        public void Use()
         {
             GL.UseProgram(_handle);
         }

@@ -3,7 +3,6 @@ using Kotono.Graphics.Objects;
 using Kotono.Input;
 using Kotono.Utils;
 using OpenTK.Windowing.GraphicsLibraryFramework;
-using System;
 
 namespace Kotono.Engine.Interface.AddMenu
 {
