@@ -61,7 +61,7 @@ bool IsOutline()
         }
     }
 
-    return (maxDepth - minDepth) > 0.1 ? true : false;
+    return (maxDepth - minDepth) > 0.1;
 }
 
 float linearizeDepth(float depth)
