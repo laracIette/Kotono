@@ -19,11 +19,11 @@ namespace Kotono.Audio
                 AL.Source(Source, ALSourcef.Gain, _volume * SoundManager.GeneralVolume);
             }
         }
-        
+
         public bool IsPlaying => AL.GetSourceState(Source) == ALSourceState.Playing;
 
         public bool IsPaused => AL.GetSourceState(Source) == ALSourceState.Paused;
-        
+
         public bool IsStopped => AL.GetSourceState(Source) == ALSourceState.Stopped;
 
         public Sound(string path)

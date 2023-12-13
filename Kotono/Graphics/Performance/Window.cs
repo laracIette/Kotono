@@ -29,10 +29,10 @@ namespace Kotono.Graphics.Performance
             _update = new RateStat(_dest, Anchor.Top);
 
             _background = new RoundedBox(
-                new Rect(_dest.X, _dest.Y, 400, 120), 
-                Color.FromHex("#273f45"), 
-                layer: 0, 
-                fallOff: 1,  
+                new Rect(_dest.X, _dest.Y, 400, 120),
+                Color.FromHex("#273f45"),
+                layer: 0,
+                fallOff: 1,
                 cornerSize: 10
             );
         }

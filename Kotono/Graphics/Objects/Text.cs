@@ -249,7 +249,7 @@ namespace Kotono.Graphics.Objects
 
         public void Update()
         {
-            
+
         }
 
         public virtual void SetText(string text)

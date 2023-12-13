@@ -4,7 +4,7 @@ namespace Kotono.Graphics.Shaders
 {
     public class PointLightShader : Shader
     {
-        public PointLightShader() 
+        public PointLightShader()
             : base("pointLight")
         { }
 

@@ -68,22 +68,22 @@ namespace Kotono.Graphics.Objects.Hitboxes
             set => _transform = value;
         }
 
-        public Vector Location 
-        { 
-            get => _transform.Location; 
-            set => _transform.Location = value; 
+        public Vector Location
+        {
+            get => _transform.Location;
+            set => _transform.Location = value;
         }
 
-        public Vector Rotation 
-        { 
-            get => _transform.Rotation; 
-            set => _transform.Rotation = value; 
+        public Vector Rotation
+        {
+            get => _transform.Rotation;
+            set => _transform.Rotation = value;
         }
 
-        public Vector Scale 
-        { 
-            get => _transform.Scale; 
-            set => _transform.Scale = value; 
+        public Vector Scale
+        {
+            get => _transform.Scale;
+            set => _transform.Scale = value;
         }
 
         public Color Color { get; set; } = Color.White;
@@ -117,7 +117,7 @@ namespace Kotono.Graphics.Objects.Hitboxes
 
         public void Init() { }
 
-        public void Update() 
+        public void Update()
         {
 
         }

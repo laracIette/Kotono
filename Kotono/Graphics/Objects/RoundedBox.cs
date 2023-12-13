@@ -11,7 +11,7 @@ namespace Kotono.Graphics.Objects
     {
         private Rect _dest;
 
-        public virtual Rect Dest 
+        public virtual Rect Dest
         {
             get => _dest;
             set
@@ -33,7 +33,7 @@ namespace Kotono.Graphics.Objects
 
         protected float _fallOff;
 
-        public float FallOff 
+        public float FallOff
         {
             get => _fallOff;
             set
@@ -45,7 +45,7 @@ namespace Kotono.Graphics.Objects
 
         protected float _cornerSize;
 
-        public float CornerSize 
+        public float CornerSize
         {
             get => _cornerSize;
             set
@@ -53,19 +53,19 @@ namespace Kotono.Graphics.Objects
                 _cornerSize = value;
                 UpdateValues();
             }
-        } 
+        }
 
         public Color Color { get; set; }
 
         public bool IsDraw { get; private set; } = true;
 
         public int Layer { get; set; }
-        
+
         protected virtual Matrix4 Model =>
             Matrix4.CreateScale((Dest + new Rect(w: FallOff * 2)).WorldSpace.W, (Dest + new Rect(h: FallOff * 2)).WorldSpace.H, 1.0f)
             * Matrix4.CreateTranslation(Dest.WorldSpace.X, Dest.WorldSpace.Y, 0.0f);
 
-        public RoundedBox(Rect dest, Color color, int layer, float fallOff, float cornerSize) 
+        public RoundedBox(Rect dest, Color color, int layer, float fallOff, float cornerSize)
         {
             Dest = dest;
             Color = color;

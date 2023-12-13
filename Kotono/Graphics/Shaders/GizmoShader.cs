@@ -4,7 +4,7 @@ namespace Kotono.Graphics.Shaders
 {
     public class GizmoShader : Shader
     {
-        public GizmoShader() 
+        public GizmoShader()
             : base("gizmo")
         { }
 

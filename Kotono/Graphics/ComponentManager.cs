@@ -6,7 +6,7 @@ namespace Kotono.Graphics
     {
         private readonly List<Component> _components = new();
 
-        public ComponentManager() 
+        public ComponentManager()
         {
         }
 
@@ -33,8 +33,8 @@ namespace Kotono.Graphics
 
         public void Draw()
         {
-            foreach (var component in _components) 
-            { 
+            foreach (var component in _components)
+            {
                 component.Draw();
             }
         }

@@ -6,7 +6,7 @@ namespace Kotono.Graphics.Shaders
 {
     public class LightingShader : Shader
     {
-        public LightingShader() 
+        public LightingShader()
             : base("lighting")
         { }
 

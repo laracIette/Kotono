@@ -13,7 +13,7 @@ namespace Kotono.File
         public Rect Dest
         {
             get => Rect.FromProperties(this);
-            set 
+            set
             {
                 this["Dest.X"] = value.X.ToString();
                 this["Dest.Y"] = value.Y.ToString();
@@ -22,8 +22,8 @@ namespace Kotono.File
             }
         }
 
-        public Color Color 
-        { 
+        public Color Color
+        {
             get => Color.FromProperties(this);
             set
             {
@@ -58,7 +58,7 @@ namespace Kotono.File
             set => this["Duration"] = value.ToString();
         }
 
-        public AnimationProperties(string path) 
+        public AnimationProperties(string path)
             : base(path) { }
     }
 }

@@ -1,8 +1,8 @@
 ﻿using Kotono.Graphics.Objects.Hitboxes;
 using Kotono.Graphics.Objects.Lights;
+using Kotono.Utils;
 using OpenTK.Graphics.OpenGL4;
 using System;
-using Kotono.Utils;
 
 namespace Kotono.Graphics.Objects.Meshes
 {
@@ -10,7 +10,7 @@ namespace Kotono.Graphics.Objects.Meshes
     {
         private readonly PointLight _pointLight;
 
-        public PointLightMesh(Vector location, PointLight pointLight) 
+        public PointLightMesh(Vector location, PointLight pointLight)
             : base(
                   Path.Kotono + "Assets/Meshes/pointLight.ktf",
                   new IHitbox[]

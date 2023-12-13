@@ -32,7 +32,7 @@ namespace Kotono.Utils
         public static void Update()
         {
             // current Time in milliseconds
-            long now = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond; 
+            long now = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
 
             Delta = now - Now;
 

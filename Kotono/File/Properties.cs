@@ -92,7 +92,7 @@ namespace Kotono.File
             {
                 throw new FormatException($"error: string \"{str}\" must contain \":\" to be a Key / Value string");
             }
-            
+
             // separate key / value
             int firstColonIndex = str.IndexOf(':');
 

@@ -41,7 +41,7 @@ namespace Kotono.Graphics.Objects
             ///     a minimum value of the border's Thickness / 2 + its FallOff,
             ///     a maximum value of the smallest value between the border's Width and Height divided by 2
             _cornerSize = Math.Clamp(CornerSize, Thickness / 2 + FallOff, minSize / 2);
-            
+
             /// FallOff has : 
             ///     a minimum value of 0.000001 so that there is no division by 0 in glsl,
             ///     a maximum value of the border's Width - its Thickness

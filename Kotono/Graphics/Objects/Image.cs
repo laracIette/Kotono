@@ -15,7 +15,7 @@ namespace Kotono.Graphics.Objects
 
         private Rect _dest;
 
-        public Rect Dest 
+        public Rect Dest
         {
             get => _dest;
             set => _dest = value;
@@ -33,7 +33,7 @@ namespace Kotono.Graphics.Objects
             set => _dest.Size = value;
         }
 
-        public float X 
+        public float X
         {
             get => _dest.X;
             set => _dest.X = value;
@@ -45,7 +45,7 @@ namespace Kotono.Graphics.Objects
             set => _dest.Y = value;
         }
 
-        public float W 
+        public float W
         {
             get => _dest.W;
             set => _dest.W = value;
@@ -95,7 +95,7 @@ namespace Kotono.Graphics.Objects
             {
                 _transformation = Rect.Zero;
             }
-            
+
             Dest += _transformation * Time.DeltaS;
         }
 

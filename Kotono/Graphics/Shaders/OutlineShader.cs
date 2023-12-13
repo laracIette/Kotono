@@ -2,7 +2,7 @@
 {
     public class OutlineShader : TextureBufferShader
     {
-        public OutlineShader() 
+        public OutlineShader()
             : base("outline")
         { }
     }

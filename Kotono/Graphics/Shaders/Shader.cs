@@ -16,12 +16,12 @@ namespace Kotono.Graphics.Shaders
         private readonly string _name;
 
         public Shader(string name)
-        { 
+        {
             _name = name;
         }
 
-        public void Init() 
-        { 
+        public void Init()
+        {
             var shaderSource = IO.File.ReadAllText(Path.Kotono + "Graphics/Shaders/" + _name + ".vert");
             var vertexShader = GL.CreateShader(ShaderType.VertexShader);
             GL.ShaderSource(vertexShader, shaderSource);
@@ -54,7 +54,7 @@ namespace Kotono.Graphics.Shaders
             }
         }
 
-        public virtual void Update() 
+        public virtual void Update()
         {
             Use();
         }

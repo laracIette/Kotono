@@ -47,7 +47,7 @@ namespace Kotono
 
             Mouse.CursorState = windowSettings.CursorState;
 
-            GL.Enable(EnableCap.DepthTest);
+            //GL.Enable(EnableCap.DepthTest);
 
             new Camera();
 
@@ -82,7 +82,7 @@ namespace Kotono
             // Creating the depth and stencil texture
             _textureDepthStencilBuffer = GL.GenTexture();
             GL.BindTexture(TextureTarget.Texture2D, _textureDepthStencilBuffer);
-            
+
             GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Depth24Stencil8, (int)KT.Dest.W, (int)KT.Dest.H, 0, PixelFormat.DepthStencil, PixelType.UnsignedInt248, IntPtr.Zero);
 
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
@@ -125,7 +125,7 @@ namespace Kotono
                 GL.ClearColor(0.1f, 0.1f, 0.2f, 1.0f);
                 GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
                 GL.Enable(EnableCap.DepthTest);
-                
+
                 KT.Draw();
                 KT.UpdateShaders();
 
@@ -136,7 +136,7 @@ namespace Kotono
 
                 ShaderManager.Color.Draw(_textureColorBuffer);
                 ShaderManager.Outline.Draw(_textureDepthStencilBuffer);
-                
+
                 base.SwapBuffers();
             }
             else

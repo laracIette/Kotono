@@ -1,10 +1,9 @@
-﻿using OpenTK.Windowing.GraphicsLibraryFramework;
-
+﻿using Kotono.Graphics.Objects.Managers;
+using Kotono.Input;
 using Kotono.Utils;
+using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
 using Math = Kotono.Utils.Math;
-using Kotono.Input;
-using Kotono.Graphics.Objects.Managers;
 
 namespace Kotono.Graphics.Objects.Lights
 {
@@ -75,7 +74,7 @@ namespace Kotono.Graphics.Objects.Lights
             ShaderManager.Lighting.SetVector($"spotLights[{_shaderIndex}].direction", CameraManager.ActiveCamera.Front);
             ShaderManager.Lighting.SetColor($"spotLights[{_shaderIndex}].ambient", Color.Black);
             ShaderManager.Lighting.SetColor($"spotLights[{_shaderIndex}].diffuse", Color.White);
-            ShaderManager.Lighting.SetColor($"spotLights[{ _shaderIndex}].specular", Color.White);
+            ShaderManager.Lighting.SetColor($"spotLights[{_shaderIndex}].specular", Color.White);
             ShaderManager.Lighting.SetFloat($"spotLights[{_shaderIndex}].constant", 1.0f);
             ShaderManager.Lighting.SetFloat($"spotLights[{_shaderIndex}].linear", 0.09f);
             ShaderManager.Lighting.SetFloat($"spotLights[{_shaderIndex}].quadratic", 0.032f);

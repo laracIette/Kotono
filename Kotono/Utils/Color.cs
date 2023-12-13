@@ -19,7 +19,7 @@ namespace Kotono.Utils
         public static Color Black => FromHex("#000000FF");
 
         public static Color Blue => FromHex("#0000FFFF");
-        
+
         public static Color Cyan => FromHex("#00FFFFFF");
 
         public static Color DarkGray => FromHex("#404040FF");
@@ -27,7 +27,7 @@ namespace Kotono.Utils
         public static Color Gray => FromHex("#808080FF");
 
         public static Color Green => FromHex("#00FF00FF");
-        
+
         public static Color LightGray => FromHex("#C0C0C0FF");
 
         public static Color Magenta => FromHex("#FF00FFFF");
@@ -157,7 +157,7 @@ namespace Kotono.Utils
         private static float HexToF(char hex)
         {
             return HexToF(hex.ToString() + hex.ToString());
-        }     
+        }
 
         public static string ToHex(Color c)
         {
@@ -167,7 +167,7 @@ namespace Kotono.Utils
             result += ((int)(c.G * 255)).ToString("X");
             result += ((int)(c.B * 255)).ToString("X");
             result += ((int)(c.A * 255)).ToString("X");
-                       
+
             return result;
         }
 

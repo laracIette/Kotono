@@ -50,7 +50,7 @@ namespace Kotono.Utils
                 2 => Z,
                 _ => throw new IndexOutOfRangeException("You tried to access this Vector at index: " + index)
             };
-            
+
         /// <summary> Initialize a Vector with X = 0, Y = 0, Z = 0 </summary>
         public Vector()
         {
@@ -127,7 +127,7 @@ namespace Kotono.Utils
             v.Z = Math.Rad(v.Z);
             return v;
         }
-        
+
         /// <summary> Convert a Vector from radians to degrees </summary>
         public static Vector Deg(Vector v)
         {

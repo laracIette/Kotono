@@ -2,7 +2,7 @@
 {
     public class RoundedBoxShader : Shader
     {
-        public RoundedBoxShader() 
+        public RoundedBoxShader()
             : base("roundedBox")
         { }
     }

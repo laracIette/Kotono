@@ -11,7 +11,7 @@
             return _random.Next(min, max);
         }
 
-        
+
         /// <returns>A double between min and max.</returns>
         public static double Double(double min, double max)
         {

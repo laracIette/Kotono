@@ -4,7 +4,7 @@ namespace Kotono.Graphics.Shaders
 {
     public class HitboxShader : Shader
     {
-        public HitboxShader() 
+        public HitboxShader()
             : base("hitbox")
         { }
 

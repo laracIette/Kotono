@@ -9,11 +9,11 @@ namespace Kotono.Graphics.Print
 
         public PrinterText()
             : base("", _dest, Anchor.TopLeft, Color.White, 2 / 3f, int.MaxValue)
-        { 
+        {
         }
 
         public override void SetText(string text)
-        {   
+        {
             _text = text;
 
             Position = _dest.Position;

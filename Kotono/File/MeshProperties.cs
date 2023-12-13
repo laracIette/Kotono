@@ -7,7 +7,7 @@ namespace Kotono.File
         public Transform Transform
         {
             get => Transform.FromProperties(this);
-            set 
+            set
             {
                 this["Transform.Location.X"] = value.Location.X.ToString();
                 this["Transform.Location.Y"] = value.Location.Y.ToString();
@@ -23,8 +23,8 @@ namespace Kotono.File
             }
         }
 
-        public Color Color 
-        { 
+        public Color Color
+        {
             get => Color.FromProperties(this);
             set
             {
@@ -35,7 +35,7 @@ namespace Kotono.File
             }
         }
 
-        public MeshProperties(string path) 
+        public MeshProperties(string path)
             : base(path) { }
     }
 }

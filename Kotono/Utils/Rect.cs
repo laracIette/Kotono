@@ -12,7 +12,7 @@ namespace Kotono.Utils
         public Point Size;
 
         public float X
-        { 
+        {
             readonly get => Position.X;
             set => Position.X = value;
         }
@@ -48,15 +48,15 @@ namespace Kotono.Utils
             );
 
         public static Rect Zero => new Rect(0, 0, 0, 0);
-        
+
         public static Rect Unit => new Rect(1, 1, 1, 1);
-       
+
         public static Rect UnitX => new Rect(1, 0, 0, 0);
 
         public static Rect UnitY => new Rect(0, 1, 0, 0);
-        
+
         public static Rect UnitW => new Rect(0, 0, 1, 0);
-        
+
         public static Rect UnitH => new Rect(0, 0, 0, 1);
 
         public readonly Rect WorldSpace =>
@@ -111,7 +111,7 @@ namespace Kotono.Utils
 
         public Rect(float x, float y, Point size)
         {
-            X = x; 
+            X = x;
             Y = y;
             W = size.X;
             H = size.Y;

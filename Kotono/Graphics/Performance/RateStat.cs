@@ -29,7 +29,7 @@ namespace Kotono.Graphics.Performance
             _text.Init();
         }
 
-        public void Update() 
+        public void Update()
         {
 
         }

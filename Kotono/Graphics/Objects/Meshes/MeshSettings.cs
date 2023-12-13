@@ -6,7 +6,7 @@ namespace Kotono.Graphics.Objects.Meshes
     public struct MeshSettings
     {
         public int VertexArrayObject;
-        
+
         public int VertexBufferObject;
 
         public int IndicesCount;

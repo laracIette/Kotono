@@ -108,7 +108,7 @@ namespace Kotono.Graphics.Objects
             _frameRate = _properties.FrameRate;
             _startTime = Time.NowS + _properties.StartTime;
             _duration = _properties.Duration;
-            
+
             Hide();
 
             ObjectManager.Create(this);

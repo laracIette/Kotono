@@ -16,7 +16,7 @@ namespace Kotono.Graphics.Objects.Lights
         }
 
         public Color Color { get; protected set; }
-       
+
         public Color Ambient { get; protected set; }
 
         public Color Specular { get; protected set; }
@@ -77,7 +77,7 @@ namespace Kotono.Graphics.Objects.Lights
 
         public void Draw()
         {
-            
+
         }
 
         public void Save()

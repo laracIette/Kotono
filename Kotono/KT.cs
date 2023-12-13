@@ -63,7 +63,7 @@ namespace Kotono
         public static void Print(object? obj)
         {
             Print(
-                obj, 
+                obj,
                 new Color
                 {
                     R = (Math.Sin(0.01 * Time.Now + 0.0) * 0.5f) + 0.5f,

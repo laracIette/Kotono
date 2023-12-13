@@ -14,7 +14,7 @@ namespace Kotono.Graphics
         internal TextureUnit Unit { get; }
 
         internal Texture(int handle, TextureUnit unit)
-        {            
+        {
             Handle = handle;
             Unit = unit;
         }

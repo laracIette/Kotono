@@ -7,7 +7,7 @@ using System;
 namespace Kotono.Graphics.Objects.Shapes
 {
     public class Shape : IShape, IObject3D
-    { 
+    {
         public Vector[] Vertices { get; }
 
         private Transform _transform;

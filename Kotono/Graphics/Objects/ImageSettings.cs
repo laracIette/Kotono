@@ -2,7 +2,7 @@
 
 namespace Kotono.Graphics.Objects
 {
-    public class ImageSettings 
+    public class ImageSettings
     {
         public string Path { get; set; } = "";
 

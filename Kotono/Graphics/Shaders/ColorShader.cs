@@ -2,7 +2,7 @@
 {
     public class ColorShader : TextureBufferShader
     {
-        public ColorShader() 
+        public ColorShader()
             : base("color")
         { }
     }

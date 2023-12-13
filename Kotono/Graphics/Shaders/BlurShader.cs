@@ -2,7 +2,7 @@
 {
     public class BlurShader : TextureBufferShader
     {
-        public BlurShader() 
+        public BlurShader()
             : base("blur")
         { }
     }

@@ -46,7 +46,7 @@ namespace Kotono.Utils
             X = f;
             Y = f;
         }
-        
+
         public Point(double f)
         {
             X = (float)f;

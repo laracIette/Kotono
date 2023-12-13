@@ -8,9 +8,9 @@ namespace Kotono.Graphics
         private readonly Viewport _viewport;
 
         private readonly RoundedBox _background;
-        
-        public Component(Rect dest) 
-        { 
+
+        public Component(Rect dest)
+        {
             _viewport = new Viewport(dest);
 
             _background = new RoundedBox(dest, Color.White, 0, 3, 10);

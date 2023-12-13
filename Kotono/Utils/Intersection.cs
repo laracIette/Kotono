@@ -16,7 +16,7 @@ namespace Kotono.Utils
 
             var triangleNormal = Vector.Cross(vertex2 - vertex1, vertex3 - vertex1);
             var rayToVertex1 = vertex1 - rayOrigin;
-            
+
             float denominator = Vector.Dot(triangleNormal, rayDirection);
             if (Math.Abs(denominator) < float.Epsilon)
             {

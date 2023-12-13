@@ -1,5 +1,5 @@
-﻿using System.Speech.Recognition;
-using System;
+﻿using System;
+using System.Speech.Recognition;
 
 namespace Kotono.Audio
 {

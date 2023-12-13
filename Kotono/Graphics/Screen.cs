@@ -19,7 +19,7 @@ namespace Kotono.Graphics
 
         [LibraryImport("user32.dll")]
         private static partial IntPtr MonitorFromPoint(ScreenPoint pt, MonitorOptions dwFlags);
-        
+
         [StructLayout(LayoutKind.Sequential, Pack = 4)]
         public struct ScreenPoint
         {

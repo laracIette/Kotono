@@ -7,7 +7,7 @@ namespace Kotono.File
         public Dictionary<string, string> Dict { get; } = new();
 
         public Data() { }
-        
+
         public override string ToString()
         {
             string result = "";
