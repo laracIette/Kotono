@@ -2,7 +2,8 @@
 
 namespace Kotono.File
 {
-    public class AnimationProperties : Properties
+    public class AnimationProperties(string path) 
+        : Properties(path)
     {
         public string Directory
         {
@@ -57,8 +58,5 @@ namespace Kotono.File
             get => double.Parse(this["Duration"]);
             set => this["Duration"] = value.ToString();
         }
-
-        public AnimationProperties(string path)
-            : base(path) { }
     }
 }

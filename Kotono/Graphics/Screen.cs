@@ -21,16 +21,11 @@ namespace Kotono.Graphics
         private static partial IntPtr MonitorFromPoint(ScreenPoint pt, MonitorOptions dwFlags);
 
         [StructLayout(LayoutKind.Sequential, Pack = 4)]
-        public struct ScreenPoint
+        public struct ScreenPoint(int x, int y)
         {
-            public int X;
-            public int Y;
+            public int X = x;
 
-            public ScreenPoint(int x, int y)
-            {
-                X = x;
-                Y = y;
-            }
+            public int Y = y;
         }
 
         // Define the required structures

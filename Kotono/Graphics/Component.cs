@@ -3,18 +3,11 @@ using Kotono.Utils;
 
 namespace Kotono.Graphics
 {
-    public class Component
+    public class Component(Rect dest)
     {
-        private readonly Viewport _viewport;
+        private readonly Viewport _viewport = new(dest);
 
-        private readonly RoundedBox _background;
-
-        public Component(Rect dest)
-        {
-            _viewport = new Viewport(dest);
-
-            _background = new RoundedBox(dest, Color.White, 0, 3, 10);
-        }
+        private readonly RoundedBox _background = new(dest, Color.White, 0, 3, 10);
 
         public void Update()
         {

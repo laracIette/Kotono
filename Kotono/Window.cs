@@ -47,8 +47,6 @@ namespace Kotono
 
             Mouse.CursorState = windowSettings.CursorState;
 
-            //GL.Enable(EnableCap.DepthTest);
-
             new Camera();
 
             KT.SetWindowPosition((Point)Location);

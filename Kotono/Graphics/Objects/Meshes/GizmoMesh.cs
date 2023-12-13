@@ -3,14 +3,11 @@ using Kotono.Utils;
 
 namespace Kotono.Graphics.Objects.Meshes
 {
-    public class GizmoMesh : FrontMesh
+    public class GizmoMesh(string axis) 
+        : FrontMesh(
+              Path.Kotono + "Assets/Gizmo/gizmo_" + axis + ".ktf",
+              []
+          )
     {
-        public GizmoMesh(string axis)
-            : base(
-                  Path.Kotono + "Assets/Gizmo/gizmo_" + axis + ".ktf",
-                  new IHitbox[] { }
-              )
-        {
-        }
     }
 }

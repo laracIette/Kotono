@@ -7,7 +7,7 @@ namespace Kotono.Engine.Interface.AddMenu
 {
     public class SubMenu
     {
-        private readonly List<Text> _options = new();
+        private readonly List<Text> _options = [];
 
         private readonly Anchor _anchor;
 

@@ -88,7 +88,7 @@ namespace Kotono.Graphics.Objects.Hitboxes
 
         public Color Color { get; set; } = Color.White;
 
-        public List<Sphere> Collisions { get; set; } = new();
+        public List<Sphere> Collisions { get; set; } = [];
 
         public Box()
         {

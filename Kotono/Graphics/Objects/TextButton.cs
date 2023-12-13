@@ -2,9 +2,10 @@
 
 namespace Kotono.Graphics.Objects
 {
-    public class TextButton : Button
+    public class TextButton(Rect dest, Color color, int layer, float fallOff, float cornerSize, string text) 
+        : Button(dest, color, layer, fallOff, cornerSize)
     {
-        protected readonly Text _text;
+        protected readonly Text _text = new(text, new Rect(dest.Position, 25, 30), Anchor.Center, Color.White, 0.6f, 2);
 
         public override Rect Dest
         {
@@ -17,12 +18,6 @@ namespace Kotono.Graphics.Objects
                     _text.Position = value.Position;
                 }
             }
-        }
-
-        public TextButton(Rect dest, Color color, int layer, float fallOff, float cornerSize, string text)
-            : base(dest, color, layer, fallOff, cornerSize)
-        {
-            _text = new Text(text, new Rect(dest.Position, 25, 30), Anchor.Center, Color.White, 0.6f, 2);
         }
 
         public override void Init()

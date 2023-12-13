@@ -4,25 +4,17 @@ using System.Linq;
 
 namespace Kotono.Graphics.Performance
 {
-    public class RateStat
+    public class RateStat(Rect dest, Anchor anchor)
     {
         public double Rate { get; private set; }
 
         public double Time { get; private set; }
 
-        private readonly double[] _times;
+        private readonly double[] _times = new double[60];
 
-        private int _timeIndex;
+        private int _timeIndex = 0;
 
-        private readonly Text _text;
-
-        public RateStat(Rect dest, Anchor anchor)
-        {
-            _times = new double[60];
-            _timeIndex = 0;
-
-            _text = new Text("0", dest, anchor, Color.White, spacing: 1, layer: 1);
-        }
+        private readonly Text _text = new("0", dest, anchor, Color.White, spacing: 1, layer: 1);
 
         public void Init()
         {

@@ -10,7 +10,7 @@ namespace Kotono.Graphics.Objects
 {
     public class Animation : IObject2D
     {
-        protected readonly List<Image> _frames = new();
+        protected readonly List<Image> _frames = [];
 
         public int Count => _frames.Count;
 

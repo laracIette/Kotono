@@ -4,7 +4,7 @@ namespace Kotono.File
 {
     public class Data
     {
-        public Dictionary<string, string> Dict { get; } = new();
+        public Dictionary<string, string> Dict { get; } = [];
 
         public Data() { }
 

@@ -5,7 +5,7 @@ namespace Kotono.Engine.Interface.AddMenu.MainButtons
     public class TriggersButton : MainButton
     {
         public TriggersButton()
-            : base("Triggers", new string[] { }, Anchor.TopLeft)
+            : base("Triggers", [], Anchor.TopLeft)
         { }
     }
 }

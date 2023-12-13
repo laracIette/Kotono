@@ -4,18 +4,12 @@ using System;
 
 namespace Kotono.Engine.Interface.AddMenu
 {
-    public class MainButton : TextButton
+    public class MainButton(string text, string[] options, Anchor anchor)
+        : TextButton(new Rect(100), Color.Gray, 1, 2, 25, text)
     {
-        private readonly SubMenu _subMenu;
+        private readonly SubMenu _subMenu = new(options, anchor);
 
-        private readonly Anchor _anchor;
-
-        public MainButton(string text, string[] options, Anchor anchor)
-            : base(new Rect(100), Color.Gray, 1, 2, 25, text)
-        {
-            _subMenu = new SubMenu(options, anchor);
-            _anchor = anchor;
-        }
+        private readonly Anchor _anchor = anchor;
 
         public override void Init()
         {

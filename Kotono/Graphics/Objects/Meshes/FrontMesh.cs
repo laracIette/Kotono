@@ -3,12 +3,9 @@ using Kotono.Graphics.Objects.Managers;
 
 namespace Kotono.Graphics.Objects.Meshes
 {
-    public class FrontMesh : Mesh
+    public class FrontMesh(string path, IHitbox[] hitboxes) 
+        : Mesh(path, hitboxes)
     {
-        public FrontMesh(string path, IHitbox[] hitboxes)
-            : base(path, hitboxes)
-        { }
-
         protected override void Create()
         {
             ObjectManager.Create(this);

@@ -13,7 +13,7 @@ namespace Kotono.Audio
 
         private static ALContext _context;
 
-        private static readonly Dictionary<string, int> _sources = new();
+        private static readonly Dictionary<string, int> _sources = [];
 
         private static float _generalVolume = 1.0f;
 

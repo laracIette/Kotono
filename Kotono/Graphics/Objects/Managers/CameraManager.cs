@@ -4,7 +4,7 @@ namespace Kotono.Graphics.Objects.Managers
 {
     internal static class CameraManager
     {
-        private static readonly List<Camera> _cameras = new();
+        private static readonly List<Camera> _cameras = [];
 
         internal static Camera ActiveCamera => _cameras[0];
 

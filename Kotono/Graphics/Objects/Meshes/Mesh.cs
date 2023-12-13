@@ -19,7 +19,7 @@ namespace Kotono.Graphics.Objects.Meshes
 {
     public abstract class Mesh : IObject3D
     {
-        private static readonly Dictionary<string, MeshSettings> _paths = new();
+        private static readonly Dictionary<string, MeshSettings> _paths = [];
 
         private Vector _locationVelocity;
 
@@ -144,7 +144,7 @@ namespace Kotono.Graphics.Objects.Meshes
             {
                 List<Vertex>[] models;
                 List<int>[] indices;
-                List<Triangle> triangles = new();
+                List<Triangle> triangles = [];
 
                 using (var importer = new AssimpContext())
                 {

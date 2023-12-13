@@ -4,7 +4,7 @@ namespace Kotono.Graphics.Objects.Managers
 {
     internal abstract class DrawableManager<T> where T : IDrawable
     {
-        protected readonly List<T> _drawables = new();
+        protected readonly List<T> _drawables = [];
 
         internal DrawableManager() { }
 

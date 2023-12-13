@@ -4,11 +4,11 @@ using Math = Kotono.Utils.Math;
 
 namespace Kotono.Audio
 {
-    public class Sound : IDisposable
+    public class Sound(string path) : IDisposable
     {
         private float _volume = 1.0f;
 
-        public int Source { get; private set; }
+        public int Source { get; private set; } = SoundManager.GetSource(path);
 
         public float Volume
         {
@@ -25,11 +25,6 @@ namespace Kotono.Audio
         public bool IsPaused => AL.GetSourceState(Source) == ALSourceState.Paused;
 
         public bool IsStopped => AL.GetSourceState(Source) == ALSourceState.Stopped;
-
-        public Sound(string path)
-        {
-            Source = SoundManager.GetSource(path);
-        }
 
         public void Play()
         {

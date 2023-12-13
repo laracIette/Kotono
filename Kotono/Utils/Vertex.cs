@@ -1,19 +1,12 @@
 ﻿namespace Kotono.Utils
 {
-    public struct Vertex
+    public struct Vertex(Vector location, Vector normal, Point texCoord)
     {
-        public Vector Location;
+        public Vector Location = location;
 
-        public Vector Normal;
+        public Vector Normal = normal;
 
-        public Point TexCoord;
-
-        public Vertex(Vector location, Vector normal, Point texCoord)
-        {
-            Location = location;
-            Normal = normal;
-            TexCoord = texCoord;
-        }
+        public Point TexCoord = texCoord;
 
         public const int SizeInBytes = Vector.SizeInBytes * 2 + Point.SizeInBytes;
     }

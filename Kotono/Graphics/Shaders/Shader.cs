@@ -7,18 +7,13 @@ using IO = System.IO;
 
 namespace Kotono.Graphics.Shaders
 {
-    public abstract class Shader
+    public abstract class Shader(string name)
     {
         private int _handle;
 
-        private readonly Dictionary<string, int> _uniformLocations = new();
+        private readonly Dictionary<string, int> _uniformLocations = [];
 
-        private readonly string _name;
-
-        public Shader(string name)
-        {
-            _name = name;
-        }
+        private readonly string _name = name;
 
         public void Init()
         {

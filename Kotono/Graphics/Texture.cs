@@ -7,7 +7,7 @@ namespace Kotono.Graphics
 {
     internal class Texture
     {
-        private static readonly Dictionary<string, Texture> _textures = new();
+        private static readonly Dictionary<string, Texture> _textures = [];
 
         internal int Handle { get; }
 

@@ -15,7 +15,7 @@ namespace Kotono.Graphics.Objects
 
         protected float _spacing;
 
-        protected readonly List<Image> _letters = new();
+        protected readonly List<Image> _letters = [];
 
         protected Rect _lettersDest;
 
@@ -48,7 +48,7 @@ namespace Kotono.Graphics.Objects
 
         public double StartTime { get; private set; }
 
-        private readonly static Dictionary<char, string> _paths = new();
+        private readonly static Dictionary<char, string> _paths = [];
 
         private Color _color;
 

@@ -6,7 +6,7 @@ namespace Kotono.Graphics
 {
     public class Viewport
     {
-        private readonly List<Viewport> _connections = new();
+        private readonly List<Viewport> _connections = [];
 
         public Rect Dest;
 

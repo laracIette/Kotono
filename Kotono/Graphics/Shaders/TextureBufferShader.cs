@@ -3,12 +3,9 @@ using OpenTK.Graphics.OpenGL4;
 
 namespace Kotono.Graphics.Shaders
 {
-    public abstract class TextureBufferShader : Shader
+    public abstract class TextureBufferShader(string name) 
+        : Shader(name)
     {
-        public TextureBufferShader(string name)
-            : base(name)
-        { }
-
         public void Draw(int textureBuffer)
         {
             GL.BindVertexArray(SquareVertices.VertexArrayObject);

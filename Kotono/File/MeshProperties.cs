@@ -2,7 +2,8 @@
 
 namespace Kotono.File
 {
-    public class MeshProperties : Properties
+    public class MeshProperties(string path) 
+        : Properties(path)
     {
         public Transform Transform
         {
@@ -34,8 +35,5 @@ namespace Kotono.File
                 this["Color.A"] = value.A.ToString();
             }
         }
-
-        public MeshProperties(string path)
-            : base(path) { }
     }
 }

@@ -5,7 +5,7 @@ namespace Kotono.Graphics.Objects
     public static class SquareVertices
     {
         private static readonly float[] _vertices =
-        {           
+        [           
             // locations   // texCoords
             -1.0f,  1.0f,  0.0f, 1.0f,
             -1.0f, -1.0f,  0.0f, 0.0f,
@@ -14,7 +14,7 @@ namespace Kotono.Graphics.Objects
             -1.0f,  1.0f,  0.0f, 1.0f,
              1.0f, -1.0f,  1.0f, 0.0f,
              1.0f,  1.0f,  1.0f, 1.0f
-        };
+        ];
 
         public static int VertexArrayObject { get; private set; }
 

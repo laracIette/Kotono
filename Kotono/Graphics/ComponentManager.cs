@@ -4,7 +4,7 @@ namespace Kotono.Graphics
 {
     public class ComponentManager
     {
-        private readonly List<Component> _components = new();
+        private readonly List<Component> _components = [];
 
         public ComponentManager()
         {
