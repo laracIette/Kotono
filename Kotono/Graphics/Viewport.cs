@@ -36,11 +36,6 @@ namespace Kotono.Graphics
             Dest = Rect.Zero;
         }
 
-        public Viewport(float x = 0, float y = 0, float w = 0, float h = 0)
-        {
-            Dest = new Rect(x, y, w, h);
-        }
-
         public Viewport(Rect dest)
         {
             Dest = dest;
@@ -58,7 +53,7 @@ namespace Kotono.Graphics
 
         public void Use()
         {
-            GL.Viewport((int)X, (int)Y, (int)W, (int)H);
+            GL.Viewport((int)X, (int)(KT.Dest.H - Y - H), (int)W, (int)H);
         }
     }
 }

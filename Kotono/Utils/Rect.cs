@@ -59,14 +59,15 @@ namespace Kotono.Utils
 
         public static Rect UnitH => new Rect(0, 0, 0, 1);
 
-        //public readonly Rect WorldSpace =>
-        //    new Rect(
-        //        2 * X / KT.ActiveViewport.W - 1,
-        //        1 - 2 * Y / KT.ActiveViewport.H,
-        //        W / KT.ActiveViewport.W,
-        //        H / KT.ActiveViewport.H
-        //    );
-
+#if false
+        public readonly Rect WorldSpace =>
+            new Rect(
+                2 * X / KT.ActiveViewport.W - 1,
+                1 - 2 * Y / KT.ActiveViewport.H,
+                W / KT.ActiveViewport.W,
+                H / KT.ActiveViewport.H
+            );
+#else
         public readonly Rect WorldSpace =>
             new Rect(
                 2 * X / KT.ActiveViewport1.W - 1,
@@ -74,7 +75,7 @@ namespace Kotono.Utils
                 W / KT.ActiveViewport1.W,
                 H / KT.ActiveViewport1.H
             );
-
+#endif
         public const int SizeInBytes = sizeof(float) * 4;
 
         public Rect()

@@ -3,7 +3,7 @@ using Kotono.Utils;
 
 namespace Kotono.Graphics
 {
-    public class Component(Rect dest) // issue : 0 is bottom left in viewport ? instead of top left
+    public class Component(Rect dest)
     {
         public Viewport Viewport { get; private set; } = new(dest);
 
