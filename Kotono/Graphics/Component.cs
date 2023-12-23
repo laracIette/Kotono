@@ -3,11 +3,15 @@ using Kotono.Utils;
 
 namespace Kotono.Graphics
 {
-    public class Component(Rect dest)
+    public class Component(Rect dest) // issue : 0 is bottom left in viewport ? instead of top left
     {
-        private readonly Viewport _viewport = new(dest);
+        public Viewport Viewport { get; private set; } = new(dest);
 
-        private readonly RoundedBox _background = new(dest, Color.White, 0, 3, 10);
+        private readonly RoundedBox _background = new(Rect.FromAnchor(dest, Anchor.TopLeft), Color.FromHex("#FFF1"), 0, 1, 10);
+
+        public void Init()
+        {
+        }
 
         public void Update()
         {
@@ -19,7 +23,8 @@ namespace Kotono.Graphics
 
         public void Draw()
         {
-            _viewport.Use();
+            Viewport.Use();
+            //_background.Draw();
         }
     }
 }

@@ -37,6 +37,7 @@ namespace Kotono
                 }
             )
         {
+            // For Kotono.Utils.Properties, needed to parse float correctly
             CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
             CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
 
@@ -46,6 +47,9 @@ namespace Kotono
             Path.Project = windowSettings.ProjectPath;
 
             Mouse.CursorState = windowSettings.CursorState;
+            Mouse.MouseState = MouseState;
+
+            Keyboard.KeyboardState = KeyboardState;
 
             new Camera();
 
@@ -53,10 +57,10 @@ namespace Kotono
             KT.SetWindowSize((Point)Size);
 
             CreateFrameBuffer();
-
-            KT.Init(MouseState, KeyboardState);
+            
+            KT.Init();
         }
-
+        
         private void CreateFrameBuffer()
         {
             // Creating the framebuffer
@@ -134,6 +138,9 @@ namespace Kotono
 
                 ShaderManager.Color.Draw(_textureColorBuffer);
                 ShaderManager.Outline.Draw(_textureDepthStencilBuffer);
+
+                // TODO: separate object 3d and 2d manager ????????
+                // TODO: to draw 3d before then depth buffer shit then draw 2d??????
 
                 base.SwapBuffers();
             }

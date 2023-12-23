@@ -64,13 +64,13 @@ namespace Kotono.Graphics.Objects
 
         public static void Init()
         {
-            _meshes = new GizmoMesh[]
-            {
+            _meshes =
+            [
                 new GizmoMesh("x"),
                 new GizmoMesh("y"),
                 new GizmoMesh("z"),
                 new GizmoMesh("sphere")
-            };
+            ];
 
             Hide();
         }

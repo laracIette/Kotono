@@ -45,7 +45,6 @@ namespace Kotono.Input
             SetCursorPos((int)pos.X, (int)pos.Y);
         }
 
-
         public static Point PositionFromOrigin { get; private set; } = Point.Zero;
 
         public static Point PreviousPositionFromOrigin { get; private set; } = Point.Zero;
@@ -60,7 +59,7 @@ namespace Kotono.Input
 
         private static MouseState? _mouseState;
 
-        private static MouseState MouseState
+        internal static MouseState MouseState
         {
             get => _mouseState ?? throw new Exception($"error: _mouseState must not be null");
             set => _mouseState = value;
@@ -70,9 +69,8 @@ namespace Kotono.Input
 
         public static CursorState CursorState { get; set; } = CursorState.Centered;
 
-        public static void Init(MouseState mouseState)
+        public static void Init()
         {
-            MouseState = mouseState;
             HideCursor();
         }
 
@@ -144,20 +142,11 @@ namespace Kotono.Input
             Ray = ((Vector)rayWorld.Xyz).Normalized;
         }
 
-        public static bool IsButtonDown(MouseButton button)
-        {
-            return MouseState.IsButtonDown(button);
-        }
+        public static bool IsButtonDown(MouseButton button) => MouseState.IsButtonDown(button);
 
-        public static bool IsButtonPressed(MouseButton button)
-        {
-            return MouseState.IsButtonPressed(button);
-        }
+        public static bool IsButtonPressed(MouseButton button) => MouseState.IsButtonPressed(button);
 
-        public static bool IsButtonReleased(MouseButton button)
-        {
-            return MouseState.IsButtonReleased(button);
-        }
+        public static bool IsButtonReleased(MouseButton button) => MouseState.IsButtonReleased(button);
 
         public static void ShowCursor()
         {

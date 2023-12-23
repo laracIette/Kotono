@@ -8,7 +8,6 @@ using Kotono.Graphics.Print;
 using Kotono.Input;
 using Kotono.Physics;
 using Kotono.Utils;
-using OpenTK.Windowing.GraphicsLibraryFramework;
 using Performance = Kotono.Graphics.Performance;
 using Text = Kotono.Graphics.Objects.Text;
 
@@ -16,11 +15,13 @@ namespace Kotono
 {
     public static class KT
     {
-        //private static readonly ComponentManager _componentManager = new();
+        private static readonly ComponentManager _componentManager = new();
 
         #region Viewport
 
-        internal static Viewport ActiveViewport { get; } = new();
+        internal static Viewport ActiveViewport { get; } = new(); 
+        
+        internal static Viewport ActiveViewport1 => _componentManager.ActiveViewport;
 
         #endregion Viewport
 
@@ -96,11 +97,11 @@ namespace Kotono
 
         #endregion UserMode
 
-        internal static void Init(MouseState mouseState, KeyboardState keyboardState)
+        internal static void Init()
         {
             Time.Init();
-            Mouse.Init(mouseState);
-            Keyboard.Init(keyboardState);
+            Mouse.Init();
+            Keyboard.Init();
             ShaderManager.Init();
             SquareVertices.Init();
             Text.InitPaths();
@@ -108,7 +109,7 @@ namespace Kotono
             ObjectManager.Init();
             Printer.Init();
             PerformanceWindow.Init();
-            //_componentManager.Init();
+            _componentManager.Init();
             Fizix.Init();
             _mode.Init();
             SoundManager.Init();
@@ -123,7 +124,7 @@ namespace Kotono
             Gizmo.Update();
             Printer.Update();
             ObjectManager.Update();
-            //_componentManager.Update();
+            _componentManager.Update();
             CameraManager.Update();
             PerformanceWindow.Update();
             _mode.Update();
@@ -133,13 +134,13 @@ namespace Kotono
         internal static void Draw()
         {
             ObjectManager.Draw();
-            //_componentManager.Draw();
+            _componentManager.Draw();
         }
 
         internal static void UpdateShaders()
         {
             ObjectManager.UpdateShaders();
-            //_componentManager.UpdateShaders();
+            _componentManager.UpdateShaders();
             ShaderManager.Update();
         }
 
