@@ -7,7 +7,7 @@ namespace Kotono.Graphics
     {
         public Viewport Viewport { get; } = new(dest);
 
-        private readonly RoundedBox _background = new(Rect.FromAnchor(dest, Anchor.TopLeft), Color.FromHex("#FFF1"), 0, 1, 10);
+        private readonly RoundedBox _background = new(Rect.FromAnchor(dest, Anchor.Center), Color.FromHex("#FFF1"), 0, 1, 10);
 
         public void Init()
         {

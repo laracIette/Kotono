@@ -47,19 +47,25 @@ namespace Kotono.Utils
                 Size
             );
 
+        /// <summary> A Rect with X = 0, Y = 0, W = 0, H = 0 </summary>
         public static Rect Zero => new Rect(0, 0, 0, 0);
 
+        /// <summary> A Rect with X = 1, Y = 1, W = 1, H = 1 </summary>
         public static Rect Unit => new Rect(1, 1, 1, 1);
 
+        /// <summary> A Rect with X = 1, Y = 0, W = 0, H = 0 </summary>
         public static Rect UnitX => new Rect(1, 0, 0, 0);
 
+        /// <summary> A Rect with X = 0, Y = 1, W = 0, H = 0 </summary>
         public static Rect UnitY => new Rect(0, 1, 0, 0);
 
+        /// <summary> A Rect with X = 0, Y = 0, W = 1, H = 0 </summary>
         public static Rect UnitW => new Rect(0, 0, 1, 0);
 
+        /// <summary> A Rect with X = 0, Y = 0, W = 0, H = 1 </summary>
         public static Rect UnitH => new Rect(0, 0, 0, 1);
 
-#if true
+#if false
         public readonly Rect WorldSpace =>
             new Rect(
                 2 * X / KT.ActiveViewport.W - 1,

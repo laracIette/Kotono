@@ -14,24 +14,34 @@ namespace Kotono.Utils
 
         public float Z;
 
-        public readonly float Length => MathF.Sqrt(X * X + Y * Y + Z * Z);
+        /// <summary> The length of the Vector </summary>
+        public readonly float Length => Math.Sqrt(X * X + Y * Y + Z * Z);
 
+        /// <summary> The Vector scaled to unit length </summary>
         public readonly Vector Normalized => this / Length;
 
+        /// <summary> A Vector with X = 0, Y = 0, Z = 0 </summary>
         public static Vector Zero => new Vector(0, 0, 0);
 
+        /// <summary> A Vector with X = 1, Y = 1, Z = 1 </summary>
         public static Vector Unit => new Vector(1, 1, 1);
 
+        /// <summary> A Vector with X = 1, Y = 0, Z = 0 </summary>
         public static Vector UnitX => new Vector(1, 0, 0);
 
+        /// <summary> A Vector with X = 1, Y = 1, Z = 0 </summary>
         public static Vector UnitXY => new Vector(1, 1, 0);
 
+        /// <summary> A Vector with X = 1, Y = 0, Z = 1 </summary>
         public static Vector UnitXZ => new Vector(1, 0, 1);
 
+        /// <summary> A Vector with X = 0, Y = 1, Z = 0 </summary>
         public static Vector UnitY => new Vector(0, 1, 0);
 
+        /// <summary> A Vector with X = 0, Y = 1, Z = 1 </summary>
         public static Vector UnitYZ => new Vector(0, 1, 1);
 
+        /// <summary> A Vector with X = 0, Y = 0, Z = 1 </summary>
         public static Vector UnitZ => new Vector(0, 0, 1);
 
         public static Vector Right => UnitX;
