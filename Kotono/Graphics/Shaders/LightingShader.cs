@@ -4,12 +4,8 @@ using Kotono.Utils;
 
 namespace Kotono.Graphics.Shaders
 {
-    public class LightingShader : Shader
+    public class LightingShader() : Shader("lighting")
     {
-        public LightingShader()
-            : base("lighting")
-        { }
-
         public override void Update()
         {
             base.Update();

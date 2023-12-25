@@ -2,12 +2,9 @@
 
 namespace Kotono.Graphics.Shaders
 {
-    public class GizmoShader : Shader
+    public class GizmoShader() 
+        : Shader("gizmo")
     {
-        public GizmoShader()
-            : base("gizmo")
-        { }
-
         public override void Update()
         {
             base.Update();

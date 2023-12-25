@@ -48,15 +48,6 @@ namespace Kotono.Graphics.Objects.Shapes
 
         private bool _hasInitBuffers = false;
 
-        public Shape()
-        {
-            Vertices = Array.Empty<Vector>();
-            _transform = new Transform();
-            Color = Color.White;
-
-            ObjectManager.Create(this);
-        }
-
         public Shape(Vector[] vertices, Transform transform, Color color)
         {
             Vertices = vertices;

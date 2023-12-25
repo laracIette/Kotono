@@ -9,7 +9,7 @@ namespace Kotono.Graphics.Objects
 {
     public static class Gizmo
     {
-        private static GizmoMesh[] _meshes = new GizmoMesh[4];
+        private static readonly GizmoMesh[] _meshes;
 
         private static Mesh? _attachMesh = null;
 
@@ -62,7 +62,7 @@ namespace Kotono.Graphics.Objects
 
         private static TransformSpace _transformSpace = TransformSpace.World;
 
-        public static void Init()
+        static Gizmo()
         {
             _meshes =
             [

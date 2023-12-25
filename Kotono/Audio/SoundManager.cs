@@ -9,9 +9,9 @@ namespace Kotono.Audio
 {
     public static class SoundManager
     {
-        private static ALDevice _device;
+        private static readonly ALDevice _device;
 
-        private static ALContext _context;
+        private static readonly ALContext _context;
 
         private static readonly Dictionary<string, int> _sources = [];
 
@@ -26,7 +26,7 @@ namespace Kotono.Audio
             }
         }
 
-        public static void Init()
+        static SoundManager()
         {
             _device = ALC.OpenDevice(null);
             _context = ALC.CreateContext(_device, Array.Empty<int>());
@@ -36,16 +36,12 @@ namespace Kotono.Audio
 
         public static int GetSource(string path)
         {
-
-            if (_sources.ContainsKey(path))
-            {
-            }
-            else
+            if (!_sources.ContainsKey(path))
             {
                 int buffer = AL.GenBuffer();
                 _sources[path] = AL.GenSource();
 
-                var data = LoadWav(path, out int channels, out int bits, out int rate);
+                var data = LoadWAV(path, out int channels, out int bits, out int rate);
 
                 nint dataPtr = Marshal.AllocHGlobal(data.Length * sizeof(byte));
                 Marshal.Copy(data, 0, dataPtr, data.Length);
@@ -70,7 +66,7 @@ namespace Kotono.Audio
         /// <returns></returns>
         /// <exception cref="ArgumentNullException">The file doesn't exist or isn't found.</exception>
         /// <exception cref="NotSupportedException">The file isn't a WAVE file.</exception>
-        private static byte[] LoadWav(string filename, out int channels, out int bits, out int rate)
+        private static byte[] LoadWAV(string filename, out int channels, out int bits, out int rate)
         {
             var stream = IO.File.OpenRead(filename) ?? throw new ArgumentNullException(filename);
 

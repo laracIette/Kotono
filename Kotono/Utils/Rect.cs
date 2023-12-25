@@ -59,7 +59,7 @@ namespace Kotono.Utils
 
         public static Rect UnitH => new Rect(0, 0, 0, 1);
 
-#if false
+#if true
         public readonly Rect WorldSpace =>
             new Rect(
                 2 * X / KT.ActiveViewport.W - 1,

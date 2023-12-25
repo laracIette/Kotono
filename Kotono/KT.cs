@@ -99,21 +99,14 @@ namespace Kotono
 
         internal static void Init()
         {
-            Time.Init();
-            Mouse.Init();
-            Keyboard.Init();
             ShaderManager.Init();
-            SquareVertices.Init();
             Text.InitPaths();
-            Gizmo.Init();
             ObjectManager.Init();
             Printer.Init();
             PerformanceWindow.Init();
             _componentManager.Init();
             Fizix.Init();
             _mode.Init();
-            SoundManager.Init();
-            MainMenu.Init();
         }
 
         internal static void Update()

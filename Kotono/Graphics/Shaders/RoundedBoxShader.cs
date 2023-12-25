@@ -1,9 +1,7 @@
 ﻿namespace Kotono.Graphics.Shaders
 {
-    public class RoundedBoxShader : Shader
+    public class RoundedBoxShader()
+        : Shader("roundedBox")
     {
-        public RoundedBoxShader()
-            : base("roundedBox")
-        { }
     }
 }

@@ -69,7 +69,7 @@ namespace Kotono.Input
 
         public static CursorState CursorState { get; set; } = CursorState.Centered;
 
-        public static void Init()
+        static Mouse()
         {
             HideCursor();
         }

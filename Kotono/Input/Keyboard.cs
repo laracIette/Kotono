@@ -13,10 +13,6 @@ namespace Kotono.Input
             set => _keyboardState = value;
         }
 
-        public static void Init()
-        {
-        }
-
         public static void Update()
         {
         }

@@ -24,7 +24,7 @@ namespace Kotono.Utils
         /// </summary>
         public static float DeltaS => Delta / 1000f;
 
-        public static void Init()
+        static Time()
         {
             Now = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
         }

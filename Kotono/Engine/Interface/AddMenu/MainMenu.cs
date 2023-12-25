@@ -33,7 +33,7 @@ namespace Kotono.Engine.Interface.AddMenu
             }
         }
 
-        public static void Init()
+        static MainMenu()
         {
             _backgroundBox.Hide();
 
