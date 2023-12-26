@@ -3,19 +3,19 @@ using System.Collections.Generic;
 
 namespace Kotono.Graphics
 {
-    public class ComponentManager
+    internal static class ComponentManager
     {
-        private readonly List<Component> _components = 
+        private static readonly List<Component> _components =
         [
-            //new Component(new Rect(0, 0, 1280, 720))
+            new Component(new Rect(0, 0, 1280, 720)),
             new Component(new Rect(100, 100, 640, 360))
         ];
 
-        public Viewport ActiveViewport => _components[0].Viewport;
+        internal static Component Window => _components[0];
 
-        public ComponentManager() { }
+        internal static Viewport ActiveViewport { get; set; } = _components[0].Viewport;
 
-        public void Init()
+        internal static void Init()
         {
             foreach (var component in _components)
             {
@@ -23,27 +23,11 @@ namespace Kotono.Graphics
             }
         }
 
-        public void Update()
+        internal static void Update()
         {
             foreach (var component in _components)
             {
                 component.Update();
-            }
-        }
-
-        public void UpdateShaders()
-        {
-            foreach (var component in _components)
-            {
-                component.UpdateShaders();
-            }
-        }
-
-        public void Draw()
-        {
-            foreach (var component in _components)
-            {
-                component.Draw();
             }
         }
     }

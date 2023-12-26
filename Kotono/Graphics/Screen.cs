@@ -65,7 +65,7 @@ namespace Kotono.Graphics
         // Callback function for EnumDisplayMonitors
         private static bool MonitorEnumCallback(nint hMonitor, nint hdcMonitor, ref ScreenRect lprcMonitor, nint dwData)
         {
-            MonitorInfo monitorInfo = new MonitorInfo();
+            var monitorInfo = new MonitorInfo();
             monitorInfo.Size = (uint)Marshal.SizeOf(monitorInfo);
             GetMonitorInfo(hMonitor, ref monitorInfo);
 

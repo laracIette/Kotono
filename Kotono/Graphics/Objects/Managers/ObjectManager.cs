@@ -162,7 +162,7 @@ namespace Kotono.Graphics.Objects.Managers
 
         internal static void Draw()
         {
-            KT.ActiveViewport.Use();
+            ComponentManager.Window.Viewport.Use();
 
             _hitboxManager.Draw();
             _pointLightManager.Draw();

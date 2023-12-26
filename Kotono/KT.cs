@@ -15,16 +15,6 @@ namespace Kotono
 {
     public static class KT
     {
-        private static readonly ComponentManager _componentManager = new();
-
-        #region Viewport
-
-        internal static Viewport ActiveViewport { get; } = new(); 
-        
-        internal static Viewport ActiveViewport1 => _componentManager.ActiveViewport;
-
-        #endregion Viewport
-
         #region WindowSize
 
         private static Rect _windowDest = Rect.Zero;
@@ -46,7 +36,7 @@ namespace Kotono
 
             CameraManager.ActiveCamera.AspectRatio = size.X / size.Y;
 
-            ActiveViewport.SetSize(size);
+            ComponentManager.Window.Viewport.SetSize(size);
         }
 
         #endregion WindowSize
@@ -104,7 +94,7 @@ namespace Kotono
             ObjectManager.Init();
             Printer.Init();
             PerformanceWindow.Init();
-            _componentManager.Init();
+            ComponentManager.Init();
             Fizix.Init();
             _mode.Init();
         }
@@ -117,7 +107,7 @@ namespace Kotono
             Gizmo.Update();
             Printer.Update();
             ObjectManager.Update();
-            _componentManager.Update();
+            ComponentManager.Update();
             CameraManager.Update();
             PerformanceWindow.Update();
             _mode.Update();
@@ -127,13 +117,11 @@ namespace Kotono
         internal static void Draw()
         {
             ObjectManager.Draw();
-            _componentManager.Draw();
         }
 
         internal static void UpdateShaders()
         {
             ObjectManager.UpdateShaders();
-            _componentManager.UpdateShaders();
             ShaderManager.Update();
         }
 

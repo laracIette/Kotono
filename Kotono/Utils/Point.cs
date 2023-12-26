@@ -1,16 +1,32 @@
-﻿using OpenTK.Mathematics;
+﻿using Kotono.Graphics;
+using OpenTK.Mathematics;
 using System;
+using System.Runtime.InteropServices;
 
 namespace Kotono.Utils
 {
+    [Serializable]
+    [StructLayout(LayoutKind.Sequential)]
     public struct Point
     {
+        /// <summary> 
+        /// The X component of the Point. 
+        /// </summary>
         public float X;
 
+        /// <summary> 
+        /// The Y component of the Point. 
+        /// </summary>
         public float Y;
 
+        /// <summary> 
+        /// The length component of the Point. 
+        /// </summary>
         public readonly float Length => MathF.Sqrt(X * X + Y * Y);
 
+        /// <summary> 
+        /// The Point scaled to unit length. 
+        /// </summary>
         public readonly Point Normalized => this / Length;
 
         public static Point Zero => new Point(0, 0);
@@ -23,8 +39,8 @@ namespace Kotono.Utils
 
         public readonly Point WorldSpace =>
             new Point(
-                2 * X / KT.ActiveViewport.W - 1,
-                1 - 2 * Y / KT.ActiveViewport.H
+                2 * X / ComponentManager.ActiveViewport.W - 1,
+                1 - 2 * Y / ComponentManager.ActiveViewport.H
             );
 
         public static int SizeInBytes => sizeof(float) * 2;
@@ -131,12 +147,28 @@ namespace Kotono.Utils
 
         public static bool operator ==(Point left, Point right)
         {
-            return (left.X == right.X) && (left.Y == right.Y);
+            return left.Equals(right);
         }
 
         public static bool operator !=(Point left, Point right)
         {
             return !(left == right);
+        }
+
+        public override readonly bool Equals(object? obj)
+        {
+            return obj is Point p && Equals(p);
+        }
+
+        public readonly bool Equals(Point p)
+        {
+            return X == p.X
+                && Y == p.Y;
+        }
+
+        public override readonly int GetHashCode()
+        {
+            return HashCode.Combine(X, Y);
         }
 
         public static explicit operator Vector2(Point v)
