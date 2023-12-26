@@ -41,11 +41,7 @@ namespace Kotono.Utils
                 Size.Normalized
             );
 
-        public readonly Rect TopLeft =>
-            new Rect(
-                Position - Size / 2,
-                Size
-            );
+        public readonly Point TopLeft => Position - Size / 2;
 
         /// <summary> A Rect with X = 0, Y = 0, W = 0, H = 0 </summary>
         public static Rect Zero => new Rect(0, 0, 0, 0);
@@ -82,7 +78,7 @@ namespace Kotono.Utils
                 H / KT.ActiveViewport1.H
             );
 #endif
-        public const int SizeInBytes = sizeof(float) * 4;
+        public static int SizeInBytes => Point.SizeInBytes * 2;
 
         public Rect()
         {

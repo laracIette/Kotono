@@ -106,8 +106,9 @@ namespace Kotono.Graphics.Objects
         public virtual void Draw()
         {
             ShaderManager.RoundedBox.SetMatrix4("model", Model);
+            ShaderManager.RoundedBox.SetPoint("windowSize", KT.Size);
             ShaderManager.RoundedBox.SetColor("color", Color);
-            ShaderManager.RoundedBox.SetRect("dest", new Rect(Dest.X, KT.Size.Y - Dest.Y, Dest.W, Dest.H));
+            ShaderManager.RoundedBox.SetRect("dest", Dest.WorldSpace);
             ShaderManager.RoundedBox.SetFloat("fallOff", FallOff);
             ShaderManager.RoundedBox.SetFloat("cornerSize", CornerSize);
 

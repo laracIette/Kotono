@@ -8,6 +8,6 @@
 
         public Point TexCoord = texCoord;
 
-        public const int SizeInBytes = Vector.SizeInBytes * 2 + Point.SizeInBytes;
+        public static int SizeInBytes => Vector.SizeInBytes * 2 + Point.SizeInBytes;
     }
 }

@@ -48,7 +48,7 @@ namespace Kotono.Utils
         public Vector Forward { get; private set; }
 
 
-        public const int SizeInBytes = Vector.SizeInBytes * 3;
+        public static int SizeInBytes => Vector.SizeInBytes * 3;
 
         public Transform()
         {

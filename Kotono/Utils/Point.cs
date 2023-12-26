@@ -27,7 +27,7 @@ namespace Kotono.Utils
                 1 - 2 * Y / KT.ActiveViewport.H
             );
 
-        public const int SizeInBytes = sizeof(float) * 2;
+        public static int SizeInBytes => sizeof(float) * 2;
 
         public Point()
         {

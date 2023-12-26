@@ -8,7 +8,7 @@ namespace Kotono.Graphics
         private readonly List<Component> _components = 
         [
             //new Component(new Rect(0, 0, 1280, 720))
-            new Component(new Rect(0, 0, 640, 360))
+            new Component(new Rect(100, 100, 640, 360))
         ];
 
         public Viewport ActiveViewport => _components[0].Viewport;

@@ -50,7 +50,7 @@ namespace Kotono.Utils
 
         public static Vector Forward => UnitZ;
 
-        public const int SizeInBytes = sizeof(float) * 3;
+        public static int SizeInBytes => sizeof(float) * 3;
 
         public readonly float this[int index] =>
             index switch

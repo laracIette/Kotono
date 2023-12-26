@@ -25,4 +25,8 @@
     <None Include="..\.editorconfig" Link=".editorconfig" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Engine\Interface\Components\" />
+  </ItemGroup>
+
 </Project>

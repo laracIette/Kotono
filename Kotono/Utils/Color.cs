@@ -40,7 +40,7 @@ namespace Kotono.Utils
 
         public static Color Yellow => FromHex("#FFFF00FF");
 
-        public const int SizeInBytes = sizeof(float) * 4;
+        public static int SizeInBytes => sizeof(float) * 4;
 
         public readonly float this[int index] =>
             index switch
