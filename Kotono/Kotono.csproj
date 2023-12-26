@@ -27,6 +27,7 @@
 
   <ItemGroup>
     <Folder Include="Engine\Interface\Components\" />
+    <Folder Include="Tests\" />
   </ItemGroup>
 
 </Project>
