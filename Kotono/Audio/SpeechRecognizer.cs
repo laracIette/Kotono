@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Speech.Recognition;
+using System.Threading;
 
 namespace Kotono.Audio
 {
@@ -11,7 +12,11 @@ namespace Kotono.Audio
 
         public static string Text { get; private set; } = "";
 
-        private static bool _isSpeechRecognized = false;
+        // int instead of bool for IsSpeechRecognized's Interlocked.Exchange() that doesn't support bool
+        private static int _isSpeechRecognized = 0;
+
+        // Sets _isSpeechRecognized to 0 and returns its old value, if it was 1 then IsSpeechRecognized returns true
+        public static bool IsSpeechRecognized => Interlocked.Exchange(ref _isSpeechRecognized, 0) == 1;
 
         public static void Init(GrammarBuilder grammarBuilder)
         {
@@ -21,8 +26,7 @@ namespace Kotono.Audio
             _recognizer.LoadGrammarAsync(servicesGrammar);
 
             // Add a handler for the speech recognized event.  
-            _recognizer.SpeechRecognized +=
-              new EventHandler<SpeechRecognizedEventArgs>(OnSpeechRecognized);
+            _recognizer.SpeechRecognized += new EventHandler<SpeechRecognizedEventArgs>(OnSpeechRecognized);
 
             // Configure input to the speech _recognizer.  
             _recognizer.SetInputToDefaultAudioDevice();
@@ -35,20 +39,7 @@ namespace Kotono.Audio
         private static void OnSpeechRecognized(object sender, SpeechRecognizedEventArgs e)
         {
             Text = e.Result.Text;
-            _isSpeechRecognized = true;
-        }
-
-        public static bool GetSpeechRecognized()
-        {
-            if (_isSpeechRecognized)
-            {
-                _isSpeechRecognized = false;
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            _isSpeechRecognized = 1;
         }
     }
 }
