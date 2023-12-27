@@ -1,6 +1,6 @@
 ﻿using Kotono.Audio;
 using Kotono.Engine;
-using Kotono.Engine.Interface.AddMenu;
+using Kotono.Engine.UserInterface.AddMenu;
 using Kotono.Graphics;
 using Kotono.Graphics.Objects;
 using Kotono.Graphics.Objects.Managers;
@@ -36,7 +36,7 @@ namespace Kotono
 
             CameraManager.ActiveCamera.AspectRatio = size.X / size.Y;
 
-            ComponentManager.Window.Viewport.SetSize(size);
+            ComponentManager.Window.Viewport.Size = size;
         }
 
         #endregion WindowSize

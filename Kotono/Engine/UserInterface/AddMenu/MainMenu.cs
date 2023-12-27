@@ -1,10 +1,10 @@
-﻿using Kotono.Engine.Interface.AddMenu.MainButtons;
+﻿using Kotono.Engine.UserInterface.AddMenu.MainButtons;
 using Kotono.Graphics.Objects;
 using Kotono.Input;
 using Kotono.Utils;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 
-namespace Kotono.Engine.Interface.AddMenu
+namespace Kotono.Engine.UserInterface.AddMenu
 {
     public static class MainMenu
     {

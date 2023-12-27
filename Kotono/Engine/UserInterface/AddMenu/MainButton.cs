@@ -2,7 +2,7 @@
 using Kotono.Utils;
 using System;
 
-namespace Kotono.Engine.Interface.AddMenu
+namespace Kotono.Engine.UserInterface.AddMenu
 {
     public class MainButton(string text, string[] options, Anchor anchor)
         : TextButton(new Rect(100), Color.Gray, 1, 2, 25, text)

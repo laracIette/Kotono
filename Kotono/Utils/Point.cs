@@ -131,6 +131,20 @@ namespace Kotono.Utils
             return p;
         }
 
+        public static Point operator *(Point left, Point right)
+        {
+            left.X *= right.X;
+            left.Y *= right.Y;
+            return left;
+        }
+
+        public static Point operator *(Point p, float f)
+        {
+            p.X *= f;
+            p.Y *= f;
+            return p;
+        }
+
         public static Point operator /(Point left, Point right)
         {
             left.X /= right.X;

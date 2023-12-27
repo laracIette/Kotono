@@ -234,11 +234,6 @@ namespace Kotono.Graphics.Objects.Meshes
 
             _meshSettings = value;
 
-            Create();
-        }
-
-        protected virtual void Create()
-        {
             ObjectManager.Create(this);
         }
 

@@ -1,4 +1,5 @@
-﻿using Kotono.Utils;
+﻿using Kotono.Engine.UserInterface.Elements;
+using Kotono.Utils;
 using OpenTK.Graphics.OpenGL4;
 
 namespace Kotono.Graphics.Objects.Managers
@@ -38,6 +39,14 @@ namespace Kotono.Graphics.Objects.Managers
             {
                 if (_drawables[i].IsDraw && Rect.Overlaps(_drawables[i].Dest, Rect.FromAnchor(new Rect(Point.Zero, KT.Size), Anchor.TopLeft)))
                 {
+                    if (_drawables[i] is IElement element)
+                    {
+                        element.Viewport.Use();
+                    }
+                    else
+                    {
+                        ComponentManager.Window.Viewport.Use();
+                    }
                     _drawables[i].Draw();
                 }
             }

@@ -1,6 +1,6 @@
 ﻿using Kotono.Utils;
 
-namespace Kotono.Engine.Interface.AddMenu.MainButtons
+namespace Kotono.Engine.UserInterface.AddMenu.MainButtons
 {
     public class Objects2DButton : MainButton
     {

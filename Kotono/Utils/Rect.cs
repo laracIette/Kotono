@@ -98,8 +98,7 @@ namespace Kotono.Utils
         public readonly Rect WorldSpace =>
             new Rect(
                 Position.WorldSpace,
-                W / ComponentManager.ActiveViewport.W,
-                H / ComponentManager.ActiveViewport.H
+                Size / ComponentManager.ActiveViewport.Size
             );
 
         public static int SizeInBytes => Point.SizeInBytes * 2;

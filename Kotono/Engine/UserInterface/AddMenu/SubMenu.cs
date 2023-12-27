@@ -3,7 +3,7 @@ using Kotono.Utils;
 using System;
 using System.Collections.Generic;
 
-namespace Kotono.Engine.Interface.AddMenu
+namespace Kotono.Engine.UserInterface.AddMenu
 {
     public class SubMenu
     {

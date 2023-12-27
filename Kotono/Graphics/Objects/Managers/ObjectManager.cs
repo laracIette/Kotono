@@ -7,9 +7,9 @@ namespace Kotono.Graphics.Objects.Managers
 {
     internal static class ObjectManager
     {
-        private static readonly MeshManager _meshManager = new();
-
         private static readonly FrontMeshManager _frontMeshManager = new();
+
+        private static readonly MeshManager _meshManager = new();
 
         private static readonly HitboxManager _hitboxManager = new();
 
@@ -21,74 +21,78 @@ namespace Kotono.Graphics.Objects.Managers
 
         private static readonly Object2DManager _object2DManager = new();
 
-        //private static readonly Viewport _viewport = new(0, 0, 1280, 720);
-
-        #region Object2D
-
-        internal static void Create(IObject2D obj)
+        public static void Create(IDrawable drawable)
         {
-            _object2DManager.Create(obj);
+            switch (drawable)
+            {
+                case FrontMesh frontMesh:
+                    _frontMeshManager.Create(frontMesh);
+                    break;
+
+                case Mesh mesh:
+                    _meshManager.Create(mesh);
+                    break;
+
+                case IHitbox hitbox:
+                    _hitboxManager.Create(hitbox);
+                    break;
+
+                case PointLight pointLight:
+                    _pointLightManager.Create(pointLight);
+                    break;
+
+                case SpotLight spotLight:
+                    _spotLightManager.Create(spotLight);
+                    break;
+
+                case IShape shape:
+                    _shapeManager.Create(shape);
+                    break;
+
+                case IObject2D object2D:
+                    _object2DManager.Create(object2D);
+                    break;
+
+                default:
+                    break;
+            }
         }
 
-        internal static void Delete(IObject2D obj)
+        public static void Delete(IDrawable drawable)
         {
-            _object2DManager.Delete(obj);
-        }
+            switch (drawable)
+            {
+                case FrontMesh frontMesh:
+                    _frontMeshManager.Delete(frontMesh);
+                    break;
 
-        #endregion Object2D
+                case Mesh mesh:
+                    _meshManager.Delete(mesh);
+                    break;
 
-        #region Mesh
+                case IHitbox hitbox:
+                    _hitboxManager.Delete(hitbox);
+                    break;
 
-        internal static void Create(Mesh mesh)
-        {
-            _meshManager.Create(mesh);
-        }
+                case PointLight pointLight:
+                    _pointLightManager.Delete(pointLight);
+                    break;
 
-        internal static void Delete(Mesh mesh)
-        {
-            _meshManager.Delete(mesh);
-        }
+                case SpotLight spotLight:
+                    _spotLightManager.Delete(spotLight);
+                    break;
 
-        #endregion Mesh
+                case IShape shape:
+                    _shapeManager.Delete(shape);
+                    break;
 
-        #region FrontMesh
+                case IObject2D object2D:
+                    _object2DManager.Delete(object2D);
+                    break;
 
-        internal static void Create(FrontMesh frontMesh)
-        {
-            _frontMeshManager.Create(frontMesh);
-        }
-
-        internal static void Delete(FrontMesh frontMesh)
-        {
-            _frontMeshManager.Delete(frontMesh);
-        }
-
-        #endregion FrontMesh
-
-        #region Hitbox
-
-        internal static void Create(IHitbox hitbox)
-        {
-            _hitboxManager.Create(hitbox);
-        }
-
-        internal static void Delete(IHitbox hitbox)
-        {
-            _hitboxManager.Delete(hitbox);
-        }
-
-        #endregion Hitbox
-
-        #region PointLight
-
-        internal static void Create(PointLight pointLight)
-        {
-            _pointLightManager.Create(pointLight);
-        }
-
-        internal static void Delete(PointLight pointLight)
-        {
-            _pointLightManager.Delete(pointLight);
+                default:
+                    break;
+            }
         }
 
         internal static PointLight GetFirstPointLight()
@@ -96,52 +100,21 @@ namespace Kotono.Graphics.Objects.Managers
             return _pointLightManager.GetFirst();
         }
 
-        #endregion PointLight
-
-        #region SpotLight
-
-        internal static void Create(SpotLight spotLight)
-        {
-            _spotLightManager.Create(spotLight);
-        }
-
-        internal static void Delete(SpotLight spotLight)
-        {
-            _spotLightManager.Delete(spotLight);
-        }
-
-        #endregion SpotLight
-
-        #region Shape
-
-        internal static void Create(IShape shape)
-        {
-            _shapeManager.Create(shape);
-        }
-
-        internal static void Delete(IShape shape)
-        {
-            _shapeManager.Delete(shape);
-        }
-
-        #endregion Shape
-
         internal static void Init()
         {
-            _meshManager.Init();
             _frontMeshManager.Init();
+            _meshManager.Init();
             _hitboxManager.Init();
             _pointLightManager.Init();
             _spotLightManager.Init();
             _shapeManager.Init();
             _object2DManager.Init();
-            //_viewport.Init();
         }
 
         internal static void Update()
         {
-            _meshManager.Update();
             _frontMeshManager.Update();
+            _meshManager.Update();
             _hitboxManager.Update();
             _pointLightManager.Update();
             _spotLightManager.Update();
@@ -151,8 +124,8 @@ namespace Kotono.Graphics.Objects.Managers
 
         internal static void UpdateShaders()
         {
-            _meshManager.UpdateShaders();
             _frontMeshManager.UpdateShaders();
+            _meshManager.UpdateShaders();
             _hitboxManager.UpdateShaders();
             _pointLightManager.UpdateShaders();
             _spotLightManager.UpdateShaders();
@@ -175,8 +148,8 @@ namespace Kotono.Graphics.Objects.Managers
 
         internal static void Save()
         {
-            _meshManager.Save();
             _frontMeshManager.Save();
+            _meshManager.Save();
             _hitboxManager.Save();
             _pointLightManager.Save();
             _spotLightManager.Save();

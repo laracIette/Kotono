@@ -1,13 +1,19 @@
-﻿using Kotono.Graphics.Objects;
+﻿using Kotono.Engine.UserInterface.Elements;
 using Kotono.Utils;
 
 namespace Kotono.Graphics
 {
-    public class Component(Rect dest)
+    public class Component
     {
-        public Viewport Viewport { get; } = new(dest);
+        public Viewport Viewport { get; }
 
-        private readonly RoundedBox _background = new(Rect.FromAnchor(new Rect(0, 0, 640, 360), Anchor.TopLeft), Color.FromHex("#FFF1"), 0, 1, 30);
+        private readonly Background _background;
+
+        public Component(Rect dest)
+        {
+            Viewport = new Viewport(dest);
+            _background = new(Rect.FromAnchor(dest, Anchor.TopLeft), Viewport);
+        }
 
         public void Init()
         {
