@@ -4,61 +4,52 @@ using System.Collections.Generic;
 
 namespace Kotono.Graphics
 {
-    public class Viewport
+    public class Viewport(Rect dest)
     {
         private readonly List<Viewport> _connections = [];
 
-        public Rect Dest;
+        public Rect Dest = dest;
+
+        public Point Position
+        {
+            get => Dest.Position;
+            set => Dest.Position = value;
+        }
+
+        public Point Size
+        {
+            get => Dest.Size;
+            set => Dest.Size = value;
+        }
 
         public float X
         {
             get => Dest.X;
             set => Dest.X = value;
         }
+
         public float Y
         {
             get => Dest.Y;
             set => Dest.Y = value;
         }
+
         public float W
         {
             get => Dest.W;
             set => Dest.W = value;
         }
+
         public float H
         {
             get => Dest.H;
             set => Dest.H = value;
         }
 
-        public Viewport()
-        {
-            Dest = Rect.Zero;
-        }
-
-        public Viewport(float x = 0, float y = 0, float w = 0, float h = 0)
-        {
-            Dest = new Rect(x, y, w, h);
-        }
-
-        public Viewport(Rect dest)
-        {
-            Dest = dest;
-        }
-
-        public void Init()
-        {
-
-        }
-
-        public void SetSize(Point size)
-        {
-            Dest.Size = size;
-        }
-
         public void Use()
         {
-            GL.Viewport((int)X, (int)Y, (int)W, (int)H);
+            ComponentManager.ActiveViewport = this;
+            GL.Viewport((int)X, (int)(KT.Dest.H - Y - H), (int)W, (int)H);
         }
     }
 }

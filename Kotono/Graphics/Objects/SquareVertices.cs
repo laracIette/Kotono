@@ -5,22 +5,40 @@ namespace Kotono.Graphics.Objects
     public static class SquareVertices
     {
         private static readonly float[] _vertices =
-        [           
+        [
             // locations   // texCoords
-            -1.0f,  1.0f,  0.0f, 1.0f,
-            -1.0f, -1.0f,  0.0f, 0.0f,
-             1.0f, -1.0f,  1.0f, 0.0f,
+            -1.0f,
+            1.0f,
+            0.0f,
+            1.0f,
+            -1.0f,
+            -1.0f,
+            0.0f,
+            0.0f,
+            1.0f,
+            -1.0f,
+            1.0f,
+            0.0f,
 
-            -1.0f,  1.0f,  0.0f, 1.0f,
-             1.0f, -1.0f,  1.0f, 0.0f,
-             1.0f,  1.0f,  1.0f, 1.0f
+            -1.0f,
+            1.0f,
+            0.0f,
+            1.0f,
+            1.0f,
+            -1.0f,
+            1.0f,
+            0.0f,
+            1.0f,
+            1.0f,
+            1.0f,
+            1.0f
         ];
 
-        public static int VertexArrayObject { get; private set; }
+        public static int VertexArrayObject { get; }
 
-        public static int VertexBufferObject { get; private set; }
+        public static int VertexBufferObject { get; }
 
-        public static void Init()
+        static SquareVertices()
         {
             // create vertex array
             VertexArrayObject = GL.GenVertexArray();

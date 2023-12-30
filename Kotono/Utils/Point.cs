@@ -1,38 +1,62 @@
-﻿using OpenTK.Mathematics;
+﻿using Kotono.Graphics;
+using OpenTK.Mathematics;
 using System;
+using System.Runtime.InteropServices;
 
 namespace Kotono.Utils
 {
+    [Serializable]
+    [StructLayout(LayoutKind.Sequential)]
     public struct Point
     {
+        /// <summary> 
+        /// The X component of the Point. 
+        /// </summary>
         public float X;
 
+        /// <summary> 
+        /// The Y component of the Point. 
+        /// </summary>
         public float Y;
 
+        /// <summary> 
+        /// The length component of the Point. 
+        /// </summary>
         public readonly float Length => MathF.Sqrt(X * X + Y * Y);
 
+        /// <summary> 
+        /// The Point scaled to unit length. 
+        /// </summary>
         public readonly Point Normalized => this / Length;
 
-        public static Point Zero => new Point(0, 0);
-
-        public static Point Unit => new Point(1, 1);
-
-        public static Point UnitX => new Point(1, 0);
-
-        public static Point UnitY => new Point(0, 1);
-
-        public readonly Point WorldSpace =>
+        /// <summary>
+        /// The Point scaled to Normalized Device Coordinates.
+        /// </summary>
+        public readonly Point NDC =>
             new Point(
-                2 * X / KT.ActiveViewport.W - 1,
-                1 - 2 * Y / KT.ActiveViewport.H
+                2.0f * X / ComponentManager.ActiveViewport.W - 1.0f,
+                1.0f - Y / ComponentManager.ActiveViewport.H * 2.0f
             );
 
-        public const int SizeInBytes = sizeof(float) * 2;
+        /// <summary>
+        /// The X / Y ratio of the Point.
+        /// </summary>
+        public readonly float Ratio => X / Y;
+
+        public static Point Zero => new Point(0.0f, 0.0f);
+
+        public static Point Unit => new Point(1.0f, 1.0f);
+
+        public static Point UnitX => new Point(1.0f, 0.0f);
+
+        public static Point UnitY => new Point(0.0f, 1.0f);
+
+        public static int SizeInBytes => sizeof(float) * 2;
 
         public Point()
         {
-            X = 0;
-            Y = 0;
+            X = 0.0f;
+            Y = 0.0f;
         }
 
         public Point(Point p)
@@ -47,22 +71,10 @@ namespace Kotono.Utils
             Y = f;
         }
 
-        public Point(double f)
-        {
-            X = (float)f;
-            Y = (float)f;
-        }
-
-        public Point(float x = 0, float y = 0)
+        public Point(float x = 0.0f, float y = 0.0f)
         {
             X = x;
             Y = y;
-        }
-
-        public Point(double x = 0, double y = 0)
-        {
-            X = (float)x;
-            Y = (float)y;
         }
 
         public static float Distance(Point left, Point right)
@@ -94,13 +106,6 @@ namespace Kotono.Utils
             return p;
         }
 
-        public static Point operator +(Point p, (float, float) t)
-        {
-            p.X += t.Item1;
-            p.Y += t.Item2;
-            return p;
-        }
-
         public static Point operator -(Point left, Point right)
         {
             left.X -= right.X;
@@ -112,6 +117,20 @@ namespace Kotono.Utils
         {
             p.X = -p.X;
             p.Y = -p.Y;
+            return p;
+        }
+
+        public static Point operator *(Point left, Point right)
+        {
+            left.X *= right.X;
+            left.Y *= right.Y;
+            return left;
+        }
+
+        public static Point operator *(Point p, float f)
+        {
+            p.X *= f;
+            p.Y *= f;
             return p;
         }
 
@@ -131,12 +150,33 @@ namespace Kotono.Utils
 
         public static bool operator ==(Point left, Point right)
         {
-            return (left.X == right.X) && (left.Y == right.Y);
+            return left.Equals(right);
         }
 
         public static bool operator !=(Point left, Point right)
         {
             return !(left == right);
+        }
+
+        public override readonly bool Equals(object? obj)
+        {
+            return obj is Point p && Equals(p);
+        }
+
+        public readonly bool Equals(Point p)
+        {
+            return X == p.X
+                && Y == p.Y;
+        }
+
+        public override readonly int GetHashCode()
+        {
+            return HashCode.Combine(X, Y);
+        }
+
+        public static implicit operator Point((float, float) t)
+        {
+            return new Point(t.Item1, t.Item2);
         }
 
         public static explicit operator Vector2(Point v)

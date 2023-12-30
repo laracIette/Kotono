@@ -66,8 +66,8 @@ namespace Kotono.Graphics.Objects
         private double _endTime = 0;
 
         private Matrix4 Model =>
-            Matrix4.CreateScale(Dest.WorldSpace.W, Dest.WorldSpace.H, 1.0f)
-            * Matrix4.CreateTranslation(Dest.WorldSpace.X, Dest.WorldSpace.Y, 0.0f);
+            Matrix4.CreateScale(Dest.NDC.W, Dest.NDC.H, 1.0f)
+            * Matrix4.CreateTranslation(Dest.NDC.X, Dest.NDC.Y, 0.0f);
 
         public bool IsDraw { get; private set; } = true;
 
@@ -82,12 +82,10 @@ namespace Kotono.Graphics.Objects
 
             _transformation = Rect.Zero;
 
-            _texture = Texture.Load(Path, TextureUnit.Texture0);
+            _texture = new Texture(Path, TextureUnit.Texture0);
 
             ObjectManager.Create(this);
         }
-
-        public void Init() { }
 
         public virtual void Update()
         {
@@ -97,11 +95,6 @@ namespace Kotono.Graphics.Objects
             }
 
             Dest += _transformation * Time.DeltaS;
-        }
-
-        public void UpdateShaders()
-        {
-
         }
 
         public void Draw()

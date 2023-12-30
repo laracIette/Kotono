@@ -1,9 +1,7 @@
 ﻿namespace Kotono.Graphics.Shaders
 {
-    public class RoundedBorderShader : Shader
+    public class RoundedBorderShader()
+        : Shader("roundedBorder")
     {
-        public RoundedBorderShader()
-            : base("roundedBorder")
-        { }
     }
 }

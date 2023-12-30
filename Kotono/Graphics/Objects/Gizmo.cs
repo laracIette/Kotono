@@ -9,7 +9,7 @@ namespace Kotono.Graphics.Objects
 {
     public static class Gizmo
     {
-        private static GizmoMesh[] _meshes = new GizmoMesh[4];
+        private static readonly GizmoMesh[] _meshes;
 
         private static Mesh? _attachMesh = null;
 
@@ -62,15 +62,15 @@ namespace Kotono.Graphics.Objects
 
         private static TransformSpace _transformSpace = TransformSpace.World;
 
-        public static void Init()
+        static Gizmo()
         {
-            _meshes = new GizmoMesh[]
-            {
+            _meshes =
+            [
                 new GizmoMesh("x"),
                 new GizmoMesh("y"),
                 new GizmoMesh("z"),
                 new GizmoMesh("sphere")
-            };
+            ];
 
             Hide();
         }
@@ -79,8 +79,11 @@ namespace Kotono.Graphics.Objects
         {
             if (_attachMesh == null)
             {
+                Hide();
                 return;
             }
+
+            Show();
 
             if (Mouse.IsButtonPressed(MouseButton.Left) && (Mouse.CursorState == CursorState.Confined))
             {
@@ -107,12 +110,13 @@ namespace Kotono.Graphics.Objects
                     break;
             }
 
+            // TODO: what ?? moves only if camera inside cube ?? maybe distance
             Location += GetMovement();
             _attachMesh.Location = Location;
 
-            KT.Print(_attachMesh.Location);
+            KT.Print(_attachMesh.Location, true);
 
-            Scale = (Vector)(Vector.Distance(Location, CameraManager.ActiveCamera.Location) / 75);
+            Scale = (Vector)(Vector.Distance(Location, CameraManager.ActiveCamera.Location) / 75.0f);
         }
 
         private static Vector GetMovement()

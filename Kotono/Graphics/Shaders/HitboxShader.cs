@@ -2,12 +2,9 @@
 
 namespace Kotono.Graphics.Shaders
 {
-    public class HitboxShader : Shader
+    public class HitboxShader()
+        : Shader("hitbox")
     {
-        public HitboxShader()
-            : base("hitbox")
-        { }
-
         public override void Update()
         {
             base.Update();

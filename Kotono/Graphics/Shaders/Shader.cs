@@ -129,5 +129,11 @@ namespace Kotono.Graphics.Shaders
             Use();
             GL.Uniform4(_uniformLocations[name], (Vector4)data);
         }
+
+        public void SetPoint(string name, Point data)
+        {
+            Use();
+            GL.Uniform2(_uniformLocations[name], (Vector2)data);
+        }
     }
 }

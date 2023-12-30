@@ -55,7 +55,7 @@ namespace Kotono.Graphics.Objects.Hitboxes
 
         public Color Color { get; set; } = Color.White;
 
-        public List<Sphere> Collisions { get; set; } = [];
+        public List<IHitbox> Collisions { get; set; } = [];
 
         public Sphere()
         {
@@ -70,7 +70,7 @@ namespace Kotono.Graphics.Objects.Hitboxes
                     {
                         X = 0.5f * Math.Cos(rotation),
                         Y = 0.5f * Math.Sin(rotation),
-                        Z = 0f
+                        Z = 0.0f
                     };
                 }
 
@@ -93,23 +93,16 @@ namespace Kotono.Graphics.Objects.Hitboxes
             ObjectManager.Create(this);
         }
 
-        public void Init() { }
-
         public void Update()
         {
             Location += Velocity * Time.DeltaS;
         }
 
-        public void UpdateShaders()
-        {
-
-        }
-
         public void Draw()
         {
-            DrawCircle(new Vector(MathHelper.PiOver2, 0f, 0f));
-            DrawCircle(new Vector(0f, MathHelper.PiOver2, 0f));
-            DrawCircle(new Vector(0f, 0f, MathHelper.PiOver2));
+            DrawCircle(new Vector(MathHelper.PiOver2, 0.0f, 0.0f));
+            DrawCircle(new Vector(0.0f, MathHelper.PiOver2, 0.0f));
+            DrawCircle(new Vector(0.0f, 0.0f, MathHelper.PiOver2));
         }
 
         private void DrawCircle(Vector rotation)
@@ -129,19 +122,26 @@ namespace Kotono.Graphics.Objects.Hitboxes
             GL.DrawArrays(PrimitiveType.LineLoop, 0, _vertices.Length);
         }
 
-        public bool Collides(IHitbox h)
+        public bool CollidesWith(IHitbox h)
         {
-            return (Math.Abs(Location.X - h.Location.X) < (Scale.X + h.Scale.X) / 2)
-                && (Math.Abs(Location.Y - h.Location.Y) < (Scale.Y + h.Scale.Y) / 2)
-                && (Math.Abs(Location.Z - h.Location.Z) < (Scale.Z + h.Scale.Z) / 2);
+            return (Math.Abs(Location.X - h.Location.X) < (Scale.X + h.Scale.X) / 2.0f)
+                && (Math.Abs(Location.Y - h.Location.Y) < (Scale.Y + h.Scale.Y) / 2.0f)
+                && (Math.Abs(Location.Z - h.Location.Z) < (Scale.Z + h.Scale.Z) / 2.0f);
         }
 
-        public bool Collides(Sphere s)
+        public bool CollidesWith(Sphere s)
         {
-            return Vector.Distance(this, s) < (Scale.X + s.Scale.X) / 2;
+            return Vector.Distance(this, s) < (Scale.X + s.Scale.X) / 2.0f;
         }
 
-        public bool IsColliding => Collisions.Any(Collides);
+        public bool TryGetCollider(out IHitbox? collider)
+        {
+            collider = Collisions.FirstOrDefault(CollidesWith);
+
+            return collider != null;
+        }
+
+        public bool IsColliding => TryGetCollider(out _);
 
         public void Save()
         {

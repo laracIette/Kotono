@@ -4,7 +4,7 @@ using OpenTK.Windowing.GraphicsLibraryFramework;
 
 namespace Kotono.Graphics.Objects
 {
-    public class Button(Rect dest, Color color, int layer, float fallOff, float cornerSize) 
+    public class Button(Rect dest, Color color, int layer, float fallOff, float cornerSize)
         : RoundedBox(dest, color, layer, fallOff, cornerSize)
     {
         public override void Update()

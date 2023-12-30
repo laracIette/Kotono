@@ -1,25 +1,23 @@
-﻿using Kotono.Graphics.Objects;
+﻿using Kotono.Engine.UserInterface.Elements;
 using Kotono.Utils;
 
 namespace Kotono.Graphics
 {
-    public class Component(Rect dest)
+    public class Component
     {
-        private readonly Viewport _viewport = new(dest);
+        public Viewport Viewport { get; }
 
-        private readonly RoundedBox _background = new(dest, Color.White, 0, 3, 10);
+        private readonly Background _background;
+
+        public Component(Rect dest)
+        {
+            Viewport = new Viewport(dest);
+            _background = new Background(Rect.FromAnchor(new Rect(Point.Zero, dest.Size), Anchor.TopLeft), Viewport);
+        }
 
         public void Update()
         {
-        }
-
-        public void UpdateShaders()
-        {
-        }
-
-        public void Draw()
-        {
-            _viewport.Use();
+            _background.Position += Point.Unit * 20.0f * Time.DeltaS;
         }
     }
 }

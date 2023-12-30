@@ -2,12 +2,9 @@
 
 namespace Kotono.Graphics.Shaders
 {
-    public class PointLightShader : Shader
+    public class PointLightShader()
+        : Shader("pointLight")
     {
-        public PointLightShader()
-            : base("pointLight")
-        { }
-
         public override void Update()
         {
             base.Update();

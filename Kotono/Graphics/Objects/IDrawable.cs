@@ -6,11 +6,7 @@ namespace Kotono.Graphics.Objects
     {
         public bool IsDraw { get; }
 
-        public void Init();
-
         public void Update();
-
-        public void UpdateShaders();
 
         public void Draw();
 

@@ -19,6 +19,21 @@ namespace Kotono.Graphics.Objects.Meshes
 {
     public abstract class Mesh : IObject3D
     {
+        private struct MeshSettings
+        {
+            public int VertexArrayObject;
+
+            public int VertexBufferObject;
+
+            public int IndicesCount;
+
+            public Vector Center;
+
+            public Vector[] Vertices;
+
+            public Triangle[] Triangles;
+        }
+
         private static readonly Dictionary<string, MeshSettings> _paths = [];
 
         private Vector _locationVelocity;
@@ -115,7 +130,7 @@ namespace Kotono.Graphics.Objects.Meshes
             _textures = new Texture[textureKeys.Count];
             for (int i = 0; i < textureKeys.Count; i++)
             {
-                _textures[i] = Texture.Load(_properties[textureKeys[i]], TextureUnit.Texture0 + i);
+                _textures[i] = new Texture(_properties[textureKeys[i]], TextureUnit.Texture0 + i);
             }
 
             _shader = _properties["Shader"] switch
@@ -234,15 +249,8 @@ namespace Kotono.Graphics.Objects.Meshes
 
             _meshSettings = value;
 
-            Create();
-        }
-
-        protected virtual void Create()
-        {
             ObjectManager.Create(this);
         }
-
-        public virtual void Init() { }
 
         public virtual void Update()
         {
@@ -277,8 +285,6 @@ namespace Kotono.Graphics.Objects.Meshes
                 Gizmo.AttachTo(this);
             }
         }
-
-        public void UpdateShaders() { }
 
         public virtual void Draw()
         {

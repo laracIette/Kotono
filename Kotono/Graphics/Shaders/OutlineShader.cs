@@ -1,9 +1,7 @@
 ﻿namespace Kotono.Graphics.Shaders
 {
-    public class OutlineShader : TextureBufferShader
+    public class OutlineShader()
+        : TextureBufferShader("outline")
     {
-        public OutlineShader()
-            : base("outline")
-        { }
     }
 }

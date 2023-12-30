@@ -37,6 +37,7 @@ namespace Kotono
                 }
             )
         {
+            // For Kotono.Utils.Properties, needed to parse float correctly
             CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
             CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
 
@@ -46,15 +47,18 @@ namespace Kotono
             Path.Project = windowSettings.ProjectPath;
 
             Mouse.CursorState = windowSettings.CursorState;
+            Mouse.MouseState = MouseState;
+
+            Keyboard.KeyboardState = KeyboardState;
 
             new Camera();
 
-            KT.SetWindowPosition((Point)Location);
-            KT.SetWindowSize((Point)Size);
+            KT.Position = (Point)Location;
+            KT.Size = (Point)Size;
 
             CreateFrameBuffer();
 
-            KT.Init(MouseState, KeyboardState);
+            KT.Init();
         }
 
         private void CreateFrameBuffer()
@@ -125,7 +129,6 @@ namespace Kotono
                 GL.Enable(EnableCap.DepthTest);
 
                 KT.Draw();
-                KT.UpdateShaders();
 
                 // second pass
                 GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0); // back to default
@@ -134,6 +137,9 @@ namespace Kotono
 
                 ShaderManager.Color.Draw(_textureColorBuffer);
                 ShaderManager.Outline.Draw(_textureDepthStencilBuffer);
+
+                // TODO: separate object 3d and 2d manager ????????
+                // TODO: to draw 3d before then depth buffer shit then draw 2d??????
 
                 base.SwapBuffers();
             }
@@ -169,21 +175,23 @@ namespace Kotono
         {
             base.OnResize(e);
 
-            KT.SetWindowPosition((Point)Location);
-            KT.SetWindowSize((Point)Size);
+            KT.Position = (Point)Location;
+            KT.Size = (Point)Size;
         }
 
         protected override void OnMove(WindowPositionEventArgs e)
         {
             base.OnMove(e);
 
-            KT.SetWindowPosition((Point)Location);
+            KT.Position = (Point)Location;
         }
 
         protected override void OnUnload()
         {
             KT.Exit();
 
+            GL.DeleteTexture(_textureDepthStencilBuffer);
+            GL.DeleteTexture(_textureColorBuffer);
             GL.DeleteFramebuffer(_frameBuffer);
 
             base.OnUnload();

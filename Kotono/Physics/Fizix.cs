@@ -15,7 +15,7 @@ namespace Kotono.Physics
 
         public static void Init()
         {
-            Gravity = new Vector(0, -.1, 0);
+            Gravity = new Vector(0.0f, -0.1f, 0.0f);
         }
 
         public static void Update(Mesh mesh)
@@ -25,7 +25,7 @@ namespace Kotono.Physics
 
             foreach (var vertex in mesh.Vertices)
             {
-                if ((Vector.RotateAroundPoint(vertex, mesh.Center, mesh.Rotation).Y + mesh.Location.Y) <= 0)
+                if ((Vector.RotateAroundPoint(vertex, mesh.Center, mesh.Rotation).Y + mesh.Location.Y) <= 0.0f)
                 {
                     collisionCenter += vertex;
                     n++;
@@ -57,7 +57,7 @@ namespace Kotono.Physics
             var collisionCenter = Vector.Zero;
             int n = 0;
 
-            foreach (var collider in sphere.Collisions.Where(sphere.Collides))
+            foreach (var collider in sphere.Collisions.Where(sphere.CollidesWith))
             {
                 collisionCenter += collider.Location;
                 n++;
@@ -74,16 +74,16 @@ namespace Kotono.Physics
                 Vector delta = sphere.Location - collisionCenter;
                 float distance = delta.Length;
 
-                float sphere1Radius = 1;
-                float sphere2Radius = 10;
+                float sphere1Radius = 1.0f;
+                float sphere2Radius = 10.0f;
 
                 // Calculate the collision response
                 Vector normal = delta.Normalized;
-                Vector relativeVelocity = sphere.Velocity - 0;
+                Vector relativeVelocity = sphere.Velocity - 0.0f;
                 float velocityAlongNormal = Vector.Dot(relativeVelocity, normal);
 
                 // If spheres are moving towards each other, perform the bounce
-                if (velocityAlongNormal < 0)
+                if (velocityAlongNormal < 0.0f)
                 {
                     float impulse = -2.0f * velocityAlongNormal / (1.0f / sphere1Radius + 1.0f / sphere2Radius);
                     sphere.Velocity -= normal * impulse / sphere1Radius;
@@ -106,7 +106,7 @@ namespace Kotono.Physics
                 float velocityAlongNormal = Vector.Dot(relativeVelocity, normal);
 
                 // If spheres are moving towards each other, perform the bounce
-                if (velocityAlongNormal < 0)
+                if (velocityAlongNormal < 0.0f)
                 {
                     float impulse = -2.0f * velocityAlongNormal / (1.0f / left.Radius + 1.0f / right.Radius);
                     left.Velocity -= normal * impulse / left.Radius;

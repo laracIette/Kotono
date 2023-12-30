@@ -1,9 +1,7 @@
 ﻿namespace Kotono.Graphics.Shaders
 {
-    public class BlurShader : TextureBufferShader
+    public class BlurShader()
+        : TextureBufferShader("blur")
     {
-        public BlurShader()
-            : base("blur")
-        { }
     }
 }

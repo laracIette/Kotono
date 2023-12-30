@@ -1,4 +1,5 @@
-﻿using Kotono.Utils;
+﻿using Kotono.Engine.UserInterface.Elements;
+using Kotono.Utils;
 using OpenTK.Graphics.OpenGL4;
 
 namespace Kotono.Graphics.Objects.Managers
@@ -10,21 +11,21 @@ namespace Kotono.Graphics.Objects.Managers
 
         internal override void Create(IObject2D obj)
         {
-            if (!_drawables.Contains(obj))
+            if (!Drawables.Contains(obj))
             {
                 // index of the first obj of a superior layer
-                int index = _drawables.FindIndex(i => i.Layer > obj.Layer);
+                int index = Drawables.FindIndex(i => i.Layer > obj.Layer);
 
                 // if every obj has an inferior Layer
                 if (index == -1)
                 {
                     // add obj at the end
-                    _drawables.Add(obj);
+                    Drawables.Add(obj);
                 }
                 else
                 {
                     // insert before the first obj of a superior layer 
-                    _drawables.Insert(index, obj);
+                    Drawables.Insert(index, obj);
                 }
             }
         }
@@ -34,11 +35,18 @@ namespace Kotono.Graphics.Objects.Managers
             GL.Disable(EnableCap.DepthTest);
             GL.Enable(EnableCap.Blend);
 
-            for (int i = 0; i < _drawables.Count; i++)
+            // TODO: use foreach when developement done
+            for (int i = 0; i < Drawables.Count; i++)
             {
-                if (_drawables[i].IsDraw && Rect.Overlaps(_drawables[i].Dest, Rect.FromAnchor(new Rect(Point.Zero, KT.Size), Anchor.TopLeft)))
+                if (Drawables[i].IsDraw)
                 {
-                    _drawables[i].Draw();
+                    // If Drawables[i] is an IElement, use its viewport, else use window viewport
+                    ((Drawables[i] as IElement)?.Viewport ?? ComponentManager.Window.Viewport).Use();
+
+                    if (Rect.Overlaps(Drawables[i].Dest, Rect.FromAnchor(ComponentManager.ActiveViewport.Dest, Anchor.TopLeft)))
+                    {
+                        Drawables[i].Draw();
+                    }
                 }
             }
 

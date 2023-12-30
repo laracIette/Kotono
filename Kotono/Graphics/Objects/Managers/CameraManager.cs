@@ -21,11 +21,6 @@ namespace Kotono.Graphics.Objects.Managers
             _cameras.Remove(camera);
         }
 
-        internal static Camera Get(int index)
-        {
-            return _cameras[index];
-        }
-
         internal static void Update()
         {
             foreach (var camera in _cameras)

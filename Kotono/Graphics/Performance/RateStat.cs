@@ -14,7 +14,7 @@ namespace Kotono.Graphics.Performance
 
         private int _timeIndex = 0;
 
-        private readonly Text _text = new("0", dest, anchor, Color.White, spacing: 1, layer: 1);
+        private readonly Text _text = new("0", dest, anchor, Color.White, 1.0f, 1);
 
         public void Init()
         {
@@ -33,7 +33,7 @@ namespace Kotono.Graphics.Performance
 
             Time = _times.Sum() / _times.Length;
 
-            Rate = 1 / Time;
+            Rate = 1.0 / Time;
 
             _text.SetText(Rate.ToString("0.00"));
         }

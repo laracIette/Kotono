@@ -1,25 +1,20 @@
 ﻿using OpenTK.Graphics.OpenGL4;
 using StbImageSharp;
+using System;
 using System.Collections.Generic;
 using IO = System.IO;
 
 namespace Kotono.Graphics
 {
-    internal class Texture
+    internal class Texture : IDisposable
     {
-        private static readonly Dictionary<string, Texture> _textures = [];
+        private static readonly Dictionary<string, int> _textures = [];
 
         internal int Handle { get; }
 
         internal TextureUnit Unit { get; }
 
-        internal Texture(int handle, TextureUnit unit)
-        {
-            Handle = handle;
-            Unit = unit;
-        }
-
-        internal static Texture Load(string path, TextureUnit unit)
+        internal Texture(string path, TextureUnit unit)
         {
             if (!_textures.ContainsKey(path))
             {
@@ -45,16 +40,26 @@ namespace Kotono.Graphics
 
                 GL.GenerateMipmap(GenerateMipmapTarget.Texture2D);
 
-                _textures[path] = new Texture(handle, unit);
+                _textures[path] = handle;
             }
 
-            return _textures[path];
+            Handle = _textures[path];
+            Unit = unit;
         }
 
         internal void Use()
         {
             GL.ActiveTexture(Unit);
             GL.BindTexture(TextureTarget.Texture2D, Handle);
+        }
+
+        // TODO: never actually called
+        public void Dispose()
+        {
+            GL.BindTexture(TextureTarget.Texture2D, 0);
+            GL.DeleteTexture(Handle);
+
+            GC.SuppressFinalize(this);
         }
     }
 }

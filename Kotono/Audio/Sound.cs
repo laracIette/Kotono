@@ -8,7 +8,7 @@ namespace Kotono.Audio
     {
         private float _volume = 1.0f;
 
-        public int Source { get; private set; } = SoundManager.GetSource(path);
+        public int Source { get; } = SoundManager.GetSource(path);
 
         public float Volume
         {

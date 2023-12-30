@@ -48,15 +48,6 @@ namespace Kotono.Graphics.Objects.Shapes
 
         private bool _hasInitBuffers = false;
 
-        public Shape()
-        {
-            Vertices = Array.Empty<Vector>();
-            _transform = new Transform();
-            Color = Color.White;
-
-            ObjectManager.Create(this);
-        }
-
         public Shape(Vector[] vertices, Transform transform, Color color)
         {
             Vertices = vertices;
@@ -66,11 +57,6 @@ namespace Kotono.Graphics.Objects.Shapes
             ObjectManager.Create(this);
         }
 
-        public void Init()
-        {
-
-        }
-
         public void Update()
         {
             if (!_hasInitBuffers && IsDraw)
@@ -78,11 +64,6 @@ namespace Kotono.Graphics.Objects.Shapes
                 _hasInitBuffers = true;
                 InitBuffers();
             }
-        }
-
-        public void UpdateShaders()
-        {
-
         }
 
         public void Draw()

@@ -45,7 +45,6 @@ namespace Kotono.Input
             SetCursorPos((int)pos.X, (int)pos.Y);
         }
 
-
         public static Point PositionFromOrigin { get; private set; } = Point.Zero;
 
         public static Point PreviousPositionFromOrigin { get; private set; } = Point.Zero;
@@ -60,7 +59,7 @@ namespace Kotono.Input
 
         private static MouseState? _mouseState;
 
-        private static MouseState MouseState
+        internal static MouseState MouseState
         {
             get => _mouseState ?? throw new Exception($"error: _mouseState must not be null");
             set => _mouseState = value;
@@ -70,9 +69,8 @@ namespace Kotono.Input
 
         public static CursorState CursorState { get; set; } = CursorState.Centered;
 
-        public static void Init(MouseState mouseState)
+        static Mouse()
         {
-            MouseState = mouseState;
             HideCursor();
         }
 
@@ -123,7 +121,7 @@ namespace Kotono.Input
 
             if (CursorState == CursorState.Centered)
             {
-                var center = new Point(KT.Dest.X + KT.Dest.W / 2, KT.Dest.Y + KT.Dest.H / 2);
+                var center = new Point(KT.Dest.X + KT.Dest.W / 2.0f, KT.Dest.Y + KT.Dest.H / 2.0f);
                 if (PositionFromOrigin != center)
                 {
                     SetCursorPos(center);
@@ -134,7 +132,7 @@ namespace Kotono.Input
 
         private static void UpdateRay()
         {
-            var mouse = (PositionFromOrigin - KT.Position).WorldSpace;
+            var mouse = (PositionFromOrigin - KT.Position).NDC;
 
             Vector4 rayClip = new Vector4(mouse.X, mouse.Y, -1.0f, 1.0f);
             Vector4 rayView = Matrix4.Invert(CameraManager.ActiveCamera.ProjectionMatrix) * rayClip;
@@ -144,20 +142,11 @@ namespace Kotono.Input
             Ray = ((Vector)rayWorld.Xyz).Normalized;
         }
 
-        public static bool IsButtonDown(MouseButton button)
-        {
-            return MouseState.IsButtonDown(button);
-        }
+        public static bool IsButtonDown(MouseButton button) => MouseState.IsButtonDown(button);
 
-        public static bool IsButtonPressed(MouseButton button)
-        {
-            return MouseState.IsButtonPressed(button);
-        }
+        public static bool IsButtonPressed(MouseButton button) => MouseState.IsButtonPressed(button);
 
-        public static bool IsButtonReleased(MouseButton button)
-        {
-            return MouseState.IsButtonReleased(button);
-        }
+        public static bool IsButtonReleased(MouseButton button) => MouseState.IsButtonReleased(button);
 
         public static void ShowCursor()
         {

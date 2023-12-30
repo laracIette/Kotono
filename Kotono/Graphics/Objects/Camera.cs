@@ -12,9 +12,9 @@ namespace Kotono.Graphics.Objects
     {
         private float _pitch = 0.0f;
 
-        private float _yaw = -Math.PI / 2;
+        private float _yaw = -Math.PI / 2.0f;
 
-        private float _fov = Math.PI / 2;
+        private float _fov = Math.PI / 2.0f;
 
         private float _speed = 1.0f;
 
@@ -26,7 +26,7 @@ namespace Kotono.Graphics.Objects
 
         public Vector Location { get; private set; } = Vector.Zero;
 
-        public float AspectRatio { private get; set; } = 16f / 9f;
+        public float AspectRatio { private get; set; } = 16.0f / 9.0f;
 
         public float Pitch
         {
@@ -60,7 +60,7 @@ namespace Kotono.Graphics.Objects
         }
         public Matrix4 ViewMatrix => Matrix4.LookAt((Vector3)Location, (Vector3)(Location + Front), (Vector3)Up);
 
-        public Matrix4 ProjectionMatrix => Matrix4.CreatePerspectiveFieldOfView(_fov, AspectRatio, 0.01f, 1000f);
+        public Matrix4 ProjectionMatrix => Matrix4.CreatePerspectiveFieldOfView(_fov, AspectRatio, 0.01f, 1000.0f);
 
         public Camera()
         {
@@ -83,8 +83,8 @@ namespace Kotono.Graphics.Objects
 
             Yaw += Mouse.Delta.X * sensitivity;
             Pitch -= Mouse.Delta.Y * sensitivity;
-            _speed += Mouse.ScrollDelta.Y * _speed / 10;
-            _speed = Math.Clamp(_speed, 0.1, 100);
+            _speed += Mouse.ScrollDelta.Y * _speed / 10.0f;
+            _speed = Math.Clamp(_speed, 0.1f, 100.0f);
 
             float fast = Keyboard.IsKeyDown(Keys.LeftShift) ? 2.0f : 1.0f;
             float slow = Keyboard.IsKeyDown(Keys.LeftControl) ? 0.5f : 1.0f;

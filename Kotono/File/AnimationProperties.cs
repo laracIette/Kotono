@@ -2,7 +2,7 @@
 
 namespace Kotono.File
 {
-    public class AnimationProperties(string path) 
+    public class AnimationProperties(string path)
         : Properties(path)
     {
         public string Directory

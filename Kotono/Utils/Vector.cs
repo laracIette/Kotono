@@ -2,37 +2,79 @@
 using Kotono.Graphics.Objects;
 using OpenTK.Mathematics;
 using System;
+using System.Runtime.InteropServices;
 using Quaternion = OpenTK.Mathematics.Quaternion;
 
 namespace Kotono.Utils
 {
+    [Serializable]
+    [StructLayout(LayoutKind.Sequential)]
     public struct Vector
     {
+        /// <summary> 
+        /// The X component of the Vector. 
+        /// </summary>
         public float X;
 
+        /// <summary>
+        /// The Y component of the Vector. 
+        /// </summary>
         public float Y;
 
+        /// <summary> 
+        /// The Z component of the Vector. 
+        /// </summary>
         public float Z;
 
-        public readonly float Length => MathF.Sqrt(X * X + Y * Y + Z * Z);
+        /// <summary>
+        /// The length of the Vector. 
+        /// </summary>
+        public readonly float Length => Math.Sqrt(X * X + Y * Y + Z * Z);
 
+        /// <summary> 
+        /// The Vector scaled to unit length.
+        /// </summary>
         public readonly Vector Normalized => this / Length;
 
-        public static Vector Zero => new Vector(0, 0, 0);
+        /// <summary>
+        /// A Vector with X = 0, Y = 0, Z = 0.
+        /// </summary>
+        public static Vector Zero => new Vector(0.0f, 0.0f, 0.0f);
 
-        public static Vector Unit => new Vector(1, 1, 1);
+        /// <summary>
+        /// A Vector with X = 1, Y = 1, Z = 1. 
+        /// </summary>
+        public static Vector Unit => new Vector(1.0f, 1.0f, 1.0f);
 
-        public static Vector UnitX => new Vector(1, 0, 0);
+        /// <summary> 
+        /// A Vector with X = 1, Y = 0, Z = 0.
+        /// </summary>
+        public static Vector UnitX => new Vector(1.0f, 0.0f, 0.0f);
 
-        public static Vector UnitXY => new Vector(1, 1, 0);
+        /// <summary> 
+        /// A Vector with X = 1, Y = 1, Z = 0. 
+        /// </summary>
+        public static Vector UnitXY => new Vector(1.0f, 1.0f, 0.0f);
 
-        public static Vector UnitXZ => new Vector(1, 0, 1);
+        /// <summary> 
+        /// A Vector with X = 1, Y = 0, Z = 1.
+        /// </summary>
+        public static Vector UnitXZ => new Vector(1.0f, 0.0f, 1.0f);
 
-        public static Vector UnitY => new Vector(0, 1, 0);
+        /// <summary> 
+        /// A Vector with X = 0, Y = 1, Z = 0. 
+        /// </summary>
+        public static Vector UnitY => new Vector(0.0f, 1.0f, 0.0f);
 
-        public static Vector UnitYZ => new Vector(0, 1, 1);
+        /// <summary>
+        /// A Vector with X = 0, Y = 1, Z = 1.
+        /// </summary>
+        public static Vector UnitYZ => new Vector(0.0f, 1.0f, 1.0f);
 
-        public static Vector UnitZ => new Vector(0, 0, 1);
+        /// <summary>
+        /// A Vector with X = 0, Y = 0, Z = 1.
+        /// </summary>
+        public static Vector UnitZ => new Vector(0.0f, 0.0f, 1.0f);
 
         public static Vector Right => UnitX;
 
@@ -40,7 +82,7 @@ namespace Kotono.Utils
 
         public static Vector Forward => UnitZ;
 
-        public const int SizeInBytes = sizeof(float) * 3;
+        public static int SizeInBytes => sizeof(float) * 3;
 
         public readonly float this[int index] =>
             index switch
@@ -51,15 +93,19 @@ namespace Kotono.Utils
                 _ => throw new IndexOutOfRangeException("You tried to access this Vector at index: " + index)
             };
 
-        /// <summary> Initialize a Vector with X = 0, Y = 0, Z = 0 </summary>
+        /// <summary> 
+        /// Initialize a Vector with X = 0, Y = 0, Z = 0.
+        /// </summary>
         public Vector()
         {
-            X = 0;
-            Y = 0;
-            Z = 0;
+            X = 0.0f;
+            Y = 0.0f;
+            Z = 0.0f;
         }
 
-        /// <summary> Initialize a Vector with X = v.X, Y = v.Y, Z = v.Z </summary>
+        /// <summary>
+        /// Initialize a Vector with X = v.X, Y = v.Y, Z = v.Z.
+        /// </summary>
         public Vector(Vector v)
         {
             X = v.X;
@@ -67,7 +113,9 @@ namespace Kotono.Utils
             Z = v.Z;
         }
 
-        /// <summary> Initialize a Vector with X = f, Y = f, Z = f </summary>
+        /// <summary>
+        /// Initialize a Vector with X = f, Y = f, Z = f.
+        /// </summary>
         public Vector(float f)
         {
             X = f;
@@ -75,28 +123,14 @@ namespace Kotono.Utils
             Z = f;
         }
 
-        /// <summary> Initialize a Vector with X = (float)d, Y = (float)d, Z = (float)d </summary>
-        public Vector(double d)
-        {
-            X = (float)d;
-            Y = (float)d;
-            Z = (float)d;
-        }
-
-        /// <summary> Initialize a Vector with X = x, Y = y, Z = z </summary>
-        public Vector(float x = 0, float y = 0, float z = 0)
+        /// <summary> 
+        /// Initialize a Vector with X = x, Y = y, Z = z.
+        /// </summary>
+        public Vector(float x = 0.0f, float y = 0.0f, float z = 0.0f)
         {
             X = x;
             Y = y;
             Z = z;
-        }
-
-        /// <summary> Initialize a Vector with X = (float)x, Y = (float)y, Z = (float)z </summary>
-        public Vector(double x = 0, double y = 0, double z = 0)
-        {
-            X = (float)x;
-            Y = (float)y;
-            Z = (float)z;
         }
 
         public static Vector RotateAroundPoint(Vector v, Vector point, Vector rotation)
@@ -119,7 +153,9 @@ namespace Kotono.Utils
             return left.X * right.X + left.Y * right.Y + left.Z * right.Z;
         }
 
-        /// <summary> Convert a Vector from degrees to radians </summary>
+        /// <summary> 
+        /// Convert a Vector from degrees to radians. 
+        /// </summary>
         public static Vector Rad(Vector v)
         {
             v.X = Math.Rad(v.X);
@@ -128,7 +164,9 @@ namespace Kotono.Utils
             return v;
         }
 
-        /// <summary> Convert a Vector from radians to degrees </summary>
+        /// <summary> 
+        /// Convert a Vector from radians to degrees. 
+        /// </summary>
         public static Vector Deg(Vector v)
         {
             v.X = Math.Deg(v.X);
@@ -231,12 +269,29 @@ namespace Kotono.Utils
 
         public static bool operator ==(Vector left, Vector right)
         {
-            return (left.X == right.X) && (left.Y == right.Y) && (left.Z == right.Z);
+            return left.Equals(right);
         }
 
         public static bool operator !=(Vector left, Vector right)
         {
             return !(left == right);
+        }
+
+        public override readonly bool Equals(object? obj)
+        {
+            return obj is Vector v && Equals(v);
+        }
+
+        public readonly bool Equals(Vector v)
+        {
+            return X == v.X
+                && Y == v.Y
+                && Z == v.Z;
+        }
+
+        public override readonly int GetHashCode()
+        {
+            return HashCode.Combine(X, Y, Z);
         }
 
         public static explicit operator Vector3(Vector v)

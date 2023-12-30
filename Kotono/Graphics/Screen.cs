@@ -24,7 +24,6 @@ namespace Kotono.Graphics
         public struct ScreenPoint(int x, int y)
         {
             public int X = x;
-
             public int Y = y;
         }
 
@@ -58,7 +57,7 @@ namespace Kotono.Graphics
             MONITOR_DEFAULTTONEAREST = 0x00000002
         }
 
-        public static void Init()
+        static Screen()
         {
             EnumDisplayMonitors(nint.Zero, nint.Zero, MonitorEnumCallback, nint.Zero);
         }
@@ -66,7 +65,7 @@ namespace Kotono.Graphics
         // Callback function for EnumDisplayMonitors
         private static bool MonitorEnumCallback(nint hMonitor, nint hdcMonitor, ref ScreenRect lprcMonitor, nint dwData)
         {
-            MonitorInfo monitorInfo = new MonitorInfo();
+            var monitorInfo = new MonitorInfo();
             monitorInfo.Size = (uint)Marshal.SizeOf(monitorInfo);
             GetMonitorInfo(hMonitor, ref monitorInfo);
 

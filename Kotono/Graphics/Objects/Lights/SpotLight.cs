@@ -17,15 +17,13 @@ namespace Kotono.Graphics.Objects.Lights
 
         private bool _isOn = true;
 
-        private int _shaderIndex;
-
-        private float CutOffAngle
+        public float CutOffAngle
         {
             get => _cutOffAngle;
             set => _cutOffAngle = Math.Clamp(value, 0.0f, 12.5f);
         }
 
-        private float OuterCutOffAngle
+        public float OuterCutOffAngle
         {
             get => _outerCutOffAngle;
             set => _outerCutOffAngle = Math.Clamp(value, 0.0f, 17.5f);
@@ -33,16 +31,10 @@ namespace Kotono.Graphics.Objects.Lights
 
         public const int MAX_COUNT = 1;
 
-        public static int Count { get; internal set; }
-
         public SpotLight()
         {
-            _shaderIndex = Count;
-
             ObjectManager.Create(this);
         }
-
-        public void Init() { }
 
         public void Update()
         {
@@ -64,25 +56,6 @@ namespace Kotono.Graphics.Objects.Lights
                 CutOffAngle -= 100.0f * Time.DeltaS;
                 OuterCutOffAngle -= 100.0f * Time.DeltaS;
             }
-        }
-
-        public void UpdateShaders()
-        {
-            ShaderManager.Lighting.SetFloat($"spotLights[{_shaderIndex}].cutOff", Math.Cos(Math.Rad(CutOffAngle)));
-            ShaderManager.Lighting.SetFloat($"spotLights[{_shaderIndex}].outerCutOff", Math.Cos(Math.Rad(OuterCutOffAngle)));
-            ShaderManager.Lighting.SetVector($"spotLights[{_shaderIndex}].location", CameraManager.ActiveCamera.Location);
-            ShaderManager.Lighting.SetVector($"spotLights[{_shaderIndex}].direction", CameraManager.ActiveCamera.Front);
-            ShaderManager.Lighting.SetColor($"spotLights[{_shaderIndex}].ambient", Color.Black);
-            ShaderManager.Lighting.SetColor($"spotLights[{_shaderIndex}].diffuse", Color.White);
-            ShaderManager.Lighting.SetColor($"spotLights[{_shaderIndex}].specular", Color.White);
-            ShaderManager.Lighting.SetFloat($"spotLights[{_shaderIndex}].constant", 1.0f);
-            ShaderManager.Lighting.SetFloat($"spotLights[{_shaderIndex}].linear", 0.09f);
-            ShaderManager.Lighting.SetFloat($"spotLights[{_shaderIndex}].quadratic", 0.032f);
-        }
-
-        public void UpdateIndex()
-        {
-            _shaderIndex--;
         }
 
         public void Draw()
@@ -112,7 +85,6 @@ namespace Kotono.Graphics.Objects.Lights
 
         public void Dispose()
         {
-            Count--;
             GC.SuppressFinalize(this);
         }
     }

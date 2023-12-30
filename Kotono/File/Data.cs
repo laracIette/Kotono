@@ -6,6 +6,12 @@ namespace Kotono.File
     {
         public Dictionary<string, string> Dict { get; } = [];
 
+        public string this[string key]
+        {
+            get => Dict[key];
+            set => Dict[key] = value;
+        }
+
         public Data() { }
 
         public override string ToString()
@@ -18,12 +24,6 @@ namespace Kotono.File
             }
 
             return result;
-        }
-
-        public string this[string key]
-        {
-            get => Dict[key];
-            set => Dict[key] = value;
         }
     }
 }

@@ -12,45 +12,93 @@ namespace Kotono.Graphics.Objects.Hitboxes
     public class Box : IHitbox
     {
         private static readonly float[] _vertices =
-        {
-            -0.5f, -0.5f, -0.5f,
-             0.5f, -0.5f, -0.5f,
+        [
+            -0.5f,
+            -0.5f,
+            -0.5f,
+            0.5f,
+            -0.5f,
+            -0.5f,
 
-             0.5f, -0.5f, -0.5f,
-             0.5f,  0.5f, -0.5f,
+            0.5f,
+            -0.5f,
+            -0.5f,
+            0.5f,
+            0.5f,
+            -0.5f,
 
-             0.5f,  0.5f, -0.5f,
-            -0.5f,  0.5f, -0.5f,
+            0.5f,
+            0.5f,
+            -0.5f,
+            -0.5f,
+            0.5f,
+            -0.5f,
 
-            -0.5f,  0.5f, -0.5f,
-            -0.5f, -0.5f, -0.5f,
-
-
-            -0.5f, -0.5f,  0.5f,
-             0.5f, -0.5f,  0.5f,
-
-             0.5f, -0.5f,  0.5f,
-             0.5f,  0.5f,  0.5f,
-
-             0.5f,  0.5f,  0.5f,
-            -0.5f,  0.5f,  0.5f,
-
-            -0.5f,  0.5f,  0.5f,
-            -0.5f, -0.5f,  0.5f,
+            -0.5f,
+            0.5f,
+            -0.5f,
+            -0.5f,
+            -0.5f,
+            -0.5f,
 
 
-            -0.5f, -0.5f,  0.5f,
-            -0.5f, -0.5f, -0.5f,
+            -0.5f,
+            -0.5f,
+            0.5f,
+            0.5f,
+            -0.5f,
+            0.5f,
 
-             0.5f, -0.5f,  0.5f,
-             0.5f, -0.5f, -0.5f,
+            0.5f,
+            -0.5f,
+            0.5f,
+            0.5f,
+            0.5f,
+            0.5f,
 
-             0.5f,  0.5f,  0.5f,
-             0.5f,  0.5f, -0.5f,
+            0.5f,
+            0.5f,
+            0.5f,
+            -0.5f,
+            0.5f,
+            0.5f,
 
-            -0.5f,  0.5f,  0.5f,
-            -0.5f,  0.5f, -0.5f
-        };
+            -0.5f,
+            0.5f,
+            0.5f,
+            -0.5f,
+            -0.5f,
+            0.5f,
+
+
+            -0.5f,
+            -0.5f,
+            0.5f,
+            -0.5f,
+            -0.5f,
+            -0.5f,
+
+            0.5f,
+            -0.5f,
+            0.5f,
+            0.5f,
+            -0.5f,
+            -0.5f,
+
+            0.5f,
+            0.5f,
+            0.5f,
+            0.5f,
+            0.5f,
+            -0.5f,
+
+            -0.5f,
+            0.5f,
+            0.5f,
+            -0.5f,
+            0.5f,
+            -0.5f
+        ];
 
         private static int _vertexArrayObject;
 
@@ -88,7 +136,7 @@ namespace Kotono.Graphics.Objects.Hitboxes
 
         public Color Color { get; set; } = Color.White;
 
-        public List<Sphere> Collisions { get; set; } = [];
+        public List<IHitbox> Collisions { get; set; } = [];
 
         public Box()
         {
@@ -115,14 +163,7 @@ namespace Kotono.Graphics.Objects.Hitboxes
             ObjectManager.Create(this);
         }
 
-        public void Init() { }
-
         public void Update()
-        {
-
-        }
-
-        public void UpdateShaders()
         {
 
         }
@@ -144,14 +185,21 @@ namespace Kotono.Graphics.Objects.Hitboxes
             GL.DrawArrays(PrimitiveType.Lines, 0, _vertices.Length);
         }
 
-        public bool Collides(IHitbox h)
+        public bool CollidesWith(IHitbox h)
         {
-            return (Math.Abs(Location.X - h.Location.X) <= (Scale.X + h.Scale.X) / 2)
-                && (Math.Abs(Location.Y - h.Location.Y) <= (Scale.Y + h.Scale.Y) / 2)
-                && (Math.Abs(Location.Z - h.Location.Z) <= (Scale.Z + h.Scale.Z) / 2);
+            return (Math.Abs(Location.X - h.Location.X) <= (Scale.X + h.Scale.X) / 2.0f)
+                && (Math.Abs(Location.Y - h.Location.Y) <= (Scale.Y + h.Scale.Y) / 2.0f)
+                && (Math.Abs(Location.Z - h.Location.Z) <= (Scale.Z + h.Scale.Z) / 2.0f);
         }
 
-        public bool IsColliding => Collisions.Any(Collides);
+        public bool TryGetCollider(out IHitbox? collider)
+        {
+            collider = Collisions.FirstOrDefault(CollidesWith);
+
+            return collider != null;
+        }
+
+        public bool IsColliding => TryGetCollider(out _);
 
         public void Save()
         {
