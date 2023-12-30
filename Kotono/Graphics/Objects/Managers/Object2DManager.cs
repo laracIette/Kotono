@@ -4,29 +4,16 @@ using OpenTK.Graphics.OpenGL4;
 
 namespace Kotono.Graphics.Objects.Managers
 {
-    internal class Object2DManager : DrawableManager<IObject2D>
+    internal class Object2DManager : DrawableManager<Object2D>
     {
         internal Object2DManager()
             : base() { }
 
-        internal override void Create(IObject2D obj)
+        internal override void Create(Object2D obj)
         {
             if (!Drawables.Contains(obj))
             {
-                // index of the first obj of a superior layer
-                int index = Drawables.FindIndex(i => i.Layer > obj.Layer);
-
-                // if every obj has an inferior Layer
-                if (index == -1)
-                {
-                    // add obj at the end
-                    Drawables.Add(obj);
-                }
-                else
-                {
-                    // insert before the first obj of a superior layer 
-                    Drawables.Insert(index, obj);
-                }
+                Drawables.Add(obj);
             }
         }
 
@@ -52,6 +39,26 @@ namespace Kotono.Graphics.Objects.Managers
 
             GL.Disable(EnableCap.Blend);
             GL.Enable(EnableCap.DepthTest);
+        }
+
+        internal void UpdateLayer(Object2D obj)
+        {
+            Drawables.Remove(obj);
+
+            // index of the first obj of a superior layer
+            int index = Drawables.FindIndex(i => i.Layer > obj.Layer);
+
+            // if every obj has an inferior Layer
+            if (index == -1)
+            {
+                // add obj at the end
+                Drawables.Add(obj);
+            }
+            else
+            {
+                // insert before the first obj of a superior layer 
+                Drawables.Insert(index, obj);
+            }
         }
     }
 }

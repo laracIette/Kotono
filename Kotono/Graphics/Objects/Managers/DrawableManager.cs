@@ -18,7 +18,6 @@ namespace Kotono.Graphics.Objects.Managers
 
         internal virtual void Delete(T drawable)
         {
-            drawable.Dispose();
             Drawables.Remove(drawable);
         }
 
@@ -47,7 +46,7 @@ namespace Kotono.Graphics.Objects.Managers
         {
             foreach (var drawable in Drawables)
             {
-                drawable.Save();
+                (drawable as ISaveable)?.Save();
             }
         }
     }

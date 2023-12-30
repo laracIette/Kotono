@@ -7,55 +7,11 @@ using System;
 
 namespace Kotono.Graphics.Objects
 {
-    public class Image : IObject2D
+    public class Image : Object2D
     {
         private readonly Texture _texture;
 
         public string Path { get; }
-
-        private Rect _dest;
-
-        public Rect Dest
-        {
-            get => _dest;
-            set => _dest = value;
-        }
-
-        public Point Position
-        {
-            get => _dest.Position;
-            set => _dest.Position = value;
-        }
-
-        public Point Size
-        {
-            get => _dest.Size;
-            set => _dest.Size = value;
-        }
-
-        public float X
-        {
-            get => _dest.X;
-            set => _dest.X = value;
-        }
-
-        public float Y
-        {
-            get => _dest.Y;
-            set => _dest.Y = value;
-        }
-
-        public float W
-        {
-            get => _dest.W;
-            set => _dest.W = value;
-        }
-
-        public float H
-        {
-            get => _dest.H;
-            set => _dest.H = value;
-        }
 
         public Color Color { get; set; }
 
@@ -68,12 +24,11 @@ namespace Kotono.Graphics.Objects
         private Matrix4 Model =>
             Matrix4.CreateScale(Dest.NDC.W, Dest.NDC.H, 1.0f)
             * Matrix4.CreateTranslation(Dest.NDC.X, Dest.NDC.Y, 0.0f);
-
-        public bool IsDraw { get; private set; } = true;
-
-        public int Layer { get; set; } = 0;
+        
+        public bool IsMouseOn => Rect.Overlaps(Dest, Mouse.Position);
 
         public Image(ImageSettings settings)
+            : base()
         {
             Path = settings.Path;
             Dest = settings.Dest;
@@ -83,11 +38,9 @@ namespace Kotono.Graphics.Objects
             _transformation = Rect.Zero;
 
             _texture = new Texture(Path, TextureUnit.Texture0);
-
-            ObjectManager.Create(this);
         }
 
-        public virtual void Update()
+        public override void Update()
         {
             if (Time.NowS >= _endTime)
             {
@@ -97,7 +50,7 @@ namespace Kotono.Graphics.Objects
             Dest += _transformation * Time.DeltaS;
         }
 
-        public void Draw()
+        public override void Draw()
         {
             GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
 
@@ -122,36 +75,6 @@ namespace Kotono.Graphics.Objects
 
             _startTime = Time.NowS;
             _endTime = _startTime + time;
-        }
-
-        public bool IsMouseOn()
-        {
-            return Rect.Overlaps(Dest, Mouse.Position);
-        }
-
-        public void Show()
-        {
-            IsDraw = true;
-        }
-
-        public void Hide()
-        {
-            IsDraw = false;
-        }
-
-        public void Save()
-        {
-
-        }
-
-        public void Delete()
-        {
-            ObjectManager.Delete(this);
-        }
-
-        public void Dispose()
-        {
-            GC.SuppressFinalize(this);
         }
     }
 }

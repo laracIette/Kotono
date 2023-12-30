@@ -56,7 +56,7 @@ namespace Kotono.Graphics.Objects
             }
         }
 
-        public static bool IsDraw { get; private set; } = false;
+        public static bool IsDraw { get; set; } = false;
 
         private static int _selectedMeshIndex = -1;
 
@@ -169,7 +169,7 @@ namespace Kotono.Graphics.Objects
             IsDraw = true;
             foreach (var mesh in _meshes)
             {
-                mesh.Show();
+                mesh.IsDraw = true;
             }
         }
 
@@ -178,7 +178,7 @@ namespace Kotono.Graphics.Objects
             IsDraw = false;
             foreach (var mesh in _meshes)
             {
-                mesh.Hide();
+                mesh.IsDraw = false;
             }
         }
     }

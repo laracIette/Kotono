@@ -7,10 +7,9 @@ using Math = Kotono.Utils.Math;
 
 namespace Kotono.Graphics.Objects.Lights
 {
-    public class SpotLight : IDrawable
+    public class SpotLight() : 
+        Drawable()
     {
-        public bool IsDraw { get; private set; }
-
         private float _cutOffAngle = 12.5f;
 
         private float _outerCutOffAngle = 17.5f;
@@ -31,12 +30,7 @@ namespace Kotono.Graphics.Objects.Lights
 
         public const int MAX_COUNT = 1;
 
-        public SpotLight()
-        {
-            ObjectManager.Create(this);
-        }
-
-        public void Update()
+        public override void Update()
         {
             if (Keyboard.IsKeyPressed(Keys.F))
             {
@@ -56,36 +50,6 @@ namespace Kotono.Graphics.Objects.Lights
                 CutOffAngle -= 100.0f * Time.DeltaS;
                 OuterCutOffAngle -= 100.0f * Time.DeltaS;
             }
-        }
-
-        public void Draw()
-        {
-
-        }
-
-        public void Save()
-        {
-
-        }
-
-        public void Show()
-        {
-            IsDraw = true;
-        }
-
-        public void Hide()
-        {
-            IsDraw = false;
-        }
-
-        public void Delete()
-        {
-            ObjectManager.Delete(this);
-        }
-
-        public void Dispose()
-        {
-            GC.SuppressFinalize(this);
         }
     }
 }

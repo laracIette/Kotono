@@ -3,7 +3,7 @@
 namespace Kotono.Graphics.Objects.Managers
 {
     internal class HitboxManager()
-        : DrawableManager<IHitbox>()
+        : DrawableManager<Hitbox>()
     {
     }
 }

@@ -1,49 +1,18 @@
-﻿using Kotono.Utils;
+﻿using Kotono.Graphics.Objects;
+using Kotono.Utils;
 using OpenTK.Graphics.OpenGL4;
 using System.Collections.Generic;
 
 namespace Kotono.Graphics
 {
-    public class Viewport(Rect dest)
+    public class Viewport : Object2D
     {
         private readonly List<Viewport> _connections = [];
 
-        public Rect Dest = dest;
-
-        public Point Position
+        public Viewport(Rect dest)
+            : base() 
         {
-            get => Dest.Position;
-            set => Dest.Position = value;
-        }
-
-        public Point Size
-        {
-            get => Dest.Size;
-            set => Dest.Size = value;
-        }
-
-        public float X
-        {
-            get => Dest.X;
-            set => Dest.X = value;
-        }
-
-        public float Y
-        {
-            get => Dest.Y;
-            set => Dest.Y = value;
-        }
-
-        public float W
-        {
-            get => Dest.W;
-            set => Dest.W = value;
-        }
-
-        public float H
-        {
-            get => Dest.H;
-            set => Dest.H = value;
+            Dest = dest;
         }
 
         public void Use()

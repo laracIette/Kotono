@@ -11,26 +11,28 @@ namespace Kotono.Engine.UserInterface.AddMenu
 
         private readonly Anchor _anchor = anchor;
 
+        public override bool IsDraw 
+        { 
+            get => base.IsDraw;
+            set
+            {
+                base.IsDraw = value;
+                if (!value)
+                {
+                    _subMenu.IsDraw = false;
+                }
+            }
+        }
+
         public override void Update()
         {
             base.Update();
             _text.Update();
         }
 
-        public override void Show()
-        {
-            base.Show();
-        }
-
-        public override void Hide()
-        {
-            base.Hide();
-            _subMenu.Hide();
-        }
-
         protected override void OnPressed()
         {
-            _subMenu.Show();
+            _subMenu.IsDraw = true;
             _subMenu.Position = _anchor switch
             {
                 Anchor.TopLeft => new Point(Dest.X + Dest.W / 2.0f, Dest.Y - Dest.H / 2.0f),
