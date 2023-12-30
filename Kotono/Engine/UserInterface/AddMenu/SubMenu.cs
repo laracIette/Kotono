@@ -2,6 +2,7 @@
 using Kotono.Utils;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Kotono.Engine.UserInterface.AddMenu
 {
@@ -22,6 +23,18 @@ namespace Kotono.Engine.UserInterface.AddMenu
             }
         }
 
+        public bool IsDraw
+        {
+            get => _options.FirstOrDefault()?.IsDraw ?? throw new Exception("error: cannot access IsDraw, _frames is empty.");
+            set
+            {
+                foreach (var option in _options)
+                {
+                    option.IsDraw = value;
+                }
+            }
+        }
+
         public SubMenu(string[] options, Anchor anchor)
         {
             _anchor = anchor;
@@ -30,7 +43,7 @@ namespace Kotono.Engine.UserInterface.AddMenu
             {
                 var dest = GetTextDest(i, KT.Size / 2.0f);
                 _options.Add(new Text(options[i], dest, _anchor, Color.White, 0.6f, 3));
-                _options[i].Show();
+                _options[i].IsDraw = true;
                 _options[i].Init();
             }
         }
@@ -45,22 +58,6 @@ namespace Kotono.Engine.UserInterface.AddMenu
                 Anchor.BottomRight => new Rect(pos.X, pos.Y - index * 24.0f, 20.0f, 24.0f),
                 _ => throw new Exception($"error: Anchor \"{_anchor}\" isn't supported")
             };
-        }
-
-        public void Show()
-        {
-            foreach (var option in _options)
-            {
-                option.Show();
-            }
-        }
-
-        public void Hide()
-        {
-            foreach (var option in _options)
-            {
-                option.Hide();
-            }
         }
     }
 }

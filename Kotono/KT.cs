@@ -1,4 +1,5 @@
-﻿using Kotono.Audio;
+﻿using System;
+using Kotono.Audio;
 using Kotono.Engine;
 using Kotono.Engine.UserInterface.AddMenu;
 using Kotono.Graphics;
@@ -48,6 +49,11 @@ namespace Kotono
 
         #region Printer
 
+        /// <summary>
+        /// Prints an object to the Window given a Color.
+        /// </summary>
+        /// <param name="obj"> The object to print. </param>
+        /// <param name="color"> The Color of the text. </param>
         public static void Print(object? obj, Color color)
         {
             if (obj != null)
@@ -56,11 +62,19 @@ namespace Kotono
             }
         }
 
+        /// <summary>
+        /// Prints an object to the Window.
+        /// </summary>
+        /// <param name="obj"> The object to print. </param>
+        /// <param name="rainbow"> A bool to determine whether the Color of the text should loop through RBG values. </param>
         public static void Print(object? obj, bool rainbow = false)
         {
             Print(obj, rainbow ? Color.Rainbow(0.01) : Color.White);
         }
 
+        /// <summary>
+        /// Prints an empty line.
+        /// </summary>
         public static void Print()
         {
             Print("");
@@ -83,6 +97,17 @@ namespace Kotono
         public static UserMode UserMode => _mode.UserMode;
 
         #endregion UserMode
+
+        #region Logger
+        /// <summary>
+        /// Writes an object to the console.
+        /// </summary>
+        /// <param name="obj"> The object to log. </param>
+        internal static void Log(object? obj)
+        {
+            Console.WriteLine(obj);
+        }
+        #endregion Logger
 
         internal static void Init()
         {
@@ -122,6 +147,7 @@ namespace Kotono
         internal static void Exit()
         {
             SoundManager.Dispose();
+            ObjectManager.Dispose();
         }
     }
 }

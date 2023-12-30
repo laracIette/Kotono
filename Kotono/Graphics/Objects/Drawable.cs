@@ -3,7 +3,7 @@ using System;
 
 namespace Kotono.Graphics.Objects
 {
-    public abstract class Drawable : IDrawable
+    public abstract class Drawable : IDrawable, IDisposable
     {
         public virtual bool IsDraw { get; set; } = true;
 
@@ -16,11 +16,16 @@ namespace Kotono.Graphics.Objects
 
         public virtual void Draw() { }
 
-        public virtual void Dispose()
+        public virtual void Delete()
         {
-            GC.SuppressFinalize(this);
+            Dispose();
 
             ObjectManager.Delete(this);
+        }
+
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
         }
     }
 }

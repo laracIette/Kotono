@@ -2,9 +2,8 @@
 
 namespace Kotono.Graphics.Objects.Managers
 {
-    internal class MeshManager : DrawableManager<Mesh>
+    internal class MeshManager()
+        : DrawableManager<Mesh>()
     {
-        internal MeshManager()
-            : base() { }
     }
 }

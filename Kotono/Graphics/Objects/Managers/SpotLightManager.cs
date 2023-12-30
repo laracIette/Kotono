@@ -9,7 +9,7 @@ namespace Kotono.Graphics.Objects.Managers
         {
             if (ObjectManager.GetSpotLights().Count >= SpotLight.MAX_COUNT)
             {
-                KT.Print($"The number of SpotLight is already at its max value: {SpotLight.MAX_COUNT}.");
+                KT.Log($"The number of SpotLight is already at its max value: {SpotLight.MAX_COUNT}.");
             }
             else
             {

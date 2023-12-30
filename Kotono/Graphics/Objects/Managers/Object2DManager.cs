@@ -4,19 +4,9 @@ using OpenTK.Graphics.OpenGL4;
 
 namespace Kotono.Graphics.Objects.Managers
 {
-    internal class Object2DManager : DrawableManager<Object2D>
+    internal class Object2DManager()
+        : DrawableManager<Object2D>()
     {
-        internal Object2DManager()
-            : base() { }
-
-        internal override void Create(Object2D obj)
-        {
-            if (!Drawables.Contains(obj))
-            {
-                Drawables.Add(obj);
-            }
-        }
-
         internal override void Draw()
         {
             GL.Disable(EnableCap.DepthTest);

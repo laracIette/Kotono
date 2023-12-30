@@ -23,7 +23,7 @@ namespace Kotono.Graphics.Objects.Managers
 
         private static readonly Object2DManager _object2DManager = new();
 
-        internal static void Create(IDrawable drawable)
+        internal static void Create(Drawable drawable)
         {
             switch (drawable)
             {
@@ -60,7 +60,7 @@ namespace Kotono.Graphics.Objects.Managers
             }
         }
 
-        internal static void Delete(IDrawable drawable)
+        internal static void Delete(Drawable drawable)
         {
             switch (drawable)
             {
@@ -150,6 +150,17 @@ namespace Kotono.Graphics.Objects.Managers
             _spotLightManager.Save();
             _shapeManager.Save();
             _object2DManager.Save();
+        }
+
+        internal static void Dispose()
+        {
+            _frontMeshManager.Dispose();
+            _meshManager.Dispose();
+            _hitboxManager.Dispose();
+            _pointLightManager.Dispose();
+            _spotLightManager.Dispose();
+            _shapeManager.Dispose();
+            _object2DManager.Dispose();
         }
     }
 }

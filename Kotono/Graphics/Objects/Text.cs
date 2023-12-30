@@ -285,7 +285,7 @@ namespace Kotono.Graphics.Objects
         {
             foreach (var letter in _letters)
             {
-                letter.Dispose();
+                letter.Delete();
             }
 
             _letters.Clear();

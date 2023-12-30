@@ -44,11 +44,11 @@ namespace Kotono.Graphics.Objects.Lights
             _mesh = new PointLightMesh(location, this);
         }
 
-        public override void Dispose()
+        public override void Delete()
         {
-            _mesh.Dispose();
+            _mesh.Delete();
 
-            base.Dispose();
+            base.Delete();
         }
     }
 }

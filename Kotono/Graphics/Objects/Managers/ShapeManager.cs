@@ -2,9 +2,8 @@
 
 namespace Kotono.Graphics.Objects.Managers
 {
-    internal class ShapeManager : DrawableManager<Shape>
+    internal class ShapeManager()
+        : DrawableManager<Shape>()
     {
-        internal ShapeManager()
-            : base() { }
     }
 }

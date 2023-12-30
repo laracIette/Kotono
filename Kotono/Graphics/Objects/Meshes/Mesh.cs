@@ -303,14 +303,14 @@ namespace Kotono.Graphics.Objects.Meshes
             _properties.WriteFile();
         }
 
-        public override void Dispose()
+        public override void Delete()
         {
             foreach (var hitbox in _hitboxes)
             {
-                hitbox.Dispose();
+                hitbox.Delete();
             }
 
-            base.Dispose();
+            base.Delete();
         }
     }
 }

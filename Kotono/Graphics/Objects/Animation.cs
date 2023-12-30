@@ -174,16 +174,6 @@ namespace Kotono.Graphics.Objects
             CurrentFrame--;
         }
 
-        public void Clear()
-        {
-            foreach (var frame in _frames)
-            {
-                frame.Dispose();
-            }
-
-            _frames.Clear();
-        }
-
         public void Save()
         {
             WriteData();
@@ -197,11 +187,21 @@ namespace Kotono.Graphics.Objects
             _properties.WriteFile();
         }
 
-        public override void Dispose()
+        public override string ToString()
         {
-            Clear();
+            return $"Directory: {_properties["Directory"]}";
+        }
 
-            base.Dispose();
+        public override void Delete()
+        {
+            foreach (var frame in _frames)
+            {
+                frame.Delete();
+            }
+
+            _frames.Clear();
+
+            base.Delete();
         }
     }
 }
