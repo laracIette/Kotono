@@ -169,6 +169,12 @@ namespace Kotono
                     WindowState.Fullscreen :
                     WindowState.Normal;
             }
+
+            if (Keyboard.IsKeyPressed(Keys.S) && Keyboard.IsKeyDown(Keys.LeftControl))
+            {
+                KT.Save();
+                KT.Print("saved", Color.FromHex("#88FF10"));
+            }
         }
 
         protected override void OnResize(ResizeEventArgs e)

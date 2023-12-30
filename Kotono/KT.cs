@@ -139,7 +139,7 @@ namespace Kotono
             ObjectManager.Draw();
         }
 
-        public static void Save()
+        internal static void Save()
         {
             ObjectManager.Save();
         }
