@@ -22,7 +22,7 @@ namespace Kotono.Utils
         /// <summary> 
         /// The length component of the Point. 
         /// </summary>
-        public readonly float Length => MathF.Sqrt(X * X + Y * Y);
+        public readonly float Length => Math.Sqrt(X * X + Y * Y);
 
         /// <summary> 
         /// The Point scaled to unit length. 
