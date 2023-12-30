@@ -4,19 +4,20 @@ using Kotono.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Math = Kotono.Utils.Math;
 
 namespace Kotono.Graphics.Objects
 {
-    public class Animation : IObject2D
+    public class Animation : Object2D, ISaveable
     {
         protected readonly List<Image> _frames = [];
 
         public int Count => _frames.Count;
 
-        public Rect Dest
+        public override Rect Dest
         {
-            get => (Count > 0) ? _frames[0].Dest : throw new Exception("error: cannot access _frames[0].Dest, _frames is empty.");
+            get => _frames.FirstOrDefault()?.Dest ?? throw new Exception("error: cannot access Dest, _frames is empty.");
             set
             {
                 foreach (var frame in _frames)
@@ -26,14 +27,26 @@ namespace Kotono.Graphics.Objects
             }
         }
 
-        public int Layer
+        public override int Layer
         {
-            get => (Count > 0) ? _frames[0].Layer : throw new Exception("error: cannot access _frames[0].Layer, _frames is empty.");
+            get => _frames.FirstOrDefault()?.Layer ?? throw new Exception("error: cannot access Layer, _frames is empty.");
             set
             {
                 foreach (var frame in _frames)
                 {
                     frame.Layer = value;
+                }
+            }
+        }
+
+        public override bool IsDraw
+        {
+            get => _frames.FirstOrDefault()?.IsDraw ?? throw new Exception("error: cannot access IsDraw, _frames is empty.");
+            set
+            {
+                foreach (var frame in _frames)
+                {
+                    frame.IsDraw = value;
                 }
             }
         }
@@ -49,9 +62,9 @@ namespace Kotono.Graphics.Objects
             get => _currentFrame;
             set
             {
-                _frames[_currentFrame].Hide();
+                _frames[_currentFrame].IsDraw = false;
                 _currentFrame = (int)Math.Loop(value, Count);
-                _frames[_currentFrame].Show();
+                _frames[_currentFrame].IsDraw = true;
             }
         }
 
@@ -69,12 +82,13 @@ namespace Kotono.Graphics.Objects
 
         public bool IsPlaying { get; private set; } = false;
 
-        public bool IsDraw { get; private set; } = true;
-
         private readonly AnimationProperties _properties;
 
-        /// <summary> Create an Animation from files in a directory </summary>
+        /// <summary> 
+        /// Create an Animation from files in a directory.
+        /// </summary>
         public Animation(string path)
+            : base()
         {
             _properties = new AnimationProperties(path);
 
@@ -109,19 +123,17 @@ namespace Kotono.Graphics.Objects
             _startTime = Time.NowS + _properties.StartTime;
             _duration = _properties.Duration;
 
-            Hide();
-
-            ObjectManager.Create(this);
+            IsDraw = false;
         }
 
-        public void Update()
+        public override void Update()
         {
             if (!_isStarted && (Time.NowS >= _startTime))
             {
                 _isStarted = true;
                 IsPlaying = true;
                 _lastFrameTime = Time.NowS;
-                _frames[0].Show();
+                _frames[0].IsDraw = true;
             }
 
             if (_isStarted && (Time.NowS <= EndTime))
@@ -161,34 +173,15 @@ namespace Kotono.Graphics.Objects
         {
             CurrentFrame--;
         }
-        public void Show()
-        {
-            foreach (var frame in _frames)
-            {
-                frame.Show();
-            }
-        }
-
-        public void Hide()
-        {
-            foreach (var frame in _frames)
-            {
-                frame.Hide();
-            }
-        }
 
         public void Clear()
         {
             foreach (var frame in _frames)
             {
-                frame.Delete();
+                frame.Dispose();
             }
+
             _frames.Clear();
-        }
-
-        public void Draw()
-        {
-
         }
 
         public void Save()
@@ -204,15 +197,11 @@ namespace Kotono.Graphics.Objects
             _properties.WriteFile();
         }
 
-        public void Delete()
-        {
-            ObjectManager.Delete(this);
-        }
-
-        public void Dispose()
+        public override void Dispose()
         {
             Clear();
-            GC.SuppressFinalize(this);
+
+            base.Dispose();
         }
     }
 }

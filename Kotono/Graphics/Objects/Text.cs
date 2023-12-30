@@ -4,10 +4,11 @@ using Kotono.Utils;
 using OpenTK.Graphics.OpenGL4;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Kotono.Graphics.Objects
 {
-    public class Text : IObject2D, ISelectable
+    public class Text : Object2D, ISelectable
     {
         protected string _text;
 
@@ -21,13 +22,13 @@ namespace Kotono.Graphics.Objects
 
         private readonly RoundedBorder _roundedBorder;
 
-        public Rect Dest
+        public override Rect Dest
         {
             get => Rect.FromAnchor(new Rect(_lettersDest.X, _lettersDest.Y, _lettersDest.W * _text.Length * _spacing, _lettersDest.H), _anchor);
             set => _lettersDest = value;
         }
 
-        public Point Position
+        public override Point Position
         {
             get => Dest.Position;
             set
@@ -42,6 +43,18 @@ namespace Kotono.Graphics.Objects
                 if (_roundedBorder != null)
                 {
                     _roundedBorder.Dest = Dest;
+                }
+            }
+        }
+
+        public override bool IsDraw
+        {
+            get => _letters.FirstOrDefault()?.IsDraw ?? false; // don't draw if empty
+            set
+            {
+                foreach (var frame in _letters)
+                {
+                    frame.IsDraw = value;
                 }
             }
         }
@@ -65,13 +78,9 @@ namespace Kotono.Graphics.Objects
             }
         }
 
-        public bool IsDraw { get; private set; } = true;
+        public bool IsSelected { get; } = false;
 
-        public int Layer { get; set; }
-
-        public bool IsSelected { get; }
-
-        public bool IsActive { get; }
+        public bool IsActive { get; } = false;
 
         public bool IsMouseOn => Rect.Overlaps(Dest, Mouse.Position);
 
@@ -153,6 +162,7 @@ namespace Kotono.Graphics.Objects
         }
 
         public Text(string text, Rect lettersDest, Anchor position, Color color, float spacing, int layer)
+            : base()
         {
             _text = text;
             _lettersDest = lettersDest;
@@ -162,9 +172,7 @@ namespace Kotono.Graphics.Objects
             Layer = layer;
 
             _roundedBorder = new RoundedBorder(Dest, Color.Red, 2, 0.0f, 0.0f, 1.0f);
-            _roundedBorder.Hide();
-
-            ObjectManager.Create(this);
+            _roundedBorder.IsDraw = false;
         }
 
         public void Init()
@@ -247,11 +255,6 @@ namespace Kotono.Graphics.Objects
             };
         }
 
-        public void Update()
-        {
-
-        }
-
         public virtual void SetText(string text)
         {
             if (IsDraw && (text != _text))
@@ -282,52 +285,15 @@ namespace Kotono.Graphics.Objects
         {
             foreach (var letter in _letters)
             {
-                letter.Delete();
+                letter.Dispose();
             }
+
             _letters.Clear();
-        }
-
-        public void Show()
-        {
-            IsDraw = true;
-            foreach (var letter in _letters)
-            {
-                letter.Show();
-            }
-        }
-
-        public void Hide()
-        {
-            IsDraw = false;
-            foreach (var letter in _letters)
-            {
-                letter.Hide();
-            }
-        }
-
-        public void Draw()
-        {
-
-        }
-
-        public void Save()
-        {
-
         }
 
         public override string ToString()
         {
             return _text;
-        }
-
-        public void Delete()
-        {
-            ObjectManager.Delete(this);
-        }
-
-        public void Dispose()
-        {
-            GC.SuppressFinalize(this);
         }
     }
 }

@@ -5,13 +5,11 @@ using System;
 
 namespace Kotono.Graphics.Objects.Lights
 {
-    public class PointLight : IDrawable
+    public class PointLight : Drawable
     {
         private readonly Mesh _mesh;
 
         public Vector Location => _mesh.Location;
-
-        public bool IsDraw { get; private set; }
 
         public bool IsGravity
         {
@@ -34,6 +32,7 @@ namespace Kotono.Graphics.Objects.Lights
         public const int MAX_COUNT = 100;
 
         public PointLight(Vector location, Color ambient, Color diffuse, Color specular, float constant, float linear, float quadratic)
+            : base()
         {
             Ambient = ambient;
             Color = diffuse;
@@ -43,45 +42,13 @@ namespace Kotono.Graphics.Objects.Lights
             Quadratic = quadratic;
 
             _mesh = new PointLightMesh(location, this);
-
-            ObjectManager.Create(this);
         }
 
-        public virtual void Update()
+        public override void Dispose()
         {
+            _mesh.Dispose();
 
-        }
-
-        public void Draw()
-        {
-
-        }
-
-        public void Save()
-        {
-
-        }
-
-        public void Show()
-        {
-            IsDraw = true;
-        }
-
-        public void Hide()
-        {
-            IsDraw = false;
-        }
-
-        public void Delete()
-        {
-            ObjectManager.Delete(this);
-        }
-
-        public void Dispose()
-        {
-            _mesh.Delete();
-
-            GC.SuppressFinalize(this);
+            base.Dispose();
         }
     }
 }

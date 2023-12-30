@@ -21,6 +21,17 @@ namespace Kotono.Graphics.Performance
 
         internal double UpdateRate => _update.Rate;
 
+        internal bool IsDraw
+        {
+            get => _background.IsDraw;
+            set
+            {
+                _background.IsDraw = value;
+                _frame.IsDraw = value;
+                _update.IsDraw = value;
+            }
+        }
+
         internal Window()
         {
             _dest = new Rect(1080.0f, 660.0f, 50.0f, 60.0f);
@@ -57,20 +68,6 @@ namespace Kotono.Graphics.Performance
         internal void AddUpdateTime(double updateTime)
         {
             _update.AddTime(updateTime);
-        }
-
-        internal void Show()
-        {
-            _background.Show();
-            _frame.Show();
-            _update.Show();
-        }
-
-        internal void Hide()
-        {
-            _background.Hide();
-            _frame.Hide();
-            _update.Hide();
         }
     }
 }

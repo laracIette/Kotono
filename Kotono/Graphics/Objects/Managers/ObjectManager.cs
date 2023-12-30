@@ -35,7 +35,7 @@ namespace Kotono.Graphics.Objects.Managers
                     _meshManager.Create(mesh);
                     break;
 
-                case IHitbox hitbox:
+                case Hitbox hitbox:
                     _hitboxManager.Create(hitbox);
                     break;
 
@@ -47,11 +47,11 @@ namespace Kotono.Graphics.Objects.Managers
                     _spotLightManager.Create(spotLight);
                     break;
 
-                case IShape shape:
+                case Shape shape:
                     _shapeManager.Create(shape);
                     break;
 
-                case IObject2D object2D:
+                case Object2D object2D:
                     _object2DManager.Create(object2D);
                     break;
 
@@ -72,7 +72,7 @@ namespace Kotono.Graphics.Objects.Managers
                     _meshManager.Delete(mesh);
                     break;
 
-                case IHitbox hitbox:
+                case Hitbox hitbox:
                     _hitboxManager.Delete(hitbox);
                     break;
 
@@ -84,11 +84,11 @@ namespace Kotono.Graphics.Objects.Managers
                     _spotLightManager.Delete(spotLight);
                     break;
 
-                case IShape shape:
+                case Shape shape:
                     _shapeManager.Delete(shape);
                     break;
 
-                case IObject2D object2D:
+                case Object2D object2D:
                     _object2DManager.Delete(object2D);
                     break;
 
@@ -110,6 +110,11 @@ namespace Kotono.Graphics.Objects.Managers
         internal static List<SpotLight> GetSpotLights()
         {
             return _spotLightManager.Drawables;
+        }
+
+        internal static void UpdateObject2DLayer(Object2D obj)
+        {
+            _object2DManager.UpdateLayer(obj);
         }
 
         internal static void Update()

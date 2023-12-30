@@ -17,7 +17,7 @@ using PrimitiveType = OpenTK.Graphics.OpenGL4.PrimitiveType;
 
 namespace Kotono.Graphics.Objects.Meshes
 {
-    public abstract class Mesh : IObject3D
+    public abstract class Mesh : Object3D, ISaveable
     {
         private struct MeshSettings
         {
@@ -40,11 +40,9 @@ namespace Kotono.Graphics.Objects.Meshes
 
         private Vector _rotationVelocity;
 
-        private readonly IHitbox[] _hitboxes;
+        private readonly Hitbox[] _hitboxes;
 
         protected readonly Shader _shader;
-
-        public bool IsDraw { get; private set; } = true;
 
         public bool IsFiziks { get; set; } = false;
 
@@ -68,32 +66,6 @@ namespace Kotono.Graphics.Objects.Meshes
 
         private readonly Texture[] _textures;
 
-        private Transform _transform;
-
-        public Transform Transform
-        {
-            get => _transform;
-            set => _transform = value;
-        }
-
-        public Vector Location
-        {
-            get => _transform.Location;
-            set => _transform.Location = value;
-        }
-
-        public Vector Rotation
-        {
-            get => Vector.Deg(_transform.Rotation);
-            set => _transform.Rotation = Vector.Rad(value);
-        }
-
-        public Vector Scale
-        {
-            get => _transform.Scale;
-            set => _transform.Scale = value;
-        }
-
         public Vector LocationVelocity
         {
             get => _locationVelocity;
@@ -116,7 +88,8 @@ namespace Kotono.Graphics.Objects.Meshes
 
         private readonly MeshProperties _properties;
 
-        public Mesh(string path, IHitbox[] hitboxes)
+        public Mesh(string path, Hitbox[] hitboxes)
+            : base()
         {
             _properties = new MeshProperties(path);
 
@@ -248,11 +221,9 @@ namespace Kotono.Graphics.Objects.Meshes
             }
 
             _meshSettings = value;
-
-            ObjectManager.Create(this);
         }
 
-        public virtual void Update()
+        public override void Update()
         {
             var tempLoc = Location;
 
@@ -270,14 +241,15 @@ namespace Kotono.Graphics.Objects.Meshes
             {
                 hitbox.Location = tempLoc;
 
-                if ((CollisionState == CollisionState.BlockAll) && hitbox.IsColliding)
-                {
+                    if ((CollisionState == CollisionState.BlockAll) && hitbox.IsColliding)
+                    {
                     hitbox.Location = Location;
-                }
-                else
-                {
-                    Location = tempLoc;
-                }
+                    }
+                    else
+                    {
+                        Location = tempLoc;
+                    }
+                
             }
 
             if (Mouse.IsButtonPressed(MouseButton.Left) && IsMouseOn(out _, out _))
@@ -286,7 +258,7 @@ namespace Kotono.Graphics.Objects.Meshes
             }
         }
 
-        public virtual void Draw()
+        public override void Draw()
         {
             foreach (var texture in _textures)
             {
@@ -318,16 +290,6 @@ namespace Kotono.Graphics.Objects.Meshes
             return false;
         }
 
-        public void Show()
-        {
-            IsDraw = true;
-        }
-
-        public void Hide()
-        {
-            IsDraw = false;
-        }
-
         public void Save()
         {
             WriteData();
@@ -341,19 +303,14 @@ namespace Kotono.Graphics.Objects.Meshes
             _properties.WriteFile();
         }
 
-        public void Delete()
-        {
-            ObjectManager.Delete(this);
-        }
-
-        public void Dispose()
+        public override void Dispose()
         {
             foreach (var hitbox in _hitboxes)
             {
-                hitbox.Delete();
+                hitbox.Dispose();
             }
 
-            GC.SuppressFinalize(this);
+            base.Dispose();
         }
     }
 }

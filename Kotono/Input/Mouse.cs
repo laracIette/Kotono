@@ -87,7 +87,7 @@ namespace Kotono.Input
             if (CursorState == CursorState.Confined)
             {
                 var delta = Point.Zero;
-                if (Position.X < 0)
+                if (Position.X < 0.0f)
                 {
                     delta.X += KT.Dest.W;
                 }
@@ -95,7 +95,7 @@ namespace Kotono.Input
                 {
                     delta.X -= KT.Dest.W;
                 }
-                if (Position.Y < 0)
+                if (Position.Y < 0.0f)
                 {
                     delta.Y += KT.Dest.H;
                 }

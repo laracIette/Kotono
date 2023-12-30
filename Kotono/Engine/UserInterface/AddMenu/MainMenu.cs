@@ -18,7 +18,18 @@ namespace Kotono.Engine.UserInterface.AddMenu
             new TriggersButton()
         };
 
-        public static bool IsDraw => _backgroundBox.IsDraw;
+        public static bool IsDraw
+        {
+            get => _backgroundBox.IsDraw;
+            set
+            {
+                _backgroundBox.IsDraw = value;
+                foreach (var button in _buttons)
+                {
+                    button.IsDraw = value;
+                }
+            }
+        }
 
         public static Point Position
         {
@@ -35,12 +46,7 @@ namespace Kotono.Engine.UserInterface.AddMenu
 
         static MainMenu()
         {
-            _backgroundBox.Hide();
-
-            foreach (var button in _buttons)
-            {
-                button.Hide();
-            }
+            IsDraw = false;
         }
 
         public static void Update()
@@ -48,33 +54,15 @@ namespace Kotono.Engine.UserInterface.AddMenu
             if (Keyboard.IsKeyPressed(Keys.A) && Keyboard.IsKeyDown(Keys.LeftShift))
             {
                 Position = Mouse.Position;
-                Show();
+                IsDraw = true;
             }
 
             if (IsDraw)
             {
                 if (Mouse.IsButtonPressed(MouseButton.Left) && !Rect.Overlaps(_backgroundBox.Dest, Mouse.Position))
                 {
-                    Hide();
+                    IsDraw = false;
                 }
-            }
-        }
-
-        private static void Show()
-        {
-            _backgroundBox.Show();
-            foreach (var button in _buttons)
-            {
-                button.Show();
-            }
-        }
-
-        private static void Hide()
-        {
-            _backgroundBox.Hide();
-            foreach (var button in _buttons)
-            {
-                button.Hide();
             }
         }
     }

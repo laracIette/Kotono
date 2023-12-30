@@ -7,26 +7,24 @@ using Math = Kotono.Utils.Math;
 
 namespace Kotono.Graphics.Objects
 {
-    public class RoundedBox : IObject2D
+    public class RoundedBox : Object2D
     {
-        private Rect _dest;
-
-        public virtual Rect Dest
+        public override Rect Dest
         {
-            get => _dest;
+            get => base.Dest;
             set
             {
-                _dest = value;
+                base.Dest = value;
                 UpdateValues();
             }
         }
 
-        public Point Position
+        public override Point Position
         {
-            get => _dest.Position;
+            get => base.Position;
             set
             {
-                _dest.Position = value;
+                base.Position = value;
                 UpdateValues();
             }
         }
@@ -57,10 +55,6 @@ namespace Kotono.Graphics.Objects
 
         public Color Color { get; set; }
 
-        public bool IsDraw { get; private set; } = true;
-
-        public int Layer { get; set; }
-
         protected virtual Matrix4 Model =>
             Matrix4.CreateScale(
                 (Dest + new Rect(w: FallOff * 2.0f)).NDC.W,
@@ -70,19 +64,13 @@ namespace Kotono.Graphics.Objects
             * Matrix4.CreateTranslation(Dest.NDC.X, Dest.NDC.Y, 0.0f);
 
         public RoundedBox(Rect dest, Color color, int layer, float fallOff, float cornerSize)
+            : base()
         {
             Dest = dest;
             Color = color;
             Layer = layer;
             FallOff = fallOff;
             CornerSize = cornerSize;
-
-            ObjectManager.Create(this);
-        }
-
-        public virtual void Update()
-        {
-
         }
 
         protected virtual void UpdateValues()
@@ -97,7 +85,7 @@ namespace Kotono.Graphics.Objects
             _fallOff = Math.Max(0.000001f, FallOff);
         }
 
-        public virtual void Draw()
+        public override void Draw()
         {
             ShaderManager.RoundedBox.SetMatrix4("model", Model);
             ShaderManager.RoundedBox.SetPoint("windowSize", KT.Size);
@@ -109,31 +97,6 @@ namespace Kotono.Graphics.Objects
             GL.BindVertexArray(SquareVertices.VertexArrayObject);
 
             GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
-        }
-
-        public virtual void Show()
-        {
-            IsDraw = true;
-        }
-
-        public virtual void Hide()
-        {
-            IsDraw = false;
-        }
-
-        public void Save()
-        {
-
-        }
-
-        public void Delete()
-        {
-            ObjectManager.Delete(this);
-        }
-
-        public void Dispose()
-        {
-            GC.SuppressFinalize(this);
         }
     }
 }
