@@ -53,14 +53,14 @@ namespace Kotono
 
             new Camera();
 
-            KT.SetWindowPosition((Point)Location);
-            KT.SetWindowSize((Point)Size);
+            KT.Position = (Point)Location;
+            KT.Size = (Point)Size;
 
             CreateFrameBuffer();
-            
+
             KT.Init();
         }
-        
+
         private void CreateFrameBuffer()
         {
             // Creating the framebuffer
@@ -129,7 +129,6 @@ namespace Kotono
                 GL.Enable(EnableCap.DepthTest);
 
                 KT.Draw();
-                KT.UpdateShaders();
 
                 // second pass
                 GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0); // back to default
@@ -176,21 +175,23 @@ namespace Kotono
         {
             base.OnResize(e);
 
-            KT.SetWindowPosition((Point)Location);
-            KT.SetWindowSize((Point)Size);
+            KT.Position = (Point)Location;
+            KT.Size = (Point)Size;
         }
 
         protected override void OnMove(WindowPositionEventArgs e)
         {
             base.OnMove(e);
 
-            KT.SetWindowPosition((Point)Location);
+            KT.Position = (Point)Location;
         }
 
         protected override void OnUnload()
         {
             KT.Exit();
 
+            GL.DeleteTexture(_textureDepthStencilBuffer);
+            GL.DeleteTexture(_textureColorBuffer);
             GL.DeleteFramebuffer(_frameBuffer);
 
             base.OnUnload();

@@ -12,15 +12,12 @@ namespace Kotono.Graphics
         public Component(Rect dest)
         {
             Viewport = new Viewport(dest);
-            _background = new(Rect.FromAnchor(dest, Anchor.TopLeft), Viewport);
-        }
-
-        public void Init()
-        {
+            _background = new Background(Rect.FromAnchor(new Rect(Point.Zero, dest.Size), Anchor.TopLeft), Viewport);
         }
 
         public void Update()
         {
+            _background.Position += Point.Unit * 20.0f * Time.DeltaS;
         }
     }
 }

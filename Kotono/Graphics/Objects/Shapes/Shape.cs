@@ -57,11 +57,6 @@ namespace Kotono.Graphics.Objects.Shapes
             ObjectManager.Create(this);
         }
 
-        public void Init()
-        {
-
-        }
-
         public void Update()
         {
             if (!_hasInitBuffers && IsDraw)
@@ -69,11 +64,6 @@ namespace Kotono.Graphics.Objects.Shapes
                 _hasInitBuffers = true;
                 InitBuffers();
             }
-        }
-
-        public void UpdateShaders()
-        {
-
         }
 
         public void Draw()

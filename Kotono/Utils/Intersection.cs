@@ -8,7 +8,7 @@ namespace Kotono.Utils
         public static bool IntersectRayTriangle(Vector rayOrigin, Vector rayDirection, Triangle triangle, out Vector intersectionPoint, out float distance)
         {
             intersectionPoint = Vector.Zero;
-            distance = 0;
+            distance = 0.0f;
 
             var vertex1 = (Vector)Vector3.TransformPosition((Vector3)triangle.Vertices[0], triangle.Model);
             var vertex2 = (Vector)Vector3.TransformPosition((Vector3)triangle.Vertices[1], triangle.Model);
@@ -25,7 +25,7 @@ namespace Kotono.Utils
             }
 
             float t = Vector.Dot(rayToVertex1, triangleNormal) / denominator;
-            if (t < 0)
+            if (t < 0.0f)
             {
                 // Triangle is behind the ray's origin
                 return false;
@@ -47,7 +47,7 @@ namespace Kotono.Utils
             float u = (dot11 * dot02 - dot01 * dot12) * invDenominator;
             float v = (dot00 * dot12 - dot01 * dot02) * invDenominator;
 
-            if (u >= 0 && v >= 0 && (u + v) <= 1)
+            if (u >= 0.0f && v >= 0.0f && (u + v) <= 1.0f)
             {
                 // Ray intersects the triangle
                 distance = Vector.Distance(rayOrigin, intersectionPoint);

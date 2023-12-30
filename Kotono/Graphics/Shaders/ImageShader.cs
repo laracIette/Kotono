@@ -1,6 +1,6 @@
 ﻿namespace Kotono.Graphics.Shaders
 {
-    public class ImageShader() 
+    public class ImageShader()
         : Shader("image")
     {
     }

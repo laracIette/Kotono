@@ -3,7 +3,7 @@ using OpenTK.Graphics.OpenGL4;
 
 namespace Kotono.Graphics.Shaders
 {
-    public abstract class TextureBufferShader(string name) 
+    public abstract class TextureBufferShader(string name)
         : Shader(name)
     {
         public void Draw(int textureBuffer)

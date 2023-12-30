@@ -2,7 +2,7 @@
 
 namespace Kotono.File
 {
-    public class MeshProperties(string path) 
+    public class MeshProperties(string path)
         : Properties(path)
     {
         public Transform Transform

@@ -2,6 +2,8 @@
 using Kotono.Graphics.Objects.Lights;
 using Kotono.Graphics.Objects.Meshes;
 using Kotono.Graphics.Objects.Shapes;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Kotono.Graphics.Objects.Managers
 {
@@ -21,7 +23,7 @@ namespace Kotono.Graphics.Objects.Managers
 
         private static readonly Object2DManager _object2DManager = new();
 
-        public static void Create(IDrawable drawable)
+        internal static void Create(IDrawable drawable)
         {
             switch (drawable)
             {
@@ -58,7 +60,7 @@ namespace Kotono.Graphics.Objects.Managers
             }
         }
 
-        public static void Delete(IDrawable drawable)
+        internal static void Delete(IDrawable drawable)
         {
             switch (drawable)
             {
@@ -97,18 +99,17 @@ namespace Kotono.Graphics.Objects.Managers
 
         internal static PointLight GetFirstPointLight()
         {
-            return _pointLightManager.GetFirst();
+            return _pointLightManager.Drawables.First();
         }
 
-        internal static void Init()
+        internal static List<PointLight> GetPointLights()
         {
-            _frontMeshManager.Init();
-            _meshManager.Init();
-            _hitboxManager.Init();
-            _pointLightManager.Init();
-            _spotLightManager.Init();
-            _shapeManager.Init();
-            _object2DManager.Init();
+            return _pointLightManager.Drawables;
+        }
+
+        internal static List<SpotLight> GetSpotLights()
+        {
+            return _spotLightManager.Drawables;
         }
 
         internal static void Update()
@@ -120,17 +121,6 @@ namespace Kotono.Graphics.Objects.Managers
             _spotLightManager.Update();
             _shapeManager.Update();
             _object2DManager.Update();
-        }
-
-        internal static void UpdateShaders()
-        {
-            _frontMeshManager.UpdateShaders();
-            _meshManager.UpdateShaders();
-            _hitboxManager.UpdateShaders();
-            _pointLightManager.UpdateShaders();
-            _spotLightManager.UpdateShaders();
-            _shapeManager.UpdateShaders();
-            _object2DManager.UpdateShaders();
         }
 
         internal static void Draw()

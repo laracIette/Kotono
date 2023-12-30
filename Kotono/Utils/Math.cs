@@ -1,71 +1,128 @@
-﻿namespace Kotono.Utils
+﻿using System.Diagnostics.Contracts;
+using System.Runtime.CompilerServices;
+
+namespace Kotono.Utils
 {
     public static class Math
     {
-        public const float PI = (float)MathD.PI;
+        public const float PI = 3.14159265358979323846f;
 
-        /// <summary> Converts degrees to radians </summary>
-        public static float Rad(double degrees)
+        /// <summary> 
+        /// Converts degrees to radians.
+        /// </summary>
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static float Rad(float degrees)
         {
-            return (float)MathD.Rad(degrees);
+            return degrees * (PI / 180.0f);
         }
 
-        /// <summary> Converts radians to degrees </summary>
-        public static float Deg(double radians)
+        /// <summary>
+        /// Converts radians to degrees.
+        /// </summary>
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static float Deg(float radians)
         {
-            return (float)MathD.Deg(radians);
+            return radians * (180.0f / PI);
         }
 
-        public static float Abs(double value)
+        /// <summary>
+        /// Get the absolute value.
+        /// </summary>
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static float Abs(float value)
         {
-            return (float)MathD.Abs(value);
+            return (value >= 0.0f) ? value : -value;
         }
 
-        public static float Cos(double value)
+        public static float Cos(float value)
         {
-            return (float)MathD.Cos(value);
+            return System.MathF.Cos(value);
         }
 
-        public static float Sin(double value)
+        public static float Sin(float value)
         {
-            return (float)MathD.Sin(value);
+            return System.MathF.Sin(value);
         }
 
-        public static float Sqrt(double value)
+        public static float Sqrt(float value)
         {
-            return (float)MathD.Sqrt(value);
+            return System.MathF.Sqrt(value);
         }
 
-        public static float Clamp(double value, double min, double max)
+        [Pure]
+        public static float Clamp(float value, float min, float max)
         {
-            return (float)MathD.Clamp(value, min, max);
+            if (min > max)
+            {
+                (min, max) = (max, min);
+            }
+
+            if (value < min)
+            {
+                return min;
+            }
+            else if (value > max)
+            {
+                return max;
+            }
+
+            return value;
         }
 
-        public static float Lerp(double start, double end, double interpolation)
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static float Lerp(float start, float end, float interpolation)
         {
-            return (float)MathD.Lerp(start, end, interpolation);
+            return start + (end - start) * interpolation;
         }
 
-        public static float Min(double left, double right)
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static float Min(float left, float right)
         {
-            return (float)MathD.Min(left, right);
+            return (left < right) ? left : right;
         }
 
-        public static float Max(double left, double right)
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static float Max(float left, float right)
         {
-            return (float)MathD.Max(left, right);
+            return (left > right) ? left : right;
         }
 
-        /// <summary> Loops a number in range [min, max) </summary>
-        public static float Loop(double value, double min, double max)
+        /// <summary> 
+        /// Loops a number in range [min, max).
+        /// </summary>
+        [Pure]
+        public static float Loop(float value, float min, float max)
         {
-            return (float)MathD.Loop(value, min, max);
+            if (min > max)
+            {
+                (min, max) = (max, min);
+            }
+
+            if (value >= max)
+            {
+                value = (value - min) % (max - min) + min;
+            }
+            else if (value < min)
+            {
+                value = (value - min) % (max - min) + max;
+            }
+
+            return value;
         }
 
-        /// <summary> Loops a number in range [0, max) </summary>
-        public static float Loop(double value, double max)
+        /// <summary> 
+        /// Loops a number in range [0, max).
+        /// </summary>
+        [Pure]
+        public static float Loop(float value, float max)
         {
-            return (float)MathD.Loop(value, max);
+            return Loop(value, 0.0f, max);
         }
     }
 }

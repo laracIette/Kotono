@@ -13,19 +13,19 @@ namespace Kotono.Utils
     {
         private float _r;
 
-        private float _g; 
-        
+        private float _g;
+
         private float _b;
-        
+
         private float _a;
 
         /// <summary> 
         /// The red component of the Color. 
         /// </summary>
         public float R
-        { 
+        {
             readonly get => _r;
-            set => _r = Math.Clamp(value, 0, 1);
+            set => _r = Math.Clamp(value, 0.0f, 1.0f);
         }
 
         /// <summary> 
@@ -34,7 +34,7 @@ namespace Kotono.Utils
         public float G
         {
             readonly get => _g;
-            set => _g = Math.Clamp(value, 0, 1);
+            set => _g = Math.Clamp(value, 0.0f, 1.0f);
         }
 
         /// <summary> 
@@ -43,7 +43,7 @@ namespace Kotono.Utils
         public float B
         {
             readonly get => _b;
-            set => _b = Math.Clamp(value, 0, 1);
+            set => _b = Math.Clamp(value, 0.0f, 1.0f);
         }
 
         /// <summary> 
@@ -52,7 +52,7 @@ namespace Kotono.Utils
         public float A
         {
             readonly get => _a;
-            set => _a = Math.Clamp(value, 0, 1);
+            set => _a = Math.Clamp(value, 0.0f, 1.0f);
         }
 
         public static Color Black => FromHex("#000000FF");
@@ -96,10 +96,10 @@ namespace Kotono.Utils
         /// </summary>
         public Color()
         {
-            R = 0;
-            G = 0;
-            B = 0;
-            A = 1;
+            R = 0.0f;
+            G = 0.0f;
+            B = 0.0f;
+            A = 1.0f;
         }
 
         /// <summary> 
@@ -116,7 +116,7 @@ namespace Kotono.Utils
         /// <summary> 
         /// Initialize a Color with R = f, G = f, B = f, A = a. 
         /// </summary>
-        public Color(float f = 0, float a = 1)
+        public Color(float f = 0.0f, float a = 1.0f)
         {
             R = f;
             G = f;
@@ -125,36 +125,14 @@ namespace Kotono.Utils
         }
 
         /// <summary> 
-        /// Initialize a Color with R = (float)d, G = (float)d, B = (float)d, A = (float)a. 
-        /// </summary>
-        public Color(double d = 0, double a = 1)
-        {
-            R = (float)d;
-            G = (float)d;
-            B = (float)d;
-            A = (float)a;
-        }
-
-        /// <summary> 
         /// Initialize a Color with R = r, G = g, B = b, A = a. 
         /// </summary>
-        public Color(float r, float g, float b, float a = 1)
+        public Color(float r, float g, float b, float a = 1.0f)
         {
             R = r;
             G = g;
             B = b;
             A = a;
-        }
-
-        /// <summary> 
-        /// Initialize a Color with R = (float)r, G = (float)g, B = (float)b, A = (float)a. 
-        /// </summary>
-        public Color(double r, double g, double b, double a = 1)
-        {
-            R = (float)r;
-            G = (float)g;
-            B = (float)b;
-            A = (float)a;
         }
 
         /// <summary> 
@@ -166,17 +144,6 @@ namespace Kotono.Utils
             G = c.G;
             B = c.B;
             A = a;
-        }
-
-        /// <summary> 
-        /// Initialize a Color with R = c.R, G = c.G, B = c.B, A = (float)a. 
-        /// </summary>
-        public Color(Color c, double a)
-        {
-            R = c.R;
-            G = c.G;
-            B = c.B;
-            A = (float)a;
         }
 
         /// <summary> 
@@ -208,7 +175,7 @@ namespace Kotono.Utils
             }
             else
             {
-                return byte.Parse(hex, NumberStyles.HexNumber) / 255f;
+                return byte.Parse(hex, NumberStyles.HexNumber) / 255.0f;
             }
         }
 
@@ -224,10 +191,10 @@ namespace Kotono.Utils
         {
             string result = "#";
 
-            result += ((int)(c.R * 255)).ToString("X");
-            result += ((int)(c.G * 255)).ToString("X");
-            result += ((int)(c.B * 255)).ToString("X");
-            result += ((int)(c.A * 255)).ToString("X");
+            result += ((int)(c.R * 255.0f)).ToString("X");
+            result += ((int)(c.G * 255.0f)).ToString("X");
+            result += ((int)(c.B * 255.0f)).ToString("X");
+            result += ((int)(c.A * 255.0f)).ToString("X");
 
             return result;
         }
@@ -252,6 +219,20 @@ namespace Kotono.Utils
                 B = float.Parse(p[parent + ".Color.B"]),
                 A = float.Parse(p[parent + ".Color.A"])
             };
+        }
+
+        /// <summary>
+        /// Loops through colors given a frequency.
+        /// </summary>
+        /// <param name="frequency"> The frequency at which the color loops through RGB values. </param>
+        /// <returns></returns>
+        public static Color Rainbow(double frequency)
+        {
+            return new Color(
+                ((float)MathD.Sin(frequency * Time.Now + 0.0) * 0.5f) + 0.5f,
+                ((float)MathD.Sin(frequency * Time.Now + 2.0) * 0.5f) + 0.5f,
+                ((float)MathD.Sin(frequency * Time.Now + 4.0) * 0.5f) + 0.5f
+            );
         }
 
         /// <summary> 
@@ -359,8 +340,8 @@ namespace Kotono.Utils
 
         public readonly bool Equals(Color c)
         {
-            return R == c.R 
-                && G == c.G 
+            return R == c.R
+                && G == c.G
                 && B == c.B
                 && A == c.A;
         }

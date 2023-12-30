@@ -29,26 +29,34 @@ namespace Kotono.Utils
         /// </summary>
         public readonly Point Normalized => this / Length;
 
-        public static Point Zero => new Point(0, 0);
-
-        public static Point Unit => new Point(1, 1);
-
-        public static Point UnitX => new Point(1, 0);
-
-        public static Point UnitY => new Point(0, 1);
-
-        public readonly Point WorldSpace =>
+        /// <summary>
+        /// The Point scaled to Normalized Device Coordinates.
+        /// </summary>
+        public readonly Point NDC =>
             new Point(
-                2 * X / ComponentManager.ActiveViewport.W - 1,
-                1 - 2 * Y / ComponentManager.ActiveViewport.H
+                2.0f * X / ComponentManager.ActiveViewport.W - 1.0f,
+                1.0f - Y / ComponentManager.ActiveViewport.H * 2.0f
             );
+
+        /// <summary>
+        /// The X / Y ratio of the Point.
+        /// </summary>
+        public readonly float Ratio => X / Y;
+
+        public static Point Zero => new Point(0.0f, 0.0f);
+
+        public static Point Unit => new Point(1.0f, 1.0f);
+
+        public static Point UnitX => new Point(1.0f, 0.0f);
+
+        public static Point UnitY => new Point(0.0f, 1.0f);
 
         public static int SizeInBytes => sizeof(float) * 2;
 
         public Point()
         {
-            X = 0;
-            Y = 0;
+            X = 0.0f;
+            Y = 0.0f;
         }
 
         public Point(Point p)
@@ -63,22 +71,10 @@ namespace Kotono.Utils
             Y = f;
         }
 
-        public Point(double f)
-        {
-            X = (float)f;
-            Y = (float)f;
-        }
-
-        public Point(float x = 0, float y = 0)
+        public Point(float x = 0.0f, float y = 0.0f)
         {
             X = x;
             Y = y;
-        }
-
-        public Point(double x = 0, double y = 0)
-        {
-            X = (float)x;
-            Y = (float)y;
         }
 
         public static float Distance(Point left, Point right)
@@ -107,13 +103,6 @@ namespace Kotono.Utils
         {
             p.X += f;
             p.Y += f;
-            return p;
-        }
-
-        public static Point operator +(Point p, (float, float) t)
-        {
-            p.X += t.Item1;
-            p.Y += t.Item2;
             return p;
         }
 
@@ -183,6 +172,11 @@ namespace Kotono.Utils
         public override readonly int GetHashCode()
         {
             return HashCode.Combine(X, Y);
+        }
+
+        public static implicit operator Point((float, float) t)
+        {
+            return new Point(t.Item1, t.Item2);
         }
 
         public static explicit operator Vector2(Point v)

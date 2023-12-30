@@ -111,8 +111,8 @@ namespace Kotono.Utils
 
         public readonly bool Equals(Transform t)
         {
-            return Location == t.Location 
-                && Rotation == t.Rotation 
+            return Location == t.Location
+                && Rotation == t.Rotation
                 && Scale == t.Scale;
         }
 

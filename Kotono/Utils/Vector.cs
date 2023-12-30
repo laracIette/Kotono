@@ -39,42 +39,42 @@ namespace Kotono.Utils
         /// <summary>
         /// A Vector with X = 0, Y = 0, Z = 0.
         /// </summary>
-        public static Vector Zero => new Vector(0, 0, 0);
+        public static Vector Zero => new Vector(0.0f, 0.0f, 0.0f);
 
         /// <summary>
         /// A Vector with X = 1, Y = 1, Z = 1. 
         /// </summary>
-        public static Vector Unit => new Vector(1, 1, 1);
+        public static Vector Unit => new Vector(1.0f, 1.0f, 1.0f);
 
         /// <summary> 
         /// A Vector with X = 1, Y = 0, Z = 0.
         /// </summary>
-        public static Vector UnitX => new Vector(1, 0, 0);
+        public static Vector UnitX => new Vector(1.0f, 0.0f, 0.0f);
 
         /// <summary> 
         /// A Vector with X = 1, Y = 1, Z = 0. 
         /// </summary>
-        public static Vector UnitXY => new Vector(1, 1, 0);
+        public static Vector UnitXY => new Vector(1.0f, 1.0f, 0.0f);
 
         /// <summary> 
         /// A Vector with X = 1, Y = 0, Z = 1.
         /// </summary>
-        public static Vector UnitXZ => new Vector(1, 0, 1);
+        public static Vector UnitXZ => new Vector(1.0f, 0.0f, 1.0f);
 
         /// <summary> 
         /// A Vector with X = 0, Y = 1, Z = 0. 
         /// </summary>
-        public static Vector UnitY => new Vector(0, 1, 0);
+        public static Vector UnitY => new Vector(0.0f, 1.0f, 0.0f);
 
         /// <summary>
         /// A Vector with X = 0, Y = 1, Z = 1.
         /// </summary>
-        public static Vector UnitYZ => new Vector(0, 1, 1);
+        public static Vector UnitYZ => new Vector(0.0f, 1.0f, 1.0f);
 
         /// <summary>
         /// A Vector with X = 0, Y = 0, Z = 1.
         /// </summary>
-        public static Vector UnitZ => new Vector(0, 0, 1);
+        public static Vector UnitZ => new Vector(0.0f, 0.0f, 1.0f);
 
         public static Vector Right => UnitX;
 
@@ -98,9 +98,9 @@ namespace Kotono.Utils
         /// </summary>
         public Vector()
         {
-            X = 0;
-            Y = 0;
-            Z = 0;
+            X = 0.0f;
+            Y = 0.0f;
+            Z = 0.0f;
         }
 
         /// <summary>
@@ -124,33 +124,13 @@ namespace Kotono.Utils
         }
 
         /// <summary> 
-        /// Initialize a Vector with X = (float)d, Y = (float)d, Z = (float)d. 
-        /// </summary>
-        public Vector(double d)
-        {
-            X = (float)d;
-            Y = (float)d;
-            Z = (float)d;
-        }
-
-        /// <summary> 
         /// Initialize a Vector with X = x, Y = y, Z = z.
         /// </summary>
-        public Vector(float x = 0, float y = 0, float z = 0)
+        public Vector(float x = 0.0f, float y = 0.0f, float z = 0.0f)
         {
             X = x;
             Y = y;
             Z = z;
-        }
-
-        /// <summary>
-        /// Initialize a Vector with X = (float)x, Y = (float)y, Z = (float)z.
-        /// </summary>
-        public Vector(double x = 0, double y = 0, double z = 0)
-        {
-            X = (float)x;
-            Y = (float)y;
-            Z = (float)z;
         }
 
         public static Vector RotateAroundPoint(Vector v, Vector point, Vector rotation)

@@ -23,17 +23,17 @@ namespace Kotono.Graphics.Performance
 
         internal Window()
         {
-            _dest = new Rect(1080, 660, 50, 60);
+            _dest = new Rect(1080.0f, 660.0f, 50.0f, 60.0f);
 
             _frame = new RateStat(_dest, Anchor.Bottom);
             _update = new RateStat(_dest, Anchor.Top);
 
             _background = new RoundedBox(
-                new Rect(_dest.X, _dest.Y, 400, 120),
+                new Rect(_dest.X, _dest.Y, 400.0f, 120.0f),
                 Color.FromHex("#273f45"),
-                layer: 0,
-                fallOff: 1,
-                cornerSize: 10
+                0,
+                1.0f,
+                10.0f
             );
         }
 

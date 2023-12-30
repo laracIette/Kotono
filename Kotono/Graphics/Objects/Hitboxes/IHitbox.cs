@@ -5,12 +5,14 @@ namespace Kotono.Graphics.Objects.Hitboxes
 {
     public interface IHitbox : IObject3D
     {
-        public bool Collides(IHitbox h);
+        public bool CollidesWith(IHitbox h);
+
+        public bool TryGetCollider(out IHitbox? collider);
 
         public bool IsColliding { get; }
 
         public Color Color { get; set; }
 
-        public List<Sphere> Collisions { get; set; }
+        public List<IHitbox> Collisions { get; set; }
     }
 }

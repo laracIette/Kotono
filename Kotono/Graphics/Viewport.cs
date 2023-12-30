@@ -12,13 +12,13 @@ namespace Kotono.Graphics
 
         public Point Position
         {
-            get => Dest.Position; 
+            get => Dest.Position;
             set => Dest.Position = value;
         }
-        
+
         public Point Size
         {
-            get => Dest.Size; 
+            get => Dest.Size;
             set => Dest.Size = value;
         }
 
@@ -46,13 +46,9 @@ namespace Kotono.Graphics
             set => Dest.H = value;
         }
 
-        public void Init()
-        {
-
-        }
-
         public void Use()
         {
+            ComponentManager.ActiveViewport = this;
             GL.Viewport((int)X, (int)(KT.Dest.H - Y - H), (int)W, (int)H);
         }
     }

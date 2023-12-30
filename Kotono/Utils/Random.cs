@@ -5,27 +5,33 @@
     {
         private static readonly System.Random _random = new();
 
-        /// <returns>An int between min and max.</returns>
+        /// <summary>
+        /// Get an int between min and max.
+        /// </summary>
         public static int Int(int min, int max)
         {
             return _random.Next(min, max);
         }
 
+        /// <summary>
+        /// Get a float between min and max.
+        /// </summary>
+        public static float Float(float min, float max)
+        {
+            return Math.Lerp(min, max, _random.NextSingle());
+        }
 
-        /// <returns>A double between min and max.</returns>
+        /// <summary>
+        /// Get a double between min and max.
+        /// </summary>
         public static double Double(double min, double max)
         {
             return MathD.Lerp(min, max, _random.NextDouble());
         }
 
-
-        /// <returns>A float between min and max.</returns>
-        public static float Float(float min, float max)
-        {
-            return (float)Double(min, max);
-        }
-
-        /// <returns>A Vector with all values between min and max.</returns>
+        /// <summary>
+        /// Get a Vector with all values between min and max.
+        /// </summary>
         public static Vector Vector(float min, float max)
         {
             return new Vector(
@@ -35,7 +41,17 @@
             );
         }
 
-        /// <returns>A Vector with the X value between minX and maxX, the Y value between minY and maxY and the Z value between minZ and maxZ.</returns>
+        /// <summary>
+        /// Get a Vector with all values between 0 and 1.
+        /// </summary>
+        public static Vector Vector()
+        {
+            return Vector(0.0f, 1.0f);
+        }
+
+        /// <summary>
+        /// Get a Vector with the X value between minX and maxX, the Y value between minY and maxY and the Z value between minZ and maxZ.
+        /// </summary>
         public static Vector Vector(float minX, float maxX, float minY, float maxY, float minZ, float maxZ)
         {
             return new Vector(
@@ -45,7 +61,9 @@
             );
         }
 
-        /// <returns>A Color with all values apart from A between min and max.</returns>
+        /// <summary>
+        /// Get a Color with all values apart from A between min and max.
+        /// </summary>
         public static Color Color(float min, float max)
         {
             return new Color(
@@ -55,10 +73,12 @@
             );
         }
 
-        /// <returns>A Color with all values apart from A between 0 and 1.</returns>
+        /// <summary>
+        /// Get a Color with all values apart from A between 0 and 1.
+        /// </summary>
         public static Color Color()
         {
-            return Color(0, 1);
+            return Color(0.0f, 1.0f);
         }
     }
 }

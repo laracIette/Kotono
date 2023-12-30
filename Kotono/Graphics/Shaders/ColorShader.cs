@@ -1,6 +1,6 @@
 ﻿namespace Kotono.Graphics.Shaders
 {
-    public class ColorShader() 
+    public class ColorShader()
         : TextureBufferShader("color")
     {
     }

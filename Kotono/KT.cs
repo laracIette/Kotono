@@ -15,31 +15,36 @@ namespace Kotono
 {
     public static class KT
     {
-        #region WindowSize
+        #region WindowDest
 
-        private static Rect _windowDest = Rect.Zero;
+        private static Rect _dest = Rect.Zero;
 
-        public static Rect Dest => _windowDest;
-
-        public static Point Position => _windowDest.Position;
-
-        public static Point Size => _windowDest.Size;
-
-        public static void SetWindowPosition(Point position)
+        public static Rect Dest
         {
-            _windowDest.Position = position;
+            get => _dest;
+            set => _dest = value;
         }
 
-        public static void SetWindowSize(Point size)
+        public static Point Position
         {
-            _windowDest.Size = size;
-
-            CameraManager.ActiveCamera.AspectRatio = size.X / size.Y;
-
-            ComponentManager.Window.Viewport.Size = size;
+            get => _dest.Position;
+            set => _dest.Position = value;
         }
 
-        #endregion WindowSize
+        public static Point Size
+        {
+            get => _dest.Size;
+            set
+            {
+                _dest.Size = value;
+
+                CameraManager.ActiveCamera.AspectRatio = _dest.Size.Ratio;
+
+                ComponentManager.Window.Viewport.Size = _dest.Size;
+            }
+        }
+
+        #endregion WindowDest
 
         #region Printer
 
@@ -51,17 +56,9 @@ namespace Kotono
             }
         }
 
-        public static void Print(object? obj)
+        public static void Print(object? obj, bool rainbow = false)
         {
-            Print(
-                obj,
-                new Color
-                {
-                    R = (Math.Sin(0.01 * Time.Now + 0.0) * 0.5f) + 0.5f,
-                    G = (Math.Sin(0.01 * Time.Now + 2.0) * 0.5f) + 0.5f,
-                    B = (Math.Sin(0.01 * Time.Now + 4.0) * 0.5f) + 0.5f
-                }
-            );
+            Print(obj, rainbow ? Color.Rainbow(0.01) : Color.White);
         }
 
         public static void Print()
@@ -91,12 +88,9 @@ namespace Kotono
         {
             ShaderManager.Init();
             Text.InitPaths();
-            ObjectManager.Init();
             Printer.Init();
             PerformanceWindow.Init();
-            ComponentManager.Init();
             Fizix.Init();
-            _mode.Init();
         }
 
         internal static void Update()
@@ -116,13 +110,8 @@ namespace Kotono
 
         internal static void Draw()
         {
-            ObjectManager.Draw();
-        }
-
-        internal static void UpdateShaders()
-        {
-            ObjectManager.UpdateShaders();
             ShaderManager.Update();
+            ObjectManager.Draw();
         }
 
         public static void Save()

@@ -2,6 +2,7 @@
 using Kotono.Utils;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Kotono.Engine.UserInterface.AddMenu
 {
@@ -28,8 +29,10 @@ namespace Kotono.Engine.UserInterface.AddMenu
 
             for (int i = 0; i < options.Length; i++)
             {
-                var dest = GetTextDest(i, KT.Size / 2);
-                _options.Add(new Text(options[i], dest, _anchor, Color.White, .6f, 3));
+                var dest = GetTextDest(i, KT.Size / 2.0f);
+                _options.Add(new Text(options[i], dest, _anchor, Color.White, 0.6f, 3));
+                _options[i].Show();
+                _options[i].Init();
             }
         }
 
@@ -37,21 +40,12 @@ namespace Kotono.Engine.UserInterface.AddMenu
         {
             return _anchor switch
             {
-                Anchor.TopLeft => new Rect(pos.X, pos.Y + index * 24, 20, 24),
-                Anchor.TopRight => new Rect(pos.X, pos.Y + index * 24, 20, 24),
-                Anchor.BottomLeft => new Rect(pos.X, pos.Y - index * 24, 20, 24),
-                Anchor.BottomRight => new Rect(pos.X, pos.Y - index * 24, 20, 24),
+                Anchor.TopLeft => new Rect(pos.X, pos.Y + index * 24.0f, 20.0f, 24.0f),
+                Anchor.TopRight => new Rect(pos.X, pos.Y + index * 24.0f, 20.0f, 24.0f),
+                Anchor.BottomLeft => new Rect(pos.X, pos.Y - index * 24.0f, 20.0f, 24.0f),
+                Anchor.BottomRight => new Rect(pos.X, pos.Y - index * 24.0f, 20.0f, 24.0f),
                 _ => throw new Exception($"error: Anchor \"{_anchor}\" isn't supported")
             };
-        }
-
-        public void Init()
-        {
-            foreach (var option in _options)
-            {
-                option.Init();
-                option.Show();
-            }
         }
 
         public void Show()

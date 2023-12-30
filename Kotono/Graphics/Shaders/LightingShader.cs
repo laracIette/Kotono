@@ -1,17 +1,14 @@
-﻿using Kotono.Graphics.Objects.Lights;
-using Kotono.Graphics.Objects.Managers;
+﻿using Kotono.Graphics.Objects.Managers;
 using Kotono.Utils;
 
 namespace Kotono.Graphics.Shaders
 {
-    public class LightingShader() : Shader("lighting")
+    public class LightingShader()
+        : Shader("lighting")
     {
         public override void Update()
         {
             base.Update();
-
-            SetInt("numPointLights", PointLight.Count);
-            SetInt("numSpotLights", SpotLight.Count);
 
             SetMatrix4("view", CameraManager.ActiveCamera.ViewMatrix);
             SetMatrix4("projection", CameraManager.ActiveCamera.ProjectionMatrix);
@@ -27,6 +24,40 @@ namespace Kotono.Graphics.Shaders
             SetVector("dirLight.ambient", new Vector(0.05f, 0.05f, 0.05f));
             SetVector("dirLight.diffuse", new Vector(0.4f, 0.4f, 0.4f));
             SetVector("dirLight.specular", new Vector(0.5f, 0.5f, 0.5f));
+
+
+            var pointLights = ObjectManager.GetPointLights();
+
+            SetInt("numPointLights", pointLights.Count);
+
+            for (int i = 0; i < pointLights.Count; i++)
+            {
+                SetVector($"pointLights[{i}].location", pointLights[i].Location);
+                SetColor($"pointLights[{i}].ambient", pointLights[i].Ambient);
+                SetColor($"pointLights[{i}].diffuse", pointLights[i].Color);
+                SetColor($"pointLights[{i}].specular", pointLights[i].Specular);
+                SetFloat($"pointLights[{i}].constant", pointLights[i].Constant);
+                SetFloat($"pointLights[{i}].linear", pointLights[i].Linear);
+                SetFloat($"pointLights[{i}].quadratic", pointLights[i].Quadratic);
+            }
+
+            var spotLights = ObjectManager.GetSpotLights();
+
+            SetInt("numSpotLights", spotLights.Count);
+
+            for (int i = 0; i < spotLights.Count; i++)
+            {
+                SetFloat($"spotLights[{i}].cutOff", Math.Cos(Math.Rad(spotLights[i].CutOffAngle)));
+                SetFloat($"spotLights[{i}].outerCutOff", Math.Cos(Math.Rad(spotLights[i].OuterCutOffAngle)));
+                SetVector($"spotLights[{i}].location", CameraManager.ActiveCamera.Location);
+                SetVector($"spotLights[{i}].direction", CameraManager.ActiveCamera.Front);
+                SetColor($"spotLights[{i}].ambient", Color.Black);
+                SetColor($"spotLights[{i}].diffuse", Color.White);
+                SetColor($"spotLights[{i}].specular", Color.White);
+                SetFloat($"spotLights[{i}].constant", 1.0f);
+                SetFloat($"spotLights[{i}].linear", 0.09f);
+                SetFloat($"spotLights[{i}].quadratic", 0.032f);
+            }
         }
     }
 }

@@ -114,10 +114,6 @@ namespace Kotono.Graphics.Objects
             ObjectManager.Create(this);
         }
 
-        public void Init()
-        {
-        }
-
         public void Update()
         {
             if (!_isStarted && (Time.NowS >= _startTime))
@@ -188,11 +184,6 @@ namespace Kotono.Graphics.Objects
                 frame.Delete();
             }
             _frames.Clear();
-        }
-
-        public void UpdateShaders()
-        {
-
         }
 
         public void Draw()

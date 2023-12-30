@@ -12,11 +12,6 @@ namespace Kotono.Engine
             UserMode = UserMode.Navigate;
         }
 
-        public void Init()
-        {
-
-        }
-
         public void Update()
         {
             if (Mouse.IsButtonDown(MouseButton.Right))
