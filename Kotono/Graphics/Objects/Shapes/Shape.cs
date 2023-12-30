@@ -6,41 +6,13 @@ using System;
 
 namespace Kotono.Graphics.Objects.Shapes
 {
-    public class Shape : IShape, IObject3D
+    public class Shape : Object3D, IShape
     {
         public Vector[] Vertices { get; }
-
-        private Transform _transform;
-
-        public Transform Transform
-        {
-            get => _transform;
-            set => _transform = value;
-        }
-
-        public Vector Location
-        {
-            get => _transform.Location;
-            set => _transform.Location = value;
-        }
-
-        public Vector Rotation
-        {
-            get => _transform.Rotation;
-            set => _transform.Rotation = value;
-        }
-
-        public Vector Scale
-        {
-            get => _transform.Scale;
-            set => _transform.Scale = value;
-        }
 
         public Color Color;
 
         public Matrix4 Model => Transform.Model;
-
-        public bool IsDraw { get; private set; } = false;
 
         private int _vertexArrayObject;
 
@@ -49,15 +21,15 @@ namespace Kotono.Graphics.Objects.Shapes
         private bool _hasInitBuffers = false;
 
         public Shape(Vector[] vertices, Transform transform, Color color)
+            : base()
         {
             Vertices = vertices;
-            _transform = transform;
+            Transform = transform;
             Color = color;
-
-            ObjectManager.Create(this);
+            IsDraw = false;
         }
 
-        public void Update()
+        public override void Update()
         {
             if (!_hasInitBuffers && IsDraw)
             {
@@ -66,7 +38,7 @@ namespace Kotono.Graphics.Objects.Shapes
             }
         }
 
-        public void Draw()
+        public override void Draw()
         {
             var model =
                 Matrix4.CreateScale((Vector3)Scale)
@@ -97,31 +69,6 @@ namespace Kotono.Graphics.Objects.Shapes
             int locationAttributeLocation = ShaderManager.Hitbox.GetAttribLocation("aPos");
             GL.EnableVertexAttribArray(locationAttributeLocation);
             GL.VertexAttribPointer(locationAttributeLocation, 3, VertexAttribPointerType.Float, false, Vector.SizeInBytes, 0);
-        }
-
-        public void Show()
-        {
-            IsDraw = true;
-        }
-
-        public void Hide()
-        {
-            IsDraw = false;
-        }
-
-        public void Save()
-        {
-
-        }
-
-        public void Delete()
-        {
-            ObjectManager.Delete(this);
-        }
-
-        public void Dispose()
-        {
-            GC.SuppressFinalize(this);
         }
     }
 }

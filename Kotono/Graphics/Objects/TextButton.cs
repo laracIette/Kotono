@@ -1,4 +1,5 @@
 ﻿using Kotono.Utils;
+using System;
 
 namespace Kotono.Graphics.Objects
 {
@@ -18,23 +19,22 @@ namespace Kotono.Graphics.Objects
                 }
             }
         }
+
+        public override bool IsDraw
+        {
+            get => base.IsDraw;
+            set
+            {
+                base.IsDraw = value;
+                _text.IsDraw = value;
+            }
+        }
+
         public TextButton(Rect dest, Color color, int layer, float fallOff, float cornerSize, string text)
             : base(dest, color, layer, fallOff, cornerSize)
         {
             _text = new Text(text, new Rect(dest.Position, 25.0f, 30.0f), Anchor.Center, Color.White, 0.6f, 2);
             _text.Init();
-        }
-
-        public override void Show()
-        {
-            base.Show();
-            _text.Show();
-        }
-
-        public override void Hide()
-        {
-            base.Hide();
-            _text.Hide();
         }
     }
 }

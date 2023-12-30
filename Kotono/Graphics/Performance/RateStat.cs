@@ -14,6 +14,12 @@ namespace Kotono.Graphics.Performance
 
         private int _timeIndex = 0;
 
+        public bool IsDraw
+        {
+            get => _text.IsDraw;
+            set => _text.IsDraw = value;
+        }
+
         private readonly Text _text = new("0", dest, anchor, Color.White, 1.0f, 1);
 
         public void Init()
@@ -37,16 +43,5 @@ namespace Kotono.Graphics.Performance
 
             _text.SetText(Rate.ToString("0.00"));
         }
-
-        public void Show()
-        {
-            _text.Show();
-        }
-
-        public void Hide()
-        {
-            _text.Hide();
-        }
-
     }
 }

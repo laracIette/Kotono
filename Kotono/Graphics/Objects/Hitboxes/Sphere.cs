@@ -9,7 +9,7 @@ using Math = Kotono.Utils.Math;
 
 namespace Kotono.Graphics.Objects.Hitboxes
 {
-    public class Sphere : IHitbox
+    public class Sphere : Hitbox
     {
         private const int SEGMENTS = 64;
 
@@ -21,43 +21,12 @@ namespace Kotono.Graphics.Objects.Hitboxes
 
         private static bool _isFirst = true;
 
-        public bool IsDraw { get; private set; } = true;
-
-        private Transform _transform;
-
-        public Transform Transform
-        {
-            get => _transform;
-            set => _transform = value;
-        }
-
-        public Vector Location
-        {
-            get => _transform.Location;
-            set => _transform.Location = value;
-        }
-
-        public Vector Rotation
-        {
-            get => _transform.Rotation;
-            set => _transform.Rotation = value;
-        }
-
-        public Vector Scale
-        {
-            get => _transform.Scale;
-            set => _transform.Scale = value;
-        }
-
         public float Radius => Scale.X;
 
         public Vector Velocity { get; set; }
 
-        public Color Color { get; set; } = Color.White;
-
-        public List<IHitbox> Collisions { get; set; } = [];
-
         public Sphere()
+            : base()
         {
             if (_isFirst)
             {
@@ -87,18 +56,14 @@ namespace Kotono.Graphics.Objects.Hitboxes
                 GL.EnableVertexAttribArray(locationAttributeLocation);
                 GL.VertexAttribPointer(locationAttributeLocation, 3, VertexAttribPointerType.Float, false, Vector.SizeInBytes, 0);
             }
-
-            _transform = new Transform();
-
-            ObjectManager.Create(this);
         }
 
-        public void Update()
+        public override void Update()
         {
             Location += Velocity * Time.DeltaS;
         }
 
-        public void Draw()
+        public override void Draw()
         {
             DrawCircle(new Vector(MathHelper.PiOver2, 0.0f, 0.0f));
             DrawCircle(new Vector(0.0f, MathHelper.PiOver2, 0.0f));
@@ -122,50 +87,21 @@ namespace Kotono.Graphics.Objects.Hitboxes
             GL.DrawArrays(PrimitiveType.LineLoop, 0, _vertices.Length);
         }
 
-        public bool CollidesWith(IHitbox h)
+        public override bool CollidesWith(Hitbox hitbox)
         {
-            return (Math.Abs(Location.X - h.Location.X) < (Scale.X + h.Scale.X) / 2.0f)
-                && (Math.Abs(Location.Y - h.Location.Y) < (Scale.Y + h.Scale.Y) / 2.0f)
-                && (Math.Abs(Location.Z - h.Location.Z) < (Scale.Z + h.Scale.Z) / 2.0f);
-        }
+            switch (hitbox)
+            {
+                case Sphere sphere:
+                    return Vector.Distance(this, sphere) < (Radius + sphere.Radius) / 2.0f;
 
-        public bool CollidesWith(Sphere s)
-        {
-            return Vector.Distance(this, s) < (Scale.X + s.Scale.X) / 2.0f;
-        }
-
-        public bool TryGetCollider(out IHitbox? collider)
-        {
-            collider = Collisions.FirstOrDefault(CollidesWith);
-
-            return collider != null;
-        }
-
-        public bool IsColliding => TryGetCollider(out _);
-
-        public void Save()
-        {
-
-        }
-
-        public void Show()
-        {
-            IsDraw = true;
-        }
-
-        public void Hide()
-        {
-            IsDraw = false;
-        }
-
-        public void Delete()
-        {
-            ObjectManager.Delete(this);
-        }
-
-        public void Dispose()
-        {
-            GC.SuppressFinalize(this);
+                case IObject3D object3D:
+                    return Math.Abs(Location.X - object3D.Location.X) <= (Scale.X + object3D.Scale.X) / 2.0f
+                        && Math.Abs(Location.Y - object3D.Location.Y) <= (Scale.Y + object3D.Scale.Y) / 2.0f
+                        && Math.Abs(Location.Z - object3D.Location.Z) <= (Scale.Z + object3D.Scale.Z) / 2.0f;
+                
+                default:
+                    return false;
+            }
         }
     }
 }

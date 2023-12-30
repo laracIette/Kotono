@@ -15,6 +15,7 @@ namespace Kotono.Input
 
         public static void Update()
         {
+
         }
 
         public static bool IsKeyDown(Keys key) => KeyboardState.IsKeyDown(key);

@@ -39,6 +39,11 @@ namespace Kotono.Utils
         /// </summary>
         public readonly Vector Forward => (Vector)(Quaternion.FromEulerAngles((Vector3)Rotation) * Vector3.UnitZ);
 
+        /// <summary> 
+        /// A Transform with Location = Vector.Zero, Rotation = Vector.Zero, Scale = Vector.Unit. 
+        /// </summary>
+        public static readonly Transform Default = new Transform(Vector.Zero, Vector.Zero, Vector.Unit);
+
         public static int SizeInBytes => Vector.SizeInBytes * 3;
 
         public Transform()

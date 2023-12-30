@@ -3,13 +3,12 @@ using Kotono.Utils;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using Math = Kotono.Utils.Math;
 
 namespace Kotono.Graphics.Objects.Hitboxes
 {
-    public class Box : IHitbox
+    public class Box : Hitbox
     {
         private static readonly float[] _vertices =
         [
@@ -106,39 +105,8 @@ namespace Kotono.Graphics.Objects.Hitboxes
 
         private static bool _isFirst = true;
 
-        public bool IsDraw { get; private set; }
-
-        private Transform _transform;
-
-        public Transform Transform
-        {
-            get => _transform;
-            set => _transform = value;
-        }
-
-        public Vector Location
-        {
-            get => _transform.Location;
-            set => _transform.Location = value;
-        }
-
-        public Vector Rotation
-        {
-            get => _transform.Rotation;
-            set => _transform.Rotation = value;
-        }
-
-        public Vector Scale
-        {
-            get => _transform.Scale;
-            set => _transform.Scale = value;
-        }
-
-        public Color Color { get; set; } = Color.White;
-
-        public List<IHitbox> Collisions { get; set; } = [];
-
         public Box()
+            : base()
         {
             if (_isFirst)
             {
@@ -157,18 +125,9 @@ namespace Kotono.Graphics.Objects.Hitboxes
                 GL.EnableVertexAttribArray(locationAttributeLocation);
                 GL.VertexAttribPointer(locationAttributeLocation, 3, VertexAttribPointerType.Float, false, 0, 0);
             }
-
-            _transform = new Transform();
-
-            ObjectManager.Create(this);
         }
 
-        public void Update()
-        {
-
-        }
-
-        public void Draw()
+        public override void Draw()
         {
             var model =
                 Matrix4.CreateScale((Vector3)Scale)
@@ -185,45 +144,12 @@ namespace Kotono.Graphics.Objects.Hitboxes
             GL.DrawArrays(PrimitiveType.Lines, 0, _vertices.Length);
         }
 
-        public bool CollidesWith(IHitbox h)
+        public override bool CollidesWith(Hitbox hitbox)
         {
-            return (Math.Abs(Location.X - h.Location.X) <= (Scale.X + h.Scale.X) / 2.0f)
-                && (Math.Abs(Location.Y - h.Location.Y) <= (Scale.Y + h.Scale.Y) / 2.0f)
-                && (Math.Abs(Location.Z - h.Location.Z) <= (Scale.Z + h.Scale.Z) / 2.0f);
-        }
-
-        public bool TryGetCollider(out IHitbox? collider)
-        {
-            collider = Collisions.FirstOrDefault(CollidesWith);
-
-            return collider != null;
-        }
-
-        public bool IsColliding => TryGetCollider(out _);
-
-        public void Save()
-        {
-
-        }
-
-        public void Show()
-        {
-            IsDraw = true;
-        }
-
-        public void Hide()
-        {
-            IsDraw = false;
-        }
-
-        public void Delete()
-        {
-            ObjectManager.Delete(this);
-        }
-
-        public void Dispose()
-        {
-            GC.SuppressFinalize(this);
+            return (hitbox is IObject3D object3D)
+                && (Math.Abs(Location.X - object3D.Location.X) <= (Scale.X + object3D.Scale.X) / 2.0f)
+                && (Math.Abs(Location.Y - object3D.Location.Y) <= (Scale.Y + object3D.Scale.Y) / 2.0f)
+                && (Math.Abs(Location.Z - object3D.Location.Z) <= (Scale.Z + object3D.Scale.Z) / 2.0f);
         }
     }
 }
