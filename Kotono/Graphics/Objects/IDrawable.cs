@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Kotono.Graphics.Objects
+﻿namespace Kotono.Graphics.Objects
 {
     public interface IDrawable
     {

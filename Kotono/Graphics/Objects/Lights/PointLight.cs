@@ -1,7 +1,5 @@
-﻿using Kotono.Graphics.Objects.Managers;
-using Kotono.Graphics.Objects.Meshes;
+﻿using Kotono.Graphics.Objects.Meshes;
 using Kotono.Utils;
-using System;
 
 namespace Kotono.Graphics.Objects.Lights
 {

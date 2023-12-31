@@ -37,16 +37,19 @@ namespace Kotono.Utils
             return (value >= 0.0f) ? value : -value;
         }
 
+        /// <inheritdoc cref="System.MathF.Cos(float)" />
         public static float Cos(float value)
         {
             return System.MathF.Cos(value);
         }
-
+        
+        /// <inheritdoc cref="System.MathF.Sin(float)" />
         public static float Sin(float value)
         {
             return System.MathF.Sin(value);
         }
 
+        /// <inheritdoc cref="System.MathF.Sqrt(float)" />
         public static float Sqrt(float value)
         {
             return System.MathF.Sqrt(value);

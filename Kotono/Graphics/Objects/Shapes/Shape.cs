@@ -1,8 +1,6 @@
-﻿using Kotono.Graphics.Objects.Managers;
-using Kotono.Utils;
+﻿using Kotono.Utils;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
-using System;
 
 namespace Kotono.Graphics.Objects.Shapes
 {

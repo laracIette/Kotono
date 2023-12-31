@@ -1,10 +1,6 @@
-﻿using Kotono.Graphics.Objects.Managers;
-using Kotono.Utils;
+﻿using Kotono.Utils;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Math = Kotono.Utils.Math;
 
 namespace Kotono.Graphics.Objects.Hitboxes

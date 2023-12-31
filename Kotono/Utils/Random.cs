@@ -6,7 +6,7 @@
         private static readonly System.Random _random = new();
 
         /// <summary>
-        /// Get an int between min and max.
+        /// Get an int in range [min, max).
         /// </summary>
         public static int Int(int min, int max)
         {
@@ -14,7 +14,15 @@
         }
 
         /// <summary>
-        /// Get a float between min and max.
+        /// Get a long in range [min, max).
+        /// </summary>
+        public static long Long(long min, long max)
+        {
+            return _random.NextInt64(min, max);
+        }
+
+        /// <summary>
+        /// Get a float in range [min, max).
         /// </summary>
         public static float Float(float min, float max)
         {
@@ -22,7 +30,7 @@
         }
 
         /// <summary>
-        /// Get a double between min and max.
+        /// Get a double in range [min, max).
         /// </summary>
         public static double Double(double min, double max)
         {
@@ -30,7 +38,7 @@
         }
 
         /// <summary>
-        /// Get a Vector with all values between min and max.
+        /// Get a Vector with all values in range [min, max).
         /// </summary>
         public static Vector Vector(float min, float max)
         {
@@ -42,7 +50,7 @@
         }
 
         /// <summary>
-        /// Get a Vector with all values between 0 and 1.
+        /// Get a Vector with all values in range [0, 1).
         /// </summary>
         public static Vector Vector()
         {
@@ -50,7 +58,7 @@
         }
 
         /// <summary>
-        /// Get a Vector with the X value between minX and maxX, the Y value between minY and maxY and the Z value between minZ and maxZ.
+        /// Get a Vector with the X value in range [minX, maxX), the Y value in range [minY, maxY) and the Z value in range [minZ, maxZ).
         /// </summary>
         public static Vector Vector(float minX, float maxX, float minY, float maxY, float minZ, float maxZ)
         {
@@ -62,7 +70,7 @@
         }
 
         /// <summary>
-        /// Get a Color with all values apart from A between min and max.
+        /// Get a Color with all values apart from A in range [min, max).
         /// </summary>
         public static Color Color(float min, float max)
         {
@@ -74,7 +82,7 @@
         }
 
         /// <summary>
-        /// Get a Color with all values apart from A between 0 and 1.
+        /// Get a Color with all values apart from A in range [0, 1).
         /// </summary>
         public static Color Color()
         {

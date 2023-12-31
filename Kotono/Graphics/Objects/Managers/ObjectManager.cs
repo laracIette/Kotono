@@ -22,6 +22,8 @@ namespace Kotono.Graphics.Objects.Managers
         private static readonly ShapeManager _shapeManager = new();
 
         private static readonly Object2DManager _object2DManager = new();
+        
+        private static readonly Object3DManager _object3DManager = new();
 
         internal static void Create(Drawable drawable)
         {
@@ -53,6 +55,10 @@ namespace Kotono.Graphics.Objects.Managers
 
                 case Object2D object2D:
                     _object2DManager.Create(object2D);
+                    break;
+
+                case Object3D object3D:
+                    _object3DManager.Create(object3D);
                     break;
 
                 default:
@@ -92,6 +98,10 @@ namespace Kotono.Graphics.Objects.Managers
                     _object2DManager.Delete(object2D);
                     break;
 
+                case Object3D object3D:
+                    _object3DManager.Delete(object3D);
+                    break;
+
                 default:
                     break;
             }
@@ -126,6 +136,7 @@ namespace Kotono.Graphics.Objects.Managers
             _spotLightManager.Update();
             _shapeManager.Update();
             _object2DManager.Update();
+            _object3DManager.Update();
         }
 
         internal static void Draw()
@@ -139,6 +150,7 @@ namespace Kotono.Graphics.Objects.Managers
             _meshManager.Draw();
             _frontMeshManager.Draw();
             _object2DManager.Draw();
+            _object3DManager.Draw();
         }
 
         internal static void Save()
@@ -150,6 +162,7 @@ namespace Kotono.Graphics.Objects.Managers
             _spotLightManager.Save();
             _shapeManager.Save();
             _object2DManager.Save();
+            _object3DManager.Save();
         }
 
         internal static void Dispose()
@@ -161,6 +174,7 @@ namespace Kotono.Graphics.Objects.Managers
             _spotLightManager.Dispose();
             _shapeManager.Dispose();
             _object2DManager.Dispose();
+            _object3DManager.Dispose();
         }
     }
 }
