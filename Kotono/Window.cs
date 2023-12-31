@@ -12,7 +12,7 @@ using System.Globalization;
 
 namespace Kotono
 {
-    public class Window : GameWindow
+    public abstract class Window : GameWindow
     {
         private double _stalledTime = 0;
 
@@ -104,14 +104,14 @@ namespace Kotono
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
         }
 
-        protected override void OnLoad()
+        protected sealed override void OnLoad()
         {
             base.OnLoad();
 
             IsVisible = true;
         }
 
-        protected override void OnRenderFrame(FrameEventArgs e)
+        protected sealed override void OnRenderFrame(FrameEventArgs e)
         {
             base.OnRenderFrame(e);
 
@@ -150,7 +150,7 @@ namespace Kotono
             }
         }
 
-        protected override void OnUpdateFrame(FrameEventArgs e)
+        protected sealed override void OnUpdateFrame(FrameEventArgs e)
         {
             base.OnUpdateFrame(e);
 
@@ -175,9 +175,13 @@ namespace Kotono
                 KT.Save();
                 KT.Print("saved", Color.FromHex("#88FF10"));
             }
+
+            Update();
         }
 
-        protected override void OnResize(ResizeEventArgs e)
+        protected abstract void Update();
+
+        protected sealed override void OnResize(ResizeEventArgs e)
         {
             base.OnResize(e);
 
@@ -185,14 +189,14 @@ namespace Kotono
             KT.Size = (Point)Size;
         }
 
-        protected override void OnMove(WindowPositionEventArgs e)
+        protected sealed override void OnMove(WindowPositionEventArgs e)
         {
             base.OnMove(e);
 
             KT.Position = (Point)Location;
         }
 
-        protected override void OnUnload()
+        protected sealed override void OnUnload()
         {
             KT.Exit();
 
