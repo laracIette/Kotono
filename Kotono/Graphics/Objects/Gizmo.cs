@@ -121,7 +121,7 @@ namespace Kotono.Graphics.Objects
 
         private static Vector GetMovement()
         {
-            float speed = .01f;
+            float speed = 0.01f;
 
             return _selectedMeshIndex switch
             {

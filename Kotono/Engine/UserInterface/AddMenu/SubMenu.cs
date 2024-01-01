@@ -1,4 +1,4 @@
-﻿using Kotono.Graphics.Objects;
+﻿using Kotono.Graphics.Objects.Texts;
 using Kotono.Utils;
 using System;
 using System.Collections.Generic;

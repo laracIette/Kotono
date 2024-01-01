@@ -10,7 +10,7 @@ using Kotono.Input;
 using Kotono.Physics;
 using Kotono.Utils;
 using Performance = Kotono.Graphics.Performance;
-using Text = Kotono.Graphics.Objects.Text;
+using Text = Kotono.Graphics.Objects.Texts.Text;
 
 namespace Kotono
 {
@@ -112,7 +112,6 @@ namespace Kotono
         internal static void Init()
         {
             ShaderManager.Init();
-            Text.InitPaths();
             Printer.Init();
             PerformanceWindow.Init();
             Fizix.Init();

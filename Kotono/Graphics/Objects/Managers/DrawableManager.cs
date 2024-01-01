@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Kotono.Physics;
+using System.Collections.Generic;
 
 namespace Kotono.Graphics.Objects.Managers
 {
@@ -30,6 +31,11 @@ namespace Kotono.Graphics.Objects.Managers
             for (int i = 0; i < Drawables.Count; i++)
             {
                 Drawables[i].Update();
+
+                if (Drawables[i] is IFizixObject { IsFizix: true } obj)
+                {
+                    obj.UpdateFizix();
+                }
             }
         }
 
