@@ -12,11 +12,11 @@ using OpenTK.Mathematics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-//using PrimitiveType = OpenTK.Graphics.OpenGL4.PrimitiveType;
+using PrimitiveType = OpenTK.Graphics.OpenGL4.PrimitiveType;
 
 namespace Kotono.Graphics.Objects.Meshes
 {
-    public abstract class Mesh : Object3D, ISaveable
+    public abstract class Mesh : Object3D, ISaveable, IFizixObject
     {
         private struct MeshSettings
         {
@@ -42,8 +42,6 @@ namespace Kotono.Graphics.Objects.Meshes
         private readonly Hitbox[] _hitboxes;
 
         protected readonly Shader _shader;
-
-        public bool IsFiziks { get; set; } = false;
 
         public bool IsGravity { get; set; } = false;
 
@@ -84,6 +82,8 @@ namespace Kotono.Graphics.Objects.Meshes
         public static double MaxIntersectionCheckTime => 0.1;
 
         public double IntersectionCheckTime { get; internal set; } = MaxIntersectionCheckTime;
+
+        public bool IsFizix { get; set; } = false;
 
         private readonly MeshProperties _properties;
 
@@ -207,7 +207,7 @@ namespace Kotono.Graphics.Objects.Meshes
                 int elementBufferObject = GL.GenBuffer();
                 GL.BindBuffer(BufferTarget.ElementArrayBuffer, elementBufferObject);
                 GL.BufferData(BufferTarget.ElementArrayBuffer, indices[0].Count * sizeof(int), indices[0].ToArray(), BufferUsageHint.StaticDraw);
-                
+
                 value = new MeshSettings
                 {
                     VertexArrayObject = vertexArrayObject,
@@ -226,6 +226,8 @@ namespace Kotono.Graphics.Objects.Meshes
 
         public override void Update()
         {
+            Gizmo.TryAttachTo(this);
+
             var tempLoc = Location;
 
             if (IsGravity)
@@ -233,27 +235,24 @@ namespace Kotono.Graphics.Objects.Meshes
                 tempLoc += Fizix.Gravity * Time.DeltaS;
             }
 
-            if (IsFiziks)
-            {
-                Fizix.Update(this);
-            }
-
             foreach (var hitbox in _hitboxes)
             {
                 hitbox.Location = tempLoc;
 
-                    if ((CollisionState == CollisionState.BlockAll) && hitbox.IsColliding)
-                    {
+                if ((CollisionState == CollisionState.BlockAll) && hitbox.IsColliding)
+                {
                     hitbox.Location = Location;
-                    }
-                    else
-                    {
-                        Location = tempLoc;
-                    }
-                
+                }
+                else
+                {
+                    Location = tempLoc;
+                }
             }
+        }
 
-            Gizmo.TryAttachTo(this);
+        public void UpdateFizix()
+        {
+            Fizix.Update(this);
         }
 
         public override void Draw()
