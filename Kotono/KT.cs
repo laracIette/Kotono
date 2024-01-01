@@ -10,7 +10,6 @@ using Kotono.Input;
 using Kotono.Physics;
 using Kotono.Utils;
 using Performance = Kotono.Graphics.Performance;
-using Text = Kotono.Graphics.Objects.Texts.Text;
 
 namespace Kotono
 {

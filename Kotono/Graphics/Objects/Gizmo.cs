@@ -9,7 +9,13 @@ namespace Kotono.Graphics.Objects
 {
     public static class Gizmo
     {
-        private static readonly GizmoMesh[] _meshes;
+        private static readonly GizmoMesh[] _meshes =
+        [
+            new GizmoMesh("x"),
+            new GizmoMesh("y"),
+            new GizmoMesh("z"),
+            new GizmoMesh("sphere")
+        ];
 
         private static Mesh? _attachMesh = null;
 
@@ -56,34 +62,31 @@ namespace Kotono.Graphics.Objects
             }
         }
 
-        public static bool IsDraw { get; set; } = false;
+        public static bool IsDraw
+        {
+            get => _meshes[0].IsDraw;
+            set
+            {
+                foreach (var mesh in _meshes)
+                {
+                    mesh.IsDraw = value;
+                }
+            }
+        }
 
         private static int _selectedMeshIndex = -1;
 
         private static TransformSpace _transformSpace = TransformSpace.World;
 
-        static Gizmo()
-        {
-            _meshes =
-            [
-                new GizmoMesh("x"),
-                new GizmoMesh("y"),
-                new GizmoMesh("z"),
-                new GizmoMesh("sphere")
-            ];
-
-            Hide();
-        }
-
         public static void Update()
         {
             if (_attachMesh == null)
             {
-                Hide();
+                IsDraw = false;
                 return;
             }
 
-            Show();
+            IsDraw = true;
 
             if (Mouse.IsButtonPressed(MouseButton.Left) && (Mouse.CursorState == CursorState.Confined))
             {
@@ -110,18 +113,15 @@ namespace Kotono.Graphics.Objects
                     break;
             }
 
-            // TODO: what ?? moves only if camera inside cube ?? maybe distance
             Location += GetMovement();
             _attachMesh.Location = Location;
-
-            //KT.Print(_attachMesh.Location, true);
 
             Scale = (Vector)(Vector.Distance(Location, CameraManager.ActiveCamera.Location) / 75.0f);
         }
 
         private static Vector GetMovement()
         {
-            float speed = 0.01f;
+            float speed = Scale.X * 0.2f;
 
             return _selectedMeshIndex switch
             {
@@ -154,32 +154,24 @@ namespace Kotono.Graphics.Objects
             return closestMesh;
         }
 
-        public static void AttachTo(Mesh mesh)
+        public static bool TryAttachTo(Mesh mesh)
         {
-            _attachMesh = mesh;
+            if (mesh is not GizmoMesh
+                && Mouse.IsButtonPressed(MouseButton.Left) 
+                && Mouse.CursorState == CursorState.Confined
+                && mesh.IsMouseOn(out _, out _)
+            )
+            {
+                _attachMesh = mesh;
+                return true;
+            }
+
+            return false;
         }
 
         public static void Detach()
         {
             _attachMesh = null;
-        }
-
-        public static void Show()
-        {
-            IsDraw = true;
-            foreach (var mesh in _meshes)
-            {
-                mesh.IsDraw = true;
-            }
-        }
-
-        public static void Hide()
-        {
-            IsDraw = false;
-            foreach (var mesh in _meshes)
-            {
-                mesh.IsDraw = false;
-            }
         }
     }
 }
