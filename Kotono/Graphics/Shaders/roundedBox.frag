@@ -1,6 +1,6 @@
 #version 430 core
 
-uniform vec2 windowSize;
+uniform vec4 viewportDest;
 
 uniform vec4 color;
 uniform vec4 dest;
@@ -77,12 +77,12 @@ void main()
     FragColor = result;
 }
 
-vec4 ToScreenSpace(vec4 dest)
+vec4 ToScreenSpace(vec4 v)
 {
     return vec4(
-        (dest.x + 1) / 2 * windowSize.x,
-        (dest.y + 1) / 2 * windowSize.y,
-        dest.z * windowSize.x,
-        dest.w * windowSize.y
+        viewportDest.x + (v.x + 1) / 2 * viewportDest.z,
+        (viewportDest.w - viewportDest.y) + (v.y + 1) / 2 * viewportDest.w,
+        v.z * viewportDest.z,
+        v.w * viewportDest.w
     );
 }

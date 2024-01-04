@@ -7,7 +7,7 @@ namespace Kotono.Graphics.Objects.Managers
     {
         internal override void Create(SpotLight spotLight)
         {
-            if (ObjectManager.GetSpotLights().Count >= SpotLight.MAX_COUNT)
+            if (Drawables.Count >= SpotLight.MAX_COUNT)
             {
                 KT.Log($"The number of SpotLight is already at its max value: {SpotLight.MAX_COUNT}.");
             }

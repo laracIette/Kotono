@@ -40,7 +40,7 @@ namespace Kotono
 
                 CameraManager.ActiveCamera.AspectRatio = _dest.Size.Ratio;
 
-                ComponentManager.Window.Viewport.Size = _dest.Size;
+                ComponentManager.WindowViewport.Size = _dest.Size;
             }
         }
 

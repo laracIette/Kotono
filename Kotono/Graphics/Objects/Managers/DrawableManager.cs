@@ -1,5 +1,6 @@
 ﻿using Kotono.Physics;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Kotono.Graphics.Objects.Managers
 {
@@ -41,25 +42,21 @@ namespace Kotono.Graphics.Objects.Managers
 
         internal virtual void Draw()
         {
-            // List shouldn't change during IDrawable.Draw() calls, TODO: use foreach when development done
-            for (int i = 0; i < Drawables.Count; i++)
+            foreach (var drawable in Drawables.Where(d => d.IsDraw))
             {
-                if (Drawables[i].IsDraw)
-                {
-                    Drawables[i].Draw();
-                }
+                drawable.Draw();
             }
         }
 
         internal virtual void Save()
         {
-            foreach (var drawable in Drawables)
+            foreach (var saveable in Drawables.OfType<ISaveable>())
             {
-                (drawable as ISaveable)?.Save();
+                saveable.Save();
             }
         }
 
-        public virtual void Dispose()
+        internal virtual void Dispose()
         {
             // List changes as drawables get deleted
             for (int i = Drawables.Count - 1; i >= 0; i--)

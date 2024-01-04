@@ -17,7 +17,7 @@ namespace Kotono.Graphics
 
         public void Update()
         {
-            _background.Position += Point.Unit * 20.0f * Time.DeltaS;
+            //_background.Position += Point.Unit * 20.0f * Time.DeltaS;
         }
     }
 }

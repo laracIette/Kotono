@@ -11,9 +11,9 @@ namespace Kotono.Graphics
             new Component(new Rect(100.0f, 100.0f, 640.0f, 360.0f))
         ];
 
-        internal static Component Window => _components[0];
+        internal static Viewport WindowViewport => _components[0].Viewport;
 
-        internal static Viewport ActiveViewport { get; set; } = _components[0].Viewport;
+        internal static Viewport ActiveViewport { get; set; } = WindowViewport;
 
         internal static void Update()
         {

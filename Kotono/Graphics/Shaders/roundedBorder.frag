@@ -1,6 +1,6 @@
 #version 430 core
 
-uniform vec2 windowSize;
+uniform vec4 windowDest;
 
 uniform vec4 color;
 uniform vec4 dest;
@@ -87,9 +87,9 @@ void main()
 vec4 ToScreenSpace(vec4 dest)
 {
     return vec4(
-        (dest.x + 1) / 2 * windowSize.x,
-        (dest.y + 1) / 2 * windowSize.y,
-        dest.z * windowSize.x,
-        dest.w * windowSize.y
+        (dest.x + 1) / 2 * windowDest.z,
+        (dest.y + 1) / 2 * windowDest.w,
+        dest.z * windowDest.z,
+        dest.w * windowDest.w
     );
 }

@@ -7,7 +7,7 @@ namespace Kotono.Graphics.Objects.Managers
     {
         internal override void Create(PointLight pointLight)
         {
-            if (ObjectManager.GetPointLights().Count >= PointLight.MAX_COUNT)
+            if (Drawables.Count >= PointLight.MAX_COUNT)
             {
                 KT.Log($"The number of PointLight is already at its max value: {PointLight.MAX_COUNT}.");
             }

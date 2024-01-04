@@ -11,15 +11,15 @@ namespace Kotono.Graphics.Objects.Managers
     {
         private static readonly FrontMeshManager _frontMeshManager = new();
 
-        private static readonly MeshManager _meshManager = new();
+        //private static readonly MeshManager _meshManager = new();
 
-        private static readonly HitboxManager _hitboxManager = new();
+        //private static readonly HitboxManager _hitboxManager = new();
 
         private static readonly PointLightManager _pointLightManager = new();
 
         private static readonly SpotLightManager _spotLightManager = new();
 
-        private static readonly ShapeManager _shapeManager = new();
+        //private static readonly ShapeManager _shapeManager = new();
 
         private static readonly Object2DManager _object2DManager = new();
         
@@ -33,13 +33,13 @@ namespace Kotono.Graphics.Objects.Managers
                     _frontMeshManager.Create(frontMesh);
                     break;
 
-                case Mesh mesh:
-                    _meshManager.Create(mesh);
-                    break;
+                //case Mesh mesh:
+                //    _meshManager.Create(mesh);
+                //    break;
 
-                case Hitbox hitbox:
-                    _hitboxManager.Create(hitbox);
-                    break;
+                //case Hitbox hitbox:
+                //    _hitboxManager.Create(hitbox);
+                //    break;
 
                 case PointLight pointLight:
                     _pointLightManager.Create(pointLight);
@@ -49,9 +49,9 @@ namespace Kotono.Graphics.Objects.Managers
                     _spotLightManager.Create(spotLight);
                     break;
 
-                case Shape shape:
-                    _shapeManager.Create(shape);
-                    break;
+                //case Shape shape:
+                //    _shapeManager.Create(shape);
+                //    break;
 
                 case Object2D object2D:
                     _object2DManager.Create(object2D);
@@ -74,13 +74,13 @@ namespace Kotono.Graphics.Objects.Managers
                     _frontMeshManager.Delete(frontMesh);
                     break;
 
-                case Mesh mesh:
-                    _meshManager.Delete(mesh);
-                    break;
+                //case Mesh mesh:
+                //    _meshManager.Delete(mesh);
+                //    break;
 
-                case Hitbox hitbox:
-                    _hitboxManager.Delete(hitbox);
-                    break;
+                //case Hitbox hitbox:
+                //    _hitboxManager.Delete(hitbox);
+                //    break;
 
                 case PointLight pointLight:
                     _pointLightManager.Delete(pointLight);
@@ -90,9 +90,9 @@ namespace Kotono.Graphics.Objects.Managers
                     _spotLightManager.Delete(spotLight);
                     break;
 
-                case Shape shape:
-                    _shapeManager.Delete(shape);
-                    break;
+                //case Shape shape:
+                //    _shapeManager.Delete(shape);
+                //    break;
 
                 case Object2D object2D:
                     _object2DManager.Delete(object2D);
@@ -130,51 +130,51 @@ namespace Kotono.Graphics.Objects.Managers
         internal static void Update()
         {
             _frontMeshManager.Update();
-            _meshManager.Update();
-            _hitboxManager.Update();
+            //_meshManager.Update();
+            //_hitboxManager.Update();
             _pointLightManager.Update();
             _spotLightManager.Update();
-            _shapeManager.Update();
-            _object2DManager.Update();
+            //_shapeManager.Update();
             _object3DManager.Update();
+            _object2DManager.Update();
         }
 
         internal static void Draw()
         {
-            ComponentManager.Window.Viewport.Use();
+            ComponentManager.WindowViewport.Use();
 
-            _hitboxManager.Draw();
+            //_hitboxManager.Draw();
             _pointLightManager.Draw();
             _spotLightManager.Draw();
-            _shapeManager.Draw();
-            _meshManager.Draw();
+            //_shapeManager.Draw();
+            //_meshManager.Draw();
             _frontMeshManager.Draw();
-            _object2DManager.Draw();
             _object3DManager.Draw();
+            _object2DManager.Draw();
         }
 
         internal static void Save()
         {
             _frontMeshManager.Save();
-            _meshManager.Save();
-            _hitboxManager.Save();
+            //_meshManager.Save();
+            //_hitboxManager.Save();
             _pointLightManager.Save();
             _spotLightManager.Save();
-            _shapeManager.Save();
-            _object2DManager.Save();
+            //_shapeManager.Save();
             _object3DManager.Save();
+            _object2DManager.Save();
         }
 
         internal static void Dispose()
         {
             _frontMeshManager.Dispose();
-            _meshManager.Dispose();
-            _hitboxManager.Dispose();
+            //_meshManager.Dispose();
+            //_hitboxManager.Dispose();
             _pointLightManager.Dispose();
             _spotLightManager.Dispose();
-            _shapeManager.Dispose();
-            _object2DManager.Dispose();
+            //_shapeManager.Dispose();
             _object3DManager.Dispose();
+            _object2DManager.Dispose();
         }
     }
 }

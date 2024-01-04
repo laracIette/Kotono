@@ -1,4 +1,5 @@
 ﻿using Kotono.Graphics.Objects.Meshes;
+using OpenTK.Graphics.OpenGL4;
 
 namespace Kotono.Graphics.Objects.Managers
 {
@@ -7,7 +8,7 @@ namespace Kotono.Graphics.Objects.Managers
     {
         internal override void Draw()
         {
-            //GL.Clear(ClearBufferMask.DepthBufferBit); // TODO: that
+            //GL.Clear(ClearBufferMask.DepthBufferBit); // TODO: that, works but problem with outline
 
             base.Draw();
         }

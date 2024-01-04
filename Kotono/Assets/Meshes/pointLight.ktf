@@ -2,17 +2,17 @@
 
 Color: {
 	A: 1
-	B: 0.03915602
-	G: 0.8681516
-	R: 0.6544337
+	B: 0.9464123
+	G: 0.109451085
+	R: 0.37863907
 }
 Obj: W:\Visual Studio\Projects\Kotono-TestApp\Kotono-TestApp\Assets\Meshes\sphere.obj
 Shader: PointLight
 Transform: {
 	Location: {
-		X: 3.2452927
-		Y: -16.553429
-		Z: -16.46553
+		X: -11.208822
+		Y: 10.011772
+		Z: 10.704136
 	}
 	Rotation: {
 		X: 1
