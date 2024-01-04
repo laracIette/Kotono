@@ -1,5 +1,6 @@
 ﻿using Kotono.Graphics.Objects.Managers;
 using Kotono.Utils;
+using System.Linq;
 
 namespace Kotono.Graphics.Shaders
 {
@@ -26,11 +27,11 @@ namespace Kotono.Graphics.Shaders
             SetVector("dirLight.specular", new Vector(0.5f, 0.5f, 0.5f));
 
 
-            var pointLights = ObjectManager.GetPointLights();
+            var pointLights = ObjectManager.PointLights;
 
-            SetInt("numPointLights", pointLights.Count);
+            SetInt("numPointLights", pointLights.Length);
 
-            for (int i = 0; i < pointLights.Count; i++)
+            for (int i = 0; i < pointLights.Length; i++)
             {
                 SetVector($"pointLights[{i}].location", pointLights[i].Location);
                 SetColor($"pointLights[{i}].ambient", pointLights[i].Ambient);
@@ -41,11 +42,11 @@ namespace Kotono.Graphics.Shaders
                 SetFloat($"pointLights[{i}].quadratic", pointLights[i].Quadratic);
             }
 
-            var spotLights = ObjectManager.GetSpotLights();
+            var spotLights = ObjectManager.SpotLights;
 
-            SetInt("numSpotLights", spotLights.Count);
+            SetInt("numSpotLights", spotLights.Length);
 
-            for (int i = 0; i < spotLights.Count; i++)
+            for (int i = 0; i < spotLights.Length; i++)
             {
                 SetFloat($"spotLights[{i}].cutOff", Math.Cos(Math.Rad(spotLights[i].CutOffAngle)));
                 SetFloat($"spotLights[{i}].outerCutOff", Math.Cos(Math.Rad(spotLights[i].OuterCutOffAngle)));

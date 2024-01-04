@@ -3,11 +3,15 @@ using Kotono.Utils;
 
 namespace Kotono.Graphics.Objects.Lights
 {
-    public class PointLight : Drawable
+    public class PointLight : Object3D
     {
         private readonly Mesh _mesh;
 
-        public Vector Location => _mesh.Location;
+        public override Vector Location
+        {
+            get => _mesh.Location; 
+            set => _mesh.Location = value;
+        }
 
         public bool IsGravity
         {

@@ -131,12 +131,6 @@ namespace Kotono
             MainMenu.Update();
         }
 
-        internal static void Draw()
-        {
-            ShaderManager.Update();
-            ObjectManager.Draw();
-        }
-
         internal static void Save()
         {
             ObjectManager.Save();

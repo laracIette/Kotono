@@ -4,11 +4,9 @@ using System.Linq;
 
 namespace Kotono.Graphics.Objects.Managers
 {
-    internal abstract class DrawableManager<T> where T : Drawable
+    internal abstract class DrawableManager<T>() where T : Drawable
     {
         internal List<T> Drawables { get; } = [];
-
-        internal DrawableManager() { }
 
         internal virtual void Create(T drawable)
         {
@@ -58,13 +56,12 @@ namespace Kotono.Graphics.Objects.Managers
 
         internal virtual void Dispose()
         {
-            // List changes as drawables get deleted
-            for (int i = Drawables.Count - 1; i >= 0; i--)
+            foreach (var drawable in Drawables)
             {
-                Drawables[i].Dispose();
-
-                Delete(Drawables[i]);
+                drawable.Dispose();
             }
+
+            Drawables.Clear();
         }
     }
 }

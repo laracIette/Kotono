@@ -1,5 +1,6 @@
 ﻿using Kotono.Graphics;
 using Kotono.Graphics.Objects;
+using Kotono.Graphics.Objects.Managers;
 using Kotono.Input;
 using Kotono.Utils;
 using OpenTK.Graphics.OpenGL4;
@@ -122,13 +123,20 @@ namespace Kotono
 
                 KT.PerformanceWindow.AddFrameTime(e.Time);
 
+                ShaderManager.Update();
+
                 // first pass
                 GL.BindFramebuffer(FramebufferTarget.Framebuffer, _frameBuffer);
                 GL.ClearColor(0.1f, 0.1f, 0.2f, 1.0f);
                 GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
                 GL.Enable(EnableCap.DepthTest);
 
-                KT.Draw();
+                ComponentManager.WindowViewport.Use();
+
+                ObjectManager.Draw3D();
+                //GL.Clear(ClearBufferMask.DepthBufferBit); // TODO: that, works but problem with outline
+                ObjectManager.DrawFront();
+                ObjectManager.Draw2D();
 
                 // second pass
                 GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0); // back to default
@@ -139,7 +147,7 @@ namespace Kotono
                 ShaderManager.Outline.Draw(_textureDepthStencilBuffer);
 
                 // TODO: separate object 3d and 2d manager ????????
-                // TODO: to draw 3d before then depth buffer shit then draw 2d??????
+                //       to draw 3d before then depth buffer then draw 2d??????
 
                 base.SwapBuffers();
             }
