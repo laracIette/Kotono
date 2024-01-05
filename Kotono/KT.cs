@@ -98,6 +98,7 @@ namespace Kotono
         #endregion UserMode
 
         #region Logger
+
         /// <summary>
         /// Writes an object to the console.
         /// </summary>
@@ -106,6 +107,7 @@ namespace Kotono
         {
             Console.WriteLine(obj);
         }
+
         #endregion Logger
 
         internal static void Init()

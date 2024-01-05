@@ -76,9 +76,49 @@ namespace Kotono.Utils
             );
 
         /// <summary>
+        /// The center Point of the Rect.
+        /// </summary>
+        public readonly Point Center => Position;
+
+        /// <summary>
+        /// The left Point of the Rect.
+        /// </summary>
+        public readonly Point Left => new Point(X - W / 2.0f, Y);
+
+        /// <summary>
+        /// The right Point of the Rect.
+        /// </summary>
+        public readonly Point Right => new Point(X + W / 2.0f, Y);
+
+        /// <summary>
+        /// The top Point of the Rect.
+        /// </summary>
+        public readonly Point Top => new Point(X, Y + H / 2.0f);
+
+        /// <summary>
+        /// The bottom Point of the Rect.
+        /// </summary>
+        public readonly Point Bottom => new Point(X, Y - H / 2.0f);
+
+        /// <summary>
         /// The top left Point of the Rect.
         /// </summary>
-        public readonly Point TopLeft => Position - Size / 2.0f;
+        public readonly Point TopLeft => new Point(X - W / 2.0f, Y + H / 2.0f);
+
+        /// <summary>
+        /// The top right Point of the Rect.
+        /// </summary>
+        public readonly Point TopRight => new Point(X + W / 2.0f, Y + H / 2.0f);
+
+        /// <summary>
+        /// The bottom left Point of the Rect.
+        /// </summary>
+        public readonly Point BottomLeft => new Point(X - W / 2.0f, Y - H / 2.0f);
+
+        /// <summary>
+        /// The bottom right Point of the Rect.
+        /// </summary>
+        public readonly Point BottomRight => new Point(X + W / 2.0f, Y - H / 2.0f);
 
         /// <summary> 
         /// A Rect with X = 0, Y = 0, W = 0, H = 0.
