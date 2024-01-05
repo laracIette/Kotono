@@ -2,9 +2,9 @@
 
 namespace Kotono.Engine.UserInterface.AddMenu.MainButtons
 {
-    public class LightsButton : MainButton
+    internal class LightsButton : MainButton
     {
-        public LightsButton()
+        internal LightsButton()
             : base("Lights", ["PointLight", "SpotLight", "Directional Light"], Anchor.TopRight)
         { }
     }

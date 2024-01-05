@@ -6,13 +6,13 @@ using System.Linq;
 
 namespace Kotono.Engine.UserInterface.AddMenu
 {
-    public class SubMenu
+    internal class SubMenu
     {
         private readonly List<Text> _options = [];
 
         private readonly Anchor _anchor;
 
-        public Point Position
+        internal Point Position
         {
             set
             {
@@ -23,7 +23,7 @@ namespace Kotono.Engine.UserInterface.AddMenu
             }
         }
 
-        public bool IsDraw
+        internal bool IsDraw
         {
             get => _options.FirstOrDefault()?.IsDraw ?? throw new Exception("error: cannot access IsDraw, _frames is empty.");
             set
@@ -35,16 +35,19 @@ namespace Kotono.Engine.UserInterface.AddMenu
             }
         }
 
-        public SubMenu(string[] options, Anchor anchor)
+        internal SubMenu(string[] options, Anchor anchor)
         {
             _anchor = anchor;
 
             for (int i = 0; i < options.Length; i++)
             {
                 var dest = GetTextDest(i, KT.Size / 2.0f);
-                _options.Add(new Text(options[i], dest, _anchor, Color.White, 0.6f, 3));
-                _options[i].IsDraw = true;
-                _options[i].Init();
+                _options.Add(
+                    new Text(options[i], dest, _anchor, Color.White, 0.6f, 3) 
+                    { 
+                        IsDraw = true 
+                    }
+                );
             }
         }
 

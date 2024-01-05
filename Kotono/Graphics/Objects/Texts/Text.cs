@@ -6,59 +6,8 @@ using System.Linq;
 
 namespace Kotono.Graphics.Objects.Texts
 {
-    public class Text : Object2D, ISelectable
+    internal class Text : Object2D, ISelectable
     {
-        protected string _text;
-
-        protected Anchor _anchor;
-
-        protected float _spacing;
-
-        protected readonly List<Image> _letters = [];
-
-        protected Rect _lettersDest;
-
-        private readonly RoundedBorder _roundedBorder;
-
-        public override Rect Dest
-        {
-            get => Rect.FromAnchor(new Rect(_lettersDest.X, _lettersDest.Y, _lettersDest.W * _text.Length * _spacing, _lettersDest.H), _anchor);
-            set => _lettersDest = value;
-        }
-
-        public override Point Position
-        {
-            get => Dest.Position;
-            set
-            {
-                _lettersDest.Position = value;
-
-                for (int i = 0; i < _letters.Count; i++)
-                {
-                    _letters[i].Dest = GetLetterDest(i, _lettersDest);
-                }
-
-                if (_roundedBorder != null)
-                {
-                    _roundedBorder.Dest = Dest;
-                }
-            }
-        }
-
-        public override bool IsDraw
-        {
-            get => _letters.FirstOrDefault()?.IsDraw ?? false; // don't draw if empty
-            set
-            {
-                foreach (var frame in _letters)
-                {
-                    frame.IsDraw = value;
-                }
-            }
-        }
-
-        public double StartTime { get; private set; }
-
         private readonly static Dictionary<char, string> _charactersPath = new()
         {
             ['a'] = @"Characters\a.png",
@@ -135,10 +84,61 @@ namespace Kotono.Graphics.Objects.Texts
             ['#'] = @"Characters\#.png",
             ['\''] = @"Characters\'.png"
         };
+        
+        protected string _text;
+
+        protected Anchor _anchor;
+
+        protected float _spacing;
+
+        protected readonly List<Image> _letters = [];
+
+        protected Rect _lettersDest;
+
+        private readonly RoundedBorder _roundedBorder;
+
+        public override Rect Dest
+        {
+            get => Rect.FromAnchor(new Rect(_lettersDest.X, _lettersDest.Y, _lettersDest.W * _text.Length * _spacing, _lettersDest.H), _anchor);
+            set => _lettersDest = value;
+        }
+
+        public override Point Position
+        {
+            get => Dest.Position;
+            set
+            {
+                _lettersDest.Position = value;
+
+                for (int i = 0; i < _letters.Count; i++)
+                {
+                    _letters[i].Dest = GetLetterDest(i, _lettersDest);
+                }
+
+                if (_roundedBorder != null)
+                {
+                    _roundedBorder.Dest = Dest;
+                }
+            }
+        }
+
+        public override bool IsDraw
+        {
+            get => _letters.FirstOrDefault()?.IsDraw ?? false; // don't draw if empty
+            set
+            {
+                foreach (var frame in _letters)
+                {
+                    frame.IsDraw = value;
+                }
+            }
+        }
+
+        internal double StartTime { get; private set; }
 
         private Color _color;
 
-        public Color Color
+        internal Color Color
         {
             get => _color;
             set
@@ -155,9 +155,9 @@ namespace Kotono.Graphics.Objects.Texts
 
         public bool IsActive { get; } = false;
 
-        public bool IsMouseOn => Rect.Overlaps(Dest, Mouse.Position);
+        internal bool IsMouseOn => Rect.Overlaps(Dest, Mouse.Position);
 
-        public Text(string text, Rect lettersDest, Anchor position, Color color, float spacing, int layer)
+        internal Text(string text, Rect lettersDest, Anchor position, Color color, float spacing, int layer)
             : base()
         {
             _text = text;
@@ -175,7 +175,7 @@ namespace Kotono.Graphics.Objects.Texts
             Init();
         }
 
-        public void Init()
+        protected void Init()
         {
             Clear();
 
@@ -255,7 +255,7 @@ namespace Kotono.Graphics.Objects.Texts
             };
         }
 
-        public virtual void SetText(string text)
+        internal virtual void SetText(string text)
         {
             if (IsDraw && text != _text)
             {
@@ -264,7 +264,7 @@ namespace Kotono.Graphics.Objects.Texts
             }
         }
 
-        public void Transform(Rect dest)
+        internal void Transform(Rect dest)
         {
             _lettersDest += dest;
             foreach (var letter in _letters)
@@ -273,7 +273,7 @@ namespace Kotono.Graphics.Objects.Texts
             }
         }
 
-        public void Transform(Rect dest, double time)
+        internal void Transform(Rect dest, double time)
         {
             foreach (var letter in _letters)
             {
@@ -281,7 +281,7 @@ namespace Kotono.Graphics.Objects.Texts
             }
         }
 
-        public void Clear()
+        internal void Clear()
         {
             foreach (var letter in _letters)
             {

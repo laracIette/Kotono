@@ -3,9 +3,9 @@ using Kotono.Utils;
 
 namespace Kotono.Graphics.Objects.Buttons
 {
-    public class TextButton : Button
+    internal class TextButton(Rect dest, Color color, int layer, float fallOff, float cornerSize, string text) : Button(dest, color, layer, fallOff, cornerSize)
     {
-        protected readonly Text _text;
+        protected readonly Text _text = new(text, new Rect(dest.Position, 25.0f, 30.0f), Anchor.Center, Color.White, 0.6f, 2);
 
         public override Rect Dest
         {
@@ -28,13 +28,6 @@ namespace Kotono.Graphics.Objects.Buttons
                 base.IsDraw = value;
                 _text.IsDraw = value;
             }
-        }
-
-        public TextButton(Rect dest, Color color, int layer, float fallOff, float cornerSize, string text)
-            : base(dest, color, layer, fallOff, cornerSize)
-        {
-            _text = new Text(text, new Rect(dest.Position, 25.0f, 30.0f), Anchor.Center, Color.White, 0.6f, 2);
-            _text.Init();
         }
     }
 }

@@ -3,12 +3,12 @@ using Kotono.Utils;
 
 namespace Kotono.Graphics.Print
 {
-    public class PrinterText()
+    internal class PrinterText()
         : Text("", _dest, Anchor.TopLeft, Color.White, 2.0f / 3.0f, int.MaxValue)
     {
         private static readonly Rect _dest = new(0.0f, 0.0f, 25.0f, 30.0f);
 
-        public override void SetText(string text)
+        internal override void SetText(string text)
         {
             _text = text;
 
@@ -16,7 +16,7 @@ namespace Kotono.Graphics.Print
             Init();
         }
 
-        public void Lower()
+        internal void Lower()
         {
             _lettersDest.Y += _lettersDest.H;
 

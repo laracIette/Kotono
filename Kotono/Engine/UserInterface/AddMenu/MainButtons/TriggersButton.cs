@@ -2,9 +2,9 @@
 
 namespace Kotono.Engine.UserInterface.AddMenu.MainButtons
 {
-    public class TriggersButton : MainButton
+    internal class TriggersButton : MainButton
     {
-        public TriggersButton()
+        internal TriggersButton()
             : base("Triggers", [], Anchor.TopLeft)
         { }
     }

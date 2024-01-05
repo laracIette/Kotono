@@ -7,7 +7,6 @@ using Kotono.Graphics.Objects;
 using Kotono.Graphics.Objects.Managers;
 using Kotono.Graphics.Print;
 using Kotono.Input;
-using Kotono.Physics;
 using Kotono.Utils;
 using Performance = Kotono.Graphics.Performance;
 

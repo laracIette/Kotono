@@ -4,7 +4,7 @@ using System;
 
 namespace Kotono.Engine.UserInterface.AddMenu
 {
-    public class MainButton(string text, string[] options, Anchor anchor)
+    internal class MainButton(string text, string[] options, Anchor anchor)
         : TextButton(new Rect(100), Color.Gray, 1, 2f, 25f, text)
     {
         private readonly SubMenu _subMenu = new(options, anchor);
