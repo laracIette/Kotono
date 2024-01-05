@@ -45,7 +45,7 @@ namespace Kotono.Utils
         public float W
         {
             readonly get => Size.X;
-            set => Size.X = Math.Max(0.0f, value);
+            set => Size.X = value;
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace Kotono.Utils
         public float H
         {
             readonly get => Size.Y;
-            set => Size.Y = Math.Max(0.0f, value);
+            set => Size.Y = value;
         }
 
         /// <summary> 

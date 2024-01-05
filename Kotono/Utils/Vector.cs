@@ -203,6 +203,14 @@ namespace Kotono.Utils
             return Math.Max(Math.Max(v.X, v.Y), v.Z);
         }
 
+        public static Vector Clamp(Vector v, float min, float max)
+        {
+            v.X = Math.Clamp(v.X, min, max);
+            v.Y = Math.Clamp(v.Y, min, max);
+            v.Z = Math.Clamp(v.Z, min, max);
+            return v;
+        }
+
         public static Vector operator +(Vector left, Vector right)
         {
             left.X += right.X;

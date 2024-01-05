@@ -11,5 +11,7 @@ namespace Kotono.Graphics.Objects
         public Vector Rotation { get; set; }
 
         public Vector Scale { get; set; }
+
+        public Vector Velocity { get; set; }
     }
 }

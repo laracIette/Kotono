@@ -55,9 +55,8 @@ namespace Kotono.Graphics.Objects
         public override void Draw()
         {
             ShaderManager.RoundedBorder.SetMatrix4("model", Model);
-            ShaderManager.RoundedBorder.SetRect("viewportDest", ComponentManager.ActiveViewport.Dest);
             ShaderManager.RoundedBorder.SetColor("color", Color);
-            ShaderManager.RoundedBorder.SetRect("dest", Dest.NDC);
+            ShaderManager.RoundedBorder.SetRect("sides", GetSides(Dest));
             ShaderManager.RoundedBorder.SetFloat("fallOff", FallOff);
             ShaderManager.RoundedBorder.SetFloat("cornerSize", CornerSize);
             ShaderManager.RoundedBorder.SetFloat("thickness", Thickness);

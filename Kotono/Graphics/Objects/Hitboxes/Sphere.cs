@@ -89,14 +89,11 @@ namespace Kotono.Graphics.Objects.Hitboxes
             {
                 case Sphere sphere:
                     return Vector.Distance(this, sphere) < (Radius + sphere.Radius) / 2.0f;
-
-                case IObject3D object3D:
-                    return Math.Abs(Location.X - object3D.Location.X) <= (Scale.X + object3D.Scale.X) / 2.0f
-                        && Math.Abs(Location.Y - object3D.Location.Y) <= (Scale.Y + object3D.Scale.Y) / 2.0f
-                        && Math.Abs(Location.Z - object3D.Location.Z) <= (Scale.Z + object3D.Scale.Z) / 2.0f;
                 
                 default:
-                    return false;
+                    return Math.Abs(Location.X - hitbox.Location.X) <= (Scale.X + hitbox.Scale.X) / 2.0f
+                        && Math.Abs(Location.Y - hitbox.Location.Y) <= (Scale.Y + hitbox.Scale.Y) / 2.0f
+                        && Math.Abs(Location.Z - hitbox.Location.Z) <= (Scale.Z + hitbox.Scale.Z) / 2.0f;
             }
         }
     }
