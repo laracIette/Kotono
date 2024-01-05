@@ -48,12 +48,6 @@ namespace Kotono.Graphics.Performance
             );
         }
 
-        internal void Init()
-        {
-            _frame.Init();
-            _update.Init();
-        }
-
         internal void Update()
         {
             _frame.Update();

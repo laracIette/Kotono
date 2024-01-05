@@ -171,6 +171,8 @@ namespace Kotono.Graphics.Objects.Texts
             {
                 IsDraw = false
             };
+
+            Init();
         }
 
         public void Init()

@@ -55,8 +55,6 @@ namespace Kotono
             KT.Size = (Point)Size;
 
             CreateFrameBuffer();
-
-            KT.Init();
         }
 
         private void CreateFrameBuffer()

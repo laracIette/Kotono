@@ -22,11 +22,6 @@ namespace Kotono.Graphics.Performance
 
         private readonly Text _text = new("0", dest, anchor, Color.White, 1.0f, 1);
 
-        public void Init()
-        {
-            _text.Init();
-        }
-
         public void Update()
         {
 

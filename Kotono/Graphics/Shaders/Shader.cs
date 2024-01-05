@@ -7,22 +7,20 @@ using IO = System.IO;
 
 namespace Kotono.Graphics.Shaders
 {
-    public abstract class Shader(string name)
+    public abstract class Shader
     {
-        private int _handle;
+        private readonly int _handle;
 
         private readonly Dictionary<string, int> _uniformLocations = [];
 
-        private readonly string _name = name;
-
-        public void Init()
-        {
-            var shaderSource = IO.File.ReadAllText(Path.Shaders + _name + ".vert");
+        public Shader(string name) 
+        {            
+            var shaderSource = IO.File.ReadAllText(Path.Shaders + name + ".vert");
             var vertexShader = GL.CreateShader(ShaderType.VertexShader);
             GL.ShaderSource(vertexShader, shaderSource);
             CompileShader(vertexShader);
 
-            shaderSource = IO.File.ReadAllText(Path.Shaders + _name + ".frag");
+            shaderSource = IO.File.ReadAllText(Path.Shaders + name + ".frag");
             var fragmentShader = GL.CreateShader(ShaderType.FragmentShader);
             GL.ShaderSource(fragmentShader, shaderSource);
             CompileShader(fragmentShader);

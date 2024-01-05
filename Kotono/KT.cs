@@ -110,14 +110,6 @@ namespace Kotono
 
         #endregion Logger
 
-        internal static void Init()
-        {
-            ShaderManager.Init();
-            Printer.Init();
-            PerformanceWindow.Init();
-            Fizix.Init();
-        }
-
         internal static void Update()
         {
             Time.Update();

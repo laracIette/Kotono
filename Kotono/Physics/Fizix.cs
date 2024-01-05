@@ -7,18 +7,11 @@ using Math = Kotono.Utils.Math;
 
 namespace Kotono.Physics
 {
-    public sealed class Fizix
+    internal static class Fizix
     {
-        private Fizix() { }
+        internal static Vector Gravity { get; set; } = new Vector(0.0f, -0.1f, 0.0f);
 
-        public static Vector Gravity { get; set; }
-
-        public static void Init()
-        {
-            Gravity = new Vector(0.0f, -0.1f, 0.0f);
-        }
-
-        public static void Update(Mesh mesh)
+        internal static void Update(Mesh mesh)
         {
             var collisionCenter = Vector.Zero;
             int n = 0;
@@ -52,7 +45,7 @@ namespace Kotono.Physics
             }
         }
 
-        public static void Update(Sphere sphere)
+        internal static void Update(Sphere sphere)
         {
             var collisionCenter = Vector.Zero;
             int n = 0;
@@ -93,7 +86,7 @@ namespace Kotono.Physics
             }
         }
 
-        public static void Update(Sphere left, Sphere right)
+        internal static void Update(Sphere left, Sphere right)
         {
             Vector delta = left.Location - right.Location;
             float distance = delta.Length;

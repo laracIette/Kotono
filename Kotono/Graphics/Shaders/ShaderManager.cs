@@ -24,20 +24,6 @@ namespace Kotono.Graphics
 
         public static OutlineShader Outline { get; } = new();
 
-        public static void Init()
-        {
-            Lighting.Init();
-            Hitbox.Init();
-            PointLight.Init();
-            Image.Init();
-            Gizmo.Init();
-            RoundedBox.Init();
-            RoundedBorder.Init();
-            Color.Init();
-            Blur.Init();
-            Outline.Init();
-        }
-
         public static void Update()
         {
             Lighting.Update();

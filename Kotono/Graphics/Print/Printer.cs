@@ -1,4 +1,5 @@
 ﻿using Kotono.Utils;
+using Nito.Disposables.Internals;
 using System;
 using System.Linq;
 
@@ -6,24 +7,17 @@ namespace Kotono.Graphics.Print
 {
     internal static class Printer
     {
-        private static readonly PrinterText[] _texts = new PrinterText[50];
+        private static readonly PrinterText[] _texts = Enumerable.Range(0, 50)
+            .Select(_ => new PrinterText())
+            .ToArray();
 
         private static int _currentIndex = 0;
-
-        internal static void Init()
-        {
-            for (int i = 0; i < _texts.Length; i++)
-            {
-                _texts[i] = new PrinterText();
-                _texts[i].Init();
-            }
-        }
 
         internal static void Update()
         {
             foreach (var text in _texts)
             {
-                if ((Time.NowS - text.StartTime) > 3)
+                if ((Time.NowS - text.StartTime) > 3.0)
                 {
                     text.Clear();
                 }
