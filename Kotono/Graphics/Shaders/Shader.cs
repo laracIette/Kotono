@@ -17,12 +17,12 @@ namespace Kotono.Graphics.Shaders
 
         public void Init()
         {
-            var shaderSource = IO.File.ReadAllText(Path.Kotono + "Graphics/Shaders/" + _name + ".vert");
+            var shaderSource = IO.File.ReadAllText(Path.Shaders + _name + ".vert");
             var vertexShader = GL.CreateShader(ShaderType.VertexShader);
             GL.ShaderSource(vertexShader, shaderSource);
             CompileShader(vertexShader);
 
-            shaderSource = IO.File.ReadAllText(Path.Kotono + "Graphics/Shaders/" + _name + ".frag");
+            shaderSource = IO.File.ReadAllText(Path.Shaders + _name + ".frag");
             var fragmentShader = GL.CreateShader(ShaderType.FragmentShader);
             GL.ShaderSource(fragmentShader, shaderSource);
             CompileShader(fragmentShader);

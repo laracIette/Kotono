@@ -6,17 +6,17 @@ Color: {
 	G: 1
 	R: 1
 }
-Obj: W:\Visual Studio\Projects\Kotono-TestApp\Kotono-TestApp\Assets\Meshes\cube.obj
+Obj: W:\Visual Studio\Projects\Kotono\Kotono\Assets\Meshes\cube.obj
 Shader: Lighting
 Textures: {
-	Diffuse: W:\Visual Studio\Projects\Kotono-TestApp\Kotono-TestApp\Assets\Meshes\cube_diff.png
-	Specular: W:\Visual Studio\Projects\Kotono-TestApp\Kotono-TestApp\Assets\Meshes\cube_spec.png
+	Diffuse: W:\Visual Studio\Projects\Kotono\Kotono\Assets\Meshes\cube_diff.png
+	Specular: W:\Visual Studio\Projects\Kotono\Kotono\Assets\Meshes\cube_spec.png
 }
 Transform: {
 	Location: {
 		X: -0.06457243
-		Y: -1.3360292
-		Z: -8.72101
+		Y: -2.0463798
+		Z: -4.751522
 	}
 	Rotation: {
 		X: 0

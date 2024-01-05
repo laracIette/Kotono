@@ -12,10 +12,6 @@ namespace Kotono
 
         public string WindowTitle { get; set; } = "Kotono - Application";
 
-        public string KotonoPath { get; set; } = "";
-
-        public string ProjectPath { get; set; } = "";
-
         public CursorState CursorState { get; set; } = CursorState.Normal;
     }
 }

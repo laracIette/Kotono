@@ -13,25 +13,25 @@ using Performance = Kotono.Graphics.Performance;
 
 namespace Kotono
 {
-    public static class KT
+    internal static class KT
     {
         #region WindowDest
 
         private static Rect _dest = Rect.Zero;
 
-        public static Rect Dest
+        internal static Rect Dest
         {
             get => _dest;
             set => _dest = value;
         }
 
-        public static Point Position
+        internal static Point Position
         {
             get => _dest.Position;
             set => _dest.Position = value;
         }
 
-        public static Point Size
+        internal static Point Size
         {
             get => _dest.Size;
             set
@@ -53,7 +53,7 @@ namespace Kotono
         /// </summary>
         /// <param name="obj"> The object to print. </param>
         /// <param name="color"> The Color of the text. </param>
-        public static void Print(object? obj, Color color)
+        internal static void Print(object? obj, Color color)
         {
             if (obj != null)
             {
@@ -66,7 +66,7 @@ namespace Kotono
         /// </summary>
         /// <param name="obj"> The object to print. </param>
         /// <param name="rainbow"> A bool to determine whether the Color of the text should loop through RBG values. </param>
-        public static void Print(object? obj, bool rainbow = false)
+        internal static void Print(object? obj, bool rainbow = false)
         {
             Print(obj, rainbow ? Color.Rainbow(0.01) : Color.White);
         }
@@ -74,7 +74,7 @@ namespace Kotono
         /// <summary>
         /// Prints an empty line.
         /// </summary>
-        public static void Print()
+        internal static void Print()
         {
             Print("");
         }
@@ -93,7 +93,7 @@ namespace Kotono
 
         private static readonly Mode _mode = new();
 
-        public static UserMode UserMode => _mode.UserMode;
+        internal static UserMode UserMode => _mode.UserMode;
 
         #endregion UserMode
 

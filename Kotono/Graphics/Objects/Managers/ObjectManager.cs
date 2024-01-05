@@ -1,6 +1,5 @@
 ﻿using Kotono.Graphics.Objects.Lights;
 using Kotono.Graphics.Objects.Meshes;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Kotono.Graphics.Objects.Managers

@@ -13,7 +13,7 @@ using System.Globalization;
 
 namespace Kotono
 {
-    public abstract class Window : GameWindow
+    internal abstract class Window : GameWindow
     {
         private double _stalledTime = 0;
 
@@ -25,7 +25,7 @@ namespace Kotono
 
         private bool ShouldRenderFrame => IsFocused && (KT.PerformanceWindow.FrameRate < KT.MaxFrameRate);
 
-        public Window(WindowSettings windowSettings)
+        internal Window(WindowSettings windowSettings)
             : base(
                 GameWindowSettings.Default,
                 new NativeWindowSettings()
@@ -43,9 +43,6 @@ namespace Kotono
             CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
 
             KT.MaxFrameRate = windowSettings.MaxFrameRate;
-
-            Path.Kotono = windowSettings.KotonoPath;
-            Path.Project = windowSettings.ProjectPath;
 
             Mouse.CursorState = windowSettings.CursorState;
             Mouse.MouseState = MouseState;

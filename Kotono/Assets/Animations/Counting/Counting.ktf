@@ -1,0 +1,19 @@
+# Kotono Properties File
+
+Color: {
+	A: 1.00
+	B: 0.00
+	G: 1.00
+	R: 1.00
+}
+Dest: {
+	H: 60
+	W: 50
+	X: 100
+	Y: 200
+}
+Directory: W:\Visual Studio\Projects\Kotono\Kotono\Assets\Animations\Counting
+Duration: 5.00
+FrameRate: 10
+Layer: 0
+StartTime: 3.00

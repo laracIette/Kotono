@@ -1,6 +1,5 @@
 ﻿using Kotono.Graphics.Objects.Managers;
 using Kotono.Utils;
-using System.Linq;
 
 namespace Kotono.Graphics.Shaders
 {
