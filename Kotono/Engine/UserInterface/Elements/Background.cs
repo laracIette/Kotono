@@ -4,8 +4,8 @@ using Kotono.Utils;
 
 namespace Kotono.Engine.UserInterface.Elements
 {
-    internal class Background(Rect dest, Viewport viewport)
-        : RoundedBox(dest, Color.FromHex("#FFF1"), 0, 1.0f, 15.0f),
+    internal class Background(Rect dest, Color color, Viewport viewport)
+        : RoundedBox(dest, color, 0, 1.0f, 15.0f),
         IElement
     {
         public Viewport Viewport => viewport;
