@@ -6,9 +6,9 @@ namespace Kotono.Graphics.Performance
 {
     public class RateStat(Rect dest, Anchor anchor)
     {
-        public double Rate { get; private set; }
-
         public double Time { get; private set; }
+
+        public double Rate => 1.0 / Time;
 
         private readonly double[] _times = new double[60];
 
@@ -20,7 +20,7 @@ namespace Kotono.Graphics.Performance
             set => _text.IsDraw = value;
         }
 
-        private readonly Text _text = new("0", dest, anchor, Color.White, 1.0f, 1);
+        private readonly Text _text = new("0.00", dest, anchor, Color.White, 1.0f, 1);
 
         public void Update()
         {
@@ -32,9 +32,7 @@ namespace Kotono.Graphics.Performance
             _times[_timeIndex] = newTime;
             _timeIndex = (_timeIndex + 1) % _times.Length;
 
-            Time = _times.Sum() / _times.Length;
-
-            Rate = 1.0 / Time;
+            Time = _times.Average();
 
             _text.SetText(Rate.ToString("0.00"));
         }
