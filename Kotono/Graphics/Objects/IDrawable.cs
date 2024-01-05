@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace Kotono.Graphics.Objects
+﻿namespace Kotono.Graphics.Objects
 {
-    public interface IDrawable : IDisposable
+    public interface IDrawable
     {
         public bool IsDraw { get; set; }
 

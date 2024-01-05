@@ -1,4 +1,5 @@
-﻿using Kotono.Audio;
+﻿using System;
+using Kotono.Audio;
 using Kotono.Engine;
 using Kotono.Engine.UserInterface.AddMenu;
 using Kotono.Graphics;
@@ -9,29 +10,28 @@ using Kotono.Input;
 using Kotono.Physics;
 using Kotono.Utils;
 using Performance = Kotono.Graphics.Performance;
-using Text = Kotono.Graphics.Objects.Text;
 
 namespace Kotono
 {
-    public static class KT
+    internal static class KT
     {
         #region WindowDest
 
         private static Rect _dest = Rect.Zero;
 
-        public static Rect Dest
+        internal static Rect Dest
         {
             get => _dest;
             set => _dest = value;
         }
 
-        public static Point Position
+        internal static Point Position
         {
             get => _dest.Position;
             set => _dest.Position = value;
         }
 
-        public static Point Size
+        internal static Point Size
         {
             get => _dest.Size;
             set
@@ -40,7 +40,7 @@ namespace Kotono
 
                 CameraManager.ActiveCamera.AspectRatio = _dest.Size.Ratio;
 
-                ComponentManager.Window.Viewport.Size = _dest.Size;
+                ComponentManager.WindowViewport.Size = _dest.Size;
             }
         }
 
@@ -48,7 +48,12 @@ namespace Kotono
 
         #region Printer
 
-        public static void Print(object? obj, Color color)
+        /// <summary>
+        /// Prints an object to the Window given a Color.
+        /// </summary>
+        /// <param name="obj"> The object to print. </param>
+        /// <param name="color"> The Color of the text. </param>
+        internal static void Print(object? obj, Color color)
         {
             if (obj != null)
             {
@@ -56,12 +61,20 @@ namespace Kotono
             }
         }
 
-        public static void Print(object? obj, bool rainbow = false)
+        /// <summary>
+        /// Prints an object to the Window.
+        /// </summary>
+        /// <param name="obj"> The object to print. </param>
+        /// <param name="rainbow"> A bool to determine whether the Color of the text should loop through RBG values. </param>
+        internal static void Print(object? obj, bool rainbow = false)
         {
             Print(obj, rainbow ? Color.Rainbow(0.01) : Color.White);
         }
 
-        public static void Print()
+        /// <summary>
+        /// Prints an empty line.
+        /// </summary>
+        internal static void Print()
         {
             Print("");
         }
@@ -80,14 +93,24 @@ namespace Kotono
 
         private static readonly Mode _mode = new();
 
-        public static UserMode UserMode => _mode.UserMode;
+        internal static UserMode UserMode => _mode.UserMode;
 
         #endregion UserMode
+
+        #region Logger
+        /// <summary>
+        /// Writes an object to the console.
+        /// </summary>
+        /// <param name="obj"> The object to log. </param>
+        internal static void Log(object? obj)
+        {
+            Console.WriteLine(obj);
+        }
+        #endregion Logger
 
         internal static void Init()
         {
             ShaderManager.Init();
-            Text.InitPaths();
             Printer.Init();
             PerformanceWindow.Init();
             Fizix.Init();
@@ -108,13 +131,7 @@ namespace Kotono
             MainMenu.Update();
         }
 
-        internal static void Draw()
-        {
-            ShaderManager.Update();
-            ObjectManager.Draw();
-        }
-
-        public static void Save()
+        internal static void Save()
         {
             ObjectManager.Save();
         }
@@ -122,6 +139,7 @@ namespace Kotono
         internal static void Exit()
         {
             SoundManager.Dispose();
+            ObjectManager.Dispose();
         }
     }
 }

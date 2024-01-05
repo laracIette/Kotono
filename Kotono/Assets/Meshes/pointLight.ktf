@@ -1,27 +1,27 @@
 # Kotono Properties File
 
 Color: {
-	A: 1.00
-	B: 0.62
-	G: 0.01
-	R: 0.79
+	A: 1
+	B: 0.5645178
+	G: 0.022303283
+	R: 0.83306617
 }
-Obj: W:\Visual Studio\Projects\Kotono-TestApp\Kotono-TestApp\Assets\Meshes\sphere.obj
+Obj: W:\Visual Studio\Projects\Kotono\Kotono\Assets\Meshes\sphere.obj
 Shader: PointLight
 Transform: {
 	Location: {
-		X: -18.86
-		Y: -16.56
-		Z: 4.54
+		X: -15.406712
+		Y: -1.6900654
+		Z: 5.820225
 	}
 	Rotation: {
-		X: 1.00
-		Y: 1.00
-		Z: 1.00
+		X: 1
+		Y: 1
+		Z: 1
 	}
 	Scale: {
-		X: 1.00
-		Y: 1.00
-		Z: 1.00
+		X: 1
+		Y: 1
+		Z: 1
 	}
 }

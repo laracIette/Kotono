@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using Kotono.Physics;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Kotono.Graphics.Objects.Managers
 {
-    internal abstract class DrawableManager<T> where T : IDrawable
+    internal abstract class DrawableManager<T>() where T : Drawable
     {
         internal List<T> Drawables { get; } = [];
-
-        internal DrawableManager() { }
 
         internal virtual void Create(T drawable)
         {
@@ -18,7 +18,10 @@ namespace Kotono.Graphics.Objects.Managers
 
         internal virtual void Delete(T drawable)
         {
-            Drawables.Remove(drawable);
+            if (!Drawables.Remove(drawable))
+            {
+                KT.Log($"error: couldn't remove {drawable.GetType().Name} \"{drawable}\" from Drawables.");
+            }
         }
 
         internal virtual void Update()
@@ -27,27 +30,38 @@ namespace Kotono.Graphics.Objects.Managers
             for (int i = 0; i < Drawables.Count; i++)
             {
                 Drawables[i].Update();
+
+                if (Drawables[i] is IFizixObject { IsFizix: true } obj)
+                {
+                    obj.UpdateFizix();
+                }
             }
         }
 
         internal virtual void Draw()
         {
-            // List shouldn't change during IDrawable.Draw() calls, TODO: use foreach when development done
-            for (int i = 0; i < Drawables.Count; i++)
+            foreach (var drawable in Drawables.Where(d => d.IsDraw))
             {
-                if (Drawables[i].IsDraw)
-                {
-                    Drawables[i].Draw();
-                }
+                drawable.Draw();
             }
         }
 
         internal virtual void Save()
         {
+            foreach (var saveable in Drawables.OfType<ISaveable>())
+            {
+                saveable.Save();
+            }
+        }
+
+        internal virtual void Dispose()
+        {
             foreach (var drawable in Drawables)
             {
-                (drawable as ISaveable)?.Save();
+                drawable.Dispose();
             }
+
+            Drawables.Clear();
         }
     }
 }

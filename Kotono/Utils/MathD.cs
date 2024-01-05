@@ -37,16 +37,19 @@ namespace Kotono.Utils
             return (value >= 0.0) ? value : -value;
         }
 
+        /// <inheritdoc cref="System.Math.Cos(double)" />
         public static double Cos(double value)
         {
             return System.Math.Cos(value);
         }
 
+        /// <inheritdoc cref="System.Math.Sin(double)" />
         public static double Sin(double value)
         {
             return System.Math.Sin(value);
         }
 
+        /// <inheritdoc cref="System.Math.Sqrt(double)" />
         public static double Sqrt(double value)
         {
             return System.Math.Sqrt(value);

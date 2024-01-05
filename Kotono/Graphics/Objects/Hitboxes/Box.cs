@@ -1,9 +1,5 @@
-﻿using Kotono.Graphics.Objects.Managers;
-using Kotono.Utils;
-using OpenTK.Graphics.OpenGL4;
+﻿using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
-using System;
-using System.Linq;
 using Math = Kotono.Utils.Math;
 
 namespace Kotono.Graphics.Objects.Hitboxes
@@ -12,91 +8,43 @@ namespace Kotono.Graphics.Objects.Hitboxes
     {
         private static readonly float[] _vertices =
         [
-            -0.5f,
-            -0.5f,
-            -0.5f,
-            0.5f,
-            -0.5f,
-            -0.5f,
+            -0.5f, -0.5f, -0.5f,
+             0.5f, -0.5f, -0.5f,
 
-            0.5f,
-            -0.5f,
-            -0.5f,
-            0.5f,
-            0.5f,
-            -0.5f,
+             0.5f, -0.5f, -0.5f,
+             0.5f,  0.5f, -0.5f,
 
-            0.5f,
-            0.5f,
-            -0.5f,
-            -0.5f,
-            0.5f,
-            -0.5f,
+             0.5f,  0.5f, -0.5f,
+            -0.5f,  0.5f, -0.5f,
 
-            -0.5f,
-            0.5f,
-            -0.5f,
-            -0.5f,
-            -0.5f,
-            -0.5f,
+            -0.5f,  0.5f, -0.5f,
+            -0.5f, -0.5f, -0.5f,
 
 
-            -0.5f,
-            -0.5f,
-            0.5f,
-            0.5f,
-            -0.5f,
-            0.5f,
+            -0.5f, -0.5f,  0.5f,
+             0.5f, -0.5f,  0.5f,
 
-            0.5f,
-            -0.5f,
-            0.5f,
-            0.5f,
-            0.5f,
-            0.5f,
+             0.5f, -0.5f,  0.5f,
+             0.5f,  0.5f,  0.5f,
 
-            0.5f,
-            0.5f,
-            0.5f,
-            -0.5f,
-            0.5f,
-            0.5f,
+             0.5f,  0.5f,  0.5f,
+            -0.5f,  0.5f,  0.5f,
 
-            -0.5f,
-            0.5f,
-            0.5f,
-            -0.5f,
-            -0.5f,
-            0.5f,
+            -0.5f,  0.5f,  0.5f,
+            -0.5f, -0.5f,  0.5f,
 
 
-            -0.5f,
-            -0.5f,
-            0.5f,
-            -0.5f,
-            -0.5f,
-            -0.5f,
+            -0.5f, -0.5f,  0.5f,
+            -0.5f, -0.5f, -0.5f,
 
-            0.5f,
-            -0.5f,
-            0.5f,
-            0.5f,
-            -0.5f,
-            -0.5f,
+             0.5f, -0.5f,  0.5f,
+             0.5f, -0.5f, -0.5f,
 
-            0.5f,
-            0.5f,
-            0.5f,
-            0.5f,
-            0.5f,
-            -0.5f,
+             0.5f,  0.5f,  0.5f,
+             0.5f,  0.5f, -0.5f,
 
-            -0.5f,
-            0.5f,
-            0.5f,
-            -0.5f,
-            0.5f,
-            -0.5f
+            -0.5f,  0.5f,  0.5f,
+            -0.5f,  0.5f, -0.5f
         ];
 
         private static int _vertexArrayObject;
@@ -146,10 +94,9 @@ namespace Kotono.Graphics.Objects.Hitboxes
 
         public override bool CollidesWith(Hitbox hitbox)
         {
-            return (hitbox is IObject3D object3D)
-                && (Math.Abs(Location.X - object3D.Location.X) <= (Scale.X + object3D.Scale.X) / 2.0f)
-                && (Math.Abs(Location.Y - object3D.Location.Y) <= (Scale.Y + object3D.Scale.Y) / 2.0f)
-                && (Math.Abs(Location.Z - object3D.Location.Z) <= (Scale.Z + object3D.Scale.Z) / 2.0f);
+            return (Math.Abs(Location.X - hitbox.Location.X) <= (Scale.X + hitbox.Scale.X) / 2.0f)
+                && (Math.Abs(Location.Y - hitbox.Location.Y) <= (Scale.Y + hitbox.Scale.Y) / 2.0f)
+                && (Math.Abs(Location.Z - hitbox.Location.Z) <= (Scale.Z + hitbox.Scale.Z) / 2.0f);
         }
     }
 }

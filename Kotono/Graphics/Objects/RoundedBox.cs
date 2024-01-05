@@ -1,8 +1,6 @@
-﻿using Kotono.Graphics.Objects.Managers;
-using Kotono.Utils;
+﻿using Kotono.Utils;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
-using System;
 using Math = Kotono.Utils.Math;
 
 namespace Kotono.Graphics.Objects
@@ -15,16 +13,6 @@ namespace Kotono.Graphics.Objects
             set
             {
                 base.Dest = value;
-                UpdateValues();
-            }
-        }
-
-        public override Point Position
-        {
-            get => base.Position;
-            set
-            {
-                base.Position = value;
                 UpdateValues();
             }
         }
@@ -88,15 +76,27 @@ namespace Kotono.Graphics.Objects
         public override void Draw()
         {
             ShaderManager.RoundedBox.SetMatrix4("model", Model);
-            ShaderManager.RoundedBox.SetPoint("windowSize", KT.Size);
             ShaderManager.RoundedBox.SetColor("color", Color);
-            ShaderManager.RoundedBox.SetRect("dest", Dest.NDC);
+            ShaderManager.RoundedBox.SetRect("sides", GetSides(Dest));
             ShaderManager.RoundedBox.SetFloat("fallOff", FallOff);
             ShaderManager.RoundedBox.SetFloat("cornerSize", CornerSize);
 
             GL.BindVertexArray(SquareVertices.VertexArrayObject);
 
             GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
+        }
+
+        protected static Rect GetSides(Rect r)
+        {
+            r.X = ComponentManager.ActiveViewport.Dest.X + r.X;
+            r.Y = KT.Dest.H - ComponentManager.ActiveViewport.Dest.Y - r.Y;
+
+            return new Rect(
+                r.X - r.W / 2, // Left
+                r.X + r.W / 2, // Right
+                r.Y + r.H / 2, // Top
+                r.Y - r.H / 2  // Bottom
+            );
         }
     }
 }

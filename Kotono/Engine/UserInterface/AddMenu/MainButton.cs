@@ -1,4 +1,4 @@
-﻿using Kotono.Graphics.Objects;
+﻿using Kotono.Graphics.Objects.Buttons;
 using Kotono.Utils;
 using System;
 
@@ -24,13 +24,7 @@ namespace Kotono.Engine.UserInterface.AddMenu
             }
         }
 
-        public override void Update()
-        {
-            base.Update();
-            _text.Update();
-        }
-
-        protected override void OnPressed()
+        public override void OnPressed()
         {
             _subMenu.IsDraw = true;
             _subMenu.Position = _anchor switch

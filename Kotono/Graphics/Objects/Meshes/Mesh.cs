@@ -9,7 +9,6 @@ using Kotono.Physics;
 using Kotono.Utils;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
-using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +16,7 @@ using PrimitiveType = OpenTK.Graphics.OpenGL4.PrimitiveType;
 
 namespace Kotono.Graphics.Objects.Meshes
 {
-    public abstract class Mesh : Object3D, ISaveable
+    public abstract class Mesh : Object3D, ISaveable, IFizixObject
     {
         private struct MeshSettings
         {
@@ -43,8 +42,6 @@ namespace Kotono.Graphics.Objects.Meshes
         private readonly Hitbox[] _hitboxes;
 
         protected readonly Shader _shader;
-
-        public bool IsFiziks { get; set; } = false;
 
         public bool IsGravity { get; set; } = false;
 
@@ -85,6 +82,8 @@ namespace Kotono.Graphics.Objects.Meshes
         public static double MaxIntersectionCheckTime => 0.1;
 
         public double IntersectionCheckTime { get; internal set; } = MaxIntersectionCheckTime;
+
+        public bool IsFizix { get; set; } = false;
 
         private readonly MeshProperties _properties;
 
@@ -166,7 +165,7 @@ namespace Kotono.Graphics.Objects.Meshes
                         }
 
                         models[i] = tempVertices;
-                        indices[i] = mesh.GetIndices().ToList();
+                        indices[i] = [.. mesh.GetIndices()];
                     }
                 }
 
@@ -208,15 +207,17 @@ namespace Kotono.Graphics.Objects.Meshes
                 int elementBufferObject = GL.GenBuffer();
                 GL.BindBuffer(BufferTarget.ElementArrayBuffer, elementBufferObject);
                 GL.BufferData(BufferTarget.ElementArrayBuffer, indices[0].Count * sizeof(int), indices[0].ToArray(), BufferUsageHint.StaticDraw);
+
                 value = new MeshSettings
                 {
                     VertexArrayObject = vertexArrayObject,
                     VertexBufferObject = vertexBufferObject,
                     IndicesCount = indices[0].Count,
                     Center = center,
-                    Vertices = vertices.ToArray(),
-                    Triangles = triangles.ToArray()
+                    Vertices = [.. vertices],
+                    Triangles = [.. triangles]
                 };
+
                 _paths[_properties["Obj"]] = value;
             }
 
@@ -225,6 +226,8 @@ namespace Kotono.Graphics.Objects.Meshes
 
         public override void Update()
         {
+            Gizmo.TryAttachTo(this);
+
             var tempLoc = Location;
 
             if (IsGravity)
@@ -232,30 +235,24 @@ namespace Kotono.Graphics.Objects.Meshes
                 tempLoc += Fizix.Gravity * Time.DeltaS;
             }
 
-            if (IsFiziks)
-            {
-                Fizix.Update(this);
-            }
-
             foreach (var hitbox in _hitboxes)
             {
                 hitbox.Location = tempLoc;
 
-                    if ((CollisionState == CollisionState.BlockAll) && hitbox.IsColliding)
-                    {
+                if ((CollisionState == CollisionState.BlockAll) && hitbox.IsColliding)
+                {
                     hitbox.Location = Location;
-                    }
-                    else
-                    {
-                        Location = tempLoc;
-                    }
-                
+                }
+                else
+                {
+                    Location = tempLoc;
+                }
             }
+        }
 
-            if (Mouse.IsButtonPressed(MouseButton.Left) && IsMouseOn(out _, out _))
-            {
-                Gizmo.AttachTo(this);
-            }
+        public void UpdateFizix()
+        {
+            Fizix.Update(this);
         }
 
         public override void Draw()
@@ -274,18 +271,24 @@ namespace Kotono.Graphics.Objects.Meshes
             GL.DrawElements(PrimitiveType.Triangles, IndicesCount, DrawElementsType.UnsignedInt, IntPtr.Zero);
         }
 
-        public bool IsMouseOn(out Vector intersectionPoint, out float distance)
+        /// <summary>
+        /// Get whether the mouse intersects the Mesh.
+        /// </summary>
+        /// <param name="intersectionLocation"> The location at which the mouse intersects the mesh. </param>
+        /// <param name="distance"> The distance of the intersectionLocation from the Camera. </param>
+        /// <returns> <see langword="true"/> if the mouse interects the Mesh, else returns <see langword="false"/>. </returns>
+        public bool IsMouseOn(out Vector intersectionLocation, out float distance)
         {
             foreach (var triangle in Triangles)
             {
                 triangle.Transform = Transform;
-                if (Intersection.IntersectRayTriangle(CameraManager.ActiveCamera.Location, Mouse.Ray, triangle, out intersectionPoint, out distance))
+                if (Intersection.IntersectRayTriangle(CameraManager.ActiveCamera.Location, Mouse.Ray, triangle, out intersectionLocation, out distance))
                 {
                     return true;
                 }
             }
 
-            intersectionPoint = Vector.Zero;
+            intersectionLocation = Vector.Zero;
             distance = 0;
             return false;
         }
@@ -303,14 +306,14 @@ namespace Kotono.Graphics.Objects.Meshes
             _properties.WriteFile();
         }
 
-        public override void Dispose()
+        public override void Delete()
         {
             foreach (var hitbox in _hitboxes)
             {
-                hitbox.Dispose();
+                hitbox.Delete();
             }
 
-            base.Dispose();
+            base.Delete();
         }
     }
 }

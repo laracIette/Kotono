@@ -37,42 +37,42 @@ namespace Kotono.Utils
         public readonly Vector Normalized => this / Length;
 
         /// <summary>
-        /// A Vector with X = 0, Y = 0, Z = 0.
+        /// A <see cref="Vector"/> with X = 0, Y = 0, Z = 0.
         /// </summary>
         public static Vector Zero => new Vector(0.0f, 0.0f, 0.0f);
 
         /// <summary>
-        /// A Vector with X = 1, Y = 1, Z = 1. 
+        /// A <see cref="Vector"/> with X = 1, Y = 1, Z = 1. 
         /// </summary>
         public static Vector Unit => new Vector(1.0f, 1.0f, 1.0f);
 
         /// <summary> 
-        /// A Vector with X = 1, Y = 0, Z = 0.
+        /// A <see cref="Vector"/> with X = 1, Y = 0, Z = 0.
         /// </summary>
         public static Vector UnitX => new Vector(1.0f, 0.0f, 0.0f);
 
         /// <summary> 
-        /// A Vector with X = 1, Y = 1, Z = 0. 
+        /// A <see cref="Vector"/> with X = 1, Y = 1, Z = 0. 
         /// </summary>
         public static Vector UnitXY => new Vector(1.0f, 1.0f, 0.0f);
 
         /// <summary> 
-        /// A Vector with X = 1, Y = 0, Z = 1.
+        /// A <see cref="Vector"/> with X = 1, Y = 0, Z = 1.
         /// </summary>
         public static Vector UnitXZ => new Vector(1.0f, 0.0f, 1.0f);
 
         /// <summary> 
-        /// A Vector with X = 0, Y = 1, Z = 0. 
+        /// A <see cref="Vector"/> with X = 0, Y = 1, Z = 0. 
         /// </summary>
         public static Vector UnitY => new Vector(0.0f, 1.0f, 0.0f);
 
         /// <summary>
-        /// A Vector with X = 0, Y = 1, Z = 1.
+        /// A <see cref="Vector"/> with X = 0, Y = 1, Z = 1.
         /// </summary>
         public static Vector UnitYZ => new Vector(0.0f, 1.0f, 1.0f);
 
         /// <summary>
-        /// A Vector with X = 0, Y = 0, Z = 1.
+        /// A <see cref="Vector"/> with X = 0, Y = 0, Z = 1.
         /// </summary>
         public static Vector UnitZ => new Vector(0.0f, 0.0f, 1.0f);
 
@@ -94,7 +94,7 @@ namespace Kotono.Utils
             };
 
         /// <summary> 
-        /// Initialize a Vector with X = 0, Y = 0, Z = 0.
+        /// Initialize a <see cref="Vector"/> with X = 0, Y = 0, Z = 0.
         /// </summary>
         public Vector()
         {
@@ -104,7 +104,7 @@ namespace Kotono.Utils
         }
 
         /// <summary>
-        /// Initialize a Vector with X = v.X, Y = v.Y, Z = v.Z.
+        /// Initialize a <see cref="Vector"/> with X = v.X, Y = v.Y, Z = v.Z.
         /// </summary>
         public Vector(Vector v)
         {
@@ -114,7 +114,7 @@ namespace Kotono.Utils
         }
 
         /// <summary>
-        /// Initialize a Vector with X = f, Y = f, Z = f.
+        /// Initialize a <see cref="Vector"/> with X = f, Y = f, Z = f.
         /// </summary>
         public Vector(float f)
         {
@@ -124,7 +124,7 @@ namespace Kotono.Utils
         }
 
         /// <summary> 
-        /// Initialize a Vector with X = x, Y = y, Z = z.
+        /// Initialize a <see cref="Vector"/> with X = x, Y = y, Z = z.
         /// </summary>
         public Vector(float x = 0.0f, float y = 0.0f, float z = 0.0f)
         {
@@ -154,7 +154,7 @@ namespace Kotono.Utils
         }
 
         /// <summary> 
-        /// Convert a Vector from degrees to radians. 
+        /// Convert a <see cref="Vector"/> from degrees to radians. 
         /// </summary>
         public static Vector Rad(Vector v)
         {
@@ -165,7 +165,7 @@ namespace Kotono.Utils
         }
 
         /// <summary> 
-        /// Convert a Vector from radians to degrees. 
+        /// Convert a <see cref="Vector"/> from radians to degrees. 
         /// </summary>
         public static Vector Deg(Vector v)
         {
@@ -201,6 +201,14 @@ namespace Kotono.Utils
         public static float Max(Vector v)
         {
             return Math.Max(Math.Max(v.X, v.Y), v.Z);
+        }
+
+        public static Vector Clamp(Vector v, float min, float max)
+        {
+            v.X = Math.Clamp(v.X, min, max);
+            v.Y = Math.Clamp(v.Y, min, max);
+            v.Z = Math.Clamp(v.Z, min, max);
+            return v;
         }
 
         public static Vector operator +(Vector left, Vector right)

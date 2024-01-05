@@ -143,6 +143,8 @@ namespace Kotono.Input
         }
 
         public static bool IsButtonDown(MouseButton button) => MouseState.IsButtonDown(button);
+        
+        public static bool WasButtonDown(MouseButton button) => MouseState.WasButtonDown(button);
 
         public static bool IsButtonPressed(MouseButton button) => MouseState.IsButtonPressed(button);
 

@@ -51,7 +51,7 @@ namespace Kotono.Engine.UserInterface.AddMenu
 
         public static void Update()
         {
-            if (Keyboard.IsKeyPressed(Keys.A) && Keyboard.IsKeyDown(Keys.LeftShift))
+            if (Keyboard.IsKeyPressed(Keys.A) && Keyboard.IsKeyDown(Keys.LeftShift) && Mouse.CursorState == CursorState.Confined)
             {
                 Position = Mouse.Position;
                 IsDraw = true;

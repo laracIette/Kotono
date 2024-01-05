@@ -174,9 +174,9 @@ namespace Kotono.Utils
             return HashCode.Combine(X, Y);
         }
 
-        public static implicit operator Point((float, float) t)
+        public static implicit operator Point((float X, float Y) t)
         {
-            return new Point(t.Item1, t.Item2);
+            return new Point(t.X, t.Y);
         }
 
         public static explicit operator Vector2(Point v)

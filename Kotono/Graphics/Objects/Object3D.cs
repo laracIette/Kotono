@@ -31,5 +31,7 @@ namespace Kotono.Graphics.Objects
             get => _transform.Scale;
             set => _transform.Scale = value;
         }
+
+        public virtual Vector Velocity { get; set; }
     }
 }

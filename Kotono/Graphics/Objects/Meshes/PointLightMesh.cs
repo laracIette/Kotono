@@ -12,7 +12,7 @@ namespace Kotono.Graphics.Objects.Meshes
 
         public PointLightMesh(Vector location, PointLight pointLight)
             : base(
-                  Path.Kotono + "Assets/Meshes/pointLight.ktf",
+                  Path.Assets + @"Meshes\pointLight.ktf",
                   [
                       new Sphere()
                   ]

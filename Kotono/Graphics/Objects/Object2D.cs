@@ -53,7 +53,7 @@ namespace Kotono.Graphics.Objects
 
         private int _layer = 0;
 
-        public virtual int Layer 
+        public virtual int Layer
         {
             get => _layer;
             set

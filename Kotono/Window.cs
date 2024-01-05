@@ -1,5 +1,6 @@
 ﻿using Kotono.Graphics;
 using Kotono.Graphics.Objects;
+using Kotono.Graphics.Objects.Managers;
 using Kotono.Input;
 using Kotono.Utils;
 using OpenTK.Graphics.OpenGL4;
@@ -12,7 +13,7 @@ using System.Globalization;
 
 namespace Kotono
 {
-    public class Window : GameWindow
+    internal abstract class Window : GameWindow
     {
         private double _stalledTime = 0;
 
@@ -24,7 +25,7 @@ namespace Kotono
 
         private bool ShouldRenderFrame => IsFocused && (KT.PerformanceWindow.FrameRate < KT.MaxFrameRate);
 
-        public Window(WindowSettings windowSettings)
+        internal Window(WindowSettings windowSettings)
             : base(
                 GameWindowSettings.Default,
                 new NativeWindowSettings()
@@ -42,9 +43,6 @@ namespace Kotono
             CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
 
             KT.MaxFrameRate = windowSettings.MaxFrameRate;
-
-            Path.Kotono = windowSettings.KotonoPath;
-            Path.Project = windowSettings.ProjectPath;
 
             Mouse.CursorState = windowSettings.CursorState;
             Mouse.MouseState = MouseState;
@@ -104,14 +102,14 @@ namespace Kotono
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
         }
 
-        protected override void OnLoad()
+        protected sealed override void OnLoad()
         {
             base.OnLoad();
 
             IsVisible = true;
         }
 
-        protected override void OnRenderFrame(FrameEventArgs e)
+        protected sealed override void OnRenderFrame(FrameEventArgs e)
         {
             base.OnRenderFrame(e);
 
@@ -122,13 +120,20 @@ namespace Kotono
 
                 KT.PerformanceWindow.AddFrameTime(e.Time);
 
+                ShaderManager.Update();
+
                 // first pass
                 GL.BindFramebuffer(FramebufferTarget.Framebuffer, _frameBuffer);
                 GL.ClearColor(0.1f, 0.1f, 0.2f, 1.0f);
                 GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
                 GL.Enable(EnableCap.DepthTest);
 
-                KT.Draw();
+                ComponentManager.WindowViewport.Use();
+
+                ObjectManager.Draw3D();
+                //GL.Clear(ClearBufferMask.DepthBufferBit); // TODO: that, works but problem with outline
+                ObjectManager.DrawFront();
+                ObjectManager.Draw2D();
 
                 // second pass
                 GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0); // back to default
@@ -139,7 +144,7 @@ namespace Kotono
                 ShaderManager.Outline.Draw(_textureDepthStencilBuffer);
 
                 // TODO: separate object 3d and 2d manager ????????
-                // TODO: to draw 3d before then depth buffer shit then draw 2d??????
+                //       to draw 3d before then depth buffer then draw 2d??????
 
                 base.SwapBuffers();
             }
@@ -150,7 +155,7 @@ namespace Kotono
             }
         }
 
-        protected override void OnUpdateFrame(FrameEventArgs e)
+        protected sealed override void OnUpdateFrame(FrameEventArgs e)
         {
             base.OnUpdateFrame(e);
 
@@ -169,9 +174,19 @@ namespace Kotono
                     WindowState.Fullscreen :
                     WindowState.Normal;
             }
+
+            if (Keyboard.IsKeyPressed(Keys.S) && Keyboard.IsKeyDown(Keys.LeftControl))
+            {
+                KT.Save();
+                KT.Print("saved", Color.FromHex("#88FF10"));
+            }
+
+            Update();
         }
 
-        protected override void OnResize(ResizeEventArgs e)
+        protected abstract void Update();
+
+        protected sealed override void OnResize(ResizeEventArgs e)
         {
             base.OnResize(e);
 
@@ -179,14 +194,14 @@ namespace Kotono
             KT.Size = (Point)Size;
         }
 
-        protected override void OnMove(WindowPositionEventArgs e)
+        protected sealed override void OnMove(WindowPositionEventArgs e)
         {
             base.OnMove(e);
 
             KT.Position = (Point)Location;
         }
 
-        protected override void OnUnload()
+        protected sealed override void OnUnload()
         {
             KT.Exit();
 

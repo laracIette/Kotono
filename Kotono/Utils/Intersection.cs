@@ -5,9 +5,18 @@ namespace Kotono.Utils
 {
     public static class Intersection
     {
-        public static bool IntersectRayTriangle(Vector rayOrigin, Vector rayDirection, Triangle triangle, out Vector intersectionPoint, out float distance)
+        /// <summary>
+        /// Get whether the ray formed by rayOrigin and RayDirection intersects the Triangle. 
+        /// </summary>
+        /// <param name="rayOrigin"> The origin location of the ray. </param>
+        /// <param name="rayDirection"> The direction of the ray. </param>
+        /// <param name="triangle"> The Triangle to check intersection from. </param>
+        /// <param name="intersectionLocation"> The location Vector at which the mouse intersects the mesh. </param>
+        /// <param name="distance"> The distance of the intersectionLocation from the Camera. </param>
+        /// <returns> <see langword="true"/> if the ray interects the Triangle, else returns <see langword="false"/>. </returns>
+        public static bool IntersectRayTriangle(Vector rayOrigin, Vector rayDirection, Triangle triangle, out Vector intersectionLocation, out float distance)
         {
-            intersectionPoint = Vector.Zero;
+            intersectionLocation = Vector.Zero;
             distance = 0.0f;
 
             var vertex1 = (Vector)Vector3.TransformPosition((Vector3)triangle.Vertices[0], triangle.Model);
@@ -31,11 +40,11 @@ namespace Kotono.Utils
                 return false;
             }
 
-            intersectionPoint = rayOrigin + rayDirection * t;
+            intersectionLocation = rayOrigin + rayDirection * t;
 
             var v0 = vertex2 - vertex1;
             var v1 = vertex3 - vertex1;
-            var v2 = intersectionPoint - vertex1;
+            var v2 = intersectionLocation - vertex1;
 
             float dot00 = Vector.Dot(v0, v0);
             float dot01 = Vector.Dot(v0, v1);
@@ -50,7 +59,7 @@ namespace Kotono.Utils
             if (u >= 0.0f && v >= 0.0f && (u + v) <= 1.0f)
             {
                 // Ray intersects the triangle
-                distance = Vector.Distance(rayOrigin, intersectionPoint);
+                distance = Vector.Distance(rayOrigin, intersectionLocation);
                 return true;
             }
 

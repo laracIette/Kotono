@@ -1,7 +1,7 @@
-﻿using Kotono.Utils;
-using System;
+﻿using Kotono.Graphics.Objects.Texts;
+using Kotono.Utils;
 
-namespace Kotono.Graphics.Objects
+namespace Kotono.Graphics.Objects.Buttons
 {
     public class TextButton : Button
     {

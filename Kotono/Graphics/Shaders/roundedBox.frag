@@ -1,25 +1,19 @@
 #version 430 core
 
-uniform vec2 windowSize;
-
 uniform vec4 color;
-uniform vec4 dest;
+uniform vec4 sides;
 uniform float fallOff;
 uniform float cornerSize;
 
-out vec4 FragColor;
+float left =   sides.x;
+float right =  sides.y;
+float top =    sides.z;
+float bottom = sides.w;
 
-vec4 ToScreenSpace(vec4 dest);
+out vec4 FragColor;
 
 void main()
 {
-    vec4 dest = ToScreenSpace(dest);
-
-    float left =   dest.x - dest.z / 2;
-    float right =  dest.x + dest.z / 2;
-    float top =    dest.y + dest.w / 2;
-    float bottom = dest.y - dest.w / 2;
-
     bool isLeft =   gl_FragCoord.x < left + cornerSize;
     bool isRight =  gl_FragCoord.x > right - cornerSize;
     bool isTop =    gl_FragCoord.y > top - cornerSize;
@@ -75,14 +69,4 @@ void main()
     result.a -= ratio;
 
     FragColor = result;
-}
-
-vec4 ToScreenSpace(vec4 dest)
-{
-    return vec4(
-        (dest.x + 1) / 2 * windowSize.x,
-        (dest.y + 1) / 2 * windowSize.y,
-        dest.z * windowSize.x,
-        dest.w * windowSize.y
-    );
 }
