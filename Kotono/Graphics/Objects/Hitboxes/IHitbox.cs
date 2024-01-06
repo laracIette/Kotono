@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Kotono.Graphics.Objects.Hitboxes
 {
-    public interface IHitbox
+    internal interface IHitbox
     {
         public bool IsColliding { get; }
 

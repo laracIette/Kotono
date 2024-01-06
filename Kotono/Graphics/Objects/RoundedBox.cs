@@ -1,11 +1,12 @@
-﻿using Kotono.Utils;
+﻿using Kotono.Graphics.Objects.Settings;
+using Kotono.Utils;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using Math = Kotono.Utils.Math;
 
 namespace Kotono.Graphics.Objects
 {
-    public class RoundedBox : Object2D
+    internal class RoundedBox : Object2D
     {
         public override Rect Dest
         {
@@ -19,7 +20,7 @@ namespace Kotono.Graphics.Objects
 
         protected float _fallOff;
 
-        public float FallOff
+        internal float FallOff
         {
             get => _fallOff;
             set
@@ -31,7 +32,7 @@ namespace Kotono.Graphics.Objects
 
         protected float _cornerSize;
 
-        public float CornerSize
+        internal float CornerSize
         {
             get => _cornerSize;
             set
@@ -41,7 +42,7 @@ namespace Kotono.Graphics.Objects
             }
         }
 
-        public Color Color { get; set; }
+        internal Color Color { get; set; }
 
         protected virtual Matrix4 Model =>
             Matrix4.CreateScale(
@@ -51,14 +52,12 @@ namespace Kotono.Graphics.Objects
             )
             * Matrix4.CreateTranslation(Dest.NDC.X, Dest.NDC.Y, 0.0f);
 
-        public RoundedBox(Rect dest, Color color, int layer, float fallOff, float cornerSize)
-            : base()
+        internal RoundedBox(RoundedBoxSettings settings)
+            : base(settings)
         {
-            Dest = dest;
-            Color = color;
-            Layer = layer;
-            FallOff = fallOff;
-            CornerSize = cornerSize;
+            Color = settings.Color;
+            FallOff = settings.FallOff;
+            CornerSize = settings.CornerSize;
         }
 
         protected virtual void UpdateValues()

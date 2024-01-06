@@ -1,6 +1,6 @@
 ﻿namespace Kotono.Graphics.Objects
 {
-    public interface ISelectable
+    internal interface ISelectable
     {
         public bool IsSelected { get; }
 

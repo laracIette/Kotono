@@ -71,7 +71,7 @@ namespace Kotono.Input
 
         static Mouse()
         {
-            HideCursor();
+            //HideCursor();
         }
 
         public static void Update()
@@ -121,7 +121,7 @@ namespace Kotono.Input
 
             if (CursorState == CursorState.Centered)
             {
-                var center = new Point(KT.Dest.X + KT.Dest.W / 2.0f, KT.Dest.Y + KT.Dest.H / 2.0f);
+                var center = KT.Dest.TopRight;
                 if (PositionFromOrigin != center)
                 {
                     SetCursorPos(center);
@@ -132,7 +132,7 @@ namespace Kotono.Input
 
         private static void UpdateRay()
         {
-            var mouse = (PositionFromOrigin - KT.Position).NDC;
+            var mouse = Position.NDC;
 
             Vector4 rayClip = new Vector4(mouse.X, mouse.Y, -1.0f, 1.0f);
             Vector4 rayView = Matrix4.Invert(CameraManager.ActiveCamera.ProjectionMatrix) * rayClip;
@@ -143,7 +143,7 @@ namespace Kotono.Input
         }
 
         public static bool IsButtonDown(MouseButton button) => MouseState.IsButtonDown(button);
-        
+
         public static bool WasButtonDown(MouseButton button) => MouseState.WasButtonDown(button);
 
         public static bool IsButtonPressed(MouseButton button) => MouseState.IsButtonPressed(button);

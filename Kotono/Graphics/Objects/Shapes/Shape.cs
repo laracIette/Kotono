@@ -4,13 +4,13 @@ using OpenTK.Mathematics;
 
 namespace Kotono.Graphics.Objects.Shapes
 {
-    public class Shape : Object3D, IShape
+    internal class Shape : Object3D, IShape
     {
         public Vector[] Vertices { get; }
 
-        public Color Color;
+        internal Color Color;
 
-        public Matrix4 Model => Transform.Model;
+        internal Matrix4 Model => Transform.Model;
 
         private int _vertexArrayObject;
 
@@ -18,7 +18,7 @@ namespace Kotono.Graphics.Objects.Shapes
 
         private bool _hasInitBuffers = false;
 
-        public Shape(Vector[] vertices, Transform transform, Color color)
+        internal Shape(Vector[] vertices, Transform transform, Color color)
             : base()
         {
             Vertices = vertices;

@@ -7,7 +7,7 @@ using CursorState = Kotono.Input.CursorState;
 
 namespace Kotono.Graphics.Objects
 {
-    public static class Gizmo
+    internal static class Gizmo
     {
         private static readonly GizmoMesh[] _meshes =
         [
@@ -21,9 +21,9 @@ namespace Kotono.Graphics.Objects
 
         private static Transform _transform;
 
-        public static Transform Transform => _transform;
+        internal static Transform Transform => _transform;
 
-        public static Vector Location
+        internal static Vector Location
         {
             get => _transform.Location;
             set
@@ -36,7 +36,7 @@ namespace Kotono.Graphics.Objects
             }
         }
 
-        public static Vector Rotation
+        internal static Vector Rotation
         {
             get => _transform.Rotation;
             set
@@ -49,7 +49,7 @@ namespace Kotono.Graphics.Objects
             }
         }
 
-        public static Vector Scale
+        internal static Vector Scale
         {
             get => _transform.Scale;
             set
@@ -62,7 +62,7 @@ namespace Kotono.Graphics.Objects
             }
         }
 
-        public static bool IsDraw
+        internal static bool IsDraw
         {
             get => _meshes[0].IsDraw;
             set
@@ -78,7 +78,7 @@ namespace Kotono.Graphics.Objects
 
         private static TransformSpace _transformSpace = TransformSpace.World;
 
-        public static void Update()
+        internal static void Update()
         {
             if (_attachMesh == null)
             {
@@ -154,7 +154,7 @@ namespace Kotono.Graphics.Objects
             return closestMesh;
         }
 
-        public static bool TryAttachTo(Mesh mesh)
+        internal static bool TryAttachTo(Mesh mesh)
         {
             if (mesh is not GizmoMesh
                 && Mouse.IsButtonPressed(MouseButton.Left) 
@@ -169,7 +169,7 @@ namespace Kotono.Graphics.Objects
             return false;
         }
 
-        public static void Detach()
+        internal static void Detach()
         {
             _attachMesh = null;
         }

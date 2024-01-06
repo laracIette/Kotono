@@ -3,7 +3,7 @@ using Random = Kotono.Utils.Random;
 
 namespace Kotono.Graphics.Objects.Lights
 {
-    public class RainbowPointLight()
+    internal class RainbowPointLight()
         : PointLight(
               Random.Vector(-20.0f, 20.0f),
               Color.White / 20.0f,

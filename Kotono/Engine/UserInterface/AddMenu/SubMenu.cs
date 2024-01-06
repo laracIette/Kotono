@@ -1,4 +1,5 @@
-﻿using Kotono.Graphics.Objects.Texts;
+﻿using Kotono.Graphics.Objects.Settings;
+using Kotono.Graphics.Objects.Texts;
 using Kotono.Utils;
 using System;
 using System.Collections.Generic;
@@ -43,10 +44,16 @@ namespace Kotono.Engine.UserInterface.AddMenu
             {
                 var dest = GetTextDest(i, KT.Size / 2.0f);
                 _options.Add(
-                    new Text(options[i], dest, _anchor, Color.White, 0.6f, 3) 
-                    { 
-                        IsDraw = true 
-                    }
+                    new Text(
+                        new TextSettings
+                        {
+                            Dest = dest,
+                            Layer = 3,
+                            Text = options[i],
+                            Anchor = _anchor,
+                            Spacing = 0.6f
+                        }
+                    )
                 );
             }
         }

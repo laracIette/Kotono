@@ -5,7 +5,7 @@ using Math = Kotono.Utils.Math;
 
 namespace Kotono.Graphics.Objects.Lights
 {
-    public class SpotLight() : 
+    internal class SpotLight() : 
         Object3D()
     {
         private float _cutOffAngle = 12.5f;
@@ -14,19 +14,19 @@ namespace Kotono.Graphics.Objects.Lights
 
         private bool _isOn = true;
 
-        public float CutOffAngle
+        internal float CutOffAngle
         {
             get => _cutOffAngle;
             set => _cutOffAngle = Math.Clamp(value, 0.0f, 12.5f);
         }
 
-        public float OuterCutOffAngle
+        internal float OuterCutOffAngle
         {
             get => _outerCutOffAngle;
             set => _outerCutOffAngle = Math.Clamp(value, 0.0f, 17.5f);
         }
 
-        public const int MAX_COUNT = 1;
+        internal const int MAX_COUNT = 1;
 
         public override void Update()
         {

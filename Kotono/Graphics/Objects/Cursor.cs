@@ -1,9 +1,10 @@
-﻿using Kotono.Input;
+﻿using Kotono.Graphics.Objects.Settings;
+using Kotono.Input;
 using Kotono.Utils;
 
 namespace Kotono.Graphics.Objects
 {
-    public class Cursor()
+    internal class Cursor()
         : Image(
               new ImageSettings
               {

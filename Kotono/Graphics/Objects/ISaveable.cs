@@ -1,6 +1,6 @@
 ﻿namespace Kotono.Graphics.Objects
 {
-    public interface ISaveable
+    internal interface ISaveable
     {
         public void Save();
     }

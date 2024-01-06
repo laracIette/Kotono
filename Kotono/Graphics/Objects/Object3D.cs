@@ -1,9 +1,10 @@
-﻿using Kotono.Utils;
+﻿using Kotono.Graphics.Objects.Settings;
+using Kotono.Utils;
 
 namespace Kotono.Graphics.Objects
 {
-    public abstract class Object3D()
-        : Drawable(),
+    internal abstract class Object3D()
+        : Drawable(new DrawableSettings { IsDraw = true }),
         IObject3D
     {
         private Transform _transform = Transform.Default;

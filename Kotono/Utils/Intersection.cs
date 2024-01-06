@@ -3,7 +3,7 @@ using OpenTK.Mathematics;
 
 namespace Kotono.Utils
 {
-    public static class Intersection
+    internal static class Intersection
     {
         /// <summary>
         /// Get whether the ray formed by rayOrigin and RayDirection intersects the Triangle. 
@@ -14,7 +14,7 @@ namespace Kotono.Utils
         /// <param name="intersectionLocation"> The location Vector at which the mouse intersects the mesh. </param>
         /// <param name="distance"> The distance of the intersectionLocation from the Camera. </param>
         /// <returns> <see langword="true"/> if the ray interects the Triangle, else returns <see langword="false"/>. </returns>
-        public static bool IntersectRayTriangle(Vector rayOrigin, Vector rayDirection, Triangle triangle, out Vector intersectionLocation, out float distance)
+        internal static bool IntersectRayTriangle(Vector rayOrigin, Vector rayDirection, Triangle triangle, out Vector intersectionLocation, out float distance)
         {
             intersectionLocation = Vector.Zero;
             distance = 0.0f;

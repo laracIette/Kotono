@@ -1,6 +1,7 @@
 ﻿using Kotono.Graphics;
 using Kotono.Graphics.Objects;
 using Kotono.Graphics.Objects.Managers;
+using Kotono.Graphics.Statistics;
 using Kotono.Input;
 using Kotono.Utils;
 using OpenTK.Graphics.OpenGL4;
@@ -23,7 +24,7 @@ namespace Kotono
 
         private int _textureDepthStencilBuffer;
 
-        private bool ShouldRenderFrame => IsFocused && (KT.PerformanceWindow.FrameRate < KT.MaxFrameRate);
+        private bool ShouldRenderFrame => IsFocused && (PerformanceWindow.FrameRate < PerformanceWindow.MaxFrameRate);
 
         internal Window(WindowSettings windowSettings)
             : base(
@@ -42,7 +43,7 @@ namespace Kotono
             CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
             CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
 
-            KT.MaxFrameRate = windowSettings.MaxFrameRate;
+            PerformanceWindow.MaxFrameRate = windowSettings.MaxFrameRate;
 
             Mouse.CursorState = windowSettings.CursorState;
             Mouse.MouseState = MouseState;
@@ -116,7 +117,7 @@ namespace Kotono
             {
                 _stalledTime = 0;
 
-                KT.PerformanceWindow.AddFrameTime(e.Time);
+                PerformanceWindow.AddFrameTime(e.Time);
 
                 ShaderManager.Update();
 
@@ -149,7 +150,7 @@ namespace Kotono
             else
             {
                 _stalledTime += e.Time;
-                KT.PerformanceWindow.AddFrameTime(_stalledTime);
+                PerformanceWindow.AddFrameTime(_stalledTime);
             }
         }
 
@@ -157,7 +158,7 @@ namespace Kotono
         {
             base.OnUpdateFrame(e);
 
-            KT.PerformanceWindow.AddUpdateTime(e.Time);
+            PerformanceWindow.AddUpdateTime(e.Time);
 
             KT.Update();
 
@@ -189,7 +190,7 @@ namespace Kotono
             base.OnResize(e);
 
             KT.Position = (Point)Location;
-            KT.Size = (Point)Size;
+            KT.Size = (Point)ClientSize;
         }
 
         protected sealed override void OnMove(WindowPositionEventArgs e)

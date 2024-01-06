@@ -1,6 +1,6 @@
 ﻿namespace Kotono.Graphics.Objects
 {
-    public interface IDrawable
+    internal interface IDrawable
     {
         public bool IsDraw { get; set; }
 

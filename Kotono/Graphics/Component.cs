@@ -1,4 +1,5 @@
 ﻿using Kotono.Engine.UserInterface.Elements;
+using Kotono.Graphics.Objects.Settings;
 using Kotono.Utils;
 
 namespace Kotono.Graphics
@@ -11,7 +12,7 @@ namespace Kotono.Graphics
 
         internal Component(Rect dest, Color color)
         {
-            Viewport = new Viewport(dest);
+            Viewport = new Viewport(new Object2DSettings { Dest = dest });
             _background = new Background(Rect.FromAnchor(new Rect(Point.Zero, dest.Size), Anchor.TopLeft), color, Viewport);
         }
 

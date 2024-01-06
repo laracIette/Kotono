@@ -6,14 +6,15 @@ using Kotono.Graphics;
 using Kotono.Graphics.Objects;
 using Kotono.Graphics.Objects.Managers;
 using Kotono.Graphics.Print;
+using Kotono.Graphics.Statistics;
 using Kotono.Input;
 using Kotono.Utils;
-using Performance = Kotono.Graphics.Performance;
 
 namespace Kotono
 {
     internal static class KT
     {
+
         #region WindowDest
 
         private static Rect _dest = Rect.Zero;
@@ -21,7 +22,11 @@ namespace Kotono
         internal static Rect Dest
         {
             get => _dest;
-            set => _dest = value;
+            set 
+            {
+                Position = value.Position;
+                Size = value.Size;
+            }
         }
 
         internal static Point Position
@@ -37,9 +42,13 @@ namespace Kotono
             {
                 _dest.Size = value;
 
-                CameraManager.ActiveCamera.AspectRatio = _dest.Size.Ratio;
+                CameraManager.ActiveCamera.AspectRatio = Size.Ratio;
 
-                ComponentManager.WindowViewport.Size = _dest.Size;
+                ComponentManager.WindowViewport.Size = Size;
+
+                PerformanceWindow.UpdatePosition();
+
+                Log(Size);
             }
         }
 
@@ -80,14 +89,6 @@ namespace Kotono
 
         #endregion Printer
 
-        #region PerformanceWindow
-
-        internal static Performance.Window PerformanceWindow { get; } = new();
-
-        internal static int MaxFrameRate { get; set; } = 60;
-
-        #endregion PerformanceWindow
-
         #region UserMode
 
         private static readonly Mode _mode = new();
@@ -119,7 +120,6 @@ namespace Kotono
             ObjectManager.Update();
             ComponentManager.Update();
             CameraManager.Update();
-            PerformanceWindow.Update();
             _mode.Update();
             MainMenu.Update();
         }
@@ -132,6 +132,7 @@ namespace Kotono
         internal static void Exit()
         {
             SoundManager.Dispose();
+            Texture.DisposeAll();
             ObjectManager.Dispose();
         }
     }

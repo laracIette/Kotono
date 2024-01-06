@@ -250,7 +250,7 @@ namespace Kotono.Utils
         /// <summary> 
         /// Checks if left is overlapping with right.
         /// </summary>
-        public static bool Overlaps(Image left, Image right)
+        internal static bool Overlaps(Image left, Image right)
         {
             return Overlaps(left.Dest, right.Dest);
         }

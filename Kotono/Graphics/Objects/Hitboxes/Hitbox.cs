@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Kotono.Graphics.Objects.Hitboxes
 {
-    public abstract class Hitbox()
+    internal abstract class Hitbox()
         : Object3D(),
         IHitbox
     {

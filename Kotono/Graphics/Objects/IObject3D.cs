@@ -2,7 +2,7 @@
 
 namespace Kotono.Graphics.Objects
 {
-    public interface IObject3D
+    internal interface IObject3D
     {
         public Transform Transform { get; set; }
 

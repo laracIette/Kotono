@@ -1,4 +1,5 @@
-﻿using Kotono.Input;
+﻿using Kotono.Graphics.Objects.Settings;
+using Kotono.Input;
 using Kotono.Utils;
 using System;
 using System.Collections.Generic;
@@ -93,9 +94,9 @@ namespace Kotono.Graphics.Objects.Texts
 
         protected readonly List<Image> _letters = [];
 
-        protected Rect _lettersDest;
-
         private readonly RoundedBorder _roundedBorder;
+        
+        protected Rect _lettersDest;
 
         public override Rect Dest
         {
@@ -157,20 +158,22 @@ namespace Kotono.Graphics.Objects.Texts
 
         internal bool IsMouseOn => Rect.Overlaps(Dest, Mouse.Position);
 
-        internal Text(string text, Rect lettersDest, Anchor position, Color color, float spacing, int layer)
-            : base()
+        internal Text(TextSettings settings)
+            : base(settings)
         {
-            _text = text;
-            _lettersDest = lettersDest;
-            _anchor = position;
-            Color = color;
-            _spacing = spacing;
-            Layer = layer;
+            _text = settings.Text;
+            _anchor = settings.Anchor;
+            Color = settings.Color;
+            _spacing = settings.Spacing;
 
-            _roundedBorder = new RoundedBorder(Dest, Color.Red, 2, 0.0f, 0.0f, 1.0f)
-            {
-                IsDraw = false
-            };
+            _roundedBorder = new RoundedBorder(
+                new RoundedBorderSettings
+                {
+                    IsDraw = false,
+                    Dest = Dest,
+                    Layer = 2
+                }
+            );
 
             Init();
         }

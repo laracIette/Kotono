@@ -4,7 +4,7 @@ using Math = Kotono.Utils.Math;
 
 namespace Kotono.Graphics.Objects.Hitboxes
 {
-    public class Box : Hitbox
+    internal class Box : Hitbox
     {
         private static readonly float[] _vertices =
         [
@@ -101,7 +101,7 @@ namespace Kotono.Graphics.Objects.Hitboxes
 
         private static bool _isFirst = true;
 
-        public Box()
+        internal Box()
             : base()
         {
             if (_isFirst)

@@ -3,7 +3,7 @@ using Kotono.Utils;
 
 namespace Kotono.Graphics.Objects.Meshes
 {
-    public class Cube()
+    internal class Cube()
         : Mesh(
               Path.Assets + @"Meshes\cube.ktf",
               [

@@ -180,7 +180,7 @@ namespace Kotono.Utils
             return (left - right).Length;
         }
 
-        public static float Distance(IObject3D left, IObject3D right)
+        internal static float Distance(IObject3D left, IObject3D right)
         {
             return Distance(left.Location, right.Location);
         }

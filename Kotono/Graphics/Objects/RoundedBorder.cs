@@ -1,14 +1,15 @@
-﻿using Kotono.Utils;
+﻿using Kotono.Graphics.Objects.Settings;
+using Kotono.Utils;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
 
 namespace Kotono.Graphics.Objects
 {
-    public class RoundedBorder : RoundedBox
+    internal class RoundedBorder : RoundedBox
     {
         private float _thickness;
 
-        public float Thickness
+        internal float Thickness
         {
             get => _thickness;
             set
@@ -26,10 +27,9 @@ namespace Kotono.Graphics.Objects
             )
             * Matrix4.CreateTranslation(Dest.NDC.X, Dest.NDC.Y, 0.0f);
 
-        public RoundedBorder(Rect dest, Color color, int layer, float fallOff, float cornerSize, float thickness)
-            : base(dest, color, layer, fallOff, cornerSize)
+        internal RoundedBorder(RoundedBorderSettings settings)
+            : base(settings)
         {
-            Thickness = thickness;
         }
 
         protected override void UpdateValues()

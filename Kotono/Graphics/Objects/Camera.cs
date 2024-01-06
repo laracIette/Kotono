@@ -8,7 +8,7 @@ using Math = Kotono.Utils.Math;
 
 namespace Kotono.Graphics.Objects
 {
-    public class Camera
+    internal class Camera
     {
         private float _pitch = 0.0f;
 
@@ -18,17 +18,17 @@ namespace Kotono.Graphics.Objects
 
         private float _speed = 1.0f;
 
-        public Vector Front { get; private set; } = -Vector.UnitZ;
+        internal Vector Front { get; private set; } = -Vector.UnitZ;
 
-        public Vector Up { get; private set; } = Vector.UnitY;
+        internal Vector Up { get; private set; } = Vector.UnitY;
 
-        public Vector Right { get; private set; } = Vector.UnitX;
+        internal Vector Right { get; private set; } = Vector.UnitX;
 
-        public Vector Location { get; private set; } = Vector.Zero;
+        internal Vector Location { get; private set; } = Vector.Zero;
 
-        public float AspectRatio { private get; set; } = 16.0f / 9.0f;
+        internal float AspectRatio { get; set; } = 16.0f / 9.0f;
 
-        public float Pitch
+        internal float Pitch
         {
             get => Math.Deg(_pitch);
             set
@@ -39,7 +39,7 @@ namespace Kotono.Graphics.Objects
             }
         }
 
-        public float Yaw
+        internal float Yaw
         {
             get => Math.Deg(_yaw);
             set
@@ -49,7 +49,7 @@ namespace Kotono.Graphics.Objects
             }
         }
 
-        public float Fov
+        internal float Fov
         {
             get => Math.Deg(_fov);
             set
@@ -58,16 +58,16 @@ namespace Kotono.Graphics.Objects
                 _fov = Math.Rad(value);
             }
         }
-        public Matrix4 ViewMatrix => Matrix4.LookAt((Vector3)Location, (Vector3)(Location + Front), (Vector3)Up);
+        internal Matrix4 ViewMatrix => Matrix4.LookAt((Vector3)Location, (Vector3)(Location + Front), (Vector3)Up);
 
-        public Matrix4 ProjectionMatrix => Matrix4.CreatePerspectiveFieldOfView(_fov, AspectRatio, 0.01f, 1000.0f);
+        internal Matrix4 ProjectionMatrix => Matrix4.CreatePerspectiveFieldOfView(_fov, AspectRatio, 0.01f, 1000.0f);
 
-        public Camera()
+        internal Camera()
         {
             CameraManager.Create(this);
         }
 
-        public void Update()
+        internal void Update()
         {
             Move();
         }

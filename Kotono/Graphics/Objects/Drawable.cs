@@ -1,14 +1,17 @@
 ﻿using Kotono.Graphics.Objects.Managers;
+using Kotono.Graphics.Objects.Settings;
 using System;
 
 namespace Kotono.Graphics.Objects
 {
-    public abstract class Drawable : IDrawable, IDisposable
+    internal abstract class Drawable : IDrawable, IDisposable
     {
-        public virtual bool IsDraw { get; set; } = true;
+        public virtual bool IsDraw { get; set; }
 
-        public Drawable()
+        internal Drawable(DrawableSettings settings)
         {
+            IsDraw = settings.IsDraw;
+
             ObjectManager.Create(this);
         }
 

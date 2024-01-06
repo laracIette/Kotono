@@ -5,7 +5,7 @@ using Math = Kotono.Utils.Math;
 
 namespace Kotono.Graphics.Objects.Hitboxes
 {
-    public class Sphere : Hitbox
+    internal class Sphere : Hitbox
     {
         private const int SEGMENTS = 64;
 
@@ -17,11 +17,9 @@ namespace Kotono.Graphics.Objects.Hitboxes
 
         private static bool _isFirst = true;
 
-        public float Radius => Scale.X;
+        internal float Radius => Scale.X;
 
-        public Vector Velocity { get; set; }
-
-        public Sphere()
+        internal Sphere()
             : base()
         {
             if (_isFirst)

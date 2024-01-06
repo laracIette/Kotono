@@ -1,17 +1,18 @@
-﻿using Kotono.Input;
+﻿using Kotono.Graphics.Objects.Settings;
+using Kotono.Input;
 using Kotono.Utils;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 
 namespace Kotono.Graphics.Objects
 {
-    public class Image : Object2D
+    internal class Image : Object2D
     {
         private readonly Texture _texture;
 
-        public string Path { get; }
+        internal string Path { get; }
 
-        public Color Color { get; set; }
+        internal Color Color { get; set; }
 
         private Rect _transformation;
 
@@ -23,15 +24,13 @@ namespace Kotono.Graphics.Objects
             Matrix4.CreateScale(Dest.NDC.W, Dest.NDC.H, 1.0f)
             * Matrix4.CreateTranslation(Dest.NDC.X, Dest.NDC.Y, 0.0f);
         
-        public bool IsMouseOn => Rect.Overlaps(Dest, Mouse.Position);
+        internal bool IsMouseOn => Rect.Overlaps(Dest, Mouse.Position);
 
-        public Image(ImageSettings settings)
-            : base()
+        internal Image(ImageSettings settings)
+            : base(settings)
         {
             Path = settings.Path;
-            Dest = settings.Dest;
             Color = settings.Color;
-            Layer = settings.Layer;
 
             _transformation = Rect.Zero;
 
@@ -62,12 +61,12 @@ namespace Kotono.Graphics.Objects
             GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
         }
 
-        public void Transform(Rect transformation)
+        internal void Transform(Rect transformation)
         {
             Dest += transformation;
         }
 
-        public void Transform(Rect transformation, double time)
+        internal void Transform(Rect transformation, double time)
         {
             _transformation += transformation / (float)time;
 

@@ -1,13 +1,12 @@
 ﻿using Kotono.Graphics.Objects.Managers;
+using Kotono.Graphics.Objects.Settings;
 using Kotono.Utils;
 
 namespace Kotono.Graphics.Objects
 {
-    public abstract class Object2D()
-        : Drawable(),
-        IObject2D
+    internal abstract class Object2D : Drawable, IObject2D
     {
-        private Rect _dest = Rect.Zero;
+        private Rect _dest;
 
         public virtual Rect Dest
         {
@@ -51,7 +50,7 @@ namespace Kotono.Graphics.Objects
             set => _dest.H = value;
         }
 
-        private int _layer = 0;
+        private int _layer;
 
         public virtual int Layer
         {
@@ -61,6 +60,13 @@ namespace Kotono.Graphics.Objects
                 _layer = value;
                 ObjectManager.UpdateObject2DLayer(this);
             }
+        }
+
+        internal Object2D(Object2DSettings settings)
+            : base(settings)
+        {
+            Dest = settings.Dest;
+            Layer = settings.Layer;
         }
     }
 }

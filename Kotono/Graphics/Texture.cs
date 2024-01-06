@@ -6,7 +6,7 @@ using IO = System.IO;
 
 namespace Kotono.Graphics
 {
-    internal class Texture : IDisposable
+    internal class Texture
     {
         private static readonly Dictionary<string, int> _textures = [];
 
@@ -53,13 +53,14 @@ namespace Kotono.Graphics
             GL.BindTexture(TextureTarget.Texture2D, Handle);
         }
 
-        // TODO: never actually called
-        public void Dispose()
+        public static void DisposeAll()
         {
             GL.BindTexture(TextureTarget.Texture2D, 0);
-            GL.DeleteTexture(Handle);
 
-            GC.SuppressFinalize(this);
+            foreach (var handle in _textures.Values)
+            {
+                GL.DeleteTexture(handle);
+            }
         }
     }
 }

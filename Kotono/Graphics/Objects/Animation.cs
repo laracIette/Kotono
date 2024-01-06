@@ -1,4 +1,5 @@
 ﻿using Kotono.File;
+using Kotono.Graphics.Objects.Settings;
 using Kotono.Utils;
 using System;
 using System.Collections.Generic;
@@ -8,11 +9,11 @@ using Math = Kotono.Utils.Math;
 
 namespace Kotono.Graphics.Objects
 {
-    public class Animation : Object2D, ISaveable
+    internal class Animation : Object2D, ISaveable
     {
         protected readonly List<Image> _frames = [];
 
-        public int Count => _frames.Count;
+        internal int Count => _frames.Count;
 
         public override Rect Dest
         {
@@ -86,8 +87,8 @@ namespace Kotono.Graphics.Objects
         /// <summary> 
         /// Create an Animation from files in a directory.
         /// </summary>
-        public Animation(string path)
-            : base()
+        internal Animation(string path)
+            : base(new Object2DSettings { IsDraw = false })
         {
             _properties = new AnimationProperties(path);
 
@@ -109,6 +110,7 @@ namespace Kotono.Graphics.Objects
                     _frames.Add(new Image(
                         new ImageSettings
                         {
+                            IsDraw = false,
                             Path = filePath,
                             Dest = _properties.Dest,
                             Color = _properties.Color,
@@ -121,8 +123,6 @@ namespace Kotono.Graphics.Objects
             _frameRate = _properties.FrameRate;
             _startTime = Time.NowS + _properties.StartTime;
             _duration = _properties.Duration;
-
-            IsDraw = false;
         }
 
         public override void Update()
@@ -153,22 +153,22 @@ namespace Kotono.Graphics.Objects
             }
         }
 
-        public void Play()
+        internal void Play()
         {
             IsPlaying = true;
         }
 
-        public void Pause()
+        internal void Pause()
         {
             IsPlaying = false;
         }
 
-        public void Next()
+        internal void Next()
         {
             CurrentFrame++;
         }
 
-        public void Previous()
+        internal void Previous()
         {
             CurrentFrame--;
         }

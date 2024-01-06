@@ -3,7 +3,7 @@ using Kotono.Utils;
 
 namespace Kotono.Graphics.Objects.Lights
 {
-    public class PointLight : Object3D
+    internal class PointLight : Object3D
     {
         private readonly Mesh _mesh;
 
@@ -13,27 +13,27 @@ namespace Kotono.Graphics.Objects.Lights
             set => _mesh.Location = value;
         }
 
-        public bool IsGravity
+        internal bool IsGravity
         {
             get => _mesh.IsGravity;
             set => _mesh.IsGravity = value;
         }
 
-        public Color Color { get; protected set; }
+        internal Color Color { get; set; }
 
-        public Color Ambient { get; protected set; }
+        internal Color Ambient { get; set; }
 
-        public Color Specular { get; protected set; }
+        internal Color Specular { get; set; }
 
-        public float Constant { get; protected set; }
+        internal float Constant { get; set; }
 
-        public float Linear { get; protected set; }
+        internal float Linear { get; set; }
 
-        public float Quadratic { get; protected set; }
+        internal float Quadratic { get; set; }
 
-        public const int MAX_COUNT = 100;
+        internal const int MAX_COUNT = 100;
 
-        public PointLight(Vector location, Color ambient, Color diffuse, Color specular, float constant, float linear, float quadratic)
+        internal PointLight(Vector location, Color ambient, Color diffuse, Color specular, float constant, float linear, float quadratic)
             : base()
         {
             Ambient = ambient;

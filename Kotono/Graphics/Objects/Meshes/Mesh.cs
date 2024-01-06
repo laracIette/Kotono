@@ -16,7 +16,7 @@ using PrimitiveType = OpenTK.Graphics.OpenGL4.PrimitiveType;
 
 namespace Kotono.Graphics.Objects.Meshes
 {
-    public abstract class Mesh : Object3D, ISaveable, IFizixObject
+    internal abstract class Mesh : Object3D, ISaveable, IFizixObject
     {
         private struct MeshSettings
         {
@@ -43,51 +43,51 @@ namespace Kotono.Graphics.Objects.Meshes
 
         protected readonly Shader _shader;
 
-        public bool IsGravity { get; set; } = false;
+        internal bool IsGravity { get; set; } = false;
 
-        public CollisionState CollisionState { get; set; }
+        internal CollisionState CollisionState { get; set; }
 
         private readonly MeshSettings _meshSettings;
 
-        public int VertexArrayObject => _meshSettings.VertexArrayObject;
+        internal int VertexArrayObject => _meshSettings.VertexArrayObject;
 
-        public int VertexBufferObject => _meshSettings.VertexBufferObject;
+        internal int VertexBufferObject => _meshSettings.VertexBufferObject;
 
-        public int IndicesCount => _meshSettings.IndicesCount;
+        internal int IndicesCount => _meshSettings.IndicesCount;
 
-        public Vector Center => _meshSettings.Center;
+        internal Vector Center => _meshSettings.Center;
 
-        public Vector[] Vertices => _meshSettings.Vertices;
+        internal Vector[] Vertices => _meshSettings.Vertices;
 
-        public Triangle[] Triangles => _meshSettings.Triangles;
+        internal Triangle[] Triangles => _meshSettings.Triangles;
 
         private readonly Texture[] _textures;
 
-        public Vector LocationVelocity
+        internal Vector LocationVelocity
         {
             get => _locationVelocity;
             set => _locationVelocity = value;
         }
 
-        public Vector RotationVelocity
+        internal Vector RotationVelocity
         {
             get => Vector.Deg(_rotationVelocity);
             set => _rotationVelocity = Vector.Rad(value);
         }
 
-        public Color Color { get; set; }
+        internal Color Color { get; set; }
 
-        public Matrix4 Model => Transform.Model;
+        internal Matrix4 Model => Transform.Model;
 
-        public static double MaxIntersectionCheckTime => 0.1;
+        internal static double MaxIntersectionCheckTime => 0.1;
 
-        public double IntersectionCheckTime { get; internal set; } = MaxIntersectionCheckTime;
+        internal double IntersectionCheckTime { get; set; } = MaxIntersectionCheckTime;
 
         public bool IsFizix { get; set; } = false;
 
         private readonly MeshProperties _properties;
 
-        public Mesh(string path, Hitbox[] hitboxes)
+        internal Mesh(string path, Hitbox[] hitboxes)
             : base()
         {
             _properties = new MeshProperties(path);

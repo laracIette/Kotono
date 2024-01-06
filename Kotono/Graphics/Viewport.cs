@@ -1,21 +1,21 @@
 ﻿using Kotono.Graphics.Objects;
+using Kotono.Graphics.Objects.Settings;
 using Kotono.Utils;
 using OpenTK.Graphics.OpenGL4;
 using System.Collections.Generic;
 
 namespace Kotono.Graphics
 {
-    public class Viewport : Object2D
+    internal class Viewport : Object2D
     {
         private readonly List<Viewport> _connections = [];
 
-        public Viewport(Rect dest)
-            : base() 
+        internal Viewport(Object2DSettings settings)
+            : base(settings) 
         {
-            Dest = dest;
         }
 
-        public void Use()
+        internal void Use()
         {
             ComponentManager.ActiveViewport = this;
             GL.Viewport((int)X, (int)(KT.Dest.H - Y - H), (int)W, (int)H);

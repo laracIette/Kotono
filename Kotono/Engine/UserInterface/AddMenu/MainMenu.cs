@@ -1,5 +1,6 @@
 ﻿using Kotono.Engine.UserInterface.AddMenu.MainButtons;
 using Kotono.Graphics.Objects;
+using Kotono.Graphics.Objects.Settings;
 using Kotono.Input;
 using Kotono.Utils;
 using OpenTK.Windowing.GraphicsLibraryFramework;
@@ -8,7 +9,15 @@ namespace Kotono.Engine.UserInterface.AddMenu
 {
     public static class MainMenu
     {
-        private static readonly RoundedBox _backgroundBox = new(new Rect(0.0f, 0.0f, 300.0f, 300.0f), Color.DarkGray, 0, 2.0f, 30.0f);
+        private static readonly RoundedBox _backgroundBox = new(
+            new RoundedBoxSettings
+            {
+                Dest = new Rect(0.0f, 0.0f, 300.0f, 300.0f),
+                Color = Color.DarkGray,
+                FallOff = 2.0f,
+                CornerSize = 30.0f
+            }
+        );
 
         private static readonly MainButton[] _buttons =
         {

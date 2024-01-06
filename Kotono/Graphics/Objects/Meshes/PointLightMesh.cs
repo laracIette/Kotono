@@ -6,11 +6,11 @@ using System;
 
 namespace Kotono.Graphics.Objects.Meshes
 {
-    public class PointLightMesh : Mesh
+    internal class PointLightMesh : Mesh
     {
         private readonly PointLight _pointLight;
 
-        public PointLightMesh(Vector location, PointLight pointLight)
+        internal PointLightMesh(Vector location, PointLight pointLight)
             : base(
                   Path.Assets + @"Meshes\pointLight.ktf",
                   [

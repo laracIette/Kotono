@@ -10,6 +10,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Engine\Interface\**" />
+    <EmbeddedResource Remove="Engine\Interface\**" />
+    <None Remove="Engine\Interface\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AssimpNet" Version="4.1.0" />
     <PackageReference Include="Catalyst" Version="1.0.44215" />
     <PackageReference Include="Catalyst.Models.English" Version="1.0.30952" />
@@ -26,7 +32,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Engine\Interface\Components\" />
     <Folder Include="Tests\" />
   </ItemGroup>
 
