@@ -3,9 +3,7 @@ using Kotono.Utils;
 
 namespace Kotono.Graphics.Objects
 {
-    internal abstract class Object3D()
-        : Drawable(new DrawableSettings { IsDraw = true }),
-        IObject3D
+    internal abstract class Object3D : Drawable, IObject3D
     {
         private Transform _transform = Transform.Default;
 
@@ -34,5 +32,21 @@ namespace Kotono.Graphics.Objects
         }
 
         public virtual Vector Velocity { get; set; }
+
+#if true
+        internal Object3D(Object3DSettings settings)
+            : base(settings)
+        {
+            Location = settings.Location;
+            Rotation = settings.Rotation;
+            Scale = settings.Scale;
+            Velocity = settings.Velocity;
+        }
+#else
+        internal Object3D()
+            : base(new DrawableSettings { IsDraw = true })
+        {
+        }
+#endif
     }
 }

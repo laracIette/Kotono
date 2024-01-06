@@ -1,14 +1,19 @@
 ﻿using Kotono.Graphics.Objects.Hitboxes;
+using Kotono.Graphics.Objects.Settings;
 using Kotono.Utils;
 
 namespace Kotono.Graphics.Objects.Meshes
 {
     internal class Cube()
         : Mesh(
-              Path.Assets + @"Meshes\cube.ktf",
-              [
-                  new Box()
-              ]
+            new MeshSettings
+            {
+                Path = Path.Assets + @"Meshes\cube.ktf",
+                Hitboxes =
+                [
+                    new Box(new HitboxSettings())
+                ]
+            }
           )
     {
     }

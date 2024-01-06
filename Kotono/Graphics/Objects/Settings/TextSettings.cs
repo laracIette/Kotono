@@ -24,8 +24,8 @@ namespace Kotono.Graphics.Objects.Settings
 
         /// <summary>
         /// The spacing multiplier between each letter of the Text.
-        /// Default value : 1
+        /// <para> Default value : 1.0f </para>
         /// </summary>
-        internal float Spacing { get; set; } = 1;
+        internal float Spacing { get; set; } = 1.0f;
     }
 }

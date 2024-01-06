@@ -6,7 +6,7 @@ namespace Kotono.Graphics
 {
     public static partial class Screen
     {
-        public static Point Size { get; set; }
+        public static Point Size { get; private set; }
 
         // Import the necessary Windows API functions
         [LibraryImport("user32.dll")]

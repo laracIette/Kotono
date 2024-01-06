@@ -1,9 +1,9 @@
-﻿using Kotono.Graphics.Objects.Hitboxes;
+﻿using Kotono.Graphics.Objects.Settings;
 
 namespace Kotono.Graphics.Objects.Meshes
 {
-    internal class FrontMesh(string path, Hitbox[] hitboxes)
-        : Mesh(path, hitboxes)
+    internal class FrontMesh(MeshSettings settings)
+        : Mesh(settings)
     {
     }
 }

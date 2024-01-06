@@ -1,4 +1,5 @@
-﻿using Kotono.Utils;
+﻿using Kotono.Graphics.Objects.Settings;
+using Kotono.Utils;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using Math = Kotono.Utils.Math;
@@ -19,8 +20,8 @@ namespace Kotono.Graphics.Objects.Hitboxes
 
         internal float Radius => Scale.X;
 
-        internal Sphere()
-            : base()
+        internal Sphere(HitboxSettings settings)
+            : base(settings)
         {
             if (_isFirst)
             {

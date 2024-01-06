@@ -11,6 +11,8 @@ namespace Kotono.Graphics.Objects.Hitboxes
 
         public List<Hitbox> Collisions { get; }
 
+        public List<Hitbox> Colliders { get; }
+
         public bool CollidesWith(Hitbox h);
 
         public bool TryGetCollider(out Hitbox? collider);

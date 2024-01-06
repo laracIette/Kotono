@@ -1,4 +1,5 @@
-﻿using Kotono.Utils;
+﻿using Kotono.Graphics.Objects.Settings;
+using Kotono.Utils;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 
@@ -6,25 +7,24 @@ namespace Kotono.Graphics.Objects.Shapes
 {
     internal class Shape : Object3D, IShape
     {
-        public Vector[] Vertices { get; }
-
-        internal Color Color;
-
-        internal Matrix4 Model => Transform.Model;
-
         private int _vertexArrayObject;
 
         private int _vertexBufferObject;
 
         private bool _hasInitBuffers = false;
 
-        internal Shape(Vector[] vertices, Transform transform, Color color)
-            : base()
+        internal Color Color;
+
+        public Vector[] Vertices { get; }
+
+        internal Matrix4 Model => Transform.Model;
+
+        internal Shape(ShapeSettings settings)
+            : base(settings)
         {
-            Vertices = vertices;
-            Transform = transform;
-            Color = color;
             IsDraw = false;
+            Vertices = settings.Vertices;
+            Color = settings.Color;
         }
 
         public override void Update()

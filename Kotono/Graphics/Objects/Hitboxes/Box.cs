@@ -1,4 +1,5 @@
-﻿using OpenTK.Graphics.OpenGL4;
+﻿using Kotono.Graphics.Objects.Settings;
+using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using Math = Kotono.Utils.Math;
 
@@ -101,8 +102,8 @@ namespace Kotono.Graphics.Objects.Hitboxes
 
         private static bool _isFirst = true;
 
-        internal Box()
-            : base()
+        internal Box(HitboxSettings settings)
+            : base(settings)
         {
             if (_isFirst)
             {

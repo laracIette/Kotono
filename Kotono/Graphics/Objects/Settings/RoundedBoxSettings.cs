@@ -12,14 +12,14 @@ namespace Kotono.Graphics.Objects.Settings
 
         /// <summary>
         /// The fall off of the RoundedBox.
-        /// <para> Default value : 0 </para>
+        /// <para> Default value : 0.0f </para>
         /// </summary>
-        internal float FallOff { get; set; } = 0;
+        internal float FallOff { get; set; } = 0.0f;
         
         /// <summary>
         /// The corner size of the RoundedBox.
-        /// <para> Default value : 0 </para>
+        /// <para> Default value : 0.0f </para>
         /// </summary>
-        internal float CornerSize { get; set; } = 0;
+        internal float CornerSize { get; set; } = 0.0f;
     }
 }

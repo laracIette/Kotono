@@ -40,7 +40,7 @@ namespace Kotono.Graphics.Objects.Managers
 
         internal virtual void Draw()
         {
-            foreach (var drawable in Drawables.Where(d => d.IsDraw))
+            foreach (var drawable in Drawables.FindAll(d => d.IsDraw))
             {
                 drawable.Draw();
             }

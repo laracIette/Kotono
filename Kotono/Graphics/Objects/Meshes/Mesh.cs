@@ -2,6 +2,7 @@
 using Kotono.File;
 using Kotono.Graphics.Objects.Hitboxes;
 using Kotono.Graphics.Objects.Managers;
+using Kotono.Graphics.Objects.Settings;
 using Kotono.Graphics.Objects.Shapes;
 using Kotono.Graphics.Shaders;
 using Kotono.Input;
@@ -18,7 +19,7 @@ namespace Kotono.Graphics.Objects.Meshes
 {
     internal abstract class Mesh : Object3D, ISaveable, IFizixObject
     {
-        private struct MeshSettings
+        private struct MeshHiddenSettings
         {
             public int VertexArrayObject;
 
@@ -33,13 +34,13 @@ namespace Kotono.Graphics.Objects.Meshes
             public Triangle[] Triangles;
         }
 
-        private static readonly Dictionary<string, MeshSettings> _paths = [];
+        private static readonly Dictionary<string, MeshHiddenSettings> _paths = [];
 
         private Vector _locationVelocity;
 
         private Vector _rotationVelocity;
 
-        private readonly Hitbox[] _hitboxes;
+        private readonly List<Hitbox> _hitboxes;
 
         protected readonly Shader _shader;
 
@@ -47,7 +48,7 @@ namespace Kotono.Graphics.Objects.Meshes
 
         internal CollisionState CollisionState { get; set; }
 
-        private readonly MeshSettings _meshSettings;
+        private readonly MeshHiddenSettings _meshSettings;
 
         internal int VertexArrayObject => _meshSettings.VertexArrayObject;
 
@@ -87,10 +88,10 @@ namespace Kotono.Graphics.Objects.Meshes
 
         private readonly MeshProperties _properties;
 
-        internal Mesh(string path, Hitbox[] hitboxes)
-            : base()
+        internal Mesh(MeshSettings settings)
+            : base(settings)
         {
-            _properties = new MeshProperties(path);
+            _properties = new MeshProperties(settings.Path);
 
             var textureKeys = _properties.Data.Dict.Keys.Where(k => k.StartsWith("Textures")).ToList();
 
@@ -117,7 +118,7 @@ namespace Kotono.Graphics.Objects.Meshes
 
             Color = _properties.Color;
 
-            _hitboxes = hitboxes;
+            _hitboxes = settings.Hitboxes;
 
             foreach (var hitbox in _hitboxes)
             {
@@ -127,7 +128,7 @@ namespace Kotono.Graphics.Objects.Meshes
                 hitbox.Color = Color.Red;
             }
 
-            if (!_paths.TryGetValue(_properties["Obj"], out MeshSettings value))
+            if (!_paths.TryGetValue(_properties["Obj"], out MeshHiddenSettings value))
             {
                 List<Vertex>[] models;
                 List<int>[] indices;
@@ -208,7 +209,7 @@ namespace Kotono.Graphics.Objects.Meshes
                 GL.BindBuffer(BufferTarget.ElementArrayBuffer, elementBufferObject);
                 GL.BufferData(BufferTarget.ElementArrayBuffer, indices[0].Count * sizeof(int), indices[0].ToArray(), BufferUsageHint.StaticDraw);
 
-                value = new MeshSettings
+                value = new MeshHiddenSettings
                 {
                     VertexArrayObject = vertexArrayObject,
                     VertexBufferObject = vertexBufferObject,

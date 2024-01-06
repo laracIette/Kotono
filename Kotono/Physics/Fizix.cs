@@ -2,7 +2,6 @@
 using Kotono.Graphics.Objects.Meshes;
 using Kotono.Utils;
 using OpenTK.Mathematics;
-using System.Linq;
 using Math = Kotono.Utils.Math;
 
 namespace Kotono.Physics
@@ -50,7 +49,7 @@ namespace Kotono.Physics
             var collisionCenter = Vector.Zero;
             int n = 0;
 
-            foreach (var collider in sphere.Collisions.Where(sphere.CollidesWith))
+            foreach (var collider in sphere.Collisions.FindAll(sphere.CollidesWith))
             {
                 collisionCenter += collider.Location;
                 n++;

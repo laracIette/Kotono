@@ -1,4 +1,5 @@
-﻿using Kotono.Input;
+﻿using Kotono.Graphics.Objects.Settings;
+using Kotono.Input;
 using Kotono.Utils;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using Math = Kotono.Utils.Math;
@@ -6,7 +7,7 @@ using Math = Kotono.Utils.Math;
 namespace Kotono.Graphics.Objects.Lights
 {
     internal class SpotLight() : 
-        Object3D()
+        Object3D(new Object3DSettings())
     {
         private float _cutOffAngle = 12.5f;
 

@@ -1,12 +1,15 @@
-﻿using Kotono.Utils;
+﻿using Kotono.Graphics.Objects.Settings;
+using Kotono.Utils;
 
 namespace Kotono.Graphics.Objects.Meshes
 {
     internal class GizmoMesh(string axis)
         : FrontMesh(
-              Path.Assets + @"Gizmo\gizmo_" + axis + ".ktf",
-              []
-          )
+            new MeshSettings
+            {
+                Path = Path.Assets + @"Gizmo\gizmo_" + axis + ".ktf"
+            }
+        )
     {
     }
 }

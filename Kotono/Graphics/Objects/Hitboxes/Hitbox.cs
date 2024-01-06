@@ -1,24 +1,26 @@
-﻿using Kotono.Utils;
+﻿using Kotono.Graphics.Objects.Settings;
+using Kotono.Utils;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Kotono.Graphics.Objects.Hitboxes
 {
-    internal abstract class Hitbox()
-        : Object3D(),
+    internal abstract class Hitbox(HitboxSettings settings)
+        : Object3D(settings),
         IHitbox
     {
         public bool IsColliding => TryGetCollider(out _);
 
-        public Color Color { get; set; } = Color.White;
+        public Color Color { get; set; } = settings.Color;
 
-        public List<Hitbox> Collisions { get; } = [];
+        public List<Hitbox> Collisions { get; } = settings.Collisions;
+
+        public List<Hitbox> Colliders => Collisions.FindAll(CollidesWith);
 
         public abstract bool CollidesWith(Hitbox hitbox);
 
         public bool TryGetCollider(out Hitbox? collider)
         {
-            collider = Collisions.FirstOrDefault(CollidesWith);
+            collider = Collisions.Find(CollidesWith);
 
             return collider != null;
         }

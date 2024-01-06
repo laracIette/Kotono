@@ -1,6 +1,5 @@
 ﻿using Kotono.Graphics.Objects;
 using Kotono.Graphics.Objects.Settings;
-using Kotono.Utils;
 using OpenTK.Graphics.OpenGL4;
 using System.Collections.Generic;
 

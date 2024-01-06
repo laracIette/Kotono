@@ -1,11 +1,12 @@
 ﻿using Kotono.Graphics.Objects.Meshes;
+using Kotono.Graphics.Objects.Settings;
 using Kotono.Utils;
 
 namespace Kotono.Graphics.Objects.Lights
 {
     internal class PointLight : Object3D
     {
-        private readonly Mesh _mesh;
+        private readonly PointLightMesh _mesh = new();
 
         public override Vector Location
         {
@@ -33,17 +34,17 @@ namespace Kotono.Graphics.Objects.Lights
 
         internal const int MAX_COUNT = 100;
 
-        internal PointLight(Vector location, Color ambient, Color diffuse, Color specular, float constant, float linear, float quadratic)
-            : base()
+        internal PointLight(PointLightSettings settings)
+            : base(settings)
         {
-            Ambient = ambient;
-            Color = diffuse;
-            Specular = specular;
-            Constant = constant;
-            Linear = linear;
-            Quadratic = quadratic;
+            Ambient = settings.Ambient;
+            Color = settings.Diffuse;
+            Specular = settings.Specular;
+            Constant = settings.Constant;
+            Linear = settings.Linear;
+            Quadratic = settings.Quadratic;
 
-            _mesh = new PointLightMesh(location, this);
+            _mesh.AttachTo(this);
         }
 
         public override void Delete()

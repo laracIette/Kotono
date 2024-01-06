@@ -29,7 +29,7 @@ namespace Kotono
         internal Window(WindowSettings windowSettings)
             : base(
                 GameWindowSettings.Default,
-                new NativeWindowSettings()
+                new NativeWindowSettings
                 {
                     Size = new Vector2i(windowSettings.Width, windowSettings.Height),
                     Title = windowSettings.WindowTitle,

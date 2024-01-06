@@ -1,18 +1,17 @@
-﻿using Kotono.Utils;
+﻿using Kotono.Graphics.Objects.Settings;
+using Kotono.Utils;
 using Random = Kotono.Utils.Random;
 
 namespace Kotono.Graphics.Objects.Lights
 {
     internal class RainbowPointLight()
         : PointLight(
-              Random.Vector(-20.0f, 20.0f),
-              Color.White / 20.0f,
-              Color.White,
-              Color.White,
-              1.0f,
-              0.09f,
-              0.032f
-          )
+            new PointLightSettings
+            {
+                Location = Random.Vector(-20.0f, 20.0f),
+                Ambient = Color.White / 20.0f
+            }
+        )
     {
         public override void Update()
         {
