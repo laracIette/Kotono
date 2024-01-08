@@ -62,28 +62,14 @@ namespace Kotono
         {
             // Create the color texture
             _colorBufferTexture = GL.GenTexture();
-            GL.BindTexture(TextureTarget.Texture2D, _colorBufferTexture);
-            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgb, (int)KT.Dest.W, (int)KT.Dest.H, 0, PixelFormat.Rgb, PixelType.UnsignedByte, IntPtr.Zero);
-            SetTextureParameters();
 
             // Create the depth and stencil texture
             _depthStencilBufferTexture = GL.GenTexture();
-            GL.BindTexture(TextureTarget.Texture2D, _depthStencilBufferTexture);
-            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Depth24Stencil8, (int)KT.Dest.W, (int)KT.Dest.H, 0, PixelFormat.DepthStencil, PixelType.UnsignedInt248, IntPtr.Zero);
-            SetTextureParameters();
-
-            // Unbind texture
-            GL.BindTexture(TextureTarget.Texture2D, 0);
 
             // Create the framebuffer
             _frameBuffer = GL.GenFramebuffer();
-            GL.BindFramebuffer(FramebufferTarget.Framebuffer, _frameBuffer);
 
-            // Attach textures to framebuffer
-            GL.FramebufferTexture2D(FramebufferTarget.Framebuffer, FramebufferAttachment.ColorAttachment0, TextureTarget.Texture2D, _colorBufferTexture, 0);
-            GL.FramebufferTexture2D(FramebufferTarget.Framebuffer, FramebufferAttachment.DepthStencilAttachment, TextureTarget.Texture2D, _depthStencilBufferTexture, 0);
-
-            CheckFrameBufferCompletion();
+            ResizeFrameBuffer();
         }
 
         private void ResizeFrameBuffer()
