@@ -47,8 +47,6 @@ namespace Kotono
                 ComponentManager.WindowViewport.Size = Size;
 
                 PerformanceWindow.UpdatePosition();
-
-                Log(Size);
             }
         }
 

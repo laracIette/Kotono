@@ -92,19 +92,7 @@ namespace Kotono
             GL.FramebufferTexture2D(FramebufferTarget.Framebuffer, FramebufferAttachment.ColorAttachment0, TextureTarget.Texture2D, _colorBufferTexture, 0);
             GL.FramebufferTexture2D(FramebufferTarget.Framebuffer, FramebufferAttachment.DepthStencilAttachment, TextureTarget.Texture2D, _depthStencilBufferTexture, 0);
 
-            CheckFrameBufferCompletion();
-        }
-
-        private static void SetTextureParameters()
-        {
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
-        }
-
-        private void CheckFrameBufferCompletion()
-        {
-            GL.BindFramebuffer(FramebufferTarget.Framebuffer, _frameBuffer);
-
+            // Check frame buffer completion
             if (GL.CheckFramebufferStatus(FramebufferTarget.Framebuffer) != FramebufferErrorCode.FramebufferComplete)
             {
                 throw new Exception($"error: Framebuffer isn't complete.");
@@ -112,6 +100,12 @@ namespace Kotono
 
             // Unbind framebuffer
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
+        }
+
+        private static void SetTextureParameters()
+        {
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
         }
 
         protected sealed override void OnLoad()
