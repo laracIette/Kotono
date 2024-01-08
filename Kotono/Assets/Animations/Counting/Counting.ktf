@@ -12,7 +12,7 @@ Dest: {
 	X: 100
 	Y: 200
 }
-Directory: W:\Visual Studio\Projects\Kotono\Kotono\Assets\Animations\Counting
+Directory: Animations\Counting
 Duration: 5.00
 FrameRate: 10
 Layer: 0

@@ -6,11 +6,11 @@ Color: {
 	G: 1
 	R: 1
 }
-Obj: W:\Visual Studio\Projects\Kotono\Kotono\Assets\Meshes\cube.obj
+Obj: Meshes\cube.obj
 Shader: Lighting
 Textures: {
-	Diffuse: W:\Visual Studio\Projects\Kotono\Kotono\Assets\Meshes\cube_diff.png
-	Specular: W:\Visual Studio\Projects\Kotono\Kotono\Assets\Meshes\cube_spec.png
+	Diffuse: Meshes\cube_diff.png
+	Specular: Meshes\cube_spec.png
 }
 Transform: {
 	Location: {

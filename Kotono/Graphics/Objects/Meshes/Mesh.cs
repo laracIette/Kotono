@@ -101,7 +101,7 @@ namespace Kotono.Graphics.Objects.Meshes
             _textures = new Texture[textureKeys.Count];
             for (int i = 0; i < textureKeys.Count; i++)
             {
-                _textures[i] = new Texture(_properties[textureKeys[i]], TextureUnit.Texture0 + i);
+                _textures[i] = new Texture(Path.Assets + _properties[textureKeys[i]], TextureUnit.Texture0 + i);
             }
 
             _shader = _properties["Shader"] switch
@@ -126,7 +126,7 @@ namespace Kotono.Graphics.Objects.Meshes
                 hitbox.Color = Color.Red;
             }
 
-            if (!_paths.TryGetValue(_properties["Obj"], out MeshHiddenSettings value))
+            if (!_paths.TryGetValue(Path.Assets + _properties["Obj"], out MeshHiddenSettings value))
             {
                 List<Vertex>[] models;
                 List<int>[] indices;
@@ -134,7 +134,7 @@ namespace Kotono.Graphics.Objects.Meshes
 
                 using (var importer = new AssimpContext())
                 {
-                    var scene = importer.ImportFile(_properties["Obj"], PostProcessSteps.Triangulate);
+                    var scene = importer.ImportFile(Path.Assets + _properties["Obj"], PostProcessSteps.Triangulate);
 
                     foreach (var face in scene.Meshes[0].Faces)
                     {

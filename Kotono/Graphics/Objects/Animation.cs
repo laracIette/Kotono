@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Math = Kotono.Utils.Math;
+using Path = Kotono.Utils.Path;
 
 namespace Kotono.Graphics.Objects
 {
@@ -94,13 +95,15 @@ namespace Kotono.Graphics.Objects
 
             string[] filePaths;
 
-            if (Directory.Exists(_properties.Directory))
+            string directory = Path.Assets + _properties.Directory;
+
+            if (Directory.Exists(directory))
             {
-                filePaths = Directory.GetFiles(_properties.Directory);
+                filePaths = Directory.GetFiles(directory);
             }
             else
             {
-                throw new DirectoryNotFoundException($"error: couldn't find directory at \"{_properties.Directory}\"");
+                throw new DirectoryNotFoundException($"error: couldn't find directory at \"{directory}\"");
             }
 
             foreach (var filePath in filePaths)

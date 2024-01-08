@@ -6,7 +6,7 @@ Color: {
 	G: 0.8324486
 	R: 0.7012456
 }
-Obj: W:\Visual Studio\Projects\Kotono\Kotono\Assets\Meshes\sphere.obj
+Obj: Meshes\sphere.obj
 Shader: PointLight
 Transform: {
 	Location: {
