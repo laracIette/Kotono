@@ -38,15 +38,8 @@ namespace Kotono.Graphics.Objects.Shapes
 
         public override void Draw()
         {
-            var model =
-                Matrix4.CreateScale((Vector3)Scale)
-                * Matrix4.CreateRotationX(Rotation.X)
-                * Matrix4.CreateRotationY(Rotation.Y)
-                * Matrix4.CreateRotationZ(Rotation.Z)
-                * Matrix4.CreateTranslation((Vector3)Location);
-
             ShaderManager.Hitbox.SetColor("color", Color);
-            ShaderManager.Hitbox.SetMatrix4("model", model);
+            ShaderManager.Hitbox.SetMatrix4("model", Transform.Model);
 
             GL.BindVertexArray(_vertexArrayObject);
             GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);

@@ -78,8 +78,6 @@ namespace Kotono.Graphics.Objects.Meshes
 
         internal Color Color { get; set; }
 
-        internal Matrix4 Model => Transform.Model;
-
         internal static double MaxIntersectionCheckTime => 0.1;
 
         internal double IntersectionCheckTime { get; set; } = MaxIntersectionCheckTime;
@@ -263,7 +261,7 @@ namespace Kotono.Graphics.Objects.Meshes
                 texture.Use();
             }
 
-            _shader.SetMatrix4("model", Model);
+            _shader.SetMatrix4("model", Transform.Model);
             _shader.SetColor("color", Color);
 
             GL.BindVertexArray(VertexArrayObject);

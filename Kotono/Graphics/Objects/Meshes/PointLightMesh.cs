@@ -48,7 +48,7 @@ namespace Kotono.Graphics.Objects.Meshes
 
         public override void Draw()
         {
-            _shader.SetMatrix4("model", Model);
+            _shader.SetMatrix4("model", Transform.Model);
             _shader.SetColor("color", Color);
 
             GL.BindVertexArray(VertexArrayObject);
