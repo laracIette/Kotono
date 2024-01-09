@@ -6,11 +6,15 @@ namespace Kotono.Graphics.Objects
 {
     internal abstract class Drawable : IDrawable, IDisposable
     {
+        protected DrawableSettings _settings;
+
         public virtual bool IsDraw { get; set; }
 
         internal Drawable(DrawableSettings settings)
         {
-            IsDraw = settings.IsDraw;
+            _settings = settings;
+
+            IsDraw = _settings.IsDraw;
 
             ObjectManager.Create(this);
         }

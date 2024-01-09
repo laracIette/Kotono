@@ -2,8 +2,8 @@
 {
     internal static class Path
     {
-        internal static string Assets => @"..\..\..\Assets\";
+        internal const string ASSETS = @"..\..\..\Assets\";
         
-        internal static string Shaders => @"..\..\..\Graphics\Shaders\";
+        internal const string SHADERS = @"..\..\..\Graphics\Shaders\";
     }
 }

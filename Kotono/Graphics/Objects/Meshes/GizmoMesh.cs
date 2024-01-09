@@ -7,7 +7,7 @@ namespace Kotono.Graphics.Objects.Meshes
         : FrontMesh(
             new MeshSettings
             {
-                Path = Path.Assets + @"Gizmo\gizmo_" + axis + ".ktf"
+                Path = Path.ASSETS + @"Gizmo\gizmo_" + axis + ".ktf"
             }
         )
     {

@@ -8,7 +8,7 @@ namespace Kotono.Graphics.Objects.Meshes
         : Mesh(
             new MeshSettings
             {
-                Path = Path.Assets + @"Meshes\cube.ktf",
+                Path = Path.ASSETS + @"Meshes\cube.ktf",
                 Hitboxes =
                 [
                     new Box(new HitboxSettings())

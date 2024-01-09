@@ -196,7 +196,7 @@ namespace Kotono.Graphics.Objects.Texts
                 _letters.Add(new Image(
                     new ImageSettings
                     {
-                        Path = Path.Assets + path,
+                        Path = Path.ASSETS + path,
                         Dest = dest,
                         Color = Color,
                         Layer = Layer

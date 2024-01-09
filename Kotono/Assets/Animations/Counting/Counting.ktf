@@ -1,10 +1,10 @@
 # Kotono Properties File
 
 Color: {
-	A: 1.00
-	B: 0.00
-	G: 1.00
-	R: 1.00
+	A: 1
+	B: 0
+	G: 1
+	R: 1
 }
 Dest: {
 	H: 60
@@ -13,7 +13,8 @@ Dest: {
 	Y: 200
 }
 Directory: Animations\Counting
-Duration: 5.00
+Duration: 5
 FrameRate: 10
+IsDraw: False
 Layer: 0
-StartTime: 3.00
+StartTime: 3

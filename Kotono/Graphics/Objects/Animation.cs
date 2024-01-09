@@ -83,19 +83,21 @@ namespace Kotono.Graphics.Objects
 
         public bool IsPlaying { get; private set; } = false;
 
-        private readonly AnimationProperties _properties;
+        private new readonly AnimationSettings _settings;
 
         /// <summary> 
         /// Create an Animation from files in a directory.
         /// </summary>
-        internal Animation(string path)
-            : base(new Object2DSettings { IsDraw = false })
+        internal Animation(AnimationSettings settings)
+            : base(settings)
         {
-            _properties = new AnimationProperties(path);
+            _settings = settings;
+            
+            IsDraw = false;
 
             string[] filePaths;
 
-            string directory = Path.Assets + _properties.Directory;
+            string directory = Path.ASSETS + settings.Directory;
 
             if (Directory.Exists(directory))
             {
@@ -115,17 +117,17 @@ namespace Kotono.Graphics.Objects
                         {
                             IsDraw = false,
                             Path = filePath,
-                            Dest = _properties.Dest,
-                            Color = _properties.Color,
-                            Layer = _properties.Layer
+                            Dest = settings.Dest,
+                            Layer = settings.Layer,
+                            Color = settings.Color
                         }
                     ));
                 }
             }
 
-            _frameRate = _properties.FrameRate;
-            _startTime = Time.NowS + _properties.StartTime;
-            _duration = _properties.Duration;
+            _frameRate = settings.FrameRate;
+            _startTime = Time.NowS + settings.StartTime;
+            _duration = settings.Duration;
         }
 
         public override void Update()
@@ -183,15 +185,16 @@ namespace Kotono.Graphics.Objects
 
         private void WriteData()
         {
-            _properties.Dest = Dest;
-            _properties.Layer = Layer;
+            _settings.Dest = Dest;
+            _settings.Layer = Layer;
+            _settings.IsDraw = IsDraw;
 
-            _properties.WriteFile();
+            File.Settings.WriteFile(Path.ASSETS + @"Animations\Counting\Counting.ktf", _settings);
         }
 
         public override string ToString()
         {
-            return $"Directory: {_properties["Directory"]}";
+            return $"Directory: {_settings.Directory}";
         }
 
         public override void Delete()

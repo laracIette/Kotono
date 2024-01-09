@@ -1,4 +1,7 @@
 ﻿using Kotono.Utils;
+using System.Collections.Generic;
+using System;
+using System.IO;
 
 namespace Kotono.Graphics.Objects.Settings
 {
@@ -8,12 +11,19 @@ namespace Kotono.Graphics.Objects.Settings
         /// The dest of the Object2D.
         /// <para> Default value : Rect.Zero </para>
         /// </summary>
-        internal Rect Dest { get; set; } = Rect.Zero;
+        public Rect Dest { get; set; } = Rect.Zero;
         
         /// <summary>
         /// The layer of the Object2D.
         /// <para> Default value : 0 </para>
         /// </summary>
-        internal int Layer { get; set; } = 0;
+        public int Layer { get; set; } = 0; 
+        
+        public override string ToString()
+        {
+            return base.ToString()
+                + $"Dest.X: {Dest.X}\nDest.Y: {Dest.Y}\nDest.W: {Dest.W}\nDest.H: {Dest.H}\n"
+                + $"Layer: {Layer}\n";
+        }
     }
 }

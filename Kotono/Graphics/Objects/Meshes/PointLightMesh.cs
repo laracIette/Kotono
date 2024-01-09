@@ -11,7 +11,7 @@ namespace Kotono.Graphics.Objects.Meshes
         : Mesh(
             new MeshSettings
             {
-                Path = Path.Assets + @"Meshes\pointLight.ktf",
+                Path = Path.ASSETS + @"Meshes\pointLight.ktf",
                 Hitboxes =
                 [
                     new Sphere(new HitboxSettings())

@@ -1,7 +1,9 @@
 ﻿using Kotono.Audio;
+using Kotono.File;
 using Kotono.Graphics.Objects;
 using Kotono.Graphics.Objects.Lights;
 using Kotono.Graphics.Objects.Meshes;
+using Kotono.Graphics.Objects.Settings;
 using Kotono.Input;
 using Kotono.Utils;
 using Keys = OpenTK.Windowing.GraphicsLibraryFramework.Keys;
@@ -25,7 +27,9 @@ namespace Kotono
 
             CreateObjects();
 
-            _animation = new Animation(Path.Assets + @"Animations\Counting\Counting.ktf");
+            var settings = Settings.Parse<AnimationSettings>(Path.ASSETS + @"Animations\Counting\Counting.ktf");
+
+            _animation = new Animation(settings);
         }
 
         protected override void Update()
