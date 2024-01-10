@@ -108,6 +108,7 @@ namespace Kotono.Graphics.Objects.Meshes
                 "Lighting" => ShaderManager.Lighting,
                 "PointLight" => ShaderManager.PointLight,
                 "Gizmo" => ShaderManager.Gizmo,
+                "FlatTexture" => ShaderManager.FlatTexture,
                 _ => throw new Exception($"error: Shader \"{_properties["Shader"]}\" isn't valid"),
             };
 

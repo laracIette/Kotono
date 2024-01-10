@@ -13,7 +13,7 @@ namespace Kotono.Graphics
 
         internal TextureUnit Unit { get; }
 
-        internal Texture(string path, TextureUnit unit)
+        internal Texture(string path, TextureUnit unit = TextureUnit.Texture0)
         {
             if (!_textures.ContainsKey(path))
             {

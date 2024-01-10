@@ -14,7 +14,7 @@ namespace Kotono.Graphics.Objects.Meshes
                     new Box(new HitboxSettings())
                 ]
             }
-          )
+        )
     {
     }
 }

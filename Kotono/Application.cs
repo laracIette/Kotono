@@ -30,6 +30,8 @@ namespace Kotono
             var settings = Settings.Parse<AnimationSettings>(Path.ASSETS + @"Animations\Counting\Counting.ktf");
 
             _animation = new Animation(settings);
+
+            new FlatTextureMesh();
         }
 
         protected override void Update()

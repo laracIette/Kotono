@@ -34,7 +34,7 @@ namespace Kotono.Graphics.Objects
 
             _transformation = Rect.Zero;
 
-            _texture = new Texture(Path, TextureUnit.Texture0);
+            _texture = new Texture(Path);
         }
 
         public override void Update()
