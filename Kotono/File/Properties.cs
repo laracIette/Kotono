@@ -26,9 +26,9 @@ namespace Kotono.File
 
             var fileString = IO.File.ReadAllText(path).Replace("\r", "");
             var tokens = fileString.Split("\n");
-            if (tokens[0] != "# Kotono Properties File")
+            if (tokens[0] != "# Kotono Settings File")
             {
-                throw new Exception($"error: file type must be \"properties\", file must start with \"# Kotono Properties File\"");
+                throw new Exception($"error: file type must be \"properties\", file must start with \"# Kotono Settings File\"");
             }
 
             var data = new Data();
@@ -119,7 +119,7 @@ namespace Kotono.File
 
         public void WriteFile()
         {
-            string text = "# Kotono Properties File\n\n";
+            string text = "# Kotono Settings File\n\n";
 
             var keyValues = Data.ToString().Split('\n').Where(s => s != "").ToList();
             keyValues.Sort();

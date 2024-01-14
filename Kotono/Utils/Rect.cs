@@ -24,6 +24,7 @@ namespace Kotono.Utils
         /// <summary> 
         /// The X component of the Rect. 
         /// </summary>
+        [Parsable]
         public float X
         {
             readonly get => Position.X;
@@ -33,6 +34,7 @@ namespace Kotono.Utils
         /// <summary> 
         /// The Y component of the Rect. 
         /// </summary>
+        [Parsable]
         public float Y
         {
             readonly get => Position.Y;
@@ -42,6 +44,7 @@ namespace Kotono.Utils
         /// <summary>
         /// The width component of the Rect. 
         /// </summary>
+        [Parsable]
         public float W
         {
             readonly get => Size.X;
@@ -51,6 +54,7 @@ namespace Kotono.Utils
         /// <summary>
         /// The height component of the Rect.
         /// </summary>
+        [Parsable]
         public float H
         {
             readonly get => Size.Y;

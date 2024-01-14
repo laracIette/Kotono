@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Kotono.Utils;
+using System;
 using System.Collections.Generic;
 
 namespace Kotono.Graphics.Objects.Settings
@@ -10,6 +11,7 @@ namespace Kotono.Graphics.Objects.Settings
         /// Wether the Drawable should be drawn.
         /// <para> Default value : true </para>
         /// </summary>
+        [Parsable]
         public virtual bool IsDraw { get; set; } = true;
 
         public override string ToString()

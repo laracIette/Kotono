@@ -106,6 +106,14 @@ namespace Kotono
             Console.WriteLine(obj);
         }
 
+        /// <summary>
+        /// Writes an empty line to the console.
+        /// </summary>
+        internal static void Log()
+        {
+            Log("");
+        }
+
         #endregion Logger
 
         internal static void Update()

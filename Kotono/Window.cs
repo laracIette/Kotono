@@ -48,6 +48,8 @@ namespace Kotono
             Mouse.CursorState = windowSettings.CursorState;
             Mouse.MouseState = MouseState;
 
+            Mouse.HideCursor();
+
             Keyboard.KeyboardState = KeyboardState;
 
             new Camera();
@@ -199,7 +201,10 @@ namespace Kotono
             KT.Position = (Point)Location;
             KT.Size = (Point)ClientSize;
 
-            ResizeFrameBuffer();
+            if (KT.Size > Point.Zero)
+            {
+                ResizeFrameBuffer();
+            }
         }
 
         protected sealed override void OnMove(WindowPositionEventArgs e)
