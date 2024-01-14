@@ -9,7 +9,7 @@ namespace Kotono.Utils
 {
     [Serializable]
     [StructLayout(LayoutKind.Sequential)]
-    public struct Color
+    public struct Color : IEquatable<Color>
     {
         private float _r;
 
@@ -261,6 +261,16 @@ namespace Kotono.Utils
             left.B -= right.B;
             left.A -= right.A;
             return left;
+        }
+
+        public static Color Parse(string[] values)
+        {
+            return new Color(
+                float.Parse(values[0]),
+                float.Parse(values[1]),
+                float.Parse(values[2]),
+                float.Parse(values[3])
+            );
         }
 
         public static Color operator +(Color left, Color right)

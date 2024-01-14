@@ -270,6 +270,16 @@ namespace Kotono.Utils
             };
         }
 
+        public static Rect Parse(string[] values)
+        {
+            return new Rect(
+                float.Parse(values[0]),
+                float.Parse(values[1]),
+                float.Parse(values[2]),
+                float.Parse(values[3])
+            );
+        }
+
         public static Rect operator +(Rect left, Rect right)
         {
             left.X += right.X;

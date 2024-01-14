@@ -1,6 +1,5 @@
 ﻿using Kotono.Graphics.Objects.Settings;
 using Kotono.Utils;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +20,7 @@ namespace Kotono.File
             }
 
             var tokens = IO.File.ReadAllText(path).Replace("\r", "").Split("\n").ToList();
-            
+
             if (tokens[0] != "# Kotono Settings File")
             {
                 throw new Exception($"error: file type must be \"properties\", file must start with \"# Kotono Settings File\"");
@@ -46,26 +45,51 @@ namespace Kotono.File
 
             foreach (var (member, parents) in members)
             {
-#if DEBUG
                 // If data has a value corresponding to parents
-                var value = data.Any(d => d.Key.SequenceEqual(parents)) 
-                    ? data.First(d => d.Key.SequenceEqual(parents)).Value 
+                var value = data.Any(p => p.Key.SequenceEqual(parents))
+                    ? data.First(p => p.Key.SequenceEqual(parents)).Value
                     : null;
 
                 KT.Log($"{member.MemberType()}, {string.Join('.', parents)}, {value}");
 
-                if (parents.Length == 2)
+                if (value != null)
                 {
-                    Type parentType = members.First(p => p.Value.SequenceEqual(parents.Take(parents.Length - 1))).Key.MemberType();
-                    var obj = Activator.CreateInstance(parentType);
-                    member.SetValue(settings, obj);
-                }
+                    // Kotono types
+                    if (parents.Length > 1)
+                    {
+                        string type = parents[0];
 
-                else if (value != null)
-                {
-                    member.SetValue(settings, value);
+                        string[] values = [.. data.Where(p => p.Key[0] == type).ToDictionary().Values];
+
+                        if (settings is AnimationSettings animation)
+                        {
+                            switch (type)
+                            {
+                                case "Color":
+                                    // Reorder for R, G, B, A
+                                    (values[0], values[1], values[2], values[3]) = (values[3], values[2], values[1], values[0]);
+                                    animation.Color = Color.Parse(values);
+                                    break;
+                            }
+                        }
+                        if (settings is Object2DSettings object2d)
+                        {
+                            switch (type)
+                            {
+                                case "Dest":
+                                    // Reorder for X, Y, W, H
+                                    (values[0], values[1], values[2], values[3]) = (values[2], values[3], values[1], values[0]);
+                                    object2d.Dest = Rect.Parse(values);
+                                    break;
+                            }
+                        }
+                    }
+                    // Built-in types
+                    else
+                    {
+                        member.SetValue(settings, value);
+                    }
                 }
-#endif
             }
 
             KT.Log();
