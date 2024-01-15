@@ -272,12 +272,13 @@ namespace Kotono.Utils
 
         public static Rect Parse(string[] values)
         {
-            return new Rect(
-                float.Parse(values[0]),
-                float.Parse(values[1]),
-                float.Parse(values[2]),
-                float.Parse(values[3])
-            );
+            return new Rect
+            {
+                X = float.Parse(values[0]),
+                Y = float.Parse(values[1]),
+                W = float.Parse(values[2]),
+                H = float.Parse(values[3])
+            };
         }
 
         public static Rect operator +(Rect left, Rect right)

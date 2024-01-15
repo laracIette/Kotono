@@ -2,17 +2,17 @@
 
 Color: {
 	A: 1
-	B: 0.8066598
-	G: 0.013287097
-	R: 0.59842825
+	B: 0.45244098
+	G: 0.97237885
+	R: 0.1544011
 }
 Obj: Meshes\sphere.obj
 Shader: PointLight
 Transform: {
 	Location: {
-		X: -2.0024345
-		Y: -0.9111551
-		Z: -12.749483
+		X: -13.749918
+		Y: -5.598146
+		Z: -18.254166
 	}
 	Rotation: {
 		X: 1

@@ -265,12 +265,13 @@ namespace Kotono.Utils
 
         public static Color Parse(string[] values)
         {
-            return new Color(
-                float.Parse(values[0]),
-                float.Parse(values[1]),
-                float.Parse(values[2]),
-                float.Parse(values[3])
-            );
+            return new Color
+            {
+                R = float.Parse(values[0]),
+                G = float.Parse(values[1]),
+                B = float.Parse(values[2]),
+                A = float.Parse(values[3])
+            };
         }
 
         public static Color operator +(Color left, Color right)

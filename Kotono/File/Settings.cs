@@ -50,14 +50,13 @@ namespace Kotono.File
                     ? data.First(p => p.Key.SequenceEqual(parents)).Value
                     : null;
 
-                KT.Log($"{member.MemberType()}, {string.Join('.', parents)}, {value}");
-
                 if (value != null)
                 {
                     // Kotono types
                     if (parents.Length > 1)
                     {
-                        string type = parents[0];
+                        // works but bad
+                        string type = parents[^2];
 
                         string[] values = [.. data.Where(p => p.Key[0] == type).ToDictionary().Values];
 
@@ -70,6 +69,9 @@ namespace Kotono.File
                                     (values[0], values[1], values[2], values[3]) = (values[3], values[2], values[1], values[0]);
                                     animation.Color = Color.Parse(values);
                                     break;
+
+                                default:
+                                    break;
                             }
                         }
                         if (settings is Object2DSettings object2d)
@@ -80,6 +82,31 @@ namespace Kotono.File
                                     // Reorder for X, Y, W, H
                                     (values[0], values[1], values[2], values[3]) = (values[2], values[3], values[1], values[0]);
                                     object2d.Dest = Rect.Parse(values);
+                                    break;
+
+                                default:
+                                    break;
+                            }
+                        }
+                        else if (settings is Object3DSettings object3d)
+                        {
+                            // works but bad
+                            // maybe just remove transform in .ktf but would just delay the issue
+                            switch (type)
+                            {
+                                case "Location":
+                                    object3d.Location = Vector.Parse(values);
+                                    break;
+
+                                case "Rotation":
+                                    object3d.Rotation = Vector.Parse(values);
+                                    break;
+
+                                case "Scale":
+                                    object3d.Scale = Vector.Parse(values);
+                                    break;
+
+                                default:
                                     break;
                             }
                         }
@@ -92,8 +119,6 @@ namespace Kotono.File
                 }
             }
 
-            KT.Log();
-            KT.Log(settings);
             return settings;
 
 
