@@ -12,7 +12,7 @@ namespace Kotono.File
     {
         private const string ALLOWED_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
-        internal static T Parse<T>(string path) where T : DrawableSettings
+        internal static T Parse1<T>(string path) where T : DrawableSettings
         {
             if (!path.EndsWith(".ktf"))
             {
@@ -56,59 +56,26 @@ namespace Kotono.File
                     if (parents.Length > 1)
                     {
                         // works but bad
-                        string type = parents[^2];
+                        string key = parents[^2];
 
-                        string[] values = [.. data.Where(p => p.Key[0] == type).ToDictionary().Values];
+                        string[] values = [.. data.Where(p => p.Key[0] == key).ToDictionary().Values];
 
-                        if (settings is AnimationSettings animation)
+                        switch (settings)
                         {
-                            switch (type)
-                            {
-                                case "Color":
-                                    // Reorder for R, G, B, A
-                                    (values[0], values[1], values[2], values[3]) = (values[3], values[2], values[1], values[0]);
-                                    animation.Color = Color.Parse(values);
-                                    break;
+                            case AnimationSettings animation:
+                                SetAnimationSettingsValues(animation, key, values);
+                                break;
 
-                                default:
-                                    break;
-                            }
-                        }
-                        if (settings is Object2DSettings object2d)
-                        {
-                            switch (type)
-                            {
-                                case "Dest":
-                                    // Reorder for X, Y, W, H
-                                    (values[0], values[1], values[2], values[3]) = (values[2], values[3], values[1], values[0]);
-                                    object2d.Dest = Rect.Parse(values);
-                                    break;
+                            case Object2DSettings object2d:
+                                SetObject2DSettingsValues(object2d, key, values);
+                                break;
 
-                                default:
-                                    break;
-                            }
-                        }
-                        else if (settings is Object3DSettings object3d)
-                        {
-                            // works but bad
-                            // maybe just remove transform in .ktf but would just delay the issue
-                            switch (type)
-                            {
-                                case "Location":
-                                    object3d.Location = Vector.Parse(values);
-                                    break;
+                            case Object3DSettings object3d:
+                                SetObject3DSettingsValues(object3d, key, values);
+                                break;
 
-                                case "Rotation":
-                                    object3d.Rotation = Vector.Parse(values);
-                                    break;
-
-                                case "Scale":
-                                    object3d.Scale = Vector.Parse(values);
-                                    break;
-
-                                default:
-                                    break;
-                            }
+                            default:
+                                break;
                         }
                     }
                     // Built-in types
@@ -167,6 +134,119 @@ namespace Kotono.File
                 // Remove last parent once it has been parsed
                 currentParents.RemoveLast();
             }
+
+            void SetAnimationSettingsValues(AnimationSettings animation, string key, string[] values)
+            {
+                SetObject2DSettingsValues(animation, key, values);
+
+                switch (key)
+                {
+                    case "Color":
+                        // Reorder for R, G, B, A
+                        (values[0], values[1], values[2], values[3]) = (values[3], values[2], values[1], values[0]);
+                        animation.Color = Color.Parse(values);
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+
+            void SetObject2DSettingsValues(Object2DSettings object2d, string key, string[] values)
+            {
+                switch (key)
+                {
+                    case "Dest":
+                        // Reorder for X, Y, W, H
+                        (values[0], values[1], values[2], values[3]) = (values[2], values[3], values[1], values[0]);
+                        object2d.Dest = Rect.Parse(values);
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+
+            void SetObject3DSettingsValues(Object3DSettings object3d, string key, string[] values)
+            {
+                // works but bad
+                // maybe just remove transform in .ktf but would just delay the issue
+                switch (key)
+                {
+                    case "Location":
+                        object3d.Location = Vector.Parse(values);
+                        break;
+
+                    case "Rotation":
+                        object3d.Rotation = Vector.Parse(values);
+                        break;
+
+                    case "Scale":
+                        object3d.Scale = Vector.Parse(values);
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+        }
+
+        internal static T Parse<T>(string path) where T : DrawableSettings
+        {
+            if (!path.EndsWith(".ktf"))
+            {
+                throw new FormatException($"error: file path \"{path}\" must end with \".ktf\"");
+            }
+
+            var tokens = IO.File.ReadAllText(path).Replace("\r", "").Split("\n").ToList();
+
+            if (tokens[0] != "# Kotono Settings File")
+            {
+                throw new FormatException($"error: file type must be \"properties\", file must start with \"# Kotono Settings File\"");
+            }
+            else
+            {
+                tokens.RemoveAt(0);
+            }
+
+            T settings = Activator.CreateInstance<T>();
+
+            foreach (var token in tokens)
+            {
+                if (token == "")
+                {
+                    continue;
+                }
+
+                var parts = token.Split(' ');
+
+                var type = Type.GetType(parts[0]) ?? throw new Exception($"error: specified type \"{parts[0]}\" doesn't exist.");
+
+                var name = parts[1] ?? throw new Exception($"error: no specified name.");
+
+                var value = parts[2..] ?? throw new Exception($"error: no specified value.");
+
+                foreach (var member in typeof(T).GetMembers().OfAttribute<ParsableAttribute>())
+                {
+                    if (member.MemberType() == type && member.Name == name)
+                    {
+                        switch (type.FullName)
+                        {
+                            case "Kotono.Utils.Color":
+                                break;
+
+                            case "Kotono.Utils.Rect":
+                                break;
+
+                            default:
+                                member.SetValue(settings, value[0]);
+                                break;
+                        }
+                    }
+                }
+            }
+
+            return settings;
         }
 
         /// <summary>
@@ -208,82 +288,45 @@ namespace Kotono.File
             return true;
         }
 
-        internal static void WriteFile<T>(string path, T properties) where T : DrawableSettings
+        internal static void WriteFile<T>(string path, T settings) where T : DrawableSettings
         {
             string text = "# Kotono Settings File\n\n";
 
-            var keyValues = properties.ToString().Split('\n').Where(s => s != "").ToList();
-            keyValues.Sort();
-
-            // contains the parents path already seen
-            var writtenParents = new List<List<string>>();
-
-            foreach (var keyValue in keyValues)
+            foreach (var member in settings.GetType().GetMembers().OfAttribute<ParsableAttribute>())
             {
-                // separate key / value
-                int firstColonIndex = keyValue.IndexOf(':');
+                text += $"{member.MemberType()} {member.Name}";
 
-                string key = keyValue[..firstColonIndex];
-                string value = keyValue[firstColonIndex..];
+                var value = member.GetValue(settings);
 
-                // parents path, ending with the value
-                var parents = key.Split('.').ToList();
-
-                // i from 1 to parents.Count / means it has to have at least 1 parent
-                for (int i = 1; i < parents.Count; i++)
+                if (value?.GetType().Namespace?.StartsWith("Kotono") ?? false)
                 {
-                    var currentParents = parents.GetRange(0, i);
+                    AddMemberValue(member.GetValue(settings));
+                }
+                else
+                {
+                    text += $" {member.GetValue(settings)}";
+                }
 
-                    // if parents paths doesn't contain path to i
-                    if (!writtenParents.Any(a => a.SequenceEqual(currentParents)))
+                text += "\n";
+
+                void AddMemberValue(object? obj)
+                {
+                    if (obj == null)
                     {
-                        // add it
-                        writtenParents.Add(currentParents);
-
-                        // indent text
-                        for (int j = 0; j < i - 1; j++)
-                        {
-                            text += '\t';
-                        }
-
-                        // add last parent of current path and opening brace
-                        text += currentParents.Last() + ": {" + '\n';
+                        throw new Exception("error: obj shouldn't be null.");
                     }
-                }
 
-                // indent
-                for (int i = 0; i < parents.Count - 1; i++)
-                {
-                    text += '\t';
-                }
-                // add the value
-                text += parents.Last() + value + '\n';
-            }
-
-            // add closing braces
-            string result = "";
-            var textLines = text.Split('\n');
-            for (int i = 0; i < textLines.Length - 1; i++)
-            {
-                result += textLines[i] + "\n";
-
-                var currentIndent = textLines[i].Count(c => c == '\t');
-                var nextIndent = textLines[i + 1].Count(c => c == '\t');
-
-                if (currentIndent > nextIndent)
-                {
-                    for (int j = currentIndent; j > nextIndent; j--)
+                    // For each member of type's parsable members
+                    foreach (var member in obj.GetType().GetMembers().OfAttribute<ParsableAttribute>())
                     {
-                        for (int k = 0; k < j - 1; k++)
-                        {
-                            result += "\t";
-                        }
-                        result += "}\n";
+                        text += $" {member.GetValue(obj)}";
+
+                        AddMemberValue(member.GetValue(obj));
                     }
                 }
             }
 
-            IO.File.WriteAllText(path, result);
+            IO.File.WriteAllText(path, text.Sorted("\n", "\n").Trim());
         }
     }
 }

@@ -8,7 +8,7 @@ namespace Kotono.Utils
     internal static class Extensions
     {
         /// <summary>
-        /// Remove the last element from a list of type T.
+        /// Remove the last element from a list of type TSource.
         /// </summary>
         /// <typeparam name="TSource"></typeparam>
         /// <param name="source"></param>
@@ -73,6 +73,61 @@ namespace Kotono.Utils
                 default:
                     throw new NotSupportedException("error: This function should only be used for FieldInfo or PropertyInfo types.");
             };
+        }
+        
+        /// <summary>
+        /// Get the value of the member supported by the given object.
+        /// This function should only be used for <see cref="FieldInfo"/> or <see cref="PropertyInfo"/> types.
+        /// </summary>
+        /// <param name="memberInfo"></param>
+        /// <param name="obj"></param>
+        /// <param name="value"></param>
+        /// <exception cref="NotSupportedException"></exception>
+        internal static object? GetValue(this MemberInfo memberInfo, object? obj)
+        {
+            switch (memberInfo)
+            {
+                case FieldInfo fieldInfo:
+                    return fieldInfo.GetValue(obj);
+
+                case PropertyInfo propertyInfo:
+                    return propertyInfo.GetValue(obj);
+
+                default:
+                    throw new NotSupportedException("error: This function should only be used for FieldInfo or PropertyInfo types.");
+            };
+        }
+
+        /// <summary>
+        /// Get a sorted list of type TSource.
+        /// </summary>
+        /// <typeparam name="TSource"></typeparam>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        internal static List<TSource> Sorted<TSource>(this List<TSource> source)
+        {
+            source.Sort();
+            return source;
+        }
+
+        /// <summary>
+        /// Get a sorted string given a separator and a newSeparator to replace it with.
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="separator"></param>
+        /// <param name="newSeparator"></param>
+        /// <returns></returns>
+        internal static string Sorted(this string source, string separator, string newSeparator)
+        {
+            var sortedList = source.Split(separator).ToList().Sorted();
+
+            source = "";
+            foreach (var item in sortedList)
+            {
+                source += item + newSeparator;
+            }
+
+            return source;
         }
     }
 }
