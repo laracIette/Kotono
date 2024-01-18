@@ -1,5 +1,5 @@
-﻿using Kotono.Graphics.Objects.Meshes;
-using Kotono.Graphics.Objects.Settings;
+﻿using Kotono.File;
+using Kotono.Graphics.Objects.Meshes;
 using Kotono.Utils;
 
 namespace Kotono.Graphics.Objects.Lights
@@ -10,7 +10,7 @@ namespace Kotono.Graphics.Objects.Lights
 
         public override Vector Location
         {
-            get => _mesh.Location; 
+            get => _mesh.Location;
             set => _mesh.Location = value;
         }
 
@@ -38,7 +38,7 @@ namespace Kotono.Graphics.Objects.Lights
             : base(settings)
         {
             Ambient = settings.Ambient;
-            Color = settings.Diffuse;
+            Color = settings.Color;
             Specular = settings.Specular;
             Constant = settings.Constant;
             Linear = settings.Linear;

@@ -1,4 +1,4 @@
-﻿using Kotono.Graphics.Objects.Settings;
+﻿using Kotono.File;
 using Kotono.Graphics.Objects.Texts;
 using Kotono.Utils;
 using System.Linq;
@@ -19,9 +19,9 @@ namespace Kotono.Graphics.Statistics
         private readonly double[] _times = new double[60];
 
         private int _timeIndex = 0;
-        
+
         internal double Time { get; private set; }
-        
+
         internal double Rate => 1.0 / Time;
 
         internal void AddTime(double newTime)

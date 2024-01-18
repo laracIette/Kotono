@@ -42,7 +42,7 @@ namespace Kotono.Utils
         {
             return System.MathF.Cos(value);
         }
-        
+
         /// <inheritdoc cref="System.MathF.Sin(float)" />
         public static float Sin(float value)
         {

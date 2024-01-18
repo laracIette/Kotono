@@ -1,4 +1,6 @@
-﻿namespace Kotono.Graphics.Objects.Settings
+﻿using Kotono.Utils;
+
+namespace Kotono.File
 {
     internal class RoundedBorderSettings : RoundedBoxSettings
     {
@@ -6,6 +8,7 @@
         /// The thickness of the RoundedBorder.
         /// <para> Default value : 1.0f </para>
         /// </summary>
-        internal float Thickness { get; set; } = 1.0f;
+        [Parsable]
+        public float Thickness { get; set; } = 1.0f;
     }
 }

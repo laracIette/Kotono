@@ -1,5 +1,4 @@
 ﻿using Kotono.File;
-using Kotono.Graphics.Objects.Settings;
 using Kotono.Utils;
 using System;
 using System.Collections.Generic;
@@ -83,19 +82,17 @@ namespace Kotono.Graphics.Objects
 
         public bool IsPlaying { get; private set; } = false;
 
-        private readonly AnimationProperties _properties;
-
         /// <summary> 
         /// Create an Animation from files in a directory.
         /// </summary>
-        internal Animation(string path)
-            : base(new Object2DSettings { IsDraw = false })
+        internal Animation(AnimationSettings settings)
+            : base(settings)
         {
-            _properties = new AnimationProperties(path);
+            IsDraw = false;
 
             string[] filePaths;
 
-            string directory = Path.Assets + _properties.Directory;
+            string directory = Path.ASSETS + settings.Directory;
 
             if (Directory.Exists(directory))
             {
@@ -114,18 +111,18 @@ namespace Kotono.Graphics.Objects
                         new ImageSettings
                         {
                             IsDraw = false,
-                            Path = filePath,
-                            Dest = _properties.Dest,
-                            Color = _properties.Color,
-                            Layer = _properties.Layer
+                            Texture = filePath,
+                            Dest = settings.Dest,
+                            Layer = settings.Layer,
+                            Color = settings.Color
                         }
                     ));
                 }
             }
 
-            _frameRate = _properties.FrameRate;
-            _startTime = Time.NowS + _properties.StartTime;
-            _duration = _properties.Duration;
+            _frameRate = settings.FrameRate;
+            _startTime = Time.NowS + settings.StartTime;
+            _duration = settings.Duration;
         }
 
         public override void Update()
@@ -183,15 +180,16 @@ namespace Kotono.Graphics.Objects
 
         private void WriteData()
         {
-            _properties.Dest = Dest;
-            _properties.Layer = Layer;
+            ((AnimationSettings)_settings).Dest = Dest;
+            ((AnimationSettings)_settings).Layer = Layer;
+            ((AnimationSettings)_settings).IsDraw = IsDraw;
 
-            _properties.WriteFile();
+            Settings.WriteFile(_settings);
         }
 
         public override string ToString()
         {
-            return $"Directory: {_properties["Directory"]}";
+            return $"Directory: {((AnimationSettings)_settings).Directory}";
         }
 
         public override void Delete()

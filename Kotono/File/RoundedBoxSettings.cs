@@ -1,25 +1,21 @@
 ﻿using Kotono.Utils;
 
-namespace Kotono.Graphics.Objects.Settings
+namespace Kotono.File
 {
     internal class RoundedBoxSettings : Object2DSettings
     {
         /// <summary>
-        /// The color of the RoundedBox.
-        /// <para> Default value : Color.White </para>
-        /// </summary>
-        internal Color Color { get; set; } = Color.White;
-
-        /// <summary>
         /// The fall off of the RoundedBox.
         /// <para> Default value : 0.0f </para>
         /// </summary>
-        internal float FallOff { get; set; } = 0.0f;
-        
+        [Parsable]
+        public float FallOff { get; set; } = 0.0f;
+
         /// <summary>
         /// The corner size of the RoundedBox.
         /// <para> Default value : 0.0f </para>
         /// </summary>
-        internal float CornerSize { get; set; } = 0.0f;
+        [Parsable]
+        public float CornerSize { get; set; } = 0.0f;
     }
 }

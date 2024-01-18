@@ -1,5 +1,5 @@
-﻿using Kotono.Graphics.Objects;
-using Kotono.Graphics.Objects.Settings;
+﻿using Kotono.File;
+using Kotono.Graphics.Objects;
 using Kotono.Utils;
 
 namespace Kotono.Graphics.Statistics

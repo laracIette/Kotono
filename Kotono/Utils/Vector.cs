@@ -211,6 +211,16 @@ namespace Kotono.Utils
             return v;
         }
 
+        public static Vector Parse(string[] values)
+        {
+            return new Vector
+            {
+                X = float.Parse(values[0]),
+                Y = float.Parse(values[1]),
+                Z = float.Parse(values[2])
+            };
+        }
+
         public static Vector operator +(Vector left, Vector right)
         {
             left.X += right.X;

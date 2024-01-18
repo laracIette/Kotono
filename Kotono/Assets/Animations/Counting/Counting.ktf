@@ -1,19 +1,9 @@
-# Kotono Properties File
-
-Color: {
-	A: 1.00
-	B: 0.00
-	G: 1.00
-	R: 1.00
-}
-Dest: {
-	H: 60
-	W: 50
-	X: 100
-	Y: 200
-}
-Directory: Animations\Counting
-Duration: 5.00
-FrameRate: 10
-Layer: 0
-StartTime: 3.00
+# Kotono Settings File
+Kotono.Utils.Color Color 1 1 0 1
+Kotono.Utils.Rect Dest 100 200 50 60
+System.Boolean IsDraw False
+System.Double Duration 5
+System.Double StartTime 3
+System.Int32 FrameRate 10
+System.Int32 Layer 0
+System.String Directory Animations\Counting

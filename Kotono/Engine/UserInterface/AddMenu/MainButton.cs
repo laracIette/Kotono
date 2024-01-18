@@ -11,8 +11,8 @@ namespace Kotono.Engine.UserInterface.AddMenu
 
         private readonly Anchor _anchor = anchor;
 
-        public override bool IsDraw 
-        { 
+        public override bool IsDraw
+        {
             get => base.IsDraw;
             set
             {

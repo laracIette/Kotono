@@ -1,31 +1,8 @@
-# Kotono Properties File
-
-Color: {
-	A: 1
-	B: 0
-	G: 0
-	R: 1
-}
-Obj: Gizmo\gizmo_x.obj
-Shader: Gizmo
-Textures: {
-	Diffuse: Gizmo\gizmo_diff.png
-	Specular: Gizmo\gizmo_spec.png
-}
-Transform: {
-	Location: {
-		X: 0.58744544
-		Y: -2.6454995
-		Z: -8.025252
-	}
-	Rotation: {
-		X: 0
-		Y: 0
-		Z: 0
-	}
-	Scale: {
-		X: 0.11293926
-		Y: 0.11293926
-		Z: 0.11293926
-	}
-}
+# Kotono Settings File
+Kotono.Utils.Color Color 1 0 0 1
+System.String Model Gizmo\gizmo_x.obj
+Kotono.Graphics.Shaders.Shader Shader Gizmo
+Kotono.Graphics.Texture Textures Gizmo\gizmo_diff.png Gizmo\gizmo_spec.png
+Kotono.Utils.Vector Location 1.3513072 0 -1
+Kotono.Utils.Vector Rotation 0 0 0
+Kotono.Utils.Vector Scale 0.022414405 0.022414405 0.022414405

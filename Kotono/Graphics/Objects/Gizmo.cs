@@ -157,7 +157,7 @@ namespace Kotono.Graphics.Objects
         internal static bool TryAttachTo(Mesh mesh)
         {
             if (mesh is not GizmoMesh
-                && Mouse.IsButtonPressed(MouseButton.Left) 
+                && Mouse.IsButtonPressed(MouseButton.Left)
                 && Mouse.CursorState == CursorState.Confined
                 && mesh.IsMouseOn(out _, out _)
             )

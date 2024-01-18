@@ -1,5 +1,4 @@
-﻿using Kotono.File;
-using Kotono.Graphics;
+﻿using Kotono.Graphics;
 using Kotono.Graphics.Objects;
 using OpenTK.Mathematics;
 using System;
@@ -24,6 +23,7 @@ namespace Kotono.Utils
         /// <summary> 
         /// The X component of the Rect. 
         /// </summary>
+        [Parsable]
         public float X
         {
             readonly get => Position.X;
@@ -33,6 +33,7 @@ namespace Kotono.Utils
         /// <summary> 
         /// The Y component of the Rect. 
         /// </summary>
+        [Parsable]
         public float Y
         {
             readonly get => Position.Y;
@@ -42,6 +43,7 @@ namespace Kotono.Utils
         /// <summary>
         /// The width component of the Rect. 
         /// </summary>
+        [Parsable]
         public float W
         {
             readonly get => Size.X;
@@ -51,6 +53,7 @@ namespace Kotono.Utils
         /// <summary>
         /// The height component of the Rect.
         /// </summary>
+        [Parsable]
         public float H
         {
             readonly get => Size.Y;
@@ -255,14 +258,14 @@ namespace Kotono.Utils
             return Overlaps(left.Dest, right.Dest);
         }
 
-        public static Rect FromProperties(Properties p)
+        public static Rect Parse(string[] values)
         {
             return new Rect
             {
-                X = float.Parse(p["Dest.X"]),
-                Y = float.Parse(p["Dest.Y"]),
-                W = float.Parse(p["Dest.W"]),
-                H = float.Parse(p["Dest.H"])
+                X = float.Parse(values[0]),
+                Y = float.Parse(values[1]),
+                W = float.Parse(values[2]),
+                H = float.Parse(values[3])
             };
         }
 

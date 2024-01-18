@@ -1,4 +1,4 @@
-﻿using Kotono.Graphics.Objects.Settings;
+﻿using Kotono.File;
 using Kotono.Input;
 using Kotono.Utils;
 using OpenTK.Graphics.OpenGL4;
@@ -23,18 +23,18 @@ namespace Kotono.Graphics.Objects
         private Matrix4 Model =>
             Matrix4.CreateScale(Dest.NDC.W, Dest.NDC.H, 1.0f)
             * Matrix4.CreateTranslation(Dest.NDC.X, Dest.NDC.Y, 0.0f);
-        
+
         internal bool IsMouseOn => Rect.Overlaps(Dest, Mouse.Position);
 
         internal Image(ImageSettings settings)
             : base(settings)
         {
-            Path = settings.Path;
+            Path = settings.Texture;
             Color = settings.Color;
 
             _transformation = Rect.Zero;
 
-            _texture = new Texture(Path, TextureUnit.Texture0);
+            _texture = new Texture(Path);
         }
 
         public override void Update()

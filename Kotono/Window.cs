@@ -39,7 +39,7 @@ namespace Kotono
                 }
             )
         {
-            // For Kotono.File.Properties, needed to parse float correctly
+            // Needed to parse float correctly
             CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
             CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
 
@@ -47,6 +47,8 @@ namespace Kotono
 
             Mouse.CursorState = windowSettings.CursorState;
             Mouse.MouseState = MouseState;
+
+            Mouse.HideCursor();
 
             Keyboard.KeyboardState = KeyboardState;
 
@@ -199,7 +201,10 @@ namespace Kotono
             KT.Position = (Point)Location;
             KT.Size = (Point)ClientSize;
 
-            ResizeFrameBuffer();
+            if (KT.Size > Point.Zero)
+            {
+                ResizeFrameBuffer();
+            }
         }
 
         protected sealed override void OnMove(WindowPositionEventArgs e)

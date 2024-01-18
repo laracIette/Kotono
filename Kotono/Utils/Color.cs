@@ -1,5 +1,4 @@
-﻿using Kotono.File;
-using OpenTK.Mathematics;
+﻿using OpenTK.Mathematics;
 using System;
 using System.Globalization;
 using System.Linq;
@@ -9,7 +8,7 @@ namespace Kotono.Utils
 {
     [Serializable]
     [StructLayout(LayoutKind.Sequential)]
-    public struct Color
+    public struct Color : IEquatable<Color>
     {
         private float _r;
 
@@ -22,6 +21,7 @@ namespace Kotono.Utils
         /// <summary> 
         /// The red component of the Color. 
         /// </summary>
+        [Parsable]
         public float R
         {
             readonly get => _r;
@@ -31,6 +31,7 @@ namespace Kotono.Utils
         /// <summary> 
         /// The green component of the Color. 
         /// </summary>
+        [Parsable]
         public float G
         {
             readonly get => _g;
@@ -40,6 +41,7 @@ namespace Kotono.Utils
         /// <summary> 
         /// The blue component of the Color. 
         /// </summary>
+        [Parsable]
         public float B
         {
             readonly get => _b;
@@ -49,6 +51,7 @@ namespace Kotono.Utils
         /// <summary> 
         /// The alpha component of the Color. 
         /// </summary>
+        [Parsable]
         public float A
         {
             readonly get => _a;
@@ -199,28 +202,6 @@ namespace Kotono.Utils
             return result;
         }
 
-        public static Color FromProperties(Properties p)
-        {
-            return new Color
-            {
-                R = float.Parse(p["Color.R"]),
-                G = float.Parse(p["Color.G"]),
-                B = float.Parse(p["Color.B"]),
-                A = float.Parse(p["Color.A"])
-            };
-        }
-
-        public static Color FromProperties(Properties p, string parent)
-        {
-            return new Color
-            {
-                R = float.Parse(p[parent + ".Color.R"]),
-                G = float.Parse(p[parent + ".Color.G"]),
-                B = float.Parse(p[parent + ".Color.B"]),
-                A = float.Parse(p[parent + ".Color.A"])
-            };
-        }
-
         /// <summary>
         /// Loops through colors given a frequency.
         /// </summary>
@@ -257,6 +238,17 @@ namespace Kotono.Utils
             left.B -= right.B;
             left.A -= right.A;
             return left;
+        }
+
+        public static Color Parse(string[] values)
+        {
+            return new Color
+            {
+                R = float.Parse(values[0]),
+                G = float.Parse(values[1]),
+                B = float.Parse(values[2]),
+                A = float.Parse(values[3])
+            };
         }
 
         public static Color operator +(Color left, Color right)

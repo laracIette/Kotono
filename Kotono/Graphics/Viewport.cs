@@ -1,5 +1,5 @@
-﻿using Kotono.Graphics.Objects;
-using Kotono.Graphics.Objects.Settings;
+﻿using Kotono.File;
+using Kotono.Graphics.Objects;
 using OpenTK.Graphics.OpenGL4;
 using System.Collections.Generic;
 
@@ -10,7 +10,7 @@ namespace Kotono.Graphics
         private readonly List<Viewport> _connections = [];
 
         internal Viewport(Object2DSettings settings)
-            : base(settings) 
+            : base(settings)
         {
         }
 

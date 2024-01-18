@@ -24,6 +24,8 @@ namespace Kotono.Graphics
 
         public static OutlineShader Outline { get; } = new();
 
+        public static FlatTextureShader FlatTexture { get; } = new();
+
         public static void Update()
         {
             Lighting.Update();
@@ -36,6 +38,7 @@ namespace Kotono.Graphics
             Color.Update();
             Blur.Update();
             Outline.Update();
+            FlatTexture.Update();
         }
     }
 }

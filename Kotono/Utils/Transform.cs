@@ -1,5 +1,4 @@
-﻿using Kotono.File;
-using OpenTK.Mathematics;
+﻿using OpenTK.Mathematics;
 using System;
 using System.Runtime.InteropServices;
 
@@ -73,31 +72,6 @@ namespace Kotono.Utils
             * Matrix4.CreateRotationY(Rotation.Y)
             * Matrix4.CreateRotationZ(Rotation.Z)
             * Matrix4.CreateTranslation((Vector3)Location);
-
-        public static Transform FromProperties(Properties properties)
-        {
-            return new Transform
-            {
-                Location = new Vector
-                {
-                    X = float.Parse(properties["Transform.Location.X"]),
-                    Y = float.Parse(properties["Transform.Location.Y"]),
-                    Z = float.Parse(properties["Transform.Location.Z"])
-                },
-                Rotation = new Vector
-                {
-                    X = float.Parse(properties["Transform.Rotation.X"]),
-                    Y = float.Parse(properties["Transform.Rotation.Y"]),
-                    Z = float.Parse(properties["Transform.Rotation.Z"])
-                },
-                Scale = new Vector
-                {
-                    X = float.Parse(properties["Transform.Scale.X"]),
-                    Y = float.Parse(properties["Transform.Scale.Y"]),
-                    Z = float.Parse(properties["Transform.Scale.Z"])
-                }
-            };
-        }
 
         public static bool operator ==(Transform left, Transform right)
         {

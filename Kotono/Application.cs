@@ -1,4 +1,5 @@
 ﻿using Kotono.Audio;
+using Kotono.File;
 using Kotono.Graphics.Objects;
 using Kotono.Graphics.Objects.Lights;
 using Kotono.Graphics.Objects.Meshes;
@@ -25,7 +26,11 @@ namespace Kotono
 
             CreateObjects();
 
-            _animation = new Animation(Path.Assets + @"Animations\Counting\Counting.ktf");
+            var settings = Settings.Parse<AnimationSettings>(Path.ASSETS + @"Animations\Counting\Counting.ktf");
+
+            _animation = new Animation(settings);
+
+            new FlatTextureMesh();
         }
 
         protected override void Update()

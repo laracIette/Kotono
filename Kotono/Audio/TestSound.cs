@@ -7,7 +7,7 @@ namespace Kotono.Audio
     public class TestSound : Sound
     {
         public TestSound()
-            : base(Path.Assets + @"test.wav")
+            : base(Path.ASSETS + @"test.wav")
         {
             Volume = 0.2f;
         }
