@@ -1,5 +1,4 @@
-﻿using Kotono.File;
-using Kotono.Graphics.Objects.Settings;
+﻿using Kotono.Graphics.Objects.Settings;
 using Kotono.Utils;
 using System;
 using System.Collections.Generic;

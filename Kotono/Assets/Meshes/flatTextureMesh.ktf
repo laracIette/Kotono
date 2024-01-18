@@ -13,7 +13,7 @@ Textures: {
 }
 Transform: {
 	Location: {
-		X: 0
+		X: 1.3513072
 		Y: 0
 		Z: -1
 	}

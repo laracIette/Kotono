@@ -1,7 +1,4 @@
 ﻿using Kotono.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Kotono.Graphics.Objects.Settings
 {
@@ -41,15 +38,5 @@ namespace Kotono.Graphics.Objects.Settings
         /// </summary>
         [Parsable]
         public double Duration { get; set; } = 0;
-
-        public override string ToString()
-        {
-            return base.ToString()
-                + $"Directory: {Directory}\n"
-                + $"Color.R: {Color.R}\nColor.G: {Color.G}\nColor.B: {Color.B}\nColor.A: {Color.A}\n"
-                + $"FrameRate: {FrameRate}\n" 
-                + $"StartTime: {StartTime}\n"
-                + $"Duration: {Duration}";
-        }
     }
 }

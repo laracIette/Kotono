@@ -1,9 +1,9 @@
 # Kotono Settings File
-Kotono.Utils.Color Color 1 0 1 1
-Kotono.Utils.Rect Dest 60 50 100 200
-System.String Directory Animations\Counting
-System.Double Duration 5
-System.Int32 FrameRate 10
+Kotono.Utils.Color Color 1 1 0 1
+Kotono.Utils.Rect Dest 100 200 50 60
 System.Boolean IsDraw False
-System.Int32 Layer 0
+System.Double Duration 5
 System.Double StartTime 3
+System.Int32 FrameRate 10
+System.Int32 Layer 0
+System.String Directory Animations\Counting

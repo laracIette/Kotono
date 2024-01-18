@@ -83,14 +83,14 @@ namespace Kotono.Graphics.Objects.Meshes
 
         public bool IsFizix { get; set; } = false;
 
-        private readonly MeshProperties _properties;
+        private new readonly MeshProperties _settings;
 
         internal Mesh(MeshSettings settings)
             : base(settings)
         {
-            _properties = new MeshProperties(settings.Path);
+            _settings = new MeshProperties(settings.Path);
 
-            var textureKeys = _properties.Data.Dict.Keys.Where(k => k.StartsWith("Textures")).ToList();
+            var textureKeys = _settings.Data.Dict.Keys.Where(k => k.StartsWith("Textures")).ToList();
 
             if (textureKeys.Count > 32)
             {
@@ -100,21 +100,21 @@ namespace Kotono.Graphics.Objects.Meshes
             _textures = new Texture[textureKeys.Count];
             for (int i = 0; i < textureKeys.Count; i++)
             {
-                _textures[i] = new Texture(Path.ASSETS + _properties[textureKeys[i]], TextureUnit.Texture0 + i);
+                _textures[i] = new Texture(Path.ASSETS + _settings[textureKeys[i]], TextureUnit.Texture0 + i);
             }
 
-            _shader = _properties["Shader"] switch
+            _shader = _settings["Shader"] switch
             {
                 "Lighting" => ShaderManager.Lighting,
                 "PointLight" => ShaderManager.PointLight,
                 "Gizmo" => ShaderManager.Gizmo,
                 "FlatTexture" => ShaderManager.FlatTexture,
-                _ => throw new Exception($"error: Shader \"{_properties["Shader"]}\" isn't valid"),
+                _ => throw new Exception($"error: Shader \"{_settings["Shader"]}\" isn't valid"),
             };
 
-            Transform = _properties.Transform;
+            Transform = _settings.Transform;
 
-            Color = _properties.Color;
+            Color = _settings.Color;
 
             _hitboxes = settings.Hitboxes;
 
@@ -126,7 +126,7 @@ namespace Kotono.Graphics.Objects.Meshes
                 hitbox.Color = Color.Red;
             }
 
-            if (!_paths.TryGetValue(Path.ASSETS + _properties["Obj"], out MeshHiddenSettings value))
+            if (!_paths.TryGetValue(Path.ASSETS + _settings["Obj"], out MeshHiddenSettings value))
             {
                 List<Vertex>[] models;
                 List<int>[] indices;
@@ -134,7 +134,7 @@ namespace Kotono.Graphics.Objects.Meshes
 
                 using (var importer = new AssimpContext())
                 {
-                    var scene = importer.ImportFile(Path.ASSETS + _properties["Obj"], PostProcessSteps.Triangulate);
+                    var scene = importer.ImportFile(Path.ASSETS + _settings["Obj"], PostProcessSteps.Triangulate);
 
                     foreach (var face in scene.Meshes[0].Faces)
                     {
@@ -217,7 +217,7 @@ namespace Kotono.Graphics.Objects.Meshes
                     Triangles = [.. triangles]
                 };
 
-                _paths[_properties["Obj"]] = value;
+                _paths[_settings["Obj"]] = value;
             }
 
             _meshSettings = value;
@@ -299,10 +299,10 @@ namespace Kotono.Graphics.Objects.Meshes
 
         private void WriteData()
         {
-            _properties.Transform = Transform;
-            _properties.Color = Color;
+            _settings.Transform = Transform;
+            _settings.Color = Color;
 
-            _properties.WriteFile();
+            _settings.WriteFile();
         }
 
         public override void Delete()

@@ -1,7 +1,4 @@
 ﻿using Kotono.Utils;
-using System.Collections.Generic;
-using System;
-using System.IO;
 
 namespace Kotono.Graphics.Objects.Settings
 {
@@ -20,12 +17,5 @@ namespace Kotono.Graphics.Objects.Settings
         /// </summary>
         [Parsable]
         public int Layer { get; set; } = 0; 
-        
-        public override string ToString()
-        {
-            return base.ToString()
-                + $"Dest.X: {Dest.X}\nDest.Y: {Dest.Y}\nDest.W: {Dest.W}\nDest.H: {Dest.H}\n"
-                + $"Layer: {Layer}\n";
-        }
     }
 }

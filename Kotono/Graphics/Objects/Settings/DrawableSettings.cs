@@ -1,6 +1,4 @@
 ﻿using Kotono.Utils;
-using System;
-using System.Collections.Generic;
 
 namespace Kotono.Graphics.Objects.Settings
 {
@@ -13,10 +11,5 @@ namespace Kotono.Graphics.Objects.Settings
         /// </summary>
         [Parsable]
         public virtual bool IsDraw { get; set; } = true;
-
-        public override string ToString()
-        {
-            return $"IsDraw: {IsDraw}\n";
-        }
     }
 }
