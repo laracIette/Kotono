@@ -1,6 +1,5 @@
-﻿using Kotono.Graphics.Objects.Hitboxes;
+﻿using Kotono.File;
 using Kotono.Graphics.Objects.Lights;
-using Kotono.Graphics.Objects.Settings;
 using Kotono.Utils;
 using OpenTK.Graphics.OpenGL4;
 using System;
@@ -9,14 +8,7 @@ namespace Kotono.Graphics.Objects.Meshes
 {
     internal class PointLightMesh()
         : Mesh(
-            new MeshSettings
-            {
-                Path = Path.ASSETS + @"Meshes\pointLight.ktf",
-                Hitboxes =
-                [
-                    new Sphere(new HitboxSettings())
-                ]
-            }
+            Settings.Parse<MeshSettings>(Path.ASSETS + @"Meshes\pointLight.ktf")
         )
     {
         private PointLight? _pointLight = null;

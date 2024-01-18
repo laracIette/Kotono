@@ -1,6 +1,6 @@
 ﻿using Kotono.Utils;
 
-namespace Kotono.Graphics.Objects.Settings
+namespace Kotono.File
 {
     internal class Object2DSettings : DrawableSettings
     {
@@ -16,6 +16,6 @@ namespace Kotono.Graphics.Objects.Settings
         /// <para> Default value : 0 </para>
         /// </summary>
         [Parsable]
-        public int Layer { get; set; } = 0; 
+        public int Layer { get; set; } = 0;
     }
 }

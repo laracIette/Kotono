@@ -1,4 +1,4 @@
-﻿using Kotono.Graphics.Objects.Settings;
+﻿using Kotono.File;
 using Kotono.Input;
 using Kotono.Utils;
 using OpenTK.Windowing.GraphicsLibraryFramework;
@@ -31,7 +31,7 @@ namespace Kotono.Graphics.Objects.Buttons
             WasDown = Mouse.WasButtonDown(MouseButton.Left) && IsDown;
 
             IsDown = IsDraw && Mouse.IsButtonDown(MouseButton.Left) && Rect.Overlaps(Dest, Mouse.Position);
-            
+
             if (IsPressed)
             {
                 OnPressed();

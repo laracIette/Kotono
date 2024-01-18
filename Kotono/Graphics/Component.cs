@@ -1,5 +1,5 @@
 ﻿using Kotono.Engine.UserInterface.Elements;
-using Kotono.Graphics.Objects.Settings;
+using Kotono.File;
 using Kotono.Utils;
 
 namespace Kotono.Graphics
@@ -18,7 +18,7 @@ namespace Kotono.Graphics
 
         internal void Update()
         {
-            
+
         }
     }
 }

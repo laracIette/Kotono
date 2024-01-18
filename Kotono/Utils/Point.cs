@@ -160,25 +160,25 @@ namespace Kotono.Utils
 
         public static bool operator >(Point left, Point right)
         {
-            return left.X > right.X 
+            return left.X > right.X
                 && left.Y > right.Y;
         }
 
         public static bool operator <(Point left, Point right)
         {
-            return left.X < right.X 
+            return left.X < right.X
                 && left.Y < right.Y;
         }
 
         public static bool operator >=(Point left, Point right)
         {
-            return left > right 
+            return left > right
                 || left == right;
         }
 
         public static bool operator <=(Point left, Point right)
         {
-            return left < right 
+            return left < right
                 || left == right;
         }
 

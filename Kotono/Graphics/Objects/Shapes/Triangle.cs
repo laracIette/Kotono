@@ -1,4 +1,4 @@
-﻿using Kotono.Graphics.Objects.Settings;
+﻿using Kotono.File;
 using Kotono.Utils;
 
 namespace Kotono.Graphics.Objects.Shapes
@@ -10,7 +10,7 @@ namespace Kotono.Graphics.Objects.Shapes
                 Location = transform.Location,
                 Rotation = transform.Rotation,
                 Scale = transform.Scale,
-                Vertices = [vertex1, vertex2, vertex3], 
+                Vertices = [vertex1, vertex2, vertex3],
                 Color = color
             }
         )

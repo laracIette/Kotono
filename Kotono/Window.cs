@@ -39,7 +39,7 @@ namespace Kotono
                 }
             )
         {
-            // For Kotono.File.Properties, needed to parse float correctly
+            // Needed to parse float correctly
             CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
             CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
 

@@ -1,6 +1,6 @@
 ﻿using Kotono.Utils;
 
-namespace Kotono.Graphics.Objects.Settings
+namespace Kotono.File
 {
     internal class AnimationSettings : Object2DSettings
     {
@@ -10,13 +10,6 @@ namespace Kotono.Graphics.Objects.Settings
         /// </summary>
         [Parsable]
         public string Directory { get; set; } = "";
-
-        /// <summary>
-        /// The color of the Animation.
-        /// <para> Default value : Color.White </para>
-        /// </summary>        
-        [Parsable]
-        public Color Color { get; set; } = Color.White;
 
         /// <summary>
         /// The frame rate of the Animation.

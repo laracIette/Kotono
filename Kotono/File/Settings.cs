@@ -1,5 +1,6 @@
-﻿using Kotono.Graphics.Objects.Settings;
+﻿using Kotono.Graphics;
 using Kotono.Utils;
+using OpenTK.Graphics.OpenGL4;
 using System;
 using System.Linq;
 using IO = System.IO;
@@ -19,7 +20,7 @@ namespace Kotono.File
 
             if (tokens[0] != "# Kotono Settings File")
             {
-                throw new FormatException($"error: file type must be \"properties\", file must start with \"# Kotono Settings File\"");
+                throw new FormatException($"error: file type must be \"settings\", file must start with \"# Kotono Settings File\"");
             }
             else
             {
@@ -27,6 +28,8 @@ namespace Kotono.File
             }
 
             T settings = Activator.CreateInstance<T>();
+
+            settings.Path = path;
 
             foreach (var token in tokens)
             {
@@ -45,7 +48,9 @@ namespace Kotono.File
 
                 foreach (var member in typeof(T).GetMembers().OfAttribute<ParsableAttribute>())
                 {
-                    if (member.MemberType() == type && member.Name == name)
+                    member.MemberType().IsGenericList(out Type memberType);
+
+                    if (member.Name == name && memberType == type)
                     {
                         if (type.FullName?.StartsWith("Kotono") ?? false)
                         {
@@ -57,6 +62,10 @@ namespace Kotono.File
 
                                 case Object2DSettings object2d:
                                     SetObject2DSettingsValues(object2d, name, values);
+                                    break;
+
+                                case MeshSettings mesh:
+                                    SetMeshSettingsValues(mesh, name, values);
                                     break;
 
                                 case Object3DSettings object3d:
@@ -75,8 +84,8 @@ namespace Kotono.File
                 }
             }
 
-            return settings; 
-            
+            return settings;
+
             void SetAnimationSettingsValues(AnimationSettings animation, string member, string[] values)
             {
                 SetObject2DSettingsValues(animation, member, values);
@@ -98,6 +107,44 @@ namespace Kotono.File
                 {
                     case "Dest":
                         object2d.Dest = Rect.Parse(values);
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+
+            void SetMeshSettingsValues(MeshSettings mesh, string member, string[] values)
+            {
+                SetObject3DSettingsValues(mesh, member, values);
+
+                switch (member)
+                {
+                    case "Shader":
+                        mesh.Shader = values[0] switch
+                        {
+                            "Lighting" => ShaderManager.Lighting,
+                            "PointLight" => ShaderManager.PointLight,
+                            "Gizmo" => ShaderManager.Gizmo,
+                            "FlatTexture" => ShaderManager.FlatTexture,
+                            _ => throw new Exception($"error: Shader \"{values[0]}\" isn't valid.")
+                        };
+                        break;
+
+                    case "Color":
+                        mesh.Color = Color.Parse(values);
+                        break;
+
+                    case "Textures":
+                        if (values.Length > 32)
+                        {
+                            throw new Exception($"error: maximum number of Texture for a Mesh is 32.");
+                        }
+
+                        foreach (var texturePath in values)
+                        {
+                            mesh.Textures.Add(new Texture(Path.ASSETS + texturePath, TextureUnit.Texture0 + mesh.Textures.Count));
+                        }
                         break;
 
                     default:
@@ -127,7 +174,7 @@ namespace Kotono.File
             }
         }
 
-        internal static void WriteFile<T>(string path, T settings) where T : DrawableSettings
+        internal static void WriteFile<T>(T settings) where T : DrawableSettings
         {
             string text = "# Kotono Settings File\n";
 
@@ -165,7 +212,7 @@ namespace Kotono.File
                 }
             }
 
-            IO.File.WriteAllText(path, text.Sorted("\n", "\n").Trim());
+            IO.File.WriteAllText(settings.Path, text.Sorted("\n", "\n").Trim());
         }
     }
 }

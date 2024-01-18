@@ -1,5 +1,4 @@
-﻿using Kotono.File;
-using Kotono.Graphics;
+﻿using Kotono.Graphics;
 using Kotono.Graphics.Objects;
 using OpenTK.Mathematics;
 using System;
@@ -257,17 +256,6 @@ namespace Kotono.Utils
         internal static bool Overlaps(Image left, Image right)
         {
             return Overlaps(left.Dest, right.Dest);
-        }
-
-        public static Rect FromProperties(Properties p)
-        {
-            return new Rect
-            {
-                X = float.Parse(p["Dest.X"]),
-                Y = float.Parse(p["Dest.Y"]),
-                W = float.Parse(p["Dest.W"]),
-                H = float.Parse(p["Dest.H"])
-            };
         }
 
         public static Rect Parse(string[] values)

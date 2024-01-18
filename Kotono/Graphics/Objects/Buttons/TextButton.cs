@@ -1,10 +1,10 @@
-﻿using Kotono.Graphics.Objects.Settings;
+﻿using Kotono.File;
 using Kotono.Graphics.Objects.Texts;
 using Kotono.Utils;
 
 namespace Kotono.Graphics.Objects.Buttons
 {
-    internal class TextButton(Rect dest, Color color, int layer, float fallOff, float cornerSize, string text) 
+    internal class TextButton(Rect dest, Color color, int layer, float fallOff, float cornerSize, string text)
         : Button(dest, color, layer, fallOff, cornerSize)
     {
         protected readonly Text _text = new(

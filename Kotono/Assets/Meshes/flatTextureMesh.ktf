@@ -1,30 +1,8 @@
 # Kotono Settings File
-
-Color: {
-	A: 1
-	B: 1
-	G: 1
-	R: 1
-}
-Obj: Meshes\cube.obj
-Shader: FlatTexture
-Textures: {
-	Diffuse: space.png
-}
-Transform: {
-	Location: {
-		X: 1.3513072
-		Y: 0
-		Z: -1
-	}
-	Rotation: {
-		X: 0
-		Y: 0
-		Z: 0
-	}
-	Scale: {
-		X: 1
-		Y: 1
-		Z: 1
-	}
-}
+Kotono.Utils.Color Color 1 1 1 1
+System.String Model Meshes\cube.obj
+Kotono.Graphics.Shaders.Shader Shader FlatTexture
+Kotono.Graphics.Texture Textures space.png
+Kotono.Utils.Vector Location 1.3513072 0 -1
+Kotono.Utils.Vector Rotation 0 0 0
+Kotono.Utils.Vector Scale 1 1 1

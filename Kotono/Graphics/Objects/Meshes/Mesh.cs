@@ -2,7 +2,6 @@
 using Kotono.File;
 using Kotono.Graphics.Objects.Hitboxes;
 using Kotono.Graphics.Objects.Managers;
-using Kotono.Graphics.Objects.Settings;
 using Kotono.Graphics.Objects.Shapes;
 using Kotono.Graphics.Shaders;
 using Kotono.Input;
@@ -35,10 +34,6 @@ namespace Kotono.Graphics.Objects.Meshes
 
         private static readonly Dictionary<string, MeshHiddenSettings> _paths = [];
 
-        private Vector _locationVelocity;
-
-        private Vector _rotationVelocity;
-
         private readonly List<Hitbox> _hitboxes;
 
         protected readonly Shader _shader;
@@ -61,13 +56,9 @@ namespace Kotono.Graphics.Objects.Meshes
 
         internal Triangle[] Triangles => _meshSettings.Triangles;
 
-        private readonly Texture[] _textures;
+        private readonly List<Texture> _textures;
 
-        internal Vector LocationVelocity
-        {
-            get => _locationVelocity;
-            set => _locationVelocity = value;
-        }
+        private Vector _rotationVelocity;
 
         internal Vector RotationVelocity
         {
@@ -83,40 +74,13 @@ namespace Kotono.Graphics.Objects.Meshes
 
         public bool IsFizix { get; set; } = false;
 
-        private new readonly MeshProperties _settings;
-
         internal Mesh(MeshSettings settings)
             : base(settings)
         {
-            _settings = new MeshProperties(settings.Path);
-
-            var textureKeys = _settings.Data.Dict.Keys.Where(k => k.StartsWith("Textures")).ToList();
-
-            if (textureKeys.Count > 32)
-            {
-                throw new Exception($"error: maximum number of Texture for a Mesh is 32");
-            }
-
-            _textures = new Texture[textureKeys.Count];
-            for (int i = 0; i < textureKeys.Count; i++)
-            {
-                _textures[i] = new Texture(Path.ASSETS + _settings[textureKeys[i]], TextureUnit.Texture0 + i);
-            }
-
-            _shader = _settings["Shader"] switch
-            {
-                "Lighting" => ShaderManager.Lighting,
-                "PointLight" => ShaderManager.PointLight,
-                "Gizmo" => ShaderManager.Gizmo,
-                "FlatTexture" => ShaderManager.FlatTexture,
-                _ => throw new Exception($"error: Shader \"{_settings["Shader"]}\" isn't valid"),
-            };
-
-            Transform = _settings.Transform;
-
-            Color = _settings.Color;
-
+            Color = settings.Color;
+            _shader = settings.Shader;
             _hitboxes = settings.Hitboxes;
+            _textures = settings.Textures;
 
             foreach (var hitbox in _hitboxes)
             {
@@ -126,7 +90,7 @@ namespace Kotono.Graphics.Objects.Meshes
                 hitbox.Color = Color.Red;
             }
 
-            if (!_paths.TryGetValue(Path.ASSETS + _settings["Obj"], out MeshHiddenSettings value))
+            if (!_paths.TryGetValue(Path.ASSETS + settings.Model, out MeshHiddenSettings value))
             {
                 List<Vertex>[] models;
                 List<int>[] indices;
@@ -134,7 +98,7 @@ namespace Kotono.Graphics.Objects.Meshes
 
                 using (var importer = new AssimpContext())
                 {
-                    var scene = importer.ImportFile(Path.ASSETS + _settings["Obj"], PostProcessSteps.Triangulate);
+                    var scene = importer.ImportFile(Path.ASSETS + settings.Model, PostProcessSteps.Triangulate);
 
                     foreach (var face in scene.Meshes[0].Faces)
                     {
@@ -217,7 +181,7 @@ namespace Kotono.Graphics.Objects.Meshes
                     Triangles = [.. triangles]
                 };
 
-                _paths[_settings["Obj"]] = value;
+                _paths[settings.Model] = value;
             }
 
             _meshSettings = value;
@@ -288,7 +252,7 @@ namespace Kotono.Graphics.Objects.Meshes
             }
 
             intersectionLocation = Vector.Zero;
-            distance = 0;
+            distance = 0.0f;
             return false;
         }
 
@@ -299,10 +263,12 @@ namespace Kotono.Graphics.Objects.Meshes
 
         private void WriteData()
         {
-            _settings.Transform = Transform;
-            _settings.Color = Color;
+            ((MeshSettings)_settings).Location = Location;
+            ((MeshSettings)_settings).Rotation = Rotation;
+            ((MeshSettings)_settings).Scale = Scale;
+            ((MeshSettings)_settings).Color = Color;
 
-            _settings.WriteFile();
+            Settings.WriteFile(_settings);
         }
 
         public override void Delete()

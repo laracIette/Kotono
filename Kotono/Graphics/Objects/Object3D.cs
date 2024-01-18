@@ -1,4 +1,4 @@
-﻿using Kotono.Graphics.Objects.Settings;
+﻿using Kotono.File;
 using Kotono.Utils;
 
 namespace Kotono.Graphics.Objects
@@ -33,7 +33,6 @@ namespace Kotono.Graphics.Objects
 
         public virtual Vector Velocity { get; set; }
 
-#if true
         internal Object3D(Object3DSettings settings)
             : base(settings)
         {
@@ -42,11 +41,5 @@ namespace Kotono.Graphics.Objects
             Scale = settings.Scale;
             Velocity = settings.Velocity;
         }
-#else
-        internal Object3D()
-            : base(new DrawableSettings { IsDraw = true })
-        {
-        }
-#endif
     }
 }

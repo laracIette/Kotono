@@ -1,27 +1,8 @@
 # Kotono Settings File
-
-Color: {
-	A: 1
-	B: 0.1908254
-	G: 0.98597205
-	R: 0.40470317
-}
-Obj: Meshes\sphere.obj
-Shader: PointLight
-Transform: {
-	Location: {
-		X: 14.268288
-		Y: -19.888805
-		Z: -11.665985
-	}
-	Rotation: {
-		X: 1
-		Y: 1
-		Z: 1
-	}
-	Scale: {
-		X: 1
-		Y: 1
-		Z: 1
-	}
-}
+Kotono.Utils.Color Color 0.40470317 0.98597205 0.1908254 1
+System.String Model Meshes\sphere.obj
+Kotono.Graphics.Shaders.Shader Shader PointLight
+Kotono.Graphics.Texture Textures Meshes\cube_diff.png Meshes\cube_spec.png
+Kotono.Utils.Vector Location 14.268288 -19.888805 -11.665985
+Kotono.Utils.Vector Rotation 0 0 0
+Kotono.Utils.Vector Scale 1 1 1

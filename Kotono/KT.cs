@@ -1,5 +1,4 @@
-﻿using System;
-using Kotono.Audio;
+﻿using Kotono.Audio;
 using Kotono.Engine;
 using Kotono.Engine.UserInterface.AddMenu;
 using Kotono.Graphics;
@@ -9,6 +8,7 @@ using Kotono.Graphics.Print;
 using Kotono.Graphics.Statistics;
 using Kotono.Input;
 using Kotono.Utils;
+using System;
 
 namespace Kotono
 {
@@ -22,7 +22,7 @@ namespace Kotono
         internal static Rect Dest
         {
             get => _dest;
-            set 
+            set
             {
                 Position = value.Position;
                 Size = value.Size;

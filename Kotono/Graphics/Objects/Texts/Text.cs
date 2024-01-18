@@ -1,4 +1,4 @@
-﻿using Kotono.Graphics.Objects.Settings;
+﻿using Kotono.File;
 using Kotono.Input;
 using Kotono.Utils;
 using System;
@@ -85,7 +85,7 @@ namespace Kotono.Graphics.Objects.Texts
             ['#'] = @"Characters\#.png",
             ['\''] = @"Characters\'.png"
         };
-        
+
         protected string _text;
 
         protected Anchor _anchor;
@@ -95,7 +95,7 @@ namespace Kotono.Graphics.Objects.Texts
         protected readonly List<Image> _letters = [];
 
         private readonly RoundedBorder _roundedBorder;
-        
+
         protected Rect _lettersDest;
 
         public override Rect Dest
@@ -190,13 +190,13 @@ namespace Kotono.Graphics.Objects.Texts
                 {
                     path = _charactersPath[' '];
                 }
-                
+
                 Rect dest = GetLetterDest(i, _lettersDest);
 
                 _letters.Add(new Image(
                     new ImageSettings
                     {
-                        Path = Path.ASSETS + path,
+                        Texture = Path.ASSETS + path,
                         Dest = dest,
                         Color = Color,
                         Layer = Layer

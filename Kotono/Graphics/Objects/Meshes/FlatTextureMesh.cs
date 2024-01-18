@@ -1,16 +1,13 @@
-﻿using Kotono.Graphics.Objects.Settings;
+﻿using Kotono.File;
 using Kotono.Utils;
 
 namespace Kotono.Graphics.Objects.Meshes
 {
     internal class FlatTextureMesh : Mesh
     {
-        internal FlatTextureMesh() 
+        internal FlatTextureMesh()
             : base(
-                new MeshSettings
-                {
-                    Path = Path.ASSETS + @"Meshes\flatTextureMesh.ktf"
-                }
+                Settings.Parse<MeshSettings>(Path.ASSETS + @"Meshes\flatTextureMesh.ktf")
             )
         {
         }

@@ -1,4 +1,4 @@
-﻿using Kotono.Graphics.Objects.Settings;
+﻿using Kotono.File;
 using Kotono.Utils;
 using System;
 using System.Collections.Generic;
@@ -82,16 +82,12 @@ namespace Kotono.Graphics.Objects
 
         public bool IsPlaying { get; private set; } = false;
 
-        private new readonly AnimationSettings _settings;
-
         /// <summary> 
         /// Create an Animation from files in a directory.
         /// </summary>
         internal Animation(AnimationSettings settings)
             : base(settings)
         {
-            _settings = settings;
-            
             IsDraw = false;
 
             string[] filePaths;
@@ -115,7 +111,7 @@ namespace Kotono.Graphics.Objects
                         new ImageSettings
                         {
                             IsDraw = false,
-                            Path = filePath,
+                            Texture = filePath,
                             Dest = settings.Dest,
                             Layer = settings.Layer,
                             Color = settings.Color
@@ -184,16 +180,16 @@ namespace Kotono.Graphics.Objects
 
         private void WriteData()
         {
-            _settings.Dest = Dest;
-            _settings.Layer = Layer;
-            _settings.IsDraw = IsDraw;
+            ((AnimationSettings)_settings).Dest = Dest;
+            ((AnimationSettings)_settings).Layer = Layer;
+            ((AnimationSettings)_settings).IsDraw = IsDraw;
 
-            File.Settings.WriteFile(Path.ASSETS + @"Animations\Counting\Counting.ktf", _settings);
+            Settings.WriteFile(_settings);
         }
 
         public override string ToString()
         {
-            return $"Directory: {_settings.Directory}";
+            return $"Directory: {((AnimationSettings)_settings).Directory}";
         }
 
         public override void Delete()

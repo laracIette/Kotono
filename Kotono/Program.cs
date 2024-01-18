@@ -16,7 +16,7 @@ namespace Kotono
                     CursorState = CursorState.Confined
                 }
             ).Run();
-                
+
         }
     }
 }

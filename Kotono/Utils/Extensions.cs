@@ -74,7 +74,7 @@ namespace Kotono.Utils
                     throw new NotSupportedException("error: This function should only be used for FieldInfo or PropertyInfo types.");
             };
         }
-        
+
         /// <summary>
         /// Get the value of the member supported by the given object.
         /// This function should only be used for <see cref="FieldInfo"/> or <see cref="PropertyInfo"/> types.
@@ -85,16 +85,11 @@ namespace Kotono.Utils
         /// <exception cref="NotSupportedException"></exception>
         internal static object? GetValue(this MemberInfo memberInfo, object? obj)
         {
-            switch (memberInfo)
+            return memberInfo switch
             {
-                case FieldInfo fieldInfo:
-                    return fieldInfo.GetValue(obj);
-
-                case PropertyInfo propertyInfo:
-                    return propertyInfo.GetValue(obj);
-
-                default:
-                    throw new NotSupportedException("error: This function should only be used for FieldInfo or PropertyInfo types.");
+                FieldInfo fieldInfo => fieldInfo.GetValue(obj),
+                PropertyInfo propertyInfo => propertyInfo.GetValue(obj),
+                _ => throw new NotSupportedException("error: This function should only be used for FieldInfo or PropertyInfo types."),
             };
         }
 
@@ -128,6 +123,24 @@ namespace Kotono.Utils
             }
 
             return source;
+        }
+
+        /// <summary>
+        /// Get wether a itemType is a list. If <see langword="true"/>, itemType gets assigned the type the list contains.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="itemType"></param>
+        /// <returns></returns>
+        internal static bool IsGenericList(this Type type, out Type itemType)
+        {
+            if (type.IsGenericType && (type.GetGenericTypeDefinition() == typeof(List<>)))
+            {
+                itemType = type.GetGenericArguments()[0];
+                return true;
+            }
+
+            itemType = type;
+            return false;
         }
     }
 }

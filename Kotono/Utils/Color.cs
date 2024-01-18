@@ -1,5 +1,4 @@
-﻿using Kotono.File;
-using OpenTK.Mathematics;
+﻿using OpenTK.Mathematics;
 using System;
 using System.Globalization;
 using System.Linq;
@@ -201,28 +200,6 @@ namespace Kotono.Utils
             result += ((int)(c.A * 255.0f)).ToString("X");
 
             return result;
-        }
-
-        public static Color FromProperties(Properties p)
-        {
-            return new Color
-            {
-                R = float.Parse(p["Color.R"]),
-                G = float.Parse(p["Color.G"]),
-                B = float.Parse(p["Color.B"]),
-                A = float.Parse(p["Color.A"])
-            };
-        }
-
-        public static Color FromProperties(Properties p, string parent)
-        {
-            return new Color
-            {
-                R = float.Parse(p[parent + ".Color.R"]),
-                G = float.Parse(p[parent + ".Color.G"]),
-                B = float.Parse(p[parent + ".Color.B"]),
-                A = float.Parse(p[parent + ".Color.A"])
-            };
         }
 
         /// <summary>

@@ -9,7 +9,7 @@ namespace Kotono.Graphics.Objects.Managers
         private static readonly FrontMeshManager _frontMeshManager = new();
 
         private static readonly Object2DManager _object2DManager = new();
-        
+
         private static readonly Object3DManager _object3DManager = new();
 
         internal static PointLight[] PointLights => _object3DManager.Drawables.OfType<PointLight>().ToArray();
@@ -102,7 +102,7 @@ namespace Kotono.Graphics.Objects.Managers
             _frontMeshManager.Draw();
         }
 
-        internal static void Draw2D() 
+        internal static void Draw2D()
         {
             _object2DManager.Draw();
         }
