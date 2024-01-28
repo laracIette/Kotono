@@ -13,8 +13,6 @@ namespace Kotono.Graphics.Objects.Shapes
 
         private bool _hasInitBuffers = false;
 
-        internal Color Color;
-
         public Vector[] Vertices { get; }
 
         internal Matrix4 Model => Transform.Model;

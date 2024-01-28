@@ -1,8 +1,0 @@
-# Kotono Settings File
-Kotono.Utils.Color Color 1 1 0 1
-System.String Model Meshes\cube.obj
-Kotono.Graphics.Shaders.Shader Shader Lighting
-Kotono.Graphics.Texture Textures Meshes\cube_diff.png Meshes\cube_spec.png
-Kotono.Utils.Vector Location 0.58744544 -8.940789 -8.025252
-Kotono.Utils.Vector Rotation 0 0 0
-Kotono.Utils.Vector Scale 1 1 1

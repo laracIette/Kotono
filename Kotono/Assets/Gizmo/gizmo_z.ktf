@@ -1,8 +1,0 @@
-# Kotono Settings File
-Kotono.Utils.Color Color 0 0 1 1
-System.String Model Gizmo\gizmo_z.obj
-Kotono.Graphics.Shaders.Shader Shader Gizmo
-Kotono.Graphics.Texture Textures Gizmo\gizmo_diff.png Gizmo\gizmo_spec.png
-Kotono.Utils.Vector Location 1.3513072 0 -1
-Kotono.Utils.Vector Rotation 0 0 0
-Kotono.Utils.Vector Scale 0.022414405 0.022414405 0.022414405

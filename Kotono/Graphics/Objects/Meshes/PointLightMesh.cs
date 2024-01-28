@@ -8,7 +8,7 @@ namespace Kotono.Graphics.Objects.Meshes
 {
     internal class PointLightMesh()
         : Mesh(
-            Settings.Parse<MeshSettings>(Path.ASSETS + @"Meshes\pointLight.ktf")
+            Settings.Parse<MeshSettings>(Path.ASSETS + @"Meshes\pointLightMesh.json")
         )
     {
         private PointLight? _pointLight = null;

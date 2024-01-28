@@ -1,0 +1,21 @@
+{
+  "Directory": "Animations\\Counting",
+  "FrameRate": 10,
+  "StartTime": 3,
+  "Duration": 5,
+  "Dest": {
+    "X": 100,
+    "Y": 200,
+    "W": 50,
+    "H": 60
+  },
+  "Layer": 0,
+  "Path": "..\\..\\..\\Assets\\Animations\\Counting\\Counting.json",
+  "IsDraw": true,
+  "Color": {
+    "R": 1,
+    "G": 1,
+    "B": 0,
+    "A": 1
+  }
+}

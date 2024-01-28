@@ -1,12 +1,13 @@
 ﻿using OpenTK.Mathematics;
 using System;
 using System.Runtime.InteropServices;
+using System.Text.Json.Serialization;
 
 namespace Kotono.Utils
 {
     [Serializable]
     [StructLayout(LayoutKind.Sequential)]
-    public struct Transform
+    public struct Transform : IEquatable<Transform>
     {
         /// <summary> 
         /// The location component of the Transform. 
@@ -26,16 +27,19 @@ namespace Kotono.Utils
         /// <summary> 
         /// The right vector of the Transform. 
         /// </summary>
+        [JsonIgnore]
         public readonly Vector Right => (Vector)(Quaternion.FromEulerAngles((Vector3)Rotation) * Vector3.UnitX);
 
         /// <summary> 
         /// The up vector of the Transform. 
         /// </summary>
+        [JsonIgnore]
         public readonly Vector Up => (Vector)(Quaternion.FromEulerAngles((Vector3)Rotation) * Vector3.UnitY);
 
         /// <summary> 
         /// The forward vector of the Transform. 
         /// </summary>
+        [JsonIgnore]
         public readonly Vector Forward => (Vector)(Quaternion.FromEulerAngles((Vector3)Rotation) * Vector3.UnitZ);
 
         /// <summary> 

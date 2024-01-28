@@ -1,5 +1,6 @@
 ﻿using Kotono.Audio;
 using Kotono.File;
+using Kotono.Graphics;
 using Kotono.Graphics.Objects;
 using Kotono.Graphics.Objects.Lights;
 using Kotono.Graphics.Objects.Meshes;
@@ -19,18 +20,18 @@ namespace Kotono
             : base(windowSettings)
         {
             SoundManager.GeneralVolume = 1.0f;
+            
+            new Cursor();
 
             _sound = new TestSound();
 
-            new Cursor();
 
-            CreateObjects();
-
-            var settings = Settings.Parse<AnimationSettings>(Path.ASSETS + @"Animations\Counting\Counting.ktf");
+            var settings = Settings.Parse<AnimationSettings>(Path.ASSETS + @"Animations\Counting\Counting.json");
 
             _animation = new Animation(settings);
 
-            new FlatTextureMesh();
+            
+            CreateObjects();
         }
 
         protected override void Update()
@@ -39,7 +40,7 @@ namespace Kotono
 
             if (Keyboard.IsKeyPressed(Keys.Enter))
             {
-                Mouse.CursorState = (CursorState)Math.Loop((int)Mouse.CursorState + 1.0f, 3.0f);
+                Mouse.CursorState = (CursorState)Math.Loop((float)Mouse.CursorState + 1.0f, 3.0f);
             }
 
             if (Keyboard.IsKeyPressed(Keys.T))
@@ -69,6 +70,8 @@ namespace Kotono
             {
                 new RainbowPointLight();
             }
+
+            new FlatTextureMesh();
         }
     }
 

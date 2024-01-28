@@ -8,7 +8,6 @@ namespace Kotono.File
         /// The vertices of the Shape.
         /// <para> Default value : [] </para>
         /// </summary>
-        [Parsable]
         public Vector[] Vertices { get; set; } = [];
     }
 }

@@ -42,8 +42,6 @@ namespace Kotono.Graphics.Objects
             }
         }
 
-        internal Color Color { get; set; }
-
         protected virtual Matrix4 Model =>
             Matrix4.CreateScale(
                 (Dest + new Rect(w: FallOff * 2.0f)).NDC.W,

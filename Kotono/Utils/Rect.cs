@@ -3,27 +3,29 @@ using Kotono.Graphics.Objects;
 using OpenTK.Mathematics;
 using System;
 using System.Runtime.InteropServices;
+using System.Text.Json.Serialization;
 
 namespace Kotono.Utils
 {
     [Serializable]
     [StructLayout(LayoutKind.Sequential)]
-    public struct Rect
+    public struct Rect : IEquatable<Rect>
     {
         /// <summary>
         /// The position component of the Rect.
         /// </summary>
+        [JsonIgnore]
         public Point Position;
 
         /// <summary> 
         /// The size component of the Rect. 
         /// </summary>
+        [JsonIgnore]
         public Point Size;
 
         /// <summary> 
         /// The X component of the Rect. 
         /// </summary>
-        [Parsable]
         public float X
         {
             readonly get => Position.X;
@@ -33,7 +35,6 @@ namespace Kotono.Utils
         /// <summary> 
         /// The Y component of the Rect. 
         /// </summary>
-        [Parsable]
         public float Y
         {
             readonly get => Position.Y;
@@ -43,7 +44,6 @@ namespace Kotono.Utils
         /// <summary>
         /// The width component of the Rect. 
         /// </summary>
-        [Parsable]
         public float W
         {
             readonly get => Size.X;
@@ -53,7 +53,6 @@ namespace Kotono.Utils
         /// <summary>
         /// The height component of the Rect.
         /// </summary>
-        [Parsable]
         public float H
         {
             readonly get => Size.Y;
@@ -63,6 +62,7 @@ namespace Kotono.Utils
         /// <summary> 
         /// The Rect scaled to unit length. 
         /// </summary>
+        [JsonIgnore]
         public readonly Rect Normalized =>
             new Rect(
                 Position.Normalized,
@@ -72,6 +72,7 @@ namespace Kotono.Utils
         /// <summary>
         /// The Rect scaled to Normalized Device Coordinates.
         /// </summary>
+        [JsonIgnore]
         public readonly Rect NDC =>
             new Rect(
                 Position.NDC,
@@ -81,46 +82,55 @@ namespace Kotono.Utils
         /// <summary>
         /// The center Point of the Rect.
         /// </summary>
+        [JsonIgnore]
         public readonly Point Center => Position;
 
         /// <summary>
         /// The left Point of the Rect.
         /// </summary>
+        [JsonIgnore]
         public readonly Point Left => new Point(X - W / 2.0f, Y);
 
         /// <summary>
         /// The right Point of the Rect.
         /// </summary>
+        [JsonIgnore]
         public readonly Point Right => new Point(X + W / 2.0f, Y);
 
         /// <summary>
         /// The top Point of the Rect.
         /// </summary>
+        [JsonIgnore]
         public readonly Point Top => new Point(X, Y + H / 2.0f);
 
         /// <summary>
         /// The bottom Point of the Rect.
         /// </summary>
+        [JsonIgnore]
         public readonly Point Bottom => new Point(X, Y - H / 2.0f);
 
         /// <summary>
         /// The top left Point of the Rect.
         /// </summary>
+        [JsonIgnore]
         public readonly Point TopLeft => new Point(X - W / 2.0f, Y + H / 2.0f);
 
         /// <summary>
         /// The top right Point of the Rect.
         /// </summary>
+        [JsonIgnore]
         public readonly Point TopRight => new Point(X + W / 2.0f, Y + H / 2.0f);
 
         /// <summary>
         /// The bottom left Point of the Rect.
         /// </summary>
+        [JsonIgnore]
         public readonly Point BottomLeft => new Point(X - W / 2.0f, Y - H / 2.0f);
 
         /// <summary>
         /// The bottom right Point of the Rect.
         /// </summary>
+        [JsonIgnore]
         public readonly Point BottomRight => new Point(X + W / 2.0f, Y - H / 2.0f);
 
         /// <summary> 

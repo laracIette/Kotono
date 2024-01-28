@@ -1,0 +1,11 @@
+{
+  "Path": "..\\..\\..\\Assets\\Gizmo\\gizmo_z.json",
+  "Model": "..\\..\\..\\Assets\\Gizmo\\gizmo_z.obj",
+  "IsDraw": false,
+  "Color": {
+    "R": 0,
+    "G": 0,
+    "B": 1,
+    "A": 1
+  }
+}

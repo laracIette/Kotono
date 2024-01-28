@@ -3,13 +3,14 @@ using Kotono.Graphics.Objects;
 using OpenTK.Mathematics;
 using System;
 using System.Runtime.InteropServices;
+using System.Text.Json.Serialization;
 using Quaternion = OpenTK.Mathematics.Quaternion;
 
 namespace Kotono.Utils
 {
     [Serializable]
     [StructLayout(LayoutKind.Sequential)]
-    public struct Vector
+    public struct Vector : IEquatable<Vector>
     {
         /// <summary> 
         /// The X component of the Vector. 
@@ -29,11 +30,13 @@ namespace Kotono.Utils
         /// <summary>
         /// The length of the Vector. 
         /// </summary>
+        [JsonIgnore]
         public readonly float Length => Math.Sqrt(X * X + Y * Y + Z * Z);
 
         /// <summary> 
         /// The Vector scaled to unit length.
         /// </summary>
+        [JsonIgnore]
         public readonly Vector Normalized => this / Length;
 
         /// <summary>

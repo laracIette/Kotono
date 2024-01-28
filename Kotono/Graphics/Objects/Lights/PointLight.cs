@@ -20,8 +20,6 @@ namespace Kotono.Graphics.Objects.Lights
             set => _mesh.IsGravity = value;
         }
 
-        internal Color Color { get; set; }
-
         internal Color Ambient { get; set; }
 
         internal Color Specular { get; set; }

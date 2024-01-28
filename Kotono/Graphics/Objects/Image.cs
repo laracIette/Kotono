@@ -12,8 +12,6 @@ namespace Kotono.Graphics.Objects
 
         internal string Path { get; }
 
-        internal Color Color { get; set; }
-
         private Rect _transformation;
 
         private double _startTime = 0;

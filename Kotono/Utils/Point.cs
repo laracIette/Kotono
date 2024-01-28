@@ -2,12 +2,13 @@
 using OpenTK.Mathematics;
 using System;
 using System.Runtime.InteropServices;
+using System.Text.Json.Serialization;
 
 namespace Kotono.Utils
 {
     [Serializable]
     [StructLayout(LayoutKind.Sequential)]
-    public struct Point
+    public struct Point : IEquatable<Point>
     {
         /// <summary> 
         /// The X component of the Point. 
@@ -22,16 +23,19 @@ namespace Kotono.Utils
         /// <summary> 
         /// The length component of the Point. 
         /// </summary>
+        [JsonIgnore]
         public readonly float Length => Math.Sqrt(X * X + Y * Y);
 
         /// <summary> 
         /// The Point scaled to unit length. 
         /// </summary>
+        [JsonIgnore]
         public readonly Point Normalized => this / Length;
 
         /// <summary>
         /// The Point scaled to Normalized Device Coordinates.
         /// </summary>
+        [JsonIgnore]
         public readonly Point NDC =>
             new Point(
                 2.0f * X / ComponentManager.ActiveViewport.W - 1.0f,
@@ -41,6 +45,7 @@ namespace Kotono.Utils
         /// <summary>
         /// The X / Y ratio of the Point.
         /// </summary>
+        [JsonIgnore]
         public readonly float Ratio => X / Y;
 
         public static Point Zero => new Point(0.0f, 0.0f);

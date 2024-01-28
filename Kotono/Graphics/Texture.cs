@@ -9,6 +9,8 @@ namespace Kotono.Graphics
     {
         private static readonly Dictionary<string, int> _textures = [];
 
+        internal string Path { get; }
+
         internal int Handle { get; }
 
         internal TextureUnit Unit { get; }
@@ -42,6 +44,7 @@ namespace Kotono.Graphics
                 _textures[path] = handle;
             }
 
+            Path = path;
             Handle = _textures[path];
             Unit = unit;
         }

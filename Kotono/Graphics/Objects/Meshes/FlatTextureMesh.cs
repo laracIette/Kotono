@@ -7,7 +7,7 @@ namespace Kotono.Graphics.Objects.Meshes
     {
         internal FlatTextureMesh()
             : base(
-                Settings.Parse<MeshSettings>(Path.ASSETS + @"Meshes\flatTextureMesh.ktf")
+                Settings.Parse<MeshSettings>(Path.ASSETS + @"Meshes\flatTextureMesh.json")
             )
         {
         }

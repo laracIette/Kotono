@@ -21,7 +21,7 @@ namespace Kotono.Utils
         }
 
         /// <summary>
-        /// Get an array of members with the specified attribute T.
+        /// Get an array of members with the attribute of type T.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="memberInfo"></param>
@@ -124,9 +124,20 @@ namespace Kotono.Utils
 
             return source;
         }
+        
+        /// <summary>
+        /// Get a sorted string given a separator.
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="separator"></param>
+        /// <returns></returns>
+        internal static string Sorted(this string source, string separator)
+        {
+            return source.Sorted(separator, separator);
+        }
 
         /// <summary>
-        /// Get wether a itemType is a list. If <see langword="true"/>, itemType gets assigned the type the list contains.
+        /// Get wether a Type is a list. If <see langword="true"/>, itemType gets assigned the type the list contains.
         /// </summary>
         /// <param name="type"></param>
         /// <param name="itemType"></param>

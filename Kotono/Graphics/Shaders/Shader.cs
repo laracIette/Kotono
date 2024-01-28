@@ -13,8 +13,11 @@ namespace Kotono.Graphics.Shaders
 
         private readonly Dictionary<string, int> _uniformLocations = [];
 
+        
+        public string Name { get; }
+
         public Shader(string name)
-        {
+        { 
             var shaderSource = IO.File.ReadAllText(Path.SHADERS + name + ".vert");
             var vertexShader = GL.CreateShader(ShaderType.VertexShader);
             GL.ShaderSource(vertexShader, shaderSource);
@@ -45,6 +48,8 @@ namespace Kotono.Graphics.Shaders
                 var location = GL.GetUniformLocation(_handle, key);
                 _uniformLocations.Add(key, location);
             }
+
+            Name = name;
         }
 
         public virtual void Update()

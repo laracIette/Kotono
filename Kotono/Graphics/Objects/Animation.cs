@@ -173,20 +173,6 @@ namespace Kotono.Graphics.Objects
             CurrentFrame--;
         }
 
-        public void Save()
-        {
-            WriteData();
-        }
-
-        private void WriteData()
-        {
-            ((AnimationSettings)_settings).Dest = Dest;
-            ((AnimationSettings)_settings).Layer = Layer;
-            ((AnimationSettings)_settings).IsDraw = IsDraw;
-
-            Settings.WriteFile(_settings);
-        }
-
         public override string ToString()
         {
             return $"Directory: {((AnimationSettings)_settings).Directory}";

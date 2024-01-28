@@ -139,7 +139,7 @@ namespace Kotono.Graphics.Objects.Texts
 
         private Color _color;
 
-        internal Color Color
+        public override Color Color
         {
             get => _color;
             set

@@ -8,7 +8,6 @@ namespace Kotono.File
         /// The thickness of the RoundedBorder.
         /// <para> Default value : 1.0f </para>
         /// </summary>
-        [Parsable]
         public float Thickness { get; set; } = 1.0f;
     }
 }

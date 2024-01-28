@@ -10,8 +10,6 @@ namespace Kotono.Graphics.Objects.Hitboxes
     {
         public bool IsColliding => TryGetCollider(out _);
 
-        public Color Color { get; set; } = settings.Color;
-
         public List<Hitbox> Collisions { get; } = settings.Collisions;
 
         public List<Hitbox> Colliders => Collisions.FindAll(CollidesWith);

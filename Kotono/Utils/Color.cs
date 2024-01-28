@@ -3,6 +3,7 @@ using System;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text.Json.Serialization;
 
 namespace Kotono.Utils
 {
@@ -21,7 +22,6 @@ namespace Kotono.Utils
         /// <summary> 
         /// The red component of the Color. 
         /// </summary>
-        [Parsable]
         public float R
         {
             readonly get => _r;
@@ -31,7 +31,6 @@ namespace Kotono.Utils
         /// <summary> 
         /// The green component of the Color. 
         /// </summary>
-        [Parsable]
         public float G
         {
             readonly get => _g;
@@ -41,7 +40,6 @@ namespace Kotono.Utils
         /// <summary> 
         /// The blue component of the Color. 
         /// </summary>
-        [Parsable]
         public float B
         {
             readonly get => _b;
@@ -51,7 +49,6 @@ namespace Kotono.Utils
         /// <summary> 
         /// The alpha component of the Color. 
         /// </summary>
-        [Parsable]
         public float A
         {
             readonly get => _a;

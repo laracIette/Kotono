@@ -48,9 +48,9 @@ namespace Kotono.Graphics.Objects.Managers
 
         internal virtual void Save()
         {
-            foreach (var saveable in Drawables.OfType<ISaveable>())
+            foreach (var drawable in Drawables)
             {
-                saveable.Save();
+                drawable.Save();
             }
         }
 

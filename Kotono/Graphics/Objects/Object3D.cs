@@ -41,5 +41,18 @@ namespace Kotono.Graphics.Objects
             Scale = settings.Scale;
             Velocity = settings.Velocity;
         }
+
+        public override void Save()
+        {
+            if (_settings is Object3DSettings settings)
+            {
+                settings.Location = Location;
+                settings.Rotation = Rotation;
+                settings.Scale = Scale;
+                settings.Velocity = Velocity;
+            }
+
+            base.Save();
+        }
     }
 }

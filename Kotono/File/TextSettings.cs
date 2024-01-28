@@ -8,21 +8,18 @@ namespace Kotono.File
         /// The text that the Text should display.
         /// <para> Default value : "" </para>
         /// </summary>
-        [Parsable]
         public string Text { get; set; } = "";
 
         /// <summary>
         /// The anchor from which the Text should be drawn.
         /// <para> Default value : Anchor.Center </para>
         /// </summary>
-        [Parsable]
         public Anchor Anchor { get; set; } = Anchor.Center;
 
         /// <summary>
         /// The spacing multiplier between each letter of the Text.
         /// <para> Default value : 1.0f </para>
         /// </summary>
-        [Parsable]
         public float Spacing { get; set; } = 1.0f;
     }
 }

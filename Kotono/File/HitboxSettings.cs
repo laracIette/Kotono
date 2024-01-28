@@ -10,7 +10,6 @@ namespace Kotono.File
         /// The hitboxes the Hitbox checks collisions from.
         /// <para> Default value : [] </para>
         /// </summary>
-        [Parsable]
         public List<Hitbox> Collisions { get; set; } = [];
     }
 }

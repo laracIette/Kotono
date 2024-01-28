@@ -11,8 +11,11 @@
 
   <ItemGroup>
     <Compile Remove="Engine\Interface\**" />
+    <Compile Remove="Graphics\Objects\Settings\**" />
     <EmbeddedResource Remove="Engine\Interface\**" />
+    <EmbeddedResource Remove="Graphics\Objects\Settings\**" />
     <None Remove="Engine\Interface\**" />
+    <None Remove="Graphics\Objects\Settings\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,7 +35,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Graphics\Objects\Settings\" />
     <Folder Include="Tests\" />
   </ItemGroup>
 
