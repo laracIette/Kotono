@@ -36,7 +36,7 @@ namespace Kotono.Graphics.Objects.Meshes
 
         private readonly List<Hitbox> _hitboxes;
 
-        private string _model;
+        private readonly string _model;
 
         protected readonly Shader _shader;
 
@@ -68,9 +68,15 @@ namespace Kotono.Graphics.Objects.Meshes
             set => _rotationVelocity = Vector.Rad(value);
         }
 
-        internal static double MaxIntersectionCheckTime => 0.1;
+        private bool _isMouseOn = false;
 
-        internal double IntersectionCheckTime { get; set; } = MaxIntersectionCheckTime;
+        private Vector _intersectionLocation = Vector.Zero;
+
+        private float _distance = 0.0f;
+
+        internal static double IntersectionCheckFrequency => 0.1;
+
+        internal double LastIntersectionCheckTime { get; set; } = 0.0;
 
         public bool IsFizix { get; set; } = false;
 
@@ -113,7 +119,7 @@ namespace Kotono.Graphics.Objects.Meshes
                 using (var importer = new AssimpContext())
                 {
                     var scene = importer.ImportFile(_model, PostProcessSteps.Triangulate);
-#if true
+
                     foreach (var face in scene.Meshes[0].Faces)
                     {
                         triangles.Add(new Triangle(
@@ -124,7 +130,7 @@ namespace Kotono.Graphics.Objects.Meshes
                             Color.White
                         ));
                     }
-#endif
+
                     models = new List<Vertex>[scene.Meshes.Count];
                     indices = new List<int>[scene.Meshes.Count];
                     for (int i = 0; i < scene.Meshes.Count; i++)
@@ -256,18 +262,29 @@ namespace Kotono.Graphics.Objects.Meshes
         /// <returns> <see langword="true"/> if the mouse interects the Mesh, else returns <see langword="false"/>. </returns>
         public bool IsMouseOn(out Vector intersectionLocation, out float distance)
         {
-            foreach (var triangle in Triangles)
+            if (Time.NowS - LastIntersectionCheckTime > IntersectionCheckFrequency)
             {
-                triangle.Transform = Transform;
-                if (Intersection.IntersectRayTriangle(CameraManager.ActiveCamera.Location, Mouse.Ray, triangle, out intersectionLocation, out distance))
+                LastIntersectionCheckTime = Time.NowS;
+
+                _isMouseOn = false;
+                _intersectionLocation = Vector.Zero;
+                _distance = 0.0f;
+
+                foreach (var triangle in Triangles)
                 {
-                    return true;
+                    triangle.Transform = Transform;
+                    if (Intersection.IntersectRayTriangle(CameraManager.ActiveCamera.Location, Mouse.Ray, triangle, out _intersectionLocation, out _distance))
+                    {
+                        _isMouseOn = true;
+                        break;
+                    }
                 }
             }
 
-            intersectionLocation = Vector.Zero;
-            distance = 0.0f;
-            return false;
+            intersectionLocation = _intersectionLocation;
+            distance = _distance;
+
+            return _isMouseOn;
         }
 
         public override void Save()
