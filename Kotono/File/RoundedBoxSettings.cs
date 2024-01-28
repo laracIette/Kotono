@@ -1,7 +1,10 @@
-﻿using Kotono.Utils;
+﻿using Kotono.Graphics.Objects;
 
 namespace Kotono.File
 {
+    /// <summary>
+    /// Settings class for creating a <see cref="RoundedBox"/>.
+    /// </summary>
     internal class RoundedBoxSettings : Object2DSettings
     {
         /// <summary>

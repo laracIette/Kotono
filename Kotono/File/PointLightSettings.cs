@@ -1,9 +1,10 @@
 ﻿using Kotono.Utils;
+using Kotono.Graphics.Objects.Lights;
 
 namespace Kotono.File
 {
     /// <summary>
-    /// Settings class for creating <see cref="Kotono.Graphics.Objects.Lights.PointLight"/>.
+    /// Settings class for creating a <see cref="PointLight"/>.
     /// </summary>
     internal class PointLightSettings : Object3DSettings
     {

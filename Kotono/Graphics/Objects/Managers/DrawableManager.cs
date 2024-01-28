@@ -1,6 +1,5 @@
 ﻿using Kotono.Physics;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Kotono.Graphics.Objects.Managers
 {

@@ -1,10 +1,12 @@
-﻿using Kotono.Graphics;
-using Kotono.Graphics.Objects.Hitboxes;
-using Kotono.Graphics.Shaders;
+﻿using Kotono.Graphics.Objects.Hitboxes;
+using Kotono.Graphics.Objects.Meshes;
 using System.Collections.Generic;
 
 namespace Kotono.File
 {
+    /// <summary>
+    /// Settings class for creating a <see cref="Mesh"/>.
+    /// </summary>
     internal class MeshSettings : Object3DSettings
     {
         /// <summary>

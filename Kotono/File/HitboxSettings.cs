@@ -1,9 +1,11 @@
 ﻿using Kotono.Graphics.Objects.Hitboxes;
-using Kotono.Utils;
 using System.Collections.Generic;
 
 namespace Kotono.File
 {
+    /// <summary>
+    /// Settings class for creating an <see cref="Hitbox"/>.
+    /// </summary>
     internal class HitboxSettings : Object3DSettings
     {
         /// <summary>

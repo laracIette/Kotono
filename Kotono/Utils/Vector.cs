@@ -15,17 +15,17 @@ namespace Kotono.Utils
         /// <summary> 
         /// The X component of the Vector. 
         /// </summary>
-        public float X;
+        public float X { get; set; }
 
         /// <summary>
         /// The Y component of the Vector. 
         /// </summary>
-        public float Y;
+        public float Y { get; set; }
 
         /// <summary> 
         /// The Z component of the Vector. 
         /// </summary>
-        public float Z;
+        public float Z { get; set; }
 
         /// <summary>
         /// The length of the Vector. 

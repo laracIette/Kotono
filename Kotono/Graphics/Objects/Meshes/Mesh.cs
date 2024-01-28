@@ -11,7 +11,6 @@ using OpenTK.Graphics.OpenGL4;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json;
 using PrimitiveType = OpenTK.Graphics.OpenGL4.PrimitiveType;
 
 namespace Kotono.Graphics.Objects.Meshes
@@ -114,7 +113,7 @@ namespace Kotono.Graphics.Objects.Meshes
                 using (var importer = new AssimpContext())
                 {
                     var scene = importer.ImportFile(_model, PostProcessSteps.Triangulate);
-#if false
+#if true
                     foreach (var face in scene.Meshes[0].Faces)
                     {
                         triangles.Add(new Triangle(

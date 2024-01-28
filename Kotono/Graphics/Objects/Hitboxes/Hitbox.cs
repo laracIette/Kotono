@@ -1,5 +1,4 @@
 ﻿using Kotono.File;
-using Kotono.Utils;
 using System.Collections.Generic;
 
 namespace Kotono.Graphics.Objects.Hitboxes

@@ -2,6 +2,9 @@
 
 namespace Kotono.File
 {
+    /// <summary>
+    /// Settings class for creating a <see cref="Graphics.Objects.Texts.Text"/>.
+    /// </summary> 
     internal class TextSettings : Object2DSettings
     {
         /// <summary>

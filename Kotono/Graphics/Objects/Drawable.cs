@@ -9,6 +9,8 @@ namespace Kotono.Graphics.Objects
     {
         protected DrawableSettings _settings;
 
+        private readonly string _path;
+
         public virtual bool IsDraw { get; set; }
 
         public virtual Color Color { get; set; }
@@ -17,6 +19,7 @@ namespace Kotono.Graphics.Objects
         {
             _settings = settings;
 
+            _path = _settings.Path;
             IsDraw = _settings.IsDraw;
             Color = _settings.Color;
 
@@ -29,6 +32,7 @@ namespace Kotono.Graphics.Objects
 
         public virtual void Save() 
         { 
+            _settings.Path = _path;
             _settings.IsDraw = IsDraw;
             _settings.Color = Color;
 

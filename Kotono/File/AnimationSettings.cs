@@ -1,7 +1,10 @@
-﻿using Kotono.Utils;
+﻿using Kotono.Graphics.Objects;
 
 namespace Kotono.File
 {
+    /// <summary>
+    /// Settings class for creating an <see cref="Object2D"/>.
+    /// </summary>
     internal class AnimationSettings : Object2DSettings
     {
         /// <summary>

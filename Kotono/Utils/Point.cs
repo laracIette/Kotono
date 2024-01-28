@@ -13,12 +13,12 @@ namespace Kotono.Utils
         /// <summary> 
         /// The X component of the Point. 
         /// </summary>
-        public float X;
+        public float X { get; set; }
 
-        /// <summary> 
+        /// <summary>
         /// The Y component of the Point. 
         /// </summary>
-        public float Y;
+        public float Y { get; set; }
 
         /// <summary> 
         /// The length component of the Point. 

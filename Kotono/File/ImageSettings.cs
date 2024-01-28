@@ -1,7 +1,10 @@
-﻿using Kotono.Utils;
+﻿using Kotono.Graphics.Objects;
 
 namespace Kotono.File
 {
+    /// <summary>
+    /// Settings class for creating an <see cref="Image"/>.
+    /// </summary>
     internal class ImageSettings : Object2DSettings
     {
         /// <summary>

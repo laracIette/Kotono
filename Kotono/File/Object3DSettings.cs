@@ -1,9 +1,10 @@
 ﻿using Kotono.Utils;
+using Kotono.Graphics.Objects;
 
 namespace Kotono.File
 {
     /// <summary>
-    /// Settings class for creating <see cref="Kotono.Graphics.Objects.Object3D"/>.
+    /// Settings class for creating an <see cref="Object3D"/>.
     /// </summary>
     internal class Object3DSettings : DrawableSettings
     {
