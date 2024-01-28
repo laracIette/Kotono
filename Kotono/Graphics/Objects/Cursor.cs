@@ -10,7 +10,7 @@ namespace Kotono.Graphics.Objects
               {
                   Texture = Utils.Path.ASSETS + @"coke.png",
                   Dest = new Rect(0.0f, 0.0f, 50.0f, 50.0f),
-                  Layer = 10
+                  Layer = int.MaxValue
               }
           )
     {

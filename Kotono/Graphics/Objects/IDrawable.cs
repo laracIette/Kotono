@@ -8,8 +8,6 @@ namespace Kotono.Graphics.Objects
 
         public Color Color { get; set; }
 
-        public void Update();
-
         public void Draw();
     }
 }

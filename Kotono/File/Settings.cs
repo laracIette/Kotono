@@ -6,11 +6,7 @@ namespace Kotono.File
 {
     internal static class Settings
     {
-        private static readonly JsonSerializerOptions _jsonSerializerOptions = 
-            new() 
-            { 
-                WriteIndented = true
-            };
+        private static readonly JsonSerializerOptions _jsonSerializerOptions = new() { WriteIndented = true };
 
         internal static T Parse<T>(string path) where T : DrawableSettings
         {

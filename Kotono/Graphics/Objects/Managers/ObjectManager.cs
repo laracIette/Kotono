@@ -16,9 +16,9 @@ namespace Kotono.Graphics.Objects.Managers
 
         internal static SpotLight[] SpotLights => _object3DManager.Drawables.OfType<SpotLight>().ToArray();
 
-        internal static void Create(Drawable drawable)
+        internal static void Create(Object obj)
         {
-            switch (drawable)
+            switch (obj)
             {
                 case FrontMesh frontMesh:
                     _frontMeshManager.Create(frontMesh);
@@ -59,9 +59,9 @@ namespace Kotono.Graphics.Objects.Managers
             }
         }
 
-        internal static void Delete(Drawable drawable)
+        internal static void Delete(Object obj)
         {
-            switch (drawable)
+            switch (obj)
             {
                 case FrontMesh frontMesh:
                     _frontMeshManager.Delete(frontMesh);
