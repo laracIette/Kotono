@@ -7,7 +7,7 @@ namespace Kotono.Graphics.Objects.Managers
 {
     internal static class ObjectManager
     {
-        private static readonly Renderer _renderer = new(new Point(1600.0f, 800.0f));
+        private static readonly Renderer _renderer = new();
 
         private static readonly List<Object> _objects = [];
 
@@ -15,10 +15,9 @@ namespace Kotono.Graphics.Objects.Managers
 
         internal static SpotLight[] SpotLights => _objects.OfType<SpotLight>().ToArray();
 
-        internal static Point Size
+        internal static void SetSize(Point value)
         {
-            get => _renderer.Size;
-            set => _renderer.Size = value;
+            _renderer.SetSize(value);
         }
 
         internal static void Create(Object obj)

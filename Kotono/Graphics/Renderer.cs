@@ -7,20 +7,19 @@ using System.Collections.Generic;
 
 namespace Kotono.Graphics
 {
-    internal class Renderer(Point size) : IDisposable
+    internal class Renderer : IDisposable
     {
-        private readonly FrameBuffer _frameBuffer = new(size);
+        private readonly FrameBuffer _frameBuffer = new(KT.Size);
 
         private readonly List<Object2D> _object2DRenderQueue = [];
         
         private readonly List<Object3D> _object3DRenderQueue = [];
         
         private readonly List<Drawable> _drawableRenderQueue = [];
-
-        internal Point Size 
-        { 
-            get => _frameBuffer.Size;
-            set => _frameBuffer.Size = value;
+        
+        internal void SetSize(Point value)
+        {
+            _frameBuffer.Size = value;
         }
 
         #region RenderQueue

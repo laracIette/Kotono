@@ -17,7 +17,7 @@ namespace Kotono
 
         #region WindowDest
 
-        private static Rect _dest = Rect.Zero;
+        private static Rect _dest = new(0.0f, 0.0f, 1280.0f, 720.0f);
 
         internal static Rect Dest
         {
@@ -50,7 +50,7 @@ namespace Kotono
 
                 if (Size > Point.Zero)
                 {
-                    ObjectManager.Size = Size;
+                    ObjectManager.SetSize(Size);
                 }
             }
         }
