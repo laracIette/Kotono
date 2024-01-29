@@ -2,7 +2,7 @@
 {
     internal interface IFramebuffer
     {
-        public void PreDraw();
+        public void BeginDraw();
         
         public void DrawBufferTextures();
     }

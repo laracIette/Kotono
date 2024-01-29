@@ -115,8 +115,11 @@ namespace Kotono.Graphics.Objects
 
             Location += GetMovement();
             _attachMesh.Location = Location;
-
+#if true
             Scale = (Vector)(Vector.Distance(Location, CameraManager.ActiveCamera.Location) / 75.0f);
+#else
+            Scale = Vector.Unit;
+#endif
         }
 
         private static Vector GetMovement()

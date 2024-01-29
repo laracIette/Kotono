@@ -15,7 +15,7 @@ using PrimitiveType = OpenTK.Graphics.OpenGL4.PrimitiveType;
 
 namespace Kotono.Graphics.Objects.Meshes
 {
-    internal abstract class Mesh : Object3D, IFizixObject
+    internal abstract class Mesh : Object3D, IMesh
     {
         private struct MeshHiddenSettings
         {
@@ -252,6 +252,8 @@ namespace Kotono.Graphics.Objects.Meshes
             GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
 
             GL.DrawElements(PrimitiveType.Triangles, IndicesCount, DrawElementsType.UnsignedInt, IntPtr.Zero);
+
+            GL.BindTexture(TextureTarget.Texture2D, 0);
         }
 
         /// <summary>

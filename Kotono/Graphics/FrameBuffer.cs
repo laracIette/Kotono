@@ -74,7 +74,7 @@ namespace Kotono.Graphics
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
         }
 
-        public void PreDraw()
+        public void BeginDraw()
         {
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, _framebuffer);
             GL.ClearColor(0.1f, 0.1f, 0.2f, 1.0f);

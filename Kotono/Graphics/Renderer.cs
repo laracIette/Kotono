@@ -1,5 +1,6 @@
 ﻿using Kotono.Engine.UserInterface.Elements;
 using Kotono.Graphics.Objects;
+using Kotono.Graphics.Objects.Meshes;
 using Kotono.Utils;
 using OpenTK.Graphics.OpenGL4;
 using System;
@@ -11,11 +12,11 @@ namespace Kotono.Graphics
     {
         private readonly Framebuffer _framebuffer = new(KT.Size);
 
+        private readonly List<IFrontMesh> _frontMeshRenderQueue = [];
+        
         private readonly List<IObject2D> _object2DRenderQueue = [];
         
         private readonly List<IObject3D> _object3DRenderQueue = [];
-        
-        private readonly List<IDrawable> _drawableRenderQueue = [];
         
         internal void SetSize(Point value)
         {
@@ -33,6 +34,10 @@ namespace Kotono.Graphics
 
             switch (drawable)
             {
+                case IFrontMesh frontMesh:
+                    AddToFrontMeshRenderQueue(frontMesh);
+                    break;
+                
                 case IObject2D object2D:
                     AddToObject2DRenderQueue(object2D);
                     break;
@@ -42,7 +47,6 @@ namespace Kotono.Graphics
                     break;
 
                 default:
-                    AddToDrawableRenderQueue(drawable);
                     break;
             }
         }
@@ -75,16 +79,16 @@ namespace Kotono.Graphics
             _object3DRenderQueue.Add(object3D);
         }
 
-        private void AddToDrawableRenderQueue(IDrawable drawable)
+        private void AddToFrontMeshRenderQueue(IFrontMesh frontMesh)
         {
-            _drawableRenderQueue.Add(drawable);
+            _frontMeshRenderQueue.Add(frontMesh);
         }
 
         private void ClearRenderQueues()
         {
             _object2DRenderQueue.Clear();
             _object3DRenderQueue.Clear();
-            _drawableRenderQueue.Clear();
+            _frontMeshRenderQueue.Clear();
         }
 
         #endregion RenderQueue
@@ -93,9 +97,10 @@ namespace Kotono.Graphics
 
         public void Render()
         {
-            _framebuffer.PreDraw();
+            _framebuffer.BeginDraw();
 
             DrawObject3DRenderQueue();
+            DrawFrontMeshRenderQueue();
             DrawObject2DRenderQueue();
 
             _framebuffer.DrawBufferTextures();
@@ -131,6 +136,18 @@ namespace Kotono.Graphics
             foreach (var object3D in _object3DRenderQueue)
             {
                 object3D.Draw();
+            }
+        }
+
+        private void DrawFrontMeshRenderQueue()
+        {
+            //GL.Clear(ClearBufferMask.DepthBufferBit);
+
+            ComponentManager.WindowViewport.Use();
+
+            foreach (var frontMesh in _frontMeshRenderQueue)
+            {
+                frontMesh.Draw();
             }
         }
 

@@ -57,6 +57,8 @@ namespace Kotono.Graphics.Objects
             GL.BindVertexArray(SquareVertices.VertexArrayObject);
 
             GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
+
+            GL.BindTexture(TextureTarget.Texture2D, 0);
         }
 
         internal void Transform(Rect transformation)
