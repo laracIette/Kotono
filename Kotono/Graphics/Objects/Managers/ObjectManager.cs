@@ -1,124 +1,92 @@
 ﻿using Kotono.Graphics.Objects.Lights;
-using Kotono.Graphics.Objects.Meshes;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Kotono.Graphics.Objects.Managers
 {
     internal static class ObjectManager
     {
-        private static readonly FrontMeshManager _frontMeshManager = new();
+        private static readonly Renderer _renderer = new();
 
-        private static readonly Object2DManager _object2DManager = new();
+        private static readonly List<Object> _objects = [];
 
-        private static readonly Object3DManager _object3DManager = new();
+        internal static PointLight[] PointLights => _objects.OfType<PointLight>().ToArray();
 
-        internal static PointLight[] PointLights => _object3DManager.Drawables.OfType<PointLight>().ToArray();
-
-        internal static SpotLight[] SpotLights => _object3DManager.Drawables.OfType<SpotLight>().ToArray();
+        internal static SpotLight[] SpotLights => _objects.OfType<SpotLight>().ToArray();
 
         internal static void Create(Object obj)
         {
             switch (obj)
             {
-                case FrontMesh frontMesh:
-                    _frontMeshManager.Create(frontMesh);
-                    break;
-
-                case PointLight pointLight:
+                case PointLight:
                     if (PointLights.Length >= PointLight.MAX_COUNT)
                     {
                         KT.Log($"The number of PointLight is already at its max value: {PointLight.MAX_COUNT}.");
-                    }
-                    else
-                    {
-                        _object3DManager.Create(pointLight);
+                        return;
                     }
                     break;
 
-                case SpotLight spotLight:
+                case SpotLight:
                     if (SpotLights.Length >= SpotLight.MAX_COUNT)
                     {
                         KT.Log($"The number of SpotLight is already at its max value: {SpotLight.MAX_COUNT}.");
+                        return;
                     }
-                    else
-                    {
-                        _object3DManager.Create(spotLight);
-                    }
-                    break;
-
-                case Object2D object2D:
-                    _object2DManager.Create(object2D);
-                    break;
-
-                case Object3D object3D:
-                    _object3DManager.Create(object3D);
                     break;
 
                 default:
                     break;
+            }
+
+            if (!_objects.Contains(obj))
+            {
+                _objects.Add(obj);
             }
         }
 
         internal static void Delete(Object obj)
         {
-            switch (obj)
+            if (!_objects.Remove(obj))
             {
-                case FrontMesh frontMesh:
-                    _frontMeshManager.Delete(frontMesh);
-                    break;
-
-                case Object2D object2D:
-                    _object2DManager.Delete(object2D);
-                    break;
-
-                case Object3D object3D:
-                    _object3DManager.Delete(object3D);
-                    break;
-
-                default:
-                    break;
+                KT.Log($"error: couldn't remove \"{obj}\" from _objects.");
             }
-        }
-
-        internal static void UpdateObject2DLayer(Object2D object2D)
-        {
-            _object2DManager.UpdateLayer(object2D);
         }
 
         internal static void Update()
         {
-            _frontMeshManager.Update();
-            _object3DManager.Update();
-            _object2DManager.Update();
+            // List can change during Object.Update() calls
+            for (int i = 0; i < _objects.Count; i++)
+            {
+                _objects[i].Update();
+            }
         }
 
-        internal static void Draw3D()
+        internal static void Draw()
         {
-            _object3DManager.Draw();
-        }
+            foreach (var obj in _objects.OfType<Drawable>())
+            {
+                _renderer.AddToRenderQueue(obj);
+            }
 
-        internal static void DrawFront()
-        {
-            _frontMeshManager.Draw();
-        }
-
-        internal static void Draw2D()
-        {
-            _object2DManager.Draw();
+            _renderer.Render();
         }
 
         internal static void Save()
         {
-            _frontMeshManager.Save();
-            _object3DManager.Save();
-            _object2DManager.Save();
+            foreach (var obj in _objects.OfType<ISaveable>())
+            {
+                obj.Save();
+            }
         }
 
         internal static void Dispose()
         {
-            _frontMeshManager.Dispose();
-            _object3DManager.Dispose();
-            _object2DManager.Dispose();
+            foreach (var obj in _objects)
+            {
+                obj.Dispose();
+            }
+
+            _objects.Clear();
         }
     }
 }

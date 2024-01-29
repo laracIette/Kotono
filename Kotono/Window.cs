@@ -130,26 +130,7 @@ namespace Kotono
 
                 ShaderManager.Update();
 
-                // first pass
-                GL.BindFramebuffer(FramebufferTarget.Framebuffer, _frameBuffer);
-                GL.ClearColor(0.1f, 0.1f, 0.2f, 1.0f);
-                GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-                GL.Enable(EnableCap.DepthTest);
-
-                ComponentManager.WindowViewport.Use();
-
-                ObjectManager.Draw3D();
-                //GL.Clear(ClearBufferMask.DepthBufferBit); // TODO: that, works but problem with outline
-                ObjectManager.DrawFront();
-                ObjectManager.Draw2D();
-
-                // second pass
-                GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0); // back to default
-                GL.ClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-                GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-
-                ShaderManager.Color.Draw(_colorBufferTexture);
-                ShaderManager.Outline.Draw(_depthStencilBufferTexture);
+                ObjectManager.Draw();
 
                 // TODO: separate object 3d and 2d manager ????????
                 //       to draw 3d before then depth buffer then draw 2d??????
