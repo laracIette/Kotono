@@ -50,17 +50,7 @@ namespace Kotono.Graphics.Objects
             set => _dest.H = value;
         }
 
-        private int _layer;
-
-        public virtual int Layer
-        {
-            get => _layer;
-            set
-            {
-                _layer = value;
-                ObjectManager.UpdateObject2DLayer(this);
-            }
-        }
+        public virtual int Layer { get; set; }
 
         internal Object2D(Object2DSettings settings)
             : base(settings)

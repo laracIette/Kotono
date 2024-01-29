@@ -4,7 +4,7 @@ using System;
 
 namespace Kotono
 {
-    internal abstract class Object : IObject, IDisposable
+    internal abstract class Object : IObject
     {
         protected readonly ObjectSettings _settings;
 
