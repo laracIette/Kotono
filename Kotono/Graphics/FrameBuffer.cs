@@ -4,7 +4,7 @@ using System;
 
 namespace Kotono.Graphics
 {
-    internal class FrameBuffer
+    internal class FrameBuffer : IDisposable
     {
         private readonly int _frameBuffer;
 
@@ -14,7 +14,7 @@ namespace Kotono.Graphics
 
         private Point _size = Point.Zero;
 
-        public Point Size
+        internal Point Size
         {
             get => _size;
             set
@@ -90,6 +90,15 @@ namespace Kotono.Graphics
 
             ShaderManager.Color.Draw(_colorBufferTexture);
             ShaderManager.Outline.Draw(_depthStencilBufferTexture);
+        }
+
+        public void Dispose()
+        {
+            GL.DeleteTexture(_depthStencilBufferTexture);
+            GL.DeleteTexture(_colorBufferTexture);
+            GL.DeleteFramebuffer(_frameBuffer);
+
+            GC.SuppressFinalize(this);
         }
     }
 }

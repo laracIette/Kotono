@@ -47,6 +47,11 @@ namespace Kotono
                 ComponentManager.WindowViewport.Size = Size;
 
                 PerformanceWindow.UpdatePosition();
+
+                if (Size > Point.Zero)
+                {
+                    ObjectManager.Size = Size;
+                }
             }
         }
 

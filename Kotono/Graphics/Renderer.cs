@@ -2,13 +2,14 @@
 using Kotono.Graphics.Objects;
 using Kotono.Utils;
 using OpenTK.Graphics.OpenGL4;
+using System;
 using System.Collections.Generic;
 
 namespace Kotono.Graphics
 {
-    internal class Renderer
+    internal class Renderer(Point size) : IDisposable
     {
-        private readonly FrameBuffer _frameBuffer;
+        private readonly FrameBuffer _frameBuffer = new(size);
 
         private readonly List<Object2D> _object2DRenderQueue = [];
         
@@ -16,9 +17,10 @@ namespace Kotono.Graphics
         
         private readonly List<Drawable> _drawableRenderQueue = [];
 
-        public Renderer() 
-        {
-            _frameBuffer = new FrameBuffer(new Point(1600.0f, 800.0f));
+        internal Point Size 
+        { 
+            get => _frameBuffer.Size;
+            set => _frameBuffer.Size = value;
         }
 
         #region RenderQueue
@@ -134,5 +136,12 @@ namespace Kotono.Graphics
         }
 
         #endregion Render
+
+        public void Dispose()
+        {
+            _frameBuffer.Dispose();
+
+            GC.SuppressFinalize(this);
+        }
     }
 }
