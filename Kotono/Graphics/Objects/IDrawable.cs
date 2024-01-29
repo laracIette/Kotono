@@ -2,7 +2,7 @@
 
 namespace Kotono.Graphics.Objects
 {
-    internal interface IDrawable : IObject
+    internal interface IDrawable
     {
         public bool IsDraw { get; set; }
 

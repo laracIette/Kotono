@@ -7,9 +7,9 @@ using System.Collections.Generic;
 
 namespace Kotono.Graphics
 {
-    internal class Renderer : IDisposable
+    internal class Renderer : IRenderer, IDisposable
     {
-        private readonly FrameBuffer _frameBuffer = new(KT.Size);
+        private readonly Framebuffer _framebuffer = new(KT.Size);
 
         private readonly List<IObject2D> _object2DRenderQueue = [];
         
@@ -19,12 +19,12 @@ namespace Kotono.Graphics
         
         internal void SetSize(Point value)
         {
-            _frameBuffer.Size = value;
+            _framebuffer.Size = value;
         }
 
         #region RenderQueue
 
-        internal void AddToRenderQueue(IDrawable drawable)
+        public void AddToRenderQueue(IDrawable drawable)
         {
             if (!drawable.IsDraw)
             {
@@ -91,14 +91,14 @@ namespace Kotono.Graphics
 
         #region Render
 
-        internal void Render()
+        public void Render()
         {
-            _frameBuffer.PreDraw();
+            _framebuffer.PreDraw();
 
             DrawObject3DRenderQueue();
             DrawObject2DRenderQueue();
 
-            _frameBuffer.DrawBufferTextures();
+            _framebuffer.DrawBufferTextures();
 
             ClearRenderQueues();
         }
@@ -138,7 +138,7 @@ namespace Kotono.Graphics
 
         public void Dispose()
         {
-            _frameBuffer.Dispose();
+            _framebuffer.Dispose();
 
             GC.SuppressFinalize(this);
         }

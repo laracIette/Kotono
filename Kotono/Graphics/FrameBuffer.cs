@@ -4,9 +4,9 @@ using System;
 
 namespace Kotono.Graphics
 {
-    internal class FrameBuffer : IDisposable
+    internal class Framebuffer : IFramebuffer, IDisposable
     {
-        private readonly int _frameBuffer;
+        private readonly int _framebuffer;
 
         private readonly int _colorBufferTexture;
 
@@ -24,7 +24,7 @@ namespace Kotono.Graphics
             }
         }
 
-        internal FrameBuffer(Point size)
+        internal Framebuffer(Point size)
         {
             // Create the color texture
             _colorBufferTexture = GL.GenTexture();
@@ -33,7 +33,7 @@ namespace Kotono.Graphics
             _depthStencilBufferTexture = GL.GenTexture();
 
             // Create the framebuffer
-            _frameBuffer = GL.GenFramebuffer();
+            _framebuffer = GL.GenFramebuffer();
 
             Size = size;
         }
@@ -54,7 +54,7 @@ namespace Kotono.Graphics
             GL.BindTexture(TextureTarget.Texture2D, 0);
 
             // Attach textures to framebuffer
-            GL.BindFramebuffer(FramebufferTarget.Framebuffer, _frameBuffer);
+            GL.BindFramebuffer(FramebufferTarget.Framebuffer, _framebuffer);
             GL.FramebufferTexture2D(FramebufferTarget.Framebuffer, FramebufferAttachment.ColorAttachment0, TextureTarget.Texture2D, _colorBufferTexture, 0);
             GL.FramebufferTexture2D(FramebufferTarget.Framebuffer, FramebufferAttachment.DepthStencilAttachment, TextureTarget.Texture2D, _depthStencilBufferTexture, 0);
 
@@ -74,15 +74,15 @@ namespace Kotono.Graphics
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
         }
 
-        internal void PreDraw()
+        public void PreDraw()
         {
-            GL.BindFramebuffer(FramebufferTarget.Framebuffer, _frameBuffer);
+            GL.BindFramebuffer(FramebufferTarget.Framebuffer, _framebuffer);
             GL.ClearColor(0.1f, 0.1f, 0.2f, 1.0f);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             GL.Enable(EnableCap.DepthTest);
         }
 
-        internal void DrawBufferTextures()
+        public void DrawBufferTextures()
         {
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
             GL.ClearColor(1.0f, 1.0f, 1.0f, 1.0f);
@@ -96,7 +96,7 @@ namespace Kotono.Graphics
         {
             GL.DeleteTexture(_depthStencilBufferTexture);
             GL.DeleteTexture(_colorBufferTexture);
-            GL.DeleteFramebuffer(_frameBuffer);
+            GL.DeleteFramebuffer(_framebuffer);
 
             GC.SuppressFinalize(this);
         }
