@@ -11,11 +11,11 @@ namespace Kotono.Graphics
     {
         private readonly FrameBuffer _frameBuffer = new(KT.Size);
 
-        private readonly List<Object2D> _object2DRenderQueue = [];
+        private readonly List<IObject2D> _object2DRenderQueue = [];
         
-        private readonly List<Object3D> _object3DRenderQueue = [];
+        private readonly List<IObject3D> _object3DRenderQueue = [];
         
-        private readonly List<Drawable> _drawableRenderQueue = [];
+        private readonly List<IDrawable> _drawableRenderQueue = [];
         
         internal void SetSize(Point value)
         {
@@ -24,7 +24,7 @@ namespace Kotono.Graphics
 
         #region RenderQueue
 
-        internal void AddToRenderQueue(Drawable drawable)
+        internal void AddToRenderQueue(IDrawable drawable)
         {
             if (!drawable.IsDraw)
             {
@@ -33,11 +33,11 @@ namespace Kotono.Graphics
 
             switch (drawable)
             {
-                case Object2D object2D:
+                case IObject2D object2D:
                     AddToObject2DRenderQueue(object2D);
                     break;
 
-                case Object3D object3D:
+                case IObject3D object3D:
                     AddToObject3DRenderQueue(object3D);
                     break;
 
@@ -47,7 +47,7 @@ namespace Kotono.Graphics
             }
         }
 
-        private void AddToObject2DRenderQueue(Object2D object2D)
+        private void AddToObject2DRenderQueue(IObject2D object2D)
         {
             if (!Rect.Overlaps(object2D.Dest, Rect.FromAnchor(((object2D as IElement)?.Viewport ?? ComponentManager.WindowViewport).Dest, Anchor.TopLeft)))
             {
@@ -70,12 +70,12 @@ namespace Kotono.Graphics
             }
         }
 
-        private void AddToObject3DRenderQueue(Object3D object3D)
+        private void AddToObject3DRenderQueue(IObject3D object3D)
         {
             _object3DRenderQueue.Add(object3D);
         }
 
-        private void AddToDrawableRenderQueue(Drawable drawable)
+        private void AddToDrawableRenderQueue(IDrawable drawable)
         {
             _drawableRenderQueue.Add(drawable);
         }
@@ -117,7 +117,7 @@ namespace Kotono.Graphics
             GL.Enable(EnableCap.DepthTest);
         }
 
-        private static void DrawObject2D(Object2D object2D) 
+        private static void DrawObject2D(IObject2D object2D) 
         {
             ((object2D as IElement)?.Viewport ?? ComponentManager.WindowViewport).Use();
 

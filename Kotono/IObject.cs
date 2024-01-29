@@ -1,6 +1,8 @@
-﻿namespace Kotono
+﻿using System;
+
+namespace Kotono
 {
-    internal interface IObject
+    internal interface IObject : IDisposable
     {
         public void Update();
 

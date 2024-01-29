@@ -9,7 +9,7 @@ namespace Kotono.Graphics.Objects.Managers
     {
         private static readonly Renderer _renderer = new();
 
-        private static readonly List<Object> _objects = [];
+        private static readonly List<IObject> _objects = [];
 
         internal static PointLight[] PointLights => _objects.OfType<PointLight>().ToArray();
 
@@ -20,7 +20,7 @@ namespace Kotono.Graphics.Objects.Managers
             _renderer.SetSize(value);
         }
 
-        internal static void Create(Object obj)
+        internal static void Create(IObject obj)
         {
             switch (obj)
             {
@@ -50,7 +50,7 @@ namespace Kotono.Graphics.Objects.Managers
             }
         }
 
-        internal static void Delete(Object obj)
+        internal static void Delete(IObject obj)
         {
             if (!_objects.Remove(obj))
             {
@@ -69,7 +69,7 @@ namespace Kotono.Graphics.Objects.Managers
 
         internal static void Draw()
         {
-            foreach (var obj in _objects.OfType<Drawable>())
+            foreach (var obj in _objects.OfType<IDrawable>())
             {
                 _renderer.AddToRenderQueue(obj);
             }
