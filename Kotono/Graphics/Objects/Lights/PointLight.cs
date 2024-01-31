@@ -6,6 +6,8 @@ namespace Kotono.Graphics.Objects.Lights
 {
     internal class PointLight : Object3D
     {
+        internal const int MAX_COUNT = 100;
+
         private readonly PointLightMesh _mesh = new();
 
         public override Vector Location
@@ -29,8 +31,6 @@ namespace Kotono.Graphics.Objects.Lights
         internal float Linear { get; set; }
 
         internal float Quadratic { get; set; }
-
-        internal const int MAX_COUNT = 100;
 
         internal PointLight(PointLightSettings settings)
             : base(settings)

@@ -19,18 +19,20 @@ namespace Kotono.Graphics.Objects.Meshes
     {
         private struct MeshHiddenSettings
         {
-            public int VertexArrayObject;
+            internal int VertexArrayObject;
 
-            public int VertexBufferObject;
+            internal int VertexBufferObject;
 
-            public int IndicesCount;
+            internal int IndicesCount;
 
-            public Vector Center;
+            internal Vector Center;
 
-            public Vector[] Vertices;
+            internal Vector[] Vertices;
 
-            public Triangle[] Triangles;
+            internal Triangle[] Triangles;
         }
+
+        private readonly MeshHiddenSettings _meshSettings;
 
         private static readonly Dictionary<string, MeshHiddenSettings> _paths = [];
 
@@ -38,13 +40,19 @@ namespace Kotono.Graphics.Objects.Meshes
 
         private readonly string _model;
 
+        private readonly Texture[] _textures;
+
+        private bool _isMouseOn = false;
+
+        private Vector _intersectionLocation = Vector.Zero;
+
+        private float _distance = 0.0f;
+
         protected readonly Shader _shader;
 
         internal bool IsGravity { get; set; } = false;
 
         internal CollisionState CollisionState { get; set; }
-
-        private readonly MeshHiddenSettings _meshSettings;
 
         internal int VertexArrayObject => _meshSettings.VertexArrayObject;
 
@@ -58,8 +66,6 @@ namespace Kotono.Graphics.Objects.Meshes
 
         internal Triangle[] Triangles => _meshSettings.Triangles;
 
-        private readonly Texture[] _textures;
-
         private Vector _rotationVelocity;
 
         internal Vector RotationVelocity
@@ -67,12 +73,6 @@ namespace Kotono.Graphics.Objects.Meshes
             get => Vector.Deg(_rotationVelocity);
             set => _rotationVelocity = Vector.Rad(value);
         }
-
-        private bool _isMouseOn = false;
-
-        private Vector _intersectionLocation = Vector.Zero;
-
-        private float _distance = 0.0f;
 
         internal static float IntersectionCheckFrequency => 0.1f;
 
@@ -225,12 +225,11 @@ namespace Kotono.Graphics.Objects.Meshes
                 if ((CollisionState == CollisionState.BlockAll) && hitbox.IsColliding)
                 {
                     hitbox.Location = Location;
-                }
-                else
-                {
-                    Location = tempLoc;
+                    tempLoc = Location;
                 }
             }
+
+            Location = tempLoc;
         }
 
         public void UpdateFizix()

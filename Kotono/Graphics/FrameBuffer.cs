@@ -19,8 +19,11 @@ namespace Kotono.Graphics
             get => _size;
             set
             {
-                _size = value;
-                ResizeFrameBuffer();
+                if (_size != value)
+                {
+                    _size = value;
+                    ResizeFrameBuffer();
+                }
             }
         }
 

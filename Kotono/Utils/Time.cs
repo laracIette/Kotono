@@ -7,7 +7,7 @@ namespace Kotono.Utils
         /// <summary>
         /// Current Time since Epoch in milliseconds.
         /// </summary>
-        public static long SinceEpochMS { get; private set; }
+        public static long SinceEpochMS { get; private set; } = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
 
         /// <summary>
         /// Current Time since Epoch in seconds.
@@ -17,7 +17,7 @@ namespace Kotono.Utils
         /// <summary>
         /// Current Time since the start of the program in milliseconds.
         /// </summary>
-        public static int NowMS { get; private set; }
+        public static int NowMS { get; private set; } = 0;
 
         /// <summary>
         /// Current Time since the start of the program in seconds.
@@ -27,19 +27,12 @@ namespace Kotono.Utils
         /// <summary>
         /// Delta Time in milliseconds.
         /// </summary>
-        public static int DeltaMS { get; private set; }
+        public static int DeltaMS { get; private set; } = 0;
 
         /// <summary>
         /// Delta Time in seconds.
         /// </summary>
         public static float Delta => DeltaMS / 1000.0f;
-
-        static Time()
-        {
-            SinceEpochMS = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
-
-            NowMS = 0;
-        }
 
         public static void Update()
         {
