@@ -135,7 +135,7 @@ namespace Kotono.Graphics.Objects.Texts
             }
         }
 
-        internal double StartTime { get; private set; }
+        internal float StartTime { get; private set; }
 
         private Color _color;
 
@@ -182,7 +182,7 @@ namespace Kotono.Graphics.Objects.Texts
         {
             Clear();
 
-            StartTime = Time.NowS;
+            StartTime = Time.Now;
 
             for (int i = 0; i < _text.Length; i++)
             {
@@ -276,7 +276,7 @@ namespace Kotono.Graphics.Objects.Texts
             }
         }
 
-        internal void Transform(Rect dest, double time)
+        internal void Transform(Rect dest, float time)
         {
             foreach (var letter in _letters)
             {

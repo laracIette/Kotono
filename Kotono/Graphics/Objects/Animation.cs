@@ -68,15 +68,15 @@ namespace Kotono.Graphics.Objects
             }
         }
 
-        private readonly double _startTime;
+        private readonly float _startTime;
 
-        private readonly double _duration;
+        private readonly float _duration;
 
-        private double _lastFrameTime;
+        private float _lastFrameTime;
 
-        private double _pausedTime = 0;
+        private float _pausedTime = 0;
 
-        private double EndTime => _startTime + _duration + _pausedTime;
+        private float EndTime => _startTime + _duration + _pausedTime;
 
         private bool _isStarted = false;
 
@@ -121,34 +121,34 @@ namespace Kotono.Graphics.Objects
             }
 
             _frameRate = settings.FrameRate;
-            _startTime = Time.NowS + settings.StartTime;
+            _startTime = Time.Now + settings.StartTime;
             _duration = settings.Duration;
         }
 
         public override void Update()
         {
-            if (!_isStarted && (Time.NowS >= _startTime))
+            if (!_isStarted && (Time.Now >= _startTime))
             {
                 _isStarted = true;
                 IsPlaying = true;
-                _lastFrameTime = Time.NowS;
+                _lastFrameTime = Time.Now;
                 _frames[0].IsDraw = true;
             }
 
-            if (_isStarted && (Time.NowS <= EndTime))
+            if (_isStarted && (Time.Now <= EndTime))
             {
                 if (IsPlaying)
                 {
-                    if ((Time.NowS - _pausedTime - _lastFrameTime) > DeltaS)
+                    if ((Time.Now - _pausedTime - _lastFrameTime) > DeltaS)
                     {
-                        _lastFrameTime = Time.NowS - _pausedTime;
+                        _lastFrameTime = Time.Now - _pausedTime;
 
                         Next();
                     }
                 }
                 else
                 {
-                    _pausedTime += Time.DeltaS;
+                    _pausedTime += Time.Delta;
                 }
             }
         }

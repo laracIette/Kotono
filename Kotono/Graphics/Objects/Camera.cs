@@ -91,27 +91,27 @@ namespace Kotono.Graphics.Objects
 
             if (Keyboard.IsKeyDown(Keys.W))
             {
-                Location += Front * _speed * fast * slow * Time.DeltaS; // Forward
+                Location += Front * _speed * fast * slow * Time.Delta; // Forward
             }
             if (Keyboard.IsKeyDown(Keys.S))
             {
-                Location -= Front * _speed * fast * slow * Time.DeltaS; // Backwards
+                Location -= Front * _speed * fast * slow * Time.Delta; // Backwards
             }
             if (Keyboard.IsKeyDown(Keys.A))
             {
-                Location -= Right * _speed * fast * slow * Time.DeltaS; // Left
+                Location -= Right * _speed * fast * slow * Time.Delta; // Left
             }
             if (Keyboard.IsKeyDown(Keys.D))
             {
-                Location += Right * _speed * fast * slow * Time.DeltaS; // Right
+                Location += Right * _speed * fast * slow * Time.Delta; // Right
             }
             if (Keyboard.IsKeyDown(Keys.E))
             {
-                Location += Up * _speed * fast * slow * Time.DeltaS; // Up
+                Location += Up * _speed * fast * slow * Time.Delta; // Up
             }
             if (Keyboard.IsKeyDown(Keys.Q))
             {
-                Location -= Up * _speed * fast * slow * Time.DeltaS; // Down
+                Location -= Up * _speed * fast * slow * Time.Delta; // Down
             }
 
         }

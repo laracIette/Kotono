@@ -14,9 +14,9 @@ namespace Kotono.Graphics.Objects
 
         private Rect _transformation;
 
-        private double _startTime = 0;
+        private float _startTime = 0;
 
-        private double _endTime = 0;
+        private float _endTime = 0;
 
         private Matrix4 Model =>
             Matrix4.CreateScale(Dest.NDC.W, Dest.NDC.H, 1.0f)
@@ -37,12 +37,12 @@ namespace Kotono.Graphics.Objects
 
         public override void Update()
         {
-            if (Time.NowS >= _endTime)
+            if (Time.Now >= _endTime)
             {
                 _transformation = Rect.Zero;
             }
 
-            Dest += _transformation * Time.DeltaS;
+            Dest += _transformation * Time.Delta;
         }
 
         public override void Draw()
@@ -66,11 +66,11 @@ namespace Kotono.Graphics.Objects
             Dest += transformation;
         }
 
-        internal void Transform(Rect transformation, double time)
+        internal void Transform(Rect transformation, float time)
         {
-            _transformation += transformation / (float)time;
+            _transformation += transformation / time;
 
-            _startTime = Time.NowS;
+            _startTime = Time.Now;
             _endTime = _startTime + time;
         }
     }

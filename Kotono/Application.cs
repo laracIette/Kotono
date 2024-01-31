@@ -70,7 +70,7 @@ namespace Kotono
                 new RainbowPointLight();
             }
 
-            new FlatTextureMesh();
+            //new FlatTextureMesh();
         }
     }
 

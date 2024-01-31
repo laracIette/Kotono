@@ -79,7 +79,7 @@ namespace Kotono
         /// <param name="rainbow"> A bool to determine whether the Color of the text should loop through RBG values. </param>
         internal static void Print(object? obj, bool rainbow = false)
         {
-            Print(obj, rainbow ? Color.Rainbow(0.01) : Color.White);
+            Print(obj, rainbow ? Color.Rainbow(0.01f) : Color.White);
         }
 
         /// <summary>

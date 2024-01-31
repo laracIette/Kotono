@@ -1,12 +1,12 @@
 {
   "Model": "..\\..\\..\\Assets\\Gizmo\\gizmo_x.obj",
-  "Shader": "lighting",
+  "Shader": "gizmo",
   "Hitboxes": [],
   "Textures": [],
   "Location": {
     "X": 0,
-    "Y": 0,
-    "Z": 0
+    "Y": 0.09167819,
+    "Z": -7.665402
   },
   "Rotation": {
     "X": 0,
@@ -14,9 +14,9 @@
     "Z": 0
   },
   "Scale": {
-    "X": 0,
-    "Y": 0,
-    "Z": 0
+    "X": 0.11166558,
+    "Y": 0.11166558,
+    "Z": 0.11166558
   },
   "Velocity": {
     "X": 0,
@@ -24,7 +24,7 @@
     "Z": 0
   },
   "Path": "..\\..\\..\\Assets\\Gizmo\\gizmo_x.json",
-  "IsDraw": false,
+  "IsDraw": true,
   "Color": {
     "R": 1,
     "G": 0,

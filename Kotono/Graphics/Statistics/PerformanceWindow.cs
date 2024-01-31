@@ -14,13 +14,13 @@ namespace Kotono.Graphics.Statistics
 
         internal static int MaxFrameRate { get; set; } = 60;
 
-        internal static double FrameTime => _frame.Time;
+        internal static float FrameTime => _frame.Time;
 
-        internal static double FrameRate => _frame.Rate;
+        internal static float FrameRate => _frame.Rate;
 
-        internal static double UpdateTime => _update.Time;
+        internal static float UpdateTime => _update.Time;
 
-        internal static double UpdateRate => _update.Rate;
+        internal static float UpdateRate => _update.Rate;
 
         public static bool IsDraw
         {
@@ -51,12 +51,12 @@ namespace Kotono.Graphics.Statistics
             );
         }
 
-        internal static void AddFrameTime(double frameTime)
+        internal static void AddFrameTime(float frameTime)
         {
             _frame.AddTime(frameTime);
         }
 
-        internal static void AddUpdateTime(double updateTime)
+        internal static void AddUpdateTime(float updateTime)
         {
             _update.AddTime(updateTime);
         }

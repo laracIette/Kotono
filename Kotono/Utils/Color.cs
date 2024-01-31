@@ -203,12 +203,12 @@ namespace Kotono.Utils
         /// </summary>
         /// <param name="frequency"> The frequency at which the color loops through RGB values. </param>
         /// <returns></returns>
-        public static Color Rainbow(double frequency)
+        public static Color Rainbow(float frequency)
         {
             return new Color(
-                ((float)MathD.Sin(frequency * Time.Now + 0.0) * 0.5f) + 0.5f,
-                ((float)MathD.Sin(frequency * Time.Now + 2.0) * 0.5f) + 0.5f,
-                ((float)MathD.Sin(frequency * Time.Now + 4.0) * 0.5f) + 0.5f
+                (Math.Sin(frequency * Time.NowMS + 0.0f) * 0.5f) + 0.5f,
+                (Math.Sin(frequency * Time.NowMS + 2.0f) * 0.5f) + 0.5f,
+                (Math.Sin(frequency * Time.NowMS + 4.0f) * 0.5f) + 0.5f
             );
         }
 

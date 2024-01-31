@@ -79,7 +79,11 @@ namespace Kotono.Graphics
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, _framebuffer);
             GL.ClearColor(0.1f, 0.1f, 0.2f, 1.0f);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-            GL.Enable(EnableCap.DepthTest);
+        }
+
+        public void BeginDrawFront()
+        {
+            GL.BindFramebuffer(FramebufferTarget.Framebuffer, _framebuffer);
         }
 
         public void DrawBufferTextures()

@@ -74,9 +74,9 @@ namespace Kotono.Graphics.Objects.Meshes
 
         private float _distance = 0.0f;
 
-        internal static double IntersectionCheckFrequency => 0.1;
+        internal static float IntersectionCheckFrequency => 0.1f;
 
-        internal double LastIntersectionCheckTime { get; set; } = 0.0;
+        internal float LastIntersectionCheckTime { get; set; } = 0.0f;
 
         public bool IsFizix { get; set; } = false;
 
@@ -215,7 +215,7 @@ namespace Kotono.Graphics.Objects.Meshes
 
             if (IsGravity)
             {
-                tempLoc += Fizix.Gravity * Time.DeltaS;
+                tempLoc += Fizix.Gravity * Time.Delta;
             }
 
             foreach (var hitbox in _hitboxes)
@@ -264,9 +264,9 @@ namespace Kotono.Graphics.Objects.Meshes
         /// <returns> <see langword="true"/> if the mouse interects the Mesh, else returns <see langword="false"/>. </returns>
         public bool IsMouseOn(out Vector intersectionLocation, out float distance)
         {
-            if (Time.NowS - LastIntersectionCheckTime > IntersectionCheckFrequency)
+            if (Time.Now - LastIntersectionCheckTime > IntersectionCheckFrequency)
             {
-                LastIntersectionCheckTime = Time.NowS;
+                LastIntersectionCheckTime = Time.Now;
 
                 _isMouseOn = false;
                 _intersectionLocation = Vector.Zero;

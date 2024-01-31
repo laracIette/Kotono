@@ -16,15 +16,15 @@ namespace Kotono.Graphics.Statistics
             }
         )
     {
-        private readonly double[] _times = new double[60];
+        private readonly float[] _times = new float[60];
 
         private int _timeIndex = 0;
 
-        internal double Time { get; private set; }
+        internal float Time { get; private set; }
 
-        internal double Rate => 1.0 / Time;
+        internal float Rate => 1.0f / Time;
 
-        internal void AddTime(double newTime)
+        internal void AddTime(float newTime)
         {
             _times[_timeIndex] = newTime;
             _timeIndex = (_timeIndex + 1) % _times.Length;

@@ -27,16 +27,14 @@ namespace Kotono.Physics
             if ((n > 0) && (n < 3))
             {
                 collisionCenter /= n;
-
-                float roll = Math.Rad(mesh.Rotation.X);
-                float pitch = Math.Rad(mesh.Rotation.Y);
-                float yaw = Math.Rad(mesh.Rotation.Z);
+                
+                var rot = Vector.Rad(mesh.Rotation);
 
                 var up = new Vector
                 {
-                    X = Math.Cos(roll) * Math.Sin(pitch),
-                    Y = Math.Sin(roll) * Math.Sin(pitch),
-                    Z = Math.Cos(pitch)
+                    X = Math.Cos(rot.X) * Math.Sin(rot.Y),
+                    Y = Math.Sin(rot.X) * Math.Sin(rot.Y),
+                    Z = Math.Cos(rot.Y)
                 };
 
                 var lookAtMatrix = Matrix4.LookAt((Vector3)mesh.Location, (Vector3)collisionCenter, (Vector3)up);

@@ -40,14 +40,14 @@ namespace Kotono.Graphics.Objects.Lights
             {
                 if (OuterCutOffAngle >= 5.0f)
                 {
-                    CutOffAngle += 100.0f * Time.DeltaS;
+                    CutOffAngle += 100.0f * Time.Delta;
                 }
-                OuterCutOffAngle += 100.0f * Time.DeltaS;
+                OuterCutOffAngle += 100.0f * Time.Delta;
             }
             else
             {
-                CutOffAngle -= 100.0f * Time.DeltaS;
-                OuterCutOffAngle -= 100.0f * Time.DeltaS;
+                CutOffAngle -= 100.0f * Time.Delta;
+                OuterCutOffAngle -= 100.0f * Time.Delta;
             }
         }
     }

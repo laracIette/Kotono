@@ -5,38 +5,51 @@ namespace Kotono.Utils
     public static class Time
     {
         /// <summary>
-        /// Current Time in milliseconds
+        /// Current Time since Epoch in milliseconds.
         /// </summary>
-        public static long Now { get; private set; }
+        public static long SinceEpochMS { get; private set; }
 
         /// <summary>
-        /// Current Time in seconds
+        /// Current Time since Epoch in seconds.
         /// </summary>
-        public static double NowS => Now / 1000.0;
+        public static double SinceEpoch => SinceEpochMS / 1000.0;
 
         /// <summary>
-        /// Delta Time in milliseconds
+        /// Current Time since the start of the program in milliseconds.
         /// </summary>
-        public static long Delta { get; private set; }
+        public static int NowMS { get; private set; }
 
         /// <summary>
-        /// Delta Time in seconds
+        /// Current Time since the start of the program in seconds.
         /// </summary>
-        public static float DeltaS => Delta / 1000f;
+        public static float Now => NowMS / 1000.0f;
+
+        /// <summary>
+        /// Delta Time in milliseconds.
+        /// </summary>
+        public static int DeltaMS { get; private set; }
+
+        /// <summary>
+        /// Delta Time in seconds.
+        /// </summary>
+        public static float Delta => DeltaMS / 1000.0f;
 
         static Time()
         {
-            Now = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+            SinceEpochMS = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+
+            NowMS = 0;
         }
 
         public static void Update()
         {
-            // current Time in milliseconds
-            long now = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+            long sinceEpoch = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
 
-            Delta = now - Now;
+            DeltaMS = (int)(sinceEpoch - SinceEpochMS);
 
-            Now = now;
+            NowMS += DeltaMS;
+
+            SinceEpochMS = sinceEpoch;
         }
     }
 }

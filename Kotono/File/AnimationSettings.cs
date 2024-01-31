@@ -21,14 +21,14 @@ namespace Kotono.File
 
         /// <summary>
         /// The start time of the Animation.
-        /// <para> Default value : 0 </para>
+        /// <para> Default value : 0.0f </para>
         /// </summary>
-        public double StartTime { get; set; } = 0;
+        public float StartTime { get; set; } = 0.0f;
 
         /// <summary>
         /// The duration of the Animation.
-        /// <para> Default value : 0 </para>
+        /// <para> Default value : 0.0f </para>
         /// </summary>
-        public double Duration { get; set; } = 0;
+        public float Duration { get; set; } = 0.0f;
     }
 }

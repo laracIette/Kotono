@@ -100,6 +100,10 @@ namespace Kotono.Graphics
             _framebuffer.BeginDraw();
 
             DrawObject3DRenderQueue();
+
+            //_framebuffer.DrawBufferTextures();
+            //_framebuffer.BeginDrawFront();
+
             DrawFrontMeshRenderQueue();
             DrawObject2DRenderQueue();
 
@@ -110,7 +114,6 @@ namespace Kotono.Graphics
 
         private void DrawObject2DRenderQueue()
         {
-            GL.Disable(EnableCap.DepthTest);
             GL.Enable(EnableCap.Blend);
 
             foreach (var object2D in _object2DRenderQueue)
@@ -119,7 +122,6 @@ namespace Kotono.Graphics
             }
 
             GL.Disable(EnableCap.Blend);
-            GL.Enable(EnableCap.DepthTest);
         }
 
         private static void DrawObject2D(IObject2D object2D) 
@@ -131,17 +133,23 @@ namespace Kotono.Graphics
 
         private void DrawObject3DRenderQueue()
         {
+            GL.Enable(EnableCap.DepthTest);
+
             ComponentManager.WindowViewport.Use();
 
             foreach (var object3D in _object3DRenderQueue)
             {
                 object3D.Draw();
             }
+
+            GL.Disable(EnableCap.DepthTest);
         }
 
         private void DrawFrontMeshRenderQueue()
         {
-            //GL.Clear(ClearBufferMask.DepthBufferBit);
+            GL.Enable(EnableCap.DepthTest);
+
+            GL.Clear(ClearBufferMask.DepthBufferBit);
 
             ComponentManager.WindowViewport.Use();
 
@@ -149,6 +157,8 @@ namespace Kotono.Graphics
             {
                 frontMesh.Draw();
             }
+
+            GL.Disable(EnableCap.DepthTest);
         }
 
         #endregion Render

@@ -16,7 +16,7 @@ namespace Kotono
 {
     internal abstract class Window : GameWindow
     {
-        private double _stalledTime = 0;
+        private float _stalledTime = 0;
 
         private bool ShouldRenderFrame => IsFocused && (PerformanceWindow.FrameRate < PerformanceWindow.MaxFrameRate);
 
@@ -66,9 +66,9 @@ namespace Kotono
             // Render frame if Window is focused and current FrameRate < desired FrameRate
             if (ShouldRenderFrame)
             {
-                _stalledTime = 0;
+                _stalledTime = 0.0f;
 
-                PerformanceWindow.AddFrameTime(e.Time);
+                PerformanceWindow.AddFrameTime((float)e.Time);
 
                 ShaderManager.Update();
 
@@ -78,7 +78,7 @@ namespace Kotono
             }
             else
             {
-                _stalledTime += e.Time;
+                _stalledTime += (float)e.Time;
                 PerformanceWindow.AddFrameTime(_stalledTime);
             }
         }
@@ -87,7 +87,7 @@ namespace Kotono
         {
             base.OnUpdateFrame(e);
 
-            PerformanceWindow.AddUpdateTime(e.Time);
+            PerformanceWindow.AddUpdateTime((float)e.Time);
 
             KT.Update();
 

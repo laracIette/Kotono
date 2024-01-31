@@ -16,7 +16,7 @@ namespace Kotono.Graphics.Print
         {
             foreach (var text in _texts)
             {
-                if ((Time.NowS - text.StartTime) > 3.0)
+                if ((Time.Now - text.StartTime) > 3.0)
                 {
                     text.Clear();
                 }
