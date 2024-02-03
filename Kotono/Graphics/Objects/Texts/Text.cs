@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Kotono.Graphics.Objects.Texts
 {
-    internal class Text : Object2D, ISelectable
+    internal class Text : Object2D
     {
         private readonly static Dictionary<char, string> _charactersPath = new()
         {
@@ -152,9 +152,9 @@ namespace Kotono.Graphics.Objects.Texts
             }
         }
 
-        public bool IsSelected { get; } = false;
+        public new bool IsSelected { get; } = false;
 
-        public bool IsActive { get; } = false;
+        public new bool IsActive { get; } = false;
 
         internal bool IsMouseOn => Rect.Overlaps(Dest, Mouse.Position);
 

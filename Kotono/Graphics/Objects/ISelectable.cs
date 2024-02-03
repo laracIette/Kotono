@@ -12,6 +12,11 @@ namespace Kotono.Graphics.Objects
         public bool IsSelected { get; }
 
         /// <summary>
+        /// Determines wether the selectable is active.
+        /// </summary>
+        public bool IsActive { get; }
+
+        /// <summary>
         /// List of all the currently selected selectables.
         /// </summary>
         internal static List<ISelectable> Selected { get; } = [];

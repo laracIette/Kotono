@@ -1,5 +1,6 @@
 ﻿using Kotono.File;
 using Kotono.Utils;
+using System;
 
 namespace Kotono.Graphics.Objects
 {
@@ -12,6 +13,8 @@ namespace Kotono.Graphics.Objects
         public virtual Color Color { get; set; }
 
         public bool IsSelected { get; protected set; } = false;
+
+        public bool IsActive => ISelectable.Active == this;
 
         internal Drawable(DrawableSettings settings)
             : base(settings)

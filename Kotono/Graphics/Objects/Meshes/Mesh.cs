@@ -302,7 +302,10 @@ namespace Kotono.Graphics.Objects.Meshes
             }
             else
             {
-                IsSelected = false;
+                if (!Keyboard.IsKeyDown(Keys.LeftControl))
+                {
+                    IsSelected = false;
+                }
             }
 
             if (ISelectable.Selected.Contains(this))
@@ -317,9 +320,7 @@ namespace Kotono.Graphics.Objects.Meshes
                 ISelectable.Selected.Add(this);
             }
 
-            Color = IsSelected ? Color.Red : Color.White;
-
-            Color = ISelectable.Active == this ? Color.Green : Color;
+            Color = IsSelected ? (IsActive ? Color.Green : Color.Blue) : Color.White;
         }
 
         public override void Save()
