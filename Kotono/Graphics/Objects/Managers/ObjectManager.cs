@@ -1,5 +1,7 @@
 ﻿using Kotono.Graphics.Objects.Lights;
+using Kotono.Input;
 using Kotono.Utils;
+using OpenTK.Windowing.GraphicsLibraryFramework;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -65,6 +67,11 @@ namespace Kotono.Graphics.Objects.Managers
             {
                 _objects[i].Update();
             }
+
+            if (Keyboard.IsKeyPressed(Keys.Delete))
+            {
+                OnDeleteKeyPressed();
+            }
         }
 
         internal static void Draw()
@@ -82,6 +89,15 @@ namespace Kotono.Graphics.Objects.Managers
             foreach (var obj in _objects.OfType<ISaveable>())
             {
                 obj.Save();
+            }
+        }
+
+        private static void OnDeleteKeyPressed()
+        {
+            for (int i = 0; i < ISelectable.Selected.Count; i++)
+            {
+                ISelectable.Selected[i].Delete();
+                ISelectable.Selected.RemoveAt(i);
             }
         }
 

@@ -24,11 +24,7 @@ namespace Kotono
 
             _sound = new TestSound();
 
-
-            var settings = Settings.Parse<AnimationSettings>(Path.ASSETS + @"Animations\Counting\Counting.json");
-
-            _animation = new Animation(settings);
-
+            _animation = new Animation(Settings.Parse<AnimationSettings>(Path.ASSETS + @"Animations\Counting\Counting.json"));
             
             CreateObjects();
         }
@@ -44,14 +40,7 @@ namespace Kotono
 
             if (Keyboard.IsKeyPressed(Keys.T))
             {
-                if (_animation.IsPlaying)
-                {
-                    _animation.Pause();
-                }
-                else
-                {
-                    _animation.Play();
-                }
+                _animation.Switch();
             }
         }
 

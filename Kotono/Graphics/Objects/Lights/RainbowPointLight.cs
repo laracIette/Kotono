@@ -1,6 +1,5 @@
 ﻿using Kotono.File;
 using Kotono.Utils;
-using Random = Kotono.Utils.Random;
 
 namespace Kotono.Graphics.Objects.Lights
 {
@@ -17,7 +16,7 @@ namespace Kotono.Graphics.Objects.Lights
         {
             base.Update();
 
-            Color = Color.Rainbow(0.002f);
+            //Color = Color.Rainbow(0.002f);
 
             Velocity += Random.Vector(-0.1f, 0.1f) * Time.Delta;
 

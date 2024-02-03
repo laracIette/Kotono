@@ -8,6 +8,7 @@ using Kotono.Input;
 using Kotono.Physics;
 using Kotono.Utils;
 using OpenTK.Graphics.OpenGL4;
+using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -230,6 +231,11 @@ namespace Kotono.Graphics.Objects.Meshes
             }
 
             Location = tempLoc;
+
+            if (Mouse.IsButtonPressed(MouseButton.Left))
+            {
+                OnMouseLeftButtonPressed();
+            }
         }
 
         public void UpdateFizix()
@@ -286,6 +292,34 @@ namespace Kotono.Graphics.Objects.Meshes
             distance = _distance;
 
             return _isMouseOn;
+        }
+
+        private void OnMouseLeftButtonPressed()
+        {
+            if (IsMouseOn(out _, out _)) 
+            {
+                IsSelected = !IsSelected;
+            }
+            else
+            {
+                IsSelected = false;
+            }
+
+            if (ISelectable.Selected.Contains(this))
+            {
+                if (!IsSelected)
+                {
+                    ISelectable.Selected.Remove(this);
+                }
+            }
+            else if(IsSelected)
+            {
+                ISelectable.Selected.Add(this);
+            }
+
+            Color = IsSelected ? Color.Red : Color.White;
+
+            Color = ISelectable.Active == this ? Color.Green : Color;
         }
 
         public override void Save()

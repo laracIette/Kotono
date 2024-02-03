@@ -1,5 +1,4 @@
 ﻿using Kotono.File;
-using Kotono.Graphics.Objects.Managers;
 using Kotono.Utils;
 
 namespace Kotono.Graphics.Objects

@@ -3,13 +3,15 @@ using Kotono.Utils;
 
 namespace Kotono.Graphics.Objects
 {
-    internal abstract class Drawable : Object, IDrawable, ISaveable
+    internal abstract class Drawable : Object, IDrawable, ISaveable, ISelectable
     {
         private readonly string _path;
 
         public virtual bool IsDraw { get; set; }
 
         public virtual Color Color { get; set; }
+
+        public bool IsSelected { get; protected set; } = false;
 
         internal Drawable(DrawableSettings settings)
             : base(settings)

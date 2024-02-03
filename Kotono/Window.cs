@@ -4,12 +4,10 @@ using Kotono.Graphics.Objects.Managers;
 using Kotono.Graphics.Statistics;
 using Kotono.Input;
 using Kotono.Utils;
-using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
 using OpenTK.Windowing.GraphicsLibraryFramework;
-using System;
 using System.Globalization;
 
 namespace Kotono

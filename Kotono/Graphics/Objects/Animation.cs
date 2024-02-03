@@ -163,6 +163,21 @@ namespace Kotono.Graphics.Objects
             IsPlaying = false;
         }
 
+        /// <summary>
+        /// Switch between playing and paused.
+        /// </summary>
+        internal void Switch()
+        {
+            if (IsPlaying)
+            {
+                Pause();
+            }
+            else
+            {
+                Play();
+            }
+        }
+
         internal void Next()
         {
             CurrentFrame++;
