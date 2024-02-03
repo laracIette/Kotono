@@ -100,10 +100,6 @@ namespace Kotono.Graphics
             _framebuffer.BeginDraw();
 
             DrawObject3DRenderQueue();
-
-            //_framebuffer.DrawBufferTextures();
-            //_framebuffer.BeginDrawFront();
-
             DrawFrontMeshRenderQueue();
             DrawObject2DRenderQueue();
 
@@ -147,9 +143,9 @@ namespace Kotono.Graphics
 
         private void DrawFrontMeshRenderQueue()
         {
-            GL.Enable(EnableCap.DepthTest);
+            //GL.Enable(EnableCap.DepthTest);
 
-            GL.Clear(ClearBufferMask.DepthBufferBit);
+            //GL.Clear(ClearBufferMask.DepthBufferBit);
 
             ComponentManager.WindowViewport.Use();
 
@@ -158,7 +154,7 @@ namespace Kotono.Graphics
                 frontMesh.Draw();
             }
 
-            GL.Disable(EnableCap.DepthTest);
+            //GL.Disable(EnableCap.DepthTest);
         }
 
         #endregion Render

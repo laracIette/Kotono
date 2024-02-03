@@ -1,5 +1,6 @@
 ﻿using Kotono.Utils;
 using OpenTK.Graphics.OpenGL4;
+using OpenTK.Mathematics;
 using System;
 
 namespace Kotono.Graphics
@@ -22,7 +23,7 @@ namespace Kotono.Graphics
                 if (_size != value)
                 {
                     _size = value;
-                    ResizeFrameBuffer();
+                    ResizeFramebuffer();
                 }
             }
         }
@@ -41,7 +42,7 @@ namespace Kotono.Graphics
             Size = size;
         }
 
-        private void ResizeFrameBuffer()
+        private void ResizeFramebuffer()
         {
             // Update the color texture
             GL.BindTexture(TextureTarget.Texture2D, _colorBufferTexture);
@@ -79,25 +80,40 @@ namespace Kotono.Graphics
 
         public void BeginDraw()
         {
-            GL.BindFramebuffer(FramebufferTarget.Framebuffer, _framebuffer);
-            GL.ClearColor(0.1f, 0.1f, 0.2f, 1.0f);
-            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-        }
-
-        public void BeginDrawFront()
-        {
-            GL.BindFramebuffer(FramebufferTarget.Framebuffer, _framebuffer);
+            BindFramebuffer();
+            SetClearColor(Color._1A1A33FF);
+            ClearColorAndDepthBuffers();
         }
 
         public void DrawBufferTextures()
         {
-            GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
-            GL.ClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+            UnBindFramebuffer();
+            SetClearColor(Color.White);
+            ClearColorAndDepthBuffers();
 
-            ShaderManager.Color.Draw(_colorBufferTexture);
-            ShaderManager.Outline.Draw(_depthStencilBufferTexture);
+            DrawColor();
+            DrawOutline();
         }
+
+        #region Helpers
+
+        private void BindFramebuffer() => GL.BindFramebuffer(FramebufferTarget.Framebuffer, _framebuffer);
+
+        private static void UnBindFramebuffer() => GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
+
+        private static void SetClearColor(Color color) => GL.ClearColor((Color4)color);
+
+        private static void ClearColorBuffer() => GL.Clear(ClearBufferMask.ColorBufferBit);
+
+        private static void ClearDepthBuffer() => GL.Clear(ClearBufferMask.DepthBufferBit);
+
+        private static void ClearColorAndDepthBuffers() => GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+
+        private void DrawColor() => ShaderManager.Color.Draw(_colorBufferTexture);
+
+        private void DrawOutline() => ShaderManager.Outline.Draw(_depthStencilBufferTexture);
+
+        #endregion Helpers
 
         public void Dispose()
         {

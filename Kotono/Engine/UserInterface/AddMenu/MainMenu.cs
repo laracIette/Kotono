@@ -13,7 +13,7 @@ namespace Kotono.Engine.UserInterface.AddMenu
             new RoundedBoxSettings
             {
                 Dest = new Rect(0.0f, 0.0f, 300.0f, 300.0f),
-                Color = Color.DarkGray,
+                Color = Color.DarkSlateGray,
                 FallOff = 2.0f,
                 CornerSize = 30.0f
             }

@@ -44,7 +44,7 @@ namespace Kotono.Graphics.Statistics
                 new RoundedBoxSettings
                 {
                     Dest = new Rect(Position, 400.0f, 120.0f),
-                    Color = Color.DarkGray,
+                    Color = Color.DarkSlateGray,
                     FallOff = 1.0f,
                     CornerSize = 10.0f
                 }
