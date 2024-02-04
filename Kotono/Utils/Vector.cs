@@ -272,6 +272,11 @@ namespace Kotono.Utils
             return v;
         }
 
+        public static Vector operator *(float f, Vector v)
+        {
+            return v * f;
+        }
+
         public static Vector operator /(Vector left, Vector right)
         {
             left.X /= right.X;

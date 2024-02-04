@@ -166,11 +166,11 @@ namespace Kotono.Graphics.Objects.Meshes
                     }
                 }
 
-                // create vertex array
+                // Create vertex array
                 int vertexArrayObject = GL.GenVertexArray();
                 GL.BindVertexArray(vertexArrayObject);
 
-                // create vertex buffer
+                // Create vertex buffer
                 int vertexBufferObject = GL.GenBuffer();
                 GL.BindBuffer(BufferTarget.ArrayBuffer, vertexBufferObject);
                 GL.BufferData(BufferTarget.ArrayBuffer, models[0].Count * Vertex.SizeInBytes, models[0].ToArray(), BufferUsageHint.StaticDraw);
@@ -187,7 +187,7 @@ namespace Kotono.Graphics.Objects.Meshes
                 GL.EnableVertexAttribArray(texCoordAttributeLocation);
                 GL.VertexAttribPointer(texCoordAttributeLocation, 2, VertexAttribPointerType.Float, false, Vertex.SizeInBytes, sizeof(float) * 6);
 
-                // create element buffer
+                // Create element buffer
                 int elementBufferObject = GL.GenBuffer();
                 GL.BindBuffer(BufferTarget.ElementArrayBuffer, elementBufferObject);
                 GL.BufferData(BufferTarget.ElementArrayBuffer, indices[0].Count * sizeof(int), indices[0].ToArray(), BufferUsageHint.StaticDraw);
@@ -210,8 +210,6 @@ namespace Kotono.Graphics.Objects.Meshes
 
         public override void Update()
         {
-            Gizmo.TryAttachTo(this);
-
             var tempLoc = Location;
 
             if (IsGravity)
@@ -237,7 +235,7 @@ namespace Kotono.Graphics.Objects.Meshes
                 OnMouseLeftButtonPressed();
             }
 
-            Color = IsSelected ? (IsActive ? Color.Green : Color.Blue) : Color.White;
+            Color = IsSelected ? (IsActive ? Color.Green : Color.Orange) : Color.White;
         }
 
         public void UpdateFizix()

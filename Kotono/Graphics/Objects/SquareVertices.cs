@@ -40,11 +40,11 @@ namespace Kotono.Graphics.Objects
 
         static SquareVertices()
         {
-            // create vertex array
+            // Create vertex array
             VertexArrayObject = GL.GenVertexArray();
             GL.BindVertexArray(VertexArrayObject);
 
-            // vertex buffer
+            // Create vertex buffer
             VertexBufferObject = GL.GenBuffer();
             GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
             GL.BufferData(BufferTarget.ArrayBuffer, sizeof(float) * _vertices.Length, _vertices, BufferUsageHint.StaticDraw);

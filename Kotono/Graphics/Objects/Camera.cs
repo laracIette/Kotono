@@ -83,35 +83,38 @@ namespace Kotono.Graphics.Objects
 
             Yaw += Mouse.Delta.X * sensitivity;
             Pitch -= Mouse.Delta.Y * sensitivity;
+
             _speed += Mouse.ScrollDelta.Y * _speed / 10.0f;
             _speed = Math.Clamp(_speed, 0.1f, 100.0f);
 
             float fast = Keyboard.IsKeyDown(Keys.LeftShift) ? 2.0f : 1.0f;
             float slow = Keyboard.IsKeyDown(Keys.LeftControl) ? 0.5f : 1.0f;
 
+            float speed = _speed * fast * slow * Time.Delta;
+
             if (Keyboard.IsKeyDown(Keys.W))
             {
-                Location += Front * _speed * fast * slow * Time.Delta; // Forward
+                Location += speed * Front; // Forward
             }
             if (Keyboard.IsKeyDown(Keys.S))
             {
-                Location -= Front * _speed * fast * slow * Time.Delta; // Backwards
+                Location -= speed * Front; // Backwards
             }
             if (Keyboard.IsKeyDown(Keys.A))
             {
-                Location -= Right * _speed * fast * slow * Time.Delta; // Left
+                Location -= speed * Right; // Left
             }
             if (Keyboard.IsKeyDown(Keys.D))
             {
-                Location += Right * _speed * fast * slow * Time.Delta; // Right
+                Location += speed * Right; // Right
             }
             if (Keyboard.IsKeyDown(Keys.E))
             {
-                Location += Up * _speed * fast * slow * Time.Delta; // Up
+                Location += speed * Up; // Up
             }
             if (Keyboard.IsKeyDown(Keys.Q))
             {
-                Location -= Up * _speed * fast * slow * Time.Delta; // Down
+                Location -= speed * Up; // Down
             }
 
         }

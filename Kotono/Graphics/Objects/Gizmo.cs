@@ -3,6 +3,7 @@ using Kotono.Graphics.Objects.Meshes;
 using Kotono.Input;
 using Kotono.Utils;
 using OpenTK.Windowing.GraphicsLibraryFramework;
+using System.Linq;
 using CursorState = Kotono.Input.CursorState;
 
 namespace Kotono.Graphics.Objects
@@ -17,7 +18,7 @@ namespace Kotono.Graphics.Objects
             new GizmoMesh("sphere")
         ];
 
-        private static Mesh? _attachMesh = null;
+        private static Mesh? ActiveMesh => ISelectable.Active as Mesh;
 
         private static Transform _transform;
 
@@ -80,7 +81,7 @@ namespace Kotono.Graphics.Objects
 
         internal static void Update()
         {
-            if (_attachMesh == null)
+            if (ActiveMesh == null)
             {
                 IsDraw = false;
                 return;
@@ -97,7 +98,7 @@ namespace Kotono.Graphics.Objects
                 _selectedMeshIndex = -1;
             }
 
-            Location = _attachMesh.Location;
+            Location = ActiveMesh.Location;
 
             switch (_transformSpace)
             {
@@ -106,20 +107,23 @@ namespace Kotono.Graphics.Objects
                     break;
 
                 case TransformSpace.Local:
-                    Rotation = _attachMesh.Rotation;
+                    Rotation = ActiveMesh.Rotation;
                     break;
 
                 default:
                     break;
             }
 
-            Location += GetMovement();
-            _attachMesh.Location = Location;
-#if true
+            var movement = GetMovement();
+
+            Location += movement;
+
+            foreach (var obj in ISelectable.Selected.OfType<IObject3D>())
+            {
+                obj.Location += movement;
+            }
+
             Scale = (Vector)(Vector.Distance(Location, CameraManager.ActiveCamera.Location) / 75.0f);
-#else
-            Scale = Vector.Unit;
-#endif
         }
 
         private static Vector GetMovement()
@@ -128,10 +132,10 @@ namespace Kotono.Graphics.Objects
 
             return _selectedMeshIndex switch
             {
-                0 => Transform.Right * Mouse.Delta.X * speed,
-                1 => Transform.Up * -Mouse.Delta.Y * speed,
-                2 => Transform.Forward * Mouse.Delta.X * speed,
-                3 => (Transform.Right * Mouse.Delta.X + Transform.Up * -Mouse.Delta.Y) * speed,
+                0 => speed * Mouse.Delta.X * Transform.Right,
+                1 => speed * -Mouse.Delta.Y * Transform.Up,
+                2 => speed * Mouse.Delta.X * Transform.Forward,
+                3 => speed * (Mouse.Delta.X * Transform.Right + -Mouse.Delta.Y * Transform.Up),
                 _ => Vector.Zero
             };
         }
@@ -145,7 +149,7 @@ namespace Kotono.Graphics.Objects
             {
                 if (_meshes[i].IsMouseOn(out _, out float distance))
                 {
-                    // select the mesh that is the closest to the camera
+                    // Select the mesh that is the closest to the camera
                     if (distance < closestDistance)
                     {
                         closestDistance = distance;
@@ -155,26 +159,6 @@ namespace Kotono.Graphics.Objects
             }
 
             return closestMesh;
-        }
-
-        internal static bool TryAttachTo(Mesh mesh)
-        {
-            if (mesh is not GizmoMesh
-                && Mouse.IsButtonPressed(MouseButton.Left)
-                && Mouse.CursorState == CursorState.Confined
-                && mesh.IsMouseOn(out _, out _)
-            )
-            {
-                _attachMesh = mesh;
-                return true;
-            }
-
-            return false;
-        }
-
-        internal static void Detach()
-        {
-            _attachMesh = null;
         }
     }
 }

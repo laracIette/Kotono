@@ -129,7 +129,7 @@ namespace Kotono.Input
         {
             var mouse = Position.NDC;
 
-            Vector4 rayClip = new Vector4(mouse.X, mouse.Y, -1.0f, 1.0f);
+            Vector4 rayClip = new(mouse.X, mouse.Y, -1.0f, 1.0f);
             Vector4 rayView = Matrix4.Invert(CameraManager.ActiveCamera.ProjectionMatrix) * rayClip;
             rayView.Z = -1.0f; rayView.W = 0.0f;
             Vector4 rayWorld = CameraManager.ActiveCamera.ViewMatrix * rayView;

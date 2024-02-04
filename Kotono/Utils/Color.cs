@@ -86,6 +86,8 @@ namespace Kotono.Utils
 
         public static Color Navy => FromHex("#000080FF");
 
+        public static Color Orange => FromHex("#FFA500FF");
+
         public static Color Red => FromHex("#FF0000FF");
 
         public static Color Teal => FromHex("#00808000");

@@ -8,5 +8,8 @@ namespace Kotono.Graphics.Objects.Meshes
             Settings.Parse<MeshSettings>(Path.ASSETS + @"Gizmo\gizmo_" + axis + ".json")
         )
     {
+        public override void Update()
+        {
+        }
     }
 }

@@ -128,7 +128,7 @@ namespace Kotono.Graphics.Objects.Texts
 
         public override bool IsDraw
         {
-            get => _letters.FirstOrDefault()?.IsDraw ?? false; // don't draw if empty
+            get => _letters.FirstOrDefault()?.IsDraw ?? false; // Don't draw if empty
             set
             {
                 foreach (var frame in _letters)
