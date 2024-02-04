@@ -3,10 +3,10 @@ using OpenTK.Graphics.OpenGL4;
 
 namespace Kotono.Graphics.Shaders
 {
-    public abstract class TextureBufferShader(string name)
+    internal abstract class TextureBufferShader(string name)
         : Shader(name)
     {
-        public void Draw(int textureBuffer)
+        internal void Draw(int textureBuffer)
         {
             GL.BindVertexArray(SquareVertices.VertexArrayObject);
             GL.Disable(EnableCap.DepthTest);

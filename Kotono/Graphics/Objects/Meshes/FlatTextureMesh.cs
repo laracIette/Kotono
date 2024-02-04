@@ -1,5 +1,7 @@
 ﻿using Kotono.File;
 using Kotono.Utils;
+using OpenTK.Graphics.OpenGL4;
+using System;
 
 namespace Kotono.Graphics.Objects.Meshes
 {
@@ -12,18 +14,18 @@ namespace Kotono.Graphics.Objects.Meshes
         {
         }
 
-        //public override void Draw()
-        //{
-        //    _texture.Use();
+        public override void Draw()
+        {
+            _textures[0].Use();
 
-        //    _shader.SetInt("tex", _texture.Handle);
-        //    _shader.SetMatrix4("model", Transform.Model);
-        //    _shader.SetColor("color", Color);
+            _shader.SetInt("texSampler", _textures[0].Handle);
+            _shader.SetMatrix4("model", Transform.Model);
+            //_shader.SetColor("color", Color);
 
-        //    GL.BindVertexArray(VertexArrayObject);
-        //    GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
+            GL.BindVertexArray(VertexArrayObject);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
 
-        //    GL.DrawElements(PrimitiveType.Triangles, IndicesCount, DrawElementsType.UnsignedInt, IntPtr.Zero);
-        //}
+            GL.DrawElements(PrimitiveType.Triangles, IndicesCount, DrawElementsType.UnsignedInt, IntPtr.Zero);
+        }
     }
 }

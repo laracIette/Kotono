@@ -7,16 +7,16 @@ using IO = System.IO;
 
 namespace Kotono.Graphics.Shaders
 {
-    public abstract class Shader
+    internal abstract class Shader
     {
         private readonly int _handle;
 
         private readonly Dictionary<string, int> _uniformLocations = [];
 
         
-        public string Name { get; }
+        internal string Name { get; }
 
-        public Shader(string name)
+        internal Shader(string name)
         { 
             var shaderSource = IO.File.ReadAllText(Path.SHADERS + name + ".vert");
             var vertexShader = GL.CreateShader(ShaderType.VertexShader);
@@ -52,7 +52,7 @@ namespace Kotono.Graphics.Shaders
             Name = name;
         }
 
-        public virtual void Update()
+        internal virtual void Update()
         {
             Use();
         }
@@ -81,59 +81,59 @@ namespace Kotono.Graphics.Shaders
             }
         }
 
-        public void Use()
+        internal void Use()
         {
             GL.UseProgram(_handle);
         }
 
-        public int GetAttribLocation(string attribName)
+        internal int GetAttribLocation(string attribName)
         {
             return GL.GetAttribLocation(_handle, attribName);
         }
 
-        public void SetBool(string name, bool data)
+        internal void SetBool(string name, bool data)
         {
             Use();
             GL.Uniform1(_uniformLocations[name], data ? 1 : 0);
         }
 
-        public void SetInt(string name, int data)
+        internal void SetInt(string name, int data)
         {
             Use();
             GL.Uniform1(_uniformLocations[name], data);
         }
 
-        public void SetFloat(string name, float data)
+        internal void SetFloat(string name, float data)
         {
             Use();
             GL.Uniform1(_uniformLocations[name], data);
         }
 
-        public void SetMatrix4(string name, Matrix4 data)
+        internal void SetMatrix4(string name, Matrix4 data)
         {
             Use();
             GL.UniformMatrix4(_uniformLocations[name], true, ref data);
         }
 
-        public void SetVector(string name, Vector data)
+        internal void SetVector(string name, Vector data)
         {
             Use();
             GL.Uniform3(_uniformLocations[name], (Vector3)data);
         }
 
-        public void SetColor(string name, Color data)
+        internal void SetColor(string name, Color data)
         {
             Use();
             GL.Uniform4(_uniformLocations[name], (Vector4)data);
         }
 
-        public void SetRect(string name, Rect data)
+        internal void SetRect(string name, Rect data)
         {
             Use();
             GL.Uniform4(_uniformLocations[name], (Vector4)data);
         }
 
-        public void SetPoint(string name, Point data)
+        internal void SetPoint(string name, Point data)
         {
             Use();
             GL.Uniform2(_uniformLocations[name], (Vector2)data);

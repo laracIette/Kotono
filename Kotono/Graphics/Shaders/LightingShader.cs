@@ -3,10 +3,10 @@ using Kotono.Utils;
 
 namespace Kotono.Graphics.Shaders
 {
-    public class LightingShader()
+    internal class LightingShader()
         : Shader("lighting")
     {
-        public override void Update()
+        internal override void Update()
         {
             base.Update();
 

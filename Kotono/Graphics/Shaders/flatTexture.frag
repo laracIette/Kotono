@@ -1,6 +1,8 @@
 #version 430 core
 
-uniform sampler2D tex;
+in vec2 TexCoords;
+
+uniform sampler2D texSampler;
 
 uniform vec4 color;
 
@@ -8,5 +10,5 @@ out vec4 FragColor;
 
 void main()
 {
-    FragColor = texture(tex, gl_FragCoord.xy) * color;
+    FragColor = texture(texSampler, TexCoords);// * color;
 }

@@ -2,31 +2,31 @@
 
 namespace Kotono.Graphics
 {
-    public static class ShaderManager
+    internal static class ShaderManager
     {
-        public static LightingShader Lighting { get; } = new();
+        internal static LightingShader Lighting { get; } = new();
 
-        public static HitboxShader Hitbox { get; } = new();
+        internal static HitboxShader Hitbox { get; } = new();
 
-        public static PointLightShader PointLight { get; } = new();
+        internal static PointLightShader PointLight { get; } = new();
 
-        public static ImageShader Image { get; } = new();
+        internal static ImageShader Image { get; } = new();
 
-        public static GizmoShader Gizmo { get; } = new();
+        internal static GizmoShader Gizmo { get; } = new();
 
-        public static RoundedBoxShader RoundedBox { get; } = new();
+        internal static RoundedBoxShader RoundedBox { get; } = new();
 
-        public static RoundedBorderShader RoundedBorder { get; } = new();
+        internal static RoundedBorderShader RoundedBorder { get; } = new();
 
-        public static ColorShader Color { get; } = new();
+        internal static ColorShader Color { get; } = new();
 
-        public static BlurShader Blur { get; } = new();
+        internal static BlurShader Blur { get; } = new();
 
-        public static OutlineShader Outline { get; } = new();
+        internal static OutlineShader Outline { get; } = new();
 
-        public static FlatTextureShader FlatTexture { get; } = new();
+        internal static FlatTextureShader FlatTexture { get; } = new();
 
-        public static void Update()
+        internal static void Update()
         {
             Lighting.Update();
             Hitbox.Update();

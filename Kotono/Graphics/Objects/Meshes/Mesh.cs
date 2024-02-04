@@ -41,13 +41,13 @@ namespace Kotono.Graphics.Objects.Meshes
 
         private readonly string _model;
 
-        private readonly Texture[] _textures;
-
         private bool _isMouseOn = false;
 
         private Vector _intersectionLocation = Vector.Zero;
 
         private float _distance = 0.0f;
+
+        protected readonly Texture[] _textures;
 
         protected readonly Shader _shader;
 

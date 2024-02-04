@@ -1,6 +1,7 @@
 #version 430 core
 
 in vec2 aPos;
+
 in vec2 aTexCoords;
 
 uniform mat4 model;
