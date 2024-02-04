@@ -83,7 +83,10 @@ namespace Kotono.Graphics.Objects.Texts
             ['+'] = @"Characters\plus.png",
             [':'] = @"Characters\colon.png",
             ['#'] = @"Characters\#.png",
-            ['\''] = @"Characters\'.png"
+            ['\''] = @"Characters\'.png",
+            ['['] = @"Characters\[.png",
+            [']'] = @"Characters\].png",
+            [','] = @"Characters\,.png"
         };
 
         protected string _text;

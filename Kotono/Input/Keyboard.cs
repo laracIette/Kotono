@@ -3,7 +3,7 @@ using System;
 
 namespace Kotono.Input
 {
-    public static class Keyboard
+    internal static class Keyboard
     {
         private static KeyboardState? _keyboardState;
 
@@ -13,13 +13,13 @@ namespace Kotono.Input
             set => _keyboardState = value;
         }
 
-        public static void Update()
+        internal static void Update()
         {
 
         }
 
-        public static bool IsKeyDown(Keys key) => KeyboardState.IsKeyDown(key);
+        internal static bool IsKeyDown(Keys key) => KeyboardState.IsKeyDown(key);
 
-        public static bool IsKeyPressed(Keys key) => KeyboardState.IsKeyPressed(key);
+        internal static bool IsKeyPressed(Keys key) => KeyboardState.IsKeyPressed(key);
     }
 }

@@ -8,12 +8,12 @@ using System.Runtime.InteropServices;
 
 namespace Kotono.Input
 {
-    public static partial class Mouse
+    internal static partial class Mouse
     {
-        public struct POINT
+        internal struct POINT
         {
-            public int X;
-            public int Y;
+            internal int X;
+            internal int Y;
         }
 
         [LibraryImport("user32.dll")]
@@ -45,17 +45,17 @@ namespace Kotono.Input
             SetCursorPos((int)pos.X, (int)pos.Y);
         }
 
-        public static Point PositionFromOrigin { get; private set; } = Point.Zero;
+        internal static Point PositionFromOrigin { get; private set; } = Point.Zero;
 
-        public static Point PreviousPositionFromOrigin { get; private set; } = Point.Zero;
+        internal static Point PreviousPositionFromOrigin { get; private set; } = Point.Zero;
 
-        public static Point Delta { get; private set; } = Point.Zero;
+        internal static Point Delta { get; private set; } = Point.Zero;
 
-        public static Point Position => PositionFromOrigin - KT.Position;
+        internal static Point Position => PositionFromOrigin - KT.Position;
 
-        public static Point PreviousPosition => PreviousPositionFromOrigin - KT.Position;
+        internal static Point PreviousPosition => PreviousPositionFromOrigin - KT.Position;
 
-        public static Vector Ray { get; private set; } = Vector.Zero;
+        internal static Vector Ray { get; private set; } = Vector.Zero;
 
         private static MouseState? _mouseState;
 
@@ -65,16 +65,11 @@ namespace Kotono.Input
             set => _mouseState = value;
         }
 
-        public static Point ScrollDelta => (Point)MouseState.ScrollDelta;
+        internal static Point ScrollDelta => (Point)MouseState.ScrollDelta;
 
-        public static CursorState CursorState { get; set; } = CursorState.Centered;
+        internal static CursorState CursorState { get; set; } = CursorState.Centered;
 
-        static Mouse()
-        {
-            //HideCursor();
-        }
-
-        public static void Update()
+        internal static void Update()
         {
             if (KT.UserMode == UserMode.Play)
             {
@@ -142,20 +137,20 @@ namespace Kotono.Input
             Ray = ((Vector)rayWorld.Xyz).Normalized;
         }
 
-        public static bool IsButtonDown(MouseButton button) => MouseState.IsButtonDown(button);
+        internal static bool IsButtonDown(MouseButton button) => MouseState.IsButtonDown(button);
 
-        public static bool WasButtonDown(MouseButton button) => MouseState.WasButtonDown(button);
+        internal static bool WasButtonDown(MouseButton button) => MouseState.WasButtonDown(button);
 
-        public static bool IsButtonPressed(MouseButton button) => MouseState.IsButtonPressed(button);
+        internal static bool IsButtonPressed(MouseButton button) => MouseState.IsButtonPressed(button);
 
-        public static bool IsButtonReleased(MouseButton button) => MouseState.IsButtonReleased(button);
+        internal static bool IsButtonReleased(MouseButton button) => MouseState.IsButtonReleased(button);
 
-        public static void ShowCursor()
+        internal static void ShowCursor()
         {
             ShowCursor(true);
         }
 
-        public static void HideCursor()
+        internal static void HideCursor()
         {
             ShowCursor(false);
         }

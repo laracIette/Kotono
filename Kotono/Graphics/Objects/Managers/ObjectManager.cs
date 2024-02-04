@@ -94,13 +94,13 @@ namespace Kotono.Graphics.Objects.Managers
 
         private static void OnDeleteKeyPressed()
         {
+            Gizmo.Detach();
+
             for (int i = ISelectable.Selected.Count - 1; i >= 0; i--)
             {
                 ISelectable.Selected[i].Delete();
                 ISelectable.Selected.RemoveAt(i);
             }
-            
-            Gizmo.Detach();
         }
 
         internal static void Dispose()

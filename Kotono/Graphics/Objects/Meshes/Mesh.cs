@@ -236,6 +236,8 @@ namespace Kotono.Graphics.Objects.Meshes
             {
                 OnMouseLeftButtonPressed();
             }
+
+            Color = IsSelected ? (IsActive ? Color.Green : Color.Blue) : Color.White;
         }
 
         public void UpdateFizix()
@@ -296,31 +298,45 @@ namespace Kotono.Graphics.Objects.Meshes
 
         private void OnMouseLeftButtonPressed()
         {
+            // If mesh is clicked
             if (IsMouseOn(out _, out _)) 
             {
-                IsSelected = !IsSelected;
+                // If left control is down
+                if (Keyboard.IsKeyDown(Keys.LeftControl)) 
+                {
+                    IsSelected = true;
+                    ISelectable.Selected.Remove(this);
+                }
+                // If left control is up
+                else
+                {
+                    IsSelected = !IsSelected;
+                }
             }
+            // If mesh is not clicked
             else
             {
+                // If left control is up
                 if (!Keyboard.IsKeyDown(Keys.LeftControl))
                 {
                     IsSelected = false;
                 }
             }
 
+            // If mesh is in ISelectable.Selected
             if (ISelectable.Selected.Contains(this))
             {
+                // If mesh is not selected
                 if (!IsSelected)
                 {
                     ISelectable.Selected.Remove(this);
                 }
             }
-            else if(IsSelected)
+            // If mesh is not in ISelectable.Selected and is selected
+            else if (IsSelected)
             {
                 ISelectable.Selected.Add(this);
             }
-
-            Color = IsSelected ? (IsActive ? Color.Green : Color.Blue) : Color.White;
         }
 
         public override void Save()

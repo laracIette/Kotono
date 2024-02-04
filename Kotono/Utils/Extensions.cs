@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -152,6 +153,29 @@ namespace Kotono.Utils
 
             itemType = type;
             return false;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="TSource"></typeparam>
+        /// <param name="enumerable"></param>
+        /// <returns></returns>
+        internal static string GetContentString<TSource>(this IEnumerable<TSource> enumerable)
+        {
+            if (!enumerable.Any())
+            {
+                return "[]";
+            }
+
+            string result = "[";
+
+            foreach (var item in enumerable)
+            {
+                result += item + ", ";
+            }
+
+            return result[..^2] + "]";
         }
     }
 }
