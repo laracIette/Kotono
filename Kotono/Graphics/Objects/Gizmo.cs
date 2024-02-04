@@ -77,6 +77,8 @@ namespace Kotono.Graphics.Objects
 
         private static int _selectedMeshIndex = -1;
 
+        internal static bool IsSelected => _selectedMeshIndex != -1;
+
         private static TransformSpace _transformSpace = TransformSpace.World;
 
         internal static void Update()

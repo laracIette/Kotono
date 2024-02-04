@@ -296,41 +296,46 @@ namespace Kotono.Graphics.Objects.Meshes
 
         private void OnMouseLeftButtonPressed()
         {
-            // If mesh is clicked
-            if (IsMouseOn(out _, out _)) 
+            // If gizmo isn't selected
+            if (!Gizmo.IsSelected)
             {
-                // If left control is down
-                if (Keyboard.IsKeyDown(Keys.LeftControl)) 
+                // If mesh is clicked
+                if (IsMouseOn(out _, out _))
                 {
-                    IsSelected = true;
-                    ISelectable.Selected.Remove(this);
+                    // If left control is down
+                    if (Keyboard.IsKeyDown(Keys.LeftControl))
+                    {
+                        IsSelected = true;
+                        ISelectable.Selected.Remove(this);
+                    }
+                    // If left control is up
+                    else
+                    {
+                        IsSelected = !IsSelected;
+                    }
                 }
-                // If left control is up
+
+                // If mesh isn't clicked
                 else
                 {
-                    IsSelected = !IsSelected;
-                }
-            }
-            // If mesh is not clicked
-            else
-            {
-                // If left control is up
-                if (!Keyboard.IsKeyDown(Keys.LeftControl))
-                {
-                    IsSelected = false;
+                    // If left control is up
+                    if (!Keyboard.IsKeyDown(Keys.LeftControl))
+                    {
+                        IsSelected = false;
+                    }
                 }
             }
 
             // If mesh is in ISelectable.Selected
             if (ISelectable.Selected.Contains(this))
             {
-                // If mesh is not selected
+                // If mesh isn't selected
                 if (!IsSelected)
                 {
                     ISelectable.Selected.Remove(this);
                 }
             }
-            // If mesh is not in ISelectable.Selected and is selected
+            // If mesh isn't in ISelectable.Selected and is selected
             else if (IsSelected)
             {
                 ISelectable.Selected.Add(this);
