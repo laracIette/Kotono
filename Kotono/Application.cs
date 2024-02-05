@@ -5,7 +5,9 @@ using Kotono.Graphics.Objects.Lights;
 using Kotono.Graphics.Objects.Meshes;
 using Kotono.Input;
 using Kotono.Utils;
+using System;
 using Keys = OpenTK.Windowing.GraphicsLibraryFramework.Keys;
+using Math = Kotono.Utils.Math;
 
 namespace Kotono
 {
@@ -59,7 +61,10 @@ namespace Kotono
                 new RainbowPointLight();
             }
 
-            new FlatTextureMesh();
+            new FlatTextureMesh()
+            {
+                Location = -Vector.Forward * 5
+            };
         }
     }
 
