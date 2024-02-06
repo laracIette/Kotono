@@ -10,7 +10,7 @@ namespace Kotono.Graphics
 {
     internal class Renderer : IRenderer, IDisposable
     {
-        private readonly Framebuffer _framebuffer = new(KT.Size);
+        private readonly Framebuffer _framebuffer = new();
 
         private readonly List<IFrontMesh> _frontMeshRenderQueue = [];
         

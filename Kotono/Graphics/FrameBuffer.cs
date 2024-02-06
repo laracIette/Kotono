@@ -28,7 +28,7 @@ namespace Kotono.Graphics
             }
         }
 
-        internal Framebuffer(Point size)
+        internal Framebuffer()
         {
             // Create the color texture
             _colorBufferTexture = GL.GenTexture();
@@ -39,7 +39,7 @@ namespace Kotono.Graphics
             // Create the framebuffer
             _framebuffer = GL.GenFramebuffer();
 
-            Size = size;
+            Size = KT.Size;
         }
 
         private void ResizeFramebuffer()
