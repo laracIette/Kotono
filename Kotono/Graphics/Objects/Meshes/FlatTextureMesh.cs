@@ -18,9 +18,8 @@ namespace Kotono.Graphics.Objects.Meshes
         {
             _textures[0].Use();
 
-            _shader.SetInt("texSampler", _textures[0].Handle);
             _shader.SetMatrix4("model", Transform.Model);
-            //_shader.SetColor("color", Color);
+            _shader.SetColor("color", Color);
 
             GL.BindVertexArray(VertexArrayObject);
             GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);

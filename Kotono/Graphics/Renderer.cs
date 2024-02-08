@@ -17,11 +17,8 @@ namespace Kotono.Graphics
         private readonly List<IObject2D> _object2DRenderQueue = [];
         
         private readonly List<IObject3D> _object3DRenderQueue = [];
-        
-        internal void SetSize(Point value)
-        {
-            _framebuffer.Size = value;
-        }
+
+        internal void SetSize(Point value) => _framebuffer.Size = value;
 
         #region RenderQueue
 

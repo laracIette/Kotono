@@ -1,14 +1,15 @@
 #version 430 core
 
-in vec2 TexCoords;
-
 uniform sampler2D texSampler;
 
 uniform vec4 color;
 
 out vec4 FragColor;
 
+const vec2 size = vec2(1600.0, 800.0);
+
 void main()
 {
-    FragColor = texture(texSampler, TexCoords);// * color;
+    vec2 pos = gl_FragCoord.xy / size;
+    FragColor = texture(texSampler, pos) * color;
 }
