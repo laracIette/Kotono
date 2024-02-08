@@ -1,4 +1,4 @@
-﻿using Kotono.File;
+﻿using Kotono.Settings;
 using Kotono.Utils;
 using System;
 
@@ -34,7 +34,7 @@ namespace Kotono.Graphics.Objects
                 settings.IsDraw = IsDraw;
                 settings.Color = Color;
 
-                Settings.WriteFile(settings);
+                JsonParser.WriteFile(settings);
             }
         }
     }

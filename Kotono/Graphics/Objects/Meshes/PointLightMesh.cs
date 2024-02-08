@@ -1,4 +1,4 @@
-﻿using Kotono.File;
+﻿using Kotono.Settings;
 using Kotono.Graphics.Objects.Lights;
 using Kotono.Utils;
 using OpenTK.Graphics.OpenGL4;
@@ -8,7 +8,7 @@ namespace Kotono.Graphics.Objects.Meshes
 {
     internal class PointLightMesh()
         : Mesh(
-            Settings.Parse<MeshSettings>(Path.ASSETS + @"Meshes\pointLightMesh.json")
+            JsonParser.Parse<MeshSettings>(Path.ASSETS + @"Meshes\pointLightMesh.json")
         )
     {
         private PointLight? _pointLight = null;

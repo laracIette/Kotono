@@ -1,4 +1,4 @@
-﻿using Kotono.File;
+﻿using Kotono.Settings;
 using Kotono.Graphics.Objects;
 using OpenTK.Graphics.OpenGL4;
 using System.Collections.Generic;

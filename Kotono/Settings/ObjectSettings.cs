@@ -1,4 +1,4 @@
-﻿namespace Kotono.File
+﻿namespace Kotono.Settings
 {
     /// <summary>
     /// Settings class for creating an <see cref="Object"/>.

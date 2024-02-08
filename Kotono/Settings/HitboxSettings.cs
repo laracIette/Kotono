@@ -1,7 +1,7 @@
 ﻿using Kotono.Graphics.Objects.Hitboxes;
 using System.Collections.Generic;
 
-namespace Kotono.File
+namespace Kotono.Settings
 {
     /// <summary>
     /// Settings class for creating an <see cref="Hitbox"/>.

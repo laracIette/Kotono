@@ -1,6 +1,6 @@
 ﻿using Kotono.Utils;
 
-namespace Kotono.File
+namespace Kotono.Settings
 {
     /// <summary>
     /// Settings class for creating a <see cref="Graphics.Objects.Texts.Text"/>.

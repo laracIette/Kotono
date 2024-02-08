@@ -14,7 +14,6 @@ namespace Kotono
 {
     internal static class KT
     {
-
         #region WindowDest
 
         private static Rect _dest = new(0.0f, 0.0f, 1280.0f, 720.0f);
@@ -132,7 +131,6 @@ namespace Kotono
             ComponentManager.Update();
             CameraManager.Update();
             _mode.Update();
-            MainMenu.Update();
         }
 
         internal static void Save()

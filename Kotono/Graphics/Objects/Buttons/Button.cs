@@ -1,21 +1,12 @@
-﻿using Kotono.File;
+﻿using Kotono.Settings;
 using Kotono.Input;
 using Kotono.Utils;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 
 namespace Kotono.Graphics.Objects.Buttons
 {
-    internal abstract class Button(Rect dest, Color color, int layer, float fallOff, float cornerSize)
-        : RoundedBox(
-            new RoundedBoxSettings
-            {
-                Dest = dest,
-                Layer = layer,
-                Color = color,
-                FallOff = fallOff,
-                CornerSize = cornerSize
-            }
-        ),
+    internal abstract class Button(ButtonSettings settings)
+        : RoundedBox(settings),
         IButton
     {
         public bool IsDown { get; private set; }

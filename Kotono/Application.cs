@@ -1,5 +1,5 @@
 ﻿using Kotono.Audio;
-using Kotono.File;
+using Kotono.Settings;
 using Kotono.Graphics.Objects;
 using Kotono.Graphics.Objects.Lights;
 using Kotono.Graphics.Objects.Meshes;
@@ -26,7 +26,7 @@ namespace Kotono
 
             _sound = new TestSound();
 
-            _animation = new Animation(Settings.Parse<AnimationSettings>(Path.ASSETS + @"Animations\Counting\Counting.json"));
+            _animation = new Animation(JsonParser.Parse<AnimationSettings>(Path.ASSETS + @"Animations\Counting\Counting.json"));
             
             CreateObjects();
         }

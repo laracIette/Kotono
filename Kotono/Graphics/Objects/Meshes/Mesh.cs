@@ -1,5 +1,5 @@
 ﻿using Assimp;
-using Kotono.File;
+using Kotono.Settings;
 using Kotono.Graphics.Objects.Hitboxes;
 using Kotono.Graphics.Objects.Managers;
 using Kotono.Graphics.Objects.Shapes;

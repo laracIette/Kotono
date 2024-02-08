@@ -1,4 +1,4 @@
-﻿using Kotono.File;
+﻿using Kotono.Settings;
 using Kotono.Utils;
 
 namespace Kotono.Graphics.Objects.Lights

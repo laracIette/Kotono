@@ -1,6 +1,6 @@
 ﻿using Kotono.Graphics.Objects;
 
-namespace Kotono.File
+namespace Kotono.Settings
 {
     /// <summary>
     /// Settings class for creating a <see cref="RoundedBorder"/>.

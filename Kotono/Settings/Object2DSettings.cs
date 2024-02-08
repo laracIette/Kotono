@@ -1,7 +1,7 @@
 ﻿using Kotono.Utils;
 using Kotono.Graphics.Objects;
 
-namespace Kotono.File
+namespace Kotono.Settings
 {
     /// <summary>
     /// Settings class for creating an <see cref="Object2D"/>.

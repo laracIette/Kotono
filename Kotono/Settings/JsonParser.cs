@@ -2,9 +2,9 @@
 using System.Text.Json;
 using IO = System.IO;
 
-namespace Kotono.File
+namespace Kotono.Settings
 {
-    internal static class Settings
+    internal static class JsonParser
     {
         private static readonly JsonSerializerOptions _jsonSerializerOptions = new() { WriteIndented = true };
 

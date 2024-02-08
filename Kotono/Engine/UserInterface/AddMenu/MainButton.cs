@@ -1,11 +1,22 @@
 ﻿using Kotono.Graphics.Objects.Buttons;
+using Kotono.Settings;
 using Kotono.Utils;
 using System;
 
 namespace Kotono.Engine.UserInterface.AddMenu
 {
     internal class MainButton(string text, string[] options, Anchor anchor)
-        : TextButton(new Rect(100), Color.Gray, 1, 2f, 25f, text)
+        : TextButton(
+            new TextButtonSettings
+            {
+                Dest = new Rect(Point.Zero, 100.0f, 100.0f), // 100 so that CornerSize doesn't get restricted
+                Color = Color.Gray,
+                Layer = 1,
+                Text = text,
+                CornerSize = 25.0f,
+                FallOff = 2.0f
+            }
+        )
     {
         private readonly SubMenu _subMenu = new(options, anchor);
 

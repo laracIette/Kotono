@@ -1,4 +1,4 @@
-﻿using Kotono.File;
+﻿using Kotono.Settings;
 
 namespace Kotono.Graphics.Objects.Meshes
 {

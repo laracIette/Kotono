@@ -1,5 +1,5 @@
 ﻿using Kotono.Engine.UserInterface.AddMenu.MainButtons;
-using Kotono.File;
+using Kotono.Settings;
 using Kotono.Graphics.Objects;
 using Kotono.Input;
 using Kotono.Utils;
@@ -7,9 +7,9 @@ using OpenTK.Windowing.GraphicsLibraryFramework;
 
 namespace Kotono.Engine.UserInterface.AddMenu
 {
-    public static class MainMenu
+    internal class MainMenu : Object
     {
-        private static readonly RoundedBox _backgroundBox = new(
+        private readonly RoundedBox _backgroundBox = new(
             new RoundedBoxSettings
             {
                 Dest = new Rect(0.0f, 0.0f, 300.0f, 300.0f),
@@ -19,15 +19,15 @@ namespace Kotono.Engine.UserInterface.AddMenu
             }
         );
 
-        private static readonly MainButton[] _buttons =
-        {
+        private readonly MainButton[] _buttons =
+        [
             new Objects2DButton(),
             new Objects3DButton(),
             new LightsButton(),
             new TriggersButton()
-        };
+        ];
 
-        public static bool IsDraw
+        internal bool IsDraw
         {
             get => _backgroundBox.IsDraw;
             set
@@ -40,7 +40,7 @@ namespace Kotono.Engine.UserInterface.AddMenu
             }
         }
 
-        public static Point Position
+        internal Point Position
         {
             get => _backgroundBox.Position;
             set
@@ -53,22 +53,39 @@ namespace Kotono.Engine.UserInterface.AddMenu
             }
         }
 
-        static MainMenu()
+        internal MainMenu()
+            : base(new ObjectSettings())
         {
             IsDraw = false;
         }
 
-        public static void Update()
+        public override void Update()
         {
-            if (Keyboard.IsKeyPressed(Keys.A) && Keyboard.IsKeyDown(Keys.LeftShift) && Mouse.CursorState == CursorState.Confined)
+            if (Keyboard.IsKeyPressed(Keys.A))
+            {
+                OnAKeyPressed();
+            }
+
+            if (Mouse.IsButtonPressed(MouseButton.Left))
+            {
+                OnLeftButtonPressed();
+            }
+        }
+
+        private void OnAKeyPressed()
+        {
+            if (Mouse.CursorState == CursorState.Confined && Keyboard.IsKeyDown(Keys.LeftShift))
             {
                 Position = Mouse.Position;
                 IsDraw = true;
             }
+        }
 
+        private void OnLeftButtonPressed()
+        {
             if (IsDraw)
             {
-                if (Mouse.IsButtonPressed(MouseButton.Left) && !Rect.Overlaps(_backgroundBox.Dest, Mouse.Position))
+                if (!Rect.Overlaps(_backgroundBox.Dest, Mouse.Position))
                 {
                     IsDraw = false;
                 }

@@ -1,4 +1,5 @@
-﻿using Kotono.Graphics;
+﻿using Kotono.Engine.UserInterface.AddMenu;
+using Kotono.Graphics;
 using Kotono.Graphics.Objects;
 using Kotono.Graphics.Objects.Managers;
 using Kotono.Graphics.Statistics;
@@ -45,6 +46,8 @@ namespace Kotono
             Keyboard.KeyboardState = KeyboardState;
 
             new Camera();
+
+            new MainMenu();
 
             KT.Position = (Point)Location;
             KT.Size = (Point)ClientSize;

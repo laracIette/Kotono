@@ -1,4 +1,4 @@
-﻿using Kotono.File;
+﻿using Kotono.Settings;
 using Kotono.Utils;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
