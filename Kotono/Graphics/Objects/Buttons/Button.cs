@@ -2,6 +2,7 @@
 using Kotono.Input;
 using Kotono.Utils;
 using OpenTK.Windowing.GraphicsLibraryFramework;
+using System;
 
 namespace Kotono.Graphics.Objects.Buttons
 {
@@ -16,6 +17,10 @@ namespace Kotono.Graphics.Objects.Buttons
         public bool IsPressed => IsDown && !WasDown;
 
         public bool IsReleased => !IsDown && WasDown;
+
+        internal event EventHandler<ButtonEventArgs>? Pressed = null;
+        
+        internal event EventHandler? Released = null;
 
         public override void Update()
         {
@@ -33,8 +38,14 @@ namespace Kotono.Graphics.Objects.Buttons
             }
         }
 
-        public virtual void OnPressed() { }
+        public virtual void OnPressed() 
+        { 
+            Pressed?.Invoke(this, new ButtonEventArgs());
+        }
 
-        public virtual void OnReleased() { }
+        public virtual void OnReleased() 
+        {
+            Released?.Invoke(this, EventArgs.Empty);
+        }
     }
 }

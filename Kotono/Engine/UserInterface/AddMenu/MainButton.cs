@@ -46,6 +46,8 @@ namespace Kotono.Engine.UserInterface.AddMenu
                 Anchor.BottomRight => new Point(Dest.X - Dest.W / 2.0f, Dest.Y + Dest.H / 2.0f),
                 _ => throw new Exception($"error: Anchor \"{_anchor}\" isn't supported")
             };
+
+            base.OnPressed();
         }
     }
 }
