@@ -6,36 +6,46 @@ namespace Kotono
     {
         /// <summary>
         /// This is the Title of the program's Window.
-        /// <para> Default value : "Kotono - Application" </para>
         /// </summary>
+        /// <remarks> 
+        /// Default value : "Kotono - Application" 
+        /// </remarks>
         public string WindowTitle { get; set; } = "Kotono - Application";
 
         /// <summary>
         /// This is the program's Window Width,
         /// this can be changed at runtime using KT.Size.
-        /// <para> Default value : 1280 </para>
         /// </summary>
+        /// <remarks> 
+        /// Default value : 1280 
+        /// </remarks>
         public int Width { get; set; } = 1280;
 
         /// <summary>
         /// This is the program's Window Height,
         /// this can be changed at runtime using KT.Size.
-        /// <para> Default value : 720 </para>
         /// </summary>
+        /// <remarks> 
+        /// Default value : 720 
+        /// </remarks>
         public int Height { get; set; } = 720;
 
         /// <summary>
         /// This is the Max FrameRate you want your program to run at,
         /// this can be changed at runtime using PerformanceWindow.MaxFrameRate.
-        /// <para> Default value : 60 </para>
         /// </summary>
+        /// <remarks> 
+        /// Default value : 60 
+        /// </remarks>
         public int MaxFrameRate { get; set; } = 60;
 
         /// <summary>
         /// This is the State of the Cursor,
         /// this can be changed at runtime using Mouse.CursorState.
-        /// <para> Default value : CursorState.Normal </para>
         /// </summary>
+        /// <remarks> 
+        /// Default value : CursorState.Normal 
+        /// </remarks>
         public CursorState CursorState { get; set; } = CursorState.Normal;
     }
 }

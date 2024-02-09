@@ -10,8 +10,10 @@ namespace Kotono.Settings
     {
         /// <summary>
         /// The hitboxes the Hitbox checks collisions from.
-        /// <para> Default value : [] </para>
         /// </summary>
+        /// <remarks> 
+        /// Default value : [] 
+        /// </remarks>
         public List<Hitbox> Collisions { get; set; } = [];
     }
 }

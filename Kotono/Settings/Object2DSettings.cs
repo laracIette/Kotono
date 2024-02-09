@@ -10,14 +10,18 @@ namespace Kotono.Settings
     {
         /// <summary>
         /// The dest of the Object2D.
-        /// <para> Default value : Rect.Zero </para>
         /// </summary>
+        /// <remarks> 
+        /// Default value : Rect.Zero 
+        /// </remarks>
         public Rect Dest { get; set; } = Rect.Zero;
 
         /// <summary>
         /// The layer of the Object2D.
-        /// <para> Default value : 0 </para>
         /// </summary>
+        /// <remarks> 
+        /// Default value : 0 
+        /// </remarks>
         public int Layer { get; set; } = 0;
     }
 }

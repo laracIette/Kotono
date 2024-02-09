@@ -9,26 +9,34 @@ namespace Kotono.Settings
     {
         /// <summary>
         /// The directory where the Animation's frames are.
-        /// <para> Default value : "" </para>
         /// </summary>
+        /// <remarks> 
+        /// Default value : "" 
+        /// </remarks>
         public string Directory { get; set; } = "";
 
         /// <summary>
         /// The frame rate of the Animation.
-        /// <para> Default value : 60 </para>
         /// </summary>
+        /// <remarks> 
+        /// Default value : 60 
+        /// </remarks>
         public int FrameRate { get; set; } = 60;
 
         /// <summary>
         /// The start time of the Animation.
-        /// <para> Default value : 0.0f </para>
         /// </summary>
+        /// <remarks> 
+        /// Default value : 0.0f 
+        /// </remarks>
         public float StartTime { get; set; } = 0.0f;
 
         /// <summary>
         /// The duration of the Animation.
-        /// <para> Default value : 0.0f </para>
         /// </summary>
+        /// <remarks> 
+        /// Default value : 0.0f 
+        /// </remarks>
         public float Duration { get; set; } = 0.0f;
     }
 }

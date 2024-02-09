@@ -10,20 +10,26 @@ namespace Kotono.Settings
     {
         /// <summary>
         /// The path to the settings of the Drawable.
-        /// <para> Default value : "" </para>
         /// </summary>
+        /// <remarks> 
+        /// Default value : "" 
+        /// </remarks>
         public string Path { get; set; } = "";
 
         /// <summary>
         /// Wether the Drawable should be drawn.
-        /// <para> Default value : true </para>
         /// </summary>
+        /// <remarks> 
+        /// Default value : true 
+        /// </remarks>
         public virtual bool IsDraw { get; set; } = true;
 
         /// <summary>
         /// The color of the Drawable.
-        /// <para> Default value : Color.White </para>
         /// </summary>
+        /// <remarks> 
+        /// Default value : Color.White 
+        /// </remarks>
         public Color Color { get; set; } = Color.White;
     }
 }

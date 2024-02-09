@@ -9,20 +9,26 @@ namespace Kotono.Settings
     {
         /// <summary>
         /// The text that the Text should display.
-        /// <para> Default value : "" </para>
         /// </summary>
+        /// <remarks> 
+        /// Default value : "" 
+        /// </remarks>
         public string Text { get; set; } = "";
 
         /// <summary>
         /// The anchor from which the Text should be drawn.
-        /// <para> Default value : Anchor.Center </para>
         /// </summary>
+        /// <remarks> 
+        /// Default value : Anchor.Center 
+        /// </remarks>
         public Anchor Anchor { get; set; } = Anchor.Center;
 
         /// <summary>
         /// The spacing multiplier between each letter of the Text.
-        /// <para> Default value : 1.0f </para>
         /// </summary>
+        /// <remarks> 
+        /// Default value : 1.0f 
+        /// </remarks>
         public float Spacing { get; set; } = 1.0f;
     }
 }

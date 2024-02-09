@@ -9,8 +9,10 @@ namespace Kotono.Settings
     {
         /// <summary>
         /// The path to the texture of the Image.
-        /// <para> Default value : "" </para>
         /// </summary>
+        /// <remarks> 
+        /// Default value : "" 
+        /// </remarks>
         public string Texture { get; set; } = "";
     }
 }

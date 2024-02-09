@@ -9,8 +9,10 @@ namespace Kotono.Settings
     {
         /// <summary>
         /// The text that the TextButton should display.
-        /// <para> Default value : "" </para>
         /// </summary>
+        /// <remarks> 
+        /// Default value : "" 
+        /// </remarks>
         public string Text { get; set; } = "";
     }
 }

@@ -5,12 +5,12 @@ namespace Kotono.Utils
     public static class Time
     {
         /// <summary>
-        /// Current Time since Epoch in milliseconds.
+        /// Current UTC Time since Epoch in milliseconds.
         /// </summary>
-        public static long SinceEpochMS { get; private set; } = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+        public static long SinceEpochMS { get; private set; } = DateTime.UtcNow.Ticks / TimeSpan.TicksPerMillisecond;
 
         /// <summary>
-        /// Current Time since Epoch in seconds.
+        /// Current UTC Time since Epoch in seconds.
         /// </summary>
         public static double SinceEpoch => SinceEpochMS / 1000.0;
 
@@ -36,7 +36,7 @@ namespace Kotono.Utils
 
         public static void Update()
         {
-            long sinceEpoch = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+            long sinceEpoch = DateTime.UtcNow.Ticks / TimeSpan.TicksPerMillisecond;
 
             DeltaMS = (int)(sinceEpoch - SinceEpochMS);
 

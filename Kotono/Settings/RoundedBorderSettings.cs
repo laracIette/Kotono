@@ -9,8 +9,10 @@ namespace Kotono.Settings
     {
         /// <summary>
         /// The thickness of the RoundedBorder.
-        /// <para> Default value : 1.0f </para>
         /// </summary>
+        /// <remarks> 
+        /// Default value : 1.0f 
+        /// </remarks>
         public float Thickness { get; set; } = 1.0f;
     }
 }

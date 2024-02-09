@@ -10,8 +10,10 @@ namespace Kotono.Settings
     {
         /// <summary>
         /// The vertices of the Shape.
-        /// <para> Default value : [] </para>
         /// </summary>
+        /// <remarks> 
+        /// Default value : [] 
+        /// </remarks>
         public Vector[] Vertices { get; set; } = [];
     }
 }
