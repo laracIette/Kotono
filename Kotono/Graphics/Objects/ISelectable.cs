@@ -1,5 +1,4 @@
-﻿using Kotono.Graphics.Objects.Managers;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace Kotono.Graphics.Objects

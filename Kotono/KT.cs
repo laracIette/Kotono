@@ -3,7 +3,6 @@ using Kotono.Engine;
 using Kotono.Engine.UserInterface.AddMenu;
 using Kotono.Graphics;
 using Kotono.Graphics.Objects;
-using Kotono.Graphics.Objects.Managers;
 using Kotono.Graphics.Print;
 using Kotono.Graphics.Statistics;
 using Kotono.Input;
@@ -41,7 +40,7 @@ namespace Kotono
             {
                 _dest.Size = value;
 
-                CameraManager.ActiveCamera.AspectRatio = Size.Ratio;
+                ObjectManager.ActiveCamera.AspectRatio = Size.Ratio;
 
                 ComponentManager.WindowViewport.Size = Size;
 
@@ -129,7 +128,6 @@ namespace Kotono
             Printer.Update();
             ObjectManager.Update();
             ComponentManager.Update();
-            CameraManager.Update();
             _mode.Update();
         }
 

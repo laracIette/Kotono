@@ -2,10 +2,11 @@
 using Kotono.Input;
 using Kotono.Utils;
 using OpenTK.Windowing.GraphicsLibraryFramework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Kotono.Graphics.Objects.Managers
+namespace Kotono.Graphics.Objects
 {
     internal static class ObjectManager
     {
@@ -16,6 +17,8 @@ namespace Kotono.Graphics.Objects.Managers
         internal static PointLight[] PointLights => _objects.OfType<PointLight>().ToArray();
 
         internal static SpotLight[] SpotLights => _objects.OfType<SpotLight>().ToArray();
+
+        internal static Camera ActiveCamera => _objects.OfType<Camera>().FirstOrDefault() ?? throw new Exception("error: there is no Object of type Camera in _objects.");
 
         internal static void SetSize(Point value)
         {

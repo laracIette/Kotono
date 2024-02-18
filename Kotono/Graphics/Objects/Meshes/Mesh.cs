@@ -1,7 +1,6 @@
 ﻿using Assimp;
 using Kotono.Settings;
 using Kotono.Graphics.Objects.Hitboxes;
-using Kotono.Graphics.Objects.Managers;
 using Kotono.Graphics.Objects.Shapes;
 using Kotono.Graphics.Shaders;
 using Kotono.Input;
@@ -280,7 +279,7 @@ namespace Kotono.Graphics.Objects.Meshes
                 foreach (var triangle in Triangles)
                 {
                     triangle.Transform = Transform;
-                    if (Intersection.IntersectRayTriangle(CameraManager.ActiveCamera.Location, Mouse.Ray, triangle, out _intersectionLocation, out _distance))
+                    if (Intersection.IntersectRayTriangle(ObjectManager.ActiveCamera.Location, Mouse.Ray, triangle, out _intersectionLocation, out _distance))
                     {
                         _isMouseOn = true;
                         break;

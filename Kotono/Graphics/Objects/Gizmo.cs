@@ -1,5 +1,4 @@
-﻿using Kotono.Graphics.Objects.Managers;
-using Kotono.Graphics.Objects.Meshes;
+﻿using Kotono.Graphics.Objects.Meshes;
 using Kotono.Input;
 using Kotono.Utils;
 using OpenTK.Windowing.GraphicsLibraryFramework;
@@ -125,7 +124,7 @@ namespace Kotono.Graphics.Objects
                 obj.Location += movement;
             }
 
-            Scale = (Vector)(Vector.Distance(Location, CameraManager.ActiveCamera.Location) / 75.0f);
+            Scale = (Vector)(Vector.Distance(Location, ObjectManager.ActiveCamera.Location) / 75.0f);
         }
 
         private static Vector GetMovement()

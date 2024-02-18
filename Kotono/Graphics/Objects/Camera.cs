@@ -1,6 +1,6 @@
-﻿using Kotono.Graphics.Objects.Managers;
-using Kotono.Graphics.Objects.Shapes;
+﻿using Kotono.Graphics.Objects.Shapes;
 using Kotono.Input;
+using Kotono.Settings;
 using Kotono.Utils;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
@@ -9,13 +9,13 @@ using Math = Kotono.Utils.Math;
 
 namespace Kotono.Graphics.Objects
 {
-    internal class Camera
+    internal class Camera : Object
     {
         private float _pitch = 0.0f;
 
         private float _yaw = -Math.PI / 2.0f;
 
-        private float _fov = Math.PI / 2.0f;
+        private float _fov = 90.0f;
 
         private float _speed = 1.0f;
 
@@ -56,27 +56,23 @@ namespace Kotono.Graphics.Objects
         internal float Fov
         {
             get => _fov;
-            set
-            {
-                _fov = Math.Clamp(value, Math.Rad(1.0f), Math.Rad(90.0f));
-            }
+            set => _fov = Math.Clamp(value, 1.0f, 90.0f);
         }
 
         internal Matrix4 ViewMatrix => Matrix4.LookAt((Vector3)Location, (Vector3)(Location + Front), (Vector3)Up);
 
-        internal Matrix4 ProjectionMatrix => Matrix4.CreatePerspectiveFieldOfView(_fov, AspectRatio, 0.01f, 1000.0f);
+        internal Matrix4 ProjectionMatrix => Matrix4.CreatePerspectiveFieldOfView(Math.Rad(Fov), AspectRatio, 0.01f, 1000.0f);
 
         internal Camera()
+            : base(new ObjectSettings())
         {
-            CameraManager.Create(this);
-
             _line = new Line(Location, Front, Transform.Default, Color.Red)
             {
                 IsDraw = false
             };
         }
 
-        internal void Update()
+        public override void Update()
         {
             Move();
 
@@ -133,14 +129,11 @@ namespace Kotono.Graphics.Objects
 
         private void UpdateVectors()
         {
-            Front = new Vector
-            {
-                X = Math.Cos(Pitch) * Math.Cos(Yaw),
-                Y = Math.Sin(Pitch),
-                Z = Math.Cos(Pitch) * Math.Sin(Yaw)
-            };
-
-            Front = Front.Normalized;
+            Front = new Vector(
+                Math.Cos(Pitch) * Math.Cos(Yaw),
+                Math.Sin(Pitch),
+                Math.Cos(Pitch) * Math.Sin(Yaw)
+            ).Normalized;
             Right = Vector.Cross(Front, Vector.UnitY).Normalized;
             Up = Vector.Cross(Right, Front).Normalized;
         }

@@ -1,7 +1,6 @@
 ﻿using Kotono.Engine.UserInterface.AddMenu;
 using Kotono.Graphics;
 using Kotono.Graphics.Objects;
-using Kotono.Graphics.Objects.Managers;
 using Kotono.Graphics.Statistics;
 using Kotono.Input;
 using Kotono.Utils;

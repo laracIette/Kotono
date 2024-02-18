@@ -1,4 +1,4 @@
-﻿using Kotono.Graphics.Objects.Managers;
+﻿using Kotono.Graphics.Objects;
 using Kotono.Utils;
 
 namespace Kotono.Graphics.Shaders
@@ -10,10 +10,10 @@ namespace Kotono.Graphics.Shaders
         {
             base.Update();
 
-            SetMatrix4("view", CameraManager.ActiveCamera.ViewMatrix);
-            SetMatrix4("projection", CameraManager.ActiveCamera.ProjectionMatrix);
+            SetMatrix4("view", ObjectManager.ActiveCamera.ViewMatrix);
+            SetMatrix4("projection", ObjectManager.ActiveCamera.ProjectionMatrix);
 
-            SetVector("viewPos", CameraManager.ActiveCamera.Location);
+            SetVector("viewPos", ObjectManager.ActiveCamera.Location);
 
             SetInt("material.diffuse", 0);
             SetInt("material.specular", 1);
@@ -49,8 +49,8 @@ namespace Kotono.Graphics.Shaders
             {
                 SetFloat($"spotLights[{i}].cutOff", Math.Cos(Math.Rad(spotLights[i].CutOffAngle)));
                 SetFloat($"spotLights[{i}].outerCutOff", Math.Cos(Math.Rad(spotLights[i].OuterCutOffAngle)));
-                SetVector($"spotLights[{i}].location", CameraManager.ActiveCamera.Location);
-                SetVector($"spotLights[{i}].direction", CameraManager.ActiveCamera.Front);
+                SetVector($"spotLights[{i}].location", ObjectManager.ActiveCamera.Location);
+                SetVector($"spotLights[{i}].direction", ObjectManager.ActiveCamera.Front);
                 SetColor($"spotLights[{i}].ambient", Color.Black);
                 SetColor($"spotLights[{i}].diffuse", Color.White);
                 SetColor($"spotLights[{i}].specular", Color.White);
