@@ -1,6 +1,7 @@
 ﻿using Kotono.Settings;
 using Kotono.Graphics.Objects.Texts;
 using Kotono.Utils;
+using System;
 
 namespace Kotono.Graphics.Objects.Buttons
 {
@@ -16,6 +17,10 @@ namespace Kotono.Graphics.Objects.Buttons
                 Spacing = 0.6f
             }
         );
+
+        private readonly TextButtonEventArgs _args = new() { Text = settings.Text };
+
+        internal new event EventHandler<TextButtonEventArgs>? Pressed = null;
 
         public override Rect Dest
         {
@@ -38,6 +43,11 @@ namespace Kotono.Graphics.Objects.Buttons
                 base.IsDraw = value;
                 _text.IsDraw = value;
             }
+        }
+
+        public override void OnPressed()
+        {
+            Pressed?.Invoke(this, _args);
         }
     }
 }

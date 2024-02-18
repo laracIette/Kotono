@@ -2,11 +2,14 @@
 using Kotono.Utils;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
+using System;
 
 namespace Kotono.Graphics.Objects.Shapes
 {
     internal class Shape : Object3D, IShape
     {
+        private readonly PrimitiveType _mode;
+
         private int _vertexArrayObject;
 
         private int _vertexBufferObject;
@@ -23,6 +26,14 @@ namespace Kotono.Graphics.Objects.Shapes
             IsDraw = false;
             Vertices = settings.Vertices;
             Color = settings.Color;
+
+            _mode = Vertices.Length switch
+            {
+                0 => throw new Exception($"error: Vertices musn't be empty."),
+                1 => PrimitiveType.Points,
+                2 => PrimitiveType.Lines,
+                _ => PrimitiveType.LineLoop
+            };
         }
 
         public override void Update()
@@ -41,7 +52,7 @@ namespace Kotono.Graphics.Objects.Shapes
 
             GL.BindVertexArray(_vertexArrayObject);
             GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
-            GL.DrawArrays(PrimitiveType.LineLoop, 0, Vertices.Length);
+            GL.DrawArrays(_mode, 0, Vertices.Length);
         }
 
         private void InitBuffers()

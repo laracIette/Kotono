@@ -8,6 +8,7 @@ using Kotono.Utils;
 using System;
 using Keys = OpenTK.Windowing.GraphicsLibraryFramework.Keys;
 using Math = Kotono.Utils.Math;
+using Kotono.Graphics.Objects.Shapes;
 
 namespace Kotono
 {
@@ -43,7 +44,7 @@ namespace Kotono
             if (Keyboard.IsKeyPressed(Keys.T))
             {
                 _animation.Switch();
-            }
+            } 
         }
 
         private static void CreateObjects()

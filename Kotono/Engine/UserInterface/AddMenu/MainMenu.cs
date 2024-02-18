@@ -46,10 +46,10 @@ namespace Kotono.Engine.UserInterface.AddMenu
             set
             {
                 _backgroundBox.Position = value;
-                _buttons[0].Dest = Rect.FromAnchor(new Rect(value + (-5.0f, -5.0f), 140.0f, 140.0f), Anchor.BottomRight);
-                _buttons[1].Dest = Rect.FromAnchor(new Rect(value + (5.0f, -5.0f), 140.0f, 140.0f), Anchor.BottomLeft);
-                _buttons[2].Dest = Rect.FromAnchor(new Rect(value + (-5.0f, 5.0f), 140.0f, 140.0f), Anchor.TopRight);
-                _buttons[3].Dest = Rect.FromAnchor(new Rect(value + (5.0f, 5.0f), 140.0f, 140.0f), Anchor.TopLeft);
+                _buttons[0].Dest = Rect.FromAnchor(new Rect(value, 140.0f, 140.0f), Anchor.BottomRight, 5.0f);
+                _buttons[1].Dest = Rect.FromAnchor(new Rect(value, 140.0f, 140.0f), Anchor.BottomLeft, 5.0f);
+                _buttons[2].Dest = Rect.FromAnchor(new Rect(value, 140.0f, 140.0f), Anchor.TopRight, 5.0f);
+                _buttons[3].Dest = Rect.FromAnchor(new Rect(value, 140.0f, 140.0f), Anchor.TopLeft, 5.0f);
             }
         }
 

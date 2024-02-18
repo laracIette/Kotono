@@ -1,4 +1,5 @@
 ﻿using Kotono.Graphics.Objects.Managers;
+using Kotono.Graphics.Objects.Shapes;
 using Kotono.Input;
 using Kotono.Utils;
 using OpenTK.Mathematics;
@@ -18,46 +19,49 @@ namespace Kotono.Graphics.Objects
 
         private float _speed = 1.0f;
 
+        private readonly Line _line;
+
         internal Vector Front { get; private set; } = -Vector.UnitZ;
 
         internal Vector Up { get; private set; } = Vector.UnitY;
 
         internal Vector Right { get; private set; } = Vector.UnitX;
 
-        internal Vector Location { get; private set; } = Vector.Zero;
+        internal Vector Location { get; set; } = Vector.Zero;
+
+        internal Vector Rotation => new(Pitch, -Yaw - Math.PI / 2.0f, 0.0f);
 
         internal float AspectRatio { get; set; } = 16.0f / 9.0f;
 
         internal float Pitch
         {
-            get => Math.Deg(_pitch);
+            get => _pitch;
             set
             {
-                value = Math.Clamp(value, -89.0f, 89.0f);
-                _pitch = Math.Rad(value);
+                _pitch = Math.Clamp(value, Math.Rad(-89.0f), Math.Rad(89.0f));
                 UpdateVectors();
             }
         }
 
         internal float Yaw
         {
-            get => Math.Deg(_yaw);
+            get => _yaw;
             set
             {
-                _yaw = Math.Rad(value);
+                _yaw = value;
                 UpdateVectors();
             }
         }
 
         internal float Fov
         {
-            get => Math.Deg(_fov);
+            get => _fov;
             set
             {
-                value = Math.Clamp(value, 1.0f, 90.0f);
-                _fov = Math.Rad(value);
+                _fov = Math.Clamp(value, Math.Rad(1.0f), Math.Rad(90.0f));
             }
         }
+
         internal Matrix4 ViewMatrix => Matrix4.LookAt((Vector3)Location, (Vector3)(Location + Front), (Vector3)Up);
 
         internal Matrix4 ProjectionMatrix => Matrix4.CreatePerspectiveFieldOfView(_fov, AspectRatio, 0.01f, 1000.0f);
@@ -65,11 +69,19 @@ namespace Kotono.Graphics.Objects
         internal Camera()
         {
             CameraManager.Create(this);
+
+            _line = new Line(Location, Front, Transform.Default, Color.Red)
+            {
+                IsDraw = false
+            };
         }
 
         internal void Update()
         {
             Move();
+
+            _line.Location = Location;
+            _line.Rotation = Rotation;
         }
 
         private void Move()
@@ -79,7 +91,7 @@ namespace Kotono.Graphics.Objects
                 return;
             }
 
-            float sensitivity = 0.2f;
+            float sensitivity = 0.005f;
 
             Yaw += Mouse.Delta.X * sensitivity;
             Pitch -= Mouse.Delta.Y * sensitivity;
@@ -123,9 +135,9 @@ namespace Kotono.Graphics.Objects
         {
             Front = new Vector
             {
-                X = Math.Cos(_pitch) * Math.Cos(_yaw),
-                Y = Math.Sin(_pitch),
-                Z = Math.Cos(_pitch) * Math.Sin(_yaw)
+                X = Math.Cos(Pitch) * Math.Cos(Yaw),
+                Y = Math.Sin(Pitch),
+                Z = Math.Cos(Pitch) * Math.Sin(Yaw)
             };
 
             Front = Front.Normalized;

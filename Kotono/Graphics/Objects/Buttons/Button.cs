@@ -10,6 +10,12 @@ namespace Kotono.Graphics.Objects.Buttons
         : RoundedBox(settings),
         IButton
     {
+        private readonly ButtonEventArgs _args = new();
+
+        internal event EventHandler<ButtonEventArgs>? Pressed = null;
+        
+        internal event EventHandler? Released = null;
+
         public bool IsDown { get; private set; }
 
         public bool WasDown { get; private set; }
@@ -17,10 +23,6 @@ namespace Kotono.Graphics.Objects.Buttons
         public bool IsPressed => IsDown && !WasDown;
 
         public bool IsReleased => !IsDown && WasDown;
-
-        internal event EventHandler<ButtonEventArgs>? Pressed = null;
-        
-        internal event EventHandler? Released = null;
 
         public override void Update()
         {
@@ -40,12 +42,12 @@ namespace Kotono.Graphics.Objects.Buttons
 
         public virtual void OnPressed() 
         { 
-            Pressed?.Invoke(this, new ButtonEventArgs());
+            Pressed?.Invoke(this, _args);
         }
 
         public virtual void OnReleased() 
         {
-            Released?.Invoke(this, EventArgs.Empty);
+            Released?.Invoke(this, _args);
         }
     }
 }

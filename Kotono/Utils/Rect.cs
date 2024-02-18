@@ -225,21 +225,28 @@ namespace Kotono.Utils
         /// <summary> 
         /// Creates a Rect given an Anchor.
         /// </summary>
-        public static Rect FromAnchor(Rect r, Anchor a)
+        public static Rect FromAnchor(Rect r, Anchor a, Point offset)
         {
-            return a switch
+            r.Position += a switch
             {
-                Anchor.Center => r,
-                Anchor.Left => new Rect(r.X + r.W / 2.0f, r.Y, r.Size),
-                Anchor.Right => new Rect(r.X - r.W / 2.0f, r.Y, r.Size),
-                Anchor.Top => new Rect(r.X, r.Y + r.H / 2.0f, r.Size),
-                Anchor.Bottom => new Rect(r.X, r.Y - r.H / 2.0f, r.Size),
-                Anchor.TopLeft => new Rect(r.X + r.W / 2.0f, r.Y + r.H / 2.0f, r.Size),
-                Anchor.TopRight => new Rect(r.X - r.W / 2.0f, r.Y + r.H / 2.0f, r.Size),
-                Anchor.BottomLeft => new Rect(r.X + r.W / 2.0f, r.Y - r.H / 2.0f, r.Size),
-                Anchor.BottomRight => new Rect(r.X - r.W / 2.0f, r.Y - r.H / 2.0f, r.Size),
+                Anchor.Center => offset,
+                Anchor.Left => new Point(r.W / 2.0f + offset.X, offset.Y),
+                Anchor.Right => new Point(-r.W / 2.0f - offset.X, offset.Y),
+                Anchor.Top => new Point(offset.X, r.H / 2.0f + offset.Y),
+                Anchor.Bottom => new Point(offset.X, -r.H / 2.0f - offset.Y),
+                Anchor.TopLeft => new Point(r.W / 2.0f + offset.X, r.H / 2.0f + offset.Y),
+                Anchor.TopRight => new Point(-r.W / 2.0f - offset.X, r.H / 2.0f + offset.Y),
+                Anchor.BottomLeft => new Point(r.W / 2.0f + offset.X, -r.H / 2.0f - offset.Y),
+                Anchor.BottomRight => new Point(-r.W / 2.0f - offset.X, -r.H / 2.0f - offset.Y),
                 _ => throw new Exception($"error: Rect.FromAnchor() doesn't handle \"{a}\"")
             };
+
+            return r;
+        }
+
+        public static Rect FromAnchor(Rect r, Anchor a, float offset = 0.0f)
+        {
+            return FromAnchor(r, a, new Point(offset));
         }
 
         /// <summary> 

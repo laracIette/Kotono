@@ -2,11 +2,11 @@
 
 namespace Kotono.Graphics.Objects.Buttons
 {
-    internal class ButtonList
+    internal class TextButtonList
     {
-        private readonly Button[] _buttons;
+        private readonly TextButton[] _buttons;
 
-        internal ButtonList(Button[] buttons)
+        internal TextButtonList(TextButton[] buttons)
         {
             _buttons = buttons;
           
@@ -16,9 +16,9 @@ namespace Kotono.Graphics.Objects.Buttons
             }
         }
 
-        private void OnPressed(object? sender, ButtonEventArgs e)
+        private void OnPressed(object? sender, TextButtonEventArgs e)
         {
-
+            KT.Print(e.Text);
         }
     }
 }
