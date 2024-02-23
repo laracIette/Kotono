@@ -1,5 +1,5 @@
-﻿using Kotono.Utils;
-using Kotono.Graphics.Objects.Shapes;
+﻿using Kotono.Graphics.Objects.Shapes;
+using Kotono.Utils.Coordinates;
 
 namespace Kotono.Settings
 {

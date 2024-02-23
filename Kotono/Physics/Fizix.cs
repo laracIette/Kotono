@@ -1,6 +1,6 @@
 ﻿using Kotono.Graphics.Objects.Hitboxes;
 using Kotono.Graphics.Objects.Meshes;
-using Kotono.Utils;
+using Kotono.Utils.Coordinates;
 using OpenTK.Mathematics;
 using Math = Kotono.Utils.Math;
 

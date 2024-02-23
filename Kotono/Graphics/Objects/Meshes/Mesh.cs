@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using PrimitiveType = OpenTK.Graphics.OpenGL4.PrimitiveType;
+using Kotono.Utils.Coordinates;
 
 namespace Kotono.Graphics.Objects.Meshes
 {

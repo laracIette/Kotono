@@ -1,5 +1,6 @@
 ﻿using Kotono.Settings;
 using Kotono.Utils;
+using Kotono.Utils.Coordinates;
 using System;
 using System.Collections.Generic;
 using System.IO;

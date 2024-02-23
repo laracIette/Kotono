@@ -2,6 +2,7 @@
 using Kotono.Input;
 using Kotono.Settings;
 using Kotono.Utils;
+using Kotono.Utils.Coordinates;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using CursorState = Kotono.Input.CursorState;
@@ -63,8 +64,7 @@ namespace Kotono.Graphics.Objects
 
         internal Matrix4 ProjectionMatrix => Matrix4.CreatePerspectiveFieldOfView(Math.Rad(Fov), AspectRatio, 0.01f, 1000.0f);
 
-        internal Camera()
-            : base(new ObjectSettings())
+        internal Camera() : base()
         {
             _line = new Line(Location, Front, Transform.Default, Color.Red)
             {

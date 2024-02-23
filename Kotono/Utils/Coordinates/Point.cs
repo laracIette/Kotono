@@ -4,7 +4,7 @@ using System;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
 
-namespace Kotono.Utils
+namespace Kotono.Utils.Coordinates
 {
     [Serializable]
     [StructLayout(LayoutKind.Sequential)]

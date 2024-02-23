@@ -4,6 +4,7 @@ using Kotono.Graphics.Objects;
 using Kotono.Input;
 using Kotono.Utils;
 using OpenTK.Windowing.GraphicsLibraryFramework;
+using Kotono.Utils.Coordinates;
 
 namespace Kotono.Engine.UserInterface.AddMenu
 {
@@ -53,8 +54,7 @@ namespace Kotono.Engine.UserInterface.AddMenu
             }
         }
 
-        internal MainMenu()
-            : base(new ObjectSettings())
+        internal MainMenu() : base()
         {
             IsDraw = false;
         }

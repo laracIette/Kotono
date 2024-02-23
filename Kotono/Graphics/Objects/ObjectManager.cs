@@ -1,6 +1,6 @@
 ﻿using Kotono.Graphics.Objects.Lights;
 using Kotono.Input;
-using Kotono.Utils;
+using Kotono.Utils.Coordinates;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
 using System.Collections.Generic;

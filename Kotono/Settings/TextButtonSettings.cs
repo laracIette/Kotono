@@ -11,8 +11,8 @@ namespace Kotono.Settings
         /// The text that the TextButton should display.
         /// </summary>
         /// <remarks> 
-        /// Default value : "" 
+        /// Default value : <see langword="new"/> <see cref="Settings.TextSettings"/>()
         /// </remarks>
-        public string Text { get; set; } = "";
+        public TextSettings TextSettings { get; set; } = new();
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Kotono.Utils;
+using Kotono.Utils.Coordinates;
 using System.Collections.Generic;
 
 namespace Kotono.Graphics

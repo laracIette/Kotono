@@ -1,8 +1,8 @@
 ﻿using Kotono.Settings;
 using Kotono.Input;
-using Kotono.Utils;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
+using Kotono.Utils.Coordinates;
 
 namespace Kotono.Graphics.Objects.Buttons
 {

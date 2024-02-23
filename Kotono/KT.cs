@@ -7,6 +7,7 @@ using Kotono.Graphics.Print;
 using Kotono.Graphics.Statistics;
 using Kotono.Input;
 using Kotono.Utils;
+using Kotono.Utils.Coordinates;
 using System;
 
 namespace Kotono

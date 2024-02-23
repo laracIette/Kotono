@@ -1,6 +1,7 @@
 ﻿using Kotono.Settings;
 using Kotono.Graphics.Objects;
 using Kotono.Utils;
+using Kotono.Utils.Coordinates;
 
 namespace Kotono.Graphics.Statistics
 {

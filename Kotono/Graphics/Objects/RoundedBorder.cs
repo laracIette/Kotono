@@ -1,5 +1,6 @@
 ﻿using Kotono.Settings;
 using Kotono.Utils;
+using Kotono.Utils.Coordinates;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
 

@@ -1,6 +1,7 @@
 ﻿using Kotono.Graphics.Objects.Buttons;
 using Kotono.Settings;
 using Kotono.Utils;
+using Kotono.Utils.Coordinates;
 using System;
 
 namespace Kotono.Engine.UserInterface.AddMenu
@@ -12,7 +13,7 @@ namespace Kotono.Engine.UserInterface.AddMenu
                 Dest = new Rect(Point.Zero, 100.0f, 100.0f), // 100 so that CornerSize doesn't get restricted
                 Color = Color.Gray,
                 Layer = 1,
-                Text = text,
+                TextSettings = new TextSettings { Text = text },
                 CornerSize = 25.0f,
                 FallOff = 2.0f
             }

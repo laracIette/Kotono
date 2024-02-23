@@ -5,7 +5,7 @@ using System;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
 
-namespace Kotono.Utils
+namespace Kotono.Utils.Coordinates
 {
     [Serializable]
     [StructLayout(LayoutKind.Sequential)]
@@ -254,8 +254,8 @@ namespace Kotono.Utils
         /// </summary>
         public static bool Overlaps(Rect left, Rect right)
         {
-            return (Math.Abs(left.X - right.X) < (left.W + right.W) / 2.0f)
-                && (Math.Abs(left.Y - right.Y) < (left.H + right.H) / 2.0f);
+            return Math.Abs(left.X - right.X) < (left.W + right.W) / 2.0f
+                && Math.Abs(left.Y - right.Y) < (left.H + right.H) / 2.0f;
         }
 
         /// <summary> 
@@ -263,8 +263,8 @@ namespace Kotono.Utils
         /// </summary>
         public static bool Overlaps(Rect r, Point p)
         {
-            return (Math.Abs(r.X - p.X) < r.W / 2.0f)
-                && (Math.Abs(r.Y - p.Y) < r.H / 2.0f);
+            return Math.Abs(r.X - p.X) < r.W / 2.0f
+                && Math.Abs(r.Y - p.Y) < r.H / 2.0f;
         }
 
         /// <summary> 

@@ -1,9 +1,11 @@
-﻿using Kotono.Engine.UserInterface.AddMenu;
+﻿using Kotono.Audio;
+using Kotono.Engine.UserInterface.AddMenu;
 using Kotono.Graphics;
 using Kotono.Graphics.Objects;
 using Kotono.Graphics.Statistics;
 using Kotono.Input;
 using Kotono.Utils;
+using Kotono.Utils.Coordinates;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
@@ -36,6 +38,8 @@ namespace Kotono
             CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
 
             PerformanceWindow.MaxFrameRate = windowSettings.MaxFrameRate;
+            
+            SoundManager.GeneralVolume = 1.0f;
 
             Mouse.CursorState = windowSettings.CursorState;
             Mouse.MouseState = MouseState;
@@ -44,9 +48,9 @@ namespace Kotono
 
             Keyboard.KeyboardState = KeyboardState;
 
-            new Camera();
+            _ = new Camera();
 
-            new MainMenu();
+            _ = new MainMenu();
 
             KT.Position = (Point)Location;
             KT.Size = (Point)ClientSize;

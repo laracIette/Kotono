@@ -4,6 +4,7 @@ using Kotono.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Kotono.Utils.Coordinates;
 
 namespace Kotono.Engine.UserInterface.AddMenu
 {

@@ -4,6 +4,7 @@ using Kotono.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Kotono.Utils.Coordinates;
 
 namespace Kotono.Graphics.Objects.Texts
 {
@@ -138,8 +139,6 @@ namespace Kotono.Graphics.Objects.Texts
             }
         }
 
-        internal float StartTime { get; private set; }
-
         private Color _color;
 
         public override Color Color
@@ -184,8 +183,6 @@ namespace Kotono.Graphics.Objects.Texts
         protected void Init()
         {
             Clear();
-
-            StartTime = Time.Now;
 
             for (int i = 0; i < _text.Length; i++)
             {

@@ -1,6 +1,7 @@
 ﻿using Kotono.Settings;
 using Kotono.Graphics.Objects.Meshes;
 using Kotono.Utils;
+using Kotono.Utils.Coordinates;
 
 namespace Kotono.Graphics.Objects.Lights
 {

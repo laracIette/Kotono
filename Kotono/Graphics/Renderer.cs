@@ -2,6 +2,7 @@
 using Kotono.Graphics.Objects;
 using Kotono.Graphics.Objects.Meshes;
 using Kotono.Utils;
+using Kotono.Utils.Coordinates;
 using OpenTK.Graphics.OpenGL4;
 using System;
 using System.Collections.Generic;

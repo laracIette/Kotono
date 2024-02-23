@@ -9,6 +9,8 @@ using System;
 using Keys = OpenTK.Windowing.GraphicsLibraryFramework.Keys;
 using Math = Kotono.Utils.Math;
 using Kotono.Graphics.Objects.Shapes;
+using Kotono.Graphics.Objects.Buttons;
+using Kotono.Utils.Coordinates;
 
 namespace Kotono
 {
@@ -18,18 +20,50 @@ namespace Kotono
 
         private readonly Animation _animation;
 
+        private readonly Timer _timer;
+
         internal Application(WindowSettings windowSettings)
             : base(windowSettings)
         {
-            SoundManager.GeneralVolume = 1.0f;
-            
-            new Cursor();
+            _ = new Cursor();
 
             _sound = new TestSound();
 
             _animation = new Animation(JsonParser.Parse<AnimationSettings>(Path.ASSETS + @"Animations\Counting\Counting.json"));
             
             CreateObjects();
+
+            ///new TextButtonList([
+            ///    new TextButton(new TextButtonSettings 
+            ///    { 
+            ///        Dest = new Rect(150.0f, 50.0f, 100.0f, 100.0f),
+            ///        Color = Color.DarkSlateGray,
+            ///        TextSettings = new TextSettings
+            ///        {
+            ///            Text = "hey"
+            ///        }
+            ///    }),
+            ///    new TextButton(new TextButtonSettings 
+            ///    { 
+            ///        Dest = new Rect(150.0f, 50.0f, 100.0f, 100.0f),
+            ///        Color = Color.Red,
+            ///        TextSettings = new TextSettings
+            ///        {
+            ///            Text = "fgsg"
+            ///        }
+            ///    })
+            ///]);
+
+            _timer = new Timer();
+
+            _timer.Timeout += OnTimerTimeout;
+            _timer.IsLoop = true;
+            _timer.Start(1.0f);
+        }
+
+        private void OnTimerTimeout(object? sender, EventArgs e)
+        {
+            KT.Print(Time.Now, true);
         }
 
         protected override void Update()
@@ -44,14 +78,20 @@ namespace Kotono
             if (Keyboard.IsKeyPressed(Keys.T))
             {
                 _animation.Switch();
-            } 
+            }
+
+
+            if (Keyboard.IsKeyDown(Keys.I))
+            {
+                KT.Print(Time.Now, true);
+            }
         }
 
         private static void CreateObjects()
         {
-            new SpotLight();
+            _ = new SpotLight();
 
-            new Cube
+            _ = new Cube
             {
                 IsGravity = true,
                 IsFizix = false
@@ -59,10 +99,10 @@ namespace Kotono
 
             for (int i = 0; i < 10; i++)
             {
-                new RainbowPointLight();
+                _ = new RainbowPointLight();
             }
 
-            new FlatTextureMesh()
+            _ = new FlatTextureMesh()
             {
                 Location = -Vector.Forward * 5
             };

@@ -1,7 +1,7 @@
 ﻿using Kotono.Settings;
 using Kotono.Graphics.Objects.Texts;
-using Kotono.Utils;
 using System;
+using Kotono.Utils.Coordinates;
 
 namespace Kotono.Graphics.Objects.Buttons
 {
@@ -13,12 +13,12 @@ namespace Kotono.Graphics.Objects.Buttons
             {
                 Dest = new Rect(settings.Dest.Position, 25.0f, 30.0f),
                 Layer = 2,
-                Text = settings.Text,
+                Text = settings.TextSettings.Text,
                 Spacing = 0.6f
             }
         );
 
-        private readonly TextButtonEventArgs _args = new() { Text = settings.Text };
+        private readonly TextButtonEventArgs _args = new() { Text = settings.TextSettings.Text };
 
         internal new event EventHandler<TextButtonEventArgs>? Pressed = null;
 

@@ -14,13 +14,6 @@ namespace Kotono.Graphics.Print
 
         internal static void Update()
         {
-            foreach (var text in _texts)
-            {
-                if ((Time.Now - text.StartTime) > 3.0)
-                {
-                    text.Clear();
-                }
-            }
         }
 
         internal static void Lower()

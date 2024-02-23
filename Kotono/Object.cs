@@ -8,6 +8,13 @@ namespace Kotono
     {
         protected readonly ObjectSettings _settings;
 
+        internal Object()
+        {
+            _settings = new ObjectSettings();
+
+            ObjectManager.Create(this);
+        }
+
         internal Object(ObjectSettings settings)
         {
             _settings = settings;

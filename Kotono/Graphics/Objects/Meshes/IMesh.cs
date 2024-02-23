@@ -1,5 +1,5 @@
 ﻿using Kotono.Physics;
-using Kotono.Utils;
+using Kotono.Utils.Coordinates;
 
 namespace Kotono.Graphics.Objects.Meshes
 {

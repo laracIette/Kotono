@@ -3,6 +3,7 @@ using Kotono.Input;
 using Kotono.Utils;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
+using Kotono.Utils.Coordinates;
 
 namespace Kotono.Graphics.Objects
 {
