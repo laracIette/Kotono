@@ -1,4 +1,6 @@
-﻿using System.Diagnostics.Contracts;
+﻿using Kotono.Utils.Coordinates;
+using System;
+using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 
 namespace Kotono.Utils
@@ -126,6 +128,13 @@ namespace Kotono.Utils
         public static float Loop(float value, float max)
         {
             return Loop(value, 0.0f, max);
+        }
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static float Floor(float value)
+        {
+            return (int)value;
         }
     }
 }

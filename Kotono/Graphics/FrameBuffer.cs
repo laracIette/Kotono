@@ -93,7 +93,9 @@ namespace Kotono.Graphics
             ClearColorAndDepthBuffers();
 
             DrawColor();
+            GL.Enable(EnableCap.Blend);
             DrawOutline();
+            GL.Disable(EnableCap.Blend);
         }
 
         #region Helpers

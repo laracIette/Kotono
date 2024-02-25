@@ -303,6 +303,13 @@ namespace Kotono.Utils.Coordinates
             return !(left == right);
         }
 
+        public readonly void Deconstruct(out float x, out float y, out float z)
+        {
+            x = X;
+            y = Y;
+            z = Z;
+        }
+
         public override readonly bool Equals(object? obj)
         {
             return obj is Vector v && Equals(v);

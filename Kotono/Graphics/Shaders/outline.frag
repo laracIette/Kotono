@@ -6,18 +6,22 @@ in vec2 TexCoords;
 
 uniform sampler2D depth;
 
-const float offset = 1.0 / 1280.0;
+const vec3 color = vec3(0.0, 0.0, 0.0);
+
+const vec2 windowSize = vec2(1600.0, 900.0);
+
+const vec2 offset = 1.0 / windowSize;
 
 const vec2 offsets[9] = vec2[] (
-    vec2(-offset,  offset), // top-left
-    vec2( 0.0f,    offset), // top-center
-    vec2( offset,  offset), // top-right
-    vec2(-offset,  0.0f),   // center-left
-    vec2( 0.0f,    0.0f),   // center-center
-    vec2( offset,  0.0f),   // center-right
-    vec2(-offset, -offset), // bottom-left
-    vec2( 0.0f,   -offset), // bottom-center
-    vec2( offset, -offset)  // bottom-right    
+    vec2(-offset.x,  offset.y), // top-left
+    vec2( 0.0,       offset.y), // top-center
+    vec2( offset.x,  offset.y), // top-right
+    vec2(-offset.x,  0.0),      // center-left
+    vec2( 0.0,       0.0),      // center-center
+    vec2( offset.x,  0.0),      // center-right
+    vec2(-offset.x, -offset.y), // bottom-left
+    vec2( 0.0,      -offset.y), // bottom-center
+    vec2( offset.x, -offset.y)  // bottom-right    
 );
     
 const float near = 0.1;
@@ -25,27 +29,28 @@ const float far = 100.0;
 
 float sampleDepth[9];
 
-bool IsOutline();
+float GetOutline();
 float linearizeDepth(float depth);
 
 void main()
 {
-    for(int i = 0; i < 9; i++)
+    //FragColor = vec4(vec3(linearizeDepth(texture(depth, TexCoords.st).r)), 1.0);
+    //return;
+
+    for (int i = 0; i < 9; i++)
     {
         sampleDepth[i] = linearizeDepth(texture(depth, TexCoords.st + offsets[i]).r);
     }
 
-    if (IsOutline())
+    float outline = GetOutline();
+
+    if (outline > 0.1)
     {
-        FragColor = vec4(0, 0, 0, 1);
-    }
-    else
-    {
-        discard;
+        FragColor = vec4(color, outline);
     }
 }
 
-bool IsOutline()
+float GetOutline()
 {
     float minDepth = 1.0;
     float maxDepth = 0.0;
@@ -58,15 +63,16 @@ bool IsOutline()
         {
             minDepth = depth;
         }
-        else if (depth > maxDepth)
+        if (depth > maxDepth)
         {
             maxDepth = depth;
         }
     }
 
-    return (maxDepth - minDepth) > 0.1;
+    return maxDepth - minDepth;
 }
 
+// Linearize the depth within the range [0, 1].
 float linearizeDepth(float depth)
 {
     return (2.0 * near * far) / (far + near - (depth * 2.0 - 1.0) * (far - near)) / far;

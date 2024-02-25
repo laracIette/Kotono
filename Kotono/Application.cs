@@ -55,7 +55,6 @@ namespace Kotono
             ///]);
 
             _timer = new Timer();
-
             _timer.Timeout += OnTimerTimeout;
             _timer.IsLoop = true;
             _timer.Start(1.0f);

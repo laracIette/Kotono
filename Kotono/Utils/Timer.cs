@@ -2,7 +2,7 @@
 
 namespace Kotono.Utils
 {
-    internal class Timer() : Object()
+    internal class Timer : Object
     {
         private bool _isTicking = false;
 
