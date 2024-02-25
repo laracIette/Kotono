@@ -1,5 +1,4 @@
-﻿using Kotono.Settings;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Kotono.Graphics.Objects.Hitboxes
 {

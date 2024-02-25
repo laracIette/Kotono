@@ -1,5 +1,4 @@
-﻿using Kotono.Settings;
-using Kotono.Input;
+﻿using Kotono.Input;
 using Kotono.Utils;
 using System;
 using System.Collections.Generic;

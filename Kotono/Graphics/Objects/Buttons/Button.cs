@@ -1,5 +1,4 @@
-﻿using Kotono.Settings;
-using Kotono.Input;
+﻿using Kotono.Input;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
 using Kotono.Utils.Coordinates;

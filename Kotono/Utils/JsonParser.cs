@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Text.Json;
+using Kotono.Graphics.Objects;
 using IO = System.IO;
 
-namespace Kotono.Settings
+namespace Kotono.Utils
 {
     internal static class JsonParser
     {
@@ -11,9 +12,9 @@ namespace Kotono.Settings
         internal static T Parse<T>(string path) where T : DrawableSettings
         {
             string jsonString = IO.File.ReadAllText(path);
-            
+
             var settings = JsonSerializer.Deserialize<T>(jsonString) ?? Activator.CreateInstance<T>();
-            
+
             settings.Path = path;
 
             return settings;

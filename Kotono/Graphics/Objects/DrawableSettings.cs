@@ -1,7 +1,6 @@
 ﻿using Kotono.Utils;
-using Kotono.Graphics.Objects;
 
-namespace Kotono.Settings
+namespace Kotono.Graphics.Objects
 {
     /// <summary>
     /// Settings class for creating a <see cref="Drawable"/>.

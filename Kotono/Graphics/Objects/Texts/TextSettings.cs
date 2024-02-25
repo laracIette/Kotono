@@ -1,9 +1,9 @@
 ﻿using Kotono.Utils;
 
-namespace Kotono.Settings
+namespace Kotono.Graphics.Objects.Texts
 {
     /// <summary>
-    /// Settings class for creating a <see cref="Graphics.Objects.Texts.Text"/>.
+    /// Settings class for creating a <see cref="Texts.Text"/>.
     /// </summary> 
     internal class TextSettings : Object2DSettings
     {

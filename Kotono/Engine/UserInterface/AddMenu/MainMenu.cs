@@ -1,5 +1,4 @@
 ﻿using Kotono.Engine.UserInterface.AddMenu.MainButtons;
-using Kotono.Settings;
 using Kotono.Graphics.Objects;
 using Kotono.Input;
 using Kotono.Utils;

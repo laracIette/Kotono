@@ -1,6 +1,4 @@
-﻿using Kotono.Graphics.Objects.Buttons;
-
-namespace Kotono.Settings
+﻿namespace Kotono.Graphics.Objects.Buttons
 {
     /// <summary>
     /// Settings class for creating a <see cref="Button"/>.

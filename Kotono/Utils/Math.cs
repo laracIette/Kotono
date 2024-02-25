@@ -1,6 +1,4 @@
-﻿using Kotono.Utils.Coordinates;
-using System;
-using System.Diagnostics.Contracts;
+﻿using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 
 namespace Kotono.Utils

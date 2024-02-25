@@ -1,6 +1,4 @@
-﻿using Kotono.Settings;
-using Kotono.Utils;
-using System;
+﻿using Kotono.Utils;
 
 namespace Kotono.Graphics.Objects
 {

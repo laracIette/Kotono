@@ -1,5 +1,4 @@
 ﻿using Assimp;
-using Kotono.Settings;
 using Kotono.Graphics.Objects.Hitboxes;
 using Kotono.Graphics.Objects.Shapes;
 using Kotono.Graphics.Shaders;

@@ -1,7 +1,6 @@
-﻿using Kotono.Graphics.Objects;
-using Kotono.Utils.Coordinates;
+﻿using Kotono.Utils.Coordinates;
 
-namespace Kotono.Settings
+namespace Kotono.Graphics.Objects
 {
     /// <summary>
     /// Settings class for creating an <see cref="Object3D"/>.

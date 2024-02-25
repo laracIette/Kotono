@@ -1,7 +1,6 @@
 ﻿using Kotono.Utils;
-using Kotono.Graphics.Objects.Lights;
 
-namespace Kotono.Settings
+namespace Kotono.Graphics.Objects.Lights
 {
     /// <summary>
     /// Settings class for creating a <see cref="PointLight"/>.

@@ -1,5 +1,4 @@
-﻿using Kotono.Settings;
-using Kotono.Graphics.Objects.Texts;
+﻿using Kotono.Graphics.Objects.Texts;
 using Kotono.Utils;
 using System.Linq;
 using Kotono.Utils.Coordinates;

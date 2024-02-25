@@ -1,6 +1,4 @@
-﻿using Kotono.Settings;
-
-namespace Kotono.Graphics.Objects.Meshes
+﻿namespace Kotono.Graphics.Objects.Meshes
 {
     internal class FrontMesh(MeshSettings settings)
         : Mesh(settings), 

@@ -8,8 +8,6 @@ using Kotono.Utils;
 using System;
 using Keys = OpenTK.Windowing.GraphicsLibraryFramework.Keys;
 using Math = Kotono.Utils.Math;
-using Kotono.Graphics.Objects.Shapes;
-using Kotono.Graphics.Objects.Buttons;
 using Kotono.Utils.Coordinates;
 
 namespace Kotono

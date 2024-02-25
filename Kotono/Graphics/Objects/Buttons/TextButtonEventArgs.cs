@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Kotono.Graphics.Objects.Buttons
+﻿namespace Kotono.Graphics.Objects.Buttons
 {
     internal class TextButtonEventArgs : ButtonEventArgs
     {

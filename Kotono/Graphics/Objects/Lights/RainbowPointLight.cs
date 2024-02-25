@@ -1,5 +1,4 @@
-﻿using Kotono.Settings;
-using Kotono.Utils;
+﻿using Kotono.Utils;
 using Kotono.Utils.Coordinates;
 
 namespace Kotono.Graphics.Objects.Lights

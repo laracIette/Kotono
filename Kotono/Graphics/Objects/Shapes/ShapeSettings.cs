@@ -1,7 +1,6 @@
-﻿using Kotono.Graphics.Objects.Shapes;
-using Kotono.Utils.Coordinates;
+﻿using Kotono.Utils.Coordinates;
 
-namespace Kotono.Settings
+namespace Kotono.Graphics.Objects.Shapes
 {
     /// <summary>
     /// Settings class for creating a <see cref="Shape"/>.

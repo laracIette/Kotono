@@ -1,6 +1,6 @@
-﻿using Kotono.Graphics.Objects.Buttons;
+﻿using Kotono.Graphics.Objects.Texts;
 
-namespace Kotono.Settings
+namespace Kotono.Graphics.Objects.Buttons
 {
     /// <summary>
     /// Settings class for creating a <see cref="TextButton"/>.
@@ -11,7 +11,7 @@ namespace Kotono.Settings
         /// The text that the TextButton should display.
         /// </summary>
         /// <remarks> 
-        /// Default value : <see langword="new"/> <see cref="Settings.TextSettings"/>()
+        /// Default value : <see langword="new"/> <see cref="Texts.TextSettings"/>()
         /// </remarks>
         public TextSettings TextSettings { get; set; } = new();
     }

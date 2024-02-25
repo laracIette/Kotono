@@ -1,4 +1,6 @@
-﻿namespace Kotono.Settings
+﻿using Kotono.Graphics.Objects.Buttons;
+
+namespace Kotono.Settings
 {
     internal class TextButtonListSettings : TextButtonSettings
     {

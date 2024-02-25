@@ -1,5 +1,5 @@
 ﻿using Kotono.Graphics.Objects.Buttons;
-using Kotono.Settings;
+using Kotono.Graphics.Objects.Texts;
 using Kotono.Utils;
 using Kotono.Utils.Coordinates;
 using System;

@@ -1,8 +1,7 @@
 ﻿using Kotono.Graphics.Objects.Hitboxes;
-using Kotono.Graphics.Objects.Meshes;
 using System.Collections.Generic;
 
-namespace Kotono.Settings
+namespace Kotono.Graphics.Objects.Meshes
 {
     /// <summary>
     /// Settings class for creating a <see cref="Mesh"/>.
