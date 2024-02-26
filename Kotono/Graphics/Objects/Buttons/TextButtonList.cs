@@ -1,4 +1,6 @@
-﻿using Kotono.Settings;
+﻿using Kotono.Graphics.Objects.Texts;
+using Kotono.Settings;
+using Kotono.Utils;
 using Kotono.Utils.Coordinates;
 
 namespace Kotono.Graphics.Objects.Buttons
@@ -11,6 +13,8 @@ namespace Kotono.Graphics.Objects.Buttons
         {
             _buttons = new TextButton[settings.Texts.Length];
 
+            var dests = Rect.FromAnchor(settings.Texts.Length, settings.Dest, Anchor.Center);
+
             for (int i = 0; i < settings.Texts.Length; i++)
             {
                 _buttons[i] = new TextButton(
@@ -20,8 +24,11 @@ namespace Kotono.Graphics.Objects.Buttons
                         CornerSize = settings.CornerSize,
                         FallOff = settings.FallOff,
                         Layer = settings.Layer,
-                        Dest = new Rect(),
-                        
+                        Dest = dests[i],
+                        TextSettings = new TextSettings
+                        {
+                            Text = settings.Texts[i]
+                        }
                     }
                 );
 

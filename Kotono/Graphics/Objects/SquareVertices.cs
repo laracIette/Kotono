@@ -2,7 +2,7 @@
 
 namespace Kotono.Graphics.Objects
 {
-    public static class SquareVertices
+    internal static class SquareVertices
     {
         private static readonly float[] _vertices =
         [
@@ -34,9 +34,9 @@ namespace Kotono.Graphics.Objects
             1.0f
         ];
 
-        public static int VertexArrayObject { get; }
+        internal static int VertexArrayObject { get; }
 
-        public static int VertexBufferObject { get; }
+        internal static int VertexBufferObject { get; }
 
         static SquareVertices()
         {

@@ -127,5 +127,12 @@ namespace Kotono.Utils
         {
             return Loop(value, 0.0, max);
         }
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static double Floor(double value)
+        {
+            return (int)value;
+        }
     }
 }

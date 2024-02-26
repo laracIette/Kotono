@@ -206,55 +206,48 @@ namespace Kotono.Graphics.Objects.Texts
 
         private Rect GetLetterDest(int index, Rect dest)
         {
-            return _anchor switch
+            dest.Position = _anchor switch
             {
-                Anchor.Center => new Rect(
+                Anchor.Center => new Point(
                     dest.X - dest.W / 2.0f * (_text.Length - 1) * _spacing + dest.W * index * _spacing,
-                    dest.Y,
-                    dest.Size
+                    dest.Y
                 ),
-                Anchor.Top => new Rect(
+                Anchor.Top => new Point(
                     dest.X - dest.W / 2.0f * (_text.Length - 1) * _spacing + dest.W * index * _spacing,
-                    dest.Y + dest.H / 2.0f,
-                    dest.Size
+                    dest.Y + dest.H / 2.0f
                 ),
-                Anchor.Bottom => new Rect(
+                Anchor.Bottom => new Point(
                     dest.X - dest.W / 2.0f * (_text.Length - 1) * _spacing + dest.W * index * _spacing,
-                    dest.Y - dest.H / 2.0f,
-                    dest.Size
+                    dest.Y - dest.H / 2.0f
                 ),
-                Anchor.Left => new Rect(
+                Anchor.Left => new Point(
                     dest.X + (dest.W / 2.0f + dest.W * index) * _spacing,
-                    dest.Y,
-                    dest.Size
+                    dest.Y
                 ),
-                Anchor.Right => new Rect(
+                Anchor.Right => new Point(
                     dest.X - dest.W / 2.0f * _spacing - dest.W * (_text.Length - 1 - index) * _spacing,
-                    dest.Y,
-                    dest.Size
+                    dest.Y
                 ),
-                Anchor.TopLeft => new Rect(
+                Anchor.TopLeft => new Point(
                     dest.X + (dest.W / 2.0f + dest.W * index) * _spacing,
-                    dest.Y + dest.H / 2.0f,
-                    dest.Size
+                    dest.Y + dest.H / 2.0f
                 ),
-                Anchor.TopRight => new Rect(
+                Anchor.TopRight => new Point(
                     dest.X - dest.W / 2.0f * _spacing - dest.W * (_text.Length - 1 - index) * _spacing,
-                    dest.Y + dest.H / 2.0f,
-                    dest.Size
+                    dest.Y + dest.H / 2.0f
                 ),
-                Anchor.BottomLeft => new Rect(
+                Anchor.BottomLeft => new Point(
                     dest.X + (dest.W / 2.0f + dest.W * index) * _spacing,
-                    dest.Y - dest.H / 2.0f,
-                    dest.Size
+                    dest.Y - dest.H / 2.0f
                 ),
-                Anchor.BottomRight => new Rect(
+                Anchor.BottomRight => new Point(
                     dest.X - dest.W / 2.0f * _spacing - dest.W * (_text.Length - 1 - index) * _spacing,
-                    dest.Y - dest.H / 2.0f,
-                    dest.Size
+                    dest.Y - dest.H / 2.0f
                 ),
                 _ => throw new Exception($"error: Text.Init()'s switch on Anchor doesn't handle \"{_anchor}\""),
             };
+
+            return dest;
         }
 
         internal virtual void SetText(string text)

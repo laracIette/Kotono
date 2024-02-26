@@ -1,4 +1,4 @@
-﻿namespace Kotono.Graphics.Objects
+﻿namespace Kotono.Utils
 {
     public enum TransformSpace
     {

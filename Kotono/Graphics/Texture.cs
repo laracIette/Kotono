@@ -1,6 +1,7 @@
 ﻿using OpenTK.Graphics.OpenGL4;
 using StbImageSharp;
 using System.Collections.Generic;
+using System.Linq;
 using IO = System.IO;
 
 namespace Kotono.Graphics
@@ -17,12 +18,12 @@ namespace Kotono.Graphics
 
         internal Texture(string path, TextureUnit unit = TextureUnit.Texture0)
         {
-            if (!_textures.ContainsKey(path))
+            if (!_textures.TryGetValue(path, out int value))
             {
-                int handle = GL.GenTexture();
+                value = GL.GenTexture();
 
                 GL.ActiveTexture(TextureUnit.Texture0);
-                GL.BindTexture(TextureTarget.Texture2D, handle);
+                GL.BindTexture(TextureTarget.Texture2D, value);
 
                 StbImage.stbi_set_flip_vertically_on_load(1);
 
@@ -40,12 +41,11 @@ namespace Kotono.Graphics
                 GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat);
 
                 GL.GenerateMipmap(GenerateMipmapTarget.Texture2D);
-
-                _textures[path] = handle;
+                _textures[path] = value;
             }
 
             Path = path;
-            Handle = _textures[path];
+            Handle = value;
             Unit = unit;
         }
 
@@ -59,10 +59,7 @@ namespace Kotono.Graphics
         {
             GL.BindTexture(TextureTarget.Texture2D, 0);
 
-            foreach (var handle in _textures.Values)
-            {
-                GL.DeleteTexture(handle);
-            }
+            GL.DeleteTextures(_textures.Values.Count, _textures.Values.ToArray());
         }
     }
 }

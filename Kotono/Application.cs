@@ -9,6 +9,8 @@ using System;
 using Keys = OpenTK.Windowing.GraphicsLibraryFramework.Keys;
 using Math = Kotono.Utils.Math;
 using Kotono.Utils.Coordinates;
+using Kotono.Graphics.Objects.Buttons;
+using Kotono.Graphics.Objects.Texts;
 
 namespace Kotono
 {
@@ -31,26 +33,20 @@ namespace Kotono
             
             CreateObjects();
 
-            ///new TextButtonList([
-            ///    new TextButton(new TextButtonSettings 
-            ///    { 
-            ///        Dest = new Rect(150.0f, 50.0f, 100.0f, 100.0f),
-            ///        Color = Color.DarkSlateGray,
-            ///        TextSettings = new TextSettings
-            ///        {
-            ///            Text = "hey"
-            ///        }
-            ///    }),
-            ///    new TextButton(new TextButtonSettings 
-            ///    { 
-            ///        Dest = new Rect(150.0f, 50.0f, 100.0f, 100.0f),
-            ///        Color = Color.Red,
-            ///        TextSettings = new TextSettings
-            ///        {
-            ///            Text = "fgsg"
-            ///        }
-            ///    })
-            ///]);
+            _ = new TextButtonList(
+                new TextButtonListSettings
+                {
+                    Color = Color.DarkSlateGray,
+                    Texts = 
+                    [
+                        "Hey",
+                        "Yo",
+                        "BOoOOooOo"
+                    ],
+                    Dest = new Rect(150.0f, 50.0f, 100.0f, 100.0f),
+                    CornerSize = 15.0f
+                }
+            );
 
             _timer = new Timer();
             _timer.Timeout += OnTimerTimeout;

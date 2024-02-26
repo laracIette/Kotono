@@ -1,26 +1,23 @@
 ﻿using Kotono.Utils;
 using System;
 using System.Linq;
+using Math = Kotono.Utils.Math;
 
 namespace Kotono.Graphics.Print
 {
     internal static class Printer
     {
-        private static readonly PrinterText[] _texts = Enumerable.Range(0, 50)
-            .Select(_ => new PrinterText())
-            .ToArray();
+        private static readonly PrinterText[] _texts;
 
         private static int _currentIndex = 0;
 
-        internal static void Update()
+        static Printer()
         {
-        }
+            _texts = new PrinterText[50];
 
-        internal static void Lower()
-        {
-            foreach (var text in _texts)
+            for (int i = 0; i < _texts.Length; i++)
             {
-                text.Lower();
+                _texts[i] = new PrinterText();
             }
         }
 
@@ -35,8 +32,16 @@ namespace Kotono.Graphics.Print
                     _texts[_currentIndex].SetText(token);
                     _texts[_currentIndex].Color = color;
 
-                    _currentIndex = (_currentIndex + 1) % _texts.Length;
+                    _currentIndex = (int)Math.Loop(_currentIndex + 1, _texts.Length);
                 }
+            }
+        }
+
+        private static void Lower()
+        {
+            foreach (var text in _texts)
+            {
+                text.Lower();
             }
         }
     }

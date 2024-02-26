@@ -14,8 +14,6 @@ namespace Kotono.Graphics.Objects
     {
         protected readonly List<Image> _frames = [];
 
-        internal int Count => _frames.Count;
-
         public override Rect Dest
         {
             get => _frames.FirstOrDefault()?.Dest ?? throw new Exception("error: cannot access Dest, _frames is empty.");
@@ -54,7 +52,7 @@ namespace Kotono.Graphics.Objects
 
         private readonly int _frameRate;
 
-        private double DeltaS => 1 / (double)_frameRate;
+        private float Delta => 1.0f / _frameRate;
 
         private int _currentFrame = 0;
 
@@ -64,7 +62,7 @@ namespace Kotono.Graphics.Objects
             set
             {
                 _frames[_currentFrame].IsDraw = false;
-                _currentFrame = (int)Math.Loop(value, Count);
+                _currentFrame = (int)Math.Loop(value, _frames.Count);
                 _frames[_currentFrame].IsDraw = true;
             }
         }
@@ -74,6 +72,8 @@ namespace Kotono.Graphics.Objects
         private readonly float _duration;
 
         private float _lastFrameTime;
+
+        private float TimeSinceLastFrame => Time.Now - _lastFrameTime;
 
         private float _pausedTime = 0;
 
@@ -122,7 +122,7 @@ namespace Kotono.Graphics.Objects
             }
 
             _frameRate = settings.FrameRate;
-            _startTime = Time.Now + settings.StartTime;
+            _startTime = settings.StartTime;
             _duration = settings.Duration;
         }
 
@@ -140,11 +140,11 @@ namespace Kotono.Graphics.Objects
             {
                 if (IsPlaying)
                 {
-                    if ((Time.Now - _pausedTime - _lastFrameTime) > DeltaS)
+                    if ((TimeSinceLastFrame - _pausedTime) >= Delta)
                     {
                         _lastFrameTime = Time.Now - _pausedTime;
 
-                        Next();
+                        NextFrame();
                     }
                 }
                 else
@@ -179,12 +179,12 @@ namespace Kotono.Graphics.Objects
             }
         }
 
-        internal void Next()
+        internal void NextFrame()
         {
             CurrentFrame++;
         }
 
-        internal void Previous()
+        internal void PreviousFrame()
         {
             CurrentFrame--;
         }

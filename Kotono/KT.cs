@@ -125,7 +125,6 @@ namespace Kotono
             Mouse.Update();
             Keyboard.Update();
             Gizmo.Update();
-            Printer.Update();
             ObjectManager.Update();
             ComponentManager.Update();
             _mode.Update();

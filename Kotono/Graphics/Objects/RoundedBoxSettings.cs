@@ -9,9 +9,9 @@
         /// The fall off of the RoundedBox.
         /// </summary>
         /// <remarks> 
-        /// Default value : 0.0f 
+        /// Default value : 1.0f 
         /// </remarks>
-        public float FallOff { get; set; } = 0.0f;
+        public float FallOff { get; set; } = 1.0f;
 
         /// <summary>
         /// The corner size of the RoundedBox.

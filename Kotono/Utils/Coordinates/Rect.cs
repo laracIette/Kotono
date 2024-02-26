@@ -2,8 +2,11 @@
 using Kotono.Graphics.Objects;
 using OpenTK.Mathematics;
 using System;
+using System.Collections;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
+using static OpenTK.Graphics.OpenGL.GL;
 
 namespace Kotono.Utils.Coordinates
 {
@@ -247,6 +250,35 @@ namespace Kotono.Utils.Coordinates
         public static Rect FromAnchor(Rect r, Anchor a, float offset = 0.0f)
         {
             return FromAnchor(r, a, new Point(offset));
+        }
+
+        public static Rect[] FromAnchor(int n, Rect r, Anchor a, Point offset)
+        {            
+            var result = Enumerable.Repeat(FromAnchor(r, a, offset), n).ToArray();
+            
+            for (int i = 0; i < n; i++)
+            {
+                result[i].Y = a switch
+                {
+                    Anchor.Center => r.Y - r.H / 2.0f * (n - 1) + r.H * i,
+                    Anchor.Left => throw new NotImplementedException(),
+                    Anchor.Right => throw new NotImplementedException(),
+                    Anchor.Top => throw new NotImplementedException(),
+                    Anchor.Bottom => throw new NotImplementedException(),
+                    Anchor.TopLeft => throw new NotImplementedException(),
+                    Anchor.TopRight => throw new NotImplementedException(),
+                    Anchor.BottomLeft => throw new NotImplementedException(),
+                    Anchor.BottomRight => throw new NotImplementedException(),
+                    _ => throw new Exception($"error: Rect.FromAnchor() doesn't handle \"{a}\"")
+                };
+            }
+
+            return result;
+        }
+
+        public static Rect[] FromAnchor(int n, Rect r, Anchor a, float offset = 0.0f)
+        {
+            return FromAnchor(n, r, a, new Point(offset));
         }
 
         /// <summary> 
