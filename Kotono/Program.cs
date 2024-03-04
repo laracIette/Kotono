@@ -11,8 +11,7 @@ namespace Kotono
                 {
                     Width = 1600,
                     Height = 800,
-                    MaxFrameRate = 165,
-                    WindowTitle = "Kotono - Application",
+                    MaxFrameRate = 165.0f,
                     CursorState = CursorState.Confined
                 }
             ).Run();

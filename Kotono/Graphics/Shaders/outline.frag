@@ -8,7 +8,7 @@ uniform sampler2D depth;
 
 const vec3 color = vec3(0.0, 0.0, 0.0);
 
-const vec2 windowSize = vec2(1600.0, 900.0);
+const vec2 windowSize = vec2(1600.0, 800.0);
 
 const vec2 offset = 1.0 / windowSize;
 

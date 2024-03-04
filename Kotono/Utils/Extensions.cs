@@ -155,26 +155,38 @@ namespace Kotono.Utils
         }
 
         /// <summary>
-        /// 
+        /// Get a string that represents the current IEnumerable's content.
         /// </summary>
         /// <typeparam name="TSource"></typeparam>
-        /// <param name="enumerable"></param>
+        /// <param name="source"></param>
         /// <returns></returns>
-        internal static string GetContentString<TSource>(this IEnumerable<TSource> enumerable)
+        internal static string ToStringContent<TSource>(this IEnumerable<TSource> source)
         {
-            if (!enumerable.Any())
+            if (!source.Any())
             {
                 return "[]";
             }
 
             string result = "[";
 
-            foreach (var item in enumerable)
+            foreach (var item in source)
             {
                 result += item + ", ";
             }
 
             return result[..^2] + "]";
+        }
+
+        internal static TSource? FirstOrNull<TSource>(this IEnumerable<TSource> source) where TSource : class
+        {
+            if (source.Any())
+            {
+                return source.First();
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

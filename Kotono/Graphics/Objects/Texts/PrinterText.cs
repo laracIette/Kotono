@@ -1,9 +1,8 @@
-﻿using Kotono.Graphics.Objects.Texts;
-using Kotono.Utils;
+﻿using Kotono.Utils;
 using System;
 using Kotono.Utils.Coordinates;
 
-namespace Kotono.Graphics.Print
+namespace Kotono.Graphics.Objects.Texts
 {
     internal class PrinterText : Text
     {

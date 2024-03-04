@@ -1,6 +1,6 @@
 ﻿namespace Kotono.Engine
 {
-    public enum UserMode
+    public enum EngineState
     {
         Navigate,
         Edit,

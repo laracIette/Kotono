@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using PrimitiveType = OpenTK.Graphics.OpenGL4.PrimitiveType;
 using Kotono.Utils.Coordinates;
+using Kotono.Utils.Exceptions;
 
 namespace Kotono.Graphics.Objects.Meshes
 {
@@ -99,7 +100,7 @@ namespace Kotono.Graphics.Objects.Meshes
                 "pointLight" => ShaderManager.PointLight,
                 "gizmo" => ShaderManager.Gizmo,
                 "flatTexture" => ShaderManager.FlatTexture,
-                _ => throw new Exception($"error: Shader \"{settings.Shader}\" isn't valid.")
+                _ => throw new SwitchException(typeof(string), settings.Shader)
             };
 
             foreach (var hitbox in _hitboxes)

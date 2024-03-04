@@ -10,7 +10,7 @@ using Keys = OpenTK.Windowing.GraphicsLibraryFramework.Keys;
 using Math = Kotono.Utils.Math;
 using Kotono.Utils.Coordinates;
 using Kotono.Graphics.Objects.Buttons;
-using Kotono.Graphics.Objects.Texts;
+using Kotono.Graphics;
 
 namespace Kotono
 {
@@ -43,7 +43,7 @@ namespace Kotono
                         "Yo",
                         "BOoOOooOo"
                     ],
-                    Dest = new Rect(150.0f, 50.0f, 100.0f, 100.0f),
+                    Dest = new Rect(150.0f, 150.0f, 200.0f, 50.0f),
                     CornerSize = 15.0f
                 }
             );
@@ -56,7 +56,7 @@ namespace Kotono
 
         private void OnTimerTimeout(object? sender, EventArgs e)
         {
-            KT.Print(Time.Now, true);
+            Printer.Print(Time.Now, true);
         }
 
         protected override void Update()
@@ -76,7 +76,7 @@ namespace Kotono
 
             if (Keyboard.IsKeyDown(Keys.I))
             {
-                KT.Print(Time.Now, true);
+                Printer.Print(Time.Now, true);
             }
         }
 

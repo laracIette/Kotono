@@ -2,7 +2,6 @@
 using Kotono.Utils;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Kotono.Utils.Coordinates;
 
 namespace Kotono.Graphics.Objects.Texts
@@ -128,7 +127,7 @@ namespace Kotono.Graphics.Objects.Texts
 
         public override bool IsDraw
         {
-            get => _letters.FirstOrDefault()?.IsDraw ?? false; // Don't draw if empty
+            get => _letters.FirstOrNull()?.IsDraw ?? false; // Don't draw if empty
             set
             {
                 foreach (var frame in _letters)

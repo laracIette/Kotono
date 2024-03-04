@@ -13,11 +13,6 @@ namespace Kotono.Input
             set => _keyboardState = value;
         }
 
-        internal static void Update()
-        {
-
-        }
-
         internal static bool IsKeyDown(Keys key) => KeyboardState.IsKeyDown(key);
 
         internal static bool IsKeyPressed(Keys key) => KeyboardState.IsKeyPressed(key);

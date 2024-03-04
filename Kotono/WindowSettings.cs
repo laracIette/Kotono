@@ -2,7 +2,10 @@
 
 namespace Kotono
 {
-    public class WindowSettings
+    /// <summary>
+    /// Settings class for creating a <see cref="Window"/>.
+    /// </summary>
+    internal class WindowSettings : ObjectSettings
     {
         /// <summary>
         /// This is the Title of the program's Window.
@@ -14,7 +17,7 @@ namespace Kotono
 
         /// <summary>
         /// This is the program's Window Width,
-        /// this can be changed at runtime using KT.Size.
+        /// this can be changed at runtime using Window.Size.
         /// </summary>
         /// <remarks> 
         /// Default value : 1280 
@@ -23,7 +26,7 @@ namespace Kotono
 
         /// <summary>
         /// This is the program's Window Height,
-        /// this can be changed at runtime using KT.Size.
+        /// this can be changed at runtime using Window.Size.
         /// </summary>
         /// <remarks> 
         /// Default value : 720 
@@ -35,9 +38,9 @@ namespace Kotono
         /// this can be changed at runtime using PerformanceWindow.MaxFrameRate.
         /// </summary>
         /// <remarks> 
-        /// Default value : 60 
+        /// Default value : 60.0f 
         /// </remarks>
-        public int MaxFrameRate { get; set; } = 60;
+        public float MaxFrameRate { get; set; } = 60.0f;
 
         /// <summary>
         /// This is the State of the Cursor,

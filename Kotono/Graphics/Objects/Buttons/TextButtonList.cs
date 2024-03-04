@@ -2,6 +2,7 @@
 using Kotono.Settings;
 using Kotono.Utils;
 using Kotono.Utils.Coordinates;
+using System.Collections.Generic;
 
 namespace Kotono.Graphics.Objects.Buttons
 {
@@ -38,7 +39,7 @@ namespace Kotono.Graphics.Objects.Buttons
 
         private void OnPressed(object? sender, TextButtonEventArgs e)
         {
-            KT.Print(e.Text, true);
+            Printer.Print(e.Text, true);
         }
     }
 }

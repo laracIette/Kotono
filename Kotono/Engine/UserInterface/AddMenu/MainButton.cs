@@ -2,7 +2,7 @@
 using Kotono.Graphics.Objects.Texts;
 using Kotono.Utils;
 using Kotono.Utils.Coordinates;
-using System;
+using Kotono.Utils.Exceptions;
 
 namespace Kotono.Engine.UserInterface.AddMenu
 {
@@ -39,13 +39,14 @@ namespace Kotono.Engine.UserInterface.AddMenu
         public override void OnPressed()
         {
             _subMenu.IsDraw = true;
+
             _subMenu.Position = _anchor switch
             {
                 Anchor.TopLeft => new Point(Dest.X + Dest.W / 2.0f, Dest.Y - Dest.H / 2.0f),
                 Anchor.TopRight => new Point(Dest.X - Dest.W / 2.0f, Dest.Y - Dest.H / 2.0f),
                 Anchor.BottomLeft => new Point(Dest.X + Dest.W / 2.0f, Dest.Y + Dest.H / 2.0f),
                 Anchor.BottomRight => new Point(Dest.X - Dest.W / 2.0f, Dest.Y + Dest.H / 2.0f),
-                _ => throw new Exception($"error: Anchor \"{_anchor}\" isn't supported")
+                _ => throw new SwitchException(typeof(Anchor), _anchor)
             };
 
             base.OnPressed();

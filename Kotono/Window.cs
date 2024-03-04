@@ -1,4 +1,5 @@
 ﻿using Kotono.Audio;
+using Kotono.Engine;
 using Kotono.Engine.UserInterface.AddMenu;
 using Kotono.Graphics;
 using Kotono.Graphics.Objects;
@@ -19,6 +20,44 @@ namespace Kotono
         private float _stalledTime = 0;
 
         private bool ShouldRenderFrame => IsFocused && (PerformanceWindow.FrameRate < PerformanceWindow.MaxFrameRate);
+
+        private static Rect _dest = new(0.0f, 0.0f, 1280.0f, 720.0f);
+
+        internal static Rect Dest
+        {
+            get => _dest;
+            set
+            {
+                Position = value.Position;
+                Size = value.Size;
+            }
+        }
+
+        internal static Point Position
+        {
+            get => _dest.Position;
+            set => _dest.Position = value;
+        }
+
+        internal new static Point Size
+        {
+            get => _dest.Size;
+            set
+            {
+                _dest.Size = value;
+
+                ObjectManager.ActiveCamera.AspectRatio = Size.Ratio;
+
+                ComponentManager.WindowViewport.Size = Size;
+
+                PerformanceWindow.UpdatePosition();
+
+                if (Size > Point.Zero)
+                {
+                    ObjectManager.SetSize(Size);
+                }
+            }
+        }
 
         internal Window(WindowSettings windowSettings)
             : base(
@@ -52,8 +91,8 @@ namespace Kotono
 
             _ = new MainMenu();
 
-            KT.Position = (Point)Location;
-            KT.Size = (Point)ClientSize;
+            Position = (Point)Location;
+            Size = (Point)ClientSize;
         }
 
         protected sealed override void OnLoad()
@@ -91,14 +130,19 @@ namespace Kotono
         {
             base.OnUpdateFrame(e);
 
-            PerformanceWindow.AddUpdateTime((float)e.Time);
-
-            KT.Update();
-
             if (Keyboard.IsKeyDown(Keys.Escape))
             {
                 base.Close();
             }
+
+            PerformanceWindow.AddUpdateTime((float)e.Time);
+
+            Time.Update();
+            Mouse.Update();
+            Gizmo.Update();
+            ObjectManager.Update();
+            ComponentManager.Update();
+            StateManager.Update();
 
             if (Keyboard.IsKeyPressed(Keys.F11))
             {
@@ -109,8 +153,8 @@ namespace Kotono
 
             if (Keyboard.IsKeyPressed(Keys.S) && Keyboard.IsKeyDown(Keys.LeftControl))
             {
-                KT.Save();
-                KT.Print("saved", Color.FromHex("#88FF10"));
+                Save();
+                Printer.Print("saved", Color.FromHex("#88FF10"));
             }
 
             Update();
@@ -118,24 +162,31 @@ namespace Kotono
 
         protected abstract void Update();
 
+        private static void Save()
+        {
+            ObjectManager.Save();
+        }
+
         protected sealed override void OnResize(ResizeEventArgs e)
         {
             base.OnResize(e);
 
-            KT.Position = (Point)Location;
-            KT.Size = (Point)ClientSize;
+            Position = (Point)Location;
+            Size = (Point)ClientSize;
         }
 
         protected sealed override void OnMove(WindowPositionEventArgs e)
         {
             base.OnMove(e);
 
-            KT.Position = (Point)Location;
+            Position = (Point)Location;
         }
 
         protected sealed override void OnUnload()
         {
-            KT.Exit();
+            SoundManager.Dispose();
+            Texture.DisposeAll();
+            ObjectManager.Dispose();
 
             base.OnUnload();
         }

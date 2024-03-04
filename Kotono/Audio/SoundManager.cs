@@ -74,18 +74,18 @@ namespace Kotono.Audio
             // RIFF header
             var signature = new string(reader.ReadChars(4));
             if (signature != "RIFF")
-                throw new NotSupportedException("Specified stream is not a wave file.");
+                throw new NotSupportedException("error: Specified stream is not a wave file.");
 
             int riff_chunck_size = reader.ReadInt32();
 
             var format = new string(reader.ReadChars(4));
             if (format != "WAVE")
-                throw new NotSupportedException("Specified stream is not a wave file.");
+                throw new NotSupportedException("error: Specified stream is not a wave file.");
 
             // WAVE header
             var format_signature = new string(reader.ReadChars(4));
             if (format_signature != "fmt ")
-                throw new NotSupportedException("Specified wave file is not supported.");
+                throw new NotSupportedException("error: Specified wave file is not supported.");
 
             int format_chunk_size = reader.ReadInt32();
             int audio_format = reader.ReadInt16();
@@ -97,7 +97,7 @@ namespace Kotono.Audio
 
             var data_signature = new string(reader.ReadChars(4));
             if (data_signature != "data")
-                throw new NotSupportedException("Specified wave file is not supported.");
+                throw new NotSupportedException("error: Specified wave file is not supported.");
 
             int data_chunk_size = reader.ReadInt32();
 
@@ -121,7 +121,7 @@ namespace Kotono.Audio
             {
                 1 => (bits == 8) ? ALFormat.Mono8 : ALFormat.Mono16,
                 2 => (bits == 8) ? ALFormat.Stereo8 : ALFormat.Stereo16,
-                _ => throw new NotSupportedException("The specified sound format is not supported."),
+                _ => throw new NotSupportedException("error: The specified sound format is not supported."),
             };
         }
 

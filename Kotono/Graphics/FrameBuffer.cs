@@ -40,7 +40,7 @@ namespace Kotono.Graphics
             // Create the framebuffer
             _framebuffer = GL.GenFramebuffer();
 
-            Size = KT.Size;
+            Size = Window.Size;
         }
 
         private void ResizeFramebuffer()

@@ -1,8 +1,9 @@
 ﻿using Kotono.Graphics.Objects.Lights;
 using Kotono.Input;
+using Kotono.Utils;
 using Kotono.Utils.Coordinates;
+using Kotono.Utils.Exceptions;
 using OpenTK.Windowing.GraphicsLibraryFramework;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -18,7 +19,7 @@ namespace Kotono.Graphics.Objects
 
         internal static SpotLight[] SpotLights => _objects.OfType<SpotLight>().ToArray();
 
-        internal static Camera ActiveCamera => _objects.OfType<Camera>().FirstOrDefault() ?? throw new Exception("error: there is no Object of type Camera in _objects.");
+        internal static Camera ActiveCamera => _objects.OfType<Camera>().FirstOrNull() ?? throw new KotonoException("there is no Object of type Camera in _objects");
 
         internal static void SetSize(Point value)
         {
@@ -32,7 +33,7 @@ namespace Kotono.Graphics.Objects
                 case PointLight:
                     if (PointLights.Length >= PointLight.MAX_COUNT)
                     {
-                        KT.Log($"The number of PointLight is already at its max value: {PointLight.MAX_COUNT}.");
+                        Logger.Log($"The number of PointLight is already at its max value: {PointLight.MAX_COUNT}.");
                         return;
                     }
                     break;
@@ -40,7 +41,7 @@ namespace Kotono.Graphics.Objects
                 case SpotLight:
                     if (SpotLights.Length >= SpotLight.MAX_COUNT)
                     {
-                        KT.Log($"The number of SpotLight is already at its max value: {SpotLight.MAX_COUNT}.");
+                        Logger.Log($"The number of SpotLight is already at its max value: {SpotLight.MAX_COUNT}.");
                         return;
                     }
                     break;
@@ -59,7 +60,7 @@ namespace Kotono.Graphics.Objects
         {
             if (!_objects.Remove(obj))
             {
-                KT.Log($"error: couldn't remove \"{obj}\" from _objects.");
+                Logger.Log($"error: couldn't remove \"{obj}\" from _objects.");
             }
         }
 

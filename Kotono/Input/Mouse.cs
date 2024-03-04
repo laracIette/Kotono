@@ -51,9 +51,9 @@ namespace Kotono.Input
 
         internal static Point Delta { get; private set; } = Point.Zero;
 
-        internal static Point Position => PositionFromOrigin - KT.Position;
+        internal static Point Position => PositionFromOrigin - Window.Position;
 
-        internal static Point PreviousPosition => PreviousPositionFromOrigin - KT.Position;
+        internal static Point PreviousPosition => PreviousPositionFromOrigin - Window.Position;
 
         internal static Vector Ray { get; private set; } = Vector.Zero;
 
@@ -71,7 +71,7 @@ namespace Kotono.Input
 
         internal static void Update()
         {
-            if (KT.UserMode == UserMode.Play)
+            if (StateManager.EngineState == EngineState.Play)
             {
                 CursorState = CursorState.Centered;
             }
@@ -84,19 +84,19 @@ namespace Kotono.Input
                 var delta = Point.Zero;
                 if (Position.X < 0.0f)
                 {
-                    delta.X += KT.Dest.W;
+                    delta.X += Window.Dest.W;
                 }
-                else if (Position.X > KT.Dest.W)
+                else if (Position.X > Window.Dest.W)
                 {
-                    delta.X -= KT.Dest.W;
+                    delta.X -= Window.Dest.W;
                 }
                 if (Position.Y < 0.0f)
                 {
-                    delta.Y += KT.Dest.H;
+                    delta.Y += Window.Dest.H;
                 }
-                else if (Position.Y > KT.Dest.H)
+                else if (Position.Y > Window.Dest.H)
                 {
-                    delta.Y -= KT.Dest.H;
+                    delta.Y -= Window.Dest.H;
                 }
 
                 if (delta != Point.Zero)
@@ -116,7 +116,7 @@ namespace Kotono.Input
 
             if (CursorState == CursorState.Centered)
             {
-                var center = KT.Dest.TopRight;
+                var center = Window.Dest.TopRight;
                 if (PositionFromOrigin != center)
                 {
                     SetCursorPos(center);

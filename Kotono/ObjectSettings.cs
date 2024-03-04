@@ -1,4 +1,4 @@
-﻿namespace Kotono.Graphics.Objects
+﻿namespace Kotono
 {
     /// <summary>
     /// Settings class for creating an <see cref="Object"/>.

@@ -12,7 +12,7 @@ namespace Kotono.Graphics.Statistics
 
         private static readonly RateStat _update;
 
-        internal static int MaxFrameRate { get; set; } = 60;
+        internal static float MaxFrameRate { get; set; } = 60.0f;
 
         internal static float FrameTime => _frame.Time;
 
@@ -33,7 +33,7 @@ namespace Kotono.Graphics.Statistics
             }
         }
 
-        public static Point Position => KT.Size - new Point(200.0f, 60.0f);
+        public static Point Position => Window.Size - new Point(200.0f, 60.0f);
 
         static PerformanceWindow()
         {

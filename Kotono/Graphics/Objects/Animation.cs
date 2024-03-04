@@ -1,10 +1,9 @@
 ﻿using Kotono.Settings;
 using Kotono.Utils;
 using Kotono.Utils.Coordinates;
-using System;
+using Kotono.Utils.Exceptions;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using Math = Kotono.Utils.Math;
 using Path = Kotono.Utils.Path;
 
@@ -16,7 +15,7 @@ namespace Kotono.Graphics.Objects
 
         public override Rect Dest
         {
-            get => _frames.FirstOrDefault()?.Dest ?? throw new Exception("error: cannot access Dest, _frames is empty.");
+            get => _frames.FirstOrNull()?.Dest ?? throw new KotonoException("cannot access Dest, _frames is empty");
             set
             {
                 foreach (var frame in _frames)
@@ -28,7 +27,7 @@ namespace Kotono.Graphics.Objects
 
         public override int Layer
         {
-            get => _frames.FirstOrDefault()?.Layer ?? throw new Exception("error: cannot access Layer, _frames is empty.");
+            get => _frames.FirstOrNull()?.Layer ?? throw new KotonoException("cannot access Layer, _frames is empty");
             set
             {
                 foreach (var frame in _frames)
@@ -40,7 +39,7 @@ namespace Kotono.Graphics.Objects
 
         public override bool IsDraw
         {
-            get => _frames.FirstOrDefault()?.IsDraw ?? throw new Exception("error: cannot access IsDraw, _frames is empty.");
+            get => _frames.FirstOrNull()?.IsDraw ?? throw new KotonoException("cannot access IsDraw, _frames is empty");
             set
             {
                 foreach (var frame in _frames)

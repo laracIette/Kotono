@@ -85,7 +85,7 @@ namespace Kotono.Graphics.Objects
         protected static Rect GetSides(Rect r)
         {
             r.X = ComponentManager.ActiveViewport.Dest.X + r.X;
-            r.Y = KT.Dest.H - ComponentManager.ActiveViewport.Dest.Y - r.Y;
+            r.Y = Window.Dest.H - ComponentManager.ActiveViewport.Dest.Y - r.Y;
 
             return new Rect(
                 r.X - r.W / 2, // Left

@@ -1,9 +1,8 @@
 ﻿using Kotono.Graphics.Objects.Texts;
 using Kotono.Utils;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using Kotono.Utils.Coordinates;
+using Kotono.Utils.Exceptions;
 
 namespace Kotono.Engine.UserInterface.AddMenu
 {
@@ -26,7 +25,7 @@ namespace Kotono.Engine.UserInterface.AddMenu
 
         internal bool IsDraw
         {
-            get => _options.FirstOrDefault()?.IsDraw ?? throw new Exception("error: cannot access IsDraw, _frames is empty.");
+            get => _options.FirstOrNull()?.IsDraw ?? throw new KotonoException("cannot access IsDraw, _frames is empty");
             set
             {
                 foreach (var option in _options)
@@ -42,7 +41,7 @@ namespace Kotono.Engine.UserInterface.AddMenu
 
             for (int i = 0; i < options.Length; i++)
             {
-                var dest = GetTextDest(i, KT.Size / 2.0f);
+                var dest = GetTextDest(i, Window.Size / 2.0f);
                 _options.Add(
                     new Text(
                         new TextSettings
@@ -66,7 +65,7 @@ namespace Kotono.Engine.UserInterface.AddMenu
                 Anchor.TopRight => new Rect(pos.X, pos.Y + index * 24.0f, 20.0f, 24.0f),
                 Anchor.BottomLeft => new Rect(pos.X, pos.Y - index * 24.0f, 20.0f, 24.0f),
                 Anchor.BottomRight => new Rect(pos.X, pos.Y - index * 24.0f, 20.0f, 24.0f),
-                _ => throw new Exception($"error: Anchor \"{_anchor}\" isn't supported")
+                _ => throw new SwitchException(typeof(Anchor), _anchor)
             };
         }
     }
