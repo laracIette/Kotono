@@ -36,7 +36,7 @@ namespace Kotono.Audio
 
         }
 
-        private static void OnSpeechRecognized(object sender, SpeechRecognizedEventArgs e)
+        private static void OnSpeechRecognized(object? sender, SpeechRecognizedEventArgs e)
         {
             Text = e.Result.Text;
             _isSpeechRecognized = 1;

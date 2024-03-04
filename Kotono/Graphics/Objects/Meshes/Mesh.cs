@@ -67,12 +67,10 @@ namespace Kotono.Graphics.Objects.Meshes
 
         internal Triangle[] Triangles => _meshSettings.Triangles;
 
-        private Vector _rotationVelocity;
-
-        internal Vector RotationVelocity
+        public override Vector RotationVelocity
         {
-            get => Vector.Deg(_rotationVelocity);
-            set => _rotationVelocity = Vector.Rad(value);
+            get => Vector.Deg(base.RotationVelocity);
+            set => base.RotationVelocity = Vector.Rad(value);
         }
 
         internal static float IntersectionCheckFrequency => 0.1f;

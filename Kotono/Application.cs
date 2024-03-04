@@ -87,7 +87,7 @@ namespace Kotono
             _ = new Cube
             {
                 IsGravity = true,
-                IsFizix = false
+                IsFizix = false,
             };
 
             for (int i = 0; i < 10; i++)

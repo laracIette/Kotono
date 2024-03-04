@@ -3,25 +3,37 @@
   "Shader": "gizmo",
   "Hitboxes": [],
   "Textures": [],
-  "Location": {
-    "X": -4.4240265,
-    "Y": -2.8333797,
-    "Z": -7.665402
-  },
-  "Rotation": {
-    "X": 0,
-    "Y": 0,
-    "Z": 0
-  },
-  "Scale": {
-    "X": 0.123905666,
-    "Y": 0.123905666,
-    "Z": 0.123905666
-  },
-  "Velocity": {
-    "X": 0,
-    "Y": 0,
-    "Z": 0
+  "Transform": {
+    "Location": {
+      "X": -4.591732,
+      "Y": 0.07464551,
+      "Z": -4.28783
+    },
+    "Rotation": {
+      "X": 0,
+      "Y": 0,
+      "Z": 0
+    },
+    "Scale": {
+      "X": 0.116922796,
+      "Y": 0.116922796,
+      "Z": 0.116922796
+    },
+    "LocationVelocity": {
+      "X": 0,
+      "Y": 0,
+      "Z": 0
+    },
+    "RotationVelocity": {
+      "X": 0,
+      "Y": 0,
+      "Z": 0
+    },
+    "ScaleVelocity": {
+      "X": 0,
+      "Y": 0,
+      "Z": 0
+    }
   },
   "Path": "..\\..\\..\\Assets\\Gizmo\\gizmo_x.json",
   "IsDraw": true,

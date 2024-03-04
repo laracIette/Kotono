@@ -391,10 +391,10 @@ namespace Kotono.Utils.Coordinates
             return obj is Rect r && Equals(r);
         }
 
-        public readonly bool Equals(Rect r)
+        public readonly bool Equals(Rect other)
         {
-            return Position == r.Position
-                && Size == r.Size;
+            return Position == other.Position
+                && Size == other.Size;
         }
 
         public override readonly int GetHashCode()

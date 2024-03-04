@@ -69,14 +69,14 @@ namespace Kotono.Physics
 
                 // Calculate the collision response
                 Vector normal = delta.Normalized;
-                Vector relativeVelocity = sphere.Velocity - 0.0f;
+                Vector relativeVelocity = sphere.LocationVelocity - 0.0f;
                 float velocityAlongNormal = Vector.Dot(relativeVelocity, normal);
 
                 // If spheres are moving towards each other, perform the bounce
                 if (velocityAlongNormal < 0.0f)
                 {
                     float impulse = -2.0f * velocityAlongNormal / (1.0f / sphere1Radius + 1.0f / sphere2Radius);
-                    sphere.Velocity -= normal * impulse / sphere1Radius;
+                    sphere.LocationVelocity -= normal * impulse / sphere1Radius;
                     //sphere2.Velocity += normal * impulse / sphere2Radius;
                 }
 
@@ -92,15 +92,15 @@ namespace Kotono.Physics
             {
                 // Calculate the collision response
                 Vector normal = delta.Normalized;
-                Vector relativeVelocity = left.Velocity - right.Velocity;
+                Vector relativeVelocity = left.LocationVelocity - right.LocationVelocity;
                 float velocityAlongNormal = Vector.Dot(relativeVelocity, normal);
 
                 // If spheres are moving towards each other, perform the bounce
                 if (velocityAlongNormal < 0.0f)
                 {
                     float impulse = -2.0f * velocityAlongNormal / (1.0f / left.Radius + 1.0f / right.Radius);
-                    left.Velocity -= normal * impulse / left.Radius;
-                    right.Velocity += normal * impulse / right.Radius;
+                    left.LocationVelocity -= normal * impulse / left.Radius;
+                    right.LocationVelocity += normal * impulse / right.Radius;
                 }
             }
         }

@@ -55,7 +55,7 @@ namespace Kotono.Graphics.Objects.Hitboxes
 
         public override void Update()
         {
-            Location += Velocity * Time.Delta;
+            Location += LocationVelocity * Time.Delta;
         }
 
         public override void Draw()

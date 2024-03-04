@@ -315,11 +315,11 @@ namespace Kotono.Utils.Coordinates
             return obj is Vector v && Equals(v);
         }
 
-        public readonly bool Equals(Vector v)
+        public readonly bool Equals(Vector other)
         {
-            return X == v.X
-                && Y == v.Y
-                && Z == v.Z;
+            return X == other.X
+                && Y == other.Y
+                && Z == other.Z;
         }
 
         public override readonly int GetHashCode()

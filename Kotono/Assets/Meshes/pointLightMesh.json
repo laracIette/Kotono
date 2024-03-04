@@ -3,32 +3,44 @@
   "Shader": "pointLight",
   "Hitboxes": [],
   "Textures": [],
-  "Location": {
-    "X": -1.2764375,
-    "Y": -4.399662,
-    "Z": 17.59277
-  },
-  "Rotation": {
-    "X": 0,
-    "Y": 0,
-    "Z": 0
-  },
-  "Scale": {
-    "X": 1,
-    "Y": 1,
-    "Z": 1
-  },
-  "Velocity": {
-    "X": 0,
-    "Y": 0,
-    "Z": 0
+  "Transform": {
+    "Location": {
+      "X": -7.426081,
+      "Y": -2.4263551,
+      "Z": -6.0367045
+    },
+    "Rotation": {
+      "X": 0,
+      "Y": 0,
+      "Z": 0
+    },
+    "Scale": {
+      "X": 1,
+      "Y": 1,
+      "Z": 1
+    },
+    "LocationVelocity": {
+      "X": 0,
+      "Y": 0,
+      "Z": 0
+    },
+    "RotationVelocity": {
+      "X": 0,
+      "Y": 0,
+      "Z": 0
+    },
+    "ScaleVelocity": {
+      "X": 0,
+      "Y": 0,
+      "Z": 0
+    }
   },
   "Path": "..\\..\\..\\Assets\\Meshes\\pointLightMesh.json",
   "IsDraw": true,
   "Color": {
-    "R": 0.41812986,
-    "G": 0.08555746,
-    "B": 0.92680806,
+    "R": 0.26825726,
+    "G": 0.99930525,
+    "B": 0.3161741,
     "A": 1
   }
 }

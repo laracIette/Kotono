@@ -192,10 +192,10 @@ namespace Kotono.Utils.Coordinates
             return obj is Point p && Equals(p);
         }
 
-        public readonly bool Equals(Point p)
+        public readonly bool Equals(Point other)
         {
-            return X == p.X
-                && Y == p.Y;
+            return X == other.X
+                && Y == other.Y;
         }
 
         public override readonly int GetHashCode()

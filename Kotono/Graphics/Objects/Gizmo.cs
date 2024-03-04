@@ -20,7 +20,7 @@ namespace Kotono.Graphics.Objects
 
         private static Mesh? ActiveMesh => ISelectable.Active as Mesh;
 
-        private static Transform _transform;
+        private static readonly Transform _transform = Transform.Default;
 
         internal static Transform Transform => _transform;
 
