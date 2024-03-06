@@ -9,7 +9,7 @@
   "Transform": {
     "Location": {
       "X": -4.591732,
-      "Y": 0.07454551,
+      "Y": -1.2517393,
       "Z": -4.28783
     },
     "Rotation": {
@@ -41,9 +41,9 @@
   "Path": "..\\..\\..\\Assets\\Meshes\\cube.json",
   "IsDraw": true,
   "Color": {
-    "R": 0,
+    "R": 1,
     "G": 1,
-    "B": 0,
+    "B": 1,
     "A": 1
   }
 }

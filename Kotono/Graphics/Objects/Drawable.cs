@@ -10,6 +10,8 @@ namespace Kotono.Graphics.Objects
 
         public virtual Color Color { get; set; }
 
+        public virtual bool IsHovered { get; } = false;
+
         public bool IsSelected { get; protected set; } = false;
 
         public bool IsActive => ISelectable.Active == this;

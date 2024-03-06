@@ -36,13 +36,13 @@ namespace Kotono.Utils
 
         public static void Update()
         {
-            long sinceEpoch = DateTime.UtcNow.Ticks / TimeSpan.TicksPerMillisecond;
+            long sinceEpochMS = DateTime.UtcNow.Ticks / TimeSpan.TicksPerMillisecond;
 
-            DeltaMS = (int)(sinceEpoch - SinceEpochMS);
+            DeltaMS = (int)(sinceEpochMS - SinceEpochMS);
 
             NowMS += DeltaMS;
 
-            SinceEpochMS = sinceEpoch;
+            SinceEpochMS = sinceEpochMS;
         }
     }
 }

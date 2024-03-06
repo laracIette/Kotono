@@ -13,12 +13,12 @@ namespace Kotono.Utils
         /// <param name="rayDirection"> The direction of the ray. </param>
         /// <param name="triangle"> The Triangle to check intersection from. </param>
         /// <param name="intersectionLocation"> The location Vector at which the mouse intersects the mesh. </param>
-        /// <param name="distance"> The distance of the intersectionLocation from the Camera. </param>
+        /// <param name="intersectionDistance"> The distance of the intersectionLocation from the Camera. </param>
         /// <returns> <see langword="true"/> if the ray interects the Triangle, else returns <see langword="false"/>. </returns>
-        internal static bool IntersectRayTriangle(Vector rayOrigin, Vector rayDirection, Triangle triangle, out Vector intersectionLocation, out float distance)
+        internal static bool IntersectRayTriangle(Vector rayOrigin, Vector rayDirection, Triangle triangle, out Vector intersectionLocation, out float intersectionDistance)
         {
             intersectionLocation = Vector.Zero;
-            distance = 0.0f;
+            intersectionDistance = 0.0f;
 
             var vertex1 = (Vector)Vector3.TransformPosition((Vector3)triangle.Vertices[0], triangle.Model);
             var vertex2 = (Vector)Vector3.TransformPosition((Vector3)triangle.Vertices[1], triangle.Model);
@@ -60,7 +60,7 @@ namespace Kotono.Utils
             if (u >= 0.0f && v >= 0.0f && (u + v) <= 1.0f)
             {
                 // Ray intersects the triangle
-                distance = Vector.Distance(rayOrigin, intersectionLocation);
+                intersectionDistance = Vector.Distance(rayOrigin, intersectionLocation);
                 return true;
             }
 

@@ -93,7 +93,7 @@ namespace Kotono.Utils.Coordinates
                 0 => X,
                 1 => Y,
                 2 => Z,
-                _ => throw new IndexOutOfRangeException("You tried to access this Vector at index: " + index)
+                _ => throw new IndexOutOfRangeException("error: You tried to access this Vector at index: " + index)
             };
 
         /// <summary> 

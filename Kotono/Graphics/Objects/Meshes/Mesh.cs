@@ -18,7 +18,7 @@ namespace Kotono.Graphics.Objects.Meshes
 {
     internal abstract class Mesh : Object3D, IMesh
     {
-        private struct MeshHiddenSettings
+        private class FileSettings
         {
             internal int VertexArrayObject;
 
@@ -28,44 +28,38 @@ namespace Kotono.Graphics.Objects.Meshes
 
             internal Vector Center;
 
-            internal Vector[] Vertices;
+            internal Vector[] Vertices = [];
 
-            internal Triangle[] Triangles;
+            internal Triangle[] Triangles = [];
         }
 
-        private readonly MeshHiddenSettings _meshSettings;
+        private static readonly Dictionary<string, FileSettings> _paths = [];
 
-        private static readonly Dictionary<string, MeshHiddenSettings> _paths = [];
+        private readonly FileSettings _fileSettings;
 
         private readonly List<Hitbox> _hitboxes;
 
         private readonly string _model;
 
-        private bool _isMouseOn = false;
-
-        private Vector _intersectionLocation = Vector.Zero;
-
-        private float _distance = 0.0f;
-
-        protected readonly Texture[] _textures;
-
         protected readonly Shader _shader;
+
+        internal PBRMaterial Material { get; }
 
         internal bool IsGravity { get; set; } = false;
 
         internal CollisionState CollisionState { get; set; }
 
-        internal int VertexArrayObject => _meshSettings.VertexArrayObject;
+        internal int VertexArrayObject => _fileSettings.VertexArrayObject;
 
-        internal int VertexBufferObject => _meshSettings.VertexBufferObject;
+        internal int VertexBufferObject => _fileSettings.VertexBufferObject;
 
-        internal int IndicesCount => _meshSettings.IndicesCount;
+        internal int IndicesCount => _fileSettings.IndicesCount;
 
-        internal Vector Center => _meshSettings.Center;
+        internal Vector Center => _fileSettings.Center;
 
-        internal Vector[] Vertices => _meshSettings.Vertices;
+        internal Vector[] Vertices => _fileSettings.Vertices;
 
-        internal Triangle[] Triangles => _meshSettings.Triangles;
+        internal Triangle[] Triangles => _fileSettings.Triangles;
 
         public override Vector RotationVelocity
         {
@@ -73,24 +67,63 @@ namespace Kotono.Graphics.Objects.Meshes
             set => base.RotationVelocity = Vector.Rad(value);
         }
 
-        internal static float IntersectionCheckFrequency => 0.1f;
-
-        internal float LastIntersectionCheckTime { get; set; } = 0.0f;
-
         public bool IsFizix { get; set; } = false;
+
+        public float LastIntersectionCheckTime { get; private set; } = 0.0f;
+
+        public Vector IntersectionLocation { get; private set; } = Vector.Zero;
+
+        public float IntersectionDistance { get; private set; } = 0.0f;
+
+        public override bool IsHovered
+        {
+            get
+            {
+                if (Time.Now - LastIntersectionCheckTime > IMesh.IntersectionCheckFrequency)
+                {
+                    LastIntersectionCheckTime = Time.Now;
+
+                    IntersectionLocation = Vector.Zero;
+                    IntersectionDistance = 0.0f;
+
+                    foreach (var triangle in Triangles)
+                    {
+                        triangle.Transform = Transform;
+
+                        if (Intersection.IntersectRayTriangle(ObjectManager.ActiveCamera.Location, Mouse.Ray, triangle, out Vector intersectionLocation, out float intersectionDistance))
+                        {
+                            IntersectionLocation = intersectionLocation;
+                            IntersectionDistance = intersectionDistance;
+
+                            return true;
+                        }
+                    }
+                }
+
+                return false;
+            }
+        }
 
         internal Mesh(MeshSettings settings)
             : base(settings)
         {
             _model = settings.Model;
-            Color = settings.Color;
             _hitboxes = settings.Hitboxes;
+            Color = settings.Color;
 
-            _textures = new Texture[settings.Textures.Length];
-            for (int i = 0; i < _textures.Length; i++)
+            Material = settings.Textures.Length switch
             {
-                _textures[i] = new Texture(settings.Textures[i], TextureUnit.Texture0 + i);
-            }
+                1 => new PBRMaterial
+                {
+                    Albedo = new Texture(settings.Textures[0], TextureUnit.Texture0),
+                },
+                2 => new PBRMaterial
+                {
+                    Albedo = new Texture(settings.Textures[0], TextureUnit.Texture0),
+                    Roughness = new Texture(settings.Textures[1], TextureUnit.Texture1)
+                },
+                _ => new PBRMaterial()
+            };
 
             _shader = settings.Shader switch
             {
@@ -109,7 +142,7 @@ namespace Kotono.Graphics.Objects.Meshes
                 hitbox.Color = Color.Red;
             }
 
-            if (!_paths.TryGetValue(_model, out MeshHiddenSettings value))
+            if (!_paths.TryGetValue(_model, out FileSettings? value))
             {
                 List<Vertex>[] models;
                 List<int>[] indices;
@@ -190,7 +223,7 @@ namespace Kotono.Graphics.Objects.Meshes
                 GL.BindBuffer(BufferTarget.ElementArrayBuffer, elementBufferObject);
                 GL.BufferData(BufferTarget.ElementArrayBuffer, indices[0].Count * sizeof(int), indices[0].ToArray(), BufferUsageHint.StaticDraw);
 
-                value = new MeshHiddenSettings
+                value = new FileSettings
                 {
                     VertexArrayObject = vertexArrayObject,
                     VertexBufferObject = vertexBufferObject,
@@ -203,7 +236,7 @@ namespace Kotono.Graphics.Objects.Meshes
                 _paths[settings.Model] = value;
             }
 
-            _meshSettings = value;
+            _fileSettings = value;
         }
 
         public override void Update()
@@ -243,10 +276,7 @@ namespace Kotono.Graphics.Objects.Meshes
 
         public override void Draw()
         {
-            foreach (var texture in _textures)
-            {
-                texture.Use();
-            }
+            Material.Use();
 
             _shader.SetMatrix4("model", Transform.Model);
             _shader.SetColor("color", Color);
@@ -259,46 +289,13 @@ namespace Kotono.Graphics.Objects.Meshes
             GL.BindTexture(TextureTarget.Texture2D, 0);
         }
 
-        /// <summary>
-        /// Get whether the mouse intersects the Mesh.
-        /// </summary>
-        /// <param name="intersectionLocation"> The location at which the mouse intersects the mesh. </param>
-        /// <param name="distance"> The distance of the intersectionLocation from the Camera. </param>
-        /// <returns> <see langword="true"/> if the mouse interects the Mesh, else returns <see langword="false"/>. </returns>
-        public bool IsMouseOn(out Vector intersectionLocation, out float distance)
-        {
-            if (Time.Now - LastIntersectionCheckTime > IntersectionCheckFrequency)
-            {
-                LastIntersectionCheckTime = Time.Now;
-
-                _isMouseOn = false;
-                _intersectionLocation = Vector.Zero;
-                _distance = 0.0f;
-
-                foreach (var triangle in Triangles)
-                {
-                    triangle.Transform = Transform;
-                    if (Intersection.IntersectRayTriangle(ObjectManager.ActiveCamera.Location, Mouse.Ray, triangle, out _intersectionLocation, out _distance))
-                    {
-                        _isMouseOn = true;
-                        break;
-                    }
-                }
-            }
-
-            intersectionLocation = _intersectionLocation;
-            distance = _distance;
-
-            return _isMouseOn;
-        }
-
         private void OnMouseLeftButtonPressed()
         {
             // If gizmo isn't selected
             if (!Gizmo.IsSelected)
             {
                 // If mesh is clicked
-                if (IsMouseOn(out _, out _))
+                if (IsHovered)
                 {
                     // If left control is down
                     if (Keyboard.IsKeyDown(Keys.LeftControl))
@@ -346,7 +343,7 @@ namespace Kotono.Graphics.Objects.Meshes
             {
                 settings.Model = _model;
                 settings.Shader = _shader.Name;
-                settings.Textures = _textures.Select(t => t.Path).ToArray();
+                settings.Textures = Material.Paths;
             }
 
             base.Save();

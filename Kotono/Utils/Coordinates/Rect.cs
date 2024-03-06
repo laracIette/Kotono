@@ -78,7 +78,7 @@ namespace Kotono.Utils.Coordinates
         public readonly Rect NDC =>
             new Rect(
                 Position.NDC,
-                Size / ComponentManager.ActiveViewport.Size
+                Size / WindowComponentManager.ActiveViewport.Size
             );
 
         /// <summary>

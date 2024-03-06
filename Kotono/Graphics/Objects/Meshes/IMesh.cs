@@ -5,6 +5,12 @@ namespace Kotono.Graphics.Objects.Meshes
 {
     internal interface IMesh : IObject3D, IFizixObject
     {
-        public bool IsMouseOn(out Vector intersectionLocation, out float distance);
+        internal static float IntersectionCheckFrequency => 0.1f;
+
+        public float LastIntersectionCheckTime { get; }
+
+        public Vector IntersectionLocation { get; }
+
+        public float IntersectionDistance { get; }
     }
 }

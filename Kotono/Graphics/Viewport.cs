@@ -15,7 +15,7 @@ namespace Kotono.Graphics
 
         internal void Use()
         {
-            ComponentManager.ActiveViewport = this;
+            WindowComponentManager.ActiveViewport = this;
             GL.Viewport((int)X, (int)(Window.Dest.H - Y - H), (int)W, (int)H);
         }
     }

@@ -38,8 +38,8 @@ namespace Kotono.Utils.Coordinates
         [JsonIgnore]
         public readonly Point NDC =>
             new Point(
-                2.0f * X / ComponentManager.ActiveViewport.W - 1.0f,
-                1.0f - Y / ComponentManager.ActiveViewport.H * 2.0f
+                2.0f * X / WindowComponentManager.ActiveViewport.W - 1.0f,
+                1.0f - Y / WindowComponentManager.ActiveViewport.H * 2.0f
             );
 
         /// <summary>

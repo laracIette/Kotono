@@ -48,7 +48,7 @@ namespace Kotono
 
                 ObjectManager.ActiveCamera.AspectRatio = Size.Ratio;
 
-                ComponentManager.WindowViewport.Size = Size;
+                WindowComponentManager.WindowViewport.Size = Size;
 
                 PerformanceWindow.UpdatePosition();
 
@@ -141,7 +141,7 @@ namespace Kotono
             Mouse.Update();
             Gizmo.Update();
             ObjectManager.Update();
-            ComponentManager.Update();
+            WindowComponentManager.Update();
             StateManager.Update();
 
             if (Keyboard.IsKeyPressed(Keys.F11))

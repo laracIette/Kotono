@@ -40,25 +40,21 @@ namespace Kotono.Utils.Coordinates
         /// <summary> 
         /// The right vector of the Transform. 
         /// </summary>
-        [JsonIgnore]
         internal Vector Right => (Vector)(Quaternion.FromEulerAngles((Vector3)Rotation) * Vector3.UnitX);
 
         /// <summary> 
         /// The up vector of the Transform. 
         /// </summary>
-        [JsonIgnore]
         internal Vector Up => (Vector)(Quaternion.FromEulerAngles((Vector3)Rotation) * Vector3.UnitY);
 
         /// <summary> 
         /// The forward vector of the Transform. 
         /// </summary>
-        [JsonIgnore]
         internal Vector Forward => (Vector)(Quaternion.FromEulerAngles((Vector3)Rotation) * Vector3.UnitZ);
 
         /// <summary>
         /// The model matrix of the Transform.
         /// </summary>
-        [JsonIgnore]
         internal Matrix4 Model =>
             Matrix4.CreateScale((Vector3)Scale)
             * Matrix4.CreateRotationX(Rotation.X)
@@ -77,6 +73,9 @@ namespace Kotono.Utils.Coordinates
             Location = Vector.Zero;
             Rotation = Vector.Zero;
             Scale = Vector.Zero;
+            LocationVelocity = Vector.Zero;
+            RotationVelocity = Vector.Zero;
+            ScaleVelocity = Vector.Zero;
         }
 
         internal Transform(Transform t)
@@ -84,6 +83,9 @@ namespace Kotono.Utils.Coordinates
             Location = t.Location;
             Rotation = t.Rotation;
             Scale = t.Scale;
+            LocationVelocity = t.LocationVelocity;
+            RotationVelocity = t.RotationVelocity;
+            ScaleVelocity = t.ScaleVelocity;
         }
 
         internal Transform(Vector location, Vector rotation, Vector scale)
@@ -91,6 +93,9 @@ namespace Kotono.Utils.Coordinates
             Location = location;
             Rotation = rotation;
             Scale = scale;
+            LocationVelocity = Vector.Zero;
+            RotationVelocity = Vector.Zero;
+            ScaleVelocity = Vector.Zero;
         }
 
         public static bool operator ==(Transform? left, Transform? right)
@@ -117,7 +122,10 @@ namespace Kotono.Utils.Coordinates
 
             return Location == other.Location
                 && Rotation == other.Rotation
-                && Scale == other.Scale;
+                && Scale == other.Scale
+                && LocationVelocity == other.LocationVelocity
+                && RotationVelocity == other.RotationVelocity
+                && ScaleVelocity == other.ScaleVelocity;
         }
 
         public override int GetHashCode()
@@ -128,6 +136,14 @@ namespace Kotono.Utils.Coordinates
         public override string ToString()
         {
             return $"Location: {Location}\nRotation: {Rotation}\nScale   : {Scale}";
+        }
+
+        internal string ToString(bool isVelocity)
+        {
+            return ToString() + (isVelocity ? 
+                $"\nLocationVelocity: {LocationVelocity}\nRotationVelocity: {RotationVelocity}\nScaleVelocity   : {ScaleVelocity}" : 
+                ""
+            );
         }
     }
 }

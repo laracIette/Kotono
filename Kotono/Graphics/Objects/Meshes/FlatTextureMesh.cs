@@ -15,7 +15,7 @@ namespace Kotono.Graphics.Objects.Meshes
 
         public override void Draw()
         {
-            _textures[0].Use();
+            Material.Use();
 
             _shader.SetMatrix4("model", Transform.Model);
             _shader.SetColor("color", Color);

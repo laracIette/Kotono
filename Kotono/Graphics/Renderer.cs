@@ -51,7 +51,7 @@ namespace Kotono.Graphics
 
         private void AddToObject2DRenderQueue(IObject2D object2D)
         {
-            if (!Rect.Overlaps(object2D.Dest, Rect.FromAnchor(((object2D as IElement)?.Viewport ?? ComponentManager.WindowViewport).Dest, Anchor.TopLeft)))
+            if (!Rect.Overlaps(object2D.Dest, Rect.FromAnchor(((object2D as IElement)?.Viewport ?? WindowComponentManager.WindowViewport).Dest, Anchor.TopLeft)))
             {
                 return;
             }
@@ -120,7 +120,7 @@ namespace Kotono.Graphics
 
         private static void DrawObject2D(IObject2D object2D) 
         {
-            ((object2D as IElement)?.Viewport ?? ComponentManager.WindowViewport).Use();
+            ((object2D as IElement)?.Viewport ?? WindowComponentManager.WindowViewport).Use();
 
             object2D.Draw();
         }
@@ -129,7 +129,7 @@ namespace Kotono.Graphics
         {
             GL.Enable(EnableCap.DepthTest);
 
-            ComponentManager.WindowViewport.Use();
+            WindowComponentManager.WindowViewport.Use();
 
             foreach (var object3D in _object3DRenderQueue)
             {
@@ -145,7 +145,7 @@ namespace Kotono.Graphics
 
             //GL.Clear(ClearBufferMask.DepthBufferBit);
 
-            ComponentManager.WindowViewport.Use();
+            WindowComponentManager.WindowViewport.Use();
 
             foreach (var frontMesh in _frontMeshRenderQueue)
             {

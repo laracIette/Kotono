@@ -70,7 +70,7 @@ namespace Kotono
 
             if (Keyboard.IsKeyPressed(Keys.T))
             {
-                _animation.Switch();
+                _animation.Switch(); 
             }
 
 

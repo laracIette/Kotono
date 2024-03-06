@@ -149,12 +149,12 @@ namespace Kotono.Graphics.Objects
 
             for (int i = 0; i < _meshes.Length; i++)
             {
-                if (_meshes[i].IsMouseOn(out _, out float distance))
+                if (_meshes[i].IsHovered)
                 {
                     // Select the mesh that is the closest to the camera
-                    if (distance < closestDistance)
+                    if (_meshes[i].IntersectionDistance < closestDistance)
                     {
-                        closestDistance = distance;
+                        closestDistance = _meshes[i].IntersectionDistance;
                         closestMesh = i;
                     }
                 }
