@@ -25,16 +25,19 @@ namespace Kotono.Utils.Coordinates
         /// <summary>
         /// The velocity of the Transform's location.
         /// </summary>
+        [JsonIgnore]
         public Vector LocationVelocity { get; set; }
 
         /// <summary>
         /// The velocity of the Transform's rotation.
         /// </summary>
+        [JsonIgnore]
         public Vector RotationVelocity { get; set; }
 
         /// <summary>
         /// The velocity of the Transform's scale.
         /// </summary>
+        [JsonIgnore]
         public Vector ScaleVelocity { get; set; }
 
         /// <summary> 

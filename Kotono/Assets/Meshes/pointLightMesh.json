@@ -2,12 +2,12 @@
   "Model": "..\\..\\..\\Assets\\Meshes\\sphere.obj",
   "Shader": "pointLight",
   "Hitboxes": [],
-  "MaterialTextureSettings": [],
+  "MaterialTexturesSettings": [],
   "Transform": {
     "Location": {
-      "X": -4.781856,
-      "Y": -1.1471518,
-      "Z": -14.125572
+      "X": -4.589768,
+      "Y": -1.0758476,
+      "Z": -14.4673395
     },
     "Rotation": {
       "X": 0,
@@ -18,29 +18,14 @@
       "X": 1,
       "Y": 1,
       "Z": 1
-    },
-    "LocationVelocity": {
-      "X": 0,
-      "Y": 0,
-      "Z": 0
-    },
-    "RotationVelocity": {
-      "X": 0,
-      "Y": 0,
-      "Z": 0
-    },
-    "ScaleVelocity": {
-      "X": 0,
-      "Y": 0,
-      "Z": 0
     }
   },
   "Path": "..\\..\\..\\Assets\\Meshes\\pointLightMesh.json",
   "IsDraw": true,
   "Color": {
-    "R": 0.97598284,
-    "G": 0.16270569,
-    "B": 0.30474508,
+    "R": 0.8794403,
+    "G": 0.046016335,
+    "B": 0.49840745,
     "A": 1
   }
 }

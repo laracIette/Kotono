@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Kotono.Graphics
 {
-    internal class PBRMaterial : IMaterial
+    internal class Material : IMaterial
     {
         public List<MaterialTexture> Textures { get; } = [];
 
@@ -19,13 +19,13 @@ namespace Kotono.Graphics
 
         internal MaterialTexture? AmbientOcclusion => Textures.FirstOrNull(t => t.Name == "AmbientOcclusion");
 
-        internal MaterialTextureSettings[] MaterialTextureSettings { get; }
+        internal MaterialTextureSettings[] MaterialTexturesSettings { get; }
 
-        internal PBRMaterial(MaterialTextureSettings[] materialTextureSettings)
+        internal Material(MaterialTextureSettings[] materialTexturesSettings)
         {
-            MaterialTextureSettings = materialTextureSettings;
+            MaterialTexturesSettings = materialTexturesSettings;
 
-            Textures.AddRange(materialTextureSettings.Select(settings => new MaterialTexture(settings)));
+            Textures.AddRange(materialTexturesSettings.Select(s => new MaterialTexture(s)));
         }
 
         public void Use()

@@ -43,7 +43,7 @@ namespace Kotono.Graphics.Objects.Meshes
 
         protected readonly Shader _shader;
 
-        internal PBRMaterial Material { get; }
+        internal Material Material { get; }
 
         internal bool IsGravity { get; set; } = false;
 
@@ -111,7 +111,7 @@ namespace Kotono.Graphics.Objects.Meshes
             _hitboxes = settings.Hitboxes;
             Color = settings.Color;
 
-            Material = new PBRMaterial(settings.MaterialTextureSettings);
+            Material = new Material(settings.MaterialTexturesSettings);
 
             _shader = settings.Shader switch
             {
@@ -331,7 +331,7 @@ namespace Kotono.Graphics.Objects.Meshes
             {
                 settings.Model = _model;
                 settings.Shader = _shader.Name;
-                settings.MaterialTextureSettings = Material.MaterialTextureSettings;
+                settings.MaterialTexturesSettings = Material.MaterialTexturesSettings;
             }
 
             base.Save();

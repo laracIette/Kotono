@@ -2,7 +2,7 @@
   "Model": "..\\..\\..\\Assets\\Gizmo\\gizmo_x.obj",
   "Shader": "gizmo",
   "Hitboxes": [],
-  "MaterialTextureSettings": [],
+  "MaterialTexturesSettings": [],
   "Transform": {
     "Location": {
       "X": 24.888882,
@@ -18,21 +18,6 @@
       "X": 0.39396828,
       "Y": 0.39396828,
       "Z": 0.39396828
-    },
-    "LocationVelocity": {
-      "X": 0,
-      "Y": 0,
-      "Z": 0
-    },
-    "RotationVelocity": {
-      "X": 0,
-      "Y": 0,
-      "Z": 0
-    },
-    "ScaleVelocity": {
-      "X": 0,
-      "Y": 0,
-      "Z": 0
     }
   },
   "Path": "..\\..\\..\\Assets\\Gizmo\\gizmo_x.json",

@@ -179,26 +179,12 @@ namespace Kotono.Utils
 
         internal static TSource? FirstOrNull<TSource>(this IEnumerable<TSource> source) where TSource : class
         {
-            if (source.Any())
-            {
-                return source.First();
-            }
-            else
-            {
-                return null;
-            }
+            return source.Any() ? source.First() : null;
         }
 
         internal static TSource? FirstOrNull<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate) where TSource : class
         {
-            if (source.Any())
-            {
-                return source.First(predicate);
-            }
-            else
-            {
-                return null;
-            }
+            return source.Any(predicate) ? source.First(predicate) : null;
         }
     }
 }
