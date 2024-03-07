@@ -2,8 +2,12 @@
   "Model": "..\\..\\..\\Assets\\Meshes\\cube.obj",
   "Shader": "flatTexture",
   "Hitboxes": [],
-  "Textures": [
-    "..\\..\\..\\Assets\\space.png"
+  "MaterialTextureSettings": [
+    {
+      "Name": "Albedo",
+      "Path": "..\\..\\..\\Assets\\space.png",
+      "TextureUnit": 0
+    }
   ],
   "Transform": {
     "Location": {

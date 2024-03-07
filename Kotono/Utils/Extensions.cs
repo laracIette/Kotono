@@ -188,5 +188,17 @@ namespace Kotono.Utils
                 return null;
             }
         }
+
+        internal static TSource? FirstOrNull<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate) where TSource : class
+        {
+            if (source.Any())
+            {
+                return source.First(predicate);
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }

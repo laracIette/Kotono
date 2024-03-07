@@ -28,10 +28,7 @@ namespace Kotono.Engine.UserInterface.AddMenu
             get => _options.FirstOrNull()?.IsDraw ?? throw new KotonoException("cannot access IsDraw, _frames is empty");
             set
             {
-                foreach (var option in _options)
-                {
-                    option.IsDraw = value;
-                }
+                _options.ForEach(o => o.IsDraw = value);
             }
         }
 

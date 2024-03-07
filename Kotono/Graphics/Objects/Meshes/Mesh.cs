@@ -111,19 +111,7 @@ namespace Kotono.Graphics.Objects.Meshes
             _hitboxes = settings.Hitboxes;
             Color = settings.Color;
 
-            Material = settings.Textures.Length switch
-            {
-                1 => new PBRMaterial
-                {
-                    Albedo = new Texture(settings.Textures[0], TextureUnit.Texture0),
-                },
-                2 => new PBRMaterial
-                {
-                    Albedo = new Texture(settings.Textures[0], TextureUnit.Texture0),
-                    Roughness = new Texture(settings.Textures[1], TextureUnit.Texture1)
-                },
-                _ => new PBRMaterial()
-            };
+            Material = new PBRMaterial(settings.MaterialTextureSettings);
 
             _shader = settings.Shader switch
             {
@@ -343,7 +331,7 @@ namespace Kotono.Graphics.Objects.Meshes
             {
                 settings.Model = _model;
                 settings.Shader = _shader.Name;
-                settings.Textures = Material.Paths;
+                settings.MaterialTextureSettings = Material.MaterialTextureSettings;
             }
 
             base.Save();

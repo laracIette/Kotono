@@ -2,7 +2,7 @@
   "Model": "..\\..\\..\\Assets\\Gizmo\\gizmo_x.obj",
   "Shader": "gizmo",
   "Hitboxes": [],
-  "Textures": [],
+  "MaterialTextureSettings": [],
   "Transform": {
     "Location": {
       "X": 24.888882,

@@ -2,9 +2,17 @@
   "Model": "..\\..\\..\\Assets\\Meshes\\cube.obj",
   "Shader": "lighting",
   "Hitboxes": [],
-  "Textures": [
-    "..\\..\\..\\Assets\\Meshes\\cube_diff.png",
-    "..\\..\\..\\Assets\\Meshes\\cube_spec.png"
+  "MaterialTextureSettings": [
+    {
+      "Name": "Albedo",
+      "Path": "..\\..\\..\\Assets\\Meshes\\cube_diff.png",
+      "TextureUnit": 0
+    },
+    {
+      "Name": "Roughness",
+      "Path": "..\\..\\..\\Assets\\Meshes\\cube_spec.png",
+      "TextureUnit": 1
+    }
   ],
   "Transform": {
     "Location": {

@@ -2,7 +2,7 @@
   "Model": "..\\..\\..\\Assets\\Meshes\\sphere.obj",
   "Shader": "pointLight",
   "Hitboxes": [],
-  "Textures": [],
+  "MaterialTextureSettings": [],
   "Transform": {
     "Location": {
       "X": -4.781856,

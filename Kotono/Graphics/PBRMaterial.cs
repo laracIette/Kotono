@@ -1,42 +1,36 @@
-﻿using System.Collections.Generic;
+﻿using Kotono.Graphics.Objects;
+using Kotono.Utils;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Kotono.Graphics
 {
     internal class PBRMaterial : IMaterial
     {
-        internal Texture? Albedo { get; set; } = null;
+        public List<MaterialTexture> Textures { get; } = [];
 
-        internal Texture? Normal { get; set; } = null;
+        internal MaterialTexture? Albedo => Textures.FirstOrNull(t => t.Name == "Albedo");
 
-        internal Texture? Metalness { get; set; } = null;
+        internal MaterialTexture? Normal => Textures.FirstOrNull(t => t.Name == "Normal");
 
-        internal Texture? Roughness { get; set; } = null;
+        internal MaterialTexture? Metalness => Textures.FirstOrNull(t => t.Name == "Metalness");
 
-        internal Texture? AmbientOcclusion { get; set; } = null;
+        internal MaterialTexture? Roughness => Textures.FirstOrNull(t => t.Name == "Roughness");
 
-        internal string[] Paths
+        internal MaterialTexture? AmbientOcclusion => Textures.FirstOrNull(t => t.Name == "AmbientOcclusion");
+
+        internal MaterialTextureSettings[] MaterialTextureSettings { get; }
+
+        internal PBRMaterial(MaterialTextureSettings[] materialTextureSettings)
         {
-            get
-            {
-                var result = new List<string>();
+            MaterialTextureSettings = materialTextureSettings;
 
-                if (Albedo != null) result.Add(Albedo.Path);
-                if (Normal != null) result.Add(Normal.Path);
-                if (Metalness != null) result.Add(Metalness.Path);
-                if (Roughness != null) result.Add(Roughness.Path);
-                if (AmbientOcclusion != null) result.Add(AmbientOcclusion.Path);
-
-                return [.. result];
-            }
+            Textures.AddRange(materialTextureSettings.Select(settings => new MaterialTexture(settings)));
         }
 
         public void Use()
         {
-            Albedo?.Use();
-            Normal?.Use();
-            Metalness?.Use();
-            Roughness?.Use();
-            AmbientOcclusion?.Use();
+            Textures.ForEach(t => t.Use());
         }
     }
 }

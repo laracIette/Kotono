@@ -38,6 +38,6 @@ namespace Kotono.Graphics.Objects.Meshes
         /// <remarks> 
         /// Default value : [] 
         /// </remarks>
-        public string[] Textures { get; set; } = [];
+        public MaterialTextureSettings[] MaterialTextureSettings { get; set; } = [];
     }
 }
