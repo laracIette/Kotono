@@ -15,9 +15,9 @@ namespace Kotono.Physics
             var collisionCenter = Vector.Zero;
             int n = 0;
 
-            foreach (var vertex in mesh.Vertices)
+            foreach (var vertex in mesh.Model.Vertices)
             {
-                if ((Vector.RotateAroundPoint(vertex, mesh.Center, mesh.Rotation).Y + mesh.Location.Y) <= 0.0f)
+                if ((Vector.RotateAroundPoint(vertex, mesh.Model.Center, mesh.Rotation).Y + mesh.Location.Y) <= 0.0f)
                 {
                     collisionCenter += vertex;
                     n++;

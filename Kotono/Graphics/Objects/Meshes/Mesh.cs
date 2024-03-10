@@ -18,48 +18,19 @@ namespace Kotono.Graphics.Objects.Meshes
 {
     internal abstract class Mesh : Object3D, IMesh
     {
-        private class FileSettings
-        {
-            internal int VertexArrayObject;
-
-            internal int VertexBufferObject;
-
-            internal int IndicesCount;
-
-            internal Vector Center;
-
-            internal Vector[] Vertices = [];
-
-            internal Triangle[] Triangles = [];
-        }
-
-        private static readonly Dictionary<string, FileSettings> _paths = [];
-
-        private readonly FileSettings _fileSettings;
+        private static readonly Dictionary<string, MeshModel> _paths = [];
 
         private readonly List<Hitbox> _hitboxes;
 
-        private readonly string _model;
-
         protected readonly Shader _shader;
+
+        internal MeshModel Model { get; }
 
         internal Material Material { get; }
 
         internal bool IsGravity { get; set; } = false;
 
         internal CollisionState CollisionState { get; set; }
-
-        internal int VertexArrayObject => _fileSettings.VertexArrayObject;
-
-        internal int VertexBufferObject => _fileSettings.VertexBufferObject;
-
-        internal int IndicesCount => _fileSettings.IndicesCount;
-
-        internal Vector Center => _fileSettings.Center;
-
-        internal Vector[] Vertices => _fileSettings.Vertices;
-
-        internal Triangle[] Triangles => _fileSettings.Triangles;
 
         public override Vector RotationVelocity
         {
@@ -86,7 +57,7 @@ namespace Kotono.Graphics.Objects.Meshes
                     IntersectionLocation = Vector.Zero;
                     IntersectionDistance = 0.0f;
 
-                    foreach (var triangle in Triangles)
+                    foreach (var triangle in Model.Triangles)
                     {
                         triangle.Transform = Transform;
 
@@ -107,7 +78,6 @@ namespace Kotono.Graphics.Objects.Meshes
         internal Mesh(MeshSettings settings)
             : base(settings)
         {
-            _model = settings.Model;
             _hitboxes = settings.Hitboxes;
             Color = settings.Color;
 
@@ -130,7 +100,7 @@ namespace Kotono.Graphics.Objects.Meshes
                 hitbox.Color = Color.Red;
             }
 
-            if (!_paths.TryGetValue(_model, out FileSettings? value))
+            if (!_paths.TryGetValue(settings.Model, out MeshModel? value))
             {
                 List<Vertex>[] models;
                 List<int>[] indices;
@@ -138,7 +108,7 @@ namespace Kotono.Graphics.Objects.Meshes
 
                 using (var importer = new AssimpContext())
                 {
-                    var scene = importer.ImportFile(_model, PostProcessSteps.Triangulate);
+                    var scene = importer.ImportFile(settings.Model, PostProcessSteps.Triangulate);
 
                     foreach (var face in scene.Meshes[0].Faces)
                     {
@@ -211,20 +181,21 @@ namespace Kotono.Graphics.Objects.Meshes
                 GL.BindBuffer(BufferTarget.ElementArrayBuffer, elementBufferObject);
                 GL.BufferData(BufferTarget.ElementArrayBuffer, indices[0].Count * sizeof(int), indices[0].ToArray(), BufferUsageHint.StaticDraw);
 
-                value = new FileSettings
+                value = new MeshModel
                 {
                     VertexArrayObject = vertexArrayObject,
                     VertexBufferObject = vertexBufferObject,
                     IndicesCount = indices[0].Count,
                     Center = center,
                     Vertices = [.. vertices],
-                    Triangles = [.. triangles]
+                    Triangles = [.. triangles],
+                    Path = settings.Model
                 };
 
                 _paths[settings.Model] = value;
             }
 
-            _fileSettings = value;
+            Model = value;
         }
 
         public override void Update()
@@ -269,12 +240,7 @@ namespace Kotono.Graphics.Objects.Meshes
             _shader.SetMatrix4("model", Transform.Model);
             _shader.SetColor("color", Color);
 
-            GL.BindVertexArray(VertexArrayObject);
-            GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
-
-            GL.DrawElements(PrimitiveType.Triangles, IndicesCount, DrawElementsType.UnsignedInt, IntPtr.Zero);
-
-            GL.BindTexture(TextureTarget.Texture2D, 0);
+            Model.Draw();
         }
 
         private void OnMouseLeftButtonPressed()
@@ -329,7 +295,7 @@ namespace Kotono.Graphics.Objects.Meshes
         {
             if (_settings is MeshSettings settings)
             {
-                settings.Model = _model;
+                settings.Model = Model.Path;
                 settings.Shader = _shader.Name;
                 settings.MaterialTexturesSettings = Material.MaterialTexturesSettings;
             }
