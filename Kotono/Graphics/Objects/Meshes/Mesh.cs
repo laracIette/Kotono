@@ -1,25 +1,16 @@
-﻿using Assimp;
-using Kotono.Graphics.Objects.Hitboxes;
-using Kotono.Graphics.Objects.Shapes;
+﻿using Kotono.Graphics.Objects.Hitboxes;
 using Kotono.Graphics.Shaders;
 using Kotono.Input;
 using Kotono.Physics;
 using Kotono.Utils;
-using OpenTK.Graphics.OpenGL4;
 using OpenTK.Windowing.GraphicsLibraryFramework;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using PrimitiveType = OpenTK.Graphics.OpenGL4.PrimitiveType;
 using Kotono.Utils.Coordinates;
-using Kotono.Utils.Exceptions;
 
 namespace Kotono.Graphics.Objects.Meshes
 {
     internal abstract class Mesh : Object3D, IMesh
     {
-        private static readonly Dictionary<string, MeshModel> _paths = [];
-
         private readonly List<Hitbox> _hitboxes;
 
         protected readonly Shader _shader;
@@ -83,14 +74,7 @@ namespace Kotono.Graphics.Objects.Meshes
 
             Material = new Material(settings.MaterialTexturesSettings);
 
-            _shader = settings.Shader switch
-            {
-                "lighting" => ShaderManager.Lighting,
-                "pointLight" => ShaderManager.PointLight,
-                "gizmo" => ShaderManager.Gizmo,
-                "flatTexture" => ShaderManager.FlatTexture,
-                _ => throw new SwitchException(typeof(string), settings.Shader)
-            };
+            _shader = ShaderManager.Get(settings.Shader);
 
             foreach (var hitbox in _hitboxes)
             {
@@ -100,102 +84,7 @@ namespace Kotono.Graphics.Objects.Meshes
                 hitbox.Color = Color.Red;
             }
 
-            if (!_paths.TryGetValue(settings.Model, out MeshModel? value))
-            {
-                List<Vertex>[] models;
-                List<int>[] indices;
-                List<Triangle> triangles = [];
-
-                using (var importer = new AssimpContext())
-                {
-                    var scene = importer.ImportFile(settings.Model, PostProcessSteps.Triangulate);
-
-                    foreach (var face in scene.Meshes[0].Faces)
-                    {
-                        triangles.Add(new Triangle(
-                            (Vector)scene.Meshes[0].Vertices[face.Indices[0]],
-                            (Vector)scene.Meshes[0].Vertices[face.Indices[1]],
-                            (Vector)scene.Meshes[0].Vertices[face.Indices[2]],
-                            Transform.Default,
-                            Color.White
-                        ));
-                    }
-
-                    models = new List<Vertex>[scene.Meshes.Count];
-                    indices = new List<int>[scene.Meshes.Count];
-                    for (int i = 0; i < scene.Meshes.Count; i++)
-                    {
-                        var mesh = scene.Meshes[i];
-                        var tempVertices = new List<Vertex>();
-
-                        for (int j = 0; j < mesh.Vertices.Count; j++)
-                        {
-                            var loc = new Vector(mesh.Vertices[j].X, mesh.Vertices[j].Y, mesh.Vertices[j].Z);
-                            var normal = new Vector(mesh.Normals[j].X, mesh.Normals[j].Y, mesh.Normals[j].Z);
-                            var texCoord = new Point(mesh.TextureCoordinateChannels[0][j].X, mesh.TextureCoordinateChannels[0][j].Y);
-
-                            tempVertices.Add(new Vertex(loc, normal, texCoord));
-                        }
-
-                        models[i] = tempVertices;
-                        indices[i] = [.. mesh.GetIndices()];
-                    }
-                }
-
-                var center = Vector.Zero;
-                models[0].ForEach(v => center += v.Location);
-                center /= models[0].Count;
-
-                var vertices = new List<Vector>();
-                foreach (var vertex in models[0])
-                {
-                    if (!vertices.Any(v => v == vertex.Location))
-                    {
-                        vertices.Add(vertex.Location);
-                    }
-                }
-
-                // Create vertex array
-                int vertexArrayObject = GL.GenVertexArray();
-                GL.BindVertexArray(vertexArrayObject);
-
-                // Create vertex buffer
-                int vertexBufferObject = GL.GenBuffer();
-                GL.BindBuffer(BufferTarget.ArrayBuffer, vertexBufferObject);
-                GL.BufferData(BufferTarget.ArrayBuffer, models[0].Count * Vertex.SizeInBytes, models[0].ToArray(), BufferUsageHint.StaticDraw);
-
-                int locationAttributeLocation = _shader.GetAttribLocation("aPos");
-                GL.EnableVertexAttribArray(locationAttributeLocation);
-                GL.VertexAttribPointer(locationAttributeLocation, 3, VertexAttribPointerType.Float, false, Vertex.SizeInBytes, 0);
-
-                int normalAttributeLocation = _shader.GetAttribLocation("aNormal");
-                GL.EnableVertexAttribArray(normalAttributeLocation);
-                GL.VertexAttribPointer(normalAttributeLocation, 3, VertexAttribPointerType.Float, false, Vertex.SizeInBytes, sizeof(float) * 3);
-
-                int texCoordAttributeLocation = _shader.GetAttribLocation("aTexCoords");
-                GL.EnableVertexAttribArray(texCoordAttributeLocation);
-                GL.VertexAttribPointer(texCoordAttributeLocation, 2, VertexAttribPointerType.Float, false, Vertex.SizeInBytes, sizeof(float) * 6);
-
-                // Create element buffer
-                int elementBufferObject = GL.GenBuffer();
-                GL.BindBuffer(BufferTarget.ElementArrayBuffer, elementBufferObject);
-                GL.BufferData(BufferTarget.ElementArrayBuffer, indices[0].Count * sizeof(int), indices[0].ToArray(), BufferUsageHint.StaticDraw);
-
-                value = new MeshModel
-                {
-                    VertexArrayObject = vertexArrayObject,
-                    VertexBufferObject = vertexBufferObject,
-                    IndicesCount = indices[0].Count,
-                    Center = center,
-                    Vertices = [.. vertices],
-                    Triangles = [.. triangles],
-                    Path = settings.Model
-                };
-
-                _paths[settings.Model] = value;
-            }
-
-            Model = value;
+            Model = MeshModel.Load(new MeshModelSettings { Path = settings.Model, Shader = _shader });
         }
 
         public override void Update()

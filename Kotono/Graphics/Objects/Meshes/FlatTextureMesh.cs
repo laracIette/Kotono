@@ -1,6 +1,4 @@
 ﻿using Kotono.Utils;
-using OpenTK.Graphics.OpenGL4;
-using System;
 
 namespace Kotono.Graphics.Objects.Meshes
 {

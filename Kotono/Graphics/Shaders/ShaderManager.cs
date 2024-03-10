@@ -1,4 +1,5 @@
 ﻿using Kotono.Graphics.Shaders;
+using Kotono.Utils.Exceptions;
 
 namespace Kotono.Graphics
 {
@@ -39,6 +40,25 @@ namespace Kotono.Graphics
             Blur.Update();
             Outline.Update();
             FlatTexture.Update();
+        }
+
+        internal static Shader Get(string name)
+        {
+            return name switch
+            {
+                "lighting" => Lighting,
+                "hitbox" => Hitbox,
+                "pointLight" => PointLight,
+                "image" => Image,
+                "gizmo" => Gizmo,
+                "roundedBox" => RoundedBox,
+                "roundedBorder" => RoundedBorder,
+                "color" => Color,
+                "blur" => Blur,
+                "outline" => Outline,
+                "flatTexture" => FlatTexture,
+                _ => throw new SwitchException(typeof(string), name)
+            };
         }
     }
 }

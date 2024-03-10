@@ -41,6 +41,7 @@ namespace Kotono.Graphics
                 GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat);
 
                 GL.GenerateMipmap(GenerateMipmapTarget.Texture2D);
+
                 _textures[path] = value;
             }
 
