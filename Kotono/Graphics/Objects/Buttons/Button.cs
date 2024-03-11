@@ -13,7 +13,7 @@ namespace Kotono.Graphics.Objects.Buttons
 
         internal event EventHandler<ButtonEventArgs>? Pressed = null;
         
-        internal event EventHandler? Released = null;
+        internal event EventHandler<ButtonEventArgs>? Released = null;
 
         public bool IsDown { get; private set; }
 

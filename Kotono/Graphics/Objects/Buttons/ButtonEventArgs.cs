@@ -2,9 +2,12 @@
 
 namespace Kotono.Graphics.Objects.Buttons
 {
-    internal class ButtonEventArgs : EventArgs
+    internal class ButtonEventArgs()
+        : EventArgs()
     {
-        internal ButtonEventArgs()
-            : base() { }
+        /// <summary>
+        /// The time at which the event occured.
+        /// </summary>
+        internal float Time { get; } = Utils.Time.Now;
     }
 }

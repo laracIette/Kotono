@@ -7,9 +7,9 @@ namespace Kotono.Graphics.Objects.Hitboxes
         : Object3D(settings),
         IHitbox
     {
-        public event EventHandler<HitboxEventArgs>? EnterCollision = null;
+        public event EventHandler<CollisionEventArgs>? EnterCollision = null;
 
-        public event EventHandler<HitboxEventArgs>? ExitCollision = null;
+        public event EventHandler<CollisionEventArgs>? ExitCollision = null;
 
         public List<IHitbox> Collisions { get; } = settings.Collisions;
 
@@ -51,12 +51,12 @@ namespace Kotono.Graphics.Objects.Hitboxes
 
         public void OnEnterCollision(IHitbox hitbox)
         {
-            EnterCollision?.Invoke(this, new HitboxEventArgs(this, hitbox));
+            EnterCollision?.Invoke(this, new CollisionEventArgs(this, hitbox));
         }
 
         public void OnExitCollision(IHitbox hitbox)
         {
-            ExitCollision?.Invoke(this, new HitboxEventArgs(this, hitbox));
+            ExitCollision?.Invoke(this, new CollisionEventArgs(this, hitbox));
         }
     }
 }

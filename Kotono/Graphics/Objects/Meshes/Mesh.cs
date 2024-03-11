@@ -197,19 +197,19 @@ namespace Kotono.Graphics.Objects.Meshes
             base.Save();
         }
 
-        private void OnEnterCollision(object? sender, HitboxEventArgs e)
+        private void OnEnterCollision(object? sender, CollisionEventArgs e)
         {
-            OnEnterCollision(e.Source, e.Collider);
+            OnEnterCollision(e);
         }
 
-        protected virtual void OnEnterCollision(IHitbox source, IHitbox collider) { }
+        protected virtual void OnEnterCollision(CollisionEventArgs collision) { }
 
-        private void OnExitCollision(object? sender, HitboxEventArgs e)
+        private void OnExitCollision(object? sender, CollisionEventArgs e)
         {
-            OnExitCollision(e.Source, e.Collider);
+            OnExitCollision(e);
         }
 
-        protected virtual void OnExitCollision(IHitbox source, IHitbox collider) { }
+        protected virtual void OnExitCollision(CollisionEventArgs collision) { }
 
         public override void Delete()
         {

@@ -6,9 +6,9 @@ namespace Kotono.Graphics.Objects.Hitboxes
 {
     internal interface IHitbox : IDrawable
     {
-        public event EventHandler<HitboxEventArgs>? EnterCollision;
+        public event EventHandler<CollisionEventArgs>? EnterCollision;
 
-        public event EventHandler<HitboxEventArgs>? ExitCollision;
+        public event EventHandler<CollisionEventArgs>? ExitCollision;
 
         /// <summary>
         /// The hitboxes the IHitbox checks collision with.
