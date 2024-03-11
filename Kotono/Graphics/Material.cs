@@ -9,15 +9,15 @@ namespace Kotono.Graphics
     {
         public List<MaterialTexture> Textures { get; } = [];
 
-        internal MaterialTexture? Albedo => Textures.FirstOrNull(t => t.Name == "Albedo");
+        internal MaterialTexture? Albedo => Textures.Find(t => t.Name == "Albedo");
 
-        internal MaterialTexture? Normal => Textures.FirstOrNull(t => t.Name == "Normal");
+        internal MaterialTexture? Normal => Textures.Find(t => t.Name == "Normal");
 
-        internal MaterialTexture? Metalness => Textures.FirstOrNull(t => t.Name == "Metalness");
+        internal MaterialTexture? Metalness => Textures.Find(t => t.Name == "Metalness");
 
-        internal MaterialTexture? Roughness => Textures.FirstOrNull(t => t.Name == "Roughness");
+        internal MaterialTexture? Roughness => Textures.Find(t => t.Name == "Roughness");
 
-        internal MaterialTexture? AmbientOcclusion => Textures.FirstOrNull(t => t.Name == "AmbientOcclusion");
+        internal MaterialTexture? AmbientOcclusion => Textures.Find(t => t.Name == "AmbientOcclusion");
 
         internal MaterialTextureSettings[] MaterialTexturesSettings { get; }
 

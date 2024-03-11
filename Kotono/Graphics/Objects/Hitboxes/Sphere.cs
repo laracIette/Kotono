@@ -29,7 +29,7 @@ namespace Kotono.Graphics.Objects.Hitboxes
 
                 for (int i = 0; i < SEGMENTS; i++)
                 {
-                    float rotation = i / (float)SEGMENTS * MathHelper.TwoPi;
+                    float rotation = i / (float)SEGMENTS * Math.PI * 2.0f;
                     _vertices[i] = new Vector
                     {
                         X = 0.5f * Math.Cos(rotation),
@@ -53,16 +53,11 @@ namespace Kotono.Graphics.Objects.Hitboxes
             }
         }
 
-        public override void Update()
-        {
-            Location += LocationVelocity * Time.Delta;
-        }
-
         public override void Draw()
         {
-            DrawCircle(new Vector(MathHelper.PiOver2, 0.0f, 0.0f));
-            DrawCircle(new Vector(0.0f, MathHelper.PiOver2, 0.0f));
-            DrawCircle(new Vector(0.0f, 0.0f, MathHelper.PiOver2));
+            DrawCircle(new Vector(Math.PI / 2.0f, 0.0f, 0.0f));
+            DrawCircle(new Vector(0.0f, Math.PI / 2.0f, 0.0f));
+            DrawCircle(new Vector(0.0f, 0.0f, Math.PI / 2.0f));
         }
 
         private void DrawCircle(Vector rotation)
@@ -82,17 +77,17 @@ namespace Kotono.Graphics.Objects.Hitboxes
             GL.DrawArrays(PrimitiveType.LineLoop, 0, _vertices.Length);
         }
 
-        public override bool CollidesWith(Hitbox hitbox)
+        public override bool CollidesWith(IHitbox hitbox)
         {
             switch (hitbox)
             {
                 case Sphere sphere:
-                    return Vector.Distance(this, sphere) < (Radius + sphere.Radius) / 2.0f;
+                    return Vector.Distance(this, sphere) <= Math.Avg(Radius, sphere.Radius);
 
                 case IObject3D object3D:
-                    return Math.Abs(Location.X - object3D.Location.X) <= (Scale.X + object3D.Scale.X) / 2.0f
-                        && Math.Abs(Location.Y - object3D.Location.Y) <= (Scale.Y + object3D.Scale.Y) / 2.0f
-                        && Math.Abs(Location.Z - object3D.Location.Z) <= (Scale.Z + object3D.Scale.Z) / 2.0f;
+                    return Math.Abs(Location.X - object3D.Location.X) <= Math.Avg(Radius, object3D.Scale.X)
+                        && Math.Abs(Location.Y - object3D.Location.Y) <= Math.Avg(Radius, object3D.Scale.Y)
+                        && Math.Abs(Location.Z - object3D.Location.Z) <= Math.Avg(Radius, object3D.Scale.Z);
 
                 default:
                     return false;

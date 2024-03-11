@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.Contracts;
+using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace Kotono.Utils
@@ -133,6 +134,19 @@ namespace Kotono.Utils
         public static float Floor(float value)
         {
             return (int)value;
+        }
+
+        [Pure]
+        public static float Avg(params float[] value)
+        {
+            float result = 0.0f;
+
+            foreach (var item in value)
+            {
+                result += item;
+            }
+
+            return result / value.Length;
         }
     }
 }

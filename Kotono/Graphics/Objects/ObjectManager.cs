@@ -1,4 +1,5 @@
-﻿using Kotono.Graphics.Objects.Lights;
+﻿using Kotono.Graphics.Objects.Hitboxes;
+using Kotono.Graphics.Objects.Lights;
 using Kotono.Input;
 using Kotono.Utils;
 using Kotono.Utils.Coordinates;
@@ -18,6 +19,8 @@ namespace Kotono.Graphics.Objects
         internal static PointLight[] PointLights => _objects.OfType<PointLight>().ToArray();
 
         internal static SpotLight[] SpotLights => _objects.OfType<SpotLight>().ToArray();
+
+        internal static IHitbox[] Hitboxes => _objects.OfType<IHitbox>().ToArray();
 
         internal static Camera ActiveCamera => _objects.OfType<Camera>().FirstOrNull() ?? throw new KotonoException("there is no Object of type Camera in _objects");
 

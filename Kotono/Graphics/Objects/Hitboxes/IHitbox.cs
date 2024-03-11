@@ -1,20 +1,33 @@
 ﻿using Kotono.Utils;
+using System;
 using System.Collections.Generic;
 
 namespace Kotono.Graphics.Objects.Hitboxes
 {
-    internal interface IHitbox
+    internal interface IHitbox : IDrawable
     {
+        public event EventHandler<HitboxEventArgs>? EnterCollision;
+
+        public event EventHandler<HitboxEventArgs>? ExitCollision;
+
+        /// <summary>
+        /// The hitboxes the IHitbox checks collision with.
+        /// </summary>
+        public List<IHitbox> Collisions { get; }
+
+        /// <summary>
+        /// The hitboxes the IHitbox currently collides with.
+        /// </summary>
+        public List<IHitbox> Colliders { get; }
+
         public bool IsColliding { get; }
 
-        public Color Color { get; set; }
+        public void OnEnterCollision(IHitbox hitbox);
 
-        public List<Hitbox> Collisions { get; }
+        public void OnExitCollision(IHitbox hitbox);
 
-        public List<Hitbox> Colliders { get; }
+        public bool CollidesWith(IHitbox h);
 
-        public bool CollidesWith(Hitbox h);
-
-        public bool TryGetCollider(out Hitbox? collider);
+        public bool TryGetCollider(out IHitbox? collider);
     }
 }

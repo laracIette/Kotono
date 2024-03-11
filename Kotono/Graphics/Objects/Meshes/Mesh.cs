@@ -6,6 +6,7 @@ using Kotono.Utils;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using System.Collections.Generic;
 using Kotono.Utils.Coordinates;
+using System;
 
 namespace Kotono.Graphics.Objects.Meshes
 {
@@ -76,12 +77,16 @@ namespace Kotono.Graphics.Objects.Meshes
 
             _shader = ShaderManager.Get(settings.Shader);
 
+            _hitboxes = [new Sphere(new HitboxSettings())];
             foreach (var hitbox in _hitboxes)
             {
                 hitbox.Location = Location;
                 hitbox.Rotation = Vector.Zero;
-                hitbox.Scale = Scale * 2;
+                hitbox.Scale = Scale * 5.0f;
                 hitbox.Color = Color.Red;
+
+                hitbox.EnterCollision += OnEnterCollision;
+                hitbox.ExitCollision += OnExitCollision;
             }
 
             Model = MeshModel.Load(new MeshModelSettings { Path = settings.Model, Shader = _shader });
@@ -113,8 +118,6 @@ namespace Kotono.Graphics.Objects.Meshes
             {
                 OnMouseLeftButtonPressed();
             }
-
-            Color = IsSelected ? (IsActive ? Color.Green : Color.Orange) : Color.White;
         }
 
         public void UpdateFizix()
@@ -178,6 +181,8 @@ namespace Kotono.Graphics.Objects.Meshes
             {
                 ISelectable.Selected.Add(this);
             }
+
+            Color = IsSelected ? (IsActive ? Color.Green : Color.Orange) : Color.White;
         }
 
         public override void Save()
@@ -191,6 +196,20 @@ namespace Kotono.Graphics.Objects.Meshes
 
             base.Save();
         }
+
+        private void OnEnterCollision(object? sender, HitboxEventArgs e)
+        {
+            OnEnterCollision(e.Source, e.Collider);
+        }
+
+        protected virtual void OnEnterCollision(IHitbox source, IHitbox collider) { }
+
+        private void OnExitCollision(object? sender, HitboxEventArgs e)
+        {
+            OnExitCollision(e.Source, e.Collider);
+        }
+
+        protected virtual void OnExitCollision(IHitbox source, IHitbox collider) { }
 
         public override void Delete()
         {

@@ -39,6 +39,24 @@ namespace Kotono.Utils.Coordinates
         [JsonIgnore]
         public readonly Vector Normalized => this / Length;
 
+        /// <summary> 
+        /// The minimum value of the Vector.
+        /// </summary>
+        [JsonIgnore]
+        public readonly float Min => Math.Min(Math.Min(X, Y), Z);
+
+        /// <summary> 
+        /// The maximum value of the Vector.
+        /// </summary>
+        [JsonIgnore]
+        public readonly float Max => Math.Max(Math.Max(X, Y), Z);
+        
+        /// <summary> 
+        /// The absolute value of the Vector.
+        /// </summary>
+        [JsonIgnore]
+        public readonly Vector Abs => new Vector(Math.Abs(X), Math.Abs(Y), Math.Abs(Z));
+
         /// <summary>
         /// A <see cref="Vector"/> with X = 0, Y = 0, Z = 0.
         /// </summary>
@@ -186,24 +204,6 @@ namespace Kotono.Utils.Coordinates
         internal static float Distance(IObject3D left, IObject3D right)
         {
             return Distance(left.Location, right.Location);
-        }
-
-        public static Vector Abs(Vector v)
-        {
-            v.X = Math.Abs(v.X);
-            v.Y = Math.Abs(v.Y);
-            v.Z = Math.Abs(v.Z);
-            return v;
-        }
-
-        public static float Min(Vector v)
-        {
-            return Math.Min(Math.Min(v.X, v.Y), v.Z);
-        }
-
-        public static float Max(Vector v)
-        {
-            return Math.Max(Math.Max(v.X, v.Y), v.Z);
         }
 
         public static Vector Clamp(Vector v, float min, float max)

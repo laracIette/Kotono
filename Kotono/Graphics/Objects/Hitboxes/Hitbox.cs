@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Kotono.Graphics.Objects.Hitboxes
 {
@@ -6,19 +7,56 @@ namespace Kotono.Graphics.Objects.Hitboxes
         : Object3D(settings),
         IHitbox
     {
+        public event EventHandler<HitboxEventArgs>? EnterCollision = null;
+
+        public event EventHandler<HitboxEventArgs>? ExitCollision = null;
+
+        public List<IHitbox> Collisions { get; } = settings.Collisions;
+
+        public List<IHitbox> Colliders { get; set; } = [];
+
         public bool IsColliding => TryGetCollider(out _);
 
-        public List<Hitbox> Collisions { get; } = settings.Collisions;
+        public override void Update()
+        {
+            var colliders = Collisions.FindAll(CollidesWith);
 
-        public List<Hitbox> Colliders => Collisions.FindAll(CollidesWith);
+            foreach (var hitbox in colliders)
+            {
+                if (!Colliders.Contains(hitbox))
+                {
+                    OnEnterCollision(hitbox);
+                }
+            }
 
-        public abstract bool CollidesWith(Hitbox hitbox);
+            foreach (var hitbox in Colliders)
+            {
+                if (!colliders.Contains(hitbox))
+                {
+                    OnExitCollision(hitbox);
+                }
+            }
 
-        public bool TryGetCollider(out Hitbox? collider)
+            Colliders = colliders;
+        }
+
+        public abstract bool CollidesWith(IHitbox hitbox);
+
+        public bool TryGetCollider(out IHitbox? collider)
         {
             collider = Collisions.Find(CollidesWith);
 
             return collider != null;
+        }
+
+        public void OnEnterCollision(IHitbox hitbox)
+        {
+            EnterCollision?.Invoke(this, new HitboxEventArgs(this, hitbox));
+        }
+
+        public void OnExitCollision(IHitbox hitbox)
+        {
+            ExitCollision?.Invoke(this, new HitboxEventArgs(this, hitbox));
         }
     }
 }

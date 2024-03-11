@@ -140,12 +140,12 @@ namespace Kotono.Graphics.Objects.Hitboxes
             GL.DrawArrays(PrimitiveType.Lines, 0, _vertices.Length);
         }
 
-        public override bool CollidesWith(Hitbox hitbox)
+        public override bool CollidesWith(IHitbox hitbox)
         {
             return (hitbox is IObject3D object3D)
-                && (Math.Abs(Location.X - object3D.Location.X) <= (Scale.X + object3D.Scale.X) / 2.0f)
-                && (Math.Abs(Location.Y - object3D.Location.Y) <= (Scale.Y + object3D.Scale.Y) / 2.0f)
-                && (Math.Abs(Location.Z - object3D.Location.Z) <= (Scale.Z + object3D.Scale.Z) / 2.0f);
+                && (Math.Abs(Location.X - object3D.Location.X) <= Math.Avg(Scale.X, object3D.Scale.X))
+                && (Math.Abs(Location.Y - object3D.Location.Y) <= Math.Avg(Scale.Y, object3D.Scale.Y))
+                && (Math.Abs(Location.Z - object3D.Location.Z) <= Math.Avg(Scale.Z, object3D.Scale.Z));
         }
     }
 }

@@ -49,7 +49,7 @@ namespace Kotono.Physics
 
             foreach (var collider in sphere.Collisions.FindAll(sphere.CollidesWith))
             {
-                collisionCenter += collider.Location;
+                //collisionCenter += collider.Location;
                 n++;
             }
 

@@ -11,6 +11,8 @@ using Math = Kotono.Utils.Math;
 using Kotono.Utils.Coordinates;
 using Kotono.Graphics.Objects.Buttons;
 using Kotono.Graphics;
+using Kotono.Graphics.Objects.Hitboxes;
+using System.Linq;
 
 namespace Kotono
 {

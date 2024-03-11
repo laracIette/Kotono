@@ -13,6 +13,6 @@ namespace Kotono.Graphics.Objects.Hitboxes
         /// <remarks> 
         /// Default value : [] 
         /// </remarks>
-        public List<Hitbox> Collisions { get; set; } = [];
+        public List<IHitbox> Collisions { get; set; } = [];
     }
 }
