@@ -1,6 +1,5 @@
 ﻿using Assimp;
 using Kotono.Graphics.Objects.Shapes;
-using Kotono.Graphics.Shaders;
 using Kotono.Utils;
 using Kotono.Utils.Coordinates;
 using OpenTK.Graphics.OpenGL4;
@@ -11,9 +10,9 @@ using PrimitiveType = OpenTK.Graphics.OpenGL4.PrimitiveType;
 
 namespace Kotono.Graphics.Objects.Meshes
 {
-    internal class MeshModel
+    internal class Model
     {
-        private static readonly Dictionary<string, MeshModel> _models = [];
+        private static readonly Dictionary<string, Model> _models = [];
 
         internal string Path { get; }
 
@@ -29,7 +28,7 @@ namespace Kotono.Graphics.Objects.Meshes
 
         internal Triangle[] Triangles { get; }
 
-        private MeshModel(MeshModelSettings settings)
+        private Model(ModelSettings settings)
         {
             Path = settings.Path;
 
@@ -121,11 +120,11 @@ namespace Kotono.Graphics.Objects.Meshes
             GL.BufferData(BufferTarget.ElementArrayBuffer, IndicesCount * sizeof(int), indices[0].ToArray(), BufferUsageHint.StaticDraw);
         }
 
-        internal static MeshModel Load(MeshModelSettings settings)
+        internal static Model Load(ModelSettings settings)
         {
-            if (!_models.TryGetValue(settings.Path, out MeshModel? value))
+            if (!_models.TryGetValue(settings.Path, out Model? value))
             {
-                value = new MeshModel(settings);
+                value = new Model(settings);
 
                 _models[settings.Path] = value;
             }
@@ -139,8 +138,6 @@ namespace Kotono.Graphics.Objects.Meshes
             GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
 
             GL.DrawElements(PrimitiveType.Triangles, IndicesCount, DrawElementsType.UnsignedInt, IntPtr.Zero);
-
-            GL.BindTexture(TextureTarget.Texture2D, 0);
         }
     }
 }

@@ -6,7 +6,6 @@ using Kotono.Utils;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using System.Collections.Generic;
 using Kotono.Utils.Coordinates;
-using System;
 
 namespace Kotono.Graphics.Objects.Meshes
 {
@@ -16,7 +15,7 @@ namespace Kotono.Graphics.Objects.Meshes
 
         protected readonly Shader _shader;
 
-        internal MeshModel Model { get; }
+        internal Model Model { get; }
 
         internal Material Material { get; }
 
@@ -88,7 +87,7 @@ namespace Kotono.Graphics.Objects.Meshes
                 hitbox.ExitCollision += OnExitCollision;
             }
 
-            Model = MeshModel.Load(new MeshModelSettings { Path = settings.Model, Shader = _shader });
+            Model = Model.Load(new ModelSettings { Path = settings.Model, Shader = _shader });
         }
 
         public override void Update()
@@ -132,6 +131,8 @@ namespace Kotono.Graphics.Objects.Meshes
             _shader.SetColor("color", Color);
 
             Model.Draw();
+
+            Texture.Unbind();
         }
 
         private void OnMouseLeftButtonPressed()

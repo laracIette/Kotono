@@ -19,6 +19,8 @@ namespace Kotono.Graphics.Objects.Meshes
             _shader.SetColor("color", Color);
 
             Model.Draw();
+
+            Texture.Unbind();
         }
     }
 }

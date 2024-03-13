@@ -5,14 +5,11 @@ using Kotono.Graphics.Objects.Lights;
 using Kotono.Graphics.Objects.Meshes;
 using Kotono.Input;
 using Kotono.Utils;
-using System;
 using Keys = OpenTK.Windowing.GraphicsLibraryFramework.Keys;
 using Math = Kotono.Utils.Math;
 using Kotono.Utils.Coordinates;
 using Kotono.Graphics.Objects.Buttons;
 using Kotono.Graphics;
-using Kotono.Graphics.Objects.Hitboxes;
-using System.Linq;
 
 namespace Kotono
 {

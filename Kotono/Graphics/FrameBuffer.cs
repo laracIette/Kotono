@@ -56,7 +56,7 @@ namespace Kotono.Graphics
             SetTextureParameters();
 
             // Unbind texture
-            GL.BindTexture(TextureTarget.Texture2D, 0);
+            Texture.Unbind();
 
             // Attach textures to framebuffer
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, _framebuffer);

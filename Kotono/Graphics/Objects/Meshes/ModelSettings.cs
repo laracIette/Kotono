@@ -2,7 +2,7 @@
 
 namespace Kotono.Graphics.Objects.Meshes
 {
-    internal class MeshModelSettings
+    internal class ModelSettings
     {
         internal string Path { get; set; } = "";
 

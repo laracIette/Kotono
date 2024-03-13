@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics.Contracts;
-using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace Kotono.Utils

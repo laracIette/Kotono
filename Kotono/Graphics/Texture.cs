@@ -56,9 +56,11 @@ namespace Kotono.Graphics
             GL.BindTexture(TextureTarget.Texture2D, Handle);
         }
 
+        public static void Unbind() => GL.BindTexture(TextureTarget.Texture2D, 0);
+
         public static void DisposeAll()
         {
-            GL.BindTexture(TextureTarget.Texture2D, 0);
+            Unbind();
 
             GL.DeleteTextures(_textures.Values.Count, _textures.Values.ToArray());
         }
