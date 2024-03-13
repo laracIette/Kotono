@@ -2,8 +2,7 @@
 
 namespace Kotono.Graphics.Objects.Buttons
 {
-    internal class ButtonEventArgs()
-        : EventArgs()
+    internal class ButtonEventArgs : EventArgs
     {
         /// <summary>
         /// The time at which the event occured.

@@ -55,9 +55,9 @@ namespace Kotono
             _timer.Start(1.0f, true);
         }
 
-        private void OnTimerTimeout(object? sender, EventArgs e)
+        private void OnTimerTimeout(object? sender, TimeoutEventArgs e)
         {
-            Printer.Print((int)Time.Now, true);
+            Printer.Print((int)e.Time, true);
         }
 
         protected override void Update()

@@ -12,7 +12,7 @@ namespace Kotono.Utils
 
         private float _currentDuration = 0.0f;
 
-        internal event EventHandler? Timeout = null;
+        internal event EventHandler<TimeoutEventArgs>? Timeout = null;
 
         internal bool IsLoop { get; set; } = false;
 
@@ -72,7 +72,7 @@ namespace Kotono.Utils
 
         private void OnTimeout()
         {
-            Timeout?.Invoke(this, EventArgs.Empty);
+            Timeout?.Invoke(this, new TimeoutEventArgs());
         }
     }
 }
