@@ -77,7 +77,6 @@ namespace Kotono.Graphics.Objects.Meshes
 
             _shader = ShaderManager.Get(settings.Shader);
 
-            _hitboxes = [new Sphere(new HitboxSettings())];
             foreach (var hitbox in _hitboxes)
             {
                 hitbox.Location = Location;

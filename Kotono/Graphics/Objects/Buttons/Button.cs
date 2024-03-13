@@ -25,7 +25,7 @@ namespace Kotono.Graphics.Objects.Buttons
 
         public override void Update()
         {
-            WasDown = Mouse.WasButtonDown(MouseButton.Left) && IsDown;
+            WasDown = IsDown && Mouse.WasButtonDown(MouseButton.Left);
 
             IsDown = IsDraw && Mouse.IsButtonDown(MouseButton.Left) && Rect.Overlaps(Dest, Mouse.Position);
 

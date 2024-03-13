@@ -2,47 +2,49 @@
 
 namespace Kotono.Utils
 {
-    public static class Time
+    internal static class Time
     {
-        /// <summary>
-        /// Current UTC Time since Epoch in milliseconds.
-        /// </summary>
-        public static long SinceEpochMS { get; private set; } = DateTime.UtcNow.Ticks / TimeSpan.TicksPerMillisecond;
+        private static double StartTime { get; } = DateTime.UtcNow.Ticks / (double)TimeSpan.TicksPerSecond;
 
         /// <summary>
         /// Current UTC Time since Epoch in seconds.
         /// </summary>
-        public static double SinceEpoch => SinceEpochMS / 1000.0;
+        internal static double SinceEpoch { get; private set; } = StartTime;
 
         /// <summary>
-        /// Current Time since the start of the program in milliseconds.
+        /// Current UTC Time since Epoch in milliseconds.
         /// </summary>
-        public static int NowMS { get; private set; } = 0;
+        internal static double SinceEpochMS => SinceEpoch * 1000.0;
 
         /// <summary>
         /// Current Time since the start of the program in seconds.
         /// </summary>
-        public static float Now => NowMS / 1000.0f;
+        internal static float Now { get; private set; } = 0.0f;
 
         /// <summary>
-        /// Delta Time in milliseconds.
+        /// Current Time since the start of the program in milliseconds.
         /// </summary>
-        public static int DeltaMS { get; private set; } = 0;
+        internal static float NowMS => Now * 1000.0f;
 
         /// <summary>
         /// Delta Time in seconds.
         /// </summary>
-        public static float Delta => DeltaMS / 1000.0f;
+        internal static float Delta { get; private set; } = 0.0f;
 
-        public static void Update()
+        /// <summary>
+        /// Delta Time in milliseconds.
+        /// </summary>
+        internal static float DeltaMS => Delta * 1000.0f;
+
+        internal static void Update()
         {
-            long sinceEpochMS = DateTime.UtcNow.Ticks / TimeSpan.TicksPerMillisecond;
+            SinceEpoch = DateTime.UtcNow.Ticks / (double)TimeSpan.TicksPerSecond;
 
-            DeltaMS = (int)(sinceEpochMS - SinceEpochMS);
+            float now = (float)(SinceEpoch - StartTime);
 
-            NowMS += DeltaMS;
+            Delta = now - Now;
 
-            SinceEpochMS = sinceEpochMS;
+            Now = now;
         }
     }
 }

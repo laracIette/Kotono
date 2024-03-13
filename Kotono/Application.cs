@@ -53,7 +53,7 @@ namespace Kotono
             _timer = new Timer();
             _timer.Timeout += OnTimerTimeout;
             _timer.IsLoop = true;
-            _timer.Start(1.0f);
+            _timer.Start(0.1f);
         }
 
         private void OnTimerTimeout(object? sender, EventArgs e)

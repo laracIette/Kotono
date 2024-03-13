@@ -37,23 +37,23 @@ namespace Kotono.Utils
 
         private void Reset(float duration)
         {
+            _isTicking = true;
+            _startTime = Time.Now;
+            _currentDuration = duration;
+        }
+
+        internal void Start(float duration)
+        {
             if (duration > 0.0f)
             {
-                _isTicking = true;
-                _startTime = Time.Now;
-                _currentDuration = duration;
+                Reset(duration);
+
+                _targetDuration = duration;
             }
             else
             {
                 throw new Exception($"error: duration \"{duration}\" should be over 0.0f.");
             }
-        }
-
-        internal void Start(float duration)
-        {
-            Reset(duration);
-
-            _targetDuration = duration;
         }
 
         private void OnTimeout()
