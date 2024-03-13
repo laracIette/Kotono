@@ -3,6 +3,7 @@ using Kotono.Engine;
 using Kotono.Engine.UserInterface.AddMenu;
 using Kotono.Graphics;
 using Kotono.Graphics.Objects;
+using Kotono.Graphics.Shaders;
 using Kotono.Graphics.Statistics;
 using Kotono.Input;
 using Kotono.Utils;
@@ -72,7 +73,7 @@ namespace Kotono
                 }
             )
         {
-            // Needed to parse float correctly
+            // Needed to parse correctly
             CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
             CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
 

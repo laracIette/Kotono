@@ -1,6 +1,6 @@
-﻿using Kotono.Utils;
+﻿using Kotono.Graphics.Shaders;
+using Kotono.Utils;
 using Kotono.Utils.Coordinates;
-using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
 
 namespace Kotono.Graphics.Objects
@@ -19,6 +19,8 @@ namespace Kotono.Graphics.Objects
             }
         }
 
+        protected override Shader Shader => ShaderManager.RoundedBorder;
+
         protected override Matrix4 Model =>
             Matrix4.CreateScale(
                 (Dest + new Rect(w: FallOff * 2.0f + Thickness)).NDC.W,
@@ -30,6 +32,7 @@ namespace Kotono.Graphics.Objects
         internal RoundedBorder(RoundedBorderSettings settings)
             : base(settings)
         {
+            Thickness = settings.Thickness;
         }
 
         protected override void UpdateValues()
@@ -54,16 +57,9 @@ namespace Kotono.Graphics.Objects
 
         public override void Draw()
         {
-            ShaderManager.RoundedBorder.SetMatrix4("model", Model);
-            ShaderManager.RoundedBorder.SetColor("color", Color);
-            ShaderManager.RoundedBorder.SetRect("sides", GetSides(Dest));
-            ShaderManager.RoundedBorder.SetFloat("fallOff", FallOff);
-            ShaderManager.RoundedBorder.SetFloat("cornerSize", CornerSize);
-            ShaderManager.RoundedBorder.SetFloat("thickness", Thickness);
+            Shader.SetFloat("thickness", Thickness);
 
-            GL.BindVertexArray(SquareVertices.VertexArrayObject);
-
-            GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
+            base.Draw();
         }
     }
 }

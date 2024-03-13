@@ -1,4 +1,5 @@
-﻿using Kotono.Utils.Coordinates;
+﻿using Kotono.Graphics.Shaders;
+using Kotono.Utils.Coordinates;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using Math = Kotono.Utils.Math;
@@ -41,6 +42,8 @@ namespace Kotono.Graphics.Objects
             }
         }
 
+        protected virtual Shader Shader => ShaderManager.RoundedBox;
+
         protected virtual Matrix4 Model =>
             Matrix4.CreateScale(
                 (Dest + new Rect(w: FallOff * 2.0f)).NDC.W,
@@ -71,28 +74,33 @@ namespace Kotono.Graphics.Objects
 
         public override void Draw()
         {
-            ShaderManager.RoundedBox.SetMatrix4("model", Model);
-            ShaderManager.RoundedBox.SetColor("color", Color);
-            ShaderManager.RoundedBox.SetRect("sides", GetSides(Dest));
-            ShaderManager.RoundedBox.SetFloat("fallOff", FallOff);
-            ShaderManager.RoundedBox.SetFloat("cornerSize", CornerSize);
+            Shader.SetMatrix4("model", Model);
+            Shader.SetColor("color", Color);
+            Shader.SetRect("sides", Sides);
+            Shader.SetFloat("fallOff", FallOff);
+            Shader.SetFloat("cornerSize", CornerSize);
 
             GL.BindVertexArray(SquareVertices.VertexArrayObject);
 
             GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
         }
 
-        protected static Rect GetSides(Rect r)
+        protected Rect Sides
         {
-            r.X = WindowComponentManager.ActiveViewport.Dest.X + r.X;
-            r.Y = Window.Dest.H - WindowComponentManager.ActiveViewport.Dest.Y - r.Y;
+            get
+            {
+                var r = Dest;
 
-            return new Rect(
-                r.X - r.W / 2, // Left
-                r.X + r.W / 2, // Right
-                r.Y + r.H / 2, // Top
-                r.Y - r.H / 2  // Bottom
-            );
+                r.X = WindowComponentManager.ActiveViewport.Dest.X + r.X;
+                r.Y = Window.Dest.H - WindowComponentManager.ActiveViewport.Dest.Y - r.Y;
+
+                return new Rect(
+                    r.X - r.W / 2, // Left
+                    r.X + r.W / 2, // Right
+                    r.Y + r.H / 2, // Top
+                    r.Y - r.H / 2  // Bottom
+                );
+            }
         }
     }
 }

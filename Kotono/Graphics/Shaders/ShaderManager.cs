@@ -1,7 +1,6 @@
-﻿using Kotono.Graphics.Shaders;
-using Kotono.Utils.Exceptions;
+﻿using Kotono.Utils.Exceptions;
 
-namespace Kotono.Graphics
+namespace Kotono.Graphics.Shaders
 {
     internal static class ShaderManager
     {

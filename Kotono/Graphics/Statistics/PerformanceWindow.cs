@@ -45,7 +45,6 @@ namespace Kotono.Graphics.Statistics
                 {
                     Dest = new Rect(Position, 400.0f, 120.0f),
                     Color = Color.DarkSlateGray,
-                    FallOff = 1.0f,
                     CornerSize = 10.0f
                 }
             );
