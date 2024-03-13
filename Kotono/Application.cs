@@ -52,13 +52,12 @@ namespace Kotono
 
             _timer = new Timer();
             _timer.Timeout += OnTimerTimeout;
-            _timer.IsLoop = true;
-            _timer.Start(0.1f);
+            _timer.Start(1.0f, true);
         }
 
         private void OnTimerTimeout(object? sender, EventArgs e)
         {
-            Printer.Print(Time.Now, true);
+            Printer.Print((int)Time.Now, true);
         }
 
         protected override void Update()

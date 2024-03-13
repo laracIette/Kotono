@@ -42,6 +42,10 @@ namespace Kotono.Utils
             _currentDuration = duration;
         }
 
+
+        /// <summary>
+        /// Start the timer given a duration.
+        /// </summary>
         internal void Start(float duration)
         {
             if (duration > 0.0f)
@@ -54,6 +58,16 @@ namespace Kotono.Utils
             {
                 throw new Exception($"error: duration \"{duration}\" should be over 0.0f.");
             }
+        }
+
+        /// <summary>
+        /// Start the timer given a duration and wether the timer should restart when timed-out.
+        /// </summary>
+        internal void Start(float duration, bool isLoop)
+        {
+            Start(duration);
+
+            IsLoop = isLoop;
         }
 
         private void OnTimeout()
