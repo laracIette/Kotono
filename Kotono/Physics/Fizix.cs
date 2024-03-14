@@ -10,7 +10,7 @@ namespace Kotono.Physics
     {
         internal static Vector Gravity { get; set; } = new Vector(0.0f, -0.1f, 0.0f);
 
-        internal static void Update(IFizixObject mesh)
+        internal static void Update(IFizixObject obj)
         {
 
         }

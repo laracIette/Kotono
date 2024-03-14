@@ -58,7 +58,7 @@ namespace Kotono.Graphics.Objects
         {
             if (_settings is Object3DSettings settings)
             {
-                
+
             }
 
             base.Save();

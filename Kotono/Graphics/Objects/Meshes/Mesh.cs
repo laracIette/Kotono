@@ -33,9 +33,9 @@ namespace Kotono.Graphics.Objects.Meshes
 
         public float LastIntersectionCheckTime { get; private set; } = 0.0f;
 
-        public Vector IntersectionLocation { get; private set; } = Vector.Zero;
-
         public float IntersectionDistance { get; private set; } = 0.0f;
+
+        public Vector IntersectionLocation { get; private set; } = Vector.Zero;
 
         public override bool IsHovered
         {
@@ -50,7 +50,9 @@ namespace Kotono.Graphics.Objects.Meshes
 
                     foreach (var triangle in Model.Triangles)
                     {
-                        if (Intersection.IntersectRayTriangle(ObjectManager.ActiveCamera.Location, Mouse.Ray, triangle, out Vector intersectionLocation, out float intersectionDistance))
+                        triangle.Transform = Transform.Clone(); // TODO: temporary fix
+
+                        if (Intersection.IntersectRayTriangle(ObjectManager.ActiveCamera.Location, Mouse.Ray, in triangle, out Vector intersectionLocation, out float intersectionDistance))
                         {
                             IntersectionLocation = intersectionLocation;
                             IntersectionDistance = intersectionDistance;
@@ -77,9 +79,7 @@ namespace Kotono.Graphics.Objects.Meshes
 
             foreach (var hitbox in _hitboxes)
             {
-                hitbox.RelativeLocation = RelativeLocation;
-                hitbox.RelativeRotation = Vector.Zero;
-                hitbox.RelativeScale = RelativeScale;
+                hitbox.Transform = new Transform(Transform);
                 hitbox.Color = Color.Red;
 
                 hitbox.EnterCollision += OnEnterCollision;
@@ -90,7 +90,7 @@ namespace Kotono.Graphics.Objects.Meshes
 
             foreach (var triangle in Model.Triangles)
             {
-                triangle.Transform = Transform;
+                //triangle.Transform = Transform;
             }
         }
 
@@ -120,8 +120,6 @@ namespace Kotono.Graphics.Objects.Meshes
             {
                 OnMouseLeftButtonPressed();
             }
-
-            //Printer.Print(Transform, true);
         }
 
         public override void Draw()

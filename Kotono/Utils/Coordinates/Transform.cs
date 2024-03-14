@@ -5,22 +5,22 @@ using System.Text.Json.Serialization;
 namespace Kotono.Utils.Coordinates
 {
     [Serializable]
-    public class Transform : IEquatable<Transform>
+    public class Transform : IEquatable<Transform>, ICloneable<Transform>
     {
         /// <summary> 
         /// The location of the Transform relative to its parent. 
         /// </summary>
-        public Vector RelativeLocation { get; set; }
+        public Vector RelativeLocation { get; set; } = DefaultLocation;
 
         /// <summary> 
         /// The rotation of the Transform relative to its parent. 
         /// </summary>
-        public Vector RelativeRotation { get; set; }
+        public Vector RelativeRotation { get; set; } = DefaultRotation;
 
         /// <summary> 
         /// The scale of the Transform relative to its parent. 
         /// </summary>
-        public Vector RelativeScale { get; set; }
+        public Vector RelativeScale { get; set; } = DefaultScale;
 
         /// <summary> 
         /// The location of the Transform. 
@@ -52,17 +52,17 @@ namespace Kotono.Utils.Coordinates
         /// <summary>
         /// The velocity of the Transform's relative location.
         /// </summary>
-        internal Vector LocationVelocity { get; set; } = Vector.Zero;
+        internal Vector LocationVelocity { get; set; } = DefaultLocation;
 
         /// <summary>
         /// The velocity of the Transform's relative rotation.
         /// </summary>
-        internal Vector RotationVelocity { get; set; } = Vector.Zero;
+        internal Vector RotationVelocity { get; set; } = DefaultRotation;
 
         /// <summary>
         /// The velocity of the Transform's relative scale.
         /// </summary>
-        internal Vector ScaleVelocity { get; set; } = Vector.Unit;
+        internal Vector ScaleVelocity { get; set; } = DefaultScale;
 
         /// <summary> 
         /// The right vector of the Transform. 
@@ -80,6 +80,17 @@ namespace Kotono.Utils.Coordinates
         internal Vector Forward => (Vector)(Quaternion.FromEulerAngles((Vector3)RelativeRotation) * Vector3.UnitZ);
 
         /// <summary>
+        /// The transform the Transform is relative to.
+        /// </summary>
+        internal Transform? Parent { get; set; } = null;
+
+        internal Vector ParentWorldLocation => Parent?.WorldLocation ?? DefaultLocation;
+
+        internal Vector ParentWorldRotation => Parent?.WorldRotation ?? DefaultRotation;
+
+        internal Vector ParentWorldScale => Parent?.WorldScale ?? DefaultScale;
+        
+        /// <summary>
         /// The model matrix of the Transform.
         /// </summary>
         internal Matrix4 Model =>
@@ -89,29 +100,19 @@ namespace Kotono.Utils.Coordinates
             * Matrix4.CreateRotationZ(WorldRotation.Z)
             * Matrix4.CreateTranslation((Vector3)WorldLocation);
 
-        /// <summary>
-        /// The transform the Transform is relative to.
-        /// </summary>
-        internal Transform? Parent { get; set; } = null;
-
-        internal Vector ParentWorldLocation => Parent?.WorldLocation ?? Vector.Zero;
-
-        internal Vector ParentWorldRotation => Parent?.WorldRotation ?? Vector.Zero;
-
-        internal Vector ParentWorldScale => Parent?.WorldScale ?? Vector.Unit;
-
         /// <summary> 
-        /// A Transform with Location = Vector.Zero, Rotation = Vector.Zero, Scale = Vector.Unit. 
+        /// A Transform with default location, rotation and scale. 
         /// </summary>
-        internal static Transform Default => new Transform(Vector.Zero, Vector.Zero, Vector.Unit);
+        internal static Transform Default => new Transform(DefaultLocation, DefaultRotation, DefaultScale);
+
+        internal static Vector DefaultLocation => Vector.Zero;
+
+        internal static Vector DefaultRotation => Vector.Zero;
+
+        internal static Vector DefaultScale => Vector.Unit;
 
         [JsonConstructor]
-        internal Transform()
-        {
-            RelativeLocation = Vector.Zero;
-            RelativeRotation = Vector.Zero;
-            RelativeScale = Vector.Unit;
-        }
+        internal Transform() { }
 
         internal Transform(Transform t)
         {
@@ -160,14 +161,19 @@ namespace Kotono.Utils.Coordinates
                 && ScaleVelocity == other.ScaleVelocity;
         }
 
+        public Transform Clone()
+        {
+            return new Transform(this);
+        }
+
         public override int GetHashCode()
         {
-            return HashCode.Combine(RelativeLocation, RelativeRotation, RelativeScale);
+            return HashCode.Combine(WorldLocation, WorldRotation, WorldScale);
         }
 
         public override string ToString()
         {
-            return $"RelativeLocation: {RelativeLocation}\nRelativeRotation: {RelativeRotation}\nRelativeScale   : {RelativeScale}";
+            return $"WorldLocation: {WorldLocation}\nWorldRotation: {WorldRotation}\nWorldScale   : {WorldScale}";
         }
 
         internal string ToString(bool isVelocity)

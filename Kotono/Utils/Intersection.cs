@@ -15,7 +15,7 @@ namespace Kotono.Utils
         /// <param name="intersectionLocation"> The location Vector at which the mouse intersects the mesh. </param>
         /// <param name="intersectionDistance"> The distance of the intersectionLocation from the Camera. </param>
         /// <returns> <see langword="true"/> if the ray interects the Triangle, else returns <see langword="false"/>. </returns>
-        internal static bool IntersectRayTriangle(Vector rayOrigin, Vector rayDirection, Triangle triangle, out Vector intersectionLocation, out float intersectionDistance)
+        internal static bool IntersectRayTriangle(in Vector rayOrigin, in Vector rayDirection, in Triangle triangle, out Vector intersectionLocation, out float intersectionDistance)
         {
             intersectionLocation = Vector.Zero;
             intersectionDistance = 0.0f;
