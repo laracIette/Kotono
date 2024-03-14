@@ -203,7 +203,7 @@ namespace Kotono.Utils.Coordinates
 
         internal static float Distance(IObject3D left, IObject3D right)
         {
-            return Distance(left.Location, right.Location);
+            return Distance(left.RelativeLocation, right.RelativeLocation);
         }
 
         public static Vector Clamp(Vector v, float min, float max)

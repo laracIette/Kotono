@@ -2,15 +2,9 @@
 
 namespace Kotono.Graphics.Objects.Meshes
 {
-    internal class FlatTextureMesh : Mesh
+    internal class FlatTextureMesh()
+        : Mesh(JsonParser.Parse<MeshSettings>(Path.ASSETS + @"Meshes\flatTextureMesh.json"))
     {
-        internal FlatTextureMesh()
-            : base(
-                JsonParser.Parse<MeshSettings>(Path.ASSETS + @"Meshes\flatTextureMesh.json")
-            )
-        {
-        }
-
         public override void Draw()
         {
             Material.Use();
@@ -20,7 +14,7 @@ namespace Kotono.Graphics.Objects.Meshes
 
             Model.Draw();
 
-            Texture.Unbind();
+            Texture.Bind(0);
         }
     }
 }

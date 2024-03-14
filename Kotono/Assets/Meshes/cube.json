@@ -15,17 +15,17 @@
     }
   ],
   "Transform": {
-    "Location": {
+    "RelativeLocation": {
       "X": -4.591732,
       "Y": -1.7012868,
       "Z": -4.28783
     },
-    "Rotation": {
+    "RelativeRotation": {
       "X": 0,
       "Y": 0,
       "Z": 0
     },
-    "Scale": {
+    "RelativeScale": {
       "X": 1,
       "Y": 1,
       "Z": 1

@@ -7,9 +7,7 @@ namespace Kotono.Graphics.Objects.Shapes
         : Shape(
             new ShapeSettings
             {
-                Location = transform.Location,
-                Rotation = transform.Rotation,
-                Scale = transform.Scale,
+                Transform = transform,
                 Vertices = [vertex1, vertex2, vertex3],
                 Color = color
             }

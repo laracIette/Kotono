@@ -47,17 +47,17 @@ namespace Kotono.Graphics
         private void ResizeFramebuffer()
         {
             // Update the color texture
-            GL.BindTexture(TextureTarget.Texture2D, _colorBufferTexture);
+            Texture.Bind(_colorBufferTexture);
             GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgb, (int)Size.X, (int)Size.Y, 0, PixelFormat.Rgb, PixelType.UnsignedByte, IntPtr.Zero);
             SetTextureParameters();
 
             // Update the depth and stencil texture
-            GL.BindTexture(TextureTarget.Texture2D, _depthStencilBufferTexture);
+            Texture.Bind(_depthStencilBufferTexture);
             GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Depth24Stencil8, (int)Size.X, (int)Size.Y, 0, PixelFormat.DepthStencil, PixelType.UnsignedInt248, IntPtr.Zero);
             SetTextureParameters();
 
             // Unbind texture
-            Texture.Unbind();
+            Texture.Bind(0);
 
             // Attach textures to framebuffer
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, _framebuffer);

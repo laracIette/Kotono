@@ -4,17 +4,17 @@
   "Hitboxes": [],
   "MaterialTexturesSettings": [],
   "Transform": {
-    "Location": {
+    "RelativeLocation": {
       "X": -4.998504,
       "Y": -0.83684397,
       "Z": -14.724427
     },
-    "Rotation": {
+    "RelativeRotation": {
       "X": 0,
       "Y": 0,
       "Z": 0
     },
-    "Scale": {
+    "RelativeScale": {
       "X": 1,
       "Y": 1,
       "Z": 1

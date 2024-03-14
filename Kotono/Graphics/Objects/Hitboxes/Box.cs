@@ -127,11 +127,11 @@ namespace Kotono.Graphics.Objects.Hitboxes
         public override void Draw()
         {
             var model =
-                Matrix4.CreateScale((Vector3)Scale)
-                * Matrix4.CreateRotationX(Rotation.X)
-                * Matrix4.CreateRotationY(Rotation.Y)
-                * Matrix4.CreateRotationZ(Rotation.Z)
-                * Matrix4.CreateTranslation((Vector3)Location);
+                Matrix4.CreateScale((Vector3)RelativeScale)
+                * Matrix4.CreateRotationX(RelativeRotation.X)
+                * Matrix4.CreateRotationY(RelativeRotation.Y)
+                * Matrix4.CreateRotationZ(RelativeRotation.Z)
+                * Matrix4.CreateTranslation((Vector3)RelativeLocation);
 
             ShaderManager.Hitbox.SetColor("color", Color);
             ShaderManager.Hitbox.SetMatrix4("model", model);
@@ -144,9 +144,9 @@ namespace Kotono.Graphics.Objects.Hitboxes
         public override bool CollidesWith(IHitbox hitbox)
         {
             return (hitbox is IObject3D object3D)
-                && (Math.Abs(Location.X - object3D.Location.X) <= Math.Avg(Scale.X, object3D.Scale.X))
-                && (Math.Abs(Location.Y - object3D.Location.Y) <= Math.Avg(Scale.Y, object3D.Scale.Y))
-                && (Math.Abs(Location.Z - object3D.Location.Z) <= Math.Avg(Scale.Z, object3D.Scale.Z));
+                && (Math.Abs(RelativeLocation.X - object3D.RelativeLocation.X) <= Math.Avg(RelativeScale.X, object3D.RelativeScale.X))
+                && (Math.Abs(RelativeLocation.Y - object3D.RelativeLocation.Y) <= Math.Avg(RelativeScale.Y, object3D.RelativeScale.Y))
+                && (Math.Abs(RelativeLocation.Z - object3D.RelativeLocation.Z) <= Math.Avg(RelativeScale.Z, object3D.RelativeScale.Z));
         }
     }
 }

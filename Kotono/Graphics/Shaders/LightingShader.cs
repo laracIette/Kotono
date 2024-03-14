@@ -33,7 +33,7 @@ namespace Kotono.Graphics.Shaders
 
             for (int i = 0; i < pointLights.Length; i++)
             {
-                SetVector($"pointLights[{i}].location", pointLights[i].Location);
+                SetVector($"pointLights[{i}].location", pointLights[i].RelativeLocation);
                 SetColor($"pointLights[{i}].ambient", pointLights[i].Ambient);
                 SetColor($"pointLights[{i}].diffuse", pointLights[i].Color);
                 SetColor($"pointLights[{i}].specular", pointLights[i].Specular);

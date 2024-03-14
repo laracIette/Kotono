@@ -154,7 +154,7 @@ namespace Kotono
 
             if (Keyboard.IsKeyPressed(Keys.S) && Keyboard.IsKeyDown(Keys.LeftControl))
             {
-                Save();
+                ObjectManager.Save();
                 Printer.Print("saved", Color.FromHex("#88FF10"));
             }
 
@@ -162,11 +162,6 @@ namespace Kotono
         }
 
         protected abstract void Update();
-
-        private static void Save()
-        {
-            ObjectManager.Save();
-        }
 
         protected sealed override void OnResize(ResizeEventArgs e)
         {

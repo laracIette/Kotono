@@ -95,7 +95,7 @@ namespace Kotono
 
             _ = new FlatTextureMesh()
             {
-                Location = -Vector.Forward * 5
+                RelativeLocation = -Vector.Forward * 5
             };
         }
     }

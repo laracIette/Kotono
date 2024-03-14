@@ -12,7 +12,7 @@ namespace Kotono.Graphics.Shaders
             GL.Disable(EnableCap.DepthTest);
 
             Use();
-            GL.BindTexture(TextureTarget.Texture2D, textureBuffer);
+            Texture.Bind(textureBuffer);
             GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
         }
     }

@@ -23,7 +23,7 @@ namespace Kotono.Graphics
                 value = GL.GenTexture();
 
                 GL.ActiveTexture(TextureUnit.Texture0);
-                GL.BindTexture(TextureTarget.Texture2D, value);
+                Bind(value);
 
                 StbImage.stbi_set_flip_vertically_on_load(1);
 
@@ -53,14 +53,14 @@ namespace Kotono.Graphics
         internal void Use()
         {
             GL.ActiveTexture(Unit);
-            GL.BindTexture(TextureTarget.Texture2D, Handle);
+            Bind(Handle);
         }
 
-        public static void Unbind() => GL.BindTexture(TextureTarget.Texture2D, 0);
+        public static void Bind(int handle) => GL.BindTexture(TextureTarget.Texture2D, handle);
 
         public static void DisposeAll()
         {
-            Unbind();
+            Bind(0);
 
             GL.DeleteTextures(_textures.Values.Count, _textures.Values.ToArray());
         }

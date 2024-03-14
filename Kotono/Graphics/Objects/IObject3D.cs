@@ -6,11 +6,11 @@ namespace Kotono.Graphics.Objects
     {
         public Transform Transform { get; set; }
 
-        public Vector Location { get; set; }
+        public Vector RelativeLocation { get; set; }
 
-        public Vector Rotation { get; set; }
+        public Vector RelativeRotation { get; set; }
 
-        public Vector Scale { get; set; }
+        public Vector RelativeScale { get; set; }
 
         public Vector LocationVelocity { get; set; }
 

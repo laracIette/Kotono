@@ -10,10 +10,10 @@ namespace Kotono.Graphics.Objects.Lights
 
         private readonly PointLightMesh _mesh = new();
 
-        public override Vector Location
+        public override Vector RelativeLocation
         {
-            get => _mesh.Location;
-            set => _mesh.Location = value;
+            get => _mesh.RelativeLocation;
+            set => _mesh.RelativeLocation = value;
         }
 
         internal bool IsGravity

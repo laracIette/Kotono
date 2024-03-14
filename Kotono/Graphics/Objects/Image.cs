@@ -59,7 +59,7 @@ namespace Kotono.Graphics.Objects
 
             GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
 
-            Texture.Unbind();
+            Texture.Bind(0);
         }
 
         internal void Transform(Rect transformation)

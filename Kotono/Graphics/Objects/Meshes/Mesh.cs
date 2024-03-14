@@ -3,9 +3,9 @@ using Kotono.Graphics.Shaders;
 using Kotono.Input;
 using Kotono.Physics;
 using Kotono.Utils;
+using Kotono.Utils.Coordinates;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using System.Collections.Generic;
-using Kotono.Utils.Coordinates;
 
 namespace Kotono.Graphics.Objects.Meshes
 {
@@ -50,8 +50,6 @@ namespace Kotono.Graphics.Objects.Meshes
 
                     foreach (var triangle in Model.Triangles)
                     {
-                        triangle.Transform = Transform;
-
                         if (Intersection.IntersectRayTriangle(ObjectManager.ActiveCamera.Location, Mouse.Ray, triangle, out Vector intersectionLocation, out float intersectionDistance))
                         {
                             IntersectionLocation = intersectionLocation;
@@ -69,18 +67,19 @@ namespace Kotono.Graphics.Objects.Meshes
         internal Mesh(MeshSettings settings)
             : base(settings)
         {
-            _hitboxes = settings.Hitboxes;
             Color = settings.Color;
 
             Material = new Material(settings.MaterialTexturesSettings);
 
             _shader = ShaderManager.Get(settings.Shader);
 
+            _hitboxes = settings.Hitboxes;
+
             foreach (var hitbox in _hitboxes)
             {
-                hitbox.Location = Location;
-                hitbox.Rotation = Vector.Zero;
-                hitbox.Scale = Scale * 5.0f;
+                hitbox.RelativeLocation = RelativeLocation;
+                hitbox.RelativeRotation = Vector.Zero;
+                hitbox.RelativeScale = RelativeScale;
                 hitbox.Color = Color.Red;
 
                 hitbox.EnterCollision += OnEnterCollision;
@@ -88,11 +87,16 @@ namespace Kotono.Graphics.Objects.Meshes
             }
 
             Model = Model.Load(new ModelSettings { Path = settings.Model, Shader = _shader });
+
+            foreach (var triangle in Model.Triangles)
+            {
+                triangle.Transform = Transform;
+            }
         }
 
         public override void Update()
         {
-            var tempLoc = Location;
+            var tempLoc = RelativeLocation;
 
             if (IsGravity)
             {
@@ -101,26 +105,23 @@ namespace Kotono.Graphics.Objects.Meshes
 
             foreach (var hitbox in _hitboxes)
             {
-                hitbox.Location = tempLoc;
+                hitbox.RelativeLocation = tempLoc;
 
                 if ((CollisionState == CollisionState.BlockAll) && hitbox.IsColliding)
                 {
-                    hitbox.Location = Location;
-                    tempLoc = Location;
+                    hitbox.RelativeLocation = RelativeLocation;
+                    tempLoc = RelativeLocation;
                 }
             }
 
-            Location = tempLoc;
+            RelativeLocation = tempLoc;
 
             if (Mouse.IsButtonPressed(MouseButton.Left))
             {
                 OnMouseLeftButtonPressed();
             }
-        }
 
-        public void UpdateFizix()
-        {
-            Fizix.Update(this);
+            //Printer.Print(Transform, true);
         }
 
         public override void Draw()
@@ -132,7 +133,7 @@ namespace Kotono.Graphics.Objects.Meshes
 
             Model.Draw();
 
-            Texture.Unbind();
+            Texture.Bind(0);
         }
 
         private void OnMouseLeftButtonPressed()
@@ -197,17 +198,11 @@ namespace Kotono.Graphics.Objects.Meshes
             base.Save();
         }
 
-        private void OnEnterCollision(object? sender, CollisionEventArgs e)
-        {
-            OnEnterCollision(e);
-        }
+        private void OnEnterCollision(object? sender, CollisionEventArgs e) => OnEnterCollision(e);
 
         protected virtual void OnEnterCollision(CollisionEventArgs collision) { }
 
-        private void OnExitCollision(object? sender, CollisionEventArgs e)
-        {
-            OnExitCollision(e);
-        }
+        private void OnExitCollision(object? sender, CollisionEventArgs e) => OnExitCollision(e);
 
         protected virtual void OnExitCollision(CollisionEventArgs collision) { }
 

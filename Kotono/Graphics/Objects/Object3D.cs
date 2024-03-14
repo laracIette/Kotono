@@ -12,22 +12,22 @@ namespace Kotono.Graphics.Objects
             set => _transform = value;
         }
 
-        public virtual Vector Location
+        public virtual Vector RelativeLocation
         {
-            get => _transform.Location;
-            set => _transform.Location = value;
+            get => _transform.RelativeLocation;
+            set => _transform.RelativeLocation = value;
         }
 
-        public virtual Vector Rotation
+        public virtual Vector RelativeRotation
         {
-            get => _transform.Rotation;
-            set => _transform.Rotation = value;
+            get => _transform.RelativeRotation;
+            set => _transform.RelativeRotation = value;
         }
 
-        public virtual Vector Scale
+        public virtual Vector RelativeScale
         {
-            get => _transform.Scale;
-            set => _transform.Scale = value;
+            get => _transform.RelativeScale;
+            set => _transform.RelativeScale = value;
         }
 
         public virtual Vector LocationVelocity

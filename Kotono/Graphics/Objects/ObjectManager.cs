@@ -1,6 +1,7 @@
 ﻿using Kotono.Graphics.Objects.Hitboxes;
 using Kotono.Graphics.Objects.Lights;
 using Kotono.Input;
+using Kotono.Physics;
 using Kotono.Utils;
 using Kotono.Utils.Coordinates;
 using Kotono.Utils.Exceptions;
@@ -78,6 +79,19 @@ namespace Kotono.Graphics.Objects
             if (Keyboard.IsKeyPressed(Keys.Delete))
             {
                 OnDeleteKeyPressed();
+            }
+
+            UpdateFizix();
+        }
+
+        private static void UpdateFizix()
+        {
+            foreach (var obj in _objects.OfType<IFizixObject>())
+            {
+                if (obj.IsFizix)
+                {
+                    Fizix.Update(obj);
+                }
             }
         }
 

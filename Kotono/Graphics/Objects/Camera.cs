@@ -75,8 +75,8 @@ namespace Kotono.Graphics.Objects
         {
             Move();
 
-            _line.Location = Location;
-            _line.Rotation = Rotation;
+            _line.RelativeLocation = Location;
+            _line.RelativeRotation = Rotation;
         }
 
         private void Move()

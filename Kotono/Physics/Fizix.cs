@@ -10,6 +10,11 @@ namespace Kotono.Physics
     {
         internal static Vector Gravity { get; set; } = new Vector(0.0f, -0.1f, 0.0f);
 
+        internal static void Update(IFizixObject mesh)
+        {
+
+        }
+
         internal static void Update(Mesh mesh)
         {
             var collisionCenter = Vector.Zero;
@@ -17,7 +22,7 @@ namespace Kotono.Physics
 
             foreach (var vertex in mesh.Model.Vertices)
             {
-                if ((Vector.RotateAroundPoint(vertex, mesh.Model.Center, mesh.Rotation).Y + mesh.Location.Y) <= 0.0f)
+                if ((Vector.RotateAroundPoint(vertex, mesh.Model.Center, mesh.RelativeRotation).Y + mesh.RelativeLocation.Y) <= 0.0f)
                 {
                     collisionCenter += vertex;
                     n++;
@@ -28,7 +33,7 @@ namespace Kotono.Physics
             {
                 collisionCenter /= n;
                 
-                var rot = Vector.Rad(mesh.Rotation);
+                var rot = Vector.Rad(mesh.RelativeRotation);
 
                 var up = new Vector
                 {
@@ -37,8 +42,8 @@ namespace Kotono.Physics
                     Z = Math.Cos(rot.Y)
                 };
 
-                var lookAtMatrix = Matrix4.LookAt((Vector3)mesh.Location, (Vector3)collisionCenter, (Vector3)up);
-                mesh.Rotation = (Vector)Vector3.TransformPosition((Vector3)mesh.Rotation, lookAtMatrix);
+                var lookAtMatrix = Matrix4.LookAt((Vector3)mesh.RelativeLocation, (Vector3)collisionCenter, (Vector3)up);
+                mesh.RelativeRotation = (Vector)Vector3.TransformPosition((Vector3)mesh.RelativeRotation, lookAtMatrix);
             }
         }
 
@@ -61,7 +66,7 @@ namespace Kotono.Physics
 
                 //sphere.Velocity *= direction;
 
-                Vector delta = sphere.Location - collisionCenter;
+                Vector delta = sphere.RelativeLocation - collisionCenter;
                 float distance = delta.Length;
 
                 float sphere1Radius = 1.0f;
@@ -85,7 +90,7 @@ namespace Kotono.Physics
 
         internal static void Update(Sphere left, Sphere right)
         {
-            Vector delta = left.Location - right.Location;
+            Vector delta = left.RelativeLocation - right.RelativeLocation;
             float distance = delta.Length;
 
             if (distance < left.Radius + right.Radius)

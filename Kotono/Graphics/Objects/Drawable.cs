@@ -4,7 +4,7 @@ namespace Kotono.Graphics.Objects
 {
     internal abstract class Drawable : Object, IDrawable, ISaveable, ISelectable
     {
-        private readonly string _path;
+        internal string SettingsPath { get; set; }
 
         public virtual bool IsDraw { get; set; }
 
@@ -19,7 +19,7 @@ namespace Kotono.Graphics.Objects
         internal Drawable(DrawableSettings settings)
             : base(settings)
         {
-            _path = settings.Path;
+            SettingsPath = settings.Path;
             IsDraw = settings.IsDraw;
             Color = settings.Color;
         }
@@ -30,7 +30,7 @@ namespace Kotono.Graphics.Objects
         { 
             if (_settings is DrawableSettings settings)
             {
-                settings.Path = _path;
+                settings.Path = SettingsPath;
                 settings.IsDraw = IsDraw;
                 settings.Color = Color;
 

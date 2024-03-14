@@ -26,39 +26,39 @@ namespace Kotono.Graphics.Objects
 
         internal static Vector Location
         {
-            get => _transform.Location;
+            get => _transform.RelativeLocation;
             set
             {
-                _transform.Location = value;
+                _transform.RelativeLocation = value;
                 foreach (var mesh in _meshes)
                 {
-                    mesh.Location = value;
+                    mesh.RelativeLocation = value;
                 }
             }
         }
 
         internal static Vector Rotation
         {
-            get => _transform.Rotation;
+            get => _transform.RelativeRotation;
             set
             {
-                _transform.Rotation = value;
+                _transform.RelativeRotation = value;
                 foreach (var mesh in _meshes)
                 {
-                    mesh.Rotation = value;
+                    mesh.RelativeRotation = value;
                 }
             }
         }
 
         internal static Vector Scale
         {
-            get => _transform.Scale;
+            get => _transform.RelativeScale;
             set
             {
-                _transform.Scale = value;
+                _transform.RelativeScale = value;
                 foreach (var mesh in _meshes)
                 {
-                    mesh.Scale = value;
+                    mesh.RelativeScale = value;
                 }
             }
         }
@@ -100,7 +100,7 @@ namespace Kotono.Graphics.Objects
                 _selectedMeshIndex = -1;
             }
 
-            Location = ActiveMesh.Location;
+            Location = ActiveMesh.RelativeLocation;
 
             switch (_transformSpace)
             {
@@ -109,7 +109,7 @@ namespace Kotono.Graphics.Objects
                     break;
 
                 case TransformSpace.Local:
-                    Rotation = ActiveMesh.Rotation;
+                    Rotation = ActiveMesh.RelativeRotation;
                     break;
 
                 default:
@@ -122,7 +122,7 @@ namespace Kotono.Graphics.Objects
 
             foreach (var obj in ISelectable.Selected.OfType<IObject3D>())
             {
-                obj.Location += movement;
+                obj.RelativeLocation += movement;
             }
 
             Scale = (Vector)(Vector.Distance(Location, ObjectManager.ActiveCamera.Location) / 75.0f);

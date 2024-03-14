@@ -27,10 +27,10 @@ namespace Kotono.Graphics.Objects
         /// <remarks> 
         /// Default value : Vector.Zero 
         /// </remarks>
-        internal virtual Vector Location
+        internal virtual Vector RelativeLocation
         {
-            get => _transform.Location;
-            set => _transform.Location = value;
+            get => _transform.RelativeLocation;
+            set => _transform.RelativeLocation = value;
         }
 
         /// <summary>
@@ -39,10 +39,10 @@ namespace Kotono.Graphics.Objects
         /// <remarks> 
         /// Default value : Vector.Zero 
         /// </remarks>
-        internal virtual Vector Rotation
+        internal virtual Vector RelativeRotation
         {
-            get => _transform.Rotation;
-            set => _transform.Rotation = value;
+            get => _transform.RelativeRotation;
+            set => _transform.RelativeRotation = value;
         }
 
         /// <summary>
@@ -51,10 +51,10 @@ namespace Kotono.Graphics.Objects
         /// <remarks> 
         /// Default value : Vector.Unit 
         /// </remarks>
-        internal virtual Vector Scale
+        internal virtual Vector RelativeScale
         {
-            get => _transform.Scale;
-            set => _transform.Scale = value;
+            get => _transform.RelativeScale;
+            set => _transform.RelativeScale = value;
         }
 
         /// <summary>
