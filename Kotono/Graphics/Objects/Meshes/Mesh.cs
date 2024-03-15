@@ -87,11 +87,6 @@ namespace Kotono.Graphics.Objects.Meshes
             }
 
             Model = Model.Load(new ModelSettings { Path = settings.Model, Shader = _shader });
-
-            foreach (var triangle in Model.Triangles)
-            {
-                //triangle.Transform = Transform;
-            }
         }
 
         public override void Update()
