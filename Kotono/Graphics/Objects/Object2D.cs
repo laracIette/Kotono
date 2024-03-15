@@ -61,8 +61,11 @@ namespace Kotono.Graphics.Objects
 
         public override void Save()
         {
-            ((Object2DSettings)_settings).Dest = Dest;
-            ((Object2DSettings)_settings).Layer = Layer;
+            if (_settings is Object2DSettings settings)
+            {
+                settings.Dest = Dest;
+                settings.Layer = Layer;
+            }
 
             base.Save();
         }
