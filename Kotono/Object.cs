@@ -7,12 +7,14 @@ namespace Kotono
     {
         protected readonly ObjectSettings _settings;
 
-        internal Object(ObjectSettings? settings = null)
+        internal Object(ObjectSettings settings)
         {
-            _settings = settings ?? new ObjectSettings();
+            _settings = settings;
 
             ObjectManager.Create(this);
         }
+
+        internal Object() : this(new ObjectSettings()) { }
 
         public virtual void Update() { }
 

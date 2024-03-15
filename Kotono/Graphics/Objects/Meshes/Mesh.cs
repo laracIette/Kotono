@@ -50,7 +50,7 @@ namespace Kotono.Graphics.Objects.Meshes
 
                     foreach (var triangle in Model.Triangles)
                     {
-                        triangle.Transform = Transform.Clone(); // TODO: temporary fix
+                        triangle.Transform = Transform;
 
                         if (Intersection.IntersectRayTriangle(ObjectManager.ActiveCamera.Location, Mouse.Ray, in triangle, out Vector intersectionLocation, out float intersectionDistance))
                         {

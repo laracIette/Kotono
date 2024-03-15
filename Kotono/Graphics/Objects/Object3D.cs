@@ -54,6 +54,8 @@ namespace Kotono.Graphics.Objects
             _transform = settings.Transform; 
         }
 
+        internal Object3D() : this(new Object3DSettings()) { }
+
         public override void Save()
         {
             if (_settings is Object3DSettings settings)

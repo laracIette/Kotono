@@ -57,6 +57,8 @@ namespace Kotono.Graphics.Objects
             Layer = settings.Layer;
         }
 
+        internal Object2D() : this(new Object2DSettings()) { }
+
         public override void Save()
         {
             ((Object2DSettings)_settings).Dest = Dest;
