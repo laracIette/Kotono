@@ -124,7 +124,7 @@ namespace Kotono.Utils
 
             return source;
         }
-        
+
         /// <summary>
         /// Get a sorted string given a separator.
         /// </summary>
@@ -177,7 +177,7 @@ namespace Kotono.Utils
             return result[..^2] + "]";
         }
 
-        internal static TSource? FirstOrNull<TSource>(this IEnumerable<TSource> source) where TSource : class 
+        internal static TSource? FirstOrNull<TSource>(this IEnumerable<TSource> source) where TSource : class
         {
             return source.Any() ? source.First() : null;
         }

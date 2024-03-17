@@ -1,7 +1,7 @@
 ﻿using Kotono.Graphics.Objects.Texts;
 using Kotono.Utils;
-using System.Linq;
 using Kotono.Utils.Coordinates;
+using System.Linq;
 
 namespace Kotono.Graphics.Statistics
 {

@@ -1,9 +1,9 @@
-﻿using Kotono.Input;
+﻿using Kotono.Graphics.Shaders;
+using Kotono.Input;
 using Kotono.Utils;
+using Kotono.Utils.Coordinates;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
-using Kotono.Utils.Coordinates;
-using Kotono.Graphics.Shaders;
 
 namespace Kotono.Graphics.Objects
 {

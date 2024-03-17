@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Kotono.Graphics
 {
-    internal interface IMaterial 
+    internal interface IMaterial
     {
         public List<MaterialTexture> Textures { get; }
 

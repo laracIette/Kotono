@@ -1,6 +1,5 @@
 ﻿using OpenTK.Audio.OpenAL;
 using System;
-using Math = Kotono.Utils.Math;
 
 namespace Kotono.Audio
 {

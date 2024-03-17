@@ -2,8 +2,8 @@
 using Kotono.Graphics.Objects;
 using Kotono.Input;
 using Kotono.Utils;
-using OpenTK.Windowing.GraphicsLibraryFramework;
 using Kotono.Utils.Coordinates;
+using OpenTK.Windowing.GraphicsLibraryFramework;
 
 namespace Kotono.Engine.UserInterface.AddMenu
 {

@@ -1,6 +1,6 @@
 ﻿using Kotono.Graphics.Objects.Texts;
-using System;
 using Kotono.Utils.Coordinates;
+using System;
 
 namespace Kotono.Graphics.Objects.Buttons
 {

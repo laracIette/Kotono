@@ -56,7 +56,7 @@ namespace Kotono.Utils
         }
 
         public static Color Black => FromHex("#000000FF");
-        
+
         public static Color BlackPearl => FromHex("#1E272CFF");
 
         public static Color Blue => FromHex("#0000FFFF");
@@ -68,7 +68,7 @@ namespace Kotono.Utils
         public static Color DarkGray => FromHex("#A9A9A9FF");
 
         public static Color DarkSlateGray => FromHex("#2F4F4FFF");
-        
+
         public static Color DimGray => FromHex("#696969FF");
 
         public static Color Gray => FromHex("#808080FF");
@@ -78,7 +78,7 @@ namespace Kotono.Utils
         public static Color LightBlue => FromHex("#ADD8E6FF");
 
         public static Color LightGray => FromHex("#D3D3D3FF");
-        
+
         public static Color LightSteelBlue => FromHex("#B0C4DEFF");
 
         public static Color Magenta => FromHex("#FF00FFFF");
@@ -98,7 +98,7 @@ namespace Kotono.Utils
         public static Color White => FromHex("#FFFFFFFF");
 
         public static Color Yellow => FromHex("#FFFF00FF");
-        
+
         public static Color _1A1A33FF => FromHex("#1A1A33FF");
 
         public static int SizeInBytes => sizeof(float) * 4;

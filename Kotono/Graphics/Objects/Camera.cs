@@ -5,7 +5,6 @@ using Kotono.Utils.Coordinates;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using CursorState = Kotono.Input.CursorState;
-using Math = Kotono.Utils.Math;
 
 namespace Kotono.Graphics.Objects
 {

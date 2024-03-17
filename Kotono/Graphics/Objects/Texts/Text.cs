@@ -1,8 +1,8 @@
 ﻿using Kotono.Input;
 using Kotono.Utils;
+using Kotono.Utils.Coordinates;
 using System;
 using System.Collections.Generic;
-using Kotono.Utils.Coordinates;
 
 namespace Kotono.Graphics.Objects.Texts
 {

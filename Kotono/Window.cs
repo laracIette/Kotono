@@ -78,7 +78,7 @@ namespace Kotono
             CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
 
             PerformanceWindow.MaxFrameRate = windowSettings.MaxFrameRate;
-            
+
             SoundManager.GeneralVolume = 1.0f;
 
             Mouse.CursorState = windowSettings.CursorState;

@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using IO = System.IO;
-using Math = Kotono.Utils.Math;
 
 namespace Kotono.Audio
 {

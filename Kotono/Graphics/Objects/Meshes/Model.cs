@@ -24,7 +24,7 @@ namespace Kotono.Graphics.Objects.Meshes
 
         internal Vector Center { get; }
 
-        internal Vector[] Vertices { get; } 
+        internal Vector[] Vertices { get; }
 
         internal Triangle[] Triangles { get; }
 

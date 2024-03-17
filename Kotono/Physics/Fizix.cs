@@ -2,7 +2,6 @@
 using Kotono.Graphics.Objects.Meshes;
 using Kotono.Utils.Coordinates;
 using OpenTK.Mathematics;
-using Math = Kotono.Utils.Math;
 
 namespace Kotono.Physics
 {
@@ -32,7 +31,7 @@ namespace Kotono.Physics
             if ((n > 0) && (n < 3))
             {
                 collisionCenter /= n;
-                
+
                 var rot = Vector.Rad(mesh.RelativeRotation);
 
                 var up = new Vector

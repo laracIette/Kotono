@@ -1,15 +1,14 @@
 ﻿using Kotono.Audio;
-using Kotono.Settings;
+using Kotono.Graphics;
 using Kotono.Graphics.Objects;
+using Kotono.Graphics.Objects.Buttons;
 using Kotono.Graphics.Objects.Lights;
 using Kotono.Graphics.Objects.Meshes;
 using Kotono.Input;
+using Kotono.Settings;
 using Kotono.Utils;
-using Keys = OpenTK.Windowing.GraphicsLibraryFramework.Keys;
-using Math = Kotono.Utils.Math;
 using Kotono.Utils.Coordinates;
-using Kotono.Graphics.Objects.Buttons;
-using Kotono.Graphics;
+using Keys = OpenTK.Windowing.GraphicsLibraryFramework.Keys;
 
 namespace Kotono
 {
@@ -29,14 +28,14 @@ namespace Kotono
             _sound = new TestSound();
 
             _animation = new Animation(JsonParser.Parse<AnimationSettings>(Path.ASSETS + @"Animations\Counting\Counting.json"));
-            
+
             CreateObjects();
 
             _ = new TextButtonList(
                 new TextButtonListSettings
                 {
                     Color = Color.DarkSlateGray,
-                    Texts = 
+                    Texts =
                     [
                         "Hey",
                         "Yo",
@@ -68,7 +67,7 @@ namespace Kotono
 
             if (Keyboard.IsKeyPressed(Keys.T))
             {
-                _animation.Switch(); 
+                _animation.Switch();
             }
 
 

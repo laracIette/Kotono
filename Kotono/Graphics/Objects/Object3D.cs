@@ -1,6 +1,4 @@
-﻿global using Object3D = Kotono.Graphics.Objects.Object3D<Kotono.Graphics.Objects.Object3DSettings>;
-
-using Kotono.Utils.Coordinates;
+﻿using Kotono.Utils.Coordinates;
 
 namespace Kotono.Graphics.Objects
 {
@@ -53,7 +51,7 @@ namespace Kotono.Graphics.Objects
         internal Object3D(T settings)
             : base(settings)
         {
-            _transform = settings.Transform; 
+            _transform = settings.Transform;
         }
 
         internal Object3D() : base() { }

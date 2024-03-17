@@ -2,7 +2,6 @@
 using Kotono.Utils;
 using System;
 using System.Linq;
-using Math = Kotono.Utils.Math;
 
 namespace Kotono.Graphics
 {

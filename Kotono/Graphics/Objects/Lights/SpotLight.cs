@@ -1,7 +1,6 @@
 ﻿using Kotono.Input;
 using Kotono.Utils;
 using OpenTK.Windowing.GraphicsLibraryFramework;
-using Math = Kotono.Utils.Math;
 
 namespace Kotono.Graphics.Objects.Lights
 {

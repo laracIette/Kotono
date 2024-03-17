@@ -4,8 +4,6 @@ using Kotono.Utils.Coordinates;
 using Kotono.Utils.Exceptions;
 using System.Collections.Generic;
 using System.IO;
-using Math = Kotono.Utils.Math;
-using Path = Kotono.Utils.Path;
 
 namespace Kotono.Graphics.Objects
 {

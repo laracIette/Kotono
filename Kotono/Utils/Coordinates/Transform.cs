@@ -89,7 +89,7 @@ namespace Kotono.Utils.Coordinates
         internal Vector ParentWorldRotation => Parent?.WorldRotation ?? DefaultRotation;
 
         internal Vector ParentWorldScale => Parent?.WorldScale ?? DefaultScale;
-        
+
         /// <summary>
         /// The model matrix of the Transform.
         /// </summary>
@@ -178,8 +178,8 @@ namespace Kotono.Utils.Coordinates
 
         internal string ToString(bool isVelocity)
         {
-            return ToString() + (isVelocity ? 
-                $"\nLocationVelocity: {LocationVelocity}\nRotationVelocity: {RotationVelocity}\nScaleVelocity   : {ScaleVelocity}" : 
+            return ToString() + (isVelocity ?
+                $"\nLocationVelocity: {LocationVelocity}\nRotationVelocity: {RotationVelocity}\nScaleVelocity   : {ScaleVelocity}" :
                 ""
             );
         }

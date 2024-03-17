@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Kotono.Graphics.Objects;
+using System;
 using System.Text.Json;
-using Kotono.Graphics.Objects;
 using IO = System.IO;
 
 namespace Kotono.Utils

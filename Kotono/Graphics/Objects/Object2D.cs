@@ -1,5 +1,4 @@
-﻿global using Object2D = Kotono.Graphics.Objects.Object2D<Kotono.Graphics.Objects.Object2DSettings>;
-
+﻿
 using Kotono.Utils.Coordinates;
 
 namespace Kotono.Graphics.Objects

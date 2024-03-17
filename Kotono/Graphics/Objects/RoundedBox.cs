@@ -1,10 +1,7 @@
-﻿global using RoundedBox = Kotono.Graphics.Objects.RoundedBox<Kotono.Graphics.Objects.RoundedBoxSettings>;
-
-using Kotono.Graphics.Shaders;
+﻿using Kotono.Graphics.Shaders;
 using Kotono.Utils.Coordinates;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
-using Math = Kotono.Utils.Math;
 
 
 namespace Kotono.Graphics.Objects

@@ -1,7 +1,7 @@
 ﻿using Kotono.Input;
+using Kotono.Utils.Coordinates;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
-using Kotono.Utils.Coordinates;
 
 namespace Kotono.Graphics.Objects.Buttons
 {
@@ -12,7 +12,7 @@ namespace Kotono.Graphics.Objects.Buttons
         private readonly ButtonEventArgs _args = new();
 
         internal event EventHandler<ButtonEventArgs>? Pressed = null;
-        
+
         internal event EventHandler<ButtonEventArgs>? Released = null;
 
         public bool IsDown { get; private set; }
@@ -39,12 +39,12 @@ namespace Kotono.Graphics.Objects.Buttons
             }
         }
 
-        public virtual void OnPressed() 
-        { 
+        public virtual void OnPressed()
+        {
             Pressed?.Invoke(this, _args);
         }
 
-        public virtual void OnReleased() 
+        public virtual void OnReleased()
         {
             Released?.Invoke(this, _args);
         }

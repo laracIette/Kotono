@@ -50,7 +50,7 @@ namespace Kotono.Utils.Coordinates
         /// </summary>
         [JsonIgnore]
         public readonly float Max => Math.Max(Math.Max(X, Y), Z);
-        
+
         /// <summary> 
         /// The absolute value of the Vector.
         /// </summary>

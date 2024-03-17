@@ -14,11 +14,11 @@ namespace Kotono.Graphics.Shaders
 
         private readonly Dictionary<string, int> _uniformLocations = [];
 
-        
+
         internal string Name { get; }
 
         internal Shader(string name)
-        { 
+        {
             var shaderSource = IO.File.ReadAllText(Path.SHADERS + name + ".vert");
             var vertexShader = GL.CreateShader(ShaderType.VertexShader);
             GL.ShaderSource(vertexShader, shaderSource);

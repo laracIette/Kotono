@@ -14,9 +14,9 @@ namespace Kotono.Graphics
         private readonly Framebuffer _framebuffer = new();
 
         private readonly List<IFrontMesh> _frontMeshRenderQueue = [];
-        
+
         private readonly List<IObject2D> _object2DRenderQueue = [];
-        
+
         private readonly List<IObject3D> _object3DRenderQueue = [];
 
         internal void SetSize(Point value) => _framebuffer.Size = value;
@@ -35,7 +35,7 @@ namespace Kotono.Graphics
                 case IFrontMesh frontMesh:
                     AddToFrontMeshRenderQueue(frontMesh);
                     break;
-                
+
                 case IObject2D object2D:
                     AddToObject2DRenderQueue(object2D);
                     break;
@@ -118,7 +118,7 @@ namespace Kotono.Graphics
             GL.Disable(EnableCap.Blend);
         }
 
-        private static void DrawObject2D(IObject2D object2D) 
+        private static void DrawObject2D(IObject2D object2D)
         {
             ((object2D as IElement)?.Viewport ?? WindowComponentManager.WindowViewport).Use();
 
