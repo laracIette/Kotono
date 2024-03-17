@@ -1,4 +1,5 @@
-﻿using OpenTK.Graphics.OpenGL4;
+﻿using Kotono.Graphics.Objects;
+using OpenTK.Graphics.OpenGL4;
 using StbImageSharp;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,15 +51,29 @@ namespace Kotono.Graphics
             Unit = unit;
         }
 
-        internal void Use()
+        internal static void Bind(int handle) => GL.BindTexture(TextureTarget.Texture2D, handle);
+
+        internal static void Use(int handle, TextureUnit unit = TextureUnit.Texture0)
         {
-            GL.ActiveTexture(Unit);
-            Bind(Handle);
+            GL.ActiveTexture(unit);
+
+            Bind(handle);
         }
 
-        public static void Bind(int handle) => GL.BindTexture(TextureTarget.Texture2D, handle);
+        internal void Use() => Use(Handle, Unit);
 
-        public static void DisposeAll()
+        internal static void Draw(int handle, TextureUnit unit = TextureUnit.Texture0)
+        {
+            Use(handle, unit);
+
+            SquareVertices.Draw();
+
+            Bind(0);
+        }
+
+        internal void Draw() => Draw(Handle, Unit);
+
+        internal static void DisposeAll()
         {
             Bind(0);
 

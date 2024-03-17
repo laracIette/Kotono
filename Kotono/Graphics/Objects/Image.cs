@@ -50,16 +50,10 @@ namespace Kotono.Graphics.Objects
         {
             GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
 
-            _texture.Use();
-
             ShaderManager.Image.SetMatrix4("model", Model);
             ShaderManager.Image.SetColor("color", Color);
 
-            GL.BindVertexArray(SquareVertices.VertexArrayObject);
-
-            GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
-
-            Texture.Bind(0);
+            _texture.Draw();
         }
 
         internal void Transform(Rect transformation)

@@ -1,19 +1,17 @@
-﻿using Kotono.Graphics.Objects;
-using OpenTK.Graphics.OpenGL4;
+﻿using OpenTK.Graphics.OpenGL4;
 
 namespace Kotono.Graphics.Shaders
 {
     internal abstract class TextureBufferShader(string name)
         : Shader(name)
     {
-        internal void Draw(int textureBuffer)
+        internal void Draw(int handle)
         {
-            GL.BindVertexArray(SquareVertices.VertexArrayObject);
+            Use();
+
             GL.Disable(EnableCap.DepthTest);
 
-            Use();
-            Texture.Bind(textureBuffer);
-            GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
+            Texture.Draw(handle);
         }
     }
 }

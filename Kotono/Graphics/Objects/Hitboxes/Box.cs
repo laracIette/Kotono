@@ -125,15 +125,8 @@ namespace Kotono.Graphics.Objects.Hitboxes
 
         public override void Draw()
         {
-            var model =
-                Matrix4.CreateScale((Vector3)RelativeScale)
-                * Matrix4.CreateRotationX(RelativeRotation.X)
-                * Matrix4.CreateRotationY(RelativeRotation.Y)
-                * Matrix4.CreateRotationZ(RelativeRotation.Z)
-                * Matrix4.CreateTranslation((Vector3)RelativeLocation);
-
             ShaderManager.Hitbox.SetColor("color", Color);
-            ShaderManager.Hitbox.SetMatrix4("model", model);
+            ShaderManager.Hitbox.SetMatrix4("model", Transform.Model);
 
             GL.BindVertexArray(_vertexArrayObject);
             GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);

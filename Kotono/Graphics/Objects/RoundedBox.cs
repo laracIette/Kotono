@@ -1,6 +1,5 @@
 ﻿using Kotono.Graphics.Shaders;
 using Kotono.Utils.Coordinates;
-using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 
 
@@ -82,9 +81,7 @@ namespace Kotono.Graphics.Objects
             Shader.SetFloat("fallOff", FallOff);
             Shader.SetFloat("cornerSize", CornerSize);
 
-            GL.BindVertexArray(SquareVertices.VertexArrayObject);
-
-            GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
+            SquareVertices.Draw();
         }
 
         protected Rect Sides

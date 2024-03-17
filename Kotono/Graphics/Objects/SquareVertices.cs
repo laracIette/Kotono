@@ -42,17 +42,28 @@ namespace Kotono.Graphics.Objects
         {
             // Create vertex array
             VertexArrayObject = GL.GenVertexArray();
-            GL.BindVertexArray(VertexArrayObject);
+            BindVertexArrayObject();
 
             // Create vertex buffer
             VertexBufferObject = GL.GenBuffer();
-            GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
+            BindVertexBufferObject();
             GL.BufferData(BufferTarget.ArrayBuffer, sizeof(float) * _vertices.Length, _vertices, BufferUsageHint.StaticDraw);
 
             GL.EnableVertexAttribArray(0);
             GL.VertexAttribPointer(0, 2, VertexAttribPointerType.Float, false, 4 * sizeof(float), 0);
             GL.EnableVertexAttribArray(1);
             GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 4 * sizeof(float), 2 * sizeof(float));
+        }
+
+        internal static void BindVertexArrayObject() => GL.BindVertexArray(VertexArrayObject);
+
+        internal static void BindVertexBufferObject() => GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
+
+        internal static void Draw()
+        {
+            BindVertexArrayObject();
+
+            GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
         }
     }
 }
