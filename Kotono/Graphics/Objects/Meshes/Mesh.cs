@@ -181,12 +181,9 @@ namespace Kotono.Graphics.Objects.Meshes
 
         public override void Save()
         {
-            if (_settings is MeshSettings settings)
-            {
-                settings.Model = Model.Path;
-                settings.Shader = _shader.Name;
-                settings.MaterialTexturesSettings = Material.MaterialTexturesSettings;
-            }
+            _settings.Model = Model.Path;
+            _settings.Shader = _shader.Name;
+            _settings.MaterialTexturesSettings = Material.MaterialTexturesSettings;
 
             base.Save();
         }

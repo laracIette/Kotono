@@ -1,18 +1,23 @@
 ﻿using Kotono.Utils.Coordinates;
+using System.Runtime.CompilerServices;
 
 namespace Kotono.Utils
 {
 
     public static class Random
     {
-        private static System.Random Shared => System.Random.Shared;
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static System.Random GetRandom(int? seed)
+        {
+            return seed.HasValue ? new System.Random(seed.Value) : System.Random.Shared;
+        }
 
         /// <summary>
         /// Get an int in range [min, max).
         /// </summary>
         public static int Int(int min, int max, int? seed = null)
         {
-            return seed.HasValue ? new System.Random(seed.Value).Next(min, max) : Shared.Next(min, max);
+            return GetRandom(seed).Next(min, max);
         }
 
         /// <summary>
@@ -20,7 +25,7 @@ namespace Kotono.Utils
         /// </summary>
         public static long Long(long min, long max, int? seed = null)
         {
-            return seed.HasValue ? new System.Random(seed.Value).NextInt64(min, max) : Shared.NextInt64(min, max);
+            return GetRandom(seed).NextInt64(min, max);
         }
 
         /// <summary>
@@ -28,7 +33,7 @@ namespace Kotono.Utils
         /// </summary>
         public static float Float(float min, float max, int? seed = null)
         {
-            return Math.Lerp(min, max, seed.HasValue ? new System.Random(seed.Value).NextSingle() : Shared.NextSingle());
+            return Math.Lerp(min, max, GetRandom(seed).NextSingle());
         }
 
         /// <summary>
@@ -36,7 +41,7 @@ namespace Kotono.Utils
         /// </summary>
         public static double Double(double min, double max, int? seed = null)
         {
-            return MathD.Lerp(min, max, seed.HasValue ? new System.Random(seed.Value).NextDouble() : Shared.NextDouble());
+            return MathD.Lerp(min, max, GetRandom(seed).NextDouble());
         }
 
         /// <summary>

@@ -57,12 +57,5 @@ namespace Kotono.Graphics.Objects
         }
 
         internal Object3D() : base() { }
-
-        public override void Save()
-        {
-
-
-            base.Save();
-        }
     }
 }

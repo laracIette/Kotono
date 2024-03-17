@@ -18,7 +18,7 @@ namespace Kotono.Graphics.Objects.Lights
 
             Color = Color.Rainbow(0.002f);
 
-            LocationVelocity += Random.Vector(-1.0f, 1.0f) * Time.Delta;
+            LocationVelocity += Random.Vector(-0.01f, 0.01f);
 
             LocationVelocity = Vector.Clamp(LocationVelocity, -1.0f, 1.0f);
 
