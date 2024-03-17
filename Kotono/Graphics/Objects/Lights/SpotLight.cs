@@ -5,8 +5,7 @@ using Math = Kotono.Utils.Math;
 
 namespace Kotono.Graphics.Objects.Lights
 {
-    internal class SpotLight() :
-        Object3D(new Object3DSettings())
+    internal class SpotLight : Object3D
     {
         private float _cutOffAngle = 12.5f;
 

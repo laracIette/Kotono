@@ -1,8 +1,10 @@
-﻿using Kotono.Utils.Coordinates;
+﻿global using Object2D = Kotono.Graphics.Objects.Object2D<Kotono.Graphics.Objects.Object2DSettings>;
+
+using Kotono.Utils.Coordinates;
 
 namespace Kotono.Graphics.Objects
 {
-    internal abstract class Object2D : Drawable, IObject2D
+    internal abstract class Object2D<T> : Drawable<T>, IObject2D where T : Object2DSettings
     {
         private Rect _dest;
 
@@ -50,22 +52,19 @@ namespace Kotono.Graphics.Objects
 
         public virtual int Layer { get; set; }
 
-        internal Object2D(Object2DSettings settings)
+        internal Object2D(T settings)
             : base(settings)
         {
             Dest = settings.Dest;
             Layer = settings.Layer;
         }
 
-        internal Object2D() : this(new Object2DSettings()) { }
+        internal Object2D() : base() { }
 
         public override void Save()
         {
-            if (_settings is Object2DSettings settings)
-            {
-                settings.Dest = Dest;
-                settings.Layer = Layer;
-            }
+            _settings.Dest = Dest;
+            _settings.Layer = Layer;
 
             base.Save();
         }

@@ -6,7 +6,7 @@ using System;
 
 namespace Kotono.Graphics.Objects.Shapes
 {
-    internal class Shape : Object3D, IShape
+    internal class Shape : Object3D<ShapeSettings>, IShape
     {
         private readonly PrimitiveType _mode;
 

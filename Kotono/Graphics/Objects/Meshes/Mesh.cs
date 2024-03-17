@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace Kotono.Graphics.Objects.Meshes
 {
-    internal abstract class Mesh : Object3D, IMesh
+    internal abstract class Mesh : Object3D<MeshSettings>, IMesh
     {
         private readonly List<Hitbox> _hitboxes;
 

@@ -136,16 +136,22 @@ namespace Kotono.Utils
         }
 
         [Pure]
-        public static float Avg(params float[] value)
+        public static float Add(params float[] values)
         {
             float result = 0.0f;
 
-            foreach (var item in value)
+            foreach (var item in values)
             {
                 result += item;
             }
 
-            return result / value.Length;
+            return result;
+        }
+
+        [Pure]
+        public static float Avg(params float[] values)
+        {
+            return Add(values) / values.Length;
         }
     }
 }

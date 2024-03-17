@@ -1,5 +1,4 @@
-﻿using Kotono.Graphics.Objects.Hitboxes;
-using Kotono.Utils;
+﻿using Kotono.Utils;
 
 namespace Kotono.Graphics.Objects.Meshes
 {

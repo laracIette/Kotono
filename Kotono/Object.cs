@@ -5,16 +5,10 @@ namespace Kotono
 {
     internal abstract class Object : IObject
     {
-        protected readonly ObjectSettings _settings;
-
-        internal Object(ObjectSettings settings)
+        internal Object()
         {
-            _settings = settings;
-
             ObjectManager.Create(this);
         }
-
-        internal Object() : this(new ObjectSettings()) { }
 
         public virtual void Update() { }
 

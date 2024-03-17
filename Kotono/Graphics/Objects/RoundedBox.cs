@@ -1,12 +1,15 @@
-﻿using Kotono.Graphics.Shaders;
+﻿global using RoundedBox = Kotono.Graphics.Objects.RoundedBox<Kotono.Graphics.Objects.RoundedBoxSettings>;
+
+using Kotono.Graphics.Shaders;
 using Kotono.Utils.Coordinates;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using Math = Kotono.Utils.Math;
 
+
 namespace Kotono.Graphics.Objects
 {
-    internal class RoundedBox : Object2D
+    internal class RoundedBox<T> : Object2D<T> where T : RoundedBoxSettings
     {
         public override Rect Dest
         {
@@ -52,13 +55,15 @@ namespace Kotono.Graphics.Objects
             )
             * Matrix4.CreateTranslation(Dest.NDC.X, Dest.NDC.Y, 0.0f);
 
-        internal RoundedBox(RoundedBoxSettings settings)
+        internal RoundedBox(T settings)
             : base(settings)
         {
             Color = settings.Color;
             FallOff = settings.FallOff;
             CornerSize = settings.CornerSize;
         }
+
+        internal RoundedBox() : base() { }
 
         protected virtual void UpdateValues()
         {

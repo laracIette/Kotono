@@ -5,7 +5,7 @@ namespace Kotono.Graphics.Objects
     /// <summary>
     /// Settings class for creating a <see cref="Drawable"/>.
     /// </summary>
-    internal class DrawableSettings : ObjectSettings
+    internal class DrawableSettings
     {
         /// <summary>
         /// The path to the settings of the Drawable.

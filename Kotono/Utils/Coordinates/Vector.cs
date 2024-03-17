@@ -115,36 +115,6 @@ namespace Kotono.Utils.Coordinates
             };
 
         /// <summary> 
-        /// Initialize a <see cref="Vector"/> with X = 0, Y = 0, Z = 0.
-        /// </summary>
-        public Vector()
-        {
-            X = 0.0f;
-            Y = 0.0f;
-            Z = 0.0f;
-        }
-
-        /// <summary>
-        /// Initialize a <see cref="Vector"/> with X = v.X, Y = v.Y, Z = v.Z.
-        /// </summary>
-        public Vector(Vector v)
-        {
-            X = v.X;
-            Y = v.Y;
-            Z = v.Z;
-        }
-
-        /// <summary>
-        /// Initialize a <see cref="Vector"/> with X = f, Y = f, Z = f.
-        /// </summary>
-        public Vector(float f)
-        {
-            X = f;
-            Y = f;
-            Z = f;
-        }
-
-        /// <summary> 
         /// Initialize a <see cref="Vector"/> with X = x, Y = y, Z = z.
         /// </summary>
         public Vector(float x = 0.0f, float y = 0.0f, float z = 0.0f)
@@ -153,6 +123,21 @@ namespace Kotono.Utils.Coordinates
             Y = y;
             Z = z;
         }
+
+        /// <summary> 
+        /// Initialize a <see cref="Vector"/> with X = 0, Y = 0, Z = 0.
+        /// </summary>
+        public Vector() : this(0.0f, 0.0f, 0.0f) { }
+
+        /// <summary>
+        /// Initialize a <see cref="Vector"/> with X = v.X, Y = v.Y, Z = v.Z.
+        /// </summary>
+        public Vector(Vector v) : this(v.X, v.Y, v.Z) { }
+
+        /// <summary>
+        /// Initialize a <see cref="Vector"/> with X = f, Y = f, Z = f.
+        /// </summary>
+        public Vector(float f) : this(f, f, f) { }
 
         public static Vector RotateAroundPoint(Vector v, Vector point, Vector rotation)
         {

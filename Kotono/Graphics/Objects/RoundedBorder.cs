@@ -5,7 +5,7 @@ using OpenTK.Mathematics;
 
 namespace Kotono.Graphics.Objects
 {
-    internal class RoundedBorder : RoundedBox
+    internal class RoundedBorder : RoundedBox<RoundedBorderSettings>
     {
         private float _thickness;
 

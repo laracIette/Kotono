@@ -6,7 +6,7 @@ using Kotono.Utils.Coordinates;
 
 namespace Kotono.Graphics.Objects.Texts
 {
-    internal class Text : Object2D
+    internal class Text : Object2D<TextSettings>
     {
         private readonly static Dictionary<char, string> _charactersPath = new()
         {

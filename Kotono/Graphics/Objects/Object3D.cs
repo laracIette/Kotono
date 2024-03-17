@@ -1,10 +1,12 @@
-﻿using Kotono.Utils.Coordinates;
+﻿global using Object3D = Kotono.Graphics.Objects.Object3D<Kotono.Graphics.Objects.Object3DSettings>;
+
+using Kotono.Utils.Coordinates;
 
 namespace Kotono.Graphics.Objects
 {
-    internal abstract class Object3D : Drawable, IObject3D
+    internal abstract class Object3D<T> : Drawable<T>, IObject3D where T : Object3DSettings
     {
-        private Transform _transform;
+        private Transform _transform = Transform.Default;
 
         public virtual Transform Transform
         {
@@ -48,20 +50,17 @@ namespace Kotono.Graphics.Objects
             set => _transform.ScaleVelocity = value;
         }
 
-        internal Object3D(Object3DSettings settings)
+        internal Object3D(T settings)
             : base(settings)
         {
             _transform = settings.Transform; 
         }
 
-        internal Object3D() : this(new Object3DSettings()) { }
+        internal Object3D() : base() { }
 
         public override void Save()
         {
-            if (_settings is Object3DSettings settings)
-            {
 
-            }
 
             base.Save();
         }

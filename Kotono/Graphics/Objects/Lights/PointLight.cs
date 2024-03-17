@@ -4,7 +4,7 @@ using Kotono.Utils.Coordinates;
 
 namespace Kotono.Graphics.Objects.Lights
 {
-    internal class PointLight : Object3D
+    internal class PointLight : Object3D<PointLightSettings>
     {
         internal const int MAX_COUNT = 100;
 

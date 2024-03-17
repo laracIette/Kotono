@@ -1,6 +1,4 @@
-﻿using Kotono.Graphics.Shaders;
-
-namespace Kotono.Graphics.Objects
+﻿namespace Kotono.Graphics.Objects
 {
     /// <summary>
     /// Settings class for creating a <see cref="RoundedBox"/>.

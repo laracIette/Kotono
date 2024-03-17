@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Kotono.Graphics.Objects.Hitboxes
 {
     internal abstract class Hitbox(HitboxSettings settings)
-        : Object3D(settings),
+        : Object3D<HitboxSettings>(settings),
         IHitbox
     {
         public event EventHandler<CollisionEventArgs>? EnterCollision = null;

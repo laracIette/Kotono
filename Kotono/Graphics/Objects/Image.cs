@@ -7,7 +7,7 @@ using Kotono.Graphics.Shaders;
 
 namespace Kotono.Graphics.Objects
 {
-    internal class Image : Object2D
+    internal class Image : Object2D<ImageSettings>
     {
         private readonly Texture _texture;
 

@@ -9,7 +9,7 @@ using Path = Kotono.Utils.Path;
 
 namespace Kotono.Graphics.Objects
 {
-    internal class Animation : Object2D, ISaveable
+    internal class Animation : Object2D<AnimationSettings>, ISaveable
     {
         protected readonly List<Image> _frames = [];
 
