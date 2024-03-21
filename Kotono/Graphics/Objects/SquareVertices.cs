@@ -55,15 +55,15 @@ namespace Kotono.Graphics.Objects
             GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 4 * sizeof(float), 2 * sizeof(float));
         }
 
-        internal static void BindVertexArrayObject() => GL.BindVertexArray(VertexArrayObject);
-
-        internal static void BindVertexBufferObject() => GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
-
         internal static void Draw()
         {
             BindVertexArrayObject();
 
             GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
         }
+
+        internal static void BindVertexArrayObject() => GL.BindVertexArray(VertexArrayObject);
+
+        internal static void BindVertexBufferObject() => GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
     }
 }
