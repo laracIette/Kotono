@@ -108,8 +108,8 @@ namespace Kotono.Graphics.Objects
                     Rotation = Vector.Zero;
                     break;
 
-                case TransformSpace.Local:
-                    Rotation = ActiveMesh.WorldRotation;
+                case TransformSpace.Relative:
+                    Rotation = ActiveMesh.RelativeRotation;
                     break;
 
                 default:

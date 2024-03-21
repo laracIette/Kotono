@@ -66,6 +66,8 @@ namespace Kotono.Graphics.Objects
             set => _transform.ScaleVelocity = value;
         }
 
+        public IObject3D? Parent { get; private set; } = null;
+
         internal Object3D(T settings)
             : base(settings)
         {
@@ -76,11 +78,13 @@ namespace Kotono.Graphics.Objects
 
         public void AttachTo(IObject3D parent)
         {
+            Parent = parent;
             Transform.Parent = parent.Transform;
         }
 
         public void Detach()
         {
+            Parent = null;
             Transform.Parent = null;
         }
     }

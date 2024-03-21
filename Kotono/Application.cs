@@ -58,8 +58,6 @@ namespace Kotono
             {
                 RelativeLocation = new Vector(6.0f, 0.0f, 0.0f)
             };
-
-            child.AttachTo(parent);
         }
 
         private void OnTimerTimeout(object? sender, TimeoutEventArgs e)
@@ -81,10 +79,20 @@ namespace Kotono
                 _animation.Switch();
             }
 
-
             if (Keyboard.IsKeyDown(Keys.I))
             {
                 Printer.Print(Time.Now, true);
+            }
+
+            if (Keyboard.IsKeyPressed(Keys.J))
+            {
+                foreach (var selectable in ISelectable.Selected)
+                {
+                    if (selectable != ISelectable.Active)
+                    {
+                        (selectable as IObject3D)?.AttachTo((ISelectable.Active as IObject3D)!);
+                    }
+                }
             }
         }
 
