@@ -18,7 +18,7 @@ namespace Kotono.Graphics.Objects
             new GizmoMesh("sphere")
         ];
 
-        private static Mesh? ActiveMesh => ISelectable.Active as Mesh;
+        private static IObject3D? ActiveMesh => ISelectable.Active as IObject3D;
 
         private static readonly Transform _transform = Transform.Default;
 
@@ -79,7 +79,7 @@ namespace Kotono.Graphics.Objects
 
         internal static bool IsSelected => _selectedMeshIndex != -1;
 
-        private static TransformSpace _transformSpace = TransformSpace.World;
+        private static readonly TransformSpace _transformSpace = TransformSpace.World;
 
         internal static void Update()
         {
@@ -100,7 +100,7 @@ namespace Kotono.Graphics.Objects
                 _selectedMeshIndex = -1;
             }
 
-            Location = ActiveMesh.RelativeLocation;
+            Location = ActiveMesh.WorldLocation;
 
             switch (_transformSpace)
             {
@@ -109,7 +109,7 @@ namespace Kotono.Graphics.Objects
                     break;
 
                 case TransformSpace.Local:
-                    Rotation = ActiveMesh.RelativeRotation;
+                    Rotation = ActiveMesh.WorldRotation;
                     break;
 
                 default:

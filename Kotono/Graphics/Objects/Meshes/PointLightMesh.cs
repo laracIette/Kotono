@@ -15,7 +15,7 @@ namespace Kotono.Graphics.Objects.Meshes
             _pointLight = pointLight;
         }
 
-        internal void Detach()
+        internal new void Detach()
         {
             _pointLight = null;
         }

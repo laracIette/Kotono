@@ -49,6 +49,17 @@ namespace Kotono
             _timer = new Timer();
             _timer.Timeout += OnTimerTimeout;
             _timer.Start(1.0f, true);
+
+            var parent = new Cube()
+            {
+                WorldLocation = new Vector(-3.0f, 0.0f, -3.0f)
+            };
+            var child = new Cube()
+            {
+                RelativeLocation = new Vector(6.0f, 0.0f, 0.0f)
+            };
+
+            child.AttachTo(parent);
         }
 
         private void OnTimerTimeout(object? sender, TimeoutEventArgs e)

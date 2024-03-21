@@ -12,10 +12,20 @@ namespace Kotono.Graphics.Objects
 
         public Vector RelativeScale { get; set; }
 
+        public Vector WorldLocation { get; set; }
+
+        public Vector WorldRotation { get; set; }
+
+        public Vector WorldScale { get; set; }
+
         public Vector LocationVelocity { get; set; }
 
         public Vector RotationVelocity { get; set; }
 
         public Vector ScaleVelocity { get; set; }
+
+        public void AttachTo(IObject3D parent);
+
+        public void Detach();
     }
 }

@@ -30,6 +30,24 @@ namespace Kotono.Graphics.Objects
             set => _transform.RelativeScale = value;
         }
 
+        public virtual Vector WorldLocation
+        {
+            get => _transform.WorldLocation;
+            set => _transform.WorldLocation = value;
+        }
+
+        public virtual Vector WorldRotation
+        {
+            get => _transform.WorldRotation;
+            set => _transform.WorldRotation = value;
+        }
+
+        public virtual Vector WorldScale
+        {
+            get => _transform.WorldScale;
+            set => _transform.WorldScale = value;
+        }
+
         public virtual Vector LocationVelocity
         {
             get => _transform.LocationVelocity;
@@ -55,5 +73,15 @@ namespace Kotono.Graphics.Objects
         }
 
         internal Object3D() : base() { }
+
+        public void AttachTo(IObject3D parent)
+        {
+            Transform.Parent = parent.Transform;
+        }
+
+        public void Detach()
+        {
+            Transform.Parent = null;
+        }
     }
 }
