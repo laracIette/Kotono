@@ -8,6 +8,7 @@ using Kotono.Input;
 using Kotono.Settings;
 using Kotono.Utils;
 using Kotono.Utils.Coordinates;
+using System.Linq;
 using Keys = OpenTK.Windowing.GraphicsLibraryFramework.Keys;
 
 namespace Kotono
@@ -86,12 +87,9 @@ namespace Kotono
 
             if (Keyboard.IsKeyPressed(Keys.J))
             {
-                foreach (var selectable in ISelectable.Selected)
+                foreach (var obj in ISelectable.Selected3D.Where(s => s != ISelectable.Active))
                 {
-                    if (selectable != ISelectable.Active)
-                    {
-                        (selectable as IObject3D)?.AttachTo((ISelectable.Active as IObject3D)!);
-                    }
+                    obj.Parent = ISelectable.Active3D;
                 }
             }
         }

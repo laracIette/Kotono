@@ -24,10 +24,6 @@ namespace Kotono.Graphics.Objects
 
         public Vector ScaleVelocity { get; set; }
 
-        public IObject3D? Parent { get; }
-
-        public void AttachTo(IObject3D parent);
-
-        public void Detach();
+        public IObject3D? Parent { get; set; }
     }
 }

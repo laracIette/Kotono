@@ -1,6 +1,5 @@
 ﻿using Kotono.Graphics.Shaders;
 using OpenTK.Graphics.OpenGL4;
-using OpenTK.Mathematics;
 
 namespace Kotono.Graphics.Objects.Hitboxes
 {

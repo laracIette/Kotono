@@ -66,7 +66,24 @@ namespace Kotono.Graphics.Objects
             set => _transform.ScaleVelocity = value;
         }
 
-        public IObject3D? Parent { get; private set; } = null;
+        private IObject3D? _parent = null;
+
+        public IObject3D? Parent 
+        { 
+            get => _parent;
+            set
+            {
+                var transform = Transform.Clone();
+                
+                _parent = value;
+                Transform.Parent = value?.Transform;
+                
+                // Remove relative offset, not sure if it'll stay
+                Transform.WorldLocation = transform.WorldLocation;
+                Transform.WorldRotation = transform.WorldRotation;
+                Transform.WorldScale = transform.WorldScale;
+            }
+        } 
 
         internal Object3D(T settings)
             : base(settings)
@@ -75,17 +92,5 @@ namespace Kotono.Graphics.Objects
         }
 
         internal Object3D() : base() { }
-
-        public void AttachTo(IObject3D parent)
-        {
-            Parent = parent;
-            Transform.Parent = parent.Transform;
-        }
-
-        public void Detach()
-        {
-            Parent = null;
-            Transform.Parent = null;
-        }
     }
 }
