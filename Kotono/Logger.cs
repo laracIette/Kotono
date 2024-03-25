@@ -2,13 +2,13 @@
 
 namespace Kotono
 {
-    internal static class Logger
+    public static class Logger
     {
         /// <summary>
         /// Writes an object to the console.
         /// </summary>
         /// <param name="obj"> The object to log. </param>
-        internal static void Log(object? obj)
+        public static void Log(object? obj)
         {
             Console.WriteLine(obj);
         }
@@ -16,7 +16,7 @@ namespace Kotono
         /// <summary>
         /// Writes an empty line to the console.
         /// </summary>
-        internal static void Log()
+        public static void Log()
         {
             Log("");
         }

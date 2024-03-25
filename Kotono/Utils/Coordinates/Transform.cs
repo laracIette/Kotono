@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 namespace Kotono.Utils.Coordinates
 {
     [Serializable]
-    public class Transform : IEquatable<Transform>, ICloneable<Transform>
+    internal class Transform : IEquatable<Transform>, ICloneable<Transform>
     {
         /// <summary> 
         /// The location of the Transform relative to its parent. 

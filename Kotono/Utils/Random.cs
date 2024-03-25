@@ -77,6 +77,47 @@ namespace Kotono.Utils
         }
 
         /// <summary>
+        /// Get a Point with all values in range [min, max).
+        /// </summary>
+        public static Point Point(float min, float max, int? seed = null)
+        {
+            return new Point(
+                Float(min, max, seed),
+                Float(min, max, seed)
+            );
+        }
+
+        /// <summary>
+        /// Get a Point with all values in range [0, 1).
+        /// </summary>
+        public static Point Point(int? seed = null)
+        {
+            return Point(0.0f, 1.0f, seed);
+        }
+
+        /// <summary>
+        /// Get a Point with the X value in range [minX, maxX) and the Y value in range [minY, maxY).
+        /// </summary>
+        public static Point Point(float minX, float maxX, float minY, float maxY, int? seed = null)
+        {
+            return new Point(
+                Float(minX, maxX, seed),
+                Float(minY, maxY, seed)
+            );
+        }
+
+        /// <summary>
+        /// Get a Point with the X value in range [minX, maxX) and the Y value in range [minY, maxY).
+        /// </summary>
+        public static PointI PointI(int minX, int maxX, int minY, int maxY, int? seed = null)
+        {
+            return new PointI(
+                Int(minX, maxX, seed),
+                Int(minY, maxY, seed)
+            );
+        }
+
+        /// <summary>
         /// Get a Color with all values apart from A in range [min, max).
         /// </summary>
         public static Color Color(float min, float max, int? seed = null)

@@ -92,6 +92,13 @@ namespace Kotono
                     obj.Parent = ISelectable.Active3D;
                 }
             }
+            if (Keyboard.IsKeyPressed(Keys.K))
+            {
+                foreach (var obj in ISelectable.Selected3D)
+                {
+                    obj.Parent = null;
+                }
+            }
         }
 
         private static void CreateObjects()
