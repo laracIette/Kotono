@@ -18,7 +18,7 @@ namespace Kotono.Graphics.Objects
             set => _transform.RelativeLocation = value;
         }
 
-        public virtual Vector RelativeRotation
+        public virtual Rotator RelativeRotation
         {
             get => _transform.RelativeRotation;
             set => _transform.RelativeRotation = value;
@@ -36,7 +36,7 @@ namespace Kotono.Graphics.Objects
             set => _transform.WorldLocation = value;
         }
 
-        public virtual Vector WorldRotation
+        public virtual Rotator WorldRotation
         {
             get => _transform.WorldRotation;
             set => _transform.WorldRotation = value;
@@ -54,7 +54,7 @@ namespace Kotono.Graphics.Objects
             set => _transform.LocationVelocity = value;
         }
 
-        public virtual Vector RotationVelocity
+        public virtual Rotator RotationVelocity
         {
             get => _transform.RotationVelocity;
             set => _transform.RotationVelocity = value;

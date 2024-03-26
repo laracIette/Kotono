@@ -8,19 +8,19 @@ namespace Kotono.Graphics.Objects
 
         public Vector RelativeLocation { get; set; }
 
-        public Vector RelativeRotation { get; set; }
+        public Rotator RelativeRotation { get; set; }
 
         public Vector RelativeScale { get; set; }
 
         public Vector WorldLocation { get; set; }
 
-        public Vector WorldRotation { get; set; }
+        public Rotator WorldRotation { get; set; }
 
         public Vector WorldScale { get; set; }
 
         public Vector LocationVelocity { get; set; }
 
-        public Vector RotationVelocity { get; set; }
+        public Rotator RotationVelocity { get; set; }
 
         public Vector ScaleVelocity { get; set; }
 

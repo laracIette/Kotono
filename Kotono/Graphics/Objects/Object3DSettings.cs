@@ -39,7 +39,7 @@ namespace Kotono.Graphics.Objects
         /// <remarks> 
         /// Default value : Vector.Zero 
         /// </remarks>
-        internal virtual Vector RelativeRotation
+        internal virtual Rotator RelativeRotation
         {
             get => _transform.RelativeRotation;
             set => _transform.RelativeRotation = value;
@@ -75,7 +75,7 @@ namespace Kotono.Graphics.Objects
         /// <remarks> 
         /// Default value : Vector.Zero 
         /// </remarks>
-        internal virtual Vector RotationVelocity
+        internal virtual Rotator RotationVelocity
         {
             get => _transform.RotationVelocity;
             set => _transform.RotationVelocity = value;

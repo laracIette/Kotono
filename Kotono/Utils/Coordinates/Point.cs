@@ -177,14 +177,14 @@ namespace Kotono.Utils.Coordinates
 
         public static bool operator >=(Point left, Point right)
         {
-            return left > right
-                || left == right;
+            return left.X >= right.X
+                && left.Y >= right.Y;
         }
 
         public static bool operator <=(Point left, Point right)
         {
-            return left < right
-                || left == right;
+            return left.X <= right.X
+                && left.Y <= right.Y;
         }
 
         public override readonly bool Equals(object? obj)

@@ -10,9 +10,9 @@
       "Z": -6.213918
     },
     "RelativeRotation": {
-      "X": 0,
-      "Y": 0,
-      "Z": 0
+      "Roll": 0,
+      "Pitch": 0,
+      "Yaw": 0
     },
     "RelativeScale": {
       "X": 0.39396828,

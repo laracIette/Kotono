@@ -37,7 +37,7 @@ namespace Kotono.Graphics.Objects
             }
         }
 
-        internal static Vector Rotation
+        internal static Rotator Rotation
         {
             get => _transform.RelativeRotation;
             set
@@ -105,7 +105,7 @@ namespace Kotono.Graphics.Objects
             switch (_transformSpace)
             {
                 case TransformSpace.World:
-                    Rotation = Vector.Zero;
+                    Rotation = Rotator.Zero;
                     break;
 
                 case TransformSpace.Relative:

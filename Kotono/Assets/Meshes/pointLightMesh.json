@@ -5,14 +5,14 @@
   "MaterialTexturesSettings": [],
   "Transform": {
     "RelativeLocation": {
-      "X": -4.998504,
-      "Y": -0.83684397,
-      "Z": -14.724427
+      "X": -5.236206,
+      "Y": -0.5217685,
+      "Z": -14.667314
     },
     "RelativeRotation": {
-      "X": 0,
-      "Y": 0,
-      "Z": 0
+      "Roll": 0,
+      "Pitch": 0,
+      "Yaw": 0
     },
     "RelativeScale": {
       "X": 1,
@@ -23,9 +23,9 @@
   "Path": "..\\..\\..\\Assets\\Meshes\\pointLightMesh.json",
   "IsDraw": true,
   "Color": {
-    "R": 0.1924915,
-    "G": 0.26947176,
-    "B": 0.9993756,
+    "R": 0.01926583,
+    "G": 0.82504606,
+    "B": 0.7102006,
     "A": 1
   }
 }

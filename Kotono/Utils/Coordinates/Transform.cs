@@ -15,7 +15,7 @@ namespace Kotono.Utils.Coordinates
         /// <summary> 
         /// The rotation of the Transform relative to its parent. 
         /// </summary>
-        public Vector RelativeRotation { get; set; } = DefaultRotation;
+        public Rotator RelativeRotation { get; set; } = DefaultRotation;
 
         /// <summary> 
         /// The scale of the Transform relative to its parent. 
@@ -34,7 +34,7 @@ namespace Kotono.Utils.Coordinates
         /// <summary> 
         /// The rotation of the Transform. 
         /// </summary>
-        internal Vector WorldRotation
+        internal Rotator WorldRotation
         {
             get => RelativeRotation + ParentWorldRotation;
             set => RelativeRotation = value - ParentWorldRotation;
@@ -57,7 +57,7 @@ namespace Kotono.Utils.Coordinates
         /// <summary>
         /// The velocity of the Transform's relative rotation.
         /// </summary>
-        internal Vector RotationVelocity { get; set; } = DefaultRotation;
+        internal Rotator RotationVelocity { get; set; } = DefaultRotation;
 
         /// <summary>
         /// The velocity of the Transform's relative scale.
@@ -86,7 +86,7 @@ namespace Kotono.Utils.Coordinates
 
         internal Vector ParentWorldLocation => Parent?.WorldLocation ?? DefaultLocation;
 
-        internal Vector ParentWorldRotation => Parent?.WorldRotation ?? DefaultRotation;
+        internal Rotator ParentWorldRotation => Parent?.WorldRotation ?? DefaultRotation;
 
         internal Vector ParentWorldScale => Parent?.WorldScale ?? DefaultScale;
 
@@ -95,9 +95,9 @@ namespace Kotono.Utils.Coordinates
         /// </summary>
         internal Matrix4 Model =>
             Matrix4.CreateScale((Vector3)WorldScale)
-            * Matrix4.CreateRotationX(WorldRotation.X)
-            * Matrix4.CreateRotationY(WorldRotation.Y)
-            * Matrix4.CreateRotationZ(WorldRotation.Z)
+            * Matrix4.CreateRotationX(WorldRotation.Roll)
+            * Matrix4.CreateRotationY(WorldRotation.Pitch)
+            * Matrix4.CreateRotationZ(WorldRotation.Yaw)
             * Matrix4.CreateTranslation((Vector3)WorldLocation);
 
         /// <summary> 
@@ -107,7 +107,7 @@ namespace Kotono.Utils.Coordinates
 
         internal static Vector DefaultLocation => Vector.Zero;
 
-        internal static Vector DefaultRotation => Vector.Zero;
+        internal static Rotator DefaultRotation => Rotator.Zero;
 
         internal static Vector DefaultScale => Vector.Unit;
 
@@ -124,7 +124,7 @@ namespace Kotono.Utils.Coordinates
             ScaleVelocity = t.ScaleVelocity;
         }
 
-        internal Transform(Vector location, Vector rotation, Vector scale)
+        internal Transform(Vector location, Rotator rotation, Vector scale)
         {
             RelativeLocation = location;
             RelativeRotation = rotation;

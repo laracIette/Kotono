@@ -1,5 +1,6 @@
 ﻿using Assimp;
 using Kotono.Graphics.Objects;
+using Kotono.Utils.Exceptions;
 using OpenTK.Mathematics;
 using System;
 using System.Runtime.InteropServices;
@@ -26,6 +27,39 @@ namespace Kotono.Utils.Coordinates
         /// The Z component of the Vector. 
         /// </summary>
         public float Z { get; set; }
+
+        /// <summary>
+        /// The component of the Vector corresponding to the index.
+        /// </summary>
+        /// <param name="index"> 0 => X, 1 => Y, 2 => Z. </param>
+        /// <exception cref="SwitchException"></exception>
+        public float this[int index]
+        {
+            readonly get => index switch
+            {
+                0 => X,
+                1 => Y,
+                2 => Z,
+                _ => throw new SwitchException(typeof(int), index)
+            };
+            set
+            {
+                switch (index)
+                {
+                    case 0:
+                        X = value;
+                        break;
+                    case 1:
+                        Y = value;
+                        break;
+                    case 2:
+                        Z = value;
+                        break;
+                    default:
+                        throw new SwitchException(typeof(int), index);
+                }
+            }
+        }
 
         /// <summary>
         /// The length of the Vector. 
@@ -105,15 +139,6 @@ namespace Kotono.Utils.Coordinates
 
         public static int SizeInBytes => sizeof(float) * 3;
 
-        public readonly float this[int index] =>
-            index switch
-            {
-                0 => X,
-                1 => Y,
-                2 => Z,
-                _ => throw new IndexOutOfRangeException("error: You tried to access this Vector at index: " + index)
-            };
-
         /// <summary> 
         /// Initialize a <see cref="Vector"/> with X = x, Y = y, Z = z.
         /// </summary>
@@ -139,7 +164,7 @@ namespace Kotono.Utils.Coordinates
         /// </summary>
         public Vector(float f) : this(f, f, f) { }
 
-        public static Vector RotateAroundPoint(Vector v, Vector point, Vector rotation)
+        public static Vector RotateAroundPoint(Vector v, Vector point, Rotator rotation)
         {
             return (Vector)(Quaternion.FromEulerAngles((Vector3)rotation) * (Vector3)(v - point)) + point;
         }

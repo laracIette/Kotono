@@ -54,18 +54,18 @@ namespace Kotono.Graphics.Objects.Hitboxes
 
         public override void Draw()
         {
-            DrawCircle(new Vector(Math.PI / 2.0f, 0.0f, 0.0f));
-            DrawCircle(new Vector(0.0f, Math.PI / 2.0f, 0.0f));
-            DrawCircle(new Vector(0.0f, 0.0f, Math.PI / 2.0f));
+            DrawCircle(new Rotator(Math.PI / 2.0f, 0.0f, 0.0f));
+            DrawCircle(new Rotator(0.0f, Math.PI / 2.0f, 0.0f));
+            DrawCircle(new Rotator(0.0f, 0.0f, Math.PI / 2.0f));
         }
 
-        private void DrawCircle(Vector rotation)
+        private void DrawCircle(Rotator rotation)
         {
             var model =
                 Matrix4.CreateScale((Vector3)RelativeScale)
-                * Matrix4.CreateRotationX(RelativeRotation.X + rotation.X)
-                * Matrix4.CreateRotationY(RelativeRotation.Y + rotation.Y)
-                * Matrix4.CreateRotationZ(RelativeRotation.Z + rotation.Z)
+                * Matrix4.CreateRotationX(RelativeRotation.Roll + rotation.Roll)
+                * Matrix4.CreateRotationY(RelativeRotation.Pitch + rotation.Pitch)
+                * Matrix4.CreateRotationZ(RelativeRotation.Yaw + rotation.Yaw)
                 * Matrix4.CreateTranslation((Vector3)RelativeLocation);
 
             ShaderManager.Hitbox.SetColor("color", Color);

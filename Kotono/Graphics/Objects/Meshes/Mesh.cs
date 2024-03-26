@@ -23,10 +23,10 @@ namespace Kotono.Graphics.Objects.Meshes
 
         internal CollisionState CollisionState { get; set; }
 
-        public override Vector RotationVelocity
+        public override Rotator RotationVelocity
         {
-            get => Vector.Deg(base.RotationVelocity);
-            set => base.RotationVelocity = Vector.Rad(value);
+            get => base.RotationVelocity;
+            set => base.RotationVelocity = value;
         }
 
         public bool IsFizix { get; set; } = false;

@@ -32,17 +32,17 @@ namespace Kotono.Physics
             {
                 collisionCenter /= n;
 
-                var rot = Vector.Rad(mesh.RelativeRotation);
+                var rot = mesh.RelativeRotation.Radians;
 
                 var up = new Vector
                 {
-                    X = Math.Cos(rot.X) * Math.Sin(rot.Y),
-                    Y = Math.Sin(rot.X) * Math.Sin(rot.Y),
-                    Z = Math.Cos(rot.Y)
+                    X = Math.Cos(rot.Roll) * Math.Sin(rot.Pitch),
+                    Y = Math.Sin(rot.Roll) * Math.Sin(rot.Pitch),
+                    Z = Math.Cos(rot.Pitch)
                 };
 
                 var lookAtMatrix = Matrix4.LookAt((Vector3)mesh.RelativeLocation, (Vector3)collisionCenter, (Vector3)up);
-                mesh.RelativeRotation = (Vector)Vector3.TransformPosition((Vector3)mesh.RelativeRotation, lookAtMatrix);
+                mesh.RelativeRotation = (Rotator)Vector3.TransformPosition((Vector3)mesh.RelativeRotation, lookAtMatrix);
             }
         }
 
