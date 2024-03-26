@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Kotono.Utils.Exceptions;
+using System;
 
 namespace Kotono.Utils
 {
@@ -56,7 +57,7 @@ namespace Kotono.Utils
             }
             else
             {
-                throw new Exception($"error: duration \"{duration}\" should be over 0.0f.");
+                throw new KotonoException($"duration \"{duration}\" should be over 0.0f");
             }
         }
 
