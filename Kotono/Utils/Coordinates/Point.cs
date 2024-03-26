@@ -97,6 +97,13 @@ namespace Kotono.Utils.Coordinates
             return Math.Max(p.X, p.Y);
         }
 
+        public static Point Clamp(Point p, float min, float max)
+        {
+            p.X = Math.Clamp(p.X, min, max);
+            p.Y = Math.Clamp(p.Y, min, max);
+            return p;
+        }
+
         public static Point operator +(Point left, Point right)
         {
             left.X += right.X;
