@@ -4,7 +4,12 @@ namespace Kotono.Utils
 {
     public static class Time
     {
-        private static double StartTime { get; } = DateTime.UtcNow.Ticks / (double)TimeSpan.TicksPerSecond;
+        /// <summary>
+        /// Current exact UTC Time since Epoch in seconds.
+        /// </summary>
+        public static double ExactSinceEpoch => DateTime.UtcNow.Ticks / (double)TimeSpan.TicksPerSecond;
+
+        private static double StartTime { get; } = ExactSinceEpoch;
 
         /// <summary>
         /// Current UTC Time since Epoch in seconds.
@@ -38,7 +43,7 @@ namespace Kotono.Utils
 
         public static void Update()
         {
-            SinceEpoch = DateTime.UtcNow.Ticks / (double)TimeSpan.TicksPerSecond;
+            SinceEpoch = ExactSinceEpoch;
 
             float now = (float)(SinceEpoch - StartTime);
 
