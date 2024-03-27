@@ -95,8 +95,13 @@ namespace Kotono.Utils.Coordinates
 
         public static PointI Clamp(PointI p, int min, int max)
         {
-            p.X = (int)Math.Clamp(p.X, min, max);
-            p.Y = (int)Math.Clamp(p.Y, min, max);
+            return Clamp(p, new PointI(min), new PointI(max));
+        }
+
+        public static PointI Clamp(PointI p, PointI min, PointI max)
+        {
+            p.X = (int)Math.Clamp(p.X, min.X, max.X);
+            p.Y = (int)Math.Clamp(p.Y, min.Y, max.Y);
             return p;
         }
 
@@ -119,6 +124,13 @@ namespace Kotono.Utils.Coordinates
             left.X -= right.X;
             left.Y -= right.Y;
             return left;
+        }
+
+        public static PointI operator -(PointI p, int i)
+        {
+            p.X -= i;
+            p.Y -= i;
+            return p;
         }
 
         public static PointI operator -(PointI p)

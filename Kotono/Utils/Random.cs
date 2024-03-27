@@ -107,13 +107,13 @@ namespace Kotono.Utils
         }
 
         /// <summary>
-        /// Get a Point with the X value in range [minX, maxX) and the Y value in range [minY, maxY).
+        /// Get a Point in range [min, max).
         /// </summary>
-        public static PointI PointI(int minX, int maxX, int minY, int maxY, int? seed = null)
+        public static PointI PointI(PointI min, PointI max, int? seed = null)
         {
             return new PointI(
-                Int(minX, maxX, seed),
-                Int(minY, maxY, seed)
+                Int(min.X, max.X, seed),
+                Int(min.Y, max.Y, seed)
             );
         }
 

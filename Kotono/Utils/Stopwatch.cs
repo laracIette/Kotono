@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
 namespace Kotono.Utils
 {
@@ -11,6 +12,7 @@ namespace Kotono.Utils
         /// </summary>
         public double ElapsedTime => Time.ExactSinceEpoch - _startTime;
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Start()
         {
             _startTime = Time.ExactSinceEpoch;
