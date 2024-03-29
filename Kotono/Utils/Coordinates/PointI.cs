@@ -230,6 +230,11 @@ namespace Kotono.Utils.Coordinates
             return new PointI(t.X, t.Y);
         }
 
+        public static explicit operator Point(PointI p)
+        {
+            return new Point(p.X, p.Y);
+        }
+
         public static explicit operator PointI(Vector2i v)
         {
             return new PointI(v.X, v.Y);

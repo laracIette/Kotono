@@ -99,8 +99,13 @@ namespace Kotono.Utils.Coordinates
 
         public static Point Clamp(Point p, float min, float max)
         {
-            p.X = Math.Clamp(p.X, min, max);
-            p.Y = Math.Clamp(p.Y, min, max);
+            return Clamp(p, new Point(min), new Point(max));
+        }
+
+        public static Point Clamp(Point p, Point min, Point max)
+        {
+            p.X = Math.Clamp(p.X, min.X, max.X);
+            p.Y = Math.Clamp(p.Y, min.Y, max.Y);
             return p;
         }
 
@@ -215,9 +220,14 @@ namespace Kotono.Utils.Coordinates
             return new Point(t.X, t.Y);
         }
 
-        public static explicit operator Vector2(Point v)
+        public static explicit operator PointI(Point p)
         {
-            return new Vector2(v.X, v.Y);
+            return new PointI((int)p.X, (int)p.Y);
+        }
+
+        public static explicit operator Vector2(Point p)
+        {
+            return new Vector2(p.X, p.Y);
         }
 
         public static explicit operator Point(Vector2 v)
@@ -225,9 +235,9 @@ namespace Kotono.Utils.Coordinates
             return new Point(v.X, v.Y);
         }
 
-        public static explicit operator Vector2i(Point v)
+        public static explicit operator Vector2i(Point p)
         {
-            return new Vector2i((int)v.X, (int)v.Y);
+            return new Vector2i((int)p.X, (int)p.Y);
         }
 
         public static explicit operator Point(Vector2i v)
