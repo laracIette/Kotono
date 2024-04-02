@@ -4,17 +4,17 @@ namespace Kotono.Utils
 {
     public static class Time
     {
+        private static double StartTime { get; } = ExactSinceEpoch;
+
         /// <summary>
         /// Current exact UTC Time since Epoch in seconds.
         /// </summary>
         public static double ExactSinceEpoch => DateTime.UtcNow.Ticks / (double)TimeSpan.TicksPerSecond;
 
-        private static double StartTime { get; } = ExactSinceEpoch;
-
         /// <summary>
         /// Current UTC Time since Epoch in seconds.
         /// </summary>
-        public static double SinceEpoch { get; private set; } = StartTime;
+        public static double SinceEpoch { get; private set; } = ExactSinceEpoch;
 
         /// <summary>
         /// Current UTC Time since Epoch in milliseconds.

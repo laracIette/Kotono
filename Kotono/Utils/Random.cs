@@ -33,7 +33,7 @@ namespace Kotono.Utils
         /// </summary>
         public static float Float(float min, float max, int? seed = null)
         {
-            return Math.Lerp(min, max, GetRandom(seed).NextSingle());
+            return Math.Lerp(GetRandom(seed).NextSingle(), min, max);
         }
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace Kotono.Utils
         /// </summary>
         public static double Double(double min, double max, int? seed = null)
         {
-            return MathD.Lerp(min, max, GetRandom(seed).NextDouble());
+            return MathD.Lerp(GetRandom(seed).NextDouble(), min, max);
         }
 
         /// <summary>

@@ -18,8 +18,6 @@ namespace Kotono.Graphics.Objects.Shapes
 
         public Vector[] Vertices { get; }
 
-        internal Matrix4 Model => Transform.Model;
-
         internal Shape(ShapeSettings settings)
             : base(settings)
         {

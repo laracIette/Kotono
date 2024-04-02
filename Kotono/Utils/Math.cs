@@ -8,9 +8,8 @@ namespace Kotono.Utils
         public const float PI = 3.14159265358979323846f;
 
         /// <summary> 
-        /// Converts degrees to radians.
+        /// Convert degrees to radians.
         /// </summary>
-        [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float Rad(float degrees)
         {
@@ -18,9 +17,8 @@ namespace Kotono.Utils
         }
 
         /// <summary>
-        /// Converts radians to degrees.
+        /// Convert radians to degrees.
         /// </summary>
-        [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float Deg(float radians)
         {
@@ -30,7 +28,6 @@ namespace Kotono.Utils
         /// <summary>
         /// Get the absolute value.
         /// </summary>
-        [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float Abs(float value)
         {
@@ -55,7 +52,9 @@ namespace Kotono.Utils
             return System.MathF.Sqrt(value);
         }
 
-        [Pure]
+        /// <summary>
+        /// Clamp a value in range [min, max].
+        /// </summary>
         public static float Clamp(float value, float min, float max)
         {
             if (min > max)
@@ -75,21 +74,26 @@ namespace Kotono.Utils
             return value;
         }
 
-        [Pure]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static float Lerp(float start, float end, float interpolation)
+        /// <summary>
+        /// Clamp a value in range [0, 1].
+        /// </summary>
+        public static float Clamp(float value)
         {
-            return start + (end - start) * interpolation;
+            return Clamp(value, 0.0f, 1.0f);
         }
 
-        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static float Lerp(float value, float min, float max)
+        {
+            return min + (max - min) * value;
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float Min(float left, float right)
         {
             return (left < right) ? left : right;
         }
 
-        [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float Max(float left, float right)
         {
@@ -97,9 +101,8 @@ namespace Kotono.Utils
         }
 
         /// <summary> 
-        /// Loops a number in range [min, max).
+        /// Loop a number in range [min, max).
         /// </summary>
-        [Pure]
         public static float Loop(float value, float min, float max)
         {
             if (min > max)
@@ -120,22 +123,19 @@ namespace Kotono.Utils
         }
 
         /// <summary> 
-        /// Loops a number in range [0, max).
+        /// Loop a number in range [0, max).
         /// </summary>
-        [Pure]
         public static float Loop(float value, float max)
         {
             return Loop(value, 0.0f, max);
         }
 
-        [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float Floor(float value)
         {
             return (int)value;
         }
 
-        [Pure]
         public static float Add(params float[] values)
         {
             float result = 0.0f;
@@ -148,7 +148,6 @@ namespace Kotono.Utils
             return result;
         }
 
-        [Pure]
         public static float Avg(params float[] values)
         {
             return Add(values) / values.Length;

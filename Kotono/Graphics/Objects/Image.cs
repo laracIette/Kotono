@@ -19,10 +19,6 @@ namespace Kotono.Graphics.Objects
 
         private float _endTime = 0;
 
-        private Matrix4 Model =>
-            Matrix4.CreateScale(Dest.NDC.W, Dest.NDC.H, 1.0f)
-            * Matrix4.CreateTranslation(Dest.NDC.X, Dest.NDC.Y, 0.0f);
-
         internal bool IsMouseOn => Rect.Overlaps(Dest, Mouse.Position);
 
         internal Image(ImageSettings settings)
@@ -50,7 +46,7 @@ namespace Kotono.Graphics.Objects
         {
             GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
 
-            ShaderManager.Image.SetMatrix4("model", Model);
+            ShaderManager.Image.SetMatrix4("model", Dest.Model);
             ShaderManager.Image.SetColor("color", Color);
 
             _texture.Draw();

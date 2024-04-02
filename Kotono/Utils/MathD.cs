@@ -10,7 +10,6 @@ namespace Kotono.Utils
         /// <summary> 
         /// Converts degrees to radians.
         /// </summary>
-        [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static double Rad(double degrees)
         {
@@ -20,7 +19,6 @@ namespace Kotono.Utils
         /// <summary>
         /// Converts radians to degrees.
         /// </summary>
-        [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static double Deg(double radians)
         {
@@ -30,7 +28,6 @@ namespace Kotono.Utils
         /// <summary>
         /// Get the absolute value.
         /// </summary>
-        [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static double Abs(double value)
         {
@@ -55,7 +52,6 @@ namespace Kotono.Utils
             return System.Math.Sqrt(value);
         }
 
-        [Pure]
         public static double Clamp(double value, double min, double max)
         {
             if (min > max)
@@ -75,21 +71,18 @@ namespace Kotono.Utils
             return value;
         }
 
-        [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double Lerp(double start, double end, double interpolation)
+        public static double Lerp(double value, double min, double max)
         {
-            return start + (end - start) * interpolation;
+            return min + (max - min) * value;
         }
 
-        [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static double Min(double left, double right)
         {
             return (left < right) ? left : right;
         }
 
-        [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static double Max(double left, double right)
         {
@@ -99,7 +92,6 @@ namespace Kotono.Utils
         /// <summary> 
         /// Loops a number in range [min, max).
         /// </summary>
-        [Pure]
         public static double Loop(double value, double min, double max)
         {
             if (min > max)
@@ -122,13 +114,11 @@ namespace Kotono.Utils
         /// <summary> 
         /// Loops a number in range [0, max).
         /// </summary>
-        [Pure]
         public static double Loop(double value, double max)
         {
             return Loop(value, 0.0, max);
         }
 
-        [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static double Floor(double value)
         {

@@ -94,11 +94,9 @@ namespace Kotono.Utils.Coordinates
         /// The model matrix of the Transform.
         /// </summary>
         internal Matrix4 Model =>
-            Matrix4.CreateScale((Vector3)WorldScale)
-            * Matrix4.CreateRotationX(WorldRotation.Roll)
-            * Matrix4.CreateRotationY(WorldRotation.Pitch)
-            * Matrix4.CreateRotationZ(WorldRotation.Yaw)
-            * Matrix4.CreateTranslation((Vector3)WorldLocation);
+            Vector.CreateScaleMatrix(WorldScale)
+            * Rotator.CreateRotationMatrix(WorldRotation)
+            * Vector.CreateTranslationMatrix(WorldLocation);
 
         /// <summary> 
         /// A Transform with default location, rotation and scale. 

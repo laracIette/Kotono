@@ -1,5 +1,4 @@
-﻿using Kotono.Graphics;
-using OpenTK.Mathematics;
+﻿using OpenTK.Mathematics;
 using System;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
@@ -8,7 +7,7 @@ namespace Kotono.Utils.Coordinates
 {
     [Serializable]
     [StructLayout(LayoutKind.Sequential)]
-    public struct PointI : IEquatable<PointI>
+    public partial struct PointI : IEquatable<PointI>
     {
         /// <summary> 
         /// The X component of the PointI. 
@@ -242,7 +241,7 @@ namespace Kotono.Utils.Coordinates
 
         public static explicit operator Vector2i(PointI v)
         {
-            return new Vector2i((int)v.X, (int)v.Y);
+            return new Vector2i(v.X, v.Y);
         }
 
         public override readonly string ToString()

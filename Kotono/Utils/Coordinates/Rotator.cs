@@ -27,7 +27,7 @@ namespace Kotono.Utils.Coordinates
         public static Rotator Zero => new Rotator(0.0f, 0.0f, 0.0f);
 
         /// <summary>
-        /// Initialize a <see cref="Rotator"/> from euler angles with [Roll = roll, Pitch = pitch, Yaw = yaw].
+        /// Initialize a <see cref="Rotator"/> from degrees with [Roll = roll, Pitch = pitch, Yaw = yaw].
         /// </summary>
         public Rotator(float roll = 0.0f, float pitch = 0.0f, float yaw = 0.0f)
         {
@@ -37,26 +37,34 @@ namespace Kotono.Utils.Coordinates
         }
 
         /// <summary>
-        /// Initialize a <see cref="Rotator"/> from euler angles with [Roll = 0, Pitch = 0, Yaw = 0].
+        /// Initialize a <see cref="Rotator"/> from degrees with [Roll = 0, Pitch = 0, Yaw = 0].
         /// </summary>
         public Rotator() : this(0.0f, 0.0f, 0.0f) { }
 
         /// <summary>
-        /// Initialize a <see cref="Rotator"/> from euler angles with [Roll = r.Roll, Pitch = r.Pitch, Yaw = r.Yaw].
+        /// Initialize a <see cref="Rotator"/> from degrees with [Roll = r.Roll, Pitch = r.Pitch, Yaw = r.Yaw].
         /// </summary>
         public Rotator(Rotator r) : this(r.Roll, r.Pitch, r.Yaw) { }
 
         /// <summary>
-        /// Initialize a <see cref="Rotator"/> from euler angles with [Roll = f, Pitch = f, Yaw = f].
+        /// Initialize a <see cref="Rotator"/> from degrees with [Roll = f, Pitch = f, Yaw = f].
         /// </summary>
         public Rotator(float f) : this(f, f, f) { }
 
         /// <summary>
-        /// Get a <see cref="Rotator"/> from radian angles with [Roll = roll, Pitch = pitch, Yaw = yaw].
+        /// Get a <see cref="Rotator"/> from radians with [Roll = roll, Pitch = pitch, Yaw = yaw].
         /// </summary>
         public static Rotator FromRadians(float roll = 0.0f, float pitch = 0.0f, float yaw = 0.0f)
         {
             return new Rotator(Math.Deg(roll), Math.Deg(pitch), Math.Deg(yaw));
+        }
+
+        public static Matrix4 CreateRotationMatrix(Rotator r)
+        {
+            return 
+                Matrix4.CreateRotationX(r.Roll)
+                * Matrix4.CreateRotationY(r.Pitch)
+                * Matrix4.CreateRotationZ(r.Yaw);
         }
 
         public static Rotator operator +(Rotator left, Rotator right)

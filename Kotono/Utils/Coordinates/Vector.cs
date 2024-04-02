@@ -234,6 +234,16 @@ namespace Kotono.Utils.Coordinates
             };
         }
 
+        public static Matrix4 CreateScaleMatrix(Vector v)
+        {
+            return Matrix4.CreateScale((Vector3)v);
+        }
+
+        public static Matrix4 CreateTranslationMatrix(Vector v)
+        {
+            return Matrix4.CreateTranslation((Vector3)v);
+        }
+
         public static Vector operator +(Vector left, Vector right)
         {
             left.X += right.X;
