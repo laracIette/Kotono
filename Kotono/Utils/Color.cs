@@ -229,9 +229,9 @@ namespace Kotono.Utils
         public static Color Rainbow(float frequency)
         {
             return new Color(
-                (Math.Sin(frequency * Time.NowMS + 0.0f) * 0.5f) + 0.5f,
-                (Math.Sin(frequency * Time.NowMS + 2.0f) * 0.5f) + 0.5f,
-                (Math.Sin(frequency * Time.NowMS + 4.0f) * 0.5f) + 0.5f
+                (Math.Sin(frequency * Time.Now * 1000.0f + 0.0f) * 0.5f) + 0.5f,
+                (Math.Sin(frequency * Time.Now * 1000.0f + 2.0f) * 0.5f) + 0.5f,
+                (Math.Sin(frequency * Time.Now * 1000.0f + 4.0f) * 0.5f) + 0.5f
             );
         }
 

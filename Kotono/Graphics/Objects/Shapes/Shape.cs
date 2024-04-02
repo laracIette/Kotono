@@ -1,7 +1,6 @@
 ﻿using Kotono.Graphics.Shaders;
 using Kotono.Utils.Coordinates;
 using OpenTK.Graphics.OpenGL4;
-using OpenTK.Mathematics;
 using System;
 
 namespace Kotono.Graphics.Objects.Shapes

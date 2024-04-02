@@ -7,6 +7,6 @@ namespace Kotono.Graphics.Objects.Buttons
         /// <summary>
         /// The time at which the event occured.
         /// </summary>
-        internal float Time { get; } = Utils.Time.Now;
+        internal float Time { get; } = Utils.Timing.Time.Now;
     }
 }

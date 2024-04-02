@@ -26,6 +26,8 @@ namespace Kotono.Graphics.Shaders
 
         internal static FlatTextureShader FlatTexture { get; } = new();
 
+        internal static PainterShader Painter { get; } = new();
+
         internal static void Update()
         {
             Lighting.Update();
@@ -39,6 +41,7 @@ namespace Kotono.Graphics.Shaders
             Blur.Update();
             Outline.Update();
             FlatTexture.Update();
+            Painter.Update();
         }
 
         internal static Shader Get(string name)
@@ -56,6 +59,7 @@ namespace Kotono.Graphics.Shaders
                 "blur" => Blur,
                 "outline" => Outline,
                 "flatTexture" => FlatTexture,
+                "painter" => Painter,
                 _ => throw new SwitchException(typeof(string), name)
             };
         }

@@ -4,3 +4,4 @@ global using RoundedBox = Kotono.Graphics.Objects.RoundedBox<Kotono.Graphics.Obj
 global using Math = Kotono.Utils.Math;
 global using Path = Kotono.Utils.Path;
 global using Random = Kotono.Utils.Random;
+global using Time = Kotono.Utils.Timing.Time;

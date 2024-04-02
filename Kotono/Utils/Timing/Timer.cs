@@ -1,7 +1,7 @@
 ﻿using Kotono.Utils.Exceptions;
 using System;
 
-namespace Kotono.Utils
+namespace Kotono.Utils.Timing
 {
     internal class Timer : Object
     {

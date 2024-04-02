@@ -6,8 +6,10 @@ using Kotono.Graphics.Objects.Lights;
 using Kotono.Graphics.Objects.Meshes;
 using Kotono.Input;
 using Kotono.Settings;
+using Kotono.Tests;
 using Kotono.Utils;
 using Kotono.Utils.Coordinates;
+using Kotono.Utils.Timing;
 using System.Linq;
 using Keys = OpenTK.Windowing.GraphicsLibraryFramework.Keys;
 
@@ -59,6 +61,8 @@ namespace Kotono
             {
                 RelativeLocation = new Vector(6.0f, 0.0f, 0.0f)
             };
+
+            _ = new Painter();
         }
 
         private void OnTimerTimeout(object? sender, TimeoutEventArgs e)

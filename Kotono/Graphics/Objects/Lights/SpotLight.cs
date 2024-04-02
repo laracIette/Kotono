@@ -1,5 +1,4 @@
 ﻿using Kotono.Input;
-using Kotono.Utils;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 
 namespace Kotono.Graphics.Objects.Lights

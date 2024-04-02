@@ -1,5 +1,6 @@
 ﻿using Kotono.Utils;
 using Kotono.Utils.Coordinates;
+using Kotono.Utils.Timing;
 using System;
 
 namespace Kotono.Graphics.Objects.Texts

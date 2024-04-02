@@ -224,6 +224,11 @@ namespace Kotono.Utils.Coordinates
             return HashCode.Combine(X, Y);
         }
 
+        public static implicit operator (int X, int Y)(PointI p)
+        {
+            return (p.X, p.Y);
+        }
+
         public static implicit operator PointI((int X, int Y) t)
         {
             return new PointI(t.X, t.Y);
