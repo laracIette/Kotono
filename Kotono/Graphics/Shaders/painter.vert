@@ -4,9 +4,9 @@ in vec2 aPos;
 
 in vec2 aTexCoords;
 
-out vec2 TexCoords;
-
 uniform mat4 model;
+
+out vec2 TexCoords;
 
 void main()
 {

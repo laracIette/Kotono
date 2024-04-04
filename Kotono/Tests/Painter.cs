@@ -5,31 +5,39 @@ using Kotono.Utils;
 using Kotono.Utils.Coordinates;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Windowing.GraphicsLibraryFramework;
-using System;
 
 namespace Kotono.Tests
 {
     internal class Painter : Object2D
     {
-        private readonly byte[,] _fragments;
+        private readonly byte[] _fragments;
 
         private readonly int _handle;
+
+        private new PointI Size { get; }
 
         internal Painter()
         {
             Dest = Rect.FromAnchor(new Rect(Point.Zero, 100.0f, 50.0f), Anchor.TopLeft);
 
-            _fragments = new byte[(int)Size.X * 4, (int)Size.Y * 4];
-            for (int y = 0; y < Size.Y * 4; y++)
+            Size = (PointI)Dest.Size;
+            _fragments = new byte[Size.Product * 4];
+
+            for (int i = 0; i < Size.Product * 4; i += 4)
             {
-                for (int x = 0; x < Size.X * 4; x++)
-                {
-                    _fragments[x, y] = 255;
-                }
+                _fragments[i + 3] = 255;
             }
 
             _handle = GL.GenTexture();
             UpdateTexture();
+
+            Texture.Use(_handle);
+
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
+
+            Texture.Bind(0);
+
         }
 
         public override void Update()
@@ -42,21 +50,17 @@ namespace Kotono.Tests
 
         public override void Draw()
         {
-            //GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
-
             ShaderManager.Painter.SetMatrix4("model", Dest.Model);
-            ShaderManager.Painter.SetInt("array", _handle);
 
             Texture.Draw(_handle);
         }
 
         private void UpdateTexture()
         {
-            Texture.Bind(_handle);
+            Texture.Use(_handle);
 
-            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, (int)Size.X, (int)Size.Y, 0, PixelFormat.Rgba, PixelType.UnsignedByte, IntPtr.Zero);
-            GL.TexSubImage2D(TextureTarget.Texture2D, 0, 0, 0, (int)Size.X, (int)Size.Y, PixelFormat.Rgba, PixelType.UnsignedByte, _fragments);
-            
+            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, Size.X, Size.Y, 0, PixelFormat.Rgba, PixelType.UnsignedByte, _fragments);
+
             Texture.Bind(0);
         }
 
@@ -64,7 +68,10 @@ namespace Kotono.Tests
         {
             if ((Mouse.Delta != Point.Zero) && Rect.Overlaps(Dest, Mouse.Position))
             {
-                _fragments[(int)Mouse.Position.X * 4, (int)Mouse.Position.Y * 4] = 255;
+                int index = (int)((Size.Y - Mouse.Position.Y - 1) * Size.X + Mouse.Position.X) * 4;
+                _fragments[index + 0] = 255;
+                _fragments[index + 1] = 255;
+                _fragments[index + 2] = 255;
                 UpdateTexture();
             }
         }

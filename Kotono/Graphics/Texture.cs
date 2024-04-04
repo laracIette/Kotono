@@ -23,8 +23,7 @@ namespace Kotono.Graphics
             {
                 value = GL.GenTexture();
 
-                GL.ActiveTexture(TextureUnit.Texture0);
-                Bind(value);
+                Use(value);
 
                 StbImage.stbi_set_flip_vertically_on_load(1);
 

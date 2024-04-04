@@ -48,6 +48,12 @@ namespace Kotono.Utils.Coordinates
         [JsonIgnore]
         public readonly float Ratio => X / Y;
 
+        /// <summary>
+        /// The X * Y product of the Point.
+        /// </summary>
+        [JsonIgnore]
+        public readonly float Product => X * Y;
+
         public static Point Zero => new Point(0.0f, 0.0f);
 
         public static Point Unit => new Point(1.0f, 1.0f);
