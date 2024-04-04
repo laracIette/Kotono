@@ -36,11 +36,7 @@ namespace Kotono.Tests
         {
             if (Mouse.IsButtonDown(MouseButton.Left))
             {
-                if (Rect.Overlaps(Dest, Mouse.Position))
-                {
-                    _fragments[(int)Mouse.Position.X * 4, (int)Mouse.Position.Y * 4] = 255;
-                    UpdateTexture();
-                }
+                OnLeftButtonDown();
             }
         }
 
@@ -49,6 +45,7 @@ namespace Kotono.Tests
             //GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
 
             ShaderManager.Painter.SetMatrix4("model", Dest.Model);
+            ShaderManager.Painter.SetInt("array", _handle);
 
             Texture.Draw(_handle);
         }
@@ -61,6 +58,15 @@ namespace Kotono.Tests
             GL.TexSubImage2D(TextureTarget.Texture2D, 0, 0, 0, (int)Size.X, (int)Size.Y, PixelFormat.Rgba, PixelType.UnsignedByte, _fragments);
             
             Texture.Bind(0);
+        }
+
+        private void OnLeftButtonDown()
+        {
+            if ((Mouse.Delta != Point.Zero) && Rect.Overlaps(Dest, Mouse.Position))
+            {
+                _fragments[(int)Mouse.Position.X * 4, (int)Mouse.Position.Y * 4] = 255;
+                UpdateTexture();
+            }
         }
     }
 }

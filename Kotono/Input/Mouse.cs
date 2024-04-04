@@ -4,6 +4,7 @@ using Kotono.Utils.Coordinates;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 namespace Kotono.Input
@@ -137,22 +138,22 @@ namespace Kotono.Input
             Ray = ((Vector)rayWorld.Xyz).Normalized;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static bool IsButtonDown(MouseButton button) => MouseState.IsButtonDown(button);
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static bool WasButtonDown(MouseButton button) => MouseState.WasButtonDown(button);
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static bool IsButtonPressed(MouseButton button) => MouseState.IsButtonPressed(button);
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static bool IsButtonReleased(MouseButton button) => MouseState.IsButtonReleased(button);
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static void ShowCursor() => ShowCursor(true);
 
-        internal static void ShowCursor()
-        {
-            ShowCursor(true);
-        }
-
-        internal static void HideCursor()
-        {
-            ShowCursor(false);
-        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static void HideCursor() => ShowCursor(false);
     }
 }
