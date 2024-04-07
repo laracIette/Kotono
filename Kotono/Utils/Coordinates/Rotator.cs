@@ -83,20 +83,28 @@ namespace Kotono.Utils.Coordinates
             return left;
         }
 
-        public static Rotator operator -(Rotator v, float f)
+        public static Rotator operator -(Rotator r, float f)
         {
-            v.Roll -= f;
-            v.Pitch -= f;
-            v.Yaw -= f;
-            return v;
+            r.Roll -= f;
+            r.Pitch -= f;
+            r.Yaw -= f;
+            return r;
         }
 
-        public static Rotator operator -(Rotator v)
+        public static Rotator operator -(Rotator r)
         {
-            v.Roll = -v.Roll;
-            v.Pitch = -v.Pitch;
-            v.Yaw = -v.Yaw;
-            return v;
+            r.Roll = -r.Roll;
+            r.Pitch = -r.Pitch;
+            r.Yaw = -r.Yaw;
+            return r;
+        }
+
+        public static Rotator operator *(Rotator r, float f)
+        {
+            r.Roll *= f;
+            r.Pitch *= f;
+            r.Yaw *= f;
+            return r;
         }
 
         public static bool operator ==(Rotator left, Rotator right)

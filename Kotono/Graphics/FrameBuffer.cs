@@ -32,32 +32,17 @@ namespace Kotono.Graphics
 
         internal Framebuffer()
         {
+
             // Create the color texture
-            _colorBufferTexture = GL.GenTexture();
+            _colorBufferTexture = Texture.Gen();
 
             // Create the depth and stencil texture
-            _depthStencilBufferTexture = GL.GenTexture();
+            _depthStencilBufferTexture = Texture.Gen();
 
             // Create the framebuffer
             _framebuffer = GL.GenFramebuffer();
 
             Size = Window.Size;
-        }
-
-        private void ResizeFramebuffer()
-        {
-            // Update the color texture
-            Texture.Bind(_colorBufferTexture);
-            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgb, (int)Size.X, (int)Size.Y, 0, PixelFormat.Rgb, PixelType.UnsignedByte, IntPtr.Zero);
-            SetTextureParameters();
-
-            // Update the depth and stencil texture
-            Texture.Bind(_depthStencilBufferTexture);
-            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Depth24Stencil8, (int)Size.X, (int)Size.Y, 0, PixelFormat.DepthStencil, PixelType.UnsignedInt248, IntPtr.Zero);
-            SetTextureParameters();
-
-            // Unbind texture
-            Texture.Bind(0);
 
             // Attach textures to framebuffer
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, _framebuffer);
@@ -74,10 +59,18 @@ namespace Kotono.Graphics
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
         }
 
-        private static void SetTextureParameters()
+        private void ResizeFramebuffer()
         {
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
+            // Update the color texture
+            Texture.Bind(_colorBufferTexture);
+            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgb, (int)Size.X, (int)Size.Y, 0, PixelFormat.Rgb, PixelType.UnsignedByte, IntPtr.Zero);
+
+            // Update the depth and stencil texture
+            Texture.Bind(_depthStencilBufferTexture);
+            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Depth24Stencil8, (int)Size.X, (int)Size.Y, 0, PixelFormat.DepthStencil, PixelType.UnsignedInt248, IntPtr.Zero);
+
+            // Unbind texture
+            Texture.Bind(0);
         }
 
         public void BeginDraw()
@@ -113,9 +106,9 @@ namespace Kotono.Graphics
 
         private static void ClearColorAndDepthBuffers() => GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
-        private void DrawColor() => ShaderManager.Color.Draw(_colorBufferTexture);
+        private void DrawColor() => ((TextureBufferShader)ShaderManager.Shaders["color"]).Draw(_colorBufferTexture);
 
-        private void DrawOutline() => ShaderManager.Outline.Draw(_depthStencilBufferTexture);
+        private void DrawOutline() => ((TextureBufferShader)ShaderManager.Shaders["outline"]).Draw(_depthStencilBufferTexture);
 
         #endregion Helpers
 

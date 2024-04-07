@@ -4,6 +4,7 @@ using Kotono.Graphics.Objects;
 using Kotono.Graphics.Objects.Buttons;
 using Kotono.Graphics.Objects.Lights;
 using Kotono.Graphics.Objects.Meshes;
+using Kotono.Graphics.Objects.Shapes;
 using Kotono.Input;
 using Kotono.Settings;
 using Kotono.Tests;
@@ -53,16 +54,7 @@ namespace Kotono
             _timer.Timeout += OnTimerTimeout;
             _timer.Start(1.0f, true);
 
-            var parent = new Cube()
-            {
-                WorldLocation = new Vector(-3.0f, 0.0f, -3.0f)
-            };
-            var child = new Cube()
-            {
-                RelativeLocation = new Vector(6.0f, 0.0f, 0.0f)
-            };
-
-            _ = new Painter();
+            //_ = new Painter();
         }
 
         private void OnTimerTimeout(object? sender, TimeoutEventArgs e)
@@ -115,6 +107,16 @@ namespace Kotono
                 IsFizix = false,
             };
 
+            _ = new Cube()
+            {
+                RelativeLocation = new Vector(-3.0f, 0.0f, -3.0f)
+            };
+
+            _ = new Cube()
+            {
+                RelativeLocation = new Vector(6.0f, 0.0f, 0.0f)
+            };
+
             for (int i = 0; i < 10; i++)
             {
                 _ = new RainbowPointLight();
@@ -124,6 +126,8 @@ namespace Kotono
             {
                 RelativeLocation = -Vector.Forward * 5
             };
+
+
         }
     }
 

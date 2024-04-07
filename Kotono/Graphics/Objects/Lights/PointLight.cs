@@ -1,6 +1,5 @@
 ﻿using Kotono.Graphics.Objects.Meshes;
 using Kotono.Utils;
-using Kotono.Utils.Coordinates;
 
 namespace Kotono.Graphics.Objects.Lights
 {
@@ -9,18 +8,6 @@ namespace Kotono.Graphics.Objects.Lights
         internal const int MAX_COUNT = 100;
 
         private readonly PointLightMesh _mesh = new();
-
-        public override Vector RelativeLocation
-        {
-            get => _mesh.RelativeLocation;
-            set => _mesh.RelativeLocation = value;
-        }
-
-        internal bool IsGravity
-        {
-            get => _mesh.IsGravity;
-            set => _mesh.IsGravity = value;
-        }
 
         internal Color Ambient { get; set; }
 

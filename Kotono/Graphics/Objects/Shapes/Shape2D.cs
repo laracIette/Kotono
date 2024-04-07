@@ -1,11 +1,11 @@
 ﻿using Kotono.Graphics.Shaders;
 using Kotono.Utils.Coordinates;
-using OpenTK.Graphics.OpenGL4;
+using OpenTK.Graphics.OpenGL;
 using System;
 
 namespace Kotono.Graphics.Objects.Shapes
 {
-    internal class Shape : Object3D<ShapeSettings>
+    internal class Shape2D : Object2D<Shape2DSettings>
     {
         private readonly PrimitiveType _mode;
 
@@ -15,30 +15,30 @@ namespace Kotono.Graphics.Objects.Shapes
 
         private bool _hasInitBuffers = false;
 
-        private Vector[] _vertices;
+        private Point[] _points;
 
-        internal Vector this[int index]
+        internal Point this[int index]
         {
-            get => _vertices[index];
-            set
+            get => _points[index];
+            set 
             {
-                _vertices[index] = value;
+                _points[index] = value;
 
                 UpdateBuffers();
             }
         }
 
-        internal int Length => _vertices.Length;
+        internal int Length => _points.Length;
 
-        internal Shape(ShapeSettings settings)
+        internal Shape2D(Shape2DSettings settings)
             : base(settings)
         {
-            _vertices = settings.Vertices;
+            _points = settings.Points;
             Color = settings.Color;
 
             _mode = Length switch
             {
-                0 => throw new Exception($"error: Vertices musn't be empty."),
+                0 => throw new Exception($"error: Points musn't be empty."),
                 1 => PrimitiveType.Points,
                 2 => PrimitiveType.Lines,
                 _ => settings.IsLoop ? PrimitiveType.LineLoop : PrimitiveType.LineStrip
@@ -49,9 +49,9 @@ namespace Kotono.Graphics.Objects.Shapes
             _vertexBufferObject = GL.GenBuffer();
         }
 
-        internal void AddVertex(Vector vertex)
+        internal void AddPoint(Point point)
         {
-            _vertices = [.. _vertices, vertex];
+            _points = [.. _points, point];
 
             UpdateBuffers();
         }
@@ -67,8 +67,8 @@ namespace Kotono.Graphics.Objects.Shapes
 
         public override void Draw()
         {
-            ShaderManager.Shaders["hitbox"].SetColor("color", Color);
-            ShaderManager.Shaders["hitbox"].SetMatrix4("model", Transform.Model);
+            ShaderManager.Shaders["shape2D"].SetColor("color", Color);
+            ShaderManager.Shaders["shape2D"].SetMatrix4("model", Dest.Model);
 
             GL.BindVertexArray(_vertexArrayObject);
             GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
@@ -80,10 +80,10 @@ namespace Kotono.Graphics.Objects.Shapes
             GL.BindVertexArray(_vertexArrayObject);
 
             GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
-            GL.BufferData(BufferTarget.ArrayBuffer, Length * Vector.SizeInBytes, _vertices, BufferUsageHint.StaticDraw);
+            GL.BufferData(BufferTarget.ArrayBuffer, Length * Point.SizeInBytes, _points, BufferUsageHint.StaticDraw);
 
             GL.EnableVertexAttribArray(0);
-            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, Vector.SizeInBytes, 0);
+            GL.VertexAttribPointer(0, 2, VertexAttribPointerType.Float, false, Point.SizeInBytes, 0);
         }
     }
 }

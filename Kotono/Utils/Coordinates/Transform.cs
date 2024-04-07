@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 namespace Kotono.Utils.Coordinates
 {
     [Serializable]
-    internal class Transform : IEquatable<Transform>, ICloneable<Transform>
+    internal class Transform : Object, IEquatable<Transform>, ICloneable<Transform>
     {
         /// <summary> 
         /// The location of the Transform relative to its parent. 
@@ -109,24 +109,24 @@ namespace Kotono.Utils.Coordinates
 
         internal static Vector DefaultScale => Vector.Unit;
 
-        [JsonConstructor]
-        internal Transform() { }
-
-        internal Transform(Transform t)
-        {
-            RelativeLocation = t.RelativeLocation;
-            RelativeRotation = t.RelativeRotation;
-            RelativeScale = t.RelativeScale;
-            LocationVelocity = t.LocationVelocity;
-            RotationVelocity = t.RotationVelocity;
-            ScaleVelocity = t.ScaleVelocity;
-        }
-
-        internal Transform(Vector location, Rotator rotation, Vector scale)
+        internal Transform(Vector location, Rotator rotation, Vector scale) 
+            : base()
         {
             RelativeLocation = location;
             RelativeRotation = rotation;
             RelativeScale = scale;
+        }
+
+        [JsonConstructor]
+        internal Transform() : this(DefaultLocation, DefaultRotation, DefaultScale) { }
+
+        internal Transform(Transform t) : this(t.RelativeLocation, t.RelativeRotation, t.RelativeScale) { }
+
+        public override void Update()
+        {
+            RelativeLocation += LocationVelocity * Time.Delta;
+            RelativeRotation += RotationVelocity * Time.Delta;
+            RelativeScale += ScaleVelocity * Time.Delta;
         }
 
         public static bool operator ==(Transform? left, Transform? right)
@@ -159,9 +159,20 @@ namespace Kotono.Utils.Coordinates
                 && ScaleVelocity == other.ScaleVelocity;
         }
 
+        /// <summary>
+        /// Get a copy of this <see cref="Transform"/>, with copied velocities.
+        /// </summary>
         public Transform Clone()
         {
-            return new Transform(this);
+            return new Transform
+            {
+                RelativeLocation = RelativeLocation,
+                RelativeRotation = RelativeRotation,
+                RelativeScale = RelativeScale,
+                LocationVelocity = LocationVelocity,
+                RotationVelocity = RotationVelocity,
+                ScaleVelocity = ScaleVelocity
+            };
         }
 
         public override int GetHashCode()

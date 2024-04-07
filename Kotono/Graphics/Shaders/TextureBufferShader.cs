@@ -2,7 +2,7 @@
 
 namespace Kotono.Graphics.Shaders
 {
-    internal abstract class TextureBufferShader(string name)
+    internal class TextureBufferShader(string name)
         : Shader(name)
     {
         internal void Draw(int handle)

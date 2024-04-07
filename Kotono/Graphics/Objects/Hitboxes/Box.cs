@@ -116,16 +116,15 @@ namespace Kotono.Graphics.Objects.Hitboxes
                 GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
                 GL.BufferData(BufferTarget.ArrayBuffer, _vertices.Length * sizeof(float), _vertices, BufferUsageHint.StaticDraw);
 
-                int locationAttributeLocation = ShaderManager.Hitbox.GetAttribLocation("aPos");
-                GL.EnableVertexAttribArray(locationAttributeLocation);
-                GL.VertexAttribPointer(locationAttributeLocation, 3, VertexAttribPointerType.Float, false, 0, 0);
+                GL.EnableVertexAttribArray(0);
+                GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 0, 0);
             }
         }
 
         public override void Draw()
         {
-            ShaderManager.Hitbox.SetColor("color", Color);
-            ShaderManager.Hitbox.SetMatrix4("model", Transform.Model);
+            ShaderManager.Shaders["hitbox"].SetColor("color", Color);
+            ShaderManager.Shaders["hitbox"].SetMatrix4("model", Transform.Model);
 
             GL.BindVertexArray(_vertexArrayObject);
             GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);

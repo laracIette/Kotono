@@ -1,67 +1,32 @@
-﻿using Kotono.Utils.Exceptions;
+﻿using System.Collections.Generic;
 
 namespace Kotono.Graphics.Shaders
 {
     internal static class ShaderManager
     {
-        internal static LightingShader Lighting { get; } = new();
-
-        internal static HitboxShader Hitbox { get; } = new();
-
-        internal static PointLightShader PointLight { get; } = new();
-
-        internal static ImageShader Image { get; } = new();
-
-        internal static GizmoShader Gizmo { get; } = new();
-
-        internal static RoundedBoxShader RoundedBox { get; } = new();
-
-        internal static RoundedBorderShader RoundedBorder { get; } = new();
-
-        internal static ColorShader Color { get; } = new();
-
-        internal static BlurShader Blur { get; } = new();
-
-        internal static OutlineShader Outline { get; } = new();
-
-        internal static FlatTextureShader FlatTexture { get; } = new();
-
-        internal static PainterShader Painter { get; } = new();
+        internal static Dictionary<string, Shader> Shaders { get; } = new()
+        {
+            ["lighting"] = new LightingShader(),
+            ["hitbox"] = new Object3DShader("hitbox"),
+            ["pointLight"] = new Object3DShader("pointLight"),
+            ["image"] = new Shader("image"),
+            ["gizmo"] = new Object3DShader("gizmo"),
+            ["roundedBox"] = new Shader("roundedBox"),
+            ["roundedBorder"] = new Shader("roundedBorder"),
+            ["color"] = new TextureBufferShader("color"),
+            ["blur"] = new TextureBufferShader("blur"),
+            ["outline"] = new TextureBufferShader("outline"),
+            ["flatTexture"] = new Object3DShader("flatTexture"),
+            ["painter"] = new Shader("painter"),
+            ["shape2D"] = new Shader("shape2D")
+        };
 
         internal static void Update()
         {
-            Lighting.Update();
-            Hitbox.Update();
-            PointLight.Update();
-            Image.Update();
-            Gizmo.Update();
-            RoundedBox.Update();
-            RoundedBorder.Update();
-            Color.Update();
-            Blur.Update();
-            Outline.Update();
-            FlatTexture.Update();
-            Painter.Update();
-        }
-
-        internal static Shader Get(string name)
-        {
-            return name switch
+            foreach (var shader in Shaders.Values)
             {
-                "lighting" => Lighting,
-                "hitbox" => Hitbox,
-                "pointLight" => PointLight,
-                "image" => Image,
-                "gizmo" => Gizmo,
-                "roundedBox" => RoundedBox,
-                "roundedBorder" => RoundedBorder,
-                "color" => Color,
-                "blur" => Blur,
-                "outline" => Outline,
-                "flatTexture" => FlatTexture,
-                "painter" => Painter,
-                _ => throw new SwitchException(typeof(string), name)
-            };
+                shader.Update();
+            }
         }
     }
 }

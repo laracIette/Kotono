@@ -1,4 +1,5 @@
 ﻿using Kotono.Graphics;
+using Kotono.Graphics.Objects.Shapes;
 using Kotono.Graphics.Shaders;
 using Kotono.Input;
 using Kotono.Utils;
@@ -6,8 +7,9 @@ using Kotono.Utils.Coordinates;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 
-namespace Kotono.Tests
+namespace Kotono.Tests.Painter
 {
+#if false
     internal class Painter : Object2D
     {
         private readonly byte[] _fragments;
@@ -18,7 +20,7 @@ namespace Kotono.Tests
 
         internal Painter()
         {
-            Dest = Rect.FromAnchor(new Rect(Point.Zero, 100.0f, 50.0f), Anchor.TopLeft);
+            Dest = Rect.FromAnchor(new Rect(Point.Zero, 1000.0f, 500.0f), Anchor.TopLeft);
 
             Size = (PointI)Dest.Size;
             _fragments = new byte[Size.Product * 4];
@@ -28,16 +30,9 @@ namespace Kotono.Tests
                 _fragments[i + 3] = 255;
             }
 
-            _handle = GL.GenTexture();
+            _handle = Texture.Gen();
+
             UpdateTexture();
-
-            Texture.Use(_handle);
-
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
-
-            Texture.Bind(0);
-
         }
 
         public override void Update()
@@ -69,11 +64,42 @@ namespace Kotono.Tests
             if ((Mouse.Delta != Point.Zero) && Rect.Overlaps(Dest, Mouse.Position))
             {
                 int index = (int)((Size.Y - Mouse.Position.Y - 1) * Size.X + Mouse.Position.X) * 4;
+
                 _fragments[index + 0] = 255;
                 _fragments[index + 1] = 255;
                 _fragments[index + 2] = 255;
+                //_fragments[index + 3] = 255;
+
                 UpdateTexture();
             }
         }
     }
+#else
+
+    internal class Canvas : Object2D
+    {
+        private Shape? _shape = null;
+
+        public override void Update()
+        {
+            if (Mouse.IsButtonDown(MouseButton.Left))
+            {
+                OnLeftButtonDown();
+            }
+        }
+
+        private void OnLeftButtonDown()
+        {
+            if (!Mouse.WasButtonDown(MouseButton.Left))
+            {
+                _shape = new Shape(
+                    new ShapeSettings
+                    {
+
+                    }
+                );
+            }
+        }
+    }
+#endif
 }

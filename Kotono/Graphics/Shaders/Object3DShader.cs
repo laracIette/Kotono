@@ -2,8 +2,8 @@
 
 namespace Kotono.Graphics.Shaders
 {
-    internal class PointLightShader()
-        : Shader("pointLight")
+    internal class Object3DShader(string name)
+        : Shader(name)
     {
         internal override void Update()
         {

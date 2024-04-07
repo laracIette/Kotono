@@ -44,8 +44,8 @@ namespace Kotono.Graphics.Objects
         {
             GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
 
-            ShaderManager.Image.SetMatrix4("model", Dest.Model);
-            ShaderManager.Image.SetColor("color", Color);
+            ShaderManager.Shaders["image"].SetMatrix4("model", Dest.Model);
+            ShaderManager.Shaders["image"].SetColor("color", Color);
 
             _texture.Draw();
         }

@@ -224,6 +224,14 @@ namespace Kotono.Utils.Coordinates
             return v;
         }
 
+        public static Vector Clamp(Vector v)
+        {
+            v.X = Math.Clamp(v.X);
+            v.Y = Math.Clamp(v.Y);
+            v.Z = Math.Clamp(v.Z);
+            return v;
+        }
+
         public static Vector Parse(string[] values)
         {
             return new Vector

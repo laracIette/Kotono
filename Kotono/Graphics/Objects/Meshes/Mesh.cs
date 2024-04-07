@@ -73,7 +73,7 @@ namespace Kotono.Graphics.Objects.Meshes
 
             Material = new Material(settings.MaterialTexturesSettings);
 
-            _shader = ShaderManager.Get(settings.Shader);
+            _shader = ShaderManager.Shaders[settings.Shader];
 
             _hitboxes = settings.Hitboxes;
 

@@ -8,7 +8,7 @@ using IO = System.IO;
 
 namespace Kotono.Graphics.Shaders
 {
-    internal abstract class Shader
+    internal class Shader
     {
         private readonly int _handle;
 
@@ -19,12 +19,12 @@ namespace Kotono.Graphics.Shaders
 
         internal Shader(string name)
         {
-            var shaderSource = IO.File.ReadAllText(Path.SHADERS + name + ".vert");
+            var shaderSource = IO.File.ReadAllText($@"{Path.SHADERS}{name}\{name}.vert");
             var vertexShader = GL.CreateShader(ShaderType.VertexShader);
             GL.ShaderSource(vertexShader, shaderSource);
             CompileShader(vertexShader);
 
-            shaderSource = IO.File.ReadAllText(Path.SHADERS + name + ".frag");
+            shaderSource = IO.File.ReadAllText($@"{Path.SHADERS}{name}\{name}.frag");
             var fragmentShader = GL.CreateShader(ShaderType.FragmentShader);
             GL.ShaderSource(fragmentShader, shaderSource);
             CompileShader(fragmentShader);

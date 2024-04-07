@@ -15,11 +15,6 @@ namespace Kotono.Graphics.Objects.Meshes
             _pointLight = pointLight;
         }
 
-        internal void Detach()
-        {
-            _pointLight = null;
-        }
-
         public override void Update()
         {
             if (_pointLight == null)
@@ -33,6 +28,8 @@ namespace Kotono.Graphics.Objects.Meshes
             base.Update();
 
             Color = _pointLight.Color;
+
+            RelativeLocation = _pointLight.RelativeLocation;
         }
 
         public override void Draw()

@@ -18,7 +18,7 @@ namespace Kotono.Graphics.Objects
             }
         }
 
-        protected override Shader Shader => ShaderManager.RoundedBorder;
+        protected override Shader Shader => ShaderManager.Shaders["roundedBorder"];
 
         protected override Matrix4 Model =>
             Matrix4.CreateScale(

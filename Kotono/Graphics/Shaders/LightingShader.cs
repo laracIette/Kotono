@@ -5,14 +5,11 @@ using Kotono.Utils.Coordinates;
 namespace Kotono.Graphics.Shaders
 {
     internal class LightingShader()
-        : Shader("lighting")
+        : Object3DShader("lighting")
     {
         internal override void Update()
         {
             base.Update();
-
-            SetMatrix4("view", ObjectManager.ActiveCamera.ViewMatrix);
-            SetMatrix4("projection", ObjectManager.ActiveCamera.ProjectionMatrix);
 
             SetVector("viewPos", ObjectManager.ActiveCamera.Location);
 

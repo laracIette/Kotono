@@ -70,7 +70,7 @@ namespace Kotono.Graphics.Objects
 
         internal static void Update()
         {
-            // List can change during Object.Update() calls
+            // List can change during _objects[i].Update() calls
             for (int i = 0; i < _objects.Count; i++)
             {
                 _objects[i].Update();

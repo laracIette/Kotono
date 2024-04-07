@@ -46,9 +46,8 @@ namespace Kotono.Graphics.Objects.Hitboxes
                 GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
                 GL.BufferData(BufferTarget.ArrayBuffer, _vertices.Length * Vector.SizeInBytes, _vertices, BufferUsageHint.StaticDraw);
 
-                int locationAttributeLocation = ShaderManager.Hitbox.GetAttribLocation("aPos");
-                GL.EnableVertexAttribArray(locationAttributeLocation);
-                GL.VertexAttribPointer(locationAttributeLocation, 3, VertexAttribPointerType.Float, false, Vector.SizeInBytes, 0);
+                GL.EnableVertexAttribArray(0);
+                GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, Vector.SizeInBytes, 0);
             }
         }
 
@@ -68,8 +67,8 @@ namespace Kotono.Graphics.Objects.Hitboxes
                 * Matrix4.CreateRotationZ(RelativeRotation.Yaw + rotation.Yaw)
                 * Matrix4.CreateTranslation((Vector3)RelativeLocation);
 
-            ShaderManager.Hitbox.SetColor("color", Color);
-            ShaderManager.Hitbox.SetMatrix4("model", model);
+            ShaderManager.Shaders["hitbox"].SetColor("color", Color);
+            ShaderManager.Shaders["hitbox"].SetMatrix4("model", model);
 
             GL.BindVertexArray(_vertexArrayObject);
             GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);

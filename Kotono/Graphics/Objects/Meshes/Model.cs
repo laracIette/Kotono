@@ -49,6 +49,7 @@ namespace Kotono.Graphics.Objects.Meshes
                         Transform.Default,
                         Color.White
                     ));
+                    triangles[^1].IsDraw = false;
                 }
 
                 models = new List<Vertex>[scene.Meshes.Count];

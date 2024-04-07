@@ -21,21 +21,13 @@ namespace Kotono.Graphics
         {
             if (!_textures.TryGetValue(path, out int value))
             {
-                value = GL.GenTexture();
+                value = Gen();
 
                 Use(value);
 
-                StbImage.stbi_set_flip_vertically_on_load(1);
+                var imageData = ImageData.GetFrom(path);
 
-                using (IO.Stream stream = IO.File.OpenRead(path))
-                {
-                    ImageResult image = ImageResult.FromStream(stream, ColorComponents.RedGreenBlueAlpha);
-
-                    GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, image.Width, image.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, image.Data);
-                }
-
-                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
-                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
+                GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, imageData.Size.X, imageData.Size.Y, 0, PixelFormat.Rgba, PixelType.UnsignedByte, imageData.Bytes);
 
                 GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Repeat);
                 GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat);
@@ -48,6 +40,22 @@ namespace Kotono.Graphics
             Path = path;
             Handle = value;
             Unit = unit;
+        }
+        
+        /// <summary>
+        /// Generate a new Texture.
+        /// </summary>
+        internal static int Gen()
+        {
+            int handle = GL.GenTexture();
+            Use(handle);
+
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
+
+            Bind(0);
+
+            return handle;
         }
 
         internal static void Bind(int handle) => GL.BindTexture(TextureTarget.Texture2D, handle);

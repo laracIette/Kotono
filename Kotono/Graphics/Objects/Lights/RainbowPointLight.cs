@@ -20,9 +20,7 @@ namespace Kotono.Graphics.Objects.Lights
 
             LocationVelocity += Random.Vector(-0.01f, 0.01f);
 
-            LocationVelocity = Vector.Clamp(LocationVelocity, -1.0f, 1.0f);
-
-            RelativeLocation += LocationVelocity * Time.Delta;
+            LocationVelocity = Vector.Clamp(LocationVelocity, -1.0f, 1.0f) * 100.0f;
         }
     }
 }

@@ -41,7 +41,7 @@ namespace Kotono.Graphics.Objects
             }
         }
 
-        protected virtual Shader Shader => ShaderManager.RoundedBox;
+        protected virtual Shader Shader => ShaderManager.Shaders["roundedBox"];
 
         protected virtual Matrix4 Model =>
             Matrix4.CreateScale(
