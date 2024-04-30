@@ -91,6 +91,12 @@ namespace Kotono.Utils.Coordinates
         [JsonIgnore]
         public readonly Vector Abs => new Vector(Math.Abs(X), Math.Abs(Y), Math.Abs(Z));
 
+        /// <summary> 
+        /// Wether the Vector is equal to Vector.Zero.
+        /// </summary>
+        [JsonIgnore]
+        public readonly bool IsZero => this == Zero;
+
         /// <summary>
         /// A <see cref="Vector"/> with X = 0, Y = 0, Z = 0.
         /// </summary>
@@ -136,6 +142,10 @@ namespace Kotono.Utils.Coordinates
         public static Vector Up => UnitY;
 
         public static Vector Forward => UnitZ;
+
+        public static Vector MinValue => new Vector(float.MinValue, float.MinValue, float.MinValue);
+
+        public static Vector MaxValue => new Vector(float.MaxValue, float.MaxValue, float.MaxValue);
 
         public static int SizeInBytes => sizeof(float) * 3;
 
@@ -241,6 +251,7 @@ namespace Kotono.Utils.Coordinates
                 Z = float.Parse(values[2])
             };
         }
+
 
         public static Matrix4 CreateScaleMatrix(Vector v)
         {

@@ -7,11 +7,23 @@ namespace Kotono.Graphics.Objects
     {
         protected readonly T _settings;
 
-        internal string SettingsPath { get; set; }
+        internal string SettingsPath
+        {
+            get => _settings.Path;
+            set => _settings.Path = value;
+        }
 
-        public virtual bool IsDraw { get; set; }
+        public virtual bool IsDraw
+        {
+            get => _settings.IsDraw;
+            set => _settings.IsDraw = value;
+        }
 
-        public virtual Color Color { get; set; }
+        public virtual Color Color
+        {
+            get => _settings.Color;
+            set => _settings.Color = value;
+        }
 
         public virtual bool IsHovered { get; } = false;
 
@@ -23,10 +35,6 @@ namespace Kotono.Graphics.Objects
             : base()
         {
             _settings = settings;
-
-            SettingsPath = settings.Path;
-            IsDraw = settings.IsDraw;
-            Color = settings.Color;
         }
 
         internal Drawable() : this(Activator.CreateInstance<T>()) { }
@@ -35,10 +43,6 @@ namespace Kotono.Graphics.Objects
 
         public virtual void Save()
         {
-            _settings.Path = SettingsPath;
-            _settings.IsDraw = IsDraw;
-            _settings.Color = Color;
-
             JsonParser.WriteFile(_settings);
         }
     }

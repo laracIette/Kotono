@@ -1,5 +1,4 @@
-﻿using Kotono.Graphics.Objects.Meshes;
-using Kotono.Utils;
+﻿using Kotono.Utils;
 
 namespace Kotono.Graphics.Objects.Lights
 {
@@ -7,36 +6,53 @@ namespace Kotono.Graphics.Objects.Lights
     {
         internal const int MAX_COUNT = 100;
 
-        private readonly PointLightMesh _mesh = new();
+        internal Color Ambient
+        {
+            get => _settings.Ambient;
+            set => _settings.Ambient = value;
+        }
 
-        internal Color Ambient { get; set; }
+        internal Color Specular
+        {
+            get => _settings.Specular;
+            set => _settings.Specular = value;
+        }
 
-        internal Color Specular { get; set; }
+        internal float Constant
+        {
+            get => _settings.Constant; 
+            set => _settings.Constant = value;
+        }
 
-        internal float Constant { get; set; }
+        internal float Linear
+        {
+            get => _settings.Linear;
+            set => _settings.Linear = value;
+        }
 
-        internal float Linear { get; set; }
+        internal float Quadratic
+        {
+            get => _settings.Quadratic;
+            set => _settings.Quadratic = value;
+        }
 
-        internal float Quadratic { get; set; }
+        public override Color Color 
+        { 
+            get => Parent?.Color ?? base.Color;
+            set
+            {
+                base.Color = value;
+
+                if (Parent != null)
+                {
+                    Parent.Color = value;
+                }
+            }  
+        }
 
         internal PointLight(PointLightSettings settings)
             : base(settings)
         {
-            Ambient = settings.Ambient;
-            Color = settings.Color;
-            Specular = settings.Specular;
-            Constant = settings.Constant;
-            Linear = settings.Linear;
-            Quadratic = settings.Quadratic;
-
-            _mesh.AttachTo(this);
-        }
-
-        public override void Delete()
-        {
-            _mesh.Delete();
-
-            base.Delete();
         }
     }
 }

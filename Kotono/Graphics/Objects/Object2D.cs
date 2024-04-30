@@ -49,13 +49,16 @@ namespace Kotono.Graphics.Objects
             set => _dest.H = value;
         }
 
-        public virtual int Layer { get; set; }
+        public virtual int Layer
+        {
+            get => _settings.Layer;
+            set => _settings.Layer = value;
+        }
 
         internal Object2D(T settings)
             : base(settings)
         {
             Dest = settings.Dest;
-            Layer = settings.Layer;
         }
 
         internal Object2D() : base() { }
@@ -63,7 +66,6 @@ namespace Kotono.Graphics.Objects
         public override void Save()
         {
             _settings.Dest = Dest;
-            _settings.Layer = Layer;
 
             base.Save();
         }

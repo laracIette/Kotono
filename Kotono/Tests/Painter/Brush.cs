@@ -1,8 +1,6 @@
-﻿using Kotono.Graphics;
-using Kotono.Graphics.Objects;
+﻿using Kotono.Graphics.Objects;
 using Kotono.Input;
 using Kotono.Utils.Coordinates;
-using System.Collections.Generic;
 
 namespace Kotono.Tests.Painter
 {

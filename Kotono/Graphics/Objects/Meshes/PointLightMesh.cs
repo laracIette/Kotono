@@ -1,5 +1,4 @@
-﻿using Kotono.Graphics.Objects.Lights;
-using Kotono.Utils;
+﻿using Kotono.Utils;
 
 namespace Kotono.Graphics.Objects.Meshes
 {
@@ -8,30 +7,6 @@ namespace Kotono.Graphics.Objects.Meshes
             JsonParser.Parse<MeshSettings>(Path.ASSETS + @"Meshes\pointLightMesh.json")
         )
     {
-        private PointLight? _pointLight = null;
-
-        internal void AttachTo(PointLight pointLight)
-        {
-            _pointLight = pointLight;
-        }
-
-        public override void Update()
-        {
-            if (_pointLight == null)
-            {
-                IsDraw = false;
-                return;
-            }
-
-            IsDraw = _pointLight.IsDraw;
-
-            base.Update();
-
-            Color = _pointLight.Color;
-
-            RelativeLocation = _pointLight.RelativeLocation;
-        }
-
         public override void Draw()
         {
             _shader.SetMatrix4("model", Transform.Model);

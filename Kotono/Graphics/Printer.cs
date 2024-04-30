@@ -11,6 +11,12 @@ namespace Kotono.Graphics
 
         private static int _currentIndex = 0;
 
+        private static int CurrentIndex
+        {
+            get => _currentIndex;
+            set => _currentIndex = (int)Math.Loop(value, _texts.Length);
+        }
+
         static Printer()
         {
             _texts = new PrinterText[50];
@@ -37,19 +43,19 @@ namespace Kotono.Graphics
                 foreach (var token in text.Split('\n').Reverse())
                 {
                     Lower();
-                    _texts[_currentIndex].SetText(token);
-                    _texts[_currentIndex].Color = color;
+                    _texts[CurrentIndex].SetText(token);
+                    _texts[CurrentIndex].Color = color;
 
-                    _currentIndex = (int)Math.Loop(_currentIndex + 1, _texts.Length);
+                    CurrentIndex++;
                 }
             }
         }
 
         /// <summary>
-        /// Prints an object to the Window given a Color.
+        /// Prints an object to the <see cref="Window"/> given a <see cref="Color"/>.
         /// </summary>
         /// <param name="obj"> The object to print. </param>
-        /// <param name="color"> The Color of the text. </param>
+        /// <param name="color"> The color of the text. </param>
         internal static void Print(object? obj, Color color)
         {
             if (obj != null)
@@ -59,17 +65,17 @@ namespace Kotono.Graphics
         }
 
         /// <summary>
-        /// Prints an object to the Window.
+        /// Prints an object to the <see cref="Window"/>.
         /// </summary>
         /// <param name="obj"> The object to print. </param>
-        /// <param name="rainbow"> A bool to determine whether the Color of the text should loop through RBG values. </param>
-        internal static void Print(object? obj, bool rainbow = false)
+        /// <param name="isRainbow"> Whether the Color of the text should loop through RGB values. </param>
+        internal static void Print(object? obj, bool isRainbow = false)
         {
-            Print(obj, rainbow ? Color.Rainbow(0.01f) : Color.White);
+            Print(obj, isRainbow ? Color.Rainbow(0.01f) : Color.White);
         }
 
         /// <summary>
-        /// Prints an empty line.
+        /// Prints an empty line to the <see cref="Window"/>.
         /// </summary>
         internal static void Print()
         {

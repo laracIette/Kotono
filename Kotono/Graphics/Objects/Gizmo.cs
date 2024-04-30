@@ -117,6 +117,7 @@ namespace Kotono.Graphics.Objects
             }
 
             var movement = GetMovement();
+            if (!movement.IsZero) Printer.Print(movement.Length);
 
             Location += movement;
 

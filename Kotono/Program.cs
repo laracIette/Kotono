@@ -12,7 +12,7 @@ namespace Kotono
                     Width = 1600,
                     Height = 800,
                     MaxFrameRate = 165.0f,
-                    CursorState = CursorState.Confined
+                    CursorState = CursorState.Normal
                 }
             ).Run();
         }

@@ -8,7 +8,7 @@ namespace Kotono.Graphics.Objects.Texts
 {
     internal class Text : Object2D<TextSettings>
     {
-        private readonly static Dictionary<char, string> _charactersPath = new()
+        private static readonly Dictionary<char, string> _charactersPath = new()
         {
             ['a'] = @"Characters\a.png",
             ['b'] = @"Characters\b.png",
@@ -189,7 +189,7 @@ namespace Kotono.Graphics.Objects.Texts
                     path = _charactersPath[' '];
                 }
 
-                Rect dest = GetLetterDest(i, _lettersDest);
+                var dest = GetLetterDest(i, _lettersDest);
 
                 _letters.Add(new Image(
                     new ImageSettings
@@ -251,13 +251,14 @@ namespace Kotono.Graphics.Objects.Texts
 
         internal virtual void SetText(string text)
         {
-            if (IsDraw && text != _text)
+            if (text != _text)
             {
                 _text = text;
                 Init();
             }
         }
 
+        [Obsolete("This function should not be used as it has not been finished yet.")]
         internal void Transform(Rect dest)
         {
             _lettersDest += dest;
@@ -266,7 +267,8 @@ namespace Kotono.Graphics.Objects.Texts
                 letter.Transform(dest);
             }
         }
-
+        
+        [Obsolete("This function should not be used as it has not been finished yet.")]
         internal void Transform(Rect dest, float time)
         {
             foreach (var letter in _letters)
@@ -279,15 +281,12 @@ namespace Kotono.Graphics.Objects.Texts
         {
             foreach (var letter in _letters)
             {
-                letter.Delete();
+                letter.Dispose();
             }
 
             _letters.Clear();
         }
 
-        public override string ToString()
-        {
-            return _text;
-        }
+        public override string ToString() => _text;
     }
 }

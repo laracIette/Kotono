@@ -5,9 +5,9 @@
   "MaterialTexturesSettings": [],
   "Transform": {
     "RelativeLocation": {
-      "X": 24.888882,
-      "Y": -3.069404,
-      "Z": -6.213918
+      "X": 2.685382,
+      "Y": 0,
+      "Z": 0
     },
     "RelativeRotation": {
       "Roll": 0,
@@ -15,10 +15,26 @@
       "Yaw": 0
     },
     "RelativeScale": {
-      "X": 0.39396828,
-      "Y": 0.39396828,
-      "Z": 0.39396828
-    }
+      "X": 0.084750615,
+      "Y": 0.084750615,
+      "Z": 0.084750615
+    },
+    "LocationVelocity": {
+      "X": 0,
+      "Y": 0,
+      "Z": 0
+    },
+    "RotationVelocity": {
+      "Roll": 0,
+      "Pitch": 0,
+      "Yaw": 0
+    },
+    "ScaleVelocity": {
+      "X": 1,
+      "Y": 1,
+      "Z": 1
+    },
+    "Parent": null
   },
   "Path": "..\\..\\..\\Assets\\Gizmo\\gizmo_sphere.json",
   "IsDraw": false,

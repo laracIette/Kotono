@@ -8,7 +8,7 @@ namespace Kotono.Graphics.Objects.Lights
     internal class PointLightSettings : Object3DSettings
     {
         /// <summary>
-        /// The ambient color of the PointLight.
+        /// The ambient color of the <see cref="PointLight"/>.
         /// </summary>
         /// <remarks> 
         /// Default value : Color.White 
@@ -16,7 +16,7 @@ namespace Kotono.Graphics.Objects.Lights
         public Color Ambient { get; set; } = Color.White;
 
         /// <summary>
-        /// The specular color of the PointLight.
+        /// The specular color of the <see cref="PointLight"/>.
         /// </summary>
         /// <remarks> 
         /// Default value : Color.White 
@@ -24,7 +24,7 @@ namespace Kotono.Graphics.Objects.Lights
         public Color Specular { get; set; } = Color.White;
 
         /// <summary>
-        /// The constant value of the PointLight.
+        /// The constant value of the <see cref="PointLight"/>.
         /// </summary>
         /// <remarks> 
         /// Default value : 1.0f 
@@ -32,7 +32,7 @@ namespace Kotono.Graphics.Objects.Lights
         public float Constant { get; set; } = 1.0f;
 
         /// <summary>
-        /// The linear value of the PointLight.
+        /// The linear value of the <see cref="PointLight"/>.
         /// </summary>
         /// <remarks> 
         /// Default value : 0.09f 
@@ -40,7 +40,7 @@ namespace Kotono.Graphics.Objects.Lights
         public float Linear { get; set; } = 0.09f;
 
         /// <summary>
-        /// The quadratic value of the PointLight.
+        /// The quadratic value of the <see cref="PointLight"/>.
         /// </summary>
         /// <remarks> 
         /// Default value : 0.032f 

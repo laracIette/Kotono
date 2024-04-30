@@ -1,13 +1,14 @@
 ﻿using Kotono.Utils;
 using Kotono.Utils.Coordinates;
 using Kotono.Utils.Timing;
-using System;
 
 namespace Kotono.Graphics.Objects.Texts
 {
     internal class PrinterText : Text
     {
         private readonly Timer _clear = new();
+
+        //public override bool IsUpdate => IsDraw;
 
         internal PrinterText()
             : base(
@@ -43,7 +44,7 @@ namespace Kotono.Graphics.Objects.Texts
             }
         }
 
-        private void OnClearTimeout(object? sender, EventArgs e)
+        private void OnClearTimeout(object? sender, TimedEventArgs e)
         {
             Clear();
         }

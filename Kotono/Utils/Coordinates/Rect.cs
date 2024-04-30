@@ -81,6 +81,10 @@ namespace Kotono.Utils.Coordinates
                 Size / WindowComponentManager.ActiveViewport.Size
             );
 
+        /// <summary>
+        /// The model matrix of the Rect.
+        /// </summary>
+        [JsonIgnore]
         public readonly Matrix4 Model =>
             Matrix4.CreateScale(NDC.W, NDC.H, 1.0f)
             * Matrix4.CreateTranslation(NDC.X, NDC.Y, 0.0f);

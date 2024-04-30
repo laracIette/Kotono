@@ -107,6 +107,7 @@ namespace Kotono.Utils
             if (min > max)
             {
                 (min, max) = (max, min);
+                Logger.Log("min, max switched in \"Math.Loop(float value, float min, float max)\".");
             }
 
             if (value >= max)

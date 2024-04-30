@@ -53,25 +53,23 @@ namespace Kotono.Engine.UserInterface.AddMenu
             }
         }
 
-        internal MainMenu() : base()
+        internal MainMenu() 
+            : base()
         {
             IsDraw = false;
+
+            Keyboard.SubscribeKeyPressed(OnAPressed, Keys.A);
         }
 
         public override void Update()
         {
-            if (Keyboard.IsKeyPressed(Keys.A))
-            {
-                OnAKeyPressed();
-            }
-
             if (Mouse.IsButtonPressed(MouseButton.Left))
             {
                 OnLeftButtonPressed();
             }
         }
 
-        private void OnAKeyPressed()
+        private void OnAPressed(object? sender, TimedEventArgs e)
         {
             if (Mouse.CursorState == CursorState.Confined && Keyboard.IsKeyDown(Keys.LeftShift))
             {

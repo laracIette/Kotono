@@ -4,8 +4,10 @@ namespace Kotono
 {
     internal interface IObject : IDisposable
     {
-        public void Update();
+        public bool IsUpdate { get; set; }
 
-        public void Delete();
+        public bool IsDelete { get; }
+
+        public void Update();
     }
 }

@@ -7,8 +7,8 @@ namespace Kotono.Graphics.Objects.Meshes
             JsonParser.Parse<MeshSettings>(Path.ASSETS + @"Gizmo\gizmo_" + axis + ".json")
         )
     {
-        public override void Update()
-        {
-        }
+        public override void Update() { }
+
+        protected override void OnLeftPressed(object? sender, TimedEventArgs e) { }
     }
 }

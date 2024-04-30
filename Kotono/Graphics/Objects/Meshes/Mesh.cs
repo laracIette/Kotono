@@ -23,10 +23,10 @@ namespace Kotono.Graphics.Objects.Meshes
 
         internal CollisionState CollisionState { get; set; }
 
-        public override Rotator RotationVelocity
+        public override Rotator RelativeRotationVelocity
         {
-            get => base.RotationVelocity;
-            set => base.RotationVelocity = value;
+            get => base.RelativeRotationVelocity;
+            set => base.RelativeRotationVelocity = value;
         }
 
         public bool IsFizix { get; set; } = false;
@@ -50,9 +50,7 @@ namespace Kotono.Graphics.Objects.Meshes
 
                     foreach (var triangle in Model.Triangles)
                     {
-                        triangle.Transform = Transform;
-
-                        if (Intersection.IntersectRayTriangle(ObjectManager.ActiveCamera.Location, Mouse.Ray, in triangle, out Vector intersectionLocation, out float intersectionDistance))
+                        if (Intersection.IntersectRayTriangle(ObjectManager.ActiveCamera.Location, Mouse.Ray, in triangle, Transform, out Vector intersectionLocation, out float intersectionDistance))
                         {
                             IntersectionLocation = intersectionLocation;
                             IntersectionDistance = intersectionDistance;
@@ -79,7 +77,7 @@ namespace Kotono.Graphics.Objects.Meshes
 
             foreach (var hitbox in _hitboxes)
             {
-                hitbox.Transform = new Transform(Transform);
+                hitbox.Transform.ReplaceBy(Transform);
                 hitbox.Color = Color.Red;
 
                 hitbox.EnterCollision += OnEnterCollision;
@@ -87,6 +85,8 @@ namespace Kotono.Graphics.Objects.Meshes
             }
 
             Model = Model.Load(new ModelSettings { Path = settings.Model, Shader = _shader });
+
+            Mouse.SubscribeButtonPressed(OnLeftPressed, MouseButton.Left);
         }
 
         public override void Update()
@@ -110,26 +110,9 @@ namespace Kotono.Graphics.Objects.Meshes
             }
 
             RelativeLocation = tempLoc;
-
-            if (Mouse.IsButtonPressed(MouseButton.Left))
-            {
-                OnMouseLeftButtonPressed();
-            }
         }
 
-        public override void Draw()
-        {
-            Material.Use();
-
-            _shader.SetMatrix4("model", Transform.Model);
-            _shader.SetColor("color", Color);
-
-            Model.Draw();
-
-            Texture.Bind(0);
-        }
-
-        private void OnMouseLeftButtonPressed()
+        protected virtual void OnLeftPressed(object? sender, TimedEventArgs e)
         {
             // If gizmo isn't selected
             if (!Gizmo.IsSelected)
@@ -179,6 +162,18 @@ namespace Kotono.Graphics.Objects.Meshes
             Color = IsSelected ? (IsActive ? Color.Green : Color.Orange) : Color.White;
         }
 
+        public override void Draw()
+        {
+            Material.Use();
+
+            _shader.SetMatrix4("model", Transform.Model);
+            _shader.SetColor("color", Color);
+
+            Model.Draw();
+
+            Texture.Bind(0);
+        }
+
         public override void Save()
         {
             _settings.Model = Model.Path;
@@ -196,14 +191,14 @@ namespace Kotono.Graphics.Objects.Meshes
 
         protected virtual void OnExitCollision(CollisionEventArgs collision) { }
 
-        public override void Delete()
+        public override void Dispose()
         {
             foreach (var hitbox in _hitboxes)
             {
-                hitbox.Delete();
+                hitbox.Dispose();
             }
 
-            base.Delete();
+            base.Dispose();
         }
     }
 }

@@ -1,6 +1,4 @@
 ﻿using Assimp;
-using Kotono.Graphics.Objects.Shapes;
-using Kotono.Utils;
 using Kotono.Utils.Coordinates;
 using OpenTK.Graphics.OpenGL4;
 using System;
@@ -26,7 +24,7 @@ namespace Kotono.Graphics.Objects.Meshes
 
         internal Vector[] Vertices { get; }
 
-        internal Triangle[] Triangles { get; }
+        internal ModelTriangle[] Triangles { get; }
 
         private Model(ModelSettings settings)
         {
@@ -34,7 +32,7 @@ namespace Kotono.Graphics.Objects.Meshes
 
             List<Vertex>[] models;
             List<int>[] indices;
-            List<Triangle> triangles = [];
+            List<ModelTriangle> triangles = [];
 
             using (var importer = new AssimpContext())
             {
@@ -42,14 +40,12 @@ namespace Kotono.Graphics.Objects.Meshes
 
                 foreach (var face in scene.Meshes[0].Faces)
                 {
-                    triangles.Add(new Triangle(
+                    triangles.Add(new ModelTriangle(
+                        this,
                         (Vector)scene.Meshes[0].Vertices[face.Indices[0]],
                         (Vector)scene.Meshes[0].Vertices[face.Indices[1]],
-                        (Vector)scene.Meshes[0].Vertices[face.Indices[2]],
-                        Transform.Default,
-                        Color.White
+                        (Vector)scene.Meshes[0].Vertices[face.Indices[2]]
                     ));
-                    triangles[^1].IsDraw = false;
                 }
 
                 models = new List<Vertex>[scene.Meshes.Count];

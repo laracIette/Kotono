@@ -24,7 +24,23 @@
       "X": 1,
       "Y": 1,
       "Z": 1
-    }
+    },
+    "LocationVelocity": {
+      "X": 0,
+      "Y": 0,
+      "Z": 0
+    },
+    "RotationVelocity": {
+      "Roll": 0,
+      "Pitch": 0,
+      "Yaw": 0
+    },
+    "ScaleVelocity": {
+      "X": 1,
+      "Y": 1,
+      "Z": 1
+    },
+    "Parent": null
   },
   "Path": "..\\..\\..\\Assets\\Meshes\\flatTextureMesh.json",
   "IsDraw": true,

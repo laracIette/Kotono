@@ -1,9 +1,8 @@
-﻿using System;
+﻿using Kotono.Utils;
 
 namespace Kotono.Graphics.Objects.Hitboxes
 {
-    internal class CollisionEventArgs(IHitbox source, IHitbox collider)
-        : EventArgs()
+    internal class CollisionEventArgs(IHitbox source, IHitbox collider) : TimedEventArgs
     {
         /// <summary>
         /// The hitbox that detected the collision.
@@ -14,10 +13,5 @@ namespace Kotono.Graphics.Objects.Hitboxes
         /// The hitbox that collided with the source hitbox.
         /// </summary>
         internal IHitbox Collider { get; } = collider;
-
-        /// <summary>
-        /// The time at which the event occured.
-        /// </summary>
-        internal float Time { get; } = Utils.Timing.Time.Now;
     }
 }

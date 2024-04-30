@@ -1,4 +1,4 @@
-﻿using Kotono.Graphics.Objects.Shapes;
+﻿using Kotono.Graphics.Objects.Meshes;
 using Kotono.Utils.Coordinates;
 using OpenTK.Mathematics;
 
@@ -15,14 +15,14 @@ namespace Kotono.Utils
         /// <param name="intersectionLocation"> The location Vector at which the mouse intersects the mesh. </param>
         /// <param name="intersectionDistance"> The distance of the intersectionLocation from the Camera. </param>
         /// <returns> <see langword="true"/> if the ray interects the Triangle, else returns <see langword="false"/>. </returns>
-        internal static bool IntersectRayTriangle(in Vector rayOrigin, in Vector rayDirection, in Triangle triangle, out Vector intersectionLocation, out float intersectionDistance)
+        internal static bool IntersectRayTriangle(in Vector rayOrigin, in Vector rayDirection, in ModelTriangle triangle, in Transform transform, out Vector intersectionLocation, out float intersectionDistance)
         {
             intersectionLocation = Vector.Zero;
             intersectionDistance = 0.0f;
 
-            var vertex1 = (Vector)Vector3.TransformPosition((Vector3)triangle[0], triangle.Transform.Model);
-            var vertex2 = (Vector)Vector3.TransformPosition((Vector3)triangle[1], triangle.Transform.Model);
-            var vertex3 = (Vector)Vector3.TransformPosition((Vector3)triangle[2], triangle.Transform.Model);
+            var vertex1 = (Vector)Vector3.TransformPosition((Vector3)triangle[0], transform.Model);
+            var vertex2 = (Vector)Vector3.TransformPosition((Vector3)triangle[1], transform.Model);
+            var vertex3 = (Vector)Vector3.TransformPosition((Vector3)triangle[2], transform.Model);
 
             var triangleNormal = Vector.Cross(vertex2 - vertex1, vertex3 - vertex1);
             var rayToVertex1 = vertex1 - rayOrigin;

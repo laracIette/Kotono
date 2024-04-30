@@ -96,14 +96,18 @@ namespace Kotono
             Size = (Point)ClientSize;
         }
 
-        protected sealed override void OnLoad()
+        protected override void OnLoad()
         {
             base.OnLoad();
 
             IsVisible = true;
+
+            Start();
         }
 
-        protected sealed override void OnRenderFrame(FrameEventArgs e)
+        protected virtual void Start() { }
+
+        protected override void OnRenderFrame(FrameEventArgs e)
         {
             base.OnRenderFrame(e);
 
@@ -127,7 +131,7 @@ namespace Kotono
             }
         }
 
-        protected sealed override void OnUpdateFrame(FrameEventArgs e)
+        protected override void OnUpdateFrame(FrameEventArgs e)
         {
             base.OnUpdateFrame(e);
 
@@ -139,8 +143,9 @@ namespace Kotono
             PerformanceWindow.AddUpdateTime((float)e.Time);
 
             Time.Update();
-            Mouse.Update();
             Gizmo.Update();
+            Keyboard.Update();
+            Mouse.Update();
             ObjectManager.Update();
             WindowComponentManager.Update();
             StateManager.Update();
@@ -161,9 +166,9 @@ namespace Kotono
             Update();
         }
 
-        protected abstract void Update();
+        protected virtual void Update() { }
 
-        protected sealed override void OnResize(ResizeEventArgs e)
+        protected override void OnResize(ResizeEventArgs e)
         {
             base.OnResize(e);
 
@@ -171,14 +176,14 @@ namespace Kotono
             Size = (Point)ClientSize;
         }
 
-        protected sealed override void OnMove(WindowPositionEventArgs e)
+        protected override void OnMove(WindowPositionEventArgs e)
         {
             base.OnMove(e);
 
             Position = (Point)Location;
         }
 
-        protected sealed override void OnUnload()
+        protected override void OnUnload()
         {
             SoundManager.Dispose();
             Texture.DisposeAll();

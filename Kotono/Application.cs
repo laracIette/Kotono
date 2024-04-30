@@ -4,10 +4,8 @@ using Kotono.Graphics.Objects;
 using Kotono.Graphics.Objects.Buttons;
 using Kotono.Graphics.Objects.Lights;
 using Kotono.Graphics.Objects.Meshes;
-using Kotono.Graphics.Objects.Shapes;
 using Kotono.Input;
 using Kotono.Settings;
-using Kotono.Tests;
 using Kotono.Utils;
 using Kotono.Utils.Coordinates;
 using Kotono.Utils.Timing;
@@ -18,8 +16,6 @@ namespace Kotono
 {
     internal class Application : Window
     {
-        private readonly TestSound _sound;
-
         private readonly Animation _animation;
 
         private readonly Timer _timer;
@@ -29,11 +25,7 @@ namespace Kotono
         {
             _ = new Cursor();
 
-            _sound = new TestSound();
-
-            _animation = new Animation(JsonParser.Parse<AnimationSettings>(Path.ASSETS + @"Animations\Counting\Counting.json"));
-
-            CreateObjects();
+            _ = new TestSound();
 
             _ = new TextButtonList(
                 new TextButtonListSettings
@@ -50,11 +42,18 @@ namespace Kotono
                 }
             );
 
+            _animation = new Animation(JsonParser.Parse<AnimationSettings>(Path.ASSETS + @"Animations\Counting\Counting.json"));
+
             _timer = new Timer();
             _timer.Timeout += OnTimerTimeout;
-            _timer.Start(1.0f, true);
 
-            //_ = new Painter();
+            CreateObjects();
+
+            Keyboard.SubscribeKeyPressed(OnEnterPressed, Keys.Enter);
+            Keyboard.SubscribeKeyPressed(OnTPressed, Keys.T);
+            Keyboard.SubscribeKeyPressed(OnIPressed, Keys.I);
+            Keyboard.SubscribeKeyPressed(OnJPressed, Keys.J); 
+            Keyboard.SubscribeKeyPressed(OnKPressed, Keys.K);
         }
 
         private void OnTimerTimeout(object? sender, TimeoutEventArgs e)
@@ -62,32 +61,31 @@ namespace Kotono
             Printer.Print((int)e.Time, true);
         }
 
-        protected override void Update()
+        private void OnEnterPressed(object? sender, TimedEventArgs e)
         {
-            _sound.Update();
+            Mouse.CursorState = (CursorState)Math.Loop((float)Mouse.CursorState + 1.0f, 3.0f);
+        }
 
-            if (Keyboard.IsKeyPressed(Keys.Enter))
-            {
-                Mouse.CursorState = (CursorState)Math.Loop((float)Mouse.CursorState + 1.0f, 3.0f);
-            }
+        private void OnTPressed(object? sender, TimedEventArgs e)
+        {
+            _animation.Switch();
+        }
 
-            if (Keyboard.IsKeyPressed(Keys.T))
-            {
-                _animation.Switch();
-            }
+        private void OnIPressed(object? sender, TimedEventArgs e)
+        {
+            Printer.Print(Time.Now, true);
+        }
 
-            if (Keyboard.IsKeyDown(Keys.I))
+        private void OnJPressed(object? sender, TimedEventArgs e)
+        {
+            foreach (var obj in ISelectable.Selected3D.Where(s => s != ISelectable.Active))
             {
-                Printer.Print(Time.Now, true);
+                obj.Parent = ISelectable.Active3D;
             }
+        }
 
-            if (Keyboard.IsKeyPressed(Keys.J))
-            {
-                foreach (var obj in ISelectable.Selected3D.Where(s => s != ISelectable.Active))
-                {
-                    obj.Parent = ISelectable.Active3D;
-                }
-            }
+        private void OnKPressed(object? sender, TimedEventArgs e)
+        {
             if (Keyboard.IsKeyPressed(Keys.K))
             {
                 foreach (var obj in ISelectable.Selected3D)
@@ -95,6 +93,16 @@ namespace Kotono
                     obj.Parent = null;
                 }
             }
+        }
+
+        protected override void Start()
+        {
+            _timer.Start(1.0f, true);
+        }
+
+        protected override void Update()
+        {
+            
         }
 
         private static void CreateObjects()
@@ -119,15 +127,12 @@ namespace Kotono
 
             for (int i = 0; i < 10; i++)
             {
-                _ = new RainbowPointLight();
+                _ = new PointLightMesh
+                {
+                    Parent = new RainbowPointLight(),
+                    RelativeLocation = Vector.Zero
+                };
             }
-
-            _ = new FlatTextureMesh()
-            {
-                RelativeLocation = -Vector.Forward * 5
-            };
-
-
         }
     }
 

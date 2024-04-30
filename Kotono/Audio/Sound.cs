@@ -1,15 +1,14 @@
 ﻿using OpenTK.Audio.OpenAL;
-using System;
 
 namespace Kotono.Audio
 {
-    public class Sound(string path) : IDisposable
+    internal class Sound(string path) : Object
     {
         private float _volume = 1.0f;
 
-        public int Source { get; } = SoundManager.GetSource(path);
+        internal int Source { get; } = SoundManager.GetSource(path);
 
-        public float Volume
+        internal float Volume
         {
             get => _volume;
             set
@@ -19,38 +18,38 @@ namespace Kotono.Audio
             }
         }
 
-        public bool IsPlaying => AL.GetSourceState(Source) == ALSourceState.Playing;
+        internal bool IsPlaying => AL.GetSourceState(Source) == ALSourceState.Playing;
 
-        public bool IsPaused => AL.GetSourceState(Source) == ALSourceState.Paused;
+        internal bool IsPaused => AL.GetSourceState(Source) == ALSourceState.Paused;
 
-        public bool IsStopped => AL.GetSourceState(Source) == ALSourceState.Stopped;
+        internal bool IsStopped => AL.GetSourceState(Source) == ALSourceState.Stopped;
 
-        public void Play()
+        internal void Play()
         {
             AL.SourcePlay(Source);
         }
 
-        public void Pause()
+        internal void Pause()
         {
             AL.SourcePause(Source);
         }
 
-        public void Rewind()
+        internal void Rewind()
         {
             AL.SourceRewind(Source);
         }
 
-        public void Stop()
+        internal void Stop()
         {
             AL.SourceStop(Source);
         }
 
-        public void Dispose()
+        public override void Dispose()
         {
             Stop();
             AL.DeleteSource(Source);
 
-            GC.SuppressFinalize(this);
+            base.Dispose();
         }
     }
 }

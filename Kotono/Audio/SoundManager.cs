@@ -6,7 +6,7 @@ using IO = System.IO;
 
 namespace Kotono.Audio
 {
-    public static class SoundManager
+    internal static class SoundManager
     {
         private static readonly ALDevice _device;
 
@@ -16,7 +16,7 @@ namespace Kotono.Audio
 
         private static float _generalVolume = 1.0f;
 
-        public static float GeneralVolume
+        internal static float GeneralVolume
         {
             get => _generalVolume;
             set
@@ -33,12 +33,12 @@ namespace Kotono.Audio
             ALC.MakeContextCurrent(_context);
         }
 
-        public static int GetSource(string path)
+        internal static int GetSource(string path)
         {
-            if (!_sources.ContainsKey(path))
+            if (!_sources.TryGetValue(path, out int value))
             {
                 int buffer = AL.GenBuffer();
-                _sources[path] = AL.GenSource();
+                value = AL.GenSource();
 
                 var data = LoadWAV(path, out int channels, out int bits, out int rate);
 
@@ -47,12 +47,14 @@ namespace Kotono.Audio
 
                 AL.BufferData(buffer, GetSoundFormat(channels, bits), dataPtr, data.Length, rate);
 
-                AL.Source(_sources[path], ALSourcei.Buffer, buffer);
+                AL.Source(value, ALSourcei.Buffer, buffer);
 
                 AL.DeleteBuffer(buffer);
+
+                _sources[path] = value;
             }
 
-            return _sources[path];
+            return value;
         }
 
         /// <summary>
@@ -124,7 +126,7 @@ namespace Kotono.Audio
             };
         }
 
-        public static void Dispose()
+        internal static void Dispose()
         {
             if (_context != ALContext.Null)
             {

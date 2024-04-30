@@ -48,47 +48,66 @@ namespace Kotono.Graphics.Objects
             set => _transform.WorldScale = value;
         }
 
-        public virtual Vector LocationVelocity
+        public virtual Vector RelativeLocationVelocity
         {
-            get => _transform.LocationVelocity;
-            set => _transform.LocationVelocity = value;
+            get => _transform.RelativeLocationVelocity;
+            set => _transform.RelativeLocationVelocity = value;
         }
 
-        public virtual Rotator RotationVelocity
+        public virtual Rotator RelativeRotationVelocity
         {
-            get => _transform.RotationVelocity;
-            set => _transform.RotationVelocity = value;
+            get => _transform.RelativeRotationVelocity;
+            set => _transform.RelativeRotationVelocity = value;
         }
 
-        public virtual Vector ScaleVelocity
+        public virtual Vector RelativeScaleVelocity
         {
-            get => _transform.ScaleVelocity;
-            set => _transform.ScaleVelocity = value;
+            get => _transform.RelativeScaleVelocity;
+            set => _transform.RelativeScaleVelocity = value;
+        }
+
+        public virtual Vector WorldLocationVelocity
+        {
+            get => _transform.WorldLocationVelocity;
+            set => _transform.WorldLocationVelocity = value;
+        }
+
+        public virtual Rotator WorldRotationVelocity
+        {
+            get => _transform.WorldRotationVelocity;
+            set => _transform.WorldRotationVelocity = value;
+        }
+
+        public virtual Vector WorldScaleVelocity
+        {
+            get => _transform.WorldScaleVelocity;
+            set => _transform.WorldScaleVelocity = value;
         }
 
         private IObject3D? _parent = null;
 
-        public IObject3D? Parent 
+        public virtual IObject3D? Parent 
         { 
             get => _parent;
             set
             {
-                var transform = Transform.Clone();
+                using var clone = Transform.Clone();
                 
                 _parent = value;
                 Transform.Parent = value?.Transform;
                 
                 // Remove relative offset, not sure if it'll stay
-                Transform.WorldLocation = transform.WorldLocation;
-                Transform.WorldRotation = transform.WorldRotation;
-                Transform.WorldScale = transform.WorldScale;
+                Transform.WorldLocation = clone.WorldLocation;
+                Transform.WorldRotation = clone.WorldRotation;
+                Transform.WorldScale = clone.WorldScale;
             }
         } 
 
         internal Object3D(T settings)
             : base(settings)
         {
-            _transform = settings.Transform;
+            _transform.ReplaceBy(settings.Transform);
+            settings.Transform.Dispose();
         }
 
         internal Object3D() : base() { }

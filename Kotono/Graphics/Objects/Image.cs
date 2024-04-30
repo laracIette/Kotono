@@ -62,5 +62,10 @@ namespace Kotono.Graphics.Objects
             _startTime = Time.Now;
             _endTime = _startTime + time;
         }
+
+        public override string ToString()
+        {
+            return Path;
+        }
     }
 }

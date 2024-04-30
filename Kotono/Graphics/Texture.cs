@@ -1,9 +1,7 @@
 ﻿using Kotono.Graphics.Objects;
 using OpenTK.Graphics.OpenGL4;
-using StbImageSharp;
 using System.Collections.Generic;
 using System.Linq;
-using IO = System.IO;
 
 namespace Kotono.Graphics
 {

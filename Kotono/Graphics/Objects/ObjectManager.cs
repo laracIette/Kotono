@@ -60,7 +60,7 @@ namespace Kotono.Graphics.Objects
             }
         }
 
-        internal static void Delete(IObject obj)
+        private static void Delete(IObject obj)
         {
             if (!_objects.Remove(obj))
             {
@@ -70,15 +70,26 @@ namespace Kotono.Graphics.Objects
 
         internal static void Update()
         {
-            // List can change during _objects[i].Update() calls
-            for (int i = 0; i < _objects.Count; i++)
-            {
-                _objects[i].Update();
-            }
-
             if (Keyboard.IsKeyPressed(Keys.Delete))
             {
                 OnDeleteKeyPressed();
+            }
+
+            // List can change during for loop
+            for (int i = _objects.Count - 1; i >= 0; i--)
+            {
+                if (_objects[i].IsDelete)
+                {
+                    Delete(_objects[i]);
+                }
+            }
+
+            for (int i = 0; i < _objects.Count; i++)
+            {
+                if (_objects[i].IsUpdate)
+                {
+                    _objects[i].Update();
+                }
             }
 
             UpdateFizix();
@@ -117,7 +128,7 @@ namespace Kotono.Graphics.Objects
         {
             for (int i = ISelectable.Selected.Count - 1; i >= 0; i--)
             {
-                ISelectable.Selected[i].Delete();
+                ISelectable.Selected[i].Dispose();
                 ISelectable.Selected.RemoveAt(i);
             }
         }

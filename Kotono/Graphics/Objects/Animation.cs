@@ -186,21 +186,18 @@ namespace Kotono.Graphics.Objects
             CurrentFrame--;
         }
 
-        public override string ToString()
-        {
-            return $"Directory: {((AnimationSettings)_settings).Directory}";
-        }
+        public override string ToString() => $"Directory: {_settings.Directory}";
 
-        public override void Delete()
+        public override void Dispose()
         {
             foreach (var frame in _frames)
             {
-                frame.Delete();
+                frame.Dispose();
             }
 
             _frames.Clear();
 
-            base.Delete();
+            base.Dispose();
         }
     }
 }

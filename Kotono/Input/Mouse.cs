@@ -1,9 +1,11 @@
 ﻿using Kotono.Engine;
 using Kotono.Graphics.Objects;
+using Kotono.Utils;
 using Kotono.Utils.Coordinates;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -46,6 +48,16 @@ namespace Kotono.Input
             SetCursorPos((int)pos.X, (int)pos.Y);
         }
 
+        private static MouseState? _mouseState;
+
+        internal static MouseState MouseState
+        {
+            get => _mouseState ?? throw new Exception($"error: _mouseState must not be null");
+            set => _mouseState = value;
+        }
+
+        private static readonly Dictionary<MouseButton, EventHandler<TimedEventArgs>?> _buttonsPressed = [];
+
         internal static Point PositionFromOrigin { get; private set; } = Point.Zero;
 
         internal static Point PreviousPositionFromOrigin { get; private set; } = Point.Zero;
@@ -58,17 +70,9 @@ namespace Kotono.Input
 
         internal static Vector Ray { get; private set; } = Vector.Zero;
 
-        private static MouseState? _mouseState;
-
-        internal static MouseState MouseState
-        {
-            get => _mouseState ?? throw new Exception($"error: _mouseState must not be null");
-            set => _mouseState = value;
-        }
-
         internal static Point ScrollDelta => (Point)MouseState.ScrollDelta;
 
-        internal static CursorState CursorState { get; set; } = CursorState.Centered;
+        internal static CursorState CursorState { get; set; } = CursorState.Normal;
 
         internal static void Update()
         {
@@ -124,6 +128,14 @@ namespace Kotono.Input
                     PositionFromOrigin = center;
                 }
             }
+
+            foreach (var button in _buttonsPressed.Keys)
+            {
+                if (IsButtonPressed(button))
+                {
+                    _buttonsPressed[button]?.Invoke(null, new TimedEventArgs());
+                }
+            }
         }
 
         private static void UpdateRay()
@@ -138,6 +150,16 @@ namespace Kotono.Input
             Ray = ((Vector)rayWorld.Xyz).Normalized;
         }
 
+        internal static void SubscribeButtonPressed(EventHandler<TimedEventArgs> func, MouseButton button)
+        {
+            if (!_buttonsPressed.ContainsKey(button))
+            {
+                _buttonsPressed[button] = null;
+            }
+
+            _buttonsPressed[button] += func;
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static bool IsButtonDown(MouseButton button) => MouseState.IsButtonDown(button);
 
@@ -149,7 +171,7 @@ namespace Kotono.Input
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static bool IsButtonReleased(MouseButton button) => MouseState.IsButtonReleased(button);
-        
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static void ShowCursor() => ShowCursor(true);
 

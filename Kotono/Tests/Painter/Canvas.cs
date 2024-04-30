@@ -1,10 +1,5 @@
-﻿using Kotono.Graphics;
-using Kotono.Graphics.Objects.Shapes;
-using Kotono.Graphics.Shaders;
+﻿using Kotono.Graphics.Objects.Shapes;
 using Kotono.Input;
-using Kotono.Utils;
-using Kotono.Utils.Coordinates;
-using OpenTK.Graphics.OpenGL4;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 
 namespace Kotono.Tests.Painter

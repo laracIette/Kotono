@@ -1,12 +1,6 @@
-﻿using System;
-
-namespace Kotono.Utils.Timing
+﻿namespace Kotono.Utils.Timing
 {
-    internal class TimeoutEventArgs : EventArgs
+    internal class TimeoutEventArgs : TimedEventArgs
     {
-        /// <summary>
-        /// The time at which the timeout occured.
-        /// </summary>
-        internal float Time { get; } = Timing.Time.Now;
     }
 }

@@ -18,7 +18,13 @@ namespace Kotono.Graphics.Statistics
     {
         private readonly float[] _times = new float[60];
 
-        private int _timeIndex = 0;
+        private int _timeIndex = 0; 
+
+        private int TimeIndex
+        {
+            get => _timeIndex;
+            set => _timeIndex = (int)Math.Loop(value, _times.Length);
+        }
 
         internal float Time { get; private set; }
 
@@ -26,8 +32,7 @@ namespace Kotono.Graphics.Statistics
 
         internal void AddTime(float newTime)
         {
-            _times[_timeIndex] = newTime;
-            _timeIndex = (_timeIndex + 1) % _times.Length;
+            _times[TimeIndex++] = newTime;
 
             Time = _times.Average();
 
