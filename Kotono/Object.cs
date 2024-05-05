@@ -4,7 +4,6 @@ using Kotono.Utils;
 using System;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using System.Text;
 
 namespace Kotono
 {
@@ -60,15 +59,14 @@ namespace Kotono
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected static void log() => Logger.Log();
 
-
-        protected static string Str(params object[] objects) 
+        protected static string str(params object[] objects) 
         {
-            var builder = new StringBuilder();
+            string result = "";
             foreach (var obj in objects)
             {
-                builder.Append(obj);
+                result += obj;
             }
-            return builder.ToString();
+            return result;
         }
     }
 }

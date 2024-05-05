@@ -9,7 +9,6 @@ using System.Text.Json.Serialization;
 
 namespace Kotono.Utils.Coordinates
 {
-    [Serializable]
     [StructLayout(LayoutKind.Sequential)]
     public struct Rect : IEquatable<Rect>
     {
@@ -64,7 +63,6 @@ namespace Kotono.Utils.Coordinates
         /// <summary> 
         /// The Rect scaled to unit length. 
         /// </summary>
-        [JsonIgnore]
         public readonly Rect Normalized =>
             new Rect(
                 Position.Normalized,
@@ -74,7 +72,6 @@ namespace Kotono.Utils.Coordinates
         /// <summary>
         /// The Rect scaled to Normalized Device Coordinates.
         /// </summary>
-        [JsonIgnore]
         public readonly Rect NDC =>
             new Rect(
                 Position.NDC,
@@ -84,7 +81,6 @@ namespace Kotono.Utils.Coordinates
         /// <summary>
         /// The model matrix of the Rect.
         /// </summary>
-        [JsonIgnore]
         public readonly Matrix4 Model =>
             Matrix4.CreateScale(NDC.W, NDC.H, 1.0f)
             * Matrix4.CreateTranslation(NDC.X, NDC.Y, 0.0f);
@@ -92,55 +88,46 @@ namespace Kotono.Utils.Coordinates
         /// <summary>
         /// The center Point of the Rect.
         /// </summary>
-        [JsonIgnore]
         public readonly Point Center => Position;
 
         /// <summary>
         /// The left Point of the Rect.
         /// </summary>
-        [JsonIgnore]
         public readonly Point Left => new Point(X - W / 2.0f, Y);
 
         /// <summary>
         /// The right Point of the Rect.
         /// </summary>
-        [JsonIgnore]
         public readonly Point Right => new Point(X + W / 2.0f, Y);
 
         /// <summary>
         /// The top Point of the Rect.
         /// </summary>
-        [JsonIgnore]
         public readonly Point Top => new Point(X, Y + H / 2.0f);
 
         /// <summary>
         /// The bottom Point of the Rect.
         /// </summary>
-        [JsonIgnore]
         public readonly Point Bottom => new Point(X, Y - H / 2.0f);
 
         /// <summary>
         /// The top left Point of the Rect.
         /// </summary>
-        [JsonIgnore]
         public readonly Point TopLeft => new Point(X - W / 2.0f, Y + H / 2.0f);
 
         /// <summary>
         /// The top right Point of the Rect.
         /// </summary>
-        [JsonIgnore]
         public readonly Point TopRight => new Point(X + W / 2.0f, Y + H / 2.0f);
 
         /// <summary>
         /// The bottom left Point of the Rect.
         /// </summary>
-        [JsonIgnore]
         public readonly Point BottomLeft => new Point(X - W / 2.0f, Y - H / 2.0f);
 
         /// <summary>
         /// The bottom right Point of the Rect.
         /// </summary>
-        [JsonIgnore]
         public readonly Point BottomRight => new Point(X + W / 2.0f, Y - H / 2.0f);
 
         /// <summary> 

@@ -41,7 +41,7 @@ namespace Kotono.Utils
                 return false;
             }
 
-            intersectionLocation = rayOrigin + rayDirection * t;
+            intersectionLocation = rayOrigin + t * rayDirection;
 
             var v0 = vertex2 - vertex1;
             var v1 = vertex3 - vertex1;

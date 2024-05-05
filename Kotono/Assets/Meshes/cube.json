@@ -30,29 +30,30 @@
       "Y": 1,
       "Z": 1
     },
-    "LocationVelocity": {
+    "RelativeLocationVelocity": {
       "X": 0,
       "Y": 0,
       "Z": 0
     },
-    "RotationVelocity": {
+    "RelativeRotationVelocity": {
       "Roll": 0,
       "Pitch": 0,
       "Yaw": 0
     },
-    "ScaleVelocity": {
-      "X": 1,
-      "Y": 1,
-      "Z": 1
+    "RelativeScaleVelocity": {
+      "X": 0,
+      "Y": 0,
+      "Z": 0
     },
-    "Parent": null
+    "Parent": null,
+    "IsUpdate": true
   },
   "Path": "..\\..\\..\\Assets\\Meshes\\cube.json",
   "IsDraw": true,
   "Color": {
-    "R": 0,
+    "R": 1,
     "G": 1,
-    "B": 0,
+    "B": 1,
     "A": 1
   }
 }

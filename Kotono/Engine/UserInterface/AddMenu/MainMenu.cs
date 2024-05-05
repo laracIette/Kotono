@@ -57,8 +57,6 @@ namespace Kotono.Engine.UserInterface.AddMenu
             : base()
         {
             IsDraw = false;
-
-            Keyboard.SubscribeKeyPressed(OnAPressed, Keys.A);
         }
 
         public override void Update()
@@ -69,7 +67,7 @@ namespace Kotono.Engine.UserInterface.AddMenu
             }
         }
 
-        private void OnAPressed(object? sender, TimedEventArgs e)
+        private void OnAKeyPressed()
         {
             if (Mouse.CursorState == CursorState.Confined && Keyboard.IsKeyDown(Keys.LeftShift))
             {

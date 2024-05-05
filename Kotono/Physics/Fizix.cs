@@ -32,7 +32,7 @@ namespace Kotono.Physics
             {
                 collisionCenter /= n;
 
-                var rot = mesh.RelativeRotation.Radians;
+                var rot = mesh.RelativeRotation;
 
                 var up = new Vector
                 {
@@ -80,7 +80,7 @@ namespace Kotono.Physics
                 if (velocityAlongNormal < 0.0f)
                 {
                     float impulse = -2.0f * velocityAlongNormal / (1.0f / sphere1Radius + 1.0f / sphere2Radius);
-                    sphere.RelativeLocationVelocity -= normal * impulse / sphere1Radius;
+                    sphere.RelativeLocationVelocity -= impulse * normal / sphere1Radius;
                     //sphere2.Velocity += normal * impulse / sphere2Radius;
                 }
 
@@ -103,8 +103,8 @@ namespace Kotono.Physics
                 if (velocityAlongNormal < 0.0f)
                 {
                     float impulse = -2.0f * velocityAlongNormal / (1.0f / left.Radius + 1.0f / right.Radius);
-                    left.RelativeLocationVelocity -= normal * impulse / left.Radius;
-                    right.RelativeLocationVelocity += normal * impulse / right.Radius;
+                    left.RelativeLocationVelocity -= impulse * normal / left.Radius;
+                    right.RelativeLocationVelocity += impulse * normal / right.Radius;
                 }
             }
         }

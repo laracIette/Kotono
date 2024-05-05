@@ -19,25 +19,26 @@
       "Y": 0.084750615,
       "Z": 0.084750615
     },
-    "LocationVelocity": {
+    "RelativeLocationVelocity": {
       "X": 0,
       "Y": 0,
       "Z": 0
     },
-    "RotationVelocity": {
+    "RelativeRotationVelocity": {
       "Roll": 0,
       "Pitch": 0,
       "Yaw": 0
     },
-    "ScaleVelocity": {
-      "X": 1,
-      "Y": 1,
-      "Z": 1
+    "RelativeScaleVelocity": {
+      "X": 0,
+      "Y": 0,
+      "Z": 0
     },
-    "Parent": null
+    "Parent": null,
+    "IsUpdate": true
   },
   "Path": "..\\..\\..\\Assets\\Gizmo\\gizmo_sphere.json",
-  "IsDraw": false,
+  "IsDraw": true,
   "Color": {
     "R": 1,
     "G": 1,

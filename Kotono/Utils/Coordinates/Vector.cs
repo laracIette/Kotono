@@ -4,32 +4,30 @@ using Kotono.Utils.Exceptions;
 using OpenTK.Mathematics;
 using System;
 using System.Runtime.InteropServices;
-using System.Text.Json.Serialization;
 using Quaternion = OpenTK.Mathematics.Quaternion;
 
 namespace Kotono.Utils.Coordinates
 {
-    [Serializable]
     [StructLayout(LayoutKind.Sequential)]
     public struct Vector : IEquatable<Vector>
     {
         /// <summary> 
-        /// The X component of the Vector. 
+        /// The X component of the <see cref="Vector"/>. 
         /// </summary>
         public float X { get; set; }
 
         /// <summary>
-        /// The Y component of the Vector. 
+        /// The Y component of the <see cref="Vector"/>. 
         /// </summary>
         public float Y { get; set; }
 
         /// <summary> 
-        /// The Z component of the Vector. 
+        /// The Z component of the <see cref="Vector"/>. 
         /// </summary>
         public float Z { get; set; }
 
         /// <summary>
-        /// The component of the Vector corresponding to the index.
+        /// The component of the <see cref="Vector"/> corresponding to the index.
         /// </summary>
         /// <param name="index"> 0 => X, 1 => Y, 2 => Z. </param>
         /// <exception cref="SwitchException"></exception>
@@ -62,39 +60,33 @@ namespace Kotono.Utils.Coordinates
         }
 
         /// <summary>
-        /// The length of the Vector. 
+        /// The length of the <see cref="Vector"/>. 
         /// </summary>
-        [JsonIgnore]
         public readonly float Length => Math.Sqrt(X * X + Y * Y + Z * Z);
 
         /// <summary> 
-        /// The Vector scaled to unit length.
+        /// The <see cref="Vector"/> scaled to unit length.
         /// </summary>
-        [JsonIgnore]
         public readonly Vector Normalized => this / Length;
 
         /// <summary> 
-        /// The minimum value of the Vector.
+        /// The minimum value of the <see cref="Vector"/>.
         /// </summary>
-        [JsonIgnore]
         public readonly float Min => Math.Min(Math.Min(X, Y), Z);
 
         /// <summary> 
-        /// The maximum value of the Vector.
+        /// The maximum value of the <see cref="Vector"/>.
         /// </summary>
-        [JsonIgnore]
         public readonly float Max => Math.Max(Math.Max(X, Y), Z);
 
         /// <summary> 
-        /// The absolute value of the Vector.
+        /// The absolute value of the <see cref="Vector"/>.
         /// </summary>
-        [JsonIgnore]
         public readonly Vector Abs => new Vector(Math.Abs(X), Math.Abs(Y), Math.Abs(Z));
 
         /// <summary> 
-        /// Wether the Vector is equal to Vector.Zero.
+        /// Wether the <see cref="Vector"/> is equal to <see cref="Zero"/>.
         /// </summary>
-        [JsonIgnore]
         public readonly bool IsZero => this == Zero;
 
         /// <summary>
@@ -174,12 +166,17 @@ namespace Kotono.Utils.Coordinates
         /// </summary>
         public Vector(float f) : this(f, f, f) { }
 
-        public static Vector RotateAroundPoint(Vector v, Vector point, Rotator rotation)
+        public static Vector RotateAroundPoint(in Vector v, in Vector point, in Rotator rotation)
         {
             return (Vector)(Quaternion.FromEulerAngles((Vector3)rotation) * (Vector3)(v - point)) + point;
         }
 
-        public static Vector Cross(Vector left, Vector right)
+        public static Vector Rotate(in Vector v, in Rotator r)
+        {
+            return (Vector)Vector3.Transform((Vector3)v, (Quaternion)r);
+        }
+
+        public static Vector Cross(in Vector left, in Vector right)
         {
             return new Vector
             {
@@ -189,7 +186,7 @@ namespace Kotono.Utils.Coordinates
             };
         }
 
-        public static float Dot(Vector left, Vector right)
+        public static float Dot(in Vector left, in Vector right)
         {
             return left.X * right.X + left.Y * right.Y + left.Z * right.Z;
         }
@@ -216,12 +213,12 @@ namespace Kotono.Utils.Coordinates
             return v;
         }
 
-        public static float Distance(Vector left, Vector right)
+        public static float Distance(in Vector left, in Vector right)
         {
             return (left - right).Length;
         }
 
-        internal static float Distance(IObject3D left, IObject3D right)
+        internal static float Distance(in IObject3D left, in IObject3D right)
         {
             return Distance(left.RelativeLocation, right.RelativeLocation);
         }
@@ -242,7 +239,7 @@ namespace Kotono.Utils.Coordinates
             return v;
         }
 
-        public static Vector Parse(string[] values)
+        public static Vector Parse(in string[] values)
         {
             return new Vector
             {
@@ -253,12 +250,12 @@ namespace Kotono.Utils.Coordinates
         }
 
 
-        public static Matrix4 CreateScaleMatrix(Vector v)
+        public static Matrix4 CreateScaleMatrix(in Vector v)
         {
             return Matrix4.CreateScale((Vector3)v);
         }
 
-        public static Matrix4 CreateTranslationMatrix(Vector v)
+        public static Matrix4 CreateTranslationMatrix(in Vector v)
         {
             return Matrix4.CreateTranslation((Vector3)v);
         }
@@ -303,7 +300,7 @@ namespace Kotono.Utils.Coordinates
             return left;
         }
 
-        public static Vector operator *(Vector v, float f)
+        public static Vector operator *(float f, Vector v)
         {
             v.X *= f;
             v.Y *= f;
@@ -311,9 +308,10 @@ namespace Kotono.Utils.Coordinates
             return v;
         }
 
-        public static Vector operator *(float f, Vector v)
+        [Obsolete("Reorder operands, use \"Vector.operator *(float, Vector)\" instead.")]
+        public static Vector operator *(Vector v, float f)
         {
-            return v * f;
+            return f * v;
         }
 
         public static Vector operator /(Vector left, Vector right)

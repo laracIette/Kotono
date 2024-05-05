@@ -4,7 +4,6 @@ using System.Text.Json.Serialization;
 
 namespace Kotono.Utils.Coordinates
 {
-    [Serializable]
     internal class Transform : Object, ITransform, IReplaceable<Transform>, ICloneable<Transform>, IEquatable<Transform>
     {
         public Vector RelativeLocation { get; set; } = DefaultLocation;
@@ -98,7 +97,7 @@ namespace Kotono.Utils.Coordinates
         /// </summary>
         internal Matrix4 Model =>
             Vector.CreateScaleMatrix(WorldScale)
-            * Rotator.CreateRotationMatrix(WorldRotation)
+            * WorldRotation.RotationMatrix
             * Vector.CreateTranslationMatrix(WorldLocation);
 
         /// <summary> 
@@ -169,9 +168,9 @@ namespace Kotono.Utils.Coordinates
 
         public override void Update()
         {
-            RelativeLocation += RelativeLocationVelocity * Time.Delta;
-            RelativeRotation += RelativeRotationVelocity * Time.Delta;
-            RelativeScale += RelativeScaleVelocity * Time.Delta;
+            RelativeLocation += Time.Delta * RelativeLocationVelocity;
+            RelativeRotation += Time.Delta * RelativeRotationVelocity;
+            RelativeScale += Time.Delta * RelativeScaleVelocity;
         }
 
         public static bool operator ==(Transform? left, Transform? right)

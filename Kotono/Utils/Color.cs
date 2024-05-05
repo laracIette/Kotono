@@ -7,7 +7,6 @@ using System.Runtime.InteropServices;
 
 namespace Kotono.Utils
 {
-    [Serializable]
     [StructLayout(LayoutKind.Sequential)]
     public struct Color : IEquatable<Color>
     {

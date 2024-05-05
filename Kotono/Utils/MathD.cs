@@ -4,7 +4,9 @@ namespace Kotono.Utils
 {
     public static class MathD
     {
-        public const double PI = 3.14159265358979323846;
+        public const double PI = 3.1415926535897931;
+
+        public const double TAU = 6.2831853071795862;
 
         /// <summary> 
         /// Converts degrees to radians.

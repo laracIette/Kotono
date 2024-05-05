@@ -20,16 +20,14 @@ namespace Kotono.Graphics.Objects
 
         private static IObject3D? ActiveMesh => ISelectable.Active as IObject3D;
 
-        private static readonly Transform _transform = Transform.Default;
-
-        internal static Transform Transform => _transform;
+        internal static Transform Transform { get; private set; } = Transform.Default;
 
         internal static Vector Location
         {
-            get => _transform.RelativeLocation;
+            get => Transform.RelativeLocation;
             set
             {
-                _transform.RelativeLocation = value;
+                Transform.RelativeLocation = value;
                 foreach (var mesh in _meshes)
                 {
                     mesh.RelativeLocation = value;
@@ -39,10 +37,10 @@ namespace Kotono.Graphics.Objects
 
         internal static Rotator Rotation
         {
-            get => _transform.RelativeRotation;
+            get => Transform.RelativeRotation;
             set
             {
-                _transform.RelativeRotation = value;
+                Transform.RelativeRotation = value;
                 foreach (var mesh in _meshes)
                 {
                     mesh.RelativeRotation = value;
@@ -52,10 +50,10 @@ namespace Kotono.Graphics.Objects
 
         internal static Vector Scale
         {
-            get => _transform.RelativeScale;
+            get => Transform.RelativeScale;
             set
             {
-                _transform.RelativeScale = value;
+                Transform.RelativeScale = value;
                 foreach (var mesh in _meshes)
                 {
                     mesh.RelativeScale = value;
@@ -79,7 +77,9 @@ namespace Kotono.Graphics.Objects
 
         internal static bool IsSelected => _selectedMeshIndex != -1;
 
-        private static readonly TransformSpace _transformSpace = TransformSpace.World;
+        private static readonly TransformSpace _transformSpace = TransformSpace.Relative;
+
+        private static readonly GizmoMode _gizmoMode = GizmoMode.Rotation;
 
         internal static void Update()
         {
@@ -93,7 +93,7 @@ namespace Kotono.Graphics.Objects
 
             if (Mouse.IsButtonPressed(MouseButton.Left) && (Mouse.CursorState == CursorState.Confined))
             {
-                _selectedMeshIndex = GetSelectedMeshIndex();
+                UpdateSelectedMeshIndex();
             }
             else if (Mouse.IsButtonReleased(MouseButton.Left) || (Mouse.CursorState != CursorState.Confined))
             {
@@ -109,44 +109,104 @@ namespace Kotono.Graphics.Objects
                     break;
 
                 case TransformSpace.Relative:
-                    Rotation = ActiveMesh.RelativeRotation;
-                    break;
-
-                default:
+                    //Rotation = ActiveMesh.RelativeRotation;
                     break;
             }
 
-            var movement = GetMovement();
-            if (!movement.IsZero) Printer.Print(movement.Length);
-
-            Location += movement;
-
-            foreach (var obj in ISelectable.Selected.OfType<IObject3D>())
+            switch (_gizmoMode)
             {
-                obj.RelativeLocation += movement;
+                case GizmoMode.Location:
+                    var locDelta = GetLocationDelta();
+
+                    if (!locDelta.IsZero)
+                    {
+                        Location += locDelta;
+
+                        foreach (var selected3D in ISelectable.Selected.OfType<IObject3D>())
+                        {
+                            selected3D.RelativeLocation += locDelta;
+                        }
+                    }
+                    break;
+
+                case GizmoMode.Rotation:
+                    var rotDelta = GetRotationDelta();
+
+                    if (!rotDelta.IsZero)
+                    {
+                        Rotation += rotDelta;
+
+                        foreach (var selected3D in ISelectable.Selected.OfType<IObject3D>())
+                        {
+                            selected3D.RelativeRotation += rotDelta;
+                        }
+                    }
+                    break;
+
+                case GizmoMode.Scale: 
+                    break;
             }
 
             Scale = (Vector)(Vector.Distance(Location, ObjectManager.ActiveCamera.Location) / 75.0f);
+            
+            var delta = Rotator.Zero;
+            if (Keyboard.IsKeyDown(Keys.Left))
+            {
+                delta.Pitch = Keyboard.IsKeyDown(Keys.LeftShift) ? -Time.Delta : Time.Delta;
+            }
+            if (Keyboard.IsKeyDown(Keys.Down))
+            {
+                delta.Yaw = Keyboard.IsKeyDown(Keys.LeftShift) ? -Time.Delta : Time.Delta;
+            }
+            if (Keyboard.IsKeyDown(Keys.Right))
+            {
+                delta.Roll = Keyboard.IsKeyDown(Keys.LeftShift) ? -Time.Delta : Time.Delta;
+            }
+
+            if (!delta.IsZero)
+            {
+                Rotation += delta;
+
+                Printer.Print(Rotation, true);
+            }
         }
 
-        private static Vector GetMovement()
+        private static Vector GetLocationDelta()
         {
-            float speed = Scale.X * 0.2f;
+            float speed = Scale.X * 0.1f;
+
+            float delta = Mouse.Delta.X - Mouse.Delta.Y;
 
             return _selectedMeshIndex switch
             {
-                0 => speed * Mouse.Delta.X * Transform.Right,
-                1 => speed * -Mouse.Delta.Y * Transform.Up,
-                2 => speed * Mouse.Delta.X * Transform.Forward,
-                3 => speed * (Mouse.Delta.X * Transform.Right + -Mouse.Delta.Y * Transform.Up),
+                0 => speed * delta * Transform.Right,
+                1 => speed * delta * Transform.Up,
+                2 => speed * delta * Transform.Forward,
+                3 => speed * (Mouse.Delta.X * Vector.Right - Mouse.Delta.Y * Vector.Up),
                 _ => Vector.Zero
             };
         }
 
-        private static int GetSelectedMeshIndex()
+        private static Rotator GetRotationDelta()
         {
-            int closestMesh = -1;
+            float speed = Scale.X * 0.1f;
+
+            float delta = Mouse.Delta.X - Mouse.Delta.Y;
+
+            return _selectedMeshIndex switch
+            {
+                0 => speed * delta * Rotator.UnitPitch,
+                1 => speed * delta * Rotator.UnitYaw,
+                2 => speed * delta * Rotator.UnitRoll,
+                3 => Rotator.Zero,
+                _ => Rotator.Zero
+            };
+        }
+
+        private static void UpdateSelectedMeshIndex()
+        {
             float closestDistance = float.PositiveInfinity;
+            _selectedMeshIndex = -1;
 
             for (int i = 0; i < _meshes.Length; i++)
             {
@@ -156,12 +216,10 @@ namespace Kotono.Graphics.Objects
                     if (_meshes[i].IntersectionDistance < closestDistance)
                     {
                         closestDistance = _meshes[i].IntersectionDistance;
-                        closestMesh = i;
+                        _selectedMeshIndex = i;
                     }
                 }
             }
-
-            return closestMesh;
         }
     }
 }

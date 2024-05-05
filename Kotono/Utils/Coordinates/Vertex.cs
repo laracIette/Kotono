@@ -1,9 +1,7 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
 namespace Kotono.Utils.Coordinates
 {
-    [Serializable]
     [StructLayout(LayoutKind.Sequential)]
     public struct Vertex(Vector location, Vector normal, Point texCoord)
     {

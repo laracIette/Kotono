@@ -16,5 +16,10 @@ namespace Kotono.Utils.Timing
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Start() => _startTime = Time.ExactUTC;
+
+        public override string ToString()
+        {
+            return $"Start Time: {_startTime}, Elapsed Time: {ElapsedTime}";
+        }
     }
 }

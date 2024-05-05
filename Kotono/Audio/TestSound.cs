@@ -1,8 +1,4 @@
-﻿using Kotono.Input;
-using Kotono.Utils;
-using OpenTK.Windowing.GraphicsLibraryFramework;
-
-namespace Kotono.Audio
+﻿namespace Kotono.Audio
 {
     internal class TestSound : Sound
     {
@@ -10,11 +6,9 @@ namespace Kotono.Audio
             : base(Path.ASSETS + @"test.wav")
         {
             Volume = 0.2f;
-
-            Keyboard.SubscribeKeyPressed(OnSpacePressed, Keys.Space);
         }
 
-        private void OnSpacePressed(object? sender, TimedEventArgs e)
+        private void OnSpaceKeyPressed()
         {
             if (IsPlaying)
             {

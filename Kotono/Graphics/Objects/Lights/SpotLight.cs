@@ -1,8 +1,4 @@
-﻿using Kotono.Input;
-using Kotono.Utils;
-using OpenTK.Windowing.GraphicsLibraryFramework;
-
-namespace Kotono.Graphics.Objects.Lights
+﻿namespace Kotono.Graphics.Objects.Lights
 {
     internal class SpotLight : Object3D
     {
@@ -29,7 +25,6 @@ namespace Kotono.Graphics.Objects.Lights
         internal SpotLight()
             : base()
         {
-            Keyboard.SubscribeKeyPressed(OnFPressed, Keys.F);
         }
 
         public override void Update()
@@ -49,7 +44,7 @@ namespace Kotono.Graphics.Objects.Lights
             }
         }
 
-        private void OnFPressed(object? sender, TimedEventArgs e)
+        private void OnFKeyPressed()
         {
             _isOn = !_isOn;
         }

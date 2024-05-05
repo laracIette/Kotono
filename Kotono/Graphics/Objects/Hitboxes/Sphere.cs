@@ -28,7 +28,7 @@ namespace Kotono.Graphics.Objects.Hitboxes
 
                 for (int i = 0; i < SEGMENTS; i++)
                 {
-                    float rotation = i / (float)SEGMENTS * Math.PI * 2.0f;
+                    float rotation = i / (float)SEGMENTS * Math.TAU;
                     _vertices[i] = new Vector
                     {
                         X = 0.5f * Math.Cos(rotation),

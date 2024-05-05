@@ -1,11 +1,9 @@
 ﻿using OpenTK.Mathematics;
 using System;
 using System.Runtime.InteropServices;
-using System.Text.Json.Serialization;
 
 namespace Kotono.Utils.Coordinates
 {
-    [Serializable]
     [StructLayout(LayoutKind.Sequential)]
     public partial struct PointI : IEquatable<PointI>
     {
@@ -22,25 +20,21 @@ namespace Kotono.Utils.Coordinates
         /// <summary> 
         /// The length component of the PointI. 
         /// </summary>
-        [JsonIgnore]
         public readonly float Length => Math.Sqrt(X * X + Y * Y);
 
         /// <summary> 
         /// The PointI scaled to unit length. 
         /// </summary>
-        [JsonIgnore]
         public readonly PointI Normalized => this / Length;
 
         /// <summary>
         /// The X / Y ratio of the PointI.
         /// </summary>
-        [JsonIgnore]
         public readonly float Ratio => X / Y;
 
         /// <summary>
         /// The X * Y product of the PointI.
         /// </summary>
-        [JsonIgnore]
         public readonly int Product => X * Y;
 
         public static PointI Zero => new PointI(0, 0);
@@ -146,11 +140,17 @@ namespace Kotono.Utils.Coordinates
             return left;
         }
 
-        public static PointI operator *(PointI p, int i)
+        public static PointI operator *(int i, PointI p)
         {
             p.X *= i;
             p.Y *= i;
             return p;
+        }
+
+        [Obsolete("Reorder operands, use \"PointI.operator *(int, PointI)\" instead.")]
+        public static PointI operator *(PointI p, int i)
+        {
+            return i * p;
         }
 
         public static PointI operator /(PointI left, PointI right)

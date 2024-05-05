@@ -2,11 +2,9 @@
 using OpenTK.Mathematics;
 using System;
 using System.Runtime.InteropServices;
-using System.Text.Json.Serialization;
 
 namespace Kotono.Utils.Coordinates
 {
-    [Serializable]
     [StructLayout(LayoutKind.Sequential)]
     public struct Point : IEquatable<Point>
     {
@@ -23,19 +21,16 @@ namespace Kotono.Utils.Coordinates
         /// <summary> 
         /// The length component of the Point. 
         /// </summary>
-        [JsonIgnore]
         public readonly float Length => Math.Sqrt(X * X + Y * Y);
 
         /// <summary> 
         /// The Point scaled to unit length. 
         /// </summary>
-        [JsonIgnore]
         public readonly Point Normalized => this / Length;
 
         /// <summary>
         /// The Point scaled to Normalized Device Coordinates.
         /// </summary>
-        [JsonIgnore]
         public readonly Point NDC =>
             new Point(
                 2.0f * X / WindowComponentManager.ActiveViewport.W - 1.0f,
@@ -45,13 +40,11 @@ namespace Kotono.Utils.Coordinates
         /// <summary>
         /// The X / Y ratio of the Point.
         /// </summary>
-        [JsonIgnore]
         public readonly float Ratio => X / Y;
 
         /// <summary>
         /// The X * Y product of the Point.
         /// </summary>
-        [JsonIgnore]
         public readonly float Product => X * Y;
 
         public static Point Zero => new Point(0.0f, 0.0f);
@@ -150,11 +143,17 @@ namespace Kotono.Utils.Coordinates
             return left;
         }
 
-        public static Point operator *(Point p, float f)
+        public static Point operator *(float f, Point p)
         {
             p.X *= f;
             p.Y *= f;
             return p;
+        }
+
+        [Obsolete("Reorder operands, use \"Point.operator *(float, Point)\" instead.")]
+        public static Point operator *(Point p, float f)
+        {
+            return f * p;
         }
 
         public static Point operator /(Point left, Point right)

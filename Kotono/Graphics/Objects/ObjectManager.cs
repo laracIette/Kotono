@@ -8,6 +8,7 @@ using Kotono.Utils.Exceptions;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace Kotono.Graphics.Objects
 {
@@ -56,16 +57,41 @@ namespace Kotono.Graphics.Objects
 
             if (!_objects.Contains(obj))
             {
+                Subscribe(obj);
                 _objects.Add(obj);
+            }
+        }
+
+        private static void Subscribe(IObject obj)
+        {
+            foreach (var methodInfo in obj.GetType()
+                .GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+                .Where(m => m.Name.StartsWith("On"))
+            )
+            {
+                if (methodInfo.Name.Contains("Key"))
+                {
+                    Keyboard.Subscribe(obj, methodInfo);
+                }
+                else if (methodInfo.Name.Contains("Button"))
+                {
+
+                }
             }
         }
 
         private static void Delete(IObject obj)
         {
+            UnSubscribe(obj);
             if (!_objects.Remove(obj))
             {
                 Logger.Log($"error: couldn't remove \"{obj}\" from _objects.");
             }
+        }
+
+        private static void UnSubscribe(IObject obj)
+        {
+            Keyboard.UnSubscribe(obj);
         }
 
         internal static void Update()

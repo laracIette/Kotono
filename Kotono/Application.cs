@@ -48,12 +48,6 @@ namespace Kotono
             _timer.Timeout += OnTimerTimeout;
 
             CreateObjects();
-
-            Keyboard.SubscribeKeyPressed(OnEnterPressed, Keys.Enter);
-            Keyboard.SubscribeKeyPressed(OnTPressed, Keys.T);
-            Keyboard.SubscribeKeyPressed(OnIPressed, Keys.I);
-            Keyboard.SubscribeKeyPressed(OnJPressed, Keys.J); 
-            Keyboard.SubscribeKeyPressed(OnKPressed, Keys.K);
         }
 
         private void OnTimerTimeout(object? sender, TimeoutEventArgs e)
@@ -61,22 +55,22 @@ namespace Kotono
             Printer.Print((int)e.Time, true);
         }
 
-        private void OnEnterPressed(object? sender, TimedEventArgs e)
+        private void OnEnterKeyPressed()
         {
             Mouse.CursorState = (CursorState)Math.Loop((float)Mouse.CursorState + 1.0f, 3.0f);
         }
 
-        private void OnTPressed(object? sender, TimedEventArgs e)
+        private void OnTKeyPressed()
         {
             _animation.Switch();
         }
 
-        private void OnIPressed(object? sender, TimedEventArgs e)
+        private void OnIKeyPressed()
         {
             Printer.Print(Time.Now, true);
         }
 
-        private void OnJPressed(object? sender, TimedEventArgs e)
+        private void OnJKeyPressed()
         {
             foreach (var obj in ISelectable.Selected3D.Where(s => s != ISelectable.Active))
             {
@@ -84,7 +78,7 @@ namespace Kotono
             }
         }
 
-        private void OnKPressed(object? sender, TimedEventArgs e)
+        private void OnKKeyPressed()
         {
             if (Keyboard.IsKeyPressed(Keys.K))
             {
@@ -102,7 +96,11 @@ namespace Kotono
 
         protected override void Update()
         {
-            
+            if (Keyboard.IsKeyPressed(Keys.Enter)) OnEnterKeyPressed();
+            if (Keyboard.IsKeyPressed(Keys.T)) OnTKeyPressed();
+            if (Keyboard.IsKeyPressed(Keys.I)) OnIKeyPressed();
+            if (Keyboard.IsKeyPressed(Keys.J)) OnJKeyPressed();
+            if (Keyboard.IsKeyPressed(Keys.K)) OnKKeyPressed();
         }
 
         private static void CreateObjects()

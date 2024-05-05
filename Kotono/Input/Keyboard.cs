@@ -1,13 +1,17 @@
-﻿using OpenTK.Windowing.GraphicsLibraryFramework;
-using System.Collections.Generic;
+﻿using Kotono.Utils.Exceptions;
+using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
-using Kotono.Utils;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 
 namespace Kotono.Input
 {
     internal static class Keyboard
     {
+        private record Method(Action Action, IObject Instance, MethodInfo MethodInfo);
+
         private static KeyboardState? _keyboardState;
 
         internal static KeyboardState KeyboardState
@@ -16,33 +20,99 @@ namespace Kotono.Input
             set => _keyboardState = value;
         }
 
-        private static readonly Dictionary<Keys, EventHandler<TimedEventArgs>?> _keysPressed = [];
+        private static readonly Dictionary<Keys, List<Method>> _keyActions = [];
 
         internal static void Update()
         {
-            foreach (var key in _keysPressed.Keys)
+            foreach (var key in _keyActions.Keys)
             {
-                if (IsKeyPressed(key))
+                bool isKeyPressed = IsKeyPressed(key);
+                bool isKeyDown = IsKeyDown(key);
+                bool isKeyReleased = IsKeyReleased(key);
+
+                foreach (var method in _keyActions[key])
                 {
-                    _keysPressed[key]?.Invoke(null, new TimedEventArgs());
+                    if ((isKeyPressed && method.Action == Action.Pressed)
+                     || (isKeyDown && method.Action == Action.Down)
+                     || (isKeyReleased && method.Action == Action.Released))
+                    {
+                        method.MethodInfo.Invoke(method.Instance, null);
+                    }
                 }
             }
         }
 
-        internal static void SubscribeKeyPressed(EventHandler<TimedEventArgs> func, Keys key)
+        /// <summary>
+        /// Subscribe a method to a keyboard key <see cref="Action"/>.
+        /// </summary>
+        /// <param name="instance"> The instance that should execute the method. </param>
+        /// <param name="methodInfo"> The method to execute. </param>
+        internal static void Subscribe(IObject instance, MethodInfo methodInfo)
         {
-            if (!_keysPressed.ContainsKey(key))
+            Action action;
+
+            if (methodInfo.Name.EndsWith("Pressed"))
             {
-                _keysPressed[key] = null;
+                action = Action.Pressed;
+            }
+            else if (methodInfo.Name.EndsWith("Down"))
+            {
+                action = Action.Down;
+            }
+            else if (methodInfo.Name.EndsWith("Released"))
+            {
+                action = Action.Released;
+            }
+            else
+            {
+                throw new KotonoException($"couldn't parse method \"{methodInfo.Name}\" to Action");
             }
 
-            _keysPressed[key] += func;
+            if (Enum.TryParse(methodInfo.Name[2..^10], out Keys key))
+            {
+                if (!_keyActions.TryGetValue(key, out List<Method>? value))
+                {
+                    value = [];
+                    _keyActions[key] = value;
+                }
+
+                value.Add(new Method(action, instance, methodInfo));
+            }
+            else
+            {
+                Logger.Log($"error: couldn't parse \"{methodInfo.Name[2..^10]}\" to Keys in Keyboard.SubscribeKeyPressed(object, MethodInfo).");
+            }
         }
-        
+
+        internal static void UnSubscribe(IObject instance, MethodInfo methodInfo)
+        {
+
+        }
+
+        internal static void UnSubscribe(IObject instance)
+        {
+            foreach (var methods in _keyActions.Values)
+            {
+                for (int i = methods.Count - 1; i >= 0; i--)
+                {
+                    if (methods[i].Instance == instance)
+                    {
+                        methods.RemoveAt(i);
+                    }
+                }
+            }
+        }
+
+        /// <inheritdoc cref="KeyboardState.IsKeyDown(Keys)"/>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static bool IsKeyDown(Keys key) => KeyboardState.IsKeyDown(key);
-        
+
+        /// <inheritdoc cref="KeyboardState.IsKeyPressed(Keys)"/>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static bool IsKeyPressed(Keys key) => KeyboardState.IsKeyPressed(key);
+
+        /// <inheritdoc cref="KeyboardState.IsKeyReleased(Keys)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static bool IsKeyReleased(Keys key) => KeyboardState.IsKeyReleased(key);
     }
 }
