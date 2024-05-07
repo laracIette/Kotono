@@ -2,7 +2,6 @@
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
@@ -10,7 +9,7 @@ namespace Kotono.Input
 {
     internal static class Keyboard
     {
-        private record Method(Action Action, IObject Instance, MethodInfo MethodInfo);
+        private record class Method(Action Action, IObject Instance, MethodInfo MethodInfo);
 
         private static KeyboardState? _keyboardState;
 
@@ -21,6 +20,14 @@ namespace Kotono.Input
         }
 
         private static readonly Dictionary<Keys, List<Method>> _keyActions = [];
+
+        static Keyboard()
+        {
+            foreach (var key in Enum.GetValues<Keys>()[..^2]) // remove Keys.Unknown and Keys.LastKey
+            {
+                _keyActions[key] = [];
+            }
+        }
 
         internal static void Update()
         {
@@ -45,8 +52,8 @@ namespace Kotono.Input
         /// <summary>
         /// Subscribe a method to a keyboard key <see cref="Action"/>.
         /// </summary>
-        /// <param name="instance"> The instance that should execute the method. </param>
-        /// <param name="methodInfo"> The method to execute. </param>
+        /// <param name="instance"> The object the method belongs to. </param>
+        /// <param name="methodInfo"> The method to subscribe. </param>
         internal static void Subscribe(IObject instance, MethodInfo methodInfo)
         {
             Action action;
@@ -70,36 +77,37 @@ namespace Kotono.Input
 
             if (Enum.TryParse(methodInfo.Name[2..^10], out Keys key))
             {
-                if (!_keyActions.TryGetValue(key, out List<Method>? value))
-                {
-                    value = [];
-                    _keyActions[key] = value;
-                }
-
-                value.Add(new Method(action, instance, methodInfo));
+                _keyActions[key].Add(new Method(action, instance, methodInfo));
             }
             else
             {
-                Logger.Log($"error: couldn't parse \"{methodInfo.Name[2..^10]}\" to Keys in Keyboard.SubscribeKeyPressed(object, MethodInfo).");
+                Logger.Log($"error: couldn't parse \"{methodInfo.Name[2..^10]}\" to Keys in Keyboard.Subscribe(IObject, MethodInfo).");
             }
         }
 
-        internal static void UnSubscribe(IObject instance, MethodInfo methodInfo)
-        {
-
-        }
-
-        internal static void UnSubscribe(IObject instance)
+        /// <summary>
+        /// Unsubscribe a method from a keyboard key <see cref="Action"/>.
+        /// </summary>
+        /// <param name="instance"> The object the method belongs to. </param>
+        /// <param name="methodInfo"> The method to unsubscribe. </param>
+        [Obsolete("Use Keyboard.Unsubscribe(IObject) instead as you never need to unsubscribe a single method.")]
+        internal static void Unsubscribe(IObject instance, MethodInfo methodInfo)
         {
             foreach (var methods in _keyActions.Values)
             {
-                for (int i = methods.Count - 1; i >= 0; i--)
-                {
-                    if (methods[i].Instance == instance)
-                    {
-                        methods.RemoveAt(i);
-                    }
-                }
+                methods.RemoveAll(m => m.Instance == instance && m.MethodInfo == methodInfo);
+            }
+        }
+
+        /// <summary>
+        /// Unsubscribe all the methods of an object from keyboard key <see cref="Action"/>s.
+        /// </summary>
+        /// <param name="instance"> The object which to unsubscribe the methods. </param>
+        internal static void Unsubscribe(IObject instance)
+        {
+            foreach (var methods in _keyActions.Values)
+            {
+                methods.RemoveAll(m => m.Instance == instance);
             }
         }
 

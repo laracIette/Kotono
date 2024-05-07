@@ -8,6 +8,8 @@ namespace Kotono
 
         public bool IsDelete { get; }
 
+        //public bool HasInput { get; set; }
+
         public void Update();
     }
 }

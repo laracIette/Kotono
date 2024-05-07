@@ -186,5 +186,24 @@ namespace Kotono.Utils
         {
             return source.Any(predicate) ? source.First(predicate) : null;
         }
+
+        /// <summary>
+        /// Get all the methods of a type excluding static methods.
+        /// </summary>
+        /// <param name="type"> The type to get the methods from. </param>
+        internal static MethodInfo[] GetAllMethods(this Type type)
+        {
+            return type.GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+        }
+
+        /// <summary>
+        /// Get all the methods of a type excluding static methods, given a predicate.
+        /// </summary>
+        /// <param name="type"> The type to get the methods from. </param>
+        /// <param name="predicate"> The predicate. </param>
+        internal static IEnumerable<MethodInfo> GetAllMethods(this Type type, Func<MethodInfo, bool> predicate)
+        {
+            return type.GetAllMethods().Where(predicate);
+        }
     }
 }

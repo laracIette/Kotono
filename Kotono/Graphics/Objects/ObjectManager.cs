@@ -6,6 +6,7 @@ using Kotono.Utils;
 using Kotono.Utils.Coordinates;
 using Kotono.Utils.Exceptions;
 using OpenTK.Windowing.GraphicsLibraryFramework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -58,16 +59,25 @@ namespace Kotono.Graphics.Objects
             if (!_objects.Contains(obj))
             {
                 Subscribe(obj);
+
                 _objects.Add(obj);
             }
         }
 
+        private static readonly Dictionary<Type, MethodInfo[]> _typeInputMethods = [];
+
         private static void Subscribe(IObject obj)
         {
-            foreach (var methodInfo in obj.GetType()
-                .GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-                .Where(m => m.Name.StartsWith("On"))
-            )
+            var type = obj.GetType();
+
+            // only needs to be checked once per type
+            if (!_typeInputMethods.TryGetValue(type, out MethodInfo[]? methods))
+            {
+                methods = type.GetAllMethods(m => m.Name.StartsWith("On")).ToArray();
+                _typeInputMethods[type] = methods;
+            }
+
+            foreach (var methodInfo in methods)
             {
                 if (methodInfo.Name.Contains("Key"))
                 {
@@ -82,16 +92,20 @@ namespace Kotono.Graphics.Objects
 
         private static void Delete(IObject obj)
         {
-            UnSubscribe(obj);
+            Unsubscribe(obj);
+
             if (!_objects.Remove(obj))
             {
                 Logger.Log($"error: couldn't remove \"{obj}\" from _objects.");
             }
         }
 
-        private static void UnSubscribe(IObject obj)
+        private static void Unsubscribe(IObject obj)
         {
-            Keyboard.UnSubscribe(obj);
+            if (_typeInputMethods[obj.GetType()].Length > 0)
+            {
+                Keyboard.Unsubscribe(obj);
+            }
         }
 
         internal static void Update()
