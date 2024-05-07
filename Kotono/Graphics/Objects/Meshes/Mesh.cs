@@ -29,12 +29,6 @@ namespace Kotono.Graphics.Objects.Meshes
             set => base.RelativeRotationVelocity = value;
         }
 
-
-
-        protected virtual void OnGKeyPressed()
-        {
-            print(this);
-        }
         public bool IsFizix { get; set; } = false;
 
         public float LastIntersectionCheckTime { get; private set; } = 0.0f;
