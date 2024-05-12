@@ -8,12 +8,12 @@ namespace Kotono.Graphics.Objects
     internal class Object2DSettings : DrawableSettings
     {
         /// <summary>
-        /// The dest of the Object2D.
+        /// The Rect of the Object2D.
         /// </summary>
         /// <remarks> 
         /// Default value : Rect.Zero 
         /// </remarks>
-        public Rect Dest { get; set; } = Rect.Zero;
+        public Rect Rect { get; set; } = Rect.Zero;
 
         /// <summary>
         /// The layer of the Object2D.

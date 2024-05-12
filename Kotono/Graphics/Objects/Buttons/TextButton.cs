@@ -10,7 +10,7 @@ namespace Kotono.Graphics.Objects.Buttons
         protected readonly Text _text = new(
             new TextSettings
             {
-                Dest = new Rect(settings.Dest.Position, 25.0f, 30.0f),
+                Rect = new Rect(settings.Rect.Position, 25.0f, 30.0f),
                 Layer = 2,
                 Text = settings.TextSettings.Text,
                 Spacing = 0.6f
@@ -21,12 +21,12 @@ namespace Kotono.Graphics.Objects.Buttons
 
         internal new event EventHandler<TextButtonEventArgs>? Pressed = null;
 
-        public override Rect Dest
+        public override Rect Rect
         {
-            get => base.Dest;
+            get => base.Rect;
             set
             {
-                base.Dest = value;
+                base.Rect = value;
                 if (_text != null)
                 {
                     _text.Position = value.Position;

@@ -3,7 +3,7 @@
   "FrameRate": 10,
   "StartTime": 3,
   "Duration": 5,
-  "Dest": {
+  "Rect": {
     "X": 100,
     "Y": 200,
     "W": 50,

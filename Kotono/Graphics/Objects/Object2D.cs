@@ -5,48 +5,24 @@ namespace Kotono.Graphics.Objects
 {
     internal abstract class Object2D<T> : Drawable<T>, IObject2D where T : Object2DSettings
     {
-        private Rect _dest;
+        private Rect _Rect;
 
-        public virtual Rect Dest
+        public virtual Rect Rect
         {
-            get => _dest;
-            set => _dest = value;
+            get => _Rect;
+            set => _Rect = value;
         }
 
         public virtual Point Position
         {
-            get => _dest.Position;
-            set => _dest.Position = value;
+            get => _Rect.Position;
+            set => _Rect.Position = value;
         }
 
         public virtual Point Size
         {
-            get => _dest.Size;
-            set => _dest.Size = value;
-        }
-
-        public virtual float X
-        {
-            get => _dest.X;
-            set => _dest.X = value;
-        }
-
-        public virtual float Y
-        {
-            get => _dest.Y;
-            set => _dest.Y = value;
-        }
-
-        public virtual float W
-        {
-            get => _dest.W;
-            set => _dest.W = value;
-        }
-
-        public virtual float H
-        {
-            get => _dest.H;
-            set => _dest.H = value;
+            get => _Rect.Size;
+            set => _Rect.Size = value;
         }
 
         public virtual int Layer
@@ -58,14 +34,14 @@ namespace Kotono.Graphics.Objects
         internal Object2D(T settings)
             : base(settings)
         {
-            Dest = settings.Dest;
+            Rect = settings.Rect;
         }
 
         internal Object2D() : base() { }
 
         public override void Save()
         {
-            _settings.Dest = Dest;
+            _settings.Rect = Rect;
 
             base.Save();
         }

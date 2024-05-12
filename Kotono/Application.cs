@@ -39,7 +39,7 @@ namespace Kotono
                         "Yo",
                         "BOoOOooOo"
                     ],
-                    Dest = new Rect(150.0f, 150.0f, 200.0f, 50.0f),
+                    Rect = new Rect(150.0f, 150.0f, 200.0f, 50.0f),
                     CornerSize = 15.0f
                 }
             );

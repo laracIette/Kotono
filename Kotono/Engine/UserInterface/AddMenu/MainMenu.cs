@@ -12,7 +12,7 @@ namespace Kotono.Engine.UserInterface.AddMenu
         private readonly RoundedBox _backgroundBox = new(
             new RoundedBoxSettings
             {
-                Dest = new Rect(0.0f, 0.0f, 300.0f, 300.0f),
+                Rect = new Rect(0.0f, 0.0f, 300.0f, 300.0f),
                 Color = Color.DarkSlateGray,
                 FallOff = 2.0f,
                 CornerSize = 30.0f
@@ -46,10 +46,10 @@ namespace Kotono.Engine.UserInterface.AddMenu
             set
             {
                 _backgroundBox.Position = value;
-                _buttons[0].Dest = Rect.FromAnchor(new Rect(value, 140.0f, 140.0f), Anchor.BottomRight, 5.0f);
-                _buttons[1].Dest = Rect.FromAnchor(new Rect(value, 140.0f, 140.0f), Anchor.BottomLeft, 5.0f);
-                _buttons[2].Dest = Rect.FromAnchor(new Rect(value, 140.0f, 140.0f), Anchor.TopRight, 5.0f);
-                _buttons[3].Dest = Rect.FromAnchor(new Rect(value, 140.0f, 140.0f), Anchor.TopLeft, 5.0f);
+                _buttons[0].Rect = Rect.FromAnchor(new Rect(value, 140.0f, 140.0f), Anchor.BottomRight, 5.0f);
+                _buttons[1].Rect = Rect.FromAnchor(new Rect(value, 140.0f, 140.0f), Anchor.BottomLeft, 5.0f);
+                _buttons[2].Rect = Rect.FromAnchor(new Rect(value, 140.0f, 140.0f), Anchor.TopRight, 5.0f);
+                _buttons[3].Rect = Rect.FromAnchor(new Rect(value, 140.0f, 140.0f), Anchor.TopLeft, 5.0f);
             }
         }
 
@@ -80,7 +80,7 @@ namespace Kotono.Engine.UserInterface.AddMenu
         {
             if (IsDraw)
             {
-                if (!Rect.Overlaps(_backgroundBox.Dest, Mouse.Position))
+                if (!Rect.Overlaps(_backgroundBox.Rect, Mouse.Position))
                 {
                     IsDraw = false;
                 }

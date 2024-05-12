@@ -17,7 +17,7 @@ namespace Kotono.Graphics.Objects
 
         private float _endTime = 0;
 
-        internal bool IsMouseOn => Rect.Overlaps(Dest, Mouse.Position);
+        internal bool IsMouseOn => Rect.Overlaps(Rect, Mouse.Position);
 
         internal Image(ImageSettings settings)
             : base(settings)
@@ -34,7 +34,7 @@ namespace Kotono.Graphics.Objects
         {
             if (Time.Now < _endTime)
             {
-                Dest += _transformation * Time.Delta;
+                Rect += _transformation * Time.Delta;
             }
         }
 
@@ -42,7 +42,7 @@ namespace Kotono.Graphics.Objects
         {
             GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
 
-            ShaderManager.Shaders["image"].SetMatrix4("model", Dest.Model);
+            ShaderManager.Shaders["image"].SetMatrix4("model", Rect.Model);
             ShaderManager.Shaders["image"].SetColor("color", Color);
 
             _texture.Draw();
@@ -52,19 +52,19 @@ namespace Kotono.Graphics.Objects
         /// Transform the rect of the <see cref="Image"/> in a given time span.
         /// </summary>
         /// <param name="r"> The transformation to add. </param>
-        /// <param name="time"> The duration of the transformation. </param>
-        internal void Transform(Rect r, float time)
+        /// <param name="duration"> The duration of the transformation. </param>
+        internal void SetTransformation(Rect r, float duration)
         {
-            if (time <= 0.0f)
+            if (duration <= 0.0f)
             {
-                Dest = r;
+                Rect = r;
             }
             else
             {
-                _transformation = r / time;
+                _transformation = r / duration;
 
                 _startTime = Time.Now;
-                _endTime = _startTime + time;
+                _endTime = _startTime + duration;
             }
         }
 

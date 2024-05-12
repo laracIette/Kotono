@@ -12,7 +12,7 @@ namespace Kotono.Tests.Painter
 
         internal Point Size { get; set; }
 
-        internal Rect Dest => new Rect(Mouse.Position, Size);
+        internal Rect Rect => new Rect(Mouse.Position, Size);
 
         internal Brush(BrushSettings settings)
             : base()

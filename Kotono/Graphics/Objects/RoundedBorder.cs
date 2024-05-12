@@ -22,11 +22,11 @@ namespace Kotono.Graphics.Objects
 
         protected override Matrix4 Model =>
             Matrix4.CreateScale(
-                (Dest + new Rect(w: FallOff * 2.0f + Thickness)).NDC.W,
-                (Dest + new Rect(h: FallOff * 2.0f + Thickness)).NDC.H,
+                (Rect + new Rect(w: FallOff * 2.0f + Thickness)).NDC.Size.X,
+                (Rect + new Rect(h: FallOff * 2.0f + Thickness)).NDC.Size.Y,
                 1.0f
             )
-            * Matrix4.CreateTranslation(Dest.NDC.X, Dest.NDC.Y, 0.0f);
+            * Matrix4.CreateTranslation(Rect.NDC.Position.X, Rect.NDC.Position.Y, 0.0f);
 
         internal RoundedBorder(RoundedBorderSettings settings)
             : base(settings)
@@ -36,7 +36,7 @@ namespace Kotono.Graphics.Objects
 
         protected override void UpdateValues()
         {
-            float minSize = Point.Min(Dest.Size);
+            float minSize = Point.Min(Rect.Size);
 
             /// Thickness has :
             ///     a minimum value of 0,
@@ -51,7 +51,7 @@ namespace Kotono.Graphics.Objects
             /// FallOff has : 
             ///     a minimum value of 0.000001 so that there is no division by 0 in glsl,
             ///     a maximum value of the border's Width - its Thickness
-            _fallOff = Math.Clamp(FallOff, 0.000001f, Dest.W - Thickness);
+            _fallOff = Math.Clamp(FallOff, 0.000001f, Rect.Size.X - Thickness);
         }
 
         public override void Draw()

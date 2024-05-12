@@ -11,14 +11,14 @@ namespace Kotono.Graphics.Objects
     {
         protected readonly List<Image> _frames = [];
 
-        public override Rect Dest
+        public override Rect Rect
         {
-            get => _frames.FirstOrNull()?.Dest ?? throw new KotonoException("cannot access Dest, _frames is empty");
+            get => _frames.FirstOrNull()?.Rect ?? throw new KotonoException("cannot access Rect, _frames is empty");
             set
             {
                 foreach (var frame in _frames)
                 {
-                    frame.Dest = value;
+                    frame.Rect = value;
                 }
             }
         }
@@ -110,7 +110,7 @@ namespace Kotono.Graphics.Objects
                         {
                             IsDraw = false,
                             Texture = filePath,
-                            Dest = settings.Dest,
+                            Rect = settings.Rect,
                             Layer = settings.Layer,
                             Color = settings.Color
                         }

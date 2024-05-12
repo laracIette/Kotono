@@ -11,10 +11,10 @@ namespace Kotono.Graphics
 
         private readonly Background _background;
 
-        internal WindowComponent(Rect dest, Color color)
+        internal WindowComponent(Rect Rect, Color color)
         {
-            Viewport = new Viewport(new Object2DSettings { Dest = dest });
-            _background = new Background(Rect.FromAnchor(new Rect(Point.Zero, dest.Size), Anchor.TopLeft), color, Viewport);
+            Viewport = new Viewport(new Object2DSettings { Rect = Rect });
+            _background = new Background(Rect.FromAnchor(new Rect(Point.Zero, Rect.Size), Anchor.TopLeft), color, Viewport);
         }
 
         internal void Update()

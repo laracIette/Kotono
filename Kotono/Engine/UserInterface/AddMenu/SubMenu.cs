@@ -18,7 +18,7 @@ namespace Kotono.Engine.UserInterface.AddMenu
             {
                 for (int i = 0; i < _options.Count; i++)
                 {
-                    _options[i].Position = GetTextDest(i, value).Position;
+                    _options[i].Position = GetTextRect(i, value).Position;
                 }
             }
         }
@@ -38,12 +38,12 @@ namespace Kotono.Engine.UserInterface.AddMenu
 
             for (int i = 0; i < options.Length; i++)
             {
-                var dest = GetTextDest(i, Window.Size / 2.0f);
+                var Rect = GetTextRect(i, Window.Size / 2.0f);
                 _options.Add(
                     new Text(
                         new TextSettings
                         {
-                            Dest = dest,
+                            Rect = Rect,
                             Layer = 3,
                             Text = options[i],
                             Anchor = _anchor,
@@ -54,7 +54,7 @@ namespace Kotono.Engine.UserInterface.AddMenu
             }
         }
 
-        private Rect GetTextDest(int index, Point pos)
+        private Rect GetTextRect(int index, Point pos)
         {
             return _anchor switch
             {

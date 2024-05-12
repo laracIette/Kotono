@@ -6,14 +6,12 @@ namespace Kotono.Utils.Coordinates
 {
     internal class Transform : Object, ITransform, IReplaceable<Transform>, ICloneable<Transform>, IEquatable<Transform>
     {
+        private record class Transformation(TransformBase TransformBase, float EndTime);
+
         private TransformBase _base = new(DefaultLocation, DefaultRotation, DefaultScale);
         
         private TransformBase _velocity = new(DefaultLocationVelocity, DefaultRotationVelocity, DefaultScaleVelocity);
-
-        private TransformBase _transformation;
-
-        private float _transformationEndTime = 0.0f;
-
+        
         public Vector RelativeLocation 
         { 
             get => _base.Location; 
@@ -91,6 +89,8 @@ namespace Kotono.Utils.Coordinates
             get => RelativeScaleVelocity * ParentWorldScaleVelocity;
             set => RelativeScaleVelocity = value / ParentWorldScaleVelocity;
         }
+
+        private Transformation? _transformation = null;
 
         /// <summary>
         /// The transform the Transform is relative to.
@@ -204,9 +204,16 @@ namespace Kotono.Utils.Coordinates
             RelativeRotation += Time.Delta * RelativeRotationVelocity;
             RelativeScale += Time.Delta * RelativeScaleVelocity;
 
-            if (Time.Now < _transformationEndTime)
+            if (_transformation != null)
             {
-                _base += _transformation * Time.Delta;
+                if (Time.Now > _transformation.EndTime)
+                {
+                    _transformation = null;
+                }
+                else
+                {
+                    _base += _transformation.TransformBase * Time.Delta;
+                }
             }
         }
 
@@ -214,18 +221,16 @@ namespace Kotono.Utils.Coordinates
         /// Transform the <see cref="Transform"/> in a given time span.
         /// </summary>
         /// <param name="t"> The transformation to add. </param>
-        /// <param name="time"> The duration of the transformation. </param>
-        internal void SetTransformation(TransformBase t, float time)
+        /// <param name="duration"> The duration of the transformation. </param>
+        internal void SetTransformation(TransformBase t, float duration)
         {
-            if (time <= 0.0f)
+            if (duration <= 0.0f)
             {
                 _base = t;
             }
             else
             {
-                _transformation = t / time;
-
-                _transformationEndTime = Time.Now + time;
+                _transformation = new Transformation(t / duration, Time.Now + duration);
             }
         }
 

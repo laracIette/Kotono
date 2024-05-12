@@ -5,11 +5,11 @@ using Kotono.Utils.Coordinates;
 
 namespace Kotono.Engine.UserInterface.Elements
 {
-    internal class Background(Rect dest, Color color, Viewport viewport)
+    internal class Background(Rect Rect, Color color, Viewport viewport)
         : RoundedBox(
             new RoundedBoxSettings
             {
-                Dest = dest,
+                Rect = Rect,
                 Color = color,
                 FallOff = 1.0f,
                 CornerSize = 15.0f

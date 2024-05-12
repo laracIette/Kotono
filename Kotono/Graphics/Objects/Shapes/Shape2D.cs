@@ -68,7 +68,7 @@ namespace Kotono.Graphics.Objects.Shapes
         public override void Draw()
         {
             ShaderManager.Shaders["shape2D"].SetColor("color", Color);
-            ShaderManager.Shaders["shape2D"].SetMatrix4("model", Dest.Model);
+            ShaderManager.Shaders["shape2D"].SetMatrix4("model", Rect.Model);
 
             GL.BindVertexArray(_vertexArrayObject);
             GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);

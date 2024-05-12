@@ -15,9 +15,9 @@ namespace Kotono.Tests.Painter
 
         internal Painter()
         {
-            Dest = Rect.FromAnchor(new Rect(Point.Zero, 1000.0f, 500.0f), Anchor.TopLeft);
+            Rect = Rect.FromAnchor(new Rect(Point.Zero, 1000.0f, 500.0f), Anchor.TopLeft);
 
-            Size = (PointI)Dest.Size;
+            Size = (PointI)Rect.Size;
             _fragments = new byte[Size.Product * 4];
 
             for (int i = 0; i < Size.Product * 4; i += 4)
@@ -40,7 +40,7 @@ namespace Kotono.Tests.Painter
 
         public override void Draw()
         {
-            ShaderManager.Painter.SetMatrix4("model", Dest.Model);
+            ShaderManager.Painter.SetMatrix4("model", Rect.Model);
 
             Texture.Draw(_handle);
         }
@@ -56,7 +56,7 @@ namespace Kotono.Tests.Painter
 
         private void OnLeftButtonDown()
         {
-            if ((Mouse.Delta != Point.Zero) && Rect.Overlaps(Dest, Mouse.Position))
+            if ((Mouse.Delta != Point.Zero) && Rect.Overlaps(Rect, Mouse.Position))
             {
                 int index = (int)((Size.Y - Mouse.Position.Y - 1) * Size.X + Mouse.Position.X) * 4;
 

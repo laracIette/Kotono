@@ -9,7 +9,7 @@ namespace Kotono.Graphics.Statistics
         : Text(
             new TextSettings
             {
-                Dest = new Rect(Point.Zero, 50.0f, 60.0f),
+                Rect = new Rect(Point.Zero, 50.0f, 60.0f),
                 Layer = 1,
                 Text = "0.00",
                 Anchor = anchor

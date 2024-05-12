@@ -12,7 +12,7 @@ namespace Kotono.Graphics.Objects.Texts
             : base(
                 new TextSettings
                 {
-                    Dest = new Rect(Point.Zero, 25.0f, 30.0f),
+                    Rect = new Rect(Point.Zero, 25.0f, 30.0f),
                     Anchor = Anchor.TopLeft,
                     Spacing = 2.0f / 3.0f,
                     Layer = int.MaxValue
@@ -34,11 +34,11 @@ namespace Kotono.Graphics.Objects.Texts
 
         internal void Lower()
         {
-            _lettersDest.Y += _lettersDest.H;
+            _lettersRect.Position += new Point(0.0f, _lettersRect.Size.Y);
 
             foreach (var letter in _letters)
             {
-                letter.Y = _lettersDest.Y + _lettersDest.H / 2.0f;
+                letter.Position += new Point(0.0f, _lettersRect.Size.Y);
             }
         }
 
