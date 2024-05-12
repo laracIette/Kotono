@@ -7,12 +7,6 @@ namespace Kotono.Graphics.Objects
     {
         protected readonly T _settings;
 
-        internal string SettingsPath
-        {
-            get => _settings.Path;
-            set => _settings.Path = value;
-        }
-
         public virtual bool IsDraw
         {
             get => _settings.IsDraw;

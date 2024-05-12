@@ -141,6 +141,14 @@ namespace Kotono.Utils.Coordinates
             return f * r;
         }
 
+        public static Rotator operator /(Rotator r, float f)
+        {
+            r.Pitch /= f;
+            r.Yaw /= f;
+            r.Roll /= f;
+            return r;
+        }
+
         public static bool operator ==(Rotator left, Rotator right)
         {
             return left.Equals(right);

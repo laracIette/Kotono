@@ -8,8 +8,6 @@ namespace Kotono.Graphics.Objects.Texts
     {
         private readonly Timer _clear = new();
 
-        //public override bool IsUpdate => IsDraw;
-
         internal PrinterText()
             : base(
                 new TextSettings

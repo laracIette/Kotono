@@ -6,17 +6,49 @@ namespace Kotono.Utils.Coordinates
 {
     internal class Transform : Object, ITransform, IReplaceable<Transform>, ICloneable<Transform>, IEquatable<Transform>
     {
-        public Vector RelativeLocation { get; set; } = DefaultLocation;
+        private TransformBase _base = new(DefaultLocation, DefaultRotation, DefaultScale);
+        
+        private TransformBase _velocity = new(DefaultLocationVelocity, DefaultRotationVelocity, DefaultScaleVelocity);
 
-        public Rotator RelativeRotation { get; set; } = DefaultRotation;
+        private TransformBase _transformation;
 
-        public Vector RelativeScale { get; set; } = DefaultScale;
+        private float _transformationEndTime = 0.0f;
 
-        public Vector RelativeLocationVelocity { get; set; } = DefaultLocationVelocity;
+        public Vector RelativeLocation 
+        { 
+            get => _base.Location; 
+            set => _base.Location = value; 
+        }
 
-        public Rotator RelativeRotationVelocity { get; set; } = DefaultRotationVelocity;
+        public Rotator RelativeRotation
+        {
+            get => _base.Rotation;
+            set => _base.Rotation = value;
+        }
 
-        public Vector RelativeScaleVelocity { get; set; } = DefaultScaleVelocity;
+        public Vector RelativeScale
+        {
+            get => _base.Scale;
+            set => _base.Scale = value;
+        }
+
+        public Vector RelativeLocationVelocity
+        {
+            get => _velocity.Location;
+            set => _velocity.Location = value;
+        }
+
+        public Rotator RelativeRotationVelocity
+        {
+            get => _velocity.Rotation;
+            set => _velocity.Rotation = value;
+        }
+
+        public Vector RelativeScaleVelocity
+        {
+            get => _velocity.Scale;
+            set => _velocity.Scale = value;
+        }
 
         [JsonIgnore]
         public Vector WorldLocation
@@ -171,6 +203,30 @@ namespace Kotono.Utils.Coordinates
             RelativeLocation += Time.Delta * RelativeLocationVelocity;
             RelativeRotation += Time.Delta * RelativeRotationVelocity;
             RelativeScale += Time.Delta * RelativeScaleVelocity;
+
+            if (Time.Now < _transformationEndTime)
+            {
+                _base += _transformation * Time.Delta;
+            }
+        }
+
+        /// <summary>
+        /// Transform the <see cref="Transform"/> in a given time span.
+        /// </summary>
+        /// <param name="t"> The transformation to add. </param>
+        /// <param name="time"> The duration of the transformation. </param>
+        internal void SetTransformation(TransformBase t, float time)
+        {
+            if (time <= 0.0f)
+            {
+                _base = t;
+            }
+            else
+            {
+                _transformation = t / time;
+
+                _transformationEndTime = Time.Now + time;
+            }
         }
 
         public static bool operator ==(Transform? left, Transform? right)
@@ -188,21 +244,9 @@ namespace Kotono.Utils.Coordinates
             return obj is Transform t && Equals(t);
         }
 
-        public bool Equals(Transform? other)
+        public bool Equals(Transform? t)
         {
-            return ReferenceEquals(this, other);
-
-            //if (other is null)
-            //{
-            //    return false;
-            //}
-
-            //return RelativeLocation == other.RelativeLocation
-            //    && RelativeRotation == other.RelativeRotation
-            //    && RelativeScale == other.RelativeScale
-            //    && RelativeLocationVelocity == other.RelativeLocationVelocity
-            //    && RelativeRotationVelocity == other.RelativeRotationVelocity
-            //    && RelativeScaleVelocity == other.RelativeScaleVelocity;
+            return ReferenceEquals(this, t);
         }
 
         /// <inheritdoc cref="ICloneable{T}.Clone()"/>
@@ -213,12 +257,8 @@ namespace Kotono.Utils.Coordinates
         {
             return new Transform
             {
-                RelativeLocation = RelativeLocation,
-                RelativeRotation = RelativeRotation,
-                RelativeScale = RelativeScale,
-                RelativeLocationVelocity = RelativeLocationVelocity,
-                RelativeRotationVelocity = RelativeRotationVelocity,
-                RelativeScaleVelocity = RelativeScaleVelocity
+                _base = _base,
+                _velocity = _velocity
             };
         }
 
@@ -226,14 +266,16 @@ namespace Kotono.Utils.Coordinates
         /// <remarks>
         /// Includes velocities.
         /// </remarks>
-        public void ReplaceBy(Transform obj)
+        public void ReplaceBy(Transform t) => ReplaceBy(t, true);
+
+        internal void ReplaceBy(Transform t, bool isVelocity)
         {
-            RelativeLocation = obj.RelativeLocation;
-            RelativeRotation = obj.RelativeRotation;
-            RelativeScale = obj.RelativeScale;
-            RelativeLocationVelocity = obj.RelativeLocationVelocity;
-            RelativeRotationVelocity = obj.RelativeRotationVelocity;
-            RelativeScaleVelocity = obj.RelativeScaleVelocity;
+            _base = t._base;
+
+            if (isVelocity)
+            {
+                _velocity = t._velocity;
+            }
         }
 
         public override int GetHashCode()

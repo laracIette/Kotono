@@ -22,11 +22,6 @@
 
         internal const int MAX_COUNT = 1;
 
-        internal SpotLight()
-            : base()
-        {
-        }
-
         public override void Update()
         {
             if (_isOn)

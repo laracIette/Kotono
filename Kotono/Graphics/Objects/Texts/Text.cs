@@ -264,7 +264,7 @@ namespace Kotono.Graphics.Objects.Texts
             _lettersDest += dest;
             foreach (var letter in _letters)
             {
-                letter.Transform(dest);
+                letter.Dest += dest;
             }
         }
         

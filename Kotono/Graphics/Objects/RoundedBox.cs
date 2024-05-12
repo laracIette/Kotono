@@ -59,8 +59,6 @@ namespace Kotono.Graphics.Objects
             CornerSize = settings.CornerSize;
         }
 
-        internal RoundedBox() : base() { }
-
         protected virtual void UpdateValues()
         {
             /// CornerSize has : 

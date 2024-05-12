@@ -57,25 +57,29 @@ namespace Kotono.Input
         internal static void Subscribe(IObject instance, MethodInfo methodInfo)
         {
             Action action;
+            int nameEnd;
 
             if (methodInfo.Name.EndsWith("Pressed"))
             {
                 action = Action.Pressed;
+                nameEnd = 10;
             }
             else if (methodInfo.Name.EndsWith("Down"))
             {
                 action = Action.Down;
+                nameEnd = 7;
             }
             else if (methodInfo.Name.EndsWith("Released"))
             {
                 action = Action.Released;
+                nameEnd = 11;
             }
             else
             {
                 throw new KotonoException($"couldn't parse method \"{methodInfo.Name}\" to Action");
             }
 
-            if (Enum.TryParse(methodInfo.Name[2..^10], out Keys key))
+            if (Enum.TryParse(methodInfo.Name[2..^nameEnd], out Keys key))
             {
                 _keyActions[key].Add(new Method(action, instance, methodInfo));
             }

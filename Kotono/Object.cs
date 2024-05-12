@@ -59,12 +59,12 @@ namespace Kotono
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected static void log() => Logger.Log();
 
-        protected static string str(params object[] objects) 
+        protected static string str(params object?[] objects) 
         {
             string result = "";
             foreach (var obj in objects)
             {
-                result += obj;
+                result += obj + " ";
             }
             return result;
         }

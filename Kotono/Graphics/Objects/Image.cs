@@ -32,12 +32,10 @@ namespace Kotono.Graphics.Objects
 
         public override void Update()
         {
-            if (Time.Now >= _endTime)
+            if (Time.Now < _endTime)
             {
-                _transformation = Rect.Zero;
+                Dest += _transformation * Time.Delta;
             }
-
-            Dest += _transformation * Time.Delta;
         }
 
         public override void Draw()
@@ -50,22 +48,26 @@ namespace Kotono.Graphics.Objects
             _texture.Draw();
         }
 
-        internal void Transform(Rect transformation)
+        /// <summary>
+        /// Transform the rect of the <see cref="Image"/> in a given time span.
+        /// </summary>
+        /// <param name="r"> The transformation to add. </param>
+        /// <param name="time"> The duration of the transformation. </param>
+        internal void Transform(Rect r, float time)
         {
-            Dest += transformation;
+            if (time <= 0.0f)
+            {
+                Dest = r;
+            }
+            else
+            {
+                _transformation = r / time;
+
+                _startTime = Time.Now;
+                _endTime = _startTime + time;
+            }
         }
 
-        internal void Transform(Rect transformation, float time)
-        {
-            _transformation += transformation / time;
-
-            _startTime = Time.Now;
-            _endTime = _startTime + time;
-        }
-
-        public override string ToString()
-        {
-            return Path;
-        }
+        public override string ToString() => Path;
     }
 }

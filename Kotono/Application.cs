@@ -27,6 +27,8 @@ namespace Kotono
 
             _ = new TestSound();
 
+            _ = new TestImage();
+
             _ = new TextButtonList(
                 new TextButtonListSettings
                 {
@@ -115,7 +117,7 @@ namespace Kotono
 
             _ = new Cube()
             {
-                RelativeLocation = new Vector(-3.0f, 0.0f, -3.0f)
+                RelativeLocation = new Vector(0.0f, 0.0f, -5.0f)
             };
 
             _ = new Cube()
