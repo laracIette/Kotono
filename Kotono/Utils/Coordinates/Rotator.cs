@@ -25,7 +25,7 @@ namespace Kotono.Utils.Coordinates
         /// <summary>
         /// The <see cref="Rotator"/> in radians.
         /// </summary>
-        public readonly Rotator Degrees => new Rotator(Math.Deg(Pitch), Math.Deg(Yaw), Math.Deg(Roll));
+        public readonly Rotator Degrees => new(Math.Deg(Pitch), Math.Deg(Yaw), Math.Deg(Roll));
 
         /// <summary>
         /// The rotation matrix of the <see cref="Rotator"/>.
@@ -40,27 +40,27 @@ namespace Kotono.Utils.Coordinates
         /// <summary>
         /// A <see cref="Rotator"/> with Pitch = 0, Yaw = 0, Roll = 0.
         /// </summary>
-        public static Rotator Zero => new Rotator(0.0f, 0.0f, 0.0f);
+        public static Rotator Zero => new(0.0f, 0.0f, 0.0f);
 
         /// <summary>
         /// A <see cref="Rotator"/> with Pitch = <see cref="Math.TAU"/>, Yaw = <see cref="Math.TAU"/>, Roll = <see cref="Math.TAU"/>.
         /// </summary>
-        public static Rotator Unit => new Rotator(Math.TAU, Math.TAU, Math.TAU);
+        public static Rotator Unit => new(Math.TAU, Math.TAU, Math.TAU);
 
         /// <summary>
         /// A <see cref="Rotator"/> with Pitch = <see cref="Math.TAU"/>, Yaw = 0, Roll = 0.
         /// </summary>
-        public static Rotator UnitPitch => new Rotator(Math.TAU, 0.0f, 0.0f);
+        public static Rotator UnitPitch => new(Math.TAU, 0.0f, 0.0f);
 
         /// <summary>
         /// A <see cref="Rotator"/> with Pitch = 0, Yaw = <see cref="Math.TAU"/>, Roll = 0.
         /// </summary>
-        public static Rotator UnitYaw => new Rotator(0.0f, Math.TAU, 0.0f);
+        public static Rotator UnitYaw => new(0.0f, Math.TAU, 0.0f);
 
         /// <summary>
         /// A <see cref="Rotator"/> with Pitch = 0, Yaw = 0, Roll = <see cref="Math.TAU"/>.
         /// </summary>
-        public static Rotator UnitRoll => new Rotator(0.0f, 0.0f, Math.TAU);
+        public static Rotator UnitRoll => new(0.0f, 0.0f, Math.TAU);
 
         /// <summary>
         /// Initialize a <see cref="Rotator"/> from radians with Pitch = pitch, Yaw = yaw, Roll = roll.

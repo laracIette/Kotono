@@ -28,7 +28,7 @@ namespace Kotono.Graphics.Objects
 
         internal Vector Location { get; set; } = Vector.Zero;
 
-        internal Rotator Rotation => new Rotator(Pitch, -Yaw - Math.PI / 2.0f, 0.0f);
+        internal Rotator Rotation => new(Pitch, -Yaw - Math.PI / 2.0f, 0.0f);
 
         internal float AspectRatio { get; set; } = 16.0f / 9.0f;
 

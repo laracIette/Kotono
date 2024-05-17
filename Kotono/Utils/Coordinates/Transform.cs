@@ -8,6 +8,8 @@ namespace Kotono.Utils.Coordinates
     {
         private record class Transformation(TransformBase TransformBase, float EndTime);
 
+        private Transformation? _transformation = null;
+
         private TransformBase _base = new(DefaultLocation, DefaultRotation, DefaultScale);
         
         private TransformBase _velocity = new(DefaultLocationVelocity, DefaultRotationVelocity, DefaultScaleVelocity);
@@ -90,8 +92,6 @@ namespace Kotono.Utils.Coordinates
             set => RelativeScaleVelocity = value / ParentWorldScaleVelocity;
         }
 
-        private Transformation? _transformation = null;
-
         /// <summary>
         /// The transform the Transform is relative to.
         /// </summary>
@@ -135,7 +135,7 @@ namespace Kotono.Utils.Coordinates
         /// <summary> 
         /// A Transform with default location, rotation and scale. 
         /// </summary>
-        internal static Transform Default => new Transform(DefaultLocation, DefaultRotation, DefaultScale);
+        internal static Transform Default => new(DefaultLocation, DefaultRotation, DefaultScale);
 
         /// <summary>
         /// The default location of Transform.
@@ -212,7 +212,7 @@ namespace Kotono.Utils.Coordinates
                 }
                 else
                 {
-                    _base += _transformation.TransformBase * Time.Delta;
+                    _base += Time.Delta * _transformation.TransformBase;
                 }
             }
         }

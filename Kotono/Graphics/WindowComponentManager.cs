@@ -14,13 +14,5 @@ namespace Kotono.Graphics
         internal static Viewport WindowViewport => _components[0].Viewport;
 
         internal static Viewport ActiveViewport { get; set; } = WindowViewport;
-
-        internal static void Update()
-        {
-            foreach (var component in _components)
-            {
-                component.Update();
-            }
-        }
     }
 }

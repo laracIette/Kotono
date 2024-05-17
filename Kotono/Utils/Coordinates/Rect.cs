@@ -1,191 +1,196 @@
-﻿using Kotono.Graphics;
-using Kotono.Graphics.Objects;
+﻿using Kotono.Graphics.Objects;
 using Kotono.Utils.Exceptions;
 using OpenTK.Mathematics;
 using System;
 using System.Linq;
-using System.Runtime.InteropServices;
+using System.Text.Json.Serialization;
 
 namespace Kotono.Utils.Coordinates
 {
-    [StructLayout(LayoutKind.Sequential)]
-    public struct Rect : IEquatable<Rect>
+    internal class Rect : Object, IRect, IReplaceable<Rect>, IEquatable<Rect>
     {
-        private record class Transformation(Rect TransformBase, float EndTime);
+        private record class Transformation(RectBase RectBase, float EndTime);
 
-        /// <summary>
-        /// The position component of the Rect.
-        /// </summary>
-        public Point Position { get; set; }
+        private Transformation? _transformation = null;
 
-        /// <summary> 
-        /// The size component of the Rect. 
-        /// </summary>
-        public Point Size;
+        private RectBase _base = new(Point.Zero, Point.Zero, Point.Unit);
 
-        /// <summary> 
-        /// The Rect scaled to unit length. 
-        /// </summary>
-        public readonly Rect Normalized =>
-            new Rect(
-                Position.Normalized,
-                Size.Normalized
-            );
+        public Point BaseSize 
+        {
+            get => _base.BaseSize;
+            set => _base.BaseSize = value;
+        }
+
+        public Point Size => _base.Size;
+
+        public Point Position 
+        { 
+            get => _base.Position; 
+            set => _base.Position = value; 
+        }
+
+        public Point Scale
+        {
+            get => _base.Scale;
+            set => _base.Scale = value;
+        }
 
         /// <summary>
         /// The Rect scaled to Normalized Device Coordinates.
         /// </summary>
-        public readonly Rect NDC =>
-            new Rect(
-                Position.NDC,
-                Size / WindowComponentManager.ActiveViewport.Size
-            );
+        public NDCRect NDC => new(Position, Size);
 
         /// <summary>
         /// The model matrix of the Rect.
         /// </summary>
-        public readonly Matrix4 Model =>
+        public Matrix4 Model =>
             Matrix4.CreateScale(NDC.Size.X, NDC.Size.Y, 1.0f)
             * Matrix4.CreateTranslation(NDC.Position.X, NDC.Position.Y, 0.0f);
 
         /// <summary>
         /// The center Point of the Rect.
         /// </summary>
-        public readonly Point Center => Position;
+        public Point Center => Position;
 
         /// <summary>
         /// The left Point of the Rect.
         /// </summary>
-        public readonly Point Left => new Point(Position.X - Size.X / 2.0f, Position.Y);
+        public Point Left => new(Position.X - Size.X / 2.0f, Position.Y);
 
         /// <summary>
         /// The right Point of the Rect.
         /// </summary>
-        public readonly Point Right => new Point(Position.X + Size.X / 2.0f, Position.Y);
+        public Point Right => new(Position.X + Size.X / 2.0f, Position.Y);
 
         /// <summary>
         /// The top Point of the Rect.
         /// </summary>
-        public readonly Point Top => new Point(Position.X, Position.Y + Size.Y / 2.0f);
+        public Point Top => new(Position.X, Position.Y + Size.Y / 2.0f);
 
         /// <summary>
         /// The bottom Point of the Rect.
         /// </summary>
-        public readonly Point Bottom => new Point(Position.X, Position.Y - Size.Y / 2.0f);
+        public Point Bottom => new(Position.X, Position.Y - Size.Y / 2.0f);
 
         /// <summary>
         /// The top left Point of the Rect.
         /// </summary>
-        public readonly Point TopLeft => new Point(Position.X - Size.X / 2.0f, Position.Y + Size.Y / 2.0f);
+        public Point TopLeft => new(Position.X - Size.X / 2.0f, Position.Y + Size.Y / 2.0f);
 
         /// <summary>
         /// The top right Point of the Rect.
         /// </summary>
-        public readonly Point TopRight => new Point(Position.X + Size.X / 2.0f, Position.Y + Size.Y / 2.0f);
+        public Point TopRight => new(Position.X + Size.X / 2.0f, Position.Y + Size.Y / 2.0f);
 
         /// <summary>
         /// The bottom left Point of the Rect.
         /// </summary>
-        public readonly Point BottomLeft => new Point(Position.X - Size.X / 2.0f, Position.Y - Size.Y / 2.0f);
+        public Point BottomLeft => new(Position.X - Size.X / 2.0f, Position.Y - Size.Y / 2.0f);
 
         /// <summary>
         /// The bottom right Point of the Rect.
         /// </summary>
-        public readonly Point BottomRight => new Point(Position.X + Size.X / 2.0f, Position.Y - Size.Y / 2.0f);
+        public Point BottomRight => new(Position.X + Size.X / 2.0f, Position.Y - Size.Y / 2.0f);
 
         /// <summary> 
         /// A Rect with X = 0, Y = 0, W = 0, H = 0.
         /// </summary>
-        public static Rect Zero => new Rect(0.0f, 0.0f, 0.0f, 0.0f);
+        public static Rect Default => new(0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f);
 
-        /// <summary> 
-        /// A Rect with X = 1, Y = 1, W = 1, H = 1. 
-        /// </summary>
-        public static Rect Unit => new Rect(1.0f, 1.0f, 1.0f, 1.0f);
-
-        /// <summary> 
-        /// A Rect with X = 1, Y = 0, W = 0, H = 0. 
-        /// </summary>
-        public static Rect UnitX => new Rect(1.0f, 0.0f, 0.0f, 0.0f);
-
-        /// <summary> 
-        /// A Rect with X = 0, Y = 1, W = 0, H = 0.
-        /// </summary>
-        public static Rect UnitY => new Rect(0.0f, 1.0f, 0.0f, 0.0f);
-
-        /// <summary>
-        /// A Rect with X = 0, Y = 0, W = 1, H = 0.
-        /// </summary>
-        public static Rect UnitW => new Rect(0.0f, 0.0f, 1.0f, 0.0f);
-
-        /// <summary> 
-        /// A Rect with X = 0, Y = 0, W = 0, H = 1.
-        /// </summary>
-        public static Rect UnitH => new Rect(0.0f, 0.0f, 0.0f, 1.0f);
-
-        public static int SizeInBytes => Point.SizeInBytes * 2;
-
-
-        public Rect(float x = 0.0f, float y = 0.0f, float w = 0.0f, float h = 0.0f)
+        public Rect(float x = 0.0f, float y = 0.0f, float w = 0.0f, float h = 0.0f, float sx = 1.0f, float sy = 1.0f)
+            : base()
         {
-            Position = new Point(x, y);
-            Size = new Point(w, h);
+            _base = new RectBase(new Point(x, y), new Point(w, h), new Point(sx, sy));
         }
 
-        public Rect() : this(0.0f, 0.0f, 0.0f, 0.0f) { }
+        [JsonConstructor]
+        public Rect() : this(0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f) { }
 
-        public Rect(Rect r) : this(r.Position.X, r.Position.Y, r.Size.X, r.Size.Y) { }
-
-        public Rect(float f) : this(f, f, f, f) { }
+        public Rect(Rect r) : this(r.Position.X, r.Position.Y, r.BaseSize.X, r.BaseSize.Y, r.Scale.X, r.Scale.Y) { }
 
         public Rect(Point position, Point size) : this(position.X, position.Y, size.X, size.Y) { }
+        
+        public Rect(Point position, Point size, Point scale) : this(position.X, position.Y, size.X, size.Y, scale.X, scale.Y) { }
 
         public Rect(Point position, float w, float h) : this(position.X, position.Y, w, h) { }
 
         public Rect(float x, float y, Point size) : this(x, y, size.X, size.Y) { }
 
-        public static Rect FromAnchor(Rect r, Anchor a, Point offset)
+        public override void Update()
         {
-            r.Position += a switch
+            if (_transformation != null)
+            {
+                if (Time.Now > _transformation.EndTime)
+                {
+                    _transformation = null;
+                }
+                else
+                {
+                    _base += Time.Delta * _transformation.RectBase;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Transform the rect of the <see cref="Image"/> in a given time span.
+        /// </summary>
+        /// <param name="r"> The transformation to add. </param>
+        /// <param name="duration"> The duration of the transformation. </param>
+        internal void SetTransformation(RectBase r, float duration)
+        {
+            if (duration <= 0.0f)
+            {
+                _base = r;
+            }
+            else
+            {
+                _transformation = new Transformation(r / duration, Time.Now + duration);
+            }
+        }
+
+        public static Point FromAnchor(Point position, Point size, Anchor anchor, Point offset)
+        {
+            position += anchor switch
             {
                 Anchor.Center => offset,
-                Anchor.Left => new Point(r.Size.X / 2.0f + offset.X, offset.Y),
-                Anchor.Right => new Point(-r.Size.X / 2.0f - offset.X, offset.Y),
-                Anchor.Top => new Point(offset.X, r.Size.Y / 2.0f + offset.Y),
-                Anchor.Bottom => new Point(offset.X, -r.Size.Y / 2.0f - offset.Y),
-                Anchor.TopLeft => new Point(r.Size.X / 2.0f + offset.X, r.Size.Y / 2.0f + offset.Y),
-                Anchor.TopRight => new Point(-r.Size.X / 2.0f - offset.X, r.Size.Y / 2.0f + offset.Y),
-                Anchor.BottomLeft => new Point(r.Size.X / 2.0f + offset.X, -r.Size.Y / 2.0f - offset.Y),
-                Anchor.BottomRight => new Point(-r.Size.X / 2.0f - offset.X, -r.Size.Y / 2.0f - offset.Y),
-                _ => throw new Exception($"error: Rect.FromAnchor() doesn't handle \"{a}\"")
+                Anchor.Left => new Point(size.X / 2.0f + offset.X, offset.Y),
+                Anchor.Right => new Point(-size.X / 2.0f - offset.X, offset.Y),
+                Anchor.Top => new Point(offset.X, size.Y / 2.0f + offset.Y),
+                Anchor.Bottom => new Point(offset.X, -size.Y / 2.0f - offset.Y),
+                Anchor.TopLeft => new Point(size.X / 2.0f + offset.X, size.Y / 2.0f + offset.Y),
+                Anchor.TopRight => new Point(-size.X / 2.0f - offset.X, size.Y / 2.0f + offset.Y),
+                Anchor.BottomLeft => new Point(size.X / 2.0f + offset.X, -size.Y / 2.0f - offset.Y),
+                Anchor.BottomRight => new Point(-size.X / 2.0f - offset.X, -size.Y / 2.0f - offset.Y),
+                _ => throw new Exception($"error: Rect.FromAnchor() doesn't handle \"{anchor}\"")
             };
 
-            return r;
+            return position;
         }
 
         /// <summary> 
         /// Creates a Rect given a Rect and an Anchor.
         /// </summary>
-        public static Rect FromAnchor(Rect r, Anchor a, float offset = 0.0f)
+        public static Point FromAnchor(Point position, Point size, Anchor anchor, float offset = 0.0f)
         {
-            return FromAnchor(r, a, new Point(offset));
+            return FromAnchor(position, size, anchor, new Point(offset));
         }
 
-        public static Rect[] FromAnchor(int n, Rect r, Anchor a, Point offset)
+        /// <summary>
+        /// Creates an array of Rect given a number of elements, a Rect and an Anchor.
+        /// </summary>
+        public static Point[] FromAnchor(int n, Point position, Point size, Anchor anchor, Point offset)
         {
-            var result = Enumerable.Repeat(FromAnchor(r, a, offset), n).ToArray();
+            var result = Enumerable.Repeat(FromAnchor(position, size, anchor, offset), n).ToArray();
 
             for (int i = 0; i < n; i++)
             {
-                float y = a switch
+                result[i].Y = anchor switch
                 {
-                    Anchor.Center or Anchor.Left or Anchor.Right => r.Position.Y - r.Size.Y / 2.0f * (n - 1) + r.Size.Y * i,
+                    Anchor.Center or Anchor.Left or Anchor.Right => position.Y - size.Y / 2.0f * (n - 1) + size.Y * i,
                     Anchor.Top or Anchor.TopLeft or Anchor.TopRight => throw new NotImplementedException(),
                     Anchor.Bottom or Anchor.BottomLeft or Anchor.BottomRight => throw new NotImplementedException(),
-                    _ => throw new SwitchException(typeof(Anchor), a)
+                    _ => throw new SwitchException(typeof(Anchor), anchor)
                 };
-
-                result[i].Position = new Point(result[i].Position.X, y);
             }
 
             return result;
@@ -194,9 +199,26 @@ namespace Kotono.Utils.Coordinates
         /// <summary>
         /// Creates an array of Rect given a number of elements, a Rect and an Anchor.
         /// </summary>
-        public static Rect[] FromAnchor(int n, Rect r, Anchor a, float offset = 0.0f)
+        public static Point[] FromAnchor(int n, Point position, Point size, Anchor anchor, float offset = 0.0f)
         {
-            return FromAnchor(n, r, a, new Point(offset));
+            return FromAnchor(n, position, size, anchor, new Point(offset));
+        }
+
+        /// <summary> 
+        /// Checks if left is overlapping with right.
+        /// </summary>
+        public static bool Overlaps(RectBase left, RectBase right)
+        {
+            return Math.Abs(left.Position.X - right.Position.X) < (left.Size.X + right.BaseSize.X) / 2.0f
+                && Math.Abs(left.Position.Y - right.Position.Y) < (left.Size.Y + right.BaseSize.Y) / 2.0f;
+        }
+
+        /// <summary> 
+        /// Checks if left is overlapping with right.
+        /// </summary>
+        public static bool Overlaps(Rect left, RectBase right)
+        {
+            return Overlaps(left._base, right);
         }
 
         /// <summary> 
@@ -204,8 +226,15 @@ namespace Kotono.Utils.Coordinates
         /// </summary>
         public static bool Overlaps(Rect left, Rect right)
         {
-            return Math.Abs(left.Position.X - right.Position.X) < (left.Size.X + right.Size.X) / 2.0f
-                && Math.Abs(left.Position.Y - right.Position.Y) < (left.Size.Y + right.Size.Y) / 2.0f;
+            return Overlaps(left._base, right._base);
+        }
+
+        /// <summary> 
+        /// Checks if left is overlapping with right.
+        /// </summary>
+        internal static bool Overlaps(IObject2D left, IObject2D right)
+        {
+            return Overlaps(left.Rect._base, right.Rect._base);
         }
 
         /// <summary> 
@@ -217,94 +246,35 @@ namespace Kotono.Utils.Coordinates
                 && Math.Abs(r.Position.Y - p.Y) < r.Size.Y / 2.0f;
         }
 
-        /// <summary> 
-        /// Checks if left is overlapping with right.
-        /// </summary>
-        internal static bool Overlaps(Image left, Image right)
-        {
-            return Overlaps(left.Rect, right.Rect);
-        }
-
         public static Rect Parse(string[] values)
         {
-            return new Rect
-            {
-                Position = (float.Parse(values[0]), float.Parse(values[1])),
-                Size = (float.Parse(values[2]), float.Parse(values[3]))
-            };
+            return new Rect(
+                (float.Parse(values[0]), float.Parse(values[1])),
+                (float.Parse(values[2]), float.Parse(values[3]))
+            );
         }
 
-        public static Rect operator +(Rect left, Rect right)
+        public static bool operator ==(Rect? left, Rect? right)
         {
-            left.Position += right.Position;
-            left.Size += right.Size;
-            return left;
+            return left?.Equals(right) ?? right is null;
         }
 
-        public static Rect operator -(Rect left, Rect right)
-        {
-            left.Position -= right.Position;
-            left.Size -= right.Size;
-            return left;
-        }
-
-        public static Rect operator -(Rect r)
-        {
-            r.Position = -r.Position;
-            r.Size = -r.Size;
-            return r;
-        }
-
-        public static Rect operator *(Rect left, Rect right)
-        {
-            left.Position *= right.Position;
-            left.Size *= right.Size;
-            return left;
-        }
-
-        public static Rect operator *(Rect r, float value)
-        {
-            r.Position *= value;
-            r.Size *= value;
-            return r;
-        }
-
-        public static Rect operator /(Rect left, Rect right)
-        {
-            left.Position /= right.Position;
-            left.Size /= right.Size;
-            return left;
-        }
-
-        public static Rect operator /(Rect r, float value)
-        {
-            r.Position /= value;
-            r.Size /= value;
-            return r;
-        }
-
-        public static bool operator ==(Rect left, Rect right)
-        {
-            return left.Equals(right);
-        }
-
-        public static bool operator !=(Rect left, Rect right)
+        public static bool operator !=(Rect? left, Rect? right)
         {
             return !(left == right);
         }
 
-        public override readonly bool Equals(object? obj)
+        public override bool Equals(object? obj)
         {
             return obj is Rect r && Equals(r);
         }
 
-        public readonly bool Equals(Rect other)
+        public bool Equals(Rect? r)
         {
-            return Position == other.Position
-                && Size == other.Size;
+            return ReferenceEquals(this, r);
         }
 
-        public override readonly int GetHashCode()
+        public override int GetHashCode()
         {
             return HashCode.Combine(Position, Size);
         }
@@ -319,9 +289,14 @@ namespace Kotono.Utils.Coordinates
             return new Rect(v.X, v.Y, v.Z, v.W);
         }
 
-        public override readonly string ToString()
+        public override string ToString()
         {
             return $"X: {Position.X}, Y: {Position.Y}, W: {Size.X}, H: {Size.Y}"; ;
+        }
+
+        public void ReplaceBy(Rect r)
+        {
+            _base = r._base;
         }
     }
 }

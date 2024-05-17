@@ -37,13 +37,13 @@ namespace Kotono.Utils.Coordinates
         /// </summary>
         public readonly int Product => X * Y;
 
-        public static PointI Zero => new PointI(0, 0);
+        public static PointI Zero => new(0, 0);
 
-        public static PointI Unit => new PointI(1, 1);
+        public static PointI Unit => new(1, 1);
 
-        public static PointI UnitX => new PointI(1, 0);
+        public static PointI UnitX => new(1, 0);
 
-        public static PointI UnitY => new PointI(0, 1);
+        public static PointI UnitY => new(0, 1);
 
         public static int SizeInBytes => sizeof(int) * 2;
 

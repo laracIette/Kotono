@@ -4,10 +4,14 @@
   "StartTime": 3,
   "Duration": 5,
   "Rect": {
-    "X": 100,
-    "Y": 200,
-    "W": 50,
-    "H": 60
+    "Position": {
+      "X": 100,
+      "Y": 200
+    },
+    "BaseSize": {
+      "X": 50,
+      "Y": 60
+    }
   },
   "Layer": 0,
   "Path": "..\\..\\..\\Assets\\Animations\\Counting\\Counting.json",

@@ -42,10 +42,10 @@ namespace Kotono.Engine.UserInterface.AddMenu
 
             _subMenu.Position = _anchor switch
             {
-                Anchor.TopLeft => new Point(Rect.Position.X + Rect.Size.X / 2.0f, Rect.Position.Y - Rect.Size.Y / 2.0f),
-                Anchor.TopRight => new Point(Rect.Position.X - Rect.Size.X / 2.0f, Rect.Position.Y - Rect.Size.Y / 2.0f),
-                Anchor.BottomLeft => new Point(Rect.Position.X + Rect.Size.X / 2.0f, Rect.Position.Y + Rect.Size.Y / 2.0f),
-                Anchor.BottomRight => new Point(Rect.Position.X - Rect.Size.X / 2.0f, Rect.Position.Y + Rect.Size.Y / 2.0f),
+                Anchor.TopLeft => new Point(Rect.Position.X + Rect.BaseSize.X / 2.0f, Rect.Position.Y - Rect.BaseSize.Y / 2.0f),
+                Anchor.TopRight => new Point(Rect.Position.X - Rect.BaseSize.X / 2.0f, Rect.Position.Y - Rect.BaseSize.Y / 2.0f),
+                Anchor.BottomLeft => new Point(Rect.Position.X + Rect.BaseSize.X / 2.0f, Rect.Position.Y + Rect.BaseSize.Y / 2.0f),
+                Anchor.BottomRight => new Point(Rect.Position.X - Rect.BaseSize.X / 2.0f, Rect.Position.Y + Rect.BaseSize.Y / 2.0f),
                 _ => throw new SwitchException(typeof(Anchor), _anchor)
             };
 

@@ -43,13 +43,16 @@ namespace Kotono.Graphics.Objects
 
         protected virtual Shader Shader => ShaderManager.Shaders["roundedBox"];
 
-        protected virtual Matrix4 Model =>
-            Matrix4.CreateScale(
-                (Rect + new Rect(w: FallOff * 2.0f)).NDC.Size.X,
-                (Rect + new Rect(h: FallOff * 2.0f)).NDC.Size.Y,
-                1.0f
-            )
-            * Matrix4.CreateTranslation(Rect.NDC.Position.X, Rect.NDC.Position.Y, 0.0f);
+        protected virtual Matrix4 Model
+        {
+            get
+            {
+                var ndc = new NDCRect(Position, Size + new Point(FallOff * 2.0f));
+
+                return Matrix4.CreateScale(ndc.Size.X, ndc.Size.Y, 1.0f)
+                    * Matrix4.CreateTranslation(ndc.Position.X, ndc.Position.Y, 0.0f);
+            }
+        }
 
         internal RoundedBox(T settings)
             : base(settings)
@@ -64,7 +67,7 @@ namespace Kotono.Graphics.Objects
             /// CornerSize has : 
             ///     a minimum value of 0,
             ///     a maximum value of the smallest value between the box's Width and Height divided by 2
-            _cornerSize = Math.Clamp(CornerSize, 0.0f, Math.Min(Rect.Size.X, Rect.Size.Y) / 2.0f);
+            _cornerSize = Math.Clamp(CornerSize, 0.0f, Math.Min(Rect.BaseSize.X, Rect.BaseSize.Y) / 2.0f);
 
             /// FallOff has :
             ///     a minimum value of 0.000001 so that there is no division by 0 in glsl
@@ -75,30 +78,27 @@ namespace Kotono.Graphics.Objects
         {
             Shader.SetMatrix4("model", Model);
             Shader.SetColor("color", Color);
-            Shader.SetRect("sides", Sides);
+            Shader.SetSides("sides", Sides);
             Shader.SetFloat("fallOff", FallOff);
             Shader.SetFloat("cornerSize", CornerSize);
 
             SquareVertices.Draw();
         }
 
-        protected Rect Sides
+        private Sides Sides
         {
             get
             {
-                var r = Rect with 
-                { 
-                    Position = new Point(
-                        WindowComponentManager.ActiveViewport.Rect.Position.X + Position.X,
-                        Window.Rect.Size.Y - WindowComponentManager.ActiveViewport.Rect.Position.Y - Position.Y
-                    ) 
-                };
+                var position = new Point(
+                    WindowComponentManager.ActiveViewport.Rect.Position.X + Position.X,
+                    Window.Size.Y - WindowComponentManager.ActiveViewport.Rect.Position.Y - Position.Y
+                );
 
-                return new Rect(
-                    r.Position.X - r.Size.X / 2, // Left
-                    r.Position.X + r.Size.X / 2, // Right
-                    r.Position.Y + r.Size.Y / 2, // Top
-                    r.Position.Y - r.Size.Y / 2  // Bottom
+                return new Sides(
+                    position.X - Size.X / 2,
+                    position.X + Size.X / 2,
+                    position.Y + Size.Y / 2,
+                    position.Y - Size.Y / 2 
                 );
             }
         }

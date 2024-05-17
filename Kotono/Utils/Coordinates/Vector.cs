@@ -82,7 +82,7 @@ namespace Kotono.Utils.Coordinates
         /// <summary> 
         /// The absolute value of the <see cref="Vector"/>.
         /// </summary>
-        public readonly Vector Abs => new Vector(Math.Abs(X), Math.Abs(Y), Math.Abs(Z));
+        public readonly Vector Abs => new(Math.Abs(X), Math.Abs(Y), Math.Abs(Z));
 
         /// <summary> 
         /// Wether the <see cref="Vector"/> is equal to <see cref="Zero"/>.
@@ -92,42 +92,42 @@ namespace Kotono.Utils.Coordinates
         /// <summary>
         /// A <see cref="Vector"/> with X = 0, Y = 0, Z = 0.
         /// </summary>
-        public static Vector Zero => new Vector(0.0f, 0.0f, 0.0f);
+        public static Vector Zero => new(0.0f, 0.0f, 0.0f);
 
         /// <summary>
         /// A <see cref="Vector"/> with X = 1, Y = 1, Z = 1. 
         /// </summary>
-        public static Vector Unit => new Vector(1.0f, 1.0f, 1.0f);
+        public static Vector Unit => new(1.0f, 1.0f, 1.0f);
 
         /// <summary> 
         /// A <see cref="Vector"/> with X = 1, Y = 0, Z = 0.
         /// </summary>
-        public static Vector UnitX => new Vector(1.0f, 0.0f, 0.0f);
+        public static Vector UnitX => new(1.0f, 0.0f, 0.0f);
 
         /// <summary> 
         /// A <see cref="Vector"/> with X = 1, Y = 1, Z = 0. 
         /// </summary>
-        public static Vector UnitXY => new Vector(1.0f, 1.0f, 0.0f);
+        public static Vector UnitXY => new(1.0f, 1.0f, 0.0f);
 
         /// <summary> 
         /// A <see cref="Vector"/> with X = 1, Y = 0, Z = 1.
         /// </summary>
-        public static Vector UnitXZ => new Vector(1.0f, 0.0f, 1.0f);
+        public static Vector UnitXZ => new(1.0f, 0.0f, 1.0f);
 
         /// <summary> 
         /// A <see cref="Vector"/> with X = 0, Y = 1, Z = 0. 
         /// </summary>
-        public static Vector UnitY => new Vector(0.0f, 1.0f, 0.0f);
+        public static Vector UnitY => new(0.0f, 1.0f, 0.0f);
 
         /// <summary>
         /// A <see cref="Vector"/> with X = 0, Y = 1, Z = 1.
         /// </summary>
-        public static Vector UnitYZ => new Vector(0.0f, 1.0f, 1.0f);
+        public static Vector UnitYZ => new(0.0f, 1.0f, 1.0f);
 
         /// <summary>
         /// A <see cref="Vector"/> with X = 0, Y = 0, Z = 1.
         /// </summary>
-        public static Vector UnitZ => new Vector(0.0f, 0.0f, 1.0f);
+        public static Vector UnitZ => new(0.0f, 0.0f, 1.0f);
 
         public static Vector Right => UnitX;
 
@@ -135,9 +135,9 @@ namespace Kotono.Utils.Coordinates
 
         public static Vector Forward => UnitZ;
 
-        public static Vector MinValue => new Vector(float.MinValue, float.MinValue, float.MinValue);
+        public static Vector MinValue => new(float.MinValue, float.MinValue, float.MinValue);
 
-        public static Vector MaxValue => new Vector(float.MaxValue, float.MaxValue, float.MaxValue);
+        public static Vector MaxValue => new(float.MaxValue, float.MaxValue, float.MaxValue);
 
         public static int SizeInBytes => sizeof(float) * 3;
 

@@ -98,11 +98,18 @@ namespace Kotono.Graphics.Objects.Texts
 
         private readonly RoundedBorder _roundedBorder;
 
-        protected Rect _lettersRect;
+        protected Rect _lettersRect = Rect.Default;
+
+        private readonly Rect _rect = Rect.Default;
 
         public override Rect Rect
         {
-            get => Rect.FromAnchor(new Rect(_lettersRect.Position.X, _lettersRect.Position.Y, _lettersRect.Size.X * _text.Length * _spacing, _lettersRect.Size.Y), _anchor);
+            get
+            {
+                _rect.Position = Rect.FromAnchor(_lettersRect.Position, new Point(_lettersRect.BaseSize.X * _text.Length * _spacing, _lettersRect.BaseSize.Y), _anchor);
+                _rect.BaseSize = new Point(_lettersRect.BaseSize.X * _text.Length * _spacing, _lettersRect.BaseSize.Y);
+                return _rect;
+            }
             set => _lettersRect = value;
         }
 
@@ -115,7 +122,7 @@ namespace Kotono.Graphics.Objects.Texts
 
                 for (int i = 0; i < _letters.Count; i++)
                 {
-                    _letters[i].Rect = GetLetterRect(i, _lettersRect);
+                    _letters[i].Rect.Position = GetLetterPosition(i, _lettersRect.Position, _lettersRect.Size);
                 }
 
                 if (_roundedBorder != null)
@@ -189,13 +196,13 @@ namespace Kotono.Graphics.Objects.Texts
                     path = _charactersPath[' '];
                 }
 
-                var Rect = GetLetterRect(i, _lettersRect);
+                var position = GetLetterPosition(i, _lettersRect.Position, _lettersRect.Size);
 
                 _letters.Add(new Image(
                     new ImageSettings
                     {
                         Texture = Path.ASSETS + path,
-                        Rect = Rect,
+                        Rect = new Rect(position, _lettersRect.Size),
                         Color = Color,
                         Layer = Layer
                     }
@@ -203,50 +210,50 @@ namespace Kotono.Graphics.Objects.Texts
             }
         }
 
-        private Rect GetLetterRect(int index, Rect Rect)
+        private Point GetLetterPosition(int index, Point position, Point size)
         {
-            Rect.Position = _anchor switch
+            position = _anchor switch
             {
                 Anchor.Center => new Point(
-                    Rect.Position.X - Rect.Size.X / 2.0f * (_text.Length - 1) * _spacing + Rect.Size.X * index * _spacing,
-                    Rect.Position.Y
+                    position.X - size.X / 2.0f * (_text.Length - 1) * _spacing + size.X * index * _spacing,
+                    position.Y
                 ),
                 Anchor.Top => new Point(
-                    Rect.Position.X - Rect.Size.X / 2.0f * (_text.Length - 1) * _spacing + Rect.Size.X * index * _spacing,
-                    Rect.Position.Y + Rect.Size.Y / 2.0f
+                    position.X - size.X / 2.0f * (_text.Length - 1) * _spacing + size.X * index * _spacing,
+                    position.Y + size.Y / 2.0f
                 ),
                 Anchor.Bottom => new Point(
-                    Rect.Position.X - Rect.Size.X / 2.0f * (_text.Length - 1) * _spacing + Rect.Size.X * index * _spacing,
-                    Rect.Position.Y - Rect.Size.Y / 2.0f
+                    position.X - size.X / 2.0f * (_text.Length - 1) * _spacing + size.X * index * _spacing,
+                    position.Y - size.Y / 2.0f
                 ),
                 Anchor.Left => new Point(
-                    Rect.Position.X + (Rect.Size.X / 2.0f + Rect.Size.X * index) * _spacing,
-                    Rect.Position.Y
+                    position.X + (size.X / 2.0f + size.X * index) * _spacing,
+                    position.Y
                 ),
                 Anchor.Right => new Point(
-                    Rect.Position.X - Rect.Size.X / 2.0f * _spacing - Rect.Size.X * (_text.Length - 1 - index) * _spacing,
-                    Rect.Position.Y
+                    position.X - size.X / 2.0f * _spacing - size.X * (_text.Length - 1 - index) * _spacing,
+                    position.Y
                 ),
                 Anchor.TopLeft => new Point(
-                    Rect.Position.X + (Rect.Size.X / 2.0f + Rect.Size.X * index) * _spacing,
-                    Rect.Position.Y + Rect.Size.Y / 2.0f
+                    position.X + (size.X / 2.0f + size.X * index) * _spacing,
+                    position.Y + size.Y / 2.0f
                 ),
                 Anchor.TopRight => new Point(
-                    Rect.Position.X - Rect.Size.X / 2.0f * _spacing - Rect.Size.X * (_text.Length - 1 - index) * _spacing,
-                    Rect.Position.Y + Rect.Size.Y / 2.0f
+                    position.X - size.X / 2.0f * _spacing - size.X * (_text.Length - 1 - index) * _spacing,
+                    position.Y + size.Y / 2.0f
                 ),
                 Anchor.BottomLeft => new Point(
-                    Rect.Position.X + (Rect.Size.X / 2.0f + Rect.Size.X * index) * _spacing,
-                    Rect.Position.Y - Rect.Size.Y / 2.0f
+                    position.X + (size.X / 2.0f + size.X * index) * _spacing,
+                    position.Y - size.Y / 2.0f
                 ),
                 Anchor.BottomRight => new Point(
-                    Rect.Position.X - Rect.Size.X / 2.0f * _spacing - Rect.Size.X * (_text.Length - 1 - index) * _spacing,
-                    Rect.Position.Y - Rect.Size.Y / 2.0f
+                    position.X - size.X / 2.0f * _spacing - size.X * (_text.Length - 1 - index) * _spacing,
+                    position.Y - size.Y / 2.0f
                 ),
                 _ => throw new Exception($"error: Text.Init()'s switch on Anchor doesn't handle \"{_anchor}\""),
             };
 
-            return Rect;
+            return position;
         }
 
         internal virtual void SetText(string text)
@@ -258,25 +265,6 @@ namespace Kotono.Graphics.Objects.Texts
             }
         }
 
-        [Obsolete("This function should not be used as it has not been finished yet.")]
-        internal void Transform(Rect Rect)
-        {
-            _lettersRect += Rect;
-            foreach (var letter in _letters)
-            {
-                letter.Rect += Rect;
-            }
-        }
-        
-        [Obsolete("This function should not be used as it has not been finished yet.")]
-        internal void Transform(Rect Rect, float time)
-        {
-            foreach (var letter in _letters)
-            {
-                letter.SetTransformation(Rect, time);
-            }
-        }
-
         internal void Clear()
         {
             foreach (var letter in _letters)
@@ -285,6 +273,13 @@ namespace Kotono.Graphics.Objects.Texts
             }
 
             _letters.Clear();
+        }
+
+        public override void Dispose()
+        {
+            _lettersRect.Dispose();
+
+            base.Dispose();
         }
 
         public override string ToString() => _text;

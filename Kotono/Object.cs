@@ -34,6 +34,7 @@ namespace Kotono
 
 
 
+#pragma warning disable IDE1006 // Naming Styles
         /// <inheritdoc cref="Printer.Print(object?, Color)"/>
         [Conditional("DEBUG")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -68,5 +69,6 @@ namespace Kotono
             }
             return result;
         }
+#pragma warning restore IDE1006 // Naming Styles
     }
 }

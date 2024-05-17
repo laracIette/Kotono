@@ -5,7 +5,7 @@ using Kotono.Utils.Coordinates;
 
 namespace Kotono.Graphics
 {
-    internal class WindowComponent
+    internal class WindowComponent : Object
     {
         internal Viewport Viewport { get; }
 
@@ -14,12 +14,10 @@ namespace Kotono.Graphics
         internal WindowComponent(Rect Rect, Color color)
         {
             Viewport = new Viewport(new Object2DSettings { Rect = Rect });
-            _background = new Background(Rect.FromAnchor(new Rect(Point.Zero, Rect.Size), Anchor.TopLeft), color, Viewport);
-        }
 
-        internal void Update()
-        {
+            var position = Rect.FromAnchor(Point.Zero, Rect.BaseSize, Anchor.TopLeft);
 
+            _background = new Background(new Rect(position, Rect.BaseSize), color, Viewport);
         }
     }
 }

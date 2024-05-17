@@ -32,7 +32,7 @@ namespace Kotono.Utils.Coordinates
         /// The Point scaled to Normalized Device Coordinates.
         /// </summary>
         public readonly Point NDC =>
-            new Point(
+            new(
                 2.0f * X / WindowComponentManager.ActiveViewport.Size.X - 1.0f,
                 1.0f - Y / WindowComponentManager.ActiveViewport.Size.Y * 2.0f
             );
@@ -47,13 +47,13 @@ namespace Kotono.Utils.Coordinates
         /// </summary>
         public readonly float Product => X * Y;
 
-        public static Point Zero => new Point(0.0f, 0.0f);
+        public static Point Zero => new(0.0f, 0.0f);
 
-        public static Point Unit => new Point(1.0f, 1.0f);
+        public static Point Unit => new(1.0f, 1.0f);
 
-        public static Point UnitX => new Point(1.0f, 0.0f);
+        public static Point UnitX => new(1.0f, 0.0f);
 
-        public static Point UnitY => new Point(0.0f, 1.0f);
+        public static Point UnitY => new(0.0f, 1.0f);
 
         public static int SizeInBytes => sizeof(float) * 2;
 

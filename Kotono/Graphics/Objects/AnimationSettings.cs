@@ -3,7 +3,7 @@
 namespace Kotono.Settings
 {
     /// <summary>
-    /// Settings class for creating an <see cref="Object2D"/>.
+    /// Settings class for creating an <see cref="Animation"/>.
     /// </summary>
     internal class AnimationSettings : Object2DSettings
     {

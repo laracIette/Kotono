@@ -9,7 +9,14 @@ namespace Kotono.Graphics.Objects
         public virtual Transform Transform
         {
             get => _transform;
-            set => _transform = value;
+            set
+            {
+                if (_transform != value)
+                {
+                    _transform.Dispose();
+                    _transform = value;
+                }
+            }
         }
 
         public virtual Vector RelativeLocation
@@ -106,10 +113,23 @@ namespace Kotono.Graphics.Objects
         internal Object3D(T settings)
             : base(settings)
         {
-            _transform.ReplaceBy(settings.Transform);
-            settings.Transform.Dispose();
+            Transform = settings.Transform;
         }
 
         internal Object3D() : base() { }
+    
+        public override void Save()
+        {
+            _settings.Transform = Transform;
+
+            base.Save();
+        }
+
+        public override void Dispose()
+        {
+            Transform.Dispose();
+
+            base.Dispose();
+        }
     }
 }

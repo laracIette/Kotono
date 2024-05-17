@@ -34,11 +34,11 @@ namespace Kotono.Graphics.Objects.Texts
 
         internal void Lower()
         {
-            _lettersRect.Position += new Point(0.0f, _lettersRect.Size.Y);
+            _lettersRect.Position += new Point(0.0f, _lettersRect.BaseSize.Y);
 
             foreach (var letter in _letters)
             {
-                letter.Position += new Point(0.0f, _lettersRect.Size.Y);
+                letter.Position += new Point(0.0f, _lettersRect.BaseSize.Y);
             }
         }
 

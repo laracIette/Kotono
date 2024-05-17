@@ -176,15 +176,9 @@ namespace Kotono.Graphics.Objects
             }
         }
 
-        internal void NextFrame()
-        {
-            CurrentFrame++;
-        }
+        internal void NextFrame() => CurrentFrame++;
 
-        internal void PreviousFrame()
-        {
-            CurrentFrame--;
-        }
+        internal void PreviousFrame() => CurrentFrame--;
 
         public override string ToString() => $"Directory: {_settings.Directory}";
 
@@ -194,8 +188,6 @@ namespace Kotono.Graphics.Objects
             {
                 frame.Dispose();
             }
-
-            _frames.Clear();
 
             base.Dispose();
         }

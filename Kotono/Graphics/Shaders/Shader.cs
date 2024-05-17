@@ -134,6 +134,12 @@ namespace Kotono.Graphics.Shaders
             GL.Uniform4(_uniformLocations[name], (Vector4)data);
         }
 
+        internal void SetSides(string name, Sides data)
+        {
+            Use();
+            GL.Uniform4(_uniformLocations[name], (Vector4)data);
+        }
+
         internal void SetPoint(string name, Point data)
         {
             Use();

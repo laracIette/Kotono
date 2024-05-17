@@ -89,19 +89,19 @@ namespace Kotono.Input
                 var delta = Point.Zero;
                 if (Position.X < 0.0f)
                 {
-                    delta.X += Window.Rect.Size.X;
+                    delta.X += Window.Size.X;
                 }
-                else if (Position.X > Window.Rect.Size.X)
+                else if (Position.X > Window.Size.X)
                 {
-                    delta.X -= Window.Rect.Size.X;
+                    delta.X -= Window.Size.X;
                 }
                 if (Position.Y < 0.0f)
                 {
-                    delta.Y += Window.Rect.Size.Y;
+                    delta.Y += Window.Size.Y;
                 }
-                else if (Position.Y > Window.Rect.Size.Y)
+                else if (Position.Y > Window.Size.Y)
                 {
-                    delta.Y -= Window.Rect.Size.Y;
+                    delta.Y -= Window.Size.Y;
                 }
 
                 if (delta != Point.Zero)
@@ -121,7 +121,8 @@ namespace Kotono.Input
 
             if (CursorState == CursorState.Centered)
             {
-                var center = Window.Rect.TopRight;
+                //var center = Window.Rect.TopRight; TODO
+                var center = new Point(960.0f, 540.0f);
                 if (PositionFromOrigin != center)
                 {
                     SetCursorPos(center);

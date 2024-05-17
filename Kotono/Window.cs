@@ -22,34 +22,20 @@ namespace Kotono
 
         private bool ShouldRenderFrame => IsFocused && (PerformanceWindow.FrameRate < PerformanceWindow.MaxFrameRate);
 
-        private static Rect _Rect = new(0.0f, 0.0f, 1280.0f, 720.0f);
+        internal static Point Position { get; set; } = Point.Zero;
 
-        internal static Rect Rect
-        {
-            get => _Rect;
-            set
-            {
-                Position = value.Position;
-                Size = value.Size;
-            }
-        }
-
-        internal static Point Position
-        {
-            get => _Rect.Position;
-            set => _Rect.Position = value;
-        }
+        private static Point _size = new(1280.0f, 720.0f);
 
         internal new static Point Size
         {
-            get => _Rect.Size;
+            get => _size;
             set
             {
-                _Rect.Size = value;
+                _size = value;
 
                 ObjectManager.ActiveCamera.AspectRatio = Size.Ratio;
 
-                WindowComponentManager.WindowViewport.Size = Size;
+                WindowComponentManager.WindowViewport.BaseSize = Size;
 
                 PerformanceWindow.UpdatePosition();
 
@@ -147,7 +133,6 @@ namespace Kotono
             Keyboard.Update();
             Mouse.Update();
             ObjectManager.Update();
-            WindowComponentManager.Update();
             StateManager.Update();
 
             if (Keyboard.IsKeyPressed(Keys.F11))

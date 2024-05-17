@@ -57,7 +57,7 @@ namespace Kotono
             Printer.Print((int)e.Time, true);
         }
 
-        private void OnEnterKeyPressed()
+        private static void OnEnterKeyPressed()
         {
             Mouse.CursorState = (CursorState)Math.Loop((float)Mouse.CursorState + 1.0f, 3.0f);
         }
@@ -67,12 +67,12 @@ namespace Kotono
             _animation.Switch();
         }
 
-        private void OnIKeyPressed()
+        private static void OnIKeyPressed()
         {
             Printer.Print(Time.Now, true);
         }
 
-        private void OnJKeyPressed()
+        private static void OnJKeyPressed()
         {
             foreach (var obj in ISelectable.Selected3D.Where(s => s != ISelectable.Active))
             {
@@ -80,7 +80,7 @@ namespace Kotono
             }
         }
 
-        private void OnKKeyPressed()
+        private static void OnKKeyPressed()
         {
             if (Keyboard.IsKeyPressed(Keys.K))
             {

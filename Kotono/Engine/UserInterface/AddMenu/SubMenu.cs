@@ -18,7 +18,7 @@ namespace Kotono.Engine.UserInterface.AddMenu
             {
                 for (int i = 0; i < _options.Count; i++)
                 {
-                    _options[i].Position = GetTextRect(i, value).Position;
+                    _options[i].Position = GetTextPosition(i, value);
                 }
             }
         }
@@ -38,12 +38,13 @@ namespace Kotono.Engine.UserInterface.AddMenu
 
             for (int i = 0; i < options.Length; i++)
             {
-                var Rect = GetTextRect(i, Window.Size / 2.0f);
+                var position = GetTextPosition(i, Window.Size / 2.0f);
+
                 _options.Add(
                     new Text(
                         new TextSettings
                         {
-                            Rect = Rect,
+                            Rect = new Rect(position, 20.0f, 24.0f),
                             Layer = 3,
                             Text = options[i],
                             Anchor = _anchor,
@@ -54,14 +55,14 @@ namespace Kotono.Engine.UserInterface.AddMenu
             }
         }
 
-        private Rect GetTextRect(int index, Point pos)
+        private Point GetTextPosition(int index, Point position)
         {
             return _anchor switch
             {
-                Anchor.TopLeft => new Rect(pos.X, pos.Y + index * 24.0f, 20.0f, 24.0f),
-                Anchor.TopRight => new Rect(pos.X, pos.Y + index * 24.0f, 20.0f, 24.0f),
-                Anchor.BottomLeft => new Rect(pos.X, pos.Y - index * 24.0f, 20.0f, 24.0f),
-                Anchor.BottomRight => new Rect(pos.X, pos.Y - index * 24.0f, 20.0f, 24.0f),
+                Anchor.TopLeft => new Point(position.X, position.Y + index * 24.0f),
+                Anchor.TopRight => new Point(position.X, position.Y + index * 24.0f),
+                Anchor.BottomLeft => new Point(position.X, position.Y - index * 24.0f),
+                Anchor.BottomRight => new Point(position.X, position.Y - index * 24.0f),
                 _ => throw new SwitchException(typeof(Anchor), _anchor)
             };
         }

@@ -7,12 +7,25 @@ namespace Kotono.Graphics.Objects
     /// </summary>
     internal class Object3DSettings : DrawableSettings
     {
+        private Transform _transform = Transform.Default;
+
         /// <summary>
         /// The transform of the <see cref="Object3D"/>.
         /// </summary>
         /// <remarks> 
         /// Default value : Transform.Default 
         /// </remarks>
-        public virtual Transform Transform { get; set; } = Transform.Default;
+        public virtual Transform Transform
+        {
+            get => _transform;
+            set
+            {
+                if (_transform != value)
+                {
+                    _transform.Dispose();
+                    _transform = value;
+                }
+            }
+        }
     }
 }

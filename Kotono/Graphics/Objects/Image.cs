@@ -11,12 +11,6 @@ namespace Kotono.Graphics.Objects
 
         internal string Path { get; }
 
-        private Rect _transformation;
-
-        private float _startTime = 0;
-
-        private float _endTime = 0;
-
         internal bool IsMouseOn => Rect.Overlaps(Rect, Mouse.Position);
 
         internal Image(ImageSettings settings)
@@ -25,17 +19,7 @@ namespace Kotono.Graphics.Objects
             Path = settings.Texture;
             Color = settings.Color;
 
-            _transformation = Rect.Zero;
-
             _texture = new Texture(Path);
-        }
-
-        public override void Update()
-        {
-            if (Time.Now < _endTime)
-            {
-                Rect += _transformation * Time.Delta;
-            }
         }
 
         public override void Draw()
@@ -46,26 +30,6 @@ namespace Kotono.Graphics.Objects
             ShaderManager.Shaders["image"].SetColor("color", Color);
 
             _texture.Draw();
-        }
-
-        /// <summary>
-        /// Transform the rect of the <see cref="Image"/> in a given time span.
-        /// </summary>
-        /// <param name="r"> The transformation to add. </param>
-        /// <param name="duration"> The duration of the transformation. </param>
-        internal void SetTransformation(Rect r, float duration)
-        {
-            if (duration <= 0.0f)
-            {
-                Rect = r;
-            }
-            else
-            {
-                _transformation = r / duration;
-
-                _startTime = Time.Now;
-                _endTime = _startTime + duration;
-            }
         }
 
         public override string ToString() => Path;

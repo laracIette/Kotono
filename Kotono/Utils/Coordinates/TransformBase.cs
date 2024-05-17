@@ -1,6 +1,4 @@
-﻿#pragma warning disable CS0618 // TransformBase.operator *(TransformBase, float)
-
-namespace Kotono.Utils.Coordinates
+﻿namespace Kotono.Utils.Coordinates
 {
     public struct TransformBase(Vector location, Rotator rotation, Vector scale)
     {
@@ -18,11 +16,11 @@ namespace Kotono.Utils.Coordinates
             return left;
         }
 
-        public static TransformBase operator *(TransformBase t, in float f)
+        public static TransformBase operator *(in float f, TransformBase t)
         {
-            t.Location *= f;
-            t.Rotation *= f;
-            t.Scale = Vector.Unit + (t.Scale - Vector.Unit) * f;
+            t.Location = f * t.Location;
+            t.Rotation = f * t.Rotation;
+            t.Scale = Vector.Unit + f * (t.Scale - Vector.Unit);
             return t;
         }
 

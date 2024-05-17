@@ -44,6 +44,7 @@ namespace Kotono.Input
                      || (isKeyReleased && method.Action == Action.Released))
                     {
                         method.MethodInfo.Invoke(method.Instance, null);
+                        // TODO: replace by Action ? method.action();
                     }
                 }
             }

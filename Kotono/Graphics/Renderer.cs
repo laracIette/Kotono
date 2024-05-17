@@ -51,7 +51,11 @@ namespace Kotono.Graphics
 
         private void AddToObject2DRenderQueue(IObject2D object2D)
         {
-            if (!Rect.Overlaps(object2D.Rect, Rect.FromAnchor(((object2D as IElement)?.Viewport ?? WindowComponentManager.WindowViewport).Rect, Anchor.TopLeft)))
+            var viewport = (object2D as IElement)?.Viewport ?? WindowComponentManager.WindowViewport;
+
+            var position = Rect.FromAnchor(viewport.Position, viewport.Size, Anchor.TopLeft);
+
+            if (!Rect.Overlaps(object2D.Rect, new RectBase(position, viewport.Size)))
             {
                 return;
             }
