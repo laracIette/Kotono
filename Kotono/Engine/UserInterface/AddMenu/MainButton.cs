@@ -10,7 +10,7 @@ namespace Kotono.Engine.UserInterface.AddMenu
         : TextButton(
             new TextButtonSettings
             {
-                Rect = new Rect(Point.Zero, 100.0f, 100.0f), // 100 so that CornerSize doesn't get restricted
+                Rect = new Rect(Point.Zero, new Point(100.0f, 100.0f)),
                 Color = Color.Gray,
                 Layer = 1,
                 TextSettings = new TextSettings { Text = text },
@@ -42,10 +42,10 @@ namespace Kotono.Engine.UserInterface.AddMenu
 
             _subMenu.Position = _anchor switch
             {
-                Anchor.TopLeft => new Point(Rect.Position.X + Rect.BaseSize.X / 2.0f, Rect.Position.Y - Rect.BaseSize.Y / 2.0f),
-                Anchor.TopRight => new Point(Rect.Position.X - Rect.BaseSize.X / 2.0f, Rect.Position.Y - Rect.BaseSize.Y / 2.0f),
-                Anchor.BottomLeft => new Point(Rect.Position.X + Rect.BaseSize.X / 2.0f, Rect.Position.Y + Rect.BaseSize.Y / 2.0f),
-                Anchor.BottomRight => new Point(Rect.Position.X - Rect.BaseSize.X / 2.0f, Rect.Position.Y + Rect.BaseSize.Y / 2.0f),
+                Anchor.TopLeft => Rect.TopLeft,
+                Anchor.TopRight => Rect.TopRight,
+                Anchor.BottomLeft => Rect.BottomLeft,
+                Anchor.BottomRight => Rect.BottomRight,
                 _ => throw new SwitchException(typeof(Anchor), _anchor)
             };
 

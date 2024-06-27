@@ -44,7 +44,7 @@ namespace Kotono.Engine.UserInterface.AddMenu
                     new Text(
                         new TextSettings
                         {
-                            Rect = new Rect(position, 20.0f, 24.0f),
+                            Rect = new Rect(position, new Point(20.0f, 24.0f)),
                             Layer = 3,
                             Text = options[i],
                             Anchor = _anchor,

@@ -7,10 +7,10 @@ namespace Kotono.Utils
 {
     internal static class JsonParser
     {
-        private static readonly JsonSerializerOptions _jsonSerializerOptions = new() 
-        { 
-            WriteIndented = true, 
-            IgnoreReadOnlyFields = true, 
+        private static readonly JsonSerializerOptions _jsonSerializerOptions = new()
+        {
+            WriteIndented = true,
+            IgnoreReadOnlyFields = true,
             IgnoreReadOnlyProperties = true
         };
 

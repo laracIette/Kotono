@@ -1,5 +1,4 @@
 ﻿using Kotono.Engine.UserInterface.Elements;
-using Kotono.Graphics.Objects;
 using Kotono.Utils;
 using Kotono.Utils.Coordinates;
 
@@ -11,13 +10,13 @@ namespace Kotono.Graphics
 
         private readonly Background _background;
 
-        internal WindowComponent(Rect Rect, Color color)
+        internal WindowComponent(Rect rect, Color color)
         {
-            Viewport = new Viewport(new Object2DSettings { Rect = Rect });
+            Viewport = new Viewport(rect);
 
-            var position = Rect.FromAnchor(Point.Zero, Rect.BaseSize, Anchor.TopLeft);
+            var position = Rect.FromAnchor(Point.Zero, rect.BaseSize, Anchor.TopLeft);
 
-            _background = new Background(new Rect(position, Rect.BaseSize), color, Viewport);
+            _background = new Background(new Rect(position, rect.BaseSize), color, Viewport);
         }
     }
 }

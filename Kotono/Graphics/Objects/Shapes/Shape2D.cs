@@ -20,7 +20,7 @@ namespace Kotono.Graphics.Objects.Shapes
         internal Point this[int index]
         {
             get => _points[index];
-            set 
+            set
             {
                 _points[index] = value;
 

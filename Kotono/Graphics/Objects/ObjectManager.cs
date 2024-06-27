@@ -4,10 +4,10 @@ using Kotono.Input;
 using Kotono.Physics;
 using Kotono.Utils;
 using Kotono.Utils.Coordinates;
-using Kotono.Utils.Exceptions;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 
@@ -25,12 +25,9 @@ namespace Kotono.Graphics.Objects
 
         internal static IHitbox[] Hitboxes => _objects.OfType<IHitbox>().ToArray();
 
-        internal static Camera ActiveCamera => _objects.OfType<Camera>().FirstOrNull() ?? throw new KotonoException("there is no Object of type Camera in _objects");
+        internal static int IndexOf(IObject obj) => _objects.IndexOf(obj);
 
-        internal static void SetSize(Point value)
-        {
-            _renderer.SetSize(value);
-        }
+        internal static void SetRendererSize(Point value) => _renderer.SetSize(value);
 
         internal static void Create(IObject obj)
         {
@@ -56,11 +53,9 @@ namespace Kotono.Graphics.Objects
                     break;
             }
 
-            if (!_objects.Contains(obj))
+            if (_objects.TryAddUnique(obj))
             {
                 Subscribe(obj);
-
-                _objects.Add(obj);
             }
         }
 
@@ -85,7 +80,7 @@ namespace Kotono.Graphics.Objects
                 }
                 else if (methodInfo.Name.Contains("Button"))
                 {
-
+                    Mouse.Subscribe(obj, methodInfo);
                 }
             }
         }
@@ -105,11 +100,23 @@ namespace Kotono.Graphics.Objects
             if (_typeInputMethods[obj.GetType()].Length > 0)
             {
                 Keyboard.Unsubscribe(obj);
+                Mouse.Unsubscribe(obj);
             }
         }
 
         internal static void Update()
         {
+            // List can change during for loop
+            for (int i = 0; i < _objects.Count; i++)
+            {
+                if (_objects[i].IsUpdate)
+                {
+                    _objects[i].Update();
+                }
+            }
+
+            UpdateFizix();
+
             if (Keyboard.IsKeyPressed(Keys.Delete))
             {
                 OnDeleteKeyPressed();
@@ -123,16 +130,6 @@ namespace Kotono.Graphics.Objects
                     Delete(_objects[i]);
                 }
             }
-
-            for (int i = 0; i < _objects.Count; i++)
-            {
-                if (_objects[i].IsUpdate)
-                {
-                    _objects[i].Update();
-                }
-            }
-
-            UpdateFizix();
         }
 
         private static void UpdateFizix()

@@ -20,7 +20,7 @@ namespace Kotono.Graphics.Objects
             get => _transform;
             set
             {
-                if (_transform != value)
+                if (!ReferenceEquals(_transform, value))
                 {
                     _transform.Dispose();
                     _transform = value;

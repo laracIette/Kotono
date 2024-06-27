@@ -10,6 +10,8 @@ namespace Kotono.Graphics.Objects
 {
     internal class Camera : Object
     {
+        internal static Camera Active { get; set; } = new();
+
         private float _pitch = 0.0f;
 
         private float _yaw = -Math.PI / 2.0f;

@@ -1,5 +1,4 @@
 ﻿using Kotono.Audio;
-using Kotono.Engine;
 using Kotono.Engine.UserInterface.AddMenu;
 using Kotono.Graphics;
 using Kotono.Graphics.Objects;
@@ -33,7 +32,7 @@ namespace Kotono
             {
                 _size = value;
 
-                ObjectManager.ActiveCamera.AspectRatio = Size.Ratio;
+                Camera.Active.AspectRatio = Size.Ratio;
 
                 WindowComponentManager.WindowViewport.BaseSize = Size;
 
@@ -41,7 +40,7 @@ namespace Kotono
 
                 if (Size > Point.Zero)
                 {
-                    ObjectManager.SetSize(Size);
+                    ObjectManager.SetRendererSize(Size);
                 }
             }
         }
@@ -73,8 +72,6 @@ namespace Kotono
             Mouse.HideCursor();
 
             Keyboard.KeyboardState = KeyboardState;
-
-            _ = new Camera();
 
             _ = new MainMenu();
 
@@ -129,11 +126,9 @@ namespace Kotono
             PerformanceWindow.AddUpdateTime((float)e.Time);
 
             Time.Update();
-            Gizmo.Update();
             Keyboard.Update();
             Mouse.Update();
             ObjectManager.Update();
-            StateManager.Update();
 
             if (Keyboard.IsKeyPressed(Keys.F11))
             {

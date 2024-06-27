@@ -8,7 +8,7 @@ namespace Kotono.Graphics.Objects
               new ImageSettings
               {
                   Texture = Utils.Path.ASSETS + @"coke.png",
-                  Rect = new Rect(0.0f, 0.0f, 50.0f, 50.0f),
+                  Rect = new Rect(Point.Zero, new Point(50.0f, 50.0f)),
                   Layer = int.MaxValue
               }
           )

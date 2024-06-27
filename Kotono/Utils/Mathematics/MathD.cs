@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace Kotono.Utils
+namespace Kotono.Utils.Mathematics
 {
     public static class MathD
     {
@@ -32,7 +32,7 @@ namespace Kotono.Utils
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static double Abs(double value)
         {
-            return (value >= 0.0) ? value : -value;
+            return value >= 0.0 ? value : -value;
         }
 
         /// <inheritdoc cref="System.Math.Cos(double)" />
@@ -81,13 +81,13 @@ namespace Kotono.Utils
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static double Min(double left, double right)
         {
-            return (left < right) ? left : right;
+            return left < right ? left : right;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static double Max(double left, double right)
         {
-            return (left > right) ? left : right;
+            return left > right ? left : right;
         }
 
         /// <summary> 

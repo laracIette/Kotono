@@ -9,7 +9,7 @@ namespace Kotono.Graphics.Statistics
         : Text(
             new TextSettings
             {
-                Rect = new Rect(Point.Zero, 50.0f, 60.0f),
+                Rect = new Rect(Point.Zero, new Point(50.0f, 60.0f)),
                 Layer = 1,
                 Text = "0.00",
                 Anchor = anchor
@@ -18,7 +18,7 @@ namespace Kotono.Graphics.Statistics
     {
         private readonly float[] _times = new float[60];
 
-        private int _timeIndex = 0; 
+        private int _timeIndex = 0;
 
         private int TimeIndex
         {

@@ -1,4 +1,5 @@
-﻿using Kotono.Utils.Coordinates;
+﻿using Assimp;
+using Kotono.Utils.Coordinates;
 
 namespace Kotono.Graphics.Objects
 {
@@ -15,12 +16,12 @@ namespace Kotono.Graphics.Objects
         /// <remarks> 
         /// Default value : Rect.Zero 
         /// </remarks>
-        public Rect Rect 
+        public Rect Rect
         {
             get => _rect;
             set
             {
-                if (_rect != value)
+                if (!ReferenceEquals(_rect, value))
                 {
                     _rect.Dispose();
                     _rect = value;

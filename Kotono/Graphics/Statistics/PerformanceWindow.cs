@@ -43,7 +43,7 @@ namespace Kotono.Graphics.Statistics
             _background = new RoundedBox(
                 new RoundedBoxSettings
                 {
-                    Rect = new Rect(Position, 400.0f, 120.0f),
+                    Rect = new Rect(Position, new Point(400.0f, 120.0f)),
                     Color = Color.DarkSlateGray,
                     CornerSize = 10.0f
                 }

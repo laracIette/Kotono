@@ -12,7 +12,7 @@ namespace Kotono.Engine.UserInterface.AddMenu
         private readonly RoundedBox _backgroundBox = new(
             new RoundedBoxSettings
             {
-                Rect = new Rect(0.0f, 0.0f, 300.0f, 300.0f),
+                Rect = new Rect(Point.Zero, new Point(300.0f, 300.0f)),
                 Color = Color.DarkSlateGray,
                 FallOff = 2.0f,
                 CornerSize = 30.0f
@@ -56,18 +56,10 @@ namespace Kotono.Engine.UserInterface.AddMenu
             }
         }
 
-        internal MainMenu() 
+        internal MainMenu()
             : base()
         {
             IsDraw = false;
-        }
-
-        public override void Update()
-        {
-            if (Mouse.IsButtonPressed(MouseButton.Left))
-            {
-                OnLeftButtonPressed();
-            }
         }
 
         private void OnAKeyPressed()

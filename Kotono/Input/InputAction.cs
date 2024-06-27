@@ -1,6 +1,6 @@
 ﻿namespace Kotono.Input
 {
-    internal enum Action
+    internal enum InputAction
     {
         Pressed,
         Down,

@@ -6,6 +6,6 @@ namespace Kotono.Graphics.Objects
     {
         public Transform Transform { get; set; }
 
-        public IObject3D? Parent { get; set; }
+        public new IObject3D? Parent { get; set; }
     }
 }

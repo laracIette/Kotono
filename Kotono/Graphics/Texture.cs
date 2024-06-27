@@ -39,7 +39,7 @@ namespace Kotono.Graphics
             Handle = value;
             Unit = unit;
         }
-        
+
         /// <summary>
         /// Generate a new Texture.
         /// </summary>

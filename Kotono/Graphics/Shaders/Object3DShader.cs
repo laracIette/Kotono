@@ -9,8 +9,8 @@ namespace Kotono.Graphics.Shaders
         {
             base.Update();
 
-            SetMatrix4("view", ObjectManager.ActiveCamera.ViewMatrix);
-            SetMatrix4("projection", ObjectManager.ActiveCamera.ProjectionMatrix);
+            SetMatrix4("view", Camera.Active.ViewMatrix);
+            SetMatrix4("projection", Camera.Active.ProjectionMatrix);
         }
     }
 }

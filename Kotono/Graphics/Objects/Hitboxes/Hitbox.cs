@@ -7,9 +7,9 @@ namespace Kotono.Graphics.Objects.Hitboxes
         : Object3D<HitboxSettings>(settings),
         IHitbox
     {
-        public event EventHandler<CollisionEventArgs>? EnterCollision = null;
+        public EventHandler<CollisionEventArgs>? EnterCollision { get; set; } = null;
 
-        public event EventHandler<CollisionEventArgs>? ExitCollision = null;
+        public EventHandler<CollisionEventArgs>? ExitCollision { get; set; } = null;
 
         public List<IHitbox> Collisions { get; } = settings.Collisions;
 

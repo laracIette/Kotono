@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace Kotono.Utils
+namespace Kotono.Utils.Mathematics
 {
     public static class Math
     {
@@ -32,7 +32,7 @@ namespace Kotono.Utils
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float Abs(float value)
         {
-            return (value >= 0.0f) ? value : -value;
+            return value >= 0.0f ? value : -value;
         }
 
         /// <inheritdoc cref="System.MathF.Cos(float)" />
@@ -92,13 +92,13 @@ namespace Kotono.Utils
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float Min(float left, float right)
         {
-            return (left < right) ? left : right;
+            return left < right ? left : right;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float Max(float left, float right)
         {
-            return (left > right) ? left : right;
+            return left > right ? left : right;
         }
 
         /// <summary> 

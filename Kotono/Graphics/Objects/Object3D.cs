@@ -11,7 +11,7 @@ namespace Kotono.Graphics.Objects
             get => _transform;
             set
             {
-                if (_transform != value)
+                if (!ReferenceEquals(_transform, value))
                 {
                     _transform.Dispose();
                     _transform = value;
@@ -93,22 +93,24 @@ namespace Kotono.Graphics.Objects
 
         private IObject3D? _parent = null;
 
-        public virtual IObject3D? Parent 
-        { 
+        public new virtual IObject3D? Parent
+        {
             get => _parent;
             set
             {
                 using var clone = Transform.Clone();
-                
+
                 _parent = value;
                 Transform.Parent = value?.Transform;
-                
+
                 // Remove relative offset, not sure if it'll stay
                 Transform.WorldLocation = clone.WorldLocation;
                 Transform.WorldRotation = clone.WorldRotation;
                 Transform.WorldScale = clone.WorldScale;
             }
-        } 
+        }
+
+        public override bool IsHovered => false;
 
         internal Object3D(T settings)
             : base(settings)
@@ -117,7 +119,7 @@ namespace Kotono.Graphics.Objects
         }
 
         internal Object3D() : base() { }
-    
+
         public override void Save()
         {
             _settings.Transform = Transform;

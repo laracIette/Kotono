@@ -215,39 +215,39 @@ namespace Kotono.Graphics.Objects.Texts
             position = _anchor switch
             {
                 Anchor.Center => new Point(
-                    position.X - size.X / 2.0f * (_text.Length - 1) * _spacing + size.X * index * _spacing,
+                    position.X + _spacing * size.X * (index - (_text.Length - 1) / 2.0f),
                     position.Y
                 ),
                 Anchor.Top => new Point(
-                    position.X - size.X / 2.0f * (_text.Length - 1) * _spacing + size.X * index * _spacing,
+                    position.X + _spacing * size.X * (index - (_text.Length - 1) / 2.0f),
                     position.Y + size.Y / 2.0f
                 ),
                 Anchor.Bottom => new Point(
-                    position.X - size.X / 2.0f * (_text.Length - 1) * _spacing + size.X * index * _spacing,
+                    position.X + _spacing * size.X * (index - (_text.Length - 1) / 2.0f),
                     position.Y - size.Y / 2.0f
                 ),
                 Anchor.Left => new Point(
-                    position.X + (size.X / 2.0f + size.X * index) * _spacing,
+                    position.X + _spacing * size.X * (0.5f + index),
                     position.Y
                 ),
                 Anchor.Right => new Point(
-                    position.X - size.X / 2.0f * _spacing - size.X * (_text.Length - 1 - index) * _spacing,
+                    position.X - _spacing * size.X * (1.5f + index - _text.Length),
                     position.Y
                 ),
                 Anchor.TopLeft => new Point(
-                    position.X + (size.X / 2.0f + size.X * index) * _spacing,
+                    position.X + _spacing * size.X * (0.5f + index),
                     position.Y + size.Y / 2.0f
                 ),
                 Anchor.TopRight => new Point(
-                    position.X - size.X / 2.0f * _spacing - size.X * (_text.Length - 1 - index) * _spacing,
+                    position.X - _spacing * size.X * (1.5f + index - _text.Length),
                     position.Y + size.Y / 2.0f
                 ),
                 Anchor.BottomLeft => new Point(
-                    position.X + (size.X / 2.0f + size.X * index) * _spacing,
+                    position.X + _spacing * size.X * (0.5f + index),
                     position.Y - size.Y / 2.0f
                 ),
                 Anchor.BottomRight => new Point(
-                    position.X - size.X / 2.0f * _spacing - size.X * (_text.Length - 1 - index) * _spacing,
+                    position.X - _spacing * size.X * (1.5f + index - _text.Length),
                     position.Y - size.Y / 2.0f
                 ),
                 _ => throw new Exception($"error: Text.Init()'s switch on Anchor doesn't handle \"{_anchor}\""),

@@ -5,7 +5,7 @@ namespace Kotono.Graphics.Objects.Lights
     /// <summary>
     /// Settings class for creating a <see cref="PointLight"/>.
     /// </summary>
-    internal class PointLightSettings : Object3DSettings
+    internal class PointLightSettings : LightSettings
     {
         /// <summary>
         /// The ambient color of the <see cref="PointLight"/>.

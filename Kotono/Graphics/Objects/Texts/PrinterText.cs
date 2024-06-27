@@ -12,7 +12,7 @@ namespace Kotono.Graphics.Objects.Texts
             : base(
                 new TextSettings
                 {
-                    Rect = new Rect(Point.Zero, 25.0f, 30.0f),
+                    Rect = new Rect(Point.Zero, new Point(25.0f, 30.0f)),
                     Anchor = Anchor.TopLeft,
                     Spacing = 2.0f / 3.0f,
                     Layer = int.MaxValue

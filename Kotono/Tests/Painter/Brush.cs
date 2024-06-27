@@ -16,7 +16,7 @@ namespace Kotono.Tests.Painter
 
         internal Brush(BrushSettings settings)
             : base()
-        { 
+        {
             Name = settings.Name;
             Size = settings.Size;
             _texture = new Image(

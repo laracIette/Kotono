@@ -9,6 +9,6 @@ namespace Kotono.Graphics.Objects.Meshes
     {
         public override void Update() { }
 
-        protected override void OnLeftPressed(object? sender, TimedEventArgs e) { }
+        protected override void OnLeftButtonPressed() { }
     }
 }

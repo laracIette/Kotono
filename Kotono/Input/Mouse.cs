@@ -1,11 +1,13 @@
 ﻿using Kotono.Engine;
 using Kotono.Graphics.Objects;
-using Kotono.Utils;
 using Kotono.Utils.Coordinates;
+using Kotono.Utils.Exceptions;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -13,6 +15,8 @@ namespace Kotono.Input
 {
     internal static partial class Mouse
     {
+        private record class Method(InputAction InputAction, IObject Instance, MethodInfo MethodInfo);
+
         internal struct POINT
         {
             internal int X;
@@ -31,15 +35,23 @@ namespace Kotono.Input
         [return: MarshalAs(UnmanagedType.Bool)]
         private static partial bool GetCursorPos(out POINT pos);
 
-        private static Point GetCursorPos()
+        private static Point RawCursorPos
         {
-            if (GetCursorPos(out POINT pos))
+            get
             {
-                return new Point(pos.X, pos.Y);
-            }
-            else
-            {
-                throw new Exception("error: couldn't retrieve cursor position");
+                Point result;
+
+                if (GetCursorPos(out POINT pos))
+                {
+                    result = new Point(pos.X, pos.Y);
+                }
+                else
+                {
+                    result = Point.Zero;
+                    Logger.Log("error: couldn't retrieve cursor position");
+                }
+
+                return result;
             }
         }
 
@@ -55,8 +67,6 @@ namespace Kotono.Input
             get => _mouseState ?? throw new Exception($"error: _mouseState must not be null");
             set => _mouseState = value;
         }
-
-        private static readonly Dictionary<MouseButton, EventHandler<TimedEventArgs>?> _buttonsPressed = [];
 
         internal static Point PositionFromOrigin { get; private set; } = Point.Zero;
 
@@ -74,6 +84,16 @@ namespace Kotono.Input
 
         internal static CursorState CursorState { get; set; } = CursorState.Normal;
 
+        private static readonly Dictionary<MouseButton, List<Method>> _buttonActions = []; // maybe array
+
+        static Mouse()
+        {
+            foreach (var button in Enum.GetValues<MouseButton>().Distinct())
+            {
+                _buttonActions[button] = [];
+            }
+        }
+
         internal static void Update()
         {
             if (StateManager.EngineState == EngineState.Play)
@@ -82,7 +102,7 @@ namespace Kotono.Input
             }
 
             PreviousPositionFromOrigin = PositionFromOrigin;
-            PositionFromOrigin = GetCursorPos();
+            PositionFromOrigin = RawCursorPos;
 
             if (CursorState == CursorState.Confined)
             {
@@ -130,11 +150,24 @@ namespace Kotono.Input
                 }
             }
 
-            foreach (var button in _buttonsPressed.Keys)
+            for (int i = 0; i < _buttonActions.Count; i++)
             {
-                if (IsButtonPressed(button))
+                var (button, methods) = _buttonActions.ElementAt(i);
+
+                bool isButtonPressed = IsButtonPressed(button);
+                bool isButtonDown = IsButtonDown(button);
+                bool isButtonReleased = IsButtonReleased(button);
+
+                for (int j = methods.Count - 1; j >= 0; j--)
                 {
-                    _buttonsPressed[button]?.Invoke(null, new TimedEventArgs());
+                    var method = methods[j];
+
+                    if ((isButtonPressed && method.InputAction == InputAction.Pressed)
+                     || (isButtonDown && method.InputAction == InputAction.Down)
+                     || (isButtonReleased && method.InputAction == InputAction.Released))
+                    {
+                        method.MethodInfo.Invoke(method.Instance, null);
+                    }
                 }
             }
         }
@@ -143,33 +176,80 @@ namespace Kotono.Input
         {
             var mouse = Position.NDC;
 
-            Vector4 rayClip = new(mouse.X, mouse.Y, -1.0f, 1.0f);
-            Vector4 rayView = Matrix4.Invert(ObjectManager.ActiveCamera.ProjectionMatrix) * rayClip;
+            var rayClip = new Vector4(mouse.X, mouse.Y, -1.0f, 1.0f);
+            var rayView = Matrix4.Invert(Camera.Active.ProjectionMatrix) * rayClip;
             rayView.Z = -1.0f; rayView.W = 0.0f;
-            Vector4 rayWorld = ObjectManager.ActiveCamera.ViewMatrix * rayView;
+            var rayWorld = Camera.Active.ViewMatrix * rayView;
 
             Ray = ((Vector)rayWorld.Xyz).Normalized;
         }
 
-        internal static void SubscribeButtonPressed(EventHandler<TimedEventArgs> func, MouseButton button)
+        /// <summary>
+        /// Subscribe a method to a keyboard key <see cref="InputAction"/>.
+        /// </summary>
+        /// <param name="instance"> The object the method belongs to. </param>
+        /// <param name="methodInfo"> The method to subscribe. </param>
+        internal static void Subscribe(IObject instance, MethodInfo methodInfo)
         {
-            if (!_buttonsPressed.ContainsKey(button))
+            InputAction action;
+            int nameEnd;
+
+            if (methodInfo.Name.EndsWith("Pressed"))
             {
-                _buttonsPressed[button] = null;
+                action = InputAction.Pressed;
+                nameEnd = 13;
+            }
+            else if (methodInfo.Name.EndsWith("Down"))
+            {
+                action = InputAction.Down;
+                nameEnd = 10;
+            }
+            else if (methodInfo.Name.EndsWith("Released"))
+            {
+                action = InputAction.Released;
+                nameEnd = 14;
+            }
+            else
+            {
+                throw new KotonoException($"couldn't parse method \"{methodInfo.Name}\" to Action");
             }
 
-            _buttonsPressed[button] += func;
+            if (Enum.TryParse(methodInfo.Name[2..^nameEnd], out MouseButton button))
+            {
+                _buttonActions[button].Add(new Method(action, instance, methodInfo));
+            }
+            else
+            {
+                Logger.Log($"error: couldn't parse \"{methodInfo.Name[2..^10]}\" to Keys in Keyboard.Subscribe(IObject, MethodInfo).");
+            }
         }
 
+        /// <summary>
+        /// Unsubscribe all the methods of an object from keyboard key <see cref="InputAction"/>s.
+        /// </summary>
+        /// <param name="instance"> The object which to unsubscribe the methods. </param>
+        internal static void Unsubscribe(IObject instance)
+        {
+            foreach (var methods in _buttonActions.Values)
+            {
+                methods.RemoveAll(m => m.Instance == instance);
+            }
+        }
+
+
+        /// <inheritdoc cref="MouseState.IsButtonDown(MouseButton)"/>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static bool IsButtonDown(MouseButton button) => MouseState.IsButtonDown(button);
 
+        /// <inheritdoc cref="MouseState.WasButtonDown(MouseButton)"/>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static bool WasButtonDown(MouseButton button) => MouseState.WasButtonDown(button);
 
+        /// <inheritdoc cref="MouseState.IsButtonPressed(MouseButton)"/>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static bool IsButtonPressed(MouseButton button) => MouseState.IsButtonPressed(button);
 
+        /// <inheritdoc cref="MouseState.IsButtonReleased(MouseButton)"/>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static bool IsButtonReleased(MouseButton button) => MouseState.IsButtonReleased(button);
 

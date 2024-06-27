@@ -1,4 +1,5 @@
 ﻿
+using Kotono.Input;
 using Kotono.Utils.Coordinates;
 
 namespace Kotono.Graphics.Objects
@@ -12,7 +13,7 @@ namespace Kotono.Graphics.Objects
             get => _rect;
             set
             {
-                if (_rect != value)
+                if (!ReferenceEquals(_rect, value))
                 {
                     _rect.Dispose();
                     _rect = value;
@@ -26,12 +27,22 @@ namespace Kotono.Graphics.Objects
             set => _rect.BaseSize = value;
         }
 
-        public Point Size => _rect.Size;
+        public virtual Point Size
+        {
+            get => _rect.Size;
+            set => _rect.Size = value;
+        }
 
         public virtual Point Position
         {
             get => _rect.Position;
             set => _rect.Position = value;
+        }
+
+        public virtual Rotator Rotation
+        {
+            get => _rect.Rotation;
+            set => _rect.Rotation = value;
         }
 
         public virtual Point Scale
@@ -45,6 +56,10 @@ namespace Kotono.Graphics.Objects
             get => _settings.Layer;
             set => _settings.Layer = value;
         }
+
+        public override bool IsHovered => Rect.Overlaps(Rect, Mouse.Position);
+
+        public new IObject2D? Parent { get; set; }
 
         internal Object2D(T settings)
             : base(settings)

@@ -1,4 +1,5 @@
 ﻿using Kotono.Utils.Coordinates;
+using Kotono.Utils.Mathematics;
 using System.Runtime.CompilerServices;
 
 namespace Kotono.Utils

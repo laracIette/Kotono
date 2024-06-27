@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace Kotono.Utils
 {
@@ -204,6 +205,31 @@ namespace Kotono.Utils
         internal static IEnumerable<MethodInfo> GetAllMethods(this Type type, Func<MethodInfo, bool> predicate)
         {
             return type.GetAllMethods().Where(predicate);
+        }
+
+        internal static bool TryAddUnique<TSource>(this List<TSource> source, TSource item)
+        {
+            if (source.Contains(item))
+            {
+                return false;
+            }
+            else
+            {
+                source.Add(item);
+                return true;
+            }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static bool OfType<T>(this object? obj)
+        {
+            return obj?.GetType() == typeof(T);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static string Keep(this string source, string other)
+        {
+            return new string(source.Where(other.Contains).ToArray());
         }
     }
 }

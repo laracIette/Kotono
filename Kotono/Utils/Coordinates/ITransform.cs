@@ -15,7 +15,7 @@
         /// <summary> 
         /// The scale of the Transform relative to its parent. 
         /// </summary>
-        public Vector RelativeScale { get; set; } 
+        public Vector RelativeScale { get; set; }
 
         /// <summary> 
         /// The location of the Transform. 
@@ -40,12 +40,12 @@
         /// <summary>
         /// The velocity of the Transform's relative rotation.
         /// </summary>
-        public Rotator RelativeRotationVelocity { get; set; } 
+        public Rotator RelativeRotationVelocity { get; set; }
 
         /// <summary>
         /// The velocity of the Transform's relative scale.
         /// </summary>
-        public Vector RelativeScaleVelocity { get; set; } 
+        public Vector RelativeScaleVelocity { get; set; }
 
         /// <summary>
         /// The velocity of the Transform's location.
@@ -55,11 +55,11 @@
         /// <summary>
         /// The velocity of the Transform's rotation.
         /// </summary>
-        public Rotator WorldRotationVelocity { get; set; } 
+        public Rotator WorldRotationVelocity { get; set; }
 
         /// <summary>
         /// The velocity of the Transform's scale.
         /// </summary>
-        public Vector WorldScaleVelocity { get; set; } 
+        public Vector WorldScaleVelocity { get; set; }
     }
 }

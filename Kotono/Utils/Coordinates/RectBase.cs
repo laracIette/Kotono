@@ -1,16 +1,52 @@
-﻿namespace Kotono.Utils.Coordinates
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
+
+namespace Kotono.Utils.Coordinates
 {
-    public struct RectBase(Point position, Point baseSize, Point scale)
+    public struct RectBase : IEquatable<RectBase>
     {
-        public Point Position { get; set; } = position;
+        public Point BaseSize { get; set; } = Point.Zero;
 
-        public Point BaseSize { get; set; } = baseSize;
+        public Point Position { get; set; } = Point.Zero;
 
-        public Point Scale { get; set; } = scale;
+        public Rotator Rotation { get; set; } = Rotator.Zero;
 
-        public readonly Point Size => BaseSize * Scale;
+        public Point Scale { get; set; } = Point.Unit;
 
-        public RectBase(Point position, Point baseSize) : this(position, baseSize, Point.Unit) { }
+        public Point Size
+        {
+            readonly get => BaseSize * Scale;
+            set => Scale = value / BaseSize;
+        }
+
+        public RectBase(Point position, Point baseSize, Point size, Rotator rotation)
+        {
+            Position = position;
+            BaseSize = baseSize;
+            Size = size;
+            Rotation = rotation;
+        }
+
+        public RectBase(Point position, Point baseSize, Rotator rotation, Point scale)
+        {
+            Position = position;
+            BaseSize = baseSize;
+            Rotation = rotation;
+            Scale = scale;
+        }
+
+        public RectBase(Point position, Point size, Rotator rotation)
+        {
+            Position = position;
+            BaseSize = size;
+            Rotation = rotation;
+        }
+
+        public RectBase(Point position, Point size)
+        {
+            Position = position;
+            BaseSize = size;
+        }
 
         public static RectBase operator +(RectBase left, in RectBase right)
         {
@@ -31,6 +67,34 @@
             t.Position /= f;
             t.Scale = Point.Unit + (t.Scale - Point.Unit) / f;
             return t;
+        }
+
+        public static bool operator ==(RectBase left, RectBase right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(RectBase left, RectBase right)
+        {
+            return !(left == right);
+        }
+
+        public override readonly bool Equals(object? obj)
+        {
+            return obj is RectBase rectBase && Equals(rectBase);
+        }
+
+        public readonly bool Equals(RectBase other)
+        {
+            return other.BaseSize == BaseSize
+                && other.Position == Position
+                && other.Rotation == Rotation
+                && other.Scale == Scale;
+        }
+
+        public override readonly int GetHashCode()
+        {
+            return HashCode.Combine(BaseSize, Position, Rotation, Scale);
         }
     }
 }

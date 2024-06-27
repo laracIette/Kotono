@@ -13,20 +13,30 @@ namespace Kotono.Utils.Coordinates
 
         private Transformation? _transformation = null;
 
-        private RectBase _base = new(Point.Zero, Point.Zero, Point.Unit);
+        private RectBase _base = new(DefaultPosition, DefaultSize);
 
-        public Point BaseSize 
+        public Point BaseSize
         {
             get => _base.BaseSize;
             set => _base.BaseSize = value;
         }
 
-        public Point Size => _base.Size;
+        public Point Size
+        {
+            get => _base.Size;
+            set => _base.Size = value;
+        }
 
-        public Point Position 
-        { 
-            get => _base.Position; 
-            set => _base.Position = value; 
+        public Point Position
+        {
+            get => _base.Position;
+            set => _base.Position = value;
+        }
+
+        public Rotator Rotation
+        {
+            get => _base.Rotation;
+            set => _base.Rotation = value;
         }
 
         public Point Scale
@@ -36,16 +46,14 @@ namespace Kotono.Utils.Coordinates
         }
 
         /// <summary>
-        /// The Rect scaled to Normalized Device Coordinates.
+        /// The Normalized Device Coordinates of the Rect.
         /// </summary>
         public NDCRect NDC => new(Position, Size);
 
         /// <summary>
         /// The model matrix of the Rect.
         /// </summary>
-        public Matrix4 Model =>
-            Matrix4.CreateScale(NDC.Size.X, NDC.Size.Y, 1.0f)
-            * Matrix4.CreateTranslation(NDC.Position.X, NDC.Position.Y, 0.0f);
+        public Matrix4 Model => NDC.Model;
 
         /// <summary>
         /// The center Point of the Rect.
@@ -92,29 +100,41 @@ namespace Kotono.Utils.Coordinates
         /// </summary>
         public Point BottomRight => new(Position.X + Size.X / 2.0f, Position.Y - Size.Y / 2.0f);
 
-        /// <summary> 
-        /// A Rect with X = 0, Y = 0, W = 0, H = 0.
-        /// </summary>
-        public static Rect Default => new(0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f);
+        public static Point DefaultPosition => Point.Zero;
 
-        public Rect(float x = 0.0f, float y = 0.0f, float w = 0.0f, float h = 0.0f, float sx = 1.0f, float sy = 1.0f)
-            : base()
-        {
-            _base = new RectBase(new Point(x, y), new Point(w, h), new Point(sx, sy));
-        }
+        public static Point DefaultSize => Point.Zero;
+
+        public static Rotator DefaultRotation => Rotator.Zero;
+
+        public static Point DefaultScale => Point.Unit;
+
+        /// <summary> 
+        /// A Rect with Position = <see cref="Point.Zero"/>, Size = <see cref="Point.Zero"/>, Rotation = <see cref="Rotator.Zero"/>, Scale = <see cref="Point.Unit"/>.
+        /// </summary>
+        public static Rect Default => new(DefaultPosition, DefaultSize);
 
         [JsonConstructor]
-        public Rect() : this(0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f) { }
+        public Rect() : this(DefaultPosition, DefaultSize, DefaultRotation) { }
 
-        public Rect(Rect r) : this(r.Position.X, r.Position.Y, r.BaseSize.X, r.BaseSize.Y, r.Scale.X, r.Scale.Y) { }
+        public Rect(Point position, Point baseSize, Point size, Rotator rotation)
+        {
+            _base = new RectBase(position, baseSize, size, rotation);
+        }
 
-        public Rect(Point position, Point size) : this(position.X, position.Y, size.X, size.Y) { }
-        
-        public Rect(Point position, Point size, Point scale) : this(position.X, position.Y, size.X, size.Y, scale.X, scale.Y) { }
+        public Rect(Point position, Point baseSize, Rotator rotation, Point scale)
+        {
+            _base = new RectBase(position, baseSize, rotation, scale);
+        }
 
-        public Rect(Point position, float w, float h) : this(position.X, position.Y, w, h) { }
+        public Rect(Point position, Point size, Rotator rotation)
+        {
+            _base = new RectBase(position, size, rotation);
+        }
 
-        public Rect(float x, float y, Point size) : this(x, y, size.X, size.Y) { }
+        public Rect(Point position, Point size)
+        {
+            _base = new RectBase(position, size);
+        }
 
         public override void Update()
         {
@@ -271,7 +291,7 @@ namespace Kotono.Utils.Coordinates
 
         public bool Equals(Rect? r)
         {
-            return ReferenceEquals(this, r);
+            return r?._base == _base;
         }
 
         public override int GetHashCode()
@@ -286,7 +306,7 @@ namespace Kotono.Utils.Coordinates
 
         public static explicit operator Rect(Vector4 v)
         {
-            return new Rect(v.X, v.Y, v.Z, v.W);
+            return new Rect(new Point(v.X, v.Y), new Point(v.Z, v.W));
         }
 
         public override string ToString()

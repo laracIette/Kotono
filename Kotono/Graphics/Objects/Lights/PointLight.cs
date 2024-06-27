@@ -2,7 +2,7 @@
 
 namespace Kotono.Graphics.Objects.Lights
 {
-    internal class PointLight : Object3D<PointLightSettings>
+    internal class PointLight : Light<PointLightSettings>
     {
         internal const int MAX_COUNT = 100;
 
@@ -20,7 +20,7 @@ namespace Kotono.Graphics.Objects.Lights
 
         internal float Constant
         {
-            get => _settings.Constant; 
+            get => _settings.Constant;
             set => _settings.Constant = value;
         }
 
@@ -36,8 +36,8 @@ namespace Kotono.Graphics.Objects.Lights
             set => _settings.Quadratic = value;
         }
 
-        public override Color Color 
-        { 
+        public override Color Color
+        {
             get => Parent?.Color ?? base.Color;
             set
             {
@@ -47,7 +47,7 @@ namespace Kotono.Graphics.Objects.Lights
                 {
                     Parent.Color = value;
                 }
-            }  
+            }
         }
 
         internal PointLight(PointLightSettings settings)

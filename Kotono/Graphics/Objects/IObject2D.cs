@@ -7,5 +7,7 @@ namespace Kotono.Graphics.Objects
         public Rect Rect { get; set; }
 
         public int Layer { get; set; }
+
+        public new IObject2D? Parent { get; set; }
     }
 }

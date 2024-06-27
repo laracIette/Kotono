@@ -2,6 +2,7 @@
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
@@ -9,7 +10,7 @@ namespace Kotono.Input
 {
     internal static class Keyboard
     {
-        private record class Method(Action Action, IObject Instance, MethodInfo MethodInfo);
+        private record class Method(InputAction InputAction, IObject Instance, MethodInfo MethodInfo);
 
         private static KeyboardState? _keyboardState;
 
@@ -23,9 +24,12 @@ namespace Kotono.Input
 
         static Keyboard()
         {
-            foreach (var key in Enum.GetValues<Keys>()[..^2]) // remove Keys.Unknown and Keys.LastKey
+            foreach (var key in Enum.GetValues<Keys>().Distinct())
             {
-                _keyActions[key] = [];
+                if (key != Keys.Unknown)
+                {
+                    _keyActions[key] = [];
+                }
             }
         }
 
@@ -39,40 +43,39 @@ namespace Kotono.Input
 
                 foreach (var method in _keyActions[key])
                 {
-                    if ((isKeyPressed && method.Action == Action.Pressed)
-                     || (isKeyDown && method.Action == Action.Down)
-                     || (isKeyReleased && method.Action == Action.Released))
+                    if ((isKeyPressed && method.InputAction == InputAction.Pressed)
+                     || (isKeyDown && method.InputAction == InputAction.Down)
+                     || (isKeyReleased && method.InputAction == InputAction.Released))
                     {
                         method.MethodInfo.Invoke(method.Instance, null);
-                        // TODO: replace by Action ? method.action();
                     }
                 }
             }
         }
 
         /// <summary>
-        /// Subscribe a method to a keyboard key <see cref="Action"/>.
+        /// Subscribe a method to a keyboard key <see cref="InputAction"/>.
         /// </summary>
         /// <param name="instance"> The object the method belongs to. </param>
         /// <param name="methodInfo"> The method to subscribe. </param>
         internal static void Subscribe(IObject instance, MethodInfo methodInfo)
         {
-            Action action;
+            InputAction action;
             int nameEnd;
 
             if (methodInfo.Name.EndsWith("Pressed"))
             {
-                action = Action.Pressed;
+                action = InputAction.Pressed;
                 nameEnd = 10;
             }
             else if (methodInfo.Name.EndsWith("Down"))
             {
-                action = Action.Down;
+                action = InputAction.Down;
                 nameEnd = 7;
             }
             else if (methodInfo.Name.EndsWith("Released"))
             {
-                action = Action.Released;
+                action = InputAction.Released;
                 nameEnd = 11;
             }
             else
@@ -91,21 +94,7 @@ namespace Kotono.Input
         }
 
         /// <summary>
-        /// Unsubscribe a method from a keyboard key <see cref="Action"/>.
-        /// </summary>
-        /// <param name="instance"> The object the method belongs to. </param>
-        /// <param name="methodInfo"> The method to unsubscribe. </param>
-        [Obsolete("Use Keyboard.Unsubscribe(IObject) instead as you never need to unsubscribe a single method.")]
-        internal static void Unsubscribe(IObject instance, MethodInfo methodInfo)
-        {
-            foreach (var methods in _keyActions.Values)
-            {
-                methods.RemoveAll(m => m.Instance == instance && m.MethodInfo == methodInfo);
-            }
-        }
-
-        /// <summary>
-        /// Unsubscribe all the methods of an object from keyboard key <see cref="Action"/>s.
+        /// Unsubscribe all the methods of an object from keyboard key <see cref="InputAction"/>s.
         /// </summary>
         /// <param name="instance"> The object which to unsubscribe the methods. </param>
         internal static void Unsubscribe(IObject instance)
@@ -115,6 +104,7 @@ namespace Kotono.Input
                 methods.RemoveAll(m => m.Instance == instance);
             }
         }
+
 
         /// <inheritdoc cref="KeyboardState.IsKeyDown(Keys)"/>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

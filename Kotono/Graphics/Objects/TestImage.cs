@@ -1,10 +1,15 @@
-﻿using Kotono.Utils;
-using Kotono.Utils.Coordinates;
+﻿using Kotono.Utils.Coordinates;
 
 namespace Kotono.Graphics.Objects
 {
     internal class TestImage()
-        : Image(new ImageSettings { Texture = Utils.Path.ASSETS + "Characters/a.png", Rect = new Rect(150.0f, 250.0f, 50.0f, 60.0f) })
+        : Image(
+            new ImageSettings
+            {
+                Texture = Utils.Path.ASSETS + "Characters/a.png",
+                Rect = new Rect(new Point(150.0f, 250.0f), new Point(50.0f, 60.0f))
+            }
+        )
     {
         protected virtual void OnUpKeyDown()
         {

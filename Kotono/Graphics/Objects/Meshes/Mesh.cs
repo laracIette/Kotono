@@ -50,7 +50,7 @@ namespace Kotono.Graphics.Objects.Meshes
 
                     foreach (var triangle in Model.Triangles)
                     {
-                        if (Intersection.IntersectRayTriangle(ObjectManager.ActiveCamera.Location, Mouse.Ray, in triangle, Transform, out Vector intersectionLocation, out float intersectionDistance))
+                        if (Intersection.IntersectRayTriangle(Camera.Active.Location, Mouse.Ray, in triangle, Transform, out Vector intersectionLocation, out float intersectionDistance))
                         {
                             IntersectionLocation = intersectionLocation;
                             IntersectionDistance = intersectionDistance;
@@ -85,8 +85,6 @@ namespace Kotono.Graphics.Objects.Meshes
             }
 
             Model = Model.Load(new ModelSettings { Path = settings.Model, Shader = _shader });
-
-            Mouse.SubscribeButtonPressed(OnLeftPressed, MouseButton.Left);
         }
 
         public override void Update()
@@ -112,7 +110,7 @@ namespace Kotono.Graphics.Objects.Meshes
             RelativeLocation = tempLoc;
         }
 
-        protected virtual void OnLeftPressed(object? sender, TimedEventArgs e)
+        protected virtual void OnLeftButtonPressed()
         {
             // If gizmo isn't selected
             if (!Gizmo.IsSelected)
@@ -132,15 +130,10 @@ namespace Kotono.Graphics.Objects.Meshes
                         IsSelected = !IsSelected;
                     }
                 }
-
-                // If mesh isn't clicked
-                else
+                // If mesh isn't clicked and left control is up
+                else if (!Keyboard.IsKeyDown(Keys.LeftControl))
                 {
-                    // If left control is up
-                    if (!Keyboard.IsKeyDown(Keys.LeftControl))
-                    {
-                        IsSelected = false;
-                    }
+                    IsSelected = false;
                 }
             }
 

@@ -39,7 +39,7 @@ namespace Kotono
                         "Yo",
                         "BOoOOooOo"
                     ],
-                    Rect = new Rect(150.0f, 150.0f, 200.0f, 50.0f),
+                    Rect = new Rect(new Point(150.0f, 150.0f), new Point(200.0f, 50.0f)),
                     CornerSize = 15.0f
                 }
             );
@@ -91,6 +91,11 @@ namespace Kotono
             }
         }
 
+        private static void OnUKeyPressed()
+        {
+            _cube?.Transform.SetLocationTransformation(new Vector(0.0f, 1.0f, 0.0f), 1.0f);
+        }
+
         protected override void Start()
         {
             _timer.Start(1.0f, true);
@@ -103,7 +108,10 @@ namespace Kotono
             if (Keyboard.IsKeyPressed(Keys.I)) OnIKeyPressed();
             if (Keyboard.IsKeyPressed(Keys.J)) OnJKeyPressed();
             if (Keyboard.IsKeyPressed(Keys.K)) OnKKeyPressed();
+            if (Keyboard.IsKeyPressed(Keys.U)) OnUKeyPressed();
         }
+
+        private static Cube? _cube;
 
         private static void CreateObjects()
         {
@@ -115,7 +123,7 @@ namespace Kotono
                 IsFizix = false,
             };
 
-            _ = new Cube()
+            _cube = new Cube()
             {
                 RelativeLocation = new Vector(0.0f, 0.0f, -5.0f)
             };

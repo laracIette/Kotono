@@ -6,18 +6,25 @@ namespace Kotono.Utils.Coordinates
 {
     internal class Transform : Object, ITransform, IReplaceable<Transform>, ICloneable<Transform>, IEquatable<Transform>
     {
-        private record class Transformation(TransformBase TransformBase, float EndTime);
+        private record class Transformation<T>(T Value, float EndTime) where T : struct
+        {
+            internal bool IsValid => Time.Now < EndTime;
+        }
 
-        private Transformation? _transformation = null;
+        private Transformation<Vector>? _locationTransformation = null;
+
+        private Transformation<Rotator>? _rotationTransformation = null;
+
+        private Transformation<Vector>? _scaleTransformation = null;
 
         private TransformBase _base = new(DefaultLocation, DefaultRotation, DefaultScale);
-        
+
         private TransformBase _velocity = new(DefaultLocationVelocity, DefaultRotationVelocity, DefaultScaleVelocity);
-        
-        public Vector RelativeLocation 
-        { 
-            get => _base.Location; 
-            set => _base.Location = value; 
+
+        public Vector RelativeLocation
+        {
+            get => _base.Location;
+            set => _base.Location = value;
         }
 
         public Rotator RelativeRotation
@@ -204,33 +211,86 @@ namespace Kotono.Utils.Coordinates
             RelativeRotation += Time.Delta * RelativeRotationVelocity;
             RelativeScale += Time.Delta * RelativeScaleVelocity;
 
-            if (_transformation != null)
+            if (GetTransformation(ref _locationTransformation, out Vector location))
             {
-                if (Time.Now > _transformation.EndTime)
-                {
-                    _transformation = null;
-                }
-                else
-                {
-                    _base += Time.Delta * _transformation.TransformBase;
-                }
+                RelativeLocation += Time.Delta * location;
+            }
+
+            if (GetTransformation(ref _rotationTransformation, out Rotator rotation))
+            {
+                RelativeRotation += Time.Delta * rotation;
+            }
+
+            if (GetTransformation(ref _scaleTransformation, out Vector scale))
+            {
+                RelativeScale += Time.Delta * scale;
+            }
+        }
+
+        private static bool GetTransformation<T>(ref Transformation<T>? transformation, out T value) where T : struct
+        {
+            if (transformation?.IsValid ?? false)
+            {
+                value = transformation.Value;
+                return true;
+            }
+            else
+            {
+                value = default;
+                transformation = null;
+                return false;
+            }
+
+        }
+
+        /// <summary>
+        /// Transform the <see cref="Transform"/>'s location in a given time span.
+        /// </summary>
+        /// <param name="t"> The location to add. </param>
+        /// <param name="duration"> The duration of the transformation. </param>
+        internal void SetLocationTransformation(Vector location, float duration)
+        {
+            if (duration <= 0.0f)
+            {
+                RelativeLocation += location;
+            }
+            else
+            {
+                _locationTransformation = new(location / duration, Time.Now + duration);
             }
         }
 
         /// <summary>
-        /// Transform the <see cref="Transform"/> in a given time span.
+        /// Transform the <see cref="Transform"/>'s rotation in a given time span.
         /// </summary>
-        /// <param name="t"> The transformation to add. </param>
+        /// <param name="t"> The rotation to add. </param>
         /// <param name="duration"> The duration of the transformation. </param>
-        internal void SetTransformation(TransformBase t, float duration)
+        internal void SetRotationTransformation(Rotator rotation, float duration)
         {
             if (duration <= 0.0f)
             {
-                _base = t;
+                RelativeRotation += rotation;
             }
             else
             {
-                _transformation = new Transformation(t / duration, Time.Now + duration);
+                _rotationTransformation = new(rotation / duration, Time.Now + duration);
+            }
+        }
+
+        /// <summary>
+        /// Transform the <see cref="Transform"/>'s scale in a given time span.
+        /// </summary>
+        /// <param name="t"> The scale to add. </param>
+        /// <param name="duration"> The duration of the transformation. </param>
+        internal void SetScaleTransformation(Vector scale, float duration)
+        {
+            if (duration <= 0.0f)
+            {
+                RelativeScale += scale;
+            }
+            else
+            {
+                _scaleTransformation = new(scale / duration, Time.Now + duration);
             }
         }
 
@@ -251,7 +311,7 @@ namespace Kotono.Utils.Coordinates
 
         public bool Equals(Transform? t)
         {
-            return ReferenceEquals(this, t);
+            return t?._base == _base;
         }
 
         /// <inheritdoc cref="ICloneable{T}.Clone()"/>

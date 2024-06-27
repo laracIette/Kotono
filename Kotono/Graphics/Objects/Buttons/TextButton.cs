@@ -10,7 +10,7 @@ namespace Kotono.Graphics.Objects.Buttons
         protected readonly Text _text = new(
             new TextSettings
             {
-                Rect = new Rect(settings.Rect.Position, 25.0f, 30.0f),
+                Rect = new Rect(settings.Rect.Position, new Point(25.0f, 30.0f)),
                 Layer = 2,
                 Text = settings.TextSettings.Text,
                 Spacing = 0.6f
