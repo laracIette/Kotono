@@ -88,19 +88,13 @@ namespace Kotono.Graphics.Objects.Texts
             [','] = @"Characters\,.png"
         };
 
-        internal string Value { get; private set; } = "";
-
-        internal Anchor Anchor { get; private set; } = Anchor.Center;
-
-        internal float Spacing { get; private set; } = 1.0f;
-
-        protected readonly List<Image> _letters = [];
-
         private readonly RoundedBorder _roundedBorder;
 
-        protected Rect _lettersRect = Rect.Default; // welp
+        private readonly Rect _rect = Rect.Default; // TODO: welp
 
-        private readonly Rect _rect = Rect.Default; // welp
+        protected readonly List<Image> _letters = []; // TODO: replace by private, and change Rect in PrinterText
+
+        protected Rect _lettersRect = Rect.Default; // TODO: welp
 
         private object? _source = null;
 
@@ -120,6 +114,12 @@ namespace Kotono.Graphics.Objects.Texts
                 _source = value;
             }
         }
+
+        internal string Value { get; private set; } = "";
+
+        internal Anchor Anchor { get; private set; } = Anchor.Center;
+
+        internal float Spacing { get; private set; } = 1.0f;
 
         public override Rect Rect
         {

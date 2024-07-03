@@ -11,9 +11,9 @@ namespace Kotono.Utils.Mathematics
 
         internal Expression(string input) // "6^2 * (2 + 2)"
         {
-            const string OPERANDS_0 = "^";
-            const string OPERANDS_1 = "*/";
-            const string OPERANDS_2 = "+-";
+            //const string OPERANDS_0 = "^";
+            //const string OPERANDS_1 = "*/";
+            //const string OPERANDS_2 = "+-";
 
             input = input.Keep("0123456789*/+-()^x");
         }

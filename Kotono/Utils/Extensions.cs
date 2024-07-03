@@ -207,6 +207,10 @@ namespace Kotono.Utils
             return type.GetAllMethods().Where(predicate);
         }
 
+        /// <summary>
+        /// Adds an item to the List if it doesn't contain the item.
+        /// </summary>
+        /// <returns> Wether the item was added to the List. </returns>
         internal static bool TryAddUnique<TSource>(this List<TSource> source, TSource item)
         {
             if (source.Contains(item))
@@ -220,6 +224,9 @@ namespace Kotono.Utils
             }
         }
 
+        /// <summary>
+        /// Get wether the object is of type T.
+        /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static bool OfType<T>(this object? obj)
         {

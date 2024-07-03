@@ -22,6 +22,10 @@ namespace Kotono
 
         public bool IsDelete { get; private set; } = false;
 
+        public float CreationTime { get; } = Time.Now;
+
+        public float TimeSinceCreation => Time.Now - CreationTime;
+
         internal Object()
         {
             ObjectManager.Create(this);

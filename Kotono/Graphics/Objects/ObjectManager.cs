@@ -18,6 +18,8 @@ namespace Kotono.Graphics.Objects
 
         private static readonly List<IObject> _objects = [];
 
+        private static readonly Dictionary<Type, MethodInfo[]> _typeInputMethods = [];
+
         internal static PointLight[] PointLights => _objects.OfType<PointLight>().ToArray();
 
         internal static SpotLight[] SpotLights => _objects.OfType<SpotLight>().ToArray();
@@ -57,8 +59,6 @@ namespace Kotono.Graphics.Objects
                 Subscribe(obj);
             }
         }
-
-        private static readonly Dictionary<Type, MethodInfo[]> _typeInputMethods = [];
 
         private static void Subscribe(IObject obj)
         {
