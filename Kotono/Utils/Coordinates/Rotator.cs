@@ -1,6 +1,7 @@
 ﻿using OpenTK.Mathematics;
 using System;
 using System.Runtime.InteropServices;
+using System.Text.Json.Serialization;
 
 namespace Kotono.Utils.Coordinates
 {
@@ -10,17 +11,20 @@ namespace Kotono.Utils.Coordinates
         /// <summary>
         /// The pitch angle of the <see cref="Rotator"/> in degrees.
         /// </summary>
-        public float Pitch { get; set; }
+        [JsonInclude]
+        public float Pitch = 0.0f;
 
         /// <summary>
         /// The yaw angle of the <see cref="Rotator"/> in degrees.
         /// </summary>
-        public float Yaw { get; set; }
+        [JsonInclude]
+        public float Yaw = 0.0f;
 
         /// <summary>
         /// The roll angle of the <see cref="Rotator"/> in degrees.
         /// </summary>
-        public float Roll { get; set; }
+        [JsonInclude]
+        public float Roll = 0.0f;
 
         /// <summary>
         /// The <see cref="Rotator"/> in radians.

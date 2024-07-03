@@ -12,12 +12,12 @@ namespace Kotono.Graphics.Objects.Buttons
             {
                 Rect = new Rect(settings.Rect.Position, new Point(25.0f, 30.0f)),
                 Layer = 2,
-                Text = settings.TextSettings.Text,
+                Source = settings.TextSettings.Source,
                 Spacing = 0.6f
             }
         );
 
-        private readonly TextButtonEventArgs _args = new() { Text = settings.TextSettings.Text };
+        private readonly TextButtonEventArgs _args = new() { Source = settings.TextSettings.Source };
 
         internal new event EventHandler<TextButtonEventArgs>? Pressed = null;
 

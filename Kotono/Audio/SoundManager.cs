@@ -21,7 +21,7 @@ namespace Kotono.Audio
             get => _generalVolume;
             set
             {
-                _generalVolume = Math.Clamp(value, 0.0f, 1.0f);
+                _generalVolume = Math.Clamp(value);
             }
         }
 

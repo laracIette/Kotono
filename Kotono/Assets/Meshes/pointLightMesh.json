@@ -10,9 +10,9 @@
       "Z": 0
     },
     "RelativeRotation": {
-      "Roll": 0,
       "Pitch": 0,
-      "Yaw": 0
+      "Yaw": 0,
+      "Roll": 0
     },
     "RelativeScale": {
       "X": 1,
@@ -25,16 +25,49 @@
       "Z": 0
     },
     "RelativeRotationVelocity": {
-      "Roll": 0,
       "Pitch": 0,
-      "Yaw": 0
+      "Yaw": 0,
+      "Roll": 0
     },
     "RelativeScaleVelocity": {
       "X": 0,
       "Y": 0,
       "Z": 0
     },
-    "Parent": null,
+    "Parent": {
+      "RelativeLocation": {
+        "X": 6.1419125,
+        "Y": -3.5866356,
+        "Z": -8.016477
+      },
+      "RelativeRotation": {
+        "Pitch": 0,
+        "Yaw": 0,
+        "Roll": 0
+      },
+      "RelativeScale": {
+        "X": 1,
+        "Y": 1,
+        "Z": 1
+      },
+      "RelativeLocationVelocity": {
+        "X": 0.43988022,
+        "Y": 0.27717566,
+        "Z": 0.06397854
+      },
+      "RelativeRotationVelocity": {
+        "Pitch": 0,
+        "Yaw": 0,
+        "Roll": 0
+      },
+      "RelativeScaleVelocity": {
+        "X": 0,
+        "Y": 0,
+        "Z": 0
+      },
+      "Parent": null,
+      "IsUpdate": true
+    },
     "IsUpdate": true
   },
   "Path": "..\\..\\..\\Assets\\Meshes\\pointLightMesh.json",

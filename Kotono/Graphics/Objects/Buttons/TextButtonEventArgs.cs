@@ -2,6 +2,6 @@
 {
     internal class TextButtonEventArgs : ButtonEventArgs
     {
-        internal string Text { get; set; } = "";
+        internal object? Source { get; set; } = null;
     }
 }

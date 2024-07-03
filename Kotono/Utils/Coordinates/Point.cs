@@ -2,6 +2,7 @@
 using OpenTK.Mathematics;
 using System;
 using System.Runtime.InteropServices;
+using System.Text.Json.Serialization;
 
 namespace Kotono.Utils.Coordinates
 {
@@ -11,12 +12,14 @@ namespace Kotono.Utils.Coordinates
         /// <summary> 
         /// The X component of the Point. 
         /// </summary>
-        public float X { get; set; }
+        [JsonInclude]
+        public float X = 0.0f;
 
         /// <summary>
         /// The Y component of the Point. 
         /// </summary>
-        public float Y { get; set; }
+        [JsonInclude]
+        public float Y = 0.0f;
 
         /// <summary> 
         /// The length component of the Point. 

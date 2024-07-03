@@ -4,6 +4,7 @@ using Kotono.Utils.Exceptions;
 using OpenTK.Mathematics;
 using System;
 using System.Runtime.InteropServices;
+using System.Text.Json.Serialization;
 using Quaternion = OpenTK.Mathematics.Quaternion;
 
 namespace Kotono.Utils.Coordinates
@@ -14,17 +15,20 @@ namespace Kotono.Utils.Coordinates
         /// <summary> 
         /// The X component of the <see cref="Vector"/>. 
         /// </summary>
-        public float X { get; set; }
+        [JsonInclude]
+        public float X = 0.0f;
 
         /// <summary>
         /// The Y component of the <see cref="Vector"/>. 
         /// </summary>
-        public float Y { get; set; }
+        [JsonInclude]
+        public float Y = 0.0f;
 
         /// <summary> 
         /// The Z component of the <see cref="Vector"/>. 
         /// </summary>
-        public float Z { get; set; }
+        [JsonInclude]
+        public float Z = 0.0f;
 
         /// <summary>
         /// The component of the <see cref="Vector"/> corresponding to the index.

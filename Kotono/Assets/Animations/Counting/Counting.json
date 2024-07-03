@@ -4,14 +4,28 @@
   "StartTime": 3,
   "Duration": 5,
   "Rect": {
+    "BaseSize": {
+      "X": 50,
+      "Y": 60
+    },
+    "Size": {
+      "X": 50,
+      "Y": 60
+    },
     "Position": {
       "X": 100,
       "Y": 200
     },
-    "BaseSize": {
-      "X": 50,
-      "Y": 60
-    }
+    "Rotation": {
+      "Pitch": 0,
+      "Yaw": 0,
+      "Roll": 0
+    },
+    "Scale": {
+      "X": 1,
+      "Y": 1
+    },
+    "IsUpdate": true
   },
   "Layer": 0,
   "Path": "..\\..\\..\\Assets\\Animations\\Counting\\Counting.json",

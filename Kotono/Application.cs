@@ -123,12 +123,12 @@ namespace Kotono
                 IsFizix = false,
             };
 
-            _cube = new Cube()
+            _cube = new Cube
             {
                 RelativeLocation = new Vector(0.0f, 0.0f, -5.0f)
             };
 
-            _ = new Cube()
+            _ = new Cube
             {
                 RelativeLocation = new Vector(6.0f, 0.0f, 0.0f)
             };

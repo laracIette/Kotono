@@ -1,21 +1,25 @@
 ﻿using OpenTK.Mathematics;
 using System;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Text.Json.Serialization;
 
 namespace Kotono.Utils.Coordinates
 {
     [StructLayout(LayoutKind.Sequential)]
-    public partial struct PointI : IEquatable<PointI>
+    public struct PointI : IEquatable<PointI>
     {
         /// <summary> 
         /// The X component of the PointI. 
         /// </summary>
-        public int X { get; set; }
+        [JsonInclude]
+        public int X = 0;
 
         /// <summary>
         /// The Y component of the PointI. 
         /// </summary>
-        public int Y { get; set; }
+        [JsonInclude]
+        public int Y = 0;
 
         /// <summary> 
         /// The length component of the PointI. 

@@ -13,7 +13,7 @@ namespace Kotono.Engine.UserInterface.AddMenu
                 Rect = new Rect(Point.Zero, new Point(100.0f, 100.0f)),
                 Color = Color.Gray,
                 Layer = 1,
-                TextSettings = new TextSettings { Text = text },
+                TextSettings = new TextSettings { Source = text },
                 CornerSize = 25.0f,
                 FallOff = 2.0f
             }

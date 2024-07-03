@@ -4,32 +4,28 @@ using Kotono.Utils.Timing;
 
 namespace Kotono.Graphics.Objects.Texts
 {
-    internal class PrinterText : Text
+    internal class PrinterText() 
+        : Text(
+            new TextSettings
+            {
+                Rect = new Rect(Point.Zero, new Point(25.0f, 30.0f)),
+                Anchor = Anchor.TopLeft,
+                Spacing = 2.0f / 3.0f,
+                Layer = int.MaxValue
+            }
+        )
     {
-        private readonly Timer _clear = new();
+        internal override object? Source 
+        { 
+            get => base.Source; 
+            set
+            {
+                Position = Point.Zero;
 
-        internal PrinterText()
-            : base(
-                new TextSettings
-                {
-                    Rect = new Rect(Point.Zero, new Point(25.0f, 30.0f)),
-                    Anchor = Anchor.TopLeft,
-                    Spacing = 2.0f / 3.0f,
-                    Layer = int.MaxValue
-                }
-            )
-        {
-            _clear.Timeout += OnClearTimeout;
-        }
+                base.Source = value;
 
-        internal override void SetText(string text)
-        {
-            _text = text;
-
-            Position = Point.Zero;
-            Init();
-
-            _clear.Start(3.0f);
+                ExecuteAction.Delay(Clear, 3.0f);
+            }
         }
 
         internal void Lower()
@@ -40,11 +36,6 @@ namespace Kotono.Graphics.Objects.Texts
             {
                 letter.Position += new Point(0.0f, _lettersRect.BaseSize.Y);
             }
-        }
-
-        private void OnClearTimeout(object? sender, TimedEventArgs e)
-        {
-            Clear();
         }
     }
 }

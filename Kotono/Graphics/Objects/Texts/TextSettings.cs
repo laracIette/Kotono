@@ -8,12 +8,12 @@ namespace Kotono.Graphics.Objects.Texts
     internal class TextSettings : Object2DSettings
     {
         /// <summary>
-        /// The text that the Text should display.
+        /// The object that the Text should display.
         /// </summary>
         /// <remarks> 
-        /// Default value : "" 
+        /// Default value : null 
         /// </remarks>
-        public string Text { get; set; } = "";
+        public object? Source { get; set; } = null;
 
         /// <summary>
         /// The anchor from which the Text should be drawn.

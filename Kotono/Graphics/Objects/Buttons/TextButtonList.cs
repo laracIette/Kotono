@@ -27,7 +27,7 @@ namespace Kotono.Graphics.Objects.Buttons
                         Rect = new Rect(positions[i], settings.Rect.Size),
                         TextSettings = new TextSettings
                         {
-                            Text = settings.Texts[i]
+                            Source = settings.Texts[i]
                         }
                     }
                 );
@@ -38,7 +38,7 @@ namespace Kotono.Graphics.Objects.Buttons
 
         private void OnPressed(object? sender, TextButtonEventArgs e)
         {
-            Printer.Print(e.Text, true);
+            Printer.Print(e.Source, true);
         }
     }
 }

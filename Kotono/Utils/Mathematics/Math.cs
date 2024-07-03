@@ -47,7 +47,7 @@ namespace Kotono.Utils.Mathematics
             return System.MathF.Sin(value);
         }
 
-        /// <inheritdoc cref="System.MathF.Sqrt(float)" />
+        /// <inheritdoc cref="System.MathF.Sqrt(float)" />   
         public static float Sqrt(float value)
         {
             return System.MathF.Sqrt(value);
@@ -77,7 +77,8 @@ namespace Kotono.Utils.Mathematics
 
         /// <summary>
         /// Clamp a value in range [0, 1].
-        /// </summary>
+        /// </summary>    
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float Clamp(float value)
         {
             return Clamp(value, 0.0f, 1.0f);
@@ -109,7 +110,6 @@ namespace Kotono.Utils.Mathematics
             if (min > max)
             {
                 (min, max) = (max, min);
-                Logger.Log("min, max switched in \"Math.Loop(float value, float min, float max)\".");
             }
 
             if (value >= max)
@@ -127,6 +127,7 @@ namespace Kotono.Utils.Mathematics
         /// <summary> 
         /// Loop a number in range [0, max).
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float Loop(float value, float max)
         {
             return Loop(value, 0.0f, max);
@@ -150,6 +151,12 @@ namespace Kotono.Utils.Mathematics
             return result;
         }
 
+        /// <summary>
+        /// Get the average of the given values.
+        /// </summary>
+        /// <param name="values"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float Avg(params float[] values)
         {
             return Add(values) / values.Length;

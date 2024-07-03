@@ -88,26 +88,45 @@ namespace Kotono.Graphics.Objects.Texts
             [','] = @"Characters\,.png"
         };
 
-        protected string _text;
+        internal string Value { get; private set; } = "";
 
-        protected Anchor _anchor;
+        internal Anchor Anchor { get; private set; } = Anchor.Center;
 
-        protected float _spacing;
+        internal float Spacing { get; private set; } = 1.0f;
 
         protected readonly List<Image> _letters = [];
 
         private readonly RoundedBorder _roundedBorder;
 
-        protected Rect _lettersRect = Rect.Default;
+        protected Rect _lettersRect = Rect.Default; // welp
 
-        private readonly Rect _rect = Rect.Default;
+        private readonly Rect _rect = Rect.Default; // welp
+
+        private object? _source = null;
+
+        internal virtual object? Source 
+        { 
+            get => _source;
+            set
+            {
+                var newValue = value?.ToString() ?? "";
+
+                if (Value != newValue)
+                {
+                    Value = newValue;
+                    Init();
+                }
+
+                _source = value;
+            } 
+        }
 
         public override Rect Rect
         {
             get
             {
-                _rect.Position = Rect.FromAnchor(_lettersRect.Position, new Point(_lettersRect.BaseSize.X * _text.Length * _spacing, _lettersRect.BaseSize.Y), _anchor);
-                _rect.BaseSize = new Point(_lettersRect.BaseSize.X * _text.Length * _spacing, _lettersRect.BaseSize.Y);
+                _rect.Position = Rect.FromAnchor(_lettersRect.Position, new Point(_lettersRect.BaseSize.X * Value.Length * Spacing, _lettersRect.BaseSize.Y), Anchor);
+                _rect.BaseSize = new Point(_lettersRect.BaseSize.X * Value.Length * Spacing, _lettersRect.BaseSize.Y);
                 return _rect;
             }
             set => _lettersRect = value;
@@ -168,10 +187,10 @@ namespace Kotono.Graphics.Objects.Texts
         internal Text(TextSettings settings)
             : base(settings)
         {
-            _text = settings.Text;
-            _anchor = settings.Anchor;
+            Source = settings.Source; 
+            Anchor = settings.Anchor;
             Color = settings.Color;
-            _spacing = settings.Spacing;
+            Spacing = settings.Spacing;
 
             _roundedBorder = new RoundedBorder(
                 new RoundedBorderSettings
@@ -189,9 +208,9 @@ namespace Kotono.Graphics.Objects.Texts
         {
             Clear();
 
-            for (int i = 0; i < _text.Length; i++)
+            for (int i = 0; i < Value.Length; i++)
             {
-                if (!_charactersPath.TryGetValue(_text[i], out string? path))
+                if (!_charactersPath.TryGetValue(Value[i], out string? path))
                 {
                     path = _charactersPath[' '];
                 }
@@ -212,57 +231,48 @@ namespace Kotono.Graphics.Objects.Texts
 
         private Point GetLetterPosition(int index, Point position, Point size)
         {
-            position = _anchor switch
+            position = Anchor switch
             {
                 Anchor.Center => new Point(
-                    position.X + _spacing * size.X * (index - (_text.Length - 1) / 2.0f),
+                    position.X + Spacing * size.X * (index - (Value.Length - 1) / 2.0f),
                     position.Y
                 ),
                 Anchor.Top => new Point(
-                    position.X + _spacing * size.X * (index - (_text.Length - 1) / 2.0f),
+                    position.X + Spacing * size.X * (index - (Value.Length - 1) / 2.0f),
                     position.Y + size.Y / 2.0f
                 ),
                 Anchor.Bottom => new Point(
-                    position.X + _spacing * size.X * (index - (_text.Length - 1) / 2.0f),
+                    position.X + Spacing * size.X * (index - (Value.Length - 1) / 2.0f),
                     position.Y - size.Y / 2.0f
                 ),
                 Anchor.Left => new Point(
-                    position.X + _spacing * size.X * (0.5f + index),
+                    position.X + Spacing * size.X * (0.5f + index),
                     position.Y
                 ),
                 Anchor.Right => new Point(
-                    position.X - _spacing * size.X * (1.5f + index - _text.Length),
+                    position.X - Spacing * size.X * (1.5f + index - Value.Length),
                     position.Y
                 ),
                 Anchor.TopLeft => new Point(
-                    position.X + _spacing * size.X * (0.5f + index),
+                    position.X + Spacing * size.X * (0.5f + index),
                     position.Y + size.Y / 2.0f
                 ),
                 Anchor.TopRight => new Point(
-                    position.X - _spacing * size.X * (1.5f + index - _text.Length),
+                    position.X - Spacing * size.X * (1.5f + index - Value.Length),
                     position.Y + size.Y / 2.0f
                 ),
                 Anchor.BottomLeft => new Point(
-                    position.X + _spacing * size.X * (0.5f + index),
+                    position.X + Spacing * size.X * (0.5f + index),
                     position.Y - size.Y / 2.0f
                 ),
                 Anchor.BottomRight => new Point(
-                    position.X - _spacing * size.X * (1.5f + index - _text.Length),
+                    position.X - Spacing * size.X * (1.5f + index - Value.Length),
                     position.Y - size.Y / 2.0f
                 ),
-                _ => throw new Exception($"error: Text.Init()'s switch on Anchor doesn't handle \"{_anchor}\""),
+                _ => throw new Exception($"error: Text.Init()'s switch on Anchor doesn't handle \"{Anchor}\""),
             };
 
             return position;
-        }
-
-        internal virtual void SetText(string text)
-        {
-            if (text != _text)
-            {
-                _text = text;
-                Init();
-            }
         }
 
         internal void Clear()
@@ -282,6 +292,6 @@ namespace Kotono.Graphics.Objects.Texts
             base.Dispose();
         }
 
-        public override string ToString() => _text;
+        public override string ToString() => Value;
     }
 }

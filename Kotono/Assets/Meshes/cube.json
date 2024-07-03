@@ -21,9 +21,9 @@
       "Z": 0
     },
     "RelativeRotation": {
-      "Roll": 0,
       "Pitch": 0,
-      "Yaw": 0
+      "Yaw": 0,
+      "Roll": 0
     },
     "RelativeScale": {
       "X": 1,
@@ -36,9 +36,9 @@
       "Z": 0
     },
     "RelativeRotationVelocity": {
-      "Roll": 0,
       "Pitch": 0,
-      "Yaw": 0
+      "Yaw": 0,
+      "Roll": 0
     },
     "RelativeScaleVelocity": {
       "X": 0,

@@ -43,7 +43,7 @@ namespace Kotono.Graphics
                 foreach (var token in text.Split('\n').Reverse())
                 {
                     Lower();
-                    _texts[CurrentIndex].SetText(token);
+                    _texts[CurrentIndex].Source = token;
                     _texts[CurrentIndex].Color = color;
 
                     CurrentIndex++;

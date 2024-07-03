@@ -4,101 +4,160 @@ using System;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text.Json.Serialization;
 
 namespace Kotono.Utils
 {
     [StructLayout(LayoutKind.Sequential)]
     public struct Color : IEquatable<Color>
     {
-        private float _r;
-
-        private float _g;
-
-        private float _b;
-
-        private float _a;
-
         /// <summary> 
         /// The red component of the Color. 
         /// </summary>
-        public float R
-        {
-            readonly get => _r;
-            set => _r = Math.Clamp(value, 0.0f, 1.0f);
-        }
+        [JsonInclude]
+        public float R = 0.0f;
 
         /// <summary> 
         /// The green component of the Color. 
         /// </summary>
-        public float G
-        {
-            readonly get => _g;
-            set => _g = Math.Clamp(value, 0.0f, 1.0f);
-        }
+        [JsonInclude]
+        public float G = 0.0f;
 
         /// <summary> 
         /// The blue component of the Color. 
         /// </summary>
-        public float B
-        {
-            readonly get => _b;
-            set => _b = Math.Clamp(value, 0.0f, 1.0f);
-        }
+        [JsonInclude]
+        public float B = 0.0f;
 
         /// <summary> 
         /// The alpha component of the Color. 
         /// </summary>
-        public float A
-        {
-            readonly get => _a;
-            set => _a = Math.Clamp(value, 0.0f, 1.0f);
-        }
+        [JsonInclude]
+        public float A = 1.0f;
 
+        /// <summary>
+        /// A <see cref="Color"/> whose hexadecimal code is #000000FF.
+        /// </summary>
         public static Color Black => FromHex("#000000FF");
 
+        /// <summary>
+        /// A <see cref="Color"/> whose hexadecimal code is #1E272CFF.
+        /// </summary>
         public static Color BlackPearl => FromHex("#1E272CFF");
 
+        /// <summary>
+        /// A <see cref="Color"/> whose hexadecimal code is #0000FFFF.
+        /// </summary>
         public static Color Blue => FromHex("#0000FFFF");
 
+        /// <summary>
+        /// A <see cref="Color"/> whose hexadecimal code is #00FFFFFF.
+        /// </summary>
         public static Color Cyan => FromHex("#00FFFFFF");
 
+        /// <summary>
+        /// A <see cref="Color"/> whose hexadecimal code is #00008BFF.
+        /// </summary>
         public static Color DarkBlue => FromHex("#00008BFF");
 
+        /// <summary>
+        /// A <see cref="Color"/> whose hexadecimal code is #A9A9A9FF.
+        /// </summary>
         public static Color DarkGray => FromHex("#A9A9A9FF");
 
+        /// <summary>
+        /// A <see cref="Color"/> whose hexadecimal code is #2F4F4FFF.
+        /// </summary>
         public static Color DarkSlateGray => FromHex("#2F4F4FFF");
 
+        /// <summary>
+        /// A <see cref="Color"/> whose hexadecimal code is #696969FF.
+        /// </summary>
         public static Color DimGray => FromHex("#696969FF");
 
+        /// <summary>
+        /// A <see cref="Color"/> whose hexadecimal code is #808080FF.
+        /// </summary>
         public static Color Gray => FromHex("#808080FF");
 
+        /// <summary>
+        /// A <see cref="Color"/> whose hexadecimal code is #00FF00FF.
+        /// </summary>
         public static Color Green => FromHex("#00FF00FF");
 
+        /// <summary>
+        /// A <see cref="Color"/> whose hexadecimal code is #ADD8E6FF.
+        /// </summary>
         public static Color LightBlue => FromHex("#ADD8E6FF");
 
+        /// <summary>
+        /// A <see cref="Color"/> whose hexadecimal code is #D3D3D3FF.
+        /// </summary>
         public static Color LightGray => FromHex("#D3D3D3FF");
 
+        /// <summary>
+        /// A <see cref="Color"/> whose hexadecimal code is #B0C4DEFF.
+        /// </summary>
         public static Color LightSteelBlue => FromHex("#B0C4DEFF");
 
+        /// <summary>
+        /// A <see cref="Color"/> whose hexadecimal code is #FF00FFFF.
+        /// </summary>
         public static Color Magenta => FromHex("#FF00FFFF");
 
+        /// <summary>
+        /// A <see cref="Color"/> whose hexadecimal code is #191970FF.
+        /// </summary>
         public static Color MidnightBlue => FromHex("#191970FF");
 
+        /// <summary>
+        /// A <see cref="Color"/> whose hexadecimal code is #000080FF.
+        /// </summary>
         public static Color Navy => FromHex("#000080FF");
 
+        /// <summary>
+        /// A <see cref="Color"/> whose hexadecimal code is #FFA500FF.
+        /// </summary>
         public static Color Orange => FromHex("#FFA500FF");
 
+        /// <summary>
+        /// A <see cref="Color"/> whose hexadecimal code is #FF0000FF.
+        /// </summary>
         public static Color Red => FromHex("#FF0000FF");
 
+        /// <summary>
+        /// A <see cref="Color"/> whose hexadecimal code is #00808000.
+        /// </summary>
         public static Color Teal => FromHex("#00808000");
 
+        /// <summary>
+        /// A <see cref="Color"/> whose hexadecimal code is #FFFFFF00.
+        /// </summary>
         public static Color Transparent => FromHex("#FFFFFF00");
 
+        /// <summary>
+        /// A <see cref="Color"/> whose hexadecimal code is #FFFFFFFF.
+        /// </summary>
         public static Color White => FromHex("#FFFFFFFF");
 
+        /// <summary>
+        /// A <see cref="Color"/> whose hexadecimal code is #FFFF00FF.
+        /// </summary>
         public static Color Yellow => FromHex("#FFFF00FF");
 
+        /// <summary>
+        /// A <see cref="Color"/> whose hexadecimal code is #1A1A33FF.
+        /// </summary>
         public static Color _1A1A33FF => FromHex("#1A1A33FF");
+
+        /// <summary>
+        /// The hexadecimal code of the <see cref="Color"/>, with its values clamped in range [0, 1].
+        /// </summary>
+        public readonly string Hex => "#" +
+            $"{(byte)(Math.Clamp(R) * 255.0f):X2}" +
+            $"{(byte)(Math.Clamp(G) * 255.0f):X2}" +
+            $"{(byte)(Math.Clamp(B) * 255.0f):X2}" +
+            $"{(byte)(Math.Clamp(A) * 255.0f):X2}";
 
         public static int SizeInBytes => sizeof(float) * 4;
 
@@ -206,18 +265,6 @@ namespace Kotono.Utils
         private static float HexToF(char hex)
         {
             return HexToF(hex.ToString() + hex.ToString());
-        }
-
-        public static string ToHex(Color c)
-        {
-            string result = "#";
-
-            result += ((int)(c.R * 255.0f)).ToString("X");
-            result += ((int)(c.G * 255.0f)).ToString("X");
-            result += ((int)(c.B * 255.0f)).ToString("X");
-            result += ((int)(c.A * 255.0f)).ToString("X");
-
-            return result;
         }
 
         /// <summary>

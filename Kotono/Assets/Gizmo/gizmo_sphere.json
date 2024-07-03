@@ -5,19 +5,19 @@
   "MaterialTexturesSettings": [],
   "Transform": {
     "RelativeLocation": {
-      "X": 2.685382,
+      "X": 0,
       "Y": 0,
-      "Z": 0
+      "Z": -5
     },
     "RelativeRotation": {
-      "Roll": 0,
       "Pitch": 0,
-      "Yaw": 0
+      "Yaw": 0,
+      "Roll": 0
     },
     "RelativeScale": {
-      "X": 0.084750615,
-      "Y": 0.084750615,
-      "Z": 0.084750615
+      "X": 0.06666667,
+      "Y": 0.06666667,
+      "Z": 0.06666667
     },
     "RelativeLocationVelocity": {
       "X": 0,
@@ -25,9 +25,9 @@
       "Z": 0
     },
     "RelativeRotationVelocity": {
-      "Roll": 0,
       "Pitch": 0,
-      "Yaw": 0
+      "Yaw": 0,
+      "Roll": 0
     },
     "RelativeScaleVelocity": {
       "X": 0,

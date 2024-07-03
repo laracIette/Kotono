@@ -11,7 +11,7 @@ namespace Kotono.Utils.Timing
 
         /// <summary>
         /// Get the exact elapsed time since the Stopwatch started.
-        /// </summary>
+        /// </summary>        
         public double ElapsedTime => Time.ExactUTC - _startTime;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

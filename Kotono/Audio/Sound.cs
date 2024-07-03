@@ -13,7 +13,7 @@ namespace Kotono.Audio
             get => _volume;
             set
             {
-                _volume = Math.Clamp(value, 0.0f, 1.0f);
+                _volume = Math.Clamp(value);
                 AL.Source(Source, ALSourcef.Gain, _volume * SoundManager.GeneralVolume);
             }
         }

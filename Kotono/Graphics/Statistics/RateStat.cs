@@ -11,7 +11,7 @@ namespace Kotono.Graphics.Statistics
             {
                 Rect = new Rect(Point.Zero, new Point(50.0f, 60.0f)),
                 Layer = 1,
-                Text = "0.00",
+                Source = "0.00",
                 Anchor = anchor
             }
         )
@@ -36,7 +36,7 @@ namespace Kotono.Graphics.Statistics
 
             Time = _times.Average();
 
-            SetText(Rate.ToString("0.00"));
+            Source = Rate.ToString("0.00");
         }
     }
 }
