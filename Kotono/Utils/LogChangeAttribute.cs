@@ -1,6 +1,5 @@
 ﻿using PostSharp.Aspects;
 using PostSharp.Serialization;
-using System;
 using System.Runtime.CompilerServices;
 
 namespace Kotono.Utils

@@ -7,7 +7,7 @@ namespace Kotono.Graphics.Objects.Hitboxes
     {
         public EventHandler<CollisionEventArgs>? EnterCollision { get; set; }
 
-        public EventHandler<CollisionEventArgs>? ExitCollision { get; set; } 
+        public EventHandler<CollisionEventArgs>? ExitCollision { get; set; }
 
         /// <summary>
         /// The hitboxes the IHitbox checks collision with.

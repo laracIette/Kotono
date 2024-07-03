@@ -34,7 +34,7 @@ namespace Kotono.Graphics.Objects
 
         public List<Drawable> Childrens { get; } = [];
 
-        internal Drawable(TSettings settings) : base() => _settings = settings; 
+        internal Drawable(TSettings settings) : base() => _settings = settings;
 
         internal Drawable() : this(Activator.CreateInstance<TSettings>()) { }
 

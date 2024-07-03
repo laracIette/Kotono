@@ -2,9 +2,7 @@
 using Kotono.Graphics.Objects;
 using Kotono.Utils;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace Kotono
@@ -18,7 +16,7 @@ namespace Kotono
         private int __index => ObjectManager.IndexOf(this);
 #pragma warning restore IDE1006 // Naming Styles
 #endif
-        
+
 
         public virtual bool IsUpdate { get; set; } = true;
 

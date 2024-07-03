@@ -104,8 +104,8 @@ namespace Kotono.Graphics.Objects.Texts
 
         private object? _source = null;
 
-        internal virtual object? Source 
-        { 
+        internal virtual object? Source
+        {
             get => _source;
             set
             {
@@ -118,7 +118,7 @@ namespace Kotono.Graphics.Objects.Texts
                 }
 
                 _source = value;
-            } 
+            }
         }
 
         public override Rect Rect
@@ -187,7 +187,7 @@ namespace Kotono.Graphics.Objects.Texts
         internal Text(TextSettings settings)
             : base(settings)
         {
-            Source = settings.Source; 
+            Source = settings.Source;
             Anchor = settings.Anchor;
             Color = settings.Color;
             Spacing = settings.Spacing;

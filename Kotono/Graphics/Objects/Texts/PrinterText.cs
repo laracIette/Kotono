@@ -1,10 +1,9 @@
 ﻿using Kotono.Utils;
 using Kotono.Utils.Coordinates;
-using Kotono.Utils.Timing;
 
 namespace Kotono.Graphics.Objects.Texts
 {
-    internal class PrinterText() 
+    internal class PrinterText()
         : Text(
             new TextSettings
             {
@@ -15,9 +14,9 @@ namespace Kotono.Graphics.Objects.Texts
             }
         )
     {
-        internal override object? Source 
-        { 
-            get => base.Source; 
+        internal override object? Source
+        {
+            get => base.Source;
             set
             {
                 Position = Point.Zero;

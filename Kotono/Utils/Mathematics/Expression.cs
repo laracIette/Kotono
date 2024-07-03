@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Kotono.Utils.Mathematics
 {
-    internal class Expression 
+    internal class Expression
     {
         private float _currentResult = 0.0f;
 

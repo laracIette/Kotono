@@ -21,7 +21,7 @@ namespace Kotono.Graphics.Objects
         ];
 
         private static IObject3D? ActiveMesh => ISelectable.Active as IObject3D;
-        
+
         public override Vector WorldLocation
         {
             get => Transform.WorldLocation;
@@ -73,8 +73,8 @@ namespace Kotono.Graphics.Objects
             }
         }
 
-        public override bool IsUpdate 
-        { 
+        public override bool IsUpdate
+        {
             get => ActiveMesh != null;
             set { }
         }
