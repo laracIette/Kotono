@@ -2,11 +2,14 @@
 
 namespace Kotono.Graphics.Objects.Meshes
 {
-    internal class GizmoMesh(string axis)
-        : FrontMesh(
-            JsonParser.Parse<MeshSettings>(Path.ASSETS + @"Gizmo\gizmo_" + axis + ".json")
-        )
+    internal class GizmoMesh : FrontMesh
     {
+        public GizmoMesh(Color color, string axis)
+            : base("gizmo", [], Path.FromAssets(@"Gizmo\gizmo_" + axis + ".obj"))
+        {
+            Color = color;
+        }
+
         public override void Update() { }
 
         protected override void OnLeftButtonPressed() { }

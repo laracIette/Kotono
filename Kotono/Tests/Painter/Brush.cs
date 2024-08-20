@@ -14,17 +14,10 @@ namespace Kotono.Tests.Painter
 
         internal Rect Rect => new(Mouse.Position, Size);
 
-        internal Brush(BrushSettings settings)
-            : base()
+        internal Brush(string name)
         {
-            Name = settings.Name;
-            Size = settings.Size;
-            _texture = new Image(
-                new ImageSettings
-                {
-                    Texture = Path.ASSETS + @"brushes\" + Name
-                }
-            );
+            Name = name;
+            _texture = new Image(Path.FromAssets(@"brushes\" + name));
         }
     }
 }

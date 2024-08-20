@@ -1,5 +1,13 @@
 #version 430 core
 
+struct Material2 {
+    sampler2D albedo;
+    sampler2D normal;
+    sampler2D metalness;
+    sampler2D roughness;
+    sampler2D ambientOcclusion;
+};
+
 struct Material {
     sampler2D diffuse;
     sampler2D specular;
@@ -25,7 +33,10 @@ struct PointLight {
     vec4 ambient;
     vec4 diffuse;
     vec4 specular;
+
+    float power;
 };
+
 #define MAX_POINT_LIGHTS 100
 
 uniform PointLight pointLights[MAX_POINT_LIGHTS];
@@ -33,8 +44,8 @@ uniform PointLight pointLights[MAX_POINT_LIGHTS];
 uniform int numPointLights;
 
 struct SpotLight{
-    vec3  location;
-    vec3  direction;
+    vec3 location;
+    vec3 direction;
     float cutOff;
     float outerCutOff;
 
@@ -45,6 +56,8 @@ struct SpotLight{
     float constant;
     float linear;
     float quadratic;
+
+    float power;
 };
 #define MAX_SPOT_LIGHTS 1
 
@@ -66,7 +79,7 @@ in vec2 TexCoords;
 vec4 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir);
 vec4 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir);
 vec4 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir);
-vec4 CalcOutline();
+bool IsTextureValid(sampler2D texture);
 
 void main()
 {
@@ -135,7 +148,7 @@ vec4 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
     diffuse  *= attenuation;
     specular *= attenuation;
     
-    return (ambient + diffuse + specular);
+    return (ambient + diffuse + specular) * light.power;
 } 
 
 vec4 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
@@ -151,8 +164,7 @@ vec4 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
 
     // Attenuation
     float distance    = length(light.location - FragPos);
-    float attenuation = 1.0 / (light.constant + light.linear * distance +
-    light.quadratic * (distance * distance));
+    float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));
 
     // Spotlight intensity
     float theta     = dot(lightDir, normalize(-light.direction));
@@ -168,5 +180,12 @@ vec4 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
     diffuse  *= attenuation * intensity;
     specular *= attenuation * intensity;
     
-    return (ambient + diffuse + specular);
+    return (ambient + diffuse + specular) * light.power;
+}
+
+bool IsTextureValid(sampler2D texture)
+{    
+    vec2 size = textureSize(texture, 0);
+
+    return size.x != 0 && size.y != 0;
 }

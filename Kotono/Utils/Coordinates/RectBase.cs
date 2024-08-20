@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Kotono.Utils.Exceptions;
+using System;
 
 namespace Kotono.Utils.Coordinates
 {
@@ -15,7 +16,17 @@ namespace Kotono.Utils.Coordinates
         public Point Size
         {
             readonly get => BaseSize * Scale;
-            set => Scale = value / BaseSize;
+            set
+            {
+                if (Point.IsNullOrZero(BaseSize))
+                {
+                    BaseSize = value / Scale;
+                }
+                else
+                {
+                    Scale = value / BaseSize;
+                }
+            }
         }
 
         public RectBase(Point position, Point baseSize, Point size, Rotator rotation)

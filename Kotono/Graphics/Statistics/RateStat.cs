@@ -5,16 +5,7 @@ using System.Linq;
 
 namespace Kotono.Graphics.Statistics
 {
-    internal class RateStat(Anchor anchor)
-        : Text(
-            new TextSettings
-            {
-                Rect = new Rect(Point.Zero, new Point(50.0f, 60.0f)),
-                Layer = 1,
-                Source = "0.00",
-                Anchor = anchor
-            }
-        )
+    internal class RateStat : Text
     {
         private readonly float[] _times = new float[60];
 
@@ -29,6 +20,13 @@ namespace Kotono.Graphics.Statistics
         internal float Time { get; private set; }
 
         internal float Rate => 1.0f / Time;
+
+        public RateStat()
+        {
+            Size = new Point(50.0f, 60.0f);
+            Layer = 1;
+            Source = "0.00";
+        }
 
         internal void AddTime(float newTime)
         {

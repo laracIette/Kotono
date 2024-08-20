@@ -4,8 +4,14 @@ namespace Kotono.Graphics.Objects
 {
     internal interface IObject3D : IDrawable, ITransform
     {
-        public Transform Transform { get; set; }
+        /// <summary>
+        /// The transform of the <see cref="IObject3D"/>.
+        /// </summary>
+        public Transform Transform { get; }
 
-        public new IObject3D? Parent { get; set; }
+        /// <summary>
+        /// The object to which the <see cref="IObject3D"/> is dependant.
+        /// </summary>
+        public IObject3D? Parent { get; set; }
     }
 }

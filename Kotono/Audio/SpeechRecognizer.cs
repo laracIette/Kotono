@@ -10,7 +10,7 @@ namespace Kotono.Audio
 
         private static readonly SpeechRecognitionEngine _recognizer = new(new System.Globalization.CultureInfo("en-US"));
 
-        public static string Text { get; private set; } = "";
+        public static string Text { get; private set; } = string.Empty;
 
         // int instead of bool for IsSpeechRecognized's Interlocked.Exchange() that doesn't support bool
         private static int _isSpeechRecognized = 0;

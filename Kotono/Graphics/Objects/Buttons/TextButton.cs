@@ -4,32 +4,23 @@ using System;
 
 namespace Kotono.Graphics.Objects.Buttons
 {
-    internal class TextButton(TextButtonSettings settings)
-        : Button(settings)
+    internal class TextButton : Button
     {
-        protected readonly Text _text = new(
-            new TextSettings
-            {
-                Rect = new Rect(settings.Rect.Position, new Point(25.0f, 30.0f)),
-                Layer = 2,
-                Source = settings.TextSettings.Source,
-                Spacing = 0.6f
-            }
-        );
+        protected readonly Text _text;
 
-        private readonly TextButtonEventArgs _args = new() { Source = settings.TextSettings.Source };
+        private readonly TextButtonEventArgs _args = new();
 
-        internal new event EventHandler<TextButtonEventArgs>? Pressed = null;
+        internal new EventHandler<TextButtonEventArgs>? Pressed { get; set; }
 
-        public override Rect Rect
+        public override Point Position
         {
-            get => base.Rect;
-            set
+            get => base.Position;
+            set 
             {
-                base.Rect = value;
+                base.Position = value;
                 if (_text != null)
                 {
-                    _text.Position = value.Position;
+                    _text.Position = value;
                 }
             }
         }
@@ -42,6 +33,27 @@ namespace Kotono.Graphics.Objects.Buttons
                 base.IsDraw = value;
                 _text.IsDraw = value;
             }
+        }
+
+        public object? Source
+        {
+            get => _text.Source;
+            set
+            {
+                _text.Source = value;
+                _args.Source = value;
+            }
+        }
+
+        internal TextButton()
+        {
+            _text = new Text
+            {
+                Position = Rect.Position, 
+                Size = new Point(25.0f, 30.0f),
+                Layer = 2,
+                Spacing = 0.6f
+            };
         }
 
         public override void OnPressed()

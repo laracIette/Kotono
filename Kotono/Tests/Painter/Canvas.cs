@@ -1,5 +1,7 @@
-﻿using Kotono.Graphics.Objects.Shapes;
+﻿using Kotono.Graphics.Objects;
+using Kotono.Graphics.Objects.Shapes;
 using Kotono.Input;
+using Kotono.Utils;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 
 namespace Kotono.Tests.Painter
@@ -87,12 +89,7 @@ namespace Kotono.Tests.Painter
         {
             if (!Mouse.WasButtonDown(MouseButton.Left))
             {
-                _shape = new Shape(
-                    new ShapeSettings
-                    {
-
-                    }
-                );
+                _shape = new Shape([], false);
             }
         }
     }

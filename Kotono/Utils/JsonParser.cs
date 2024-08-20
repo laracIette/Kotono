@@ -7,7 +7,7 @@ namespace Kotono.Utils
 {
     internal class JsonParser : Object
     {
-        private JsonParser() : base() { }
+        private JsonParser() { }
 
         private static readonly JsonSerializerOptions _jsonSerializerOptions = new()
         {
@@ -17,23 +17,21 @@ namespace Kotono.Utils
             IncludeFields = true
         };
 
-        internal static T Parse<T>(string path) where T : DrawableSettings
+        internal static T Parse<T>(string path) where T : Drawable
         {
             string jsonString = IO.File.ReadAllText(path);
 
             var settings = JsonSerializer.Deserialize<T>(jsonString) ?? Activator.CreateInstance<T>();
 
-            settings.Path = path;
-
             return settings;
         }
 
-        internal static void WriteFile<T>(T settings) where T : DrawableSettings
+        internal static void WriteFile(Drawable settings, string path)
         {
-            if (settings.Path != "")
+            if (!string.IsNullOrEmpty(path))
             {
                 string jsonString = JsonSerializer.Serialize(settings, settings.GetType(), _jsonSerializerOptions);
-                IO.File.WriteAllText(settings.Path, jsonString);
+                IO.File.WriteAllText(path, jsonString);
             }
         }
     }

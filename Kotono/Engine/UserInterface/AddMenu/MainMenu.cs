@@ -9,15 +9,13 @@ namespace Kotono.Engine.UserInterface.AddMenu
 {
     internal class MainMenu : Object
     {
-        private readonly RoundedBox _backgroundBox = new(
-            new RoundedBoxSettings
-            {
-                Rect = new Rect(Point.Zero, new Point(300.0f, 300.0f)),
-                Color = Color.DarkSlateGray,
-                FallOff = 2.0f,
-                CornerSize = 30.0f
-            }
-        );
+        private readonly RoundedBox _backgroundBox = new()
+        {
+            Size = new Point(300.0f, 300.0f),
+            Color = Color.DarkSlateGray,
+            FallOff = 2.0f,
+            CornerSize = 30.0f
+        };
 
         private readonly MainButton[] _buttons =
         [
@@ -49,15 +47,14 @@ namespace Kotono.Engine.UserInterface.AddMenu
 
                 var size = new Point(140.0f, 140.0f);
 
-                _buttons[0].Position = Rect.FromAnchor(value, size, Anchor.BottomRight, 5.0f);
-                _buttons[1].Position = Rect.FromAnchor(value, size, Anchor.BottomLeft, 5.0f);
-                _buttons[2].Position = Rect.FromAnchor(value, size, Anchor.TopRight, 5.0f);
-                _buttons[3].Position = Rect.FromAnchor(value, size, Anchor.TopLeft, 5.0f);
+                _buttons[0].Position = Rect.GetPositionFromAnchor(value, size, Anchor.BottomRight, 5.0f);
+                _buttons[1].Position = Rect.GetPositionFromAnchor(value, size, Anchor.BottomLeft, 5.0f);
+                _buttons[2].Position = Rect.GetPositionFromAnchor(value, size, Anchor.TopRight, 5.0f);
+                _buttons[3].Position = Rect.GetPositionFromAnchor(value, size, Anchor.TopLeft, 5.0f);
             }
         }
 
         internal MainMenu()
-            : base()
         {
             IsDraw = false;
         }

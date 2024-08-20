@@ -4,9 +4,11 @@ namespace Kotono.Utils.Mathematics
 {
     public static class Math
     {
-        public const float PI = 3.1415926535897931f;
+        public static float PiOver2 => 1.5707963267948966f;
 
-        public const float TAU = 6.2831853071795862f;
+        public static float Pi => 3.1415926535897931f;
+        
+        public static float Tau => 6.2831853071795862f;
 
         /// <summary> 
         /// Convert degrees to radians.
@@ -14,7 +16,7 @@ namespace Kotono.Utils.Mathematics
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float Rad(float degrees)
         {
-            return degrees * (PI / 180.0f);
+            return degrees * (Pi / 180.0f);
         }
 
         /// <summary>
@@ -23,7 +25,7 @@ namespace Kotono.Utils.Mathematics
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float Deg(float radians)
         {
-            return radians * (180.0f / PI);
+            return radians * (180.0f / Pi);
         }
 
         /// <summary>
@@ -160,6 +162,12 @@ namespace Kotono.Utils.Mathematics
         public static float Avg(params float[] values)
         {
             return Add(values) / values.Length;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static float Half(float value)
+        {
+            return value / 2.0f;
         }
     }
 }

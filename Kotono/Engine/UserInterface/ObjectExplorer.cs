@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Kotono.Graphics.Objects;
+using System.Collections.Generic;
 
 namespace Kotono.Engine.UserInterface
 {
@@ -7,7 +8,6 @@ namespace Kotono.Engine.UserInterface
         private readonly List<Object> _objects;
 
         internal ObjectExplorer()
-            : base()
         {
             _objects = [];
         }

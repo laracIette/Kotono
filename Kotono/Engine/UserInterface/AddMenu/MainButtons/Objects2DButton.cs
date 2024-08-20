@@ -5,7 +5,9 @@ namespace Kotono.Engine.UserInterface.AddMenu.MainButtons
     internal class Objects2DButton : MainButton
     {
         internal Objects2DButton()
-            : base("2D Objects", ["Image", "Text", "Rounded Box", "Rounded Border"], Anchor.BottomRight)
-        { }
+            : base(["Image", "Text", "Rounded Box", "Rounded Border"], Anchor.BottomRight)
+        {
+            Source = "2D Objects";
+        }
     }
 }

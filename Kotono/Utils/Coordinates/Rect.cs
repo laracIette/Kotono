@@ -7,7 +7,7 @@ using System.Text.Json.Serialization;
 
 namespace Kotono.Utils.Coordinates
 {
-    internal class Rect : Object, IRect, IReplaceable<Rect>, IEquatable<Rect>
+    internal class Rect : Object, IRect, IEquatable<Rect>
     {
         private record class Transformation(RectBase RectBase, float EndTime);
 
@@ -63,42 +63,42 @@ namespace Kotono.Utils.Coordinates
         /// <summary>
         /// The left Point of the Rect.
         /// </summary>
-        public Point Left => new(Position.X - Size.X / 2.0f, Position.Y);
+        public Point Left => new(Position.X - Math.Half(Size.X), Position.Y);
 
         /// <summary>
         /// The right Point of the Rect.
         /// </summary>
-        public Point Right => new(Position.X + Size.X / 2.0f, Position.Y);
+        public Point Right => new(Position.X + Math.Half(Size.X), Position.Y);
 
         /// <summary>
         /// The top Point of the Rect.
         /// </summary>
-        public Point Top => new(Position.X, Position.Y + Size.Y / 2.0f);
+        public Point Top => new(Position.X, Position.Y + Math.Half(Size.Y));
 
         /// <summary>
         /// The bottom Point of the Rect.
         /// </summary>
-        public Point Bottom => new(Position.X, Position.Y - Size.Y / 2.0f);
+        public Point Bottom => new(Position.X, Position.Y - Math.Half(Size.Y));
 
         /// <summary>
         /// The top left Point of the Rect.
         /// </summary>
-        public Point TopLeft => new(Position.X - Size.X / 2.0f, Position.Y + Size.Y / 2.0f);
+        public Point TopLeft => new(Position.X - Math.Half(Size.X), Position.Y + Math.Half(Size.Y));
 
         /// <summary>
         /// The top right Point of the Rect.
         /// </summary>
-        public Point TopRight => new(Position.X + Size.X / 2.0f, Position.Y + Size.Y / 2.0f);
+        public Point TopRight => new(Position.X + Math.Half(Size.X), Position.Y + Math.Half(Size.Y));
 
         /// <summary>
         /// The bottom left Point of the Rect.
         /// </summary>
-        public Point BottomLeft => new(Position.X - Size.X / 2.0f, Position.Y - Size.Y / 2.0f);
+        public Point BottomLeft => new(Position.X - Math.Half(Size.X), Position.Y - Math.Half(Size.Y));
 
         /// <summary>
         /// The bottom right Point of the Rect.
         /// </summary>
-        public Point BottomRight => new(Position.X + Size.X / 2.0f, Position.Y - Size.Y / 2.0f);
+        public Point BottomRight => new(Position.X + Math.Half(Size.X), Position.Y - Math.Half(Size.Y));
 
         public static Point DefaultPosition => Point.Zero;
 
@@ -109,11 +109,14 @@ namespace Kotono.Utils.Coordinates
         public static Point DefaultScale => Point.Unit;
 
         /// <summary> 
-        /// A Rect with Position = <see cref="Point.Zero"/>, Size = <see cref="Point.Zero"/>, Rotation = <see cref="Rotator.Zero"/>, Scale = <see cref="Point.Unit"/>.
+        /// A Rect with 
+        /// Position = <see cref="Point.Zero"/>,
+        /// Size = <see cref="Point.Zero"/>, 
+        /// Rotation = <see cref="Rotator.Zero"/>,
+        /// Scale = <see cref="Point.Unit"/>.
         /// </summary>
-        public static Rect Default => new(DefaultPosition, DefaultSize);
+        public static Rect Default => new(DefaultPosition, DefaultSize, DefaultRotation);
 
-        [JsonConstructor]
         public Rect() : this(DefaultPosition, DefaultSize, DefaultRotation) { }
 
         public Rect(Point position, Point baseSize, Point size, Rotator rotation)
@@ -168,45 +171,57 @@ namespace Kotono.Utils.Coordinates
             }
         }
 
-        public static Point FromAnchor(Point position, Point size, Anchor anchor, Point offset)
+        public static Point GetPositionFromAnchor(Point position, Point size, Anchor anchor, Point offset)
         {
-            position += anchor switch
+            if ((anchor & Anchor.Left) == Anchor.Left)
             {
-                Anchor.Center => offset,
-                Anchor.Left => new Point(size.X / 2.0f + offset.X, offset.Y),
-                Anchor.Right => new Point(-size.X / 2.0f - offset.X, offset.Y),
-                Anchor.Top => new Point(offset.X, size.Y / 2.0f + offset.Y),
-                Anchor.Bottom => new Point(offset.X, -size.Y / 2.0f - offset.Y),
-                Anchor.TopLeft => new Point(size.X / 2.0f + offset.X, size.Y / 2.0f + offset.Y),
-                Anchor.TopRight => new Point(-size.X / 2.0f - offset.X, size.Y / 2.0f + offset.Y),
-                Anchor.BottomLeft => new Point(size.X / 2.0f + offset.X, -size.Y / 2.0f - offset.Y),
-                Anchor.BottomRight => new Point(-size.X / 2.0f - offset.X, -size.Y / 2.0f - offset.Y),
-                _ => throw new Exception($"error: Rect.FromAnchor() doesn't handle \"{anchor}\"")
-            };
+                position.X += Math.Half(size.X) + offset.X;
+            }
+            else if ((anchor & Anchor.Right) == Anchor.Right)
+            {
+                position.X -= Math.Half(size.X) + offset.X;
+            }
+            else // Centered horizontally
+            {
+                position.X += offset.X;
+            }
+
+            if ((anchor & Anchor.Top) == Anchor.Top)
+            {
+                position.Y += Math.Half(size.Y) + offset.Y;
+            }
+            else if ((anchor & Anchor.Bottom) == Anchor.Bottom)
+            {
+                position.Y -= Math.Half(size.Y) + offset.Y;
+            }
+            else // Centered vertically
+            {
+                position.Y += offset.Y;
+            }
 
             return position;
         }
 
         /// <summary> 
-        /// Creates a Rect given a Rect and an Anchor.
+        /// Get the position given a position, a size and an Anchor.
         /// </summary>
-        public static Point FromAnchor(Point position, Point size, Anchor anchor, float offset = 0.0f)
+        public static Point GetPositionFromAnchor(Point position, Point size, Anchor anchor, float offset = 0.0f)
         {
-            return FromAnchor(position, size, anchor, new Point(offset));
+            return GetPositionFromAnchor(position, size, anchor, new Point(offset));
         }
 
         /// <summary>
         /// Creates an array of Rect given a number of elements, a Rect and an Anchor.
         /// </summary>
-        public static Point[] FromAnchor(int n, Point position, Point size, Anchor anchor, Point offset)
+        public static Point[] GetPositionFromAnchor(int n, Point position, Point size, Anchor anchor, Point offset)
         {
-            var result = Enumerable.Repeat(FromAnchor(position, size, anchor, offset), n).ToArray();
+            var result = Enumerable.Repeat(GetPositionFromAnchor(position, size, anchor, offset), n).ToArray();
 
             for (int i = 0; i < n; i++)
             {
                 result[i].Y = anchor switch
                 {
-                    Anchor.Center or Anchor.Left or Anchor.Right => position.Y - size.Y / 2.0f * (n - 1) + size.Y * i,
+                    Anchor.Center or Anchor.Left or Anchor.Right => position.Y - Math.Half(size.Y) * (n - 1) + size.Y * i,
                     Anchor.Top or Anchor.TopLeft or Anchor.TopRight => throw new NotImplementedException(),
                     Anchor.Bottom or Anchor.BottomLeft or Anchor.BottomRight => throw new NotImplementedException(),
                     _ => throw new SwitchException(typeof(Anchor), anchor)
@@ -219,9 +234,9 @@ namespace Kotono.Utils.Coordinates
         /// <summary>
         /// Creates an array of Rect given a number of elements, a Rect and an Anchor.
         /// </summary>
-        public static Point[] FromAnchor(int n, Point position, Point size, Anchor anchor, float offset = 0.0f)
+        public static Point[] GetPositionFromAnchor(int n, Point position, Point size, Anchor anchor, float offset = 0.0f)
         {
-            return FromAnchor(n, position, size, anchor, new Point(offset));
+            return GetPositionFromAnchor(n, position, size, anchor, new Point(offset));
         }
 
         /// <summary> 
@@ -229,8 +244,8 @@ namespace Kotono.Utils.Coordinates
         /// </summary>
         public static bool Overlaps(RectBase left, RectBase right)
         {
-            return Math.Abs(left.Position.X - right.Position.X) < (left.Size.X + right.BaseSize.X) / 2.0f
-                && Math.Abs(left.Position.Y - right.Position.Y) < (left.Size.Y + right.BaseSize.Y) / 2.0f;
+            return Math.Abs(left.Position.X - right.Position.X) < Math.Half(left.Size.X + right.BaseSize.X)
+                && Math.Abs(left.Position.Y - right.Position.Y) < Math.Half(left.Size.Y + right.BaseSize.Y);
         }
 
         /// <summary> 
@@ -262,8 +277,8 @@ namespace Kotono.Utils.Coordinates
         /// </summary>
         public static bool Overlaps(Rect r, Point p)
         {
-            return Math.Abs(r.Position.X - p.X) < r.Size.X / 2.0f
-                && Math.Abs(r.Position.Y - p.Y) < r.Size.Y / 2.0f;
+            return Math.Abs(r.Position.X - p.X) < Math.Half(r.Size.X)
+                && Math.Abs(r.Position.Y - p.Y) < Math.Half(r.Size.Y);
         }
 
         public static Rect Parse(string[] values)
@@ -312,11 +327,6 @@ namespace Kotono.Utils.Coordinates
         public override string ToString()
         {
             return $"X: {Position.X}, Y: {Position.Y}, W: {Size.X}, H: {Size.Y}"; ;
-        }
-
-        public void ReplaceBy(Rect r)
-        {
-            _base = r._base;
         }
     }
 }

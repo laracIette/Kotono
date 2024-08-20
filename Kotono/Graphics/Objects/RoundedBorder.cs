@@ -4,7 +4,7 @@ using OpenTK.Mathematics;
 
 namespace Kotono.Graphics.Objects
 {
-    internal class RoundedBorder : RoundedBox<RoundedBorderSettings>
+    internal class RoundedBorder : RoundedBox
     {
         internal float TargetThickness { get; private set; }
 
@@ -24,12 +24,6 @@ namespace Kotono.Graphics.Objects
 
         protected override Matrix4 Model => new NDCRect(Position, Size + new Point(FallOff * 2.0f + Thickness)).Model;
 
-        internal RoundedBorder(RoundedBorderSettings settings)
-            : base(settings)
-        {
-            Thickness = settings.Thickness;
-        }
-
         protected override void UpdateValues()
         {
             float minSize = Point.Min(Rect.BaseSize);
@@ -46,8 +40,8 @@ namespace Kotono.Graphics.Objects
 
             /// FallOff has : 
             ///     a minimum value of 0.000001 so that there is no division by 0 in glsl,
-            ///     a maximum value of the border's Width - its Thickness
-            _fallOff = Math.Clamp(TargetFallOff, 0.000001f, Rect.BaseSize.X - Thickness);
+            ///     a maximum value of the difference between the border's Width and its Thickness
+            _fallOff = Math.Clamp(TargetFallOff, 0.000001f, Rect.Size.X - Thickness);
         }
 
         public override void Draw()

@@ -12,7 +12,7 @@ namespace Kotono.Utils
 
         private static readonly List<DelayedAction> _actionDelays = [];
 
-        private ExecuteAction() : base() { }
+        private ExecuteAction() { }
 
         internal static void Delay(Action action, float delay = 0.0f)
         {

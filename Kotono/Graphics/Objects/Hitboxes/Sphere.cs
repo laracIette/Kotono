@@ -11,16 +11,15 @@ namespace Kotono.Graphics.Objects.Hitboxes
 
         private static readonly Vector[] _vertices = new Vector[SEGMENTS];
 
-        private static int _vertexArrayObject;
+        private static readonly VertexArraySetup _vertexArraySetup = new();
 
-        private static int _vertexBufferObject;
+        private static readonly Object3DShader _shader = (Object3DShader)ShaderManager.Shaders["hitbox"];
 
         private static bool _isFirst = true;
 
         internal float Radius => RelativeScale.X;
 
-        internal Sphere(HitboxSettings settings)
-            : base(settings)
+        internal Sphere()
         {
             if (_isFirst)
             {
@@ -28,7 +27,7 @@ namespace Kotono.Graphics.Objects.Hitboxes
 
                 for (int i = 0; i < SEGMENTS; i++)
                 {
-                    float rotation = i / (float)SEGMENTS * Math.TAU;
+                    float rotation = i / (float)SEGMENTS * Math.Tau;
                     _vertices[i] = new Vector
                     {
                         X = 0.5f * Math.Cos(rotation),
@@ -37,14 +36,8 @@ namespace Kotono.Graphics.Objects.Hitboxes
                     };
                 }
 
-                // Create vertex array
-                _vertexArrayObject = GL.GenVertexArray();
-                GL.BindVertexArray(_vertexArrayObject);
-
-                // Create vertex buffer
-                _vertexBufferObject = GL.GenBuffer();
-                GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
-                GL.BufferData(BufferTarget.ArrayBuffer, _vertices.Length * Vector.SizeInBytes, _vertices, BufferUsageHint.StaticDraw);
+                _vertexArraySetup.VertexArrayObject.Bind();
+                _vertexArraySetup.VertexBufferObject.SetData(_vertices, Vector.SizeInBytes);
 
                 GL.EnableVertexAttribArray(0);
                 GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, Vector.SizeInBytes, 0);
@@ -53,9 +46,9 @@ namespace Kotono.Graphics.Objects.Hitboxes
 
         public override void Draw()
         {
-            DrawCircle(new Rotator(Math.PI / 2.0f, 0.0f, 0.0f));
-            DrawCircle(new Rotator(0.0f, Math.PI / 2.0f, 0.0f));
-            DrawCircle(new Rotator(0.0f, 0.0f, Math.PI / 2.0f));
+            DrawCircle(new Rotator(Math.PiOver2, 0.0f, 0.0f));
+            DrawCircle(new Rotator(0.0f, Math.PiOver2, 0.0f));
+            DrawCircle(new Rotator(0.0f, 0.0f, Math.PiOver2));
         }
 
         private void DrawCircle(Rotator rotation)
@@ -67,11 +60,11 @@ namespace Kotono.Graphics.Objects.Hitboxes
                 * Matrix4.CreateRotationZ(RelativeRotation.Yaw + rotation.Yaw)
                 * Matrix4.CreateTranslation((Vector3)RelativeLocation);
 
-            ShaderManager.Shaders["hitbox"].SetColor("color", Color);
-            ShaderManager.Shaders["hitbox"].SetMatrix4("model", model);
+            _shader.SetColor(Color);
+            _shader.SetModelMatrix(model);
 
-            GL.BindVertexArray(_vertexArrayObject);
-            GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
+            _vertexArraySetup.VertexArrayObject.Bind();
+            _vertexArraySetup.VertexBufferObject.Bind();
             GL.DrawArrays(PrimitiveType.LineLoop, 0, _vertices.Length);
         }
 

@@ -117,7 +117,7 @@ namespace Kotono.Utils
         {
             var sortedList = source.Split(separator).ToList().Sorted();
 
-            source = "";
+            source = string.Empty;
             foreach (var item in sortedList)
             {
                 source += item + newSeparator;
@@ -237,6 +237,14 @@ namespace Kotono.Utils
         internal static string Keep(this string source, string other)
         {
             return new string(source.Where(other.Contains).ToArray());
+        }
+
+        /// <summary>
+        /// Add multiple items to a list of type TSource.
+        /// </summary>
+        internal static void Add<TSource>(this List<TSource> source, params TSource[] items)
+        {
+            source.AddRange(items);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
 namespace Kotono
@@ -9,19 +9,16 @@ namespace Kotono
         /// Prints an object to the console.
         /// </summary>
         /// <param name="obj"> The object to log. </param>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void Log(object? obj)
-        {
-            Console.WriteLine(obj);
-        }
+        public static void Log(object? obj) => Debug.WriteLine(obj);
 
         /// <summary>
         /// Prints an empty line to the console.
         /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void Log()
-        {
-            Log("");
-        }
+        public static void Log() => Log(string.Empty);
+
+        /// <summary>
+        /// Prints an error to the console.
+        /// </summary>
+        public static void LogError(string err) => Log($"error: {err}.");
     }
 }

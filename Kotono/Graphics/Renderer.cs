@@ -2,13 +2,14 @@
 using Kotono.Graphics.Objects.Meshes;
 using Kotono.Utils;
 using Kotono.Utils.Coordinates;
+using Kotono.Utils.Timing;
 using OpenTK.Graphics.OpenGL4;
 using System;
 using System.Collections.Generic;
 
 namespace Kotono.Graphics
 {
-    internal class Renderer : IRenderer, IDisposable
+    internal sealed class Renderer : IRenderer, IDisposable
     {
         private readonly Framebuffer _framebuffer = new();
 
@@ -18,11 +19,12 @@ namespace Kotono.Graphics
 
         private readonly List<IObject3D> _object3DRenderQueue = [];
 
-        internal void SetSize(Point value) => _framebuffer.Size = value;
+        internal void SetSize(Point size) => _framebuffer.Size = size;
 
         #region RenderQueue
 
-        public void AddToRenderQueue(IDrawable drawable)
+        public void AddToRenderQueue(IDrawable drawable) // TODO: use IEnumerator and yield return,
+                                                         // for each Drawable, create branch
         {
             if (!drawable.IsDraw)
             {
@@ -50,7 +52,7 @@ namespace Kotono.Graphics
 
         private void AddToObject2DRenderQueue(IObject2D object2D)
         {
-            var position = Rect.FromAnchor(object2D.Viewport.Position, object2D.Viewport.Size, Anchor.TopLeft);
+            var position = Rect.GetPositionFromAnchor(object2D.Viewport.Position, object2D.Viewport.Size, Anchor.TopLeft);
 
             if (!Rect.Overlaps(object2D.Rect, new RectBase(position, object2D.Viewport.Size)))
             {
@@ -105,37 +107,23 @@ namespace Kotono.Graphics
             _framebuffer.DrawBufferTextures();
 
             ClearRenderQueues();
+
         }
 
         private void DrawObject2DRenderQueue()
         {
             GL.Enable(EnableCap.Blend);
 
-            foreach (var object2D in _object2DRenderQueue)
-            {
-                DrawObject2D(object2D);
-            }
+            _object2DRenderQueue.ForEach(DrawObject2D);
 
             GL.Disable(EnableCap.Blend);
-        }
-
-        private static void DrawObject2D(IObject2D object2D)
-        {
-            object2D.Viewport.Use();
-
-            object2D.Draw();
         }
 
         private void DrawObject3DRenderQueue()
         {
             GL.Enable(EnableCap.DepthTest);
 
-            foreach (var object3D in _object3DRenderQueue)
-            {
-                object3D.Viewport.Use();
-
-                object3D.Draw();
-            }
+            _object3DRenderQueue.ForEach(DrawObject3D);
 
             GL.Disable(EnableCap.DepthTest);
         }
@@ -146,15 +134,23 @@ namespace Kotono.Graphics
 
             //GL.Clear(ClearBufferMask.DepthBufferBit);
 
-            foreach (var frontMesh in _frontMeshRenderQueue)
-            {
-                frontMesh.Viewport.Use();
-
-                frontMesh.Draw();
-            }
+            _frontMeshRenderQueue.ForEach(DrawFrontMesh);
 
             //GL.Disable(EnableCap.DepthTest);
         }
+
+        private static void DrawDrawable(IDrawable drawable)
+        {
+            drawable.Viewport.Use();
+
+            drawable.Draw();
+        }
+
+        private static void DrawObject2D(IObject2D object2D) => DrawDrawable(object2D);
+
+        private static void DrawObject3D(IObject3D object3D) => DrawDrawable(object3D);
+
+        private static void DrawFrontMesh(IFrontMesh frontMesh) => DrawDrawable(frontMesh);
 
         #endregion Render
 

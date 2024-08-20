@@ -22,7 +22,7 @@ namespace Kotono.Graphics.Statistics
 
         internal static float UpdateRate => _update.Rate;
 
-        public static bool IsDraw
+        internal static bool IsDraw
         {
             get => _background.IsDraw;
             set
@@ -33,21 +33,20 @@ namespace Kotono.Graphics.Statistics
             }
         }
 
-        public static Point Position => Window.Size - new Point(200.0f, 60.0f);
+        internal static Point Position => Window.Size - new Point(200.0f, 60.0f);
 
         static PerformanceWindow()
         {
-            _frame = new RateStat(Anchor.Bottom);
-            _update = new RateStat(Anchor.Top);
+            _frame = new RateStat { Anchor = Anchor.Bottom };
+            _update = new RateStat { Anchor = Anchor.Top };
 
-            _background = new RoundedBox(
-                new RoundedBoxSettings
-                {
-                    Rect = new Rect(Position, new Point(400.0f, 120.0f)),
-                    Color = Color.DarkSlateGray,
-                    CornerSize = 10.0f
-                }
-            );
+            _background = new RoundedBox
+            {
+                Position = Position,
+                Size = new Point(400.0f, 120.0f),
+                Color = Color.DarkSlateGray,
+                CornerSize = 10.0f
+            };
         }
 
         internal static void AddFrameTime(float frameTime)

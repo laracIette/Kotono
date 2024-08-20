@@ -1,7 +1,6 @@
 ﻿using Kotono.Graphics.Objects;
 using OpenTK.Graphics.OpenGL4;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Kotono.Graphics
 {
@@ -15,7 +14,7 @@ namespace Kotono.Graphics
 
         internal TextureUnit Unit { get; }
 
-        internal Texture(string path, TextureUnit unit = TextureUnit.Texture0)
+        internal Texture(string path, TextureUnit unit)
         {
             if (!_textures.TryGetValue(path, out int value))
             {
@@ -58,7 +57,9 @@ namespace Kotono.Graphics
 
         internal static void Bind(int handle) => GL.BindTexture(TextureTarget.Texture2D, handle);
 
-        internal static void Use(int handle, TextureUnit unit = TextureUnit.Texture0)
+        internal static void Use(int handle) => Use(handle, TextureUnit.Texture0);
+
+        internal static void Use(int handle, TextureUnit unit)
         {
             GL.ActiveTexture(unit);
 
@@ -67,7 +68,9 @@ namespace Kotono.Graphics
 
         internal void Use() => Use(Handle, Unit);
 
-        internal static void Draw(int handle, TextureUnit unit = TextureUnit.Texture0)
+        internal static void Draw(int handle) => Draw(handle, TextureUnit.Texture0);
+
+        internal static void Draw(int handle, TextureUnit unit)
         {
             Use(handle, unit);
 
@@ -82,7 +85,7 @@ namespace Kotono.Graphics
         {
             Bind(0);
 
-            GL.DeleteTextures(_textures.Values.Count, _textures.Values.ToArray());
+            GL.DeleteTextures(_textures.Values.Count, [.. _textures.Values]);
         }
     }
 }

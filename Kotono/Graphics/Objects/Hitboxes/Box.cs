@@ -94,27 +94,20 @@ namespace Kotono.Graphics.Objects.Hitboxes
             -0.5f
         ];
 
-        private static int _vertexArrayObject;
+        private static readonly VertexArraySetup _vertexArraySetup = new();
 
-        private static int _vertexBufferObject;
+        private static readonly Object3DShader _shader = (Object3DShader)ShaderManager.Shaders["hitbox"];
 
         private static bool _isFirst = true;
 
-        internal Box(HitboxSettings settings)
-            : base(settings)
+        internal Box()
         {
             if (_isFirst)
             {
                 _isFirst = false;
 
-                // Create vertex array
-                _vertexArrayObject = GL.GenVertexArray();
-                GL.BindVertexArray(_vertexArrayObject);
-
-                // Create vertex buffer
-                _vertexBufferObject = GL.GenBuffer();
-                GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
-                GL.BufferData(BufferTarget.ArrayBuffer, _vertices.Length * sizeof(float), _vertices, BufferUsageHint.StaticDraw);
+                _vertexArraySetup.VertexArrayObject.Bind();
+                _vertexArraySetup.VertexBufferObject.SetData(_vertices, sizeof(float));
 
                 GL.EnableVertexAttribArray(0);
                 GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 0, 0);
@@ -123,11 +116,11 @@ namespace Kotono.Graphics.Objects.Hitboxes
 
         public override void Draw()
         {
-            ShaderManager.Shaders["hitbox"].SetColor("color", Color);
-            ShaderManager.Shaders["hitbox"].SetMatrix4("model", Transform.Model);
+            _shader.SetColor(Color);
+            _shader.SetModelMatrix(Transform.Model);
 
-            GL.BindVertexArray(_vertexArrayObject);
-            GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
+            _vertexArraySetup.VertexArrayObject.Bind();
+            _vertexArraySetup.VertexBufferObject.Bind();
             GL.DrawArrays(PrimitiveType.Lines, 0, _vertices.Length);
         }
 

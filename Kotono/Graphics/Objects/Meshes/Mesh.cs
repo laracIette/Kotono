@@ -9,15 +9,15 @@ using System.Collections.Generic;
 
 namespace Kotono.Graphics.Objects.Meshes
 {
-    internal abstract class Mesh : Object3D<MeshSettings>, IMesh
+    internal abstract class Mesh : Object3D, IMesh
     {
         private readonly List<Hitbox> _hitboxes;
 
-        protected readonly Shader _shader;
+        protected readonly Object3DShader _shader;
 
         internal Model Model { get; }
 
-        internal Material Material { get; }
+        internal Material Material { get; set; } = new();
 
         internal bool IsGravity { get; set; } = false;
 
@@ -29,7 +29,7 @@ namespace Kotono.Graphics.Objects.Meshes
             set => base.RelativeRotationVelocity = value;
         }
 
-        public bool IsFizix { get; set; } = false;
+        public bool IsUpdateFizix { get; set; } = false;
 
         public float LastIntersectionCheckTime { get; private set; } = 0.0f;
 
@@ -64,27 +64,22 @@ namespace Kotono.Graphics.Objects.Meshes
             }
         }
 
-        internal Mesh(MeshSettings settings)
-            : base(settings)
+        internal Mesh(string shader, List<Hitbox> hitboxes, string model)
         {
-            Color = settings.Color;
+            _shader = (Object3DShader)ShaderManager.Shaders[shader];
 
-            Material = new Material(settings.MaterialTexturesSettings);
-
-            _shader = ShaderManager.Shaders[settings.Shader];
-
-            _hitboxes = settings.Hitboxes;
+            _hitboxes = hitboxes;
 
             foreach (var hitbox in _hitboxes)
             {
-                hitbox.Transform.ReplaceBy(Transform);
+                hitbox.Transform.Parent = Transform;
                 hitbox.Color = Color.Red;
 
-                hitbox.EnterCollision += OnEnterCollision;
-                hitbox.ExitCollision += OnExitCollision;
+                hitbox.EnterCollision += (s, e) => OnEnterCollision(e);
+                hitbox.ExitCollision += (s, e) => OnExitCollision(e);
             }
 
-            Model = Model.Load(new ModelSettings { Path = settings.Model, Shader = _shader });
+            Model = Model.Load(new ModelSettings { Path = model, Shader = _shader });
         }
 
         public override void Update()
@@ -151,36 +146,23 @@ namespace Kotono.Graphics.Objects.Meshes
             {
                 ISelectable.Selected.Add(this);
             }
-
-            Color = IsSelected ? (IsActive ? Color.Green : Color.Orange) : Color.White;
         }
 
         public override void Draw()
         {
-            Material.Use();
+            var color = IsSelected ? (IsActive ? Color.Green : Color.Orange) : Color;
 
-            _shader.SetMatrix4("model", Transform.Model);
-            _shader.SetColor("color", Color);
+            _shader.SetModelMatrix(Transform.Model);
+            _shader.SetColor(color);
+
+            Material.Use();
 
             Model.Draw();
 
             Texture.Bind(0);
         }
 
-        public override void Save()
-        {
-            _settings.Model = Model.Path;
-            _settings.Shader = _shader.Name;
-            _settings.MaterialTexturesSettings = Material.MaterialTexturesSettings;
-
-            base.Save();
-        }
-
-        private void OnEnterCollision(object? sender, CollisionEventArgs e) => OnEnterCollision(e);
-
         protected virtual void OnEnterCollision(CollisionEventArgs collision) { }
-
-        private void OnExitCollision(object? sender, CollisionEventArgs e) => OnExitCollision(e);
 
         protected virtual void OnExitCollision(CollisionEventArgs collision) { }
 

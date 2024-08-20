@@ -14,10 +14,10 @@ namespace Kotono.Graphics.Objects
 
         private readonly GizmoMesh[] _meshes =
         [
-            new GizmoMesh("x"),
-            new GizmoMesh("y"),
-            new GizmoMesh("z"),
-            new GizmoMesh("sphere")
+            new GizmoMesh(Color.Red, "x"),
+            new GizmoMesh(Color.Green, "y"),
+            new GizmoMesh(Color.Blue, "z"),
+            new GizmoMesh(Color.White, "sphere")
         ];
 
         private static IObject3D? ActiveMesh => ISelectable.Active as IObject3D;
@@ -85,9 +85,9 @@ namespace Kotono.Graphics.Objects
 
         private readonly TransformSpace _transformSpace = TransformSpace.Relative;
 
-        private readonly GizmoMode _gizmoMode = GizmoMode.Rotation;
+        private readonly GizmoMode _gizmoMode = GizmoMode.Location;
 
-        private Gizmo() : base() { }
+        private Gizmo() { }
 
         public override void Update()
         {

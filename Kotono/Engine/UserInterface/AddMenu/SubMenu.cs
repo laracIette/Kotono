@@ -38,19 +38,18 @@ namespace Kotono.Engine.UserInterface.AddMenu
 
             for (int i = 0; i < options.Length; i++)
             {
-                var position = GetTextPosition(i, Window.Size / 2.0f);
+                var position = GetTextPosition(i, Point.Half(Window.Size));
 
                 _options.Add(
-                    new Text(
-                        new TextSettings
-                        {
-                            Rect = new Rect(position, new Point(20.0f, 24.0f)),
-                            Layer = 3,
-                            Source = options[i],
-                            Anchor = _anchor,
-                            Spacing = 0.6f
-                        }
-                    )
+                    new Text
+                    {
+                        Position = position,
+                        Size = new Point(20.0f, 24.0f),
+                        Layer = 3,
+                        Source = options[i],
+                        Anchor = _anchor,
+                        Spacing = 0.6f
+                    }
                 );
             }
         }

@@ -3,7 +3,7 @@
     internal class TestSound : Sound
     {
         internal TestSound()
-            : base(Path.ASSETS + @"test.wav")
+            : base(Path.FromAssets(@"test.wav"))
         {
             Volume = 0.2f;
         }

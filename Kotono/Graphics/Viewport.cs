@@ -4,38 +4,38 @@ using System.Collections.Generic;
 
 namespace Kotono.Graphics
 {
-    internal class Viewport(Rect rect) : IRect
+    internal class Viewport : IRect
     {
-        private readonly Rect _rect = rect;
+        internal Rect Rect { get; } = Rect.Default;
 
         public Point BaseSize
         {
-            get => _rect.BaseSize;
-            set => _rect.BaseSize = value;
+            get => Rect.BaseSize;
+            set => Rect.BaseSize = value;
         }
 
         public Point Size
         {
-            get => _rect.Size;
-            set => _rect.Size = value;
+            get => Rect.Size;
+            set => Rect.Size = value;
         }
 
         public Point Position
         {
-            get => _rect.Position;
-            set => _rect.Position = value;
+            get => Rect.Position;
+            set => Rect.Position = value;
         }
 
         public Rotator Rotation
         {
-            get => _rect.Rotation;
-            set => _rect.Rotation = value;
+            get => Rect.Rotation;
+            set => Rect.Rotation = value;
         }
 
         public Point Scale
         {
-            get => _rect.Scale;
-            set => _rect.Scale = value;
+            get => Rect.Scale;
+            set => Rect.Scale = value;
         }
 
         private readonly List<Viewport> _connections = [];
@@ -46,6 +46,11 @@ namespace Kotono.Graphics
         {
             Active = this;
             GL.Viewport((int)Position.X, (int)(Window.Size.Y - Position.Y - Size.Y), (int)Size.X, (int)Size.Y);
+        }
+
+        public override string ToString()
+        {
+            return Rect.ToString();
         }
     }
 }

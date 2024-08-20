@@ -1,22 +1,22 @@
-﻿namespace Kotono.Graphics.Objects.Lights
+﻿using Kotono.Utils;
+
+namespace Kotono.Graphics.Objects.Lights
 {
-    internal abstract class Light<T> : Object3D<T>, ILight where T : LightSettings
+    internal abstract class Light : Object3D, ILight
     {
-        public bool IsOn
+        public bool IsOn { get; set; } = true;
+
+        public float Power { get; set; } = 1.0f;
+
+        internal Color Diffuse
         {
-            get => _settings.IsOn;
-            set => _settings.IsOn = value;
+            get => Color;
+            set => Color = value;
         }
 
-        public float Power
+        public void SwitchOnOff()
         {
-            get => _settings.Power;
-            set => _settings.Power = value;
-        }
-
-        internal Light(T settings)
-            : base(settings)
-        {
+            IsOn = !IsOn;
         }
     }
 }

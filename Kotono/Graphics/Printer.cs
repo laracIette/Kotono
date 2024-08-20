@@ -79,7 +79,7 @@ namespace Kotono.Graphics
         /// </summary>
         internal static void Print()
         {
-            Print("");
+            Print(string.Empty);
         }
     }
 }

@@ -47,24 +47,24 @@ namespace Kotono.Utils.Coordinates
         public static Rotator Zero => new(0.0f, 0.0f, 0.0f);
 
         /// <summary>
-        /// A <see cref="Rotator"/> with Pitch = <see cref="Math.TAU"/>, Yaw = <see cref="Math.TAU"/>, Roll = <see cref="Math.TAU"/>.
+        /// A <see cref="Rotator"/> with Pitch = <see cref="Math.Tau"/>, Yaw = <see cref="Math.Tau"/>, Roll = <see cref="Math.Tau"/>.
         /// </summary>
-        public static Rotator Unit => new(Math.TAU, Math.TAU, Math.TAU);
+        public static Rotator Unit => new(Math.Tau, Math.Tau, Math.Tau);
 
         /// <summary>
-        /// A <see cref="Rotator"/> with Pitch = <see cref="Math.TAU"/>, Yaw = 0, Roll = 0.
+        /// A <see cref="Rotator"/> with Pitch = <see cref="Math.Tau"/>, Yaw = 0, Roll = 0.
         /// </summary>
-        public static Rotator UnitPitch => new(Math.TAU, 0.0f, 0.0f);
+        public static Rotator UnitPitch => new(Math.Tau, 0.0f, 0.0f);
 
         /// <summary>
-        /// A <see cref="Rotator"/> with Pitch = 0, Yaw = <see cref="Math.TAU"/>, Roll = 0.
+        /// A <see cref="Rotator"/> with Pitch = 0, Yaw = <see cref="Math.Tau"/>, Roll = 0.
         /// </summary>
-        public static Rotator UnitYaw => new(0.0f, Math.TAU, 0.0f);
+        public static Rotator UnitYaw => new(0.0f, Math.Tau, 0.0f);
 
         /// <summary>
-        /// A <see cref="Rotator"/> with Pitch = 0, Yaw = 0, Roll = <see cref="Math.TAU"/>.
+        /// A <see cref="Rotator"/> with Pitch = 0, Yaw = 0, Roll = <see cref="Math.Tau"/>.
         /// </summary>
-        public static Rotator UnitRoll => new(0.0f, 0.0f, Math.TAU);
+        public static Rotator UnitRoll => new(0.0f, 0.0f, Math.Tau);
 
         /// <summary>
         /// Initialize a <see cref="Rotator"/> from radians with Pitch = pitch, Yaw = yaw, Roll = roll.

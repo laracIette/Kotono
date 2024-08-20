@@ -40,6 +40,11 @@ namespace Kotono
             IsDelete = true;
         }
 
+        public static implicit operator bool(Object? obj)
+        {
+            return obj != null;
+        }
+
 
 #pragma warning disable IDE1006 // Naming Styles
         /// <inheritdoc cref="Printer.Print(object?, Color)"/>
@@ -58,18 +63,20 @@ namespace Kotono
         protected static void print() => Printer.Print();
 
         /// <inheritdoc cref="Logger.Log(object?)"/>
-        [Conditional("DEBUG")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected static void log(object? obj) => Logger.Log(obj);
 
         /// <inheritdoc cref="Logger.Log()"/>>
-        [Conditional("DEBUG")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected static void log() => Logger.Log();
 
+        /// <inheritdoc cref="Logger.LogError(string)"/>>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        protected static void logError(string err) => Logger.LogError(err);
+
         protected static string str(params object?[] objects)
         {
-            string result = "";
+            string result = string.Empty;
             foreach (var obj in objects)
             {
                 result += obj + " ";

@@ -5,14 +5,14 @@ using OpenTK.Mathematics;
 
 namespace Kotono.Graphics.Objects
 {
-    internal class RoundedBox<T> : Object2D<T> where T : RoundedBoxSettings
+    internal class RoundedBox : Object2D
     {
-        public override Rect Rect
-        {
-            get => base.Rect;
+        public override Point Size 
+        { 
+            get => base.Size;
             set
             {
-                base.Rect = value;
+                base.Size = value;
                 UpdateValues();
             }
         }
@@ -48,14 +48,6 @@ namespace Kotono.Graphics.Objects
         protected virtual Shader Shader => ShaderManager.Shaders["roundedBox"];
 
         protected virtual Matrix4 Model => new NDCRect(Position, Size + new Point(FallOff * 2.0f)).Model;
-
-        internal RoundedBox(T settings)
-            : base(settings)
-        {
-            Color = settings.Color;
-            FallOff = settings.FallOff;
-            CornerSize = settings.CornerSize;
-        }
 
         protected virtual void UpdateValues()
         {

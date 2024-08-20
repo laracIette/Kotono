@@ -253,6 +253,15 @@ namespace Kotono.Utils.Coordinates
             };
         }
 
+        public static Vector Avg(params Vector[] values)
+        {
+            var result = Zero;
+            foreach (var vector in values)
+            {
+                result += vector;
+            }
+            return result / values.Length;
+        }
 
         public static Matrix4 CreateScaleMatrix(in Vector v)
         {
@@ -262,6 +271,11 @@ namespace Kotono.Utils.Coordinates
         public static Matrix4 CreateTranslationMatrix(in Vector v)
         {
             return Matrix4.CreateTranslation((Vector3)v);
+        }
+
+        public static bool IsNullOrZero(Vector? v)
+        {
+            return v is null || v == Zero;
         }
 
         public static Vector operator +(Vector left, Vector right)

@@ -2,6 +2,6 @@
 {
     internal interface IFizixObject
     {
-        public bool IsFizix { get; set; }
+        public bool IsUpdateFizix { get; set; }
     }
 }

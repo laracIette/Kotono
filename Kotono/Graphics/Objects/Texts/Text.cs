@@ -1,12 +1,13 @@
 ﻿using Kotono.Input;
 using Kotono.Utils;
 using Kotono.Utils.Coordinates;
+using Kotono.Utils.Exceptions;
 using System;
 using System.Collections.Generic;
 
 namespace Kotono.Graphics.Objects.Texts
 {
-    internal class Text : Object2D<TextSettings>
+    internal class Text : Object2D, IText
     {
         private static readonly Dictionary<char, string> _charactersPath = new()
         {
@@ -88,65 +89,85 @@ namespace Kotono.Graphics.Objects.Texts
             [','] = @"Characters\,.png"
         };
 
-        private readonly RoundedBorder _roundedBorder;
-
-        private readonly Rect _rect = Rect.Default; // TODO: welp
-
-        protected readonly List<Image> _letters = []; // TODO: replace by private, and change Rect in PrinterText
-
-        protected Rect _lettersRect = Rect.Default; // TODO: welp
+        protected readonly List<Image> _letters = []; // TODO: replace by private, and change only position in PrinterText
 
         private object? _source = null;
 
-        internal virtual object? Source
+        private string _value = string.Empty;
+
+        public virtual object? Source
         {
             get => _source;
             set
             {
-                var newValue = value?.ToString() ?? "";
+                _source = value;
 
-                if (Value != newValue)
+                string newValue = value?.ToString() ?? string.Empty;
+
+                if (newValue != Value)
                 {
                     Value = newValue;
-                    Init();
                 }
-
-                _source = value;
             }
         }
 
-        internal string Value { get; private set; } = "";
+        public string Value
+        {
+            get => _value;
+            private set
+            {
+                _value = value;
 
-        internal Anchor Anchor { get; private set; } = Anchor.Center;
+                Clear();
 
-        internal float Spacing { get; private set; } = 1.0f;
+                for (int i = 0; i < value.Length; i++)
+                {
+                    if (!_charactersPath.TryGetValue(value[i], out string? path))
+                    {
+                        path = _charactersPath[' '];
+                    }
+
+                    var position = GetLetterPosition(i, LettersRect.Position, LettersRect.Size);
+
+                    _letters.Add(
+                        new Image(Path.FromAssets(path))
+                        {
+                            Position = position,
+                            Size = LettersRect.Size,
+                            Color = Color,
+                            Layer = Layer
+                        }
+                    );
+                }
+            }
+        }
+
+        public Anchor Anchor { get; set; } = Anchor.Center;
+
+        public float Spacing { get; set; } = 1.0f;
 
         public override Rect Rect
         {
             get
             {
-                _rect.Position = Rect.FromAnchor(_lettersRect.Position, new Point(_lettersRect.BaseSize.X * Value.Length * Spacing, _lettersRect.BaseSize.Y), Anchor);
-                _rect.BaseSize = new Point(_lettersRect.BaseSize.X * Value.Length * Spacing, _lettersRect.BaseSize.Y);
-                return _rect;
+                base.Rect.Position = Rect.GetPositionFromAnchor(LettersRect.Position, new Point(LettersRect.BaseSize.X * Value.Length * Spacing, LettersRect.BaseSize.Y), Anchor);
+                base.Rect.BaseSize = new Point(LettersRect.BaseSize.X * Value.Length * Spacing, LettersRect.BaseSize.Y);
+                return base.Rect;
             }
-            set => _lettersRect = value;
         }
+
+        internal Rect LettersRect { get; } = Rect.Default;
 
         public override Point Position
         {
             get => Rect.Position;
             set
             {
-                _lettersRect.Position = value;
+                LettersRect.Position = value;
 
                 for (int i = 0; i < _letters.Count; i++)
                 {
-                    _letters[i].Rect.Position = GetLetterPosition(i, _lettersRect.Position, _lettersRect.Size);
-                }
-
-                if (_roundedBorder != null)
-                {
-                    _roundedBorder.Rect = Rect;
+                    _letters[i].Position = GetLetterPosition(i, LettersRect.Position, LettersRect.Size);
                 }
             }
         }
@@ -163,14 +184,12 @@ namespace Kotono.Graphics.Objects.Texts
             }
         }
 
-        private Color _color;
-
         public override Color Color
         {
-            get => _color;
+            get => base.Color;
             set
             {
-                _color = value;
+                base.Color = value;
                 foreach (var letter in _letters)
                 {
                     letter.Color = value;
@@ -178,116 +197,60 @@ namespace Kotono.Graphics.Objects.Texts
             }
         }
 
-        public new bool IsSelected { get; } = false;
+        public new bool IsSelected { get; } = false; // TODO: temporary fix
 
-        public new bool IsActive { get; } = false;
+        public new bool IsActive { get; } = false; // TODO: temporary fix
 
         internal bool IsMouseOn => Rect.Overlaps(Rect, Mouse.Position);
 
-        internal Text(TextSettings settings)
-            : base(settings)
-        {
-            Source = settings.Source;
-            Anchor = settings.Anchor;
-            Color = settings.Color;
-            Spacing = settings.Spacing;
-
-            _roundedBorder = new RoundedBorder(
-                new RoundedBorderSettings
-                {
-                    IsDraw = false,
-                    Rect = Rect,
-                    Layer = 2
-                }
-            );
-
-            Init();
-        }
-
-        protected void Init()
-        {
-            Clear();
-
-            for (int i = 0; i < Value.Length; i++)
-            {
-                if (!_charactersPath.TryGetValue(Value[i], out string? path))
-                {
-                    path = _charactersPath[' '];
-                }
-
-                var position = GetLetterPosition(i, _lettersRect.Position, _lettersRect.Size);
-
-                _letters.Add(new Image(
-                    new ImageSettings
-                    {
-                        Texture = Path.ASSETS + path,
-                        Rect = new Rect(position, _lettersRect.Size),
-                        Color = Color,
-                        Layer = Layer
-                    }
-                ));
-            }
-        }
-
         private Point GetLetterPosition(int index, Point position, Point size)
         {
+            float horizontalOffset = Spacing * size.X * (index - (Value.Length - 1) / 2.0f);
+            float verticalOffset = size.Y / 2.0f;
+
             position = Anchor switch
             {
-                Anchor.Center => new Point(
-                    position.X + Spacing * size.X * (index - (Value.Length - 1) / 2.0f),
-                    position.Y
-                ),
-                Anchor.Top => new Point(
-                    position.X + Spacing * size.X * (index - (Value.Length - 1) / 2.0f),
-                    position.Y + size.Y / 2.0f
-                ),
-                Anchor.Bottom => new Point(
-                    position.X + Spacing * size.X * (index - (Value.Length - 1) / 2.0f),
-                    position.Y - size.Y / 2.0f
-                ),
-                Anchor.Left => new Point(
-                    position.X + Spacing * size.X * (0.5f + index),
-                    position.Y
-                ),
-                Anchor.Right => new Point(
-                    position.X - Spacing * size.X * (1.5f + index - Value.Length),
-                    position.Y
-                ),
-                Anchor.TopLeft => new Point(
-                    position.X + Spacing * size.X * (0.5f + index),
-                    position.Y + size.Y / 2.0f
-                ),
-                Anchor.TopRight => new Point(
-                    position.X - Spacing * size.X * (1.5f + index - Value.Length),
-                    position.Y + size.Y / 2.0f
-                ),
-                Anchor.BottomLeft => new Point(
-                    position.X + Spacing * size.X * (0.5f + index),
-                    position.Y - size.Y / 2.0f
-                ),
-                Anchor.BottomRight => new Point(
-                    position.X - Spacing * size.X * (1.5f + index - Value.Length),
-                    position.Y - size.Y / 2.0f
-                ),
-                _ => throw new Exception($"error: Text.Init()'s switch on Anchor doesn't handle \"{Anchor}\""),
+                Anchor.Center => new Point(position.X + horizontalOffset, position.Y),
+                Anchor.Top => new Point(position.X + horizontalOffset, position.Y + verticalOffset),
+                Anchor.Bottom => new Point(position.X + horizontalOffset, position.Y - verticalOffset),
+                Anchor.Left => new Point(position.X + GetLeftOffset(index, size.X), position.Y),
+                Anchor.Right => new Point(position.X - GetRightOffset(index, size.X), position.Y),
+                Anchor.TopLeft => new Point(position.X + GetLeftOffset(index, size.X), position.Y + verticalOffset),
+                Anchor.TopRight => new Point(position.X - GetRightOffset(index, size.X), position.Y + verticalOffset),
+                Anchor.BottomLeft => new Point(position.X + GetLeftOffset(index, size.X), position.Y - verticalOffset),
+                Anchor.BottomRight => new Point(position.X - GetRightOffset(index, size.X), position.Y - verticalOffset),
+                _ => throw new KotonoException($"Text.Init()'s switch on Anchor doesn't handle \"{Anchor}\""),
             };
 
             return position;
         }
 
-        internal void Clear()
+        private float GetLeftOffset(int index, float sizeX) =>
+            Spacing * sizeX * (0.5f + index);
+
+        private float GetRightOffset(int index, float sizeX) =>
+            -Spacing * sizeX * (1.5f + index - Value.Length);
+
+        private void DisposeLetters()
         {
             foreach (var letter in _letters)
             {
                 letter.Dispose();
             }
+        }
+
+        internal void Clear()
+        {
+            DisposeLetters();
 
             _letters.Clear();
         }
 
         public override void Dispose()
         {
-            _lettersRect.Dispose();
+            LettersRect.Dispose();
+
+            DisposeLetters();
 
             base.Dispose();
         }

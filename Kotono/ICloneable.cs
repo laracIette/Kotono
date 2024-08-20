@@ -1,6 +1,6 @@
 ﻿namespace Kotono
 {
-    internal interface ICloneable<T> where T : Object
+    internal interface ICloneable<T> where T : IObject
     {
         /// <summary>
         /// Get a clone of the <see cref="ICloneable{T}"/>.

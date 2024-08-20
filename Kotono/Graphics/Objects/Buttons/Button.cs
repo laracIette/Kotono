@@ -5,15 +5,13 @@ using System;
 
 namespace Kotono.Graphics.Objects.Buttons
 {
-    internal abstract class Button(ButtonSettings settings)
-        : RoundedBox(settings),
-        IButton
+    internal abstract class Button : RoundedBox, IButton
     {
         private readonly ButtonEventArgs _args = new();
 
-        internal event EventHandler<ButtonEventArgs>? Pressed = null;
+        internal EventHandler<ButtonEventArgs>? Pressed { get; set; }
 
-        internal event EventHandler<ButtonEventArgs>? Released = null;
+        internal EventHandler<ButtonEventArgs>? Released { get; set; }
 
         public bool IsDown { get; private set; }
 

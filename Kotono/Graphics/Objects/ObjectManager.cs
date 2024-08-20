@@ -4,6 +4,7 @@ using Kotono.Input;
 using Kotono.Physics;
 using Kotono.Utils;
 using Kotono.Utils.Coordinates;
+using Kotono.Utils.Timing;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
 using System.Collections.Generic;
@@ -20,9 +21,9 @@ namespace Kotono.Graphics.Objects
 
         private static readonly Dictionary<Type, MethodInfo[]> _typeInputMethods = [];
 
-        internal static PointLight[] PointLights => _objects.OfType<PointLight>().ToArray();
+        internal static PointLight[] PointLights => _objects.OfType<PointLight>().Where(p => p.IsOn).ToArray();
 
-        internal static SpotLight[] SpotLights => _objects.OfType<SpotLight>().ToArray();
+        internal static SpotLight[] SpotLights => _objects.OfType<SpotLight>().Where(s => s.IsOn).ToArray();
 
         internal static IHitbox[] Hitboxes => _objects.OfType<IHitbox>().ToArray();
 
@@ -37,7 +38,7 @@ namespace Kotono.Graphics.Objects
                 case PointLight:
                     if (PointLights.Length >= PointLight.MAX_COUNT)
                     {
-                        Logger.Log($"The number of PointLight is already at its max value: {PointLight.MAX_COUNT}.");
+                        Logger.LogError($"The number of PointLight is already at its max value: {PointLight.MAX_COUNT}");
                         return;
                     }
                     break;
@@ -45,7 +46,7 @@ namespace Kotono.Graphics.Objects
                 case SpotLight:
                     if (SpotLights.Length >= SpotLight.MAX_COUNT)
                     {
-                        Logger.Log($"The number of SpotLight is already at its max value: {SpotLight.MAX_COUNT}.");
+                        Logger.LogError($"The number of SpotLight is already at its max value: {SpotLight.MAX_COUNT}");
                         return;
                     }
                     break;
@@ -90,7 +91,7 @@ namespace Kotono.Graphics.Objects
 
             if (!_objects.Remove(obj))
             {
-                Logger.Log($"error: couldn't remove \"{obj}\" from _objects.");
+                Logger.LogError($"couldn't remove {obj.GetType().Name} \"{obj}\" from _objects");
             }
         }
 
@@ -129,13 +130,15 @@ namespace Kotono.Graphics.Objects
                     Delete(_objects[i]);
                 }
             }
+
+            //Logger.Log(_objects.OfType<Rect>().Count());
         }
 
         private static void UpdateFizix()
         {
             foreach (var obj in _objects.OfType<IFizixObject>())
             {
-                if (obj.IsFizix)
+                if (obj.IsUpdateFizix)
                 {
                     Fizix.Update(obj);
                 }

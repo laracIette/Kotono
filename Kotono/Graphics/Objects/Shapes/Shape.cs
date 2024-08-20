@@ -1,17 +1,18 @@
 ﻿using Kotono.Graphics.Shaders;
+using Kotono.Utils;
 using Kotono.Utils.Coordinates;
 using OpenTK.Graphics.OpenGL4;
 using System;
 
 namespace Kotono.Graphics.Objects.Shapes
 {
-    internal class Shape : Object3D<ShapeSettings>
+    internal class Shape : Object3D
     {
+        private static readonly Object3DShader _shader = (Object3DShader)ShaderManager.Shaders["hitbox"];
+
         private readonly PrimitiveType _mode;
 
-        private readonly int _vertexArrayObject;
-
-        private readonly int _vertexBufferObject;
+        private readonly VertexArraySetup _vertexArraySetup = new();
 
         private bool _hasInitBuffers = false;
 
@@ -28,25 +29,17 @@ namespace Kotono.Graphics.Objects.Shapes
             }
         }
 
-        internal int Length => _vertices.Length;
-
-        internal Shape(ShapeSettings settings)
-            : base(settings)
+        internal Shape(Vector[] vertices, bool isLoop)
         {
-            _vertices = settings.Vertices;
-            Color = settings.Color;
+            _vertices = vertices;
 
-            _mode = Length switch
+            _mode = _vertices.Length switch
             {
                 0 => throw new Exception($"error: Vertices musn't be empty."),
                 1 => PrimitiveType.Points,
                 2 => PrimitiveType.Lines,
-                _ => settings.IsLoop ? PrimitiveType.LineLoop : PrimitiveType.LineStrip
+                _ => isLoop ? PrimitiveType.LineLoop : PrimitiveType.LineStrip
             };
-
-            _vertexArrayObject = GL.GenVertexArray();
-
-            _vertexBufferObject = GL.GenBuffer();
         }
 
         internal void AddVertex(Vector vertex)
@@ -67,20 +60,18 @@ namespace Kotono.Graphics.Objects.Shapes
 
         public override void Draw()
         {
-            ShaderManager.Shaders["hitbox"].SetColor("color", Color);
-            ShaderManager.Shaders["hitbox"].SetMatrix4("model", Transform.Model);
+            _shader.SetColor(Color);
+            _shader.SetModelMatrix(Transform.Model);
 
-            GL.BindVertexArray(_vertexArrayObject);
-            GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
-            GL.DrawArrays(_mode, 0, Length);
+            _vertexArraySetup.VertexArrayObject.Bind();
+            _vertexArraySetup.VertexBufferObject.Bind();
+            GL.DrawArrays(_mode, 0, _vertices.Length);
         }
 
         private void UpdateBuffers()
         {
-            GL.BindVertexArray(_vertexArrayObject);
-
-            GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
-            GL.BufferData(BufferTarget.ArrayBuffer, Length * Vector.SizeInBytes, _vertices, BufferUsageHint.StaticDraw);
+            _vertexArraySetup.VertexArrayObject.Bind();
+            _vertexArraySetup.VertexBufferObject.SetData(_vertices, Vector.SizeInBytes);
 
             GL.EnableVertexAttribArray(0);
             GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, Vector.SizeInBytes, 0);

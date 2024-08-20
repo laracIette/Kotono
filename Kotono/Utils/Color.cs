@@ -1,6 +1,8 @@
 ﻿using Kotono.Utils.Coordinates;
+using Kotono.Utils.Exceptions;
 using OpenTK.Mathematics;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -216,22 +218,11 @@ namespace Kotono.Utils
         }
 
         /// <summary> 
-        /// Initialize a Color with R = c.R, G = c.G, B = c.B, A = a. 
-        /// </summary>
-        public Color(Color c, float a)
-        {
-            R = c.R;
-            G = c.G;
-            B = c.B;
-            A = a;
-        }
-
-        /// <summary> 
         /// Convert a hex string to a Color accepts 1, 3, 4, 6, 8 letters format. 
         /// </summary>
         public static Color FromHex(string hex)
         {
-            hex = hex.Split('#').Where(s => s != "").FirstOrDefault("");
+            hex = hex.Split('#').FirstOrDefault(s => !string.IsNullOrEmpty(s), string.Empty);
 
             return hex.Length switch
             {
@@ -240,7 +231,7 @@ namespace Kotono.Utils
                 4 => new Color(HexToF(hex[0]), HexToF(hex[1]), HexToF(hex[2]), HexToF(hex[3])),
                 6 => new Color(HexToF(hex[0..2]), HexToF(hex[2..4]), HexToF(hex[4..6])),
                 8 => new Color(HexToF(hex[0..2]), HexToF(hex[2..4]), HexToF(hex[4..6]), HexToF(hex[6..8])),
-                _ => throw new Exception($"error: string \"{hex}\" Length \"{hex.Length}\" isn't handled")
+                _ => throw new KotonoException($"string \"{hex}\" Length \"{hex.Length}\" isn't handled")
             };
         }
 
@@ -251,7 +242,7 @@ namespace Kotono.Utils
         {
             if (hex.Length != 2)
             {
-                throw new Exception($"error: string \"{hex}\" Length \"{hex.Length}\" must be of \"2\"");
+                throw new KotonoException($"string \"{hex}\" Length \"{hex.Length}\" must be of \"2\"");
             }
             else
             {

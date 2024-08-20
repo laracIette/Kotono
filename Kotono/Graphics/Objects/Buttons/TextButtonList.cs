@@ -1,6 +1,4 @@
-﻿using Kotono.Graphics.Objects.Texts;
-using Kotono.Settings;
-using Kotono.Utils;
+﻿using Kotono.Utils;
 using Kotono.Utils.Coordinates;
 
 namespace Kotono.Graphics.Objects.Buttons
@@ -9,30 +7,25 @@ namespace Kotono.Graphics.Objects.Buttons
     {
         private readonly TextButton[] _buttons;
 
-        internal TextButtonList(TextButtonListSettings settings)
+        internal TextButtonList(string[] texts, Point position, Point size, Color color, float cornerSize, float fallOff, int layer)
         {
-            _buttons = new TextButton[settings.Texts.Length];
+            _buttons = new TextButton[texts.Length];
 
-            var positions = Rect.FromAnchor(settings.Texts.Length, settings.Rect.Position, settings.Rect.Size, Anchor.Center);
+            var positions = Rect.GetPositionFromAnchor(texts.Length, position, size, Anchor.Center);
 
-            for (int i = 0; i < settings.Texts.Length; i++)
+            for (int i = 0; i < texts.Length; i++)
             {
-                _buttons[i] = new TextButton(
-                    new TextButtonSettings
-                    {
-                        Color = settings.Color,
-                        CornerSize = settings.CornerSize,
-                        FallOff = settings.FallOff,
-                        Layer = settings.Layer,
-                        Rect = new Rect(positions[i], settings.Rect.Size),
-                        TextSettings = new TextSettings
-                        {
-                            Source = settings.Texts[i]
-                        }
-                    }
-                );
-
-                _buttons[i].Pressed += OnPressed;
+                _buttons[i] = new TextButton
+                {
+                    Position = positions[i],
+                    Size = size,
+                    Source = texts[i],
+                    Color = color,
+                    CornerSize = cornerSize,
+                    FallOff = fallOff,
+                    Layer = layer,
+                    Pressed = OnPressed
+                };
             }
         }
 

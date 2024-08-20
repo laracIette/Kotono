@@ -1,27 +1,17 @@
-﻿using Kotono.Settings;
-using Kotono.Utils;
+﻿using Kotono.Utils;
 using Kotono.Utils.Coordinates;
 using Kotono.Utils.Exceptions;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.Json.Serialization;
 
 namespace Kotono.Graphics.Objects
 {
-    internal class Animation : Object2D<AnimationSettings>, ISaveable
+    internal class Animation : Object2D, ISaveable
     {
         protected readonly List<Image> _frames = [];
 
-        public override Rect Rect
-        {
-            get => _frames.FirstOrNull()?.Rect ?? throw new KotonoException("cannot access Rect, _frames is empty");
-            set
-            {
-                foreach (var frame in _frames)
-                {
-                    frame.Rect = value;
-                }
-            }
-        }
+        public override Rect Rect => _frames.FirstOrNull()?.Rect ?? throw new KotonoException("cannot access Rect, _frames is empty");
 
         public override int Layer
         {
@@ -47,9 +37,30 @@ namespace Kotono.Graphics.Objects
             }
         }
 
-        private readonly int _frameRate;
+        public override Color Color
+        {
+            get => _frames.FirstOrNull()?.Color ?? throw new KotonoException("cannot access Color, _frames is empty");
+            set
+            {
+                foreach (var frame in _frames)
+                {
+                    frame.Color = value;
+                }
+            }
+        }
 
-        private float Delta => 1.0f / _frameRate;
+        /// <summary>
+        /// The directory at which the Animation's frames are.
+        /// </summary>
+        internal string DirectoryPath { get; set; } = string.Empty;
+
+        internal float Duration { get; set; } = 0.0f;
+
+        internal float StartTime { get; set; } = 0.0f;
+
+        internal float FrameRate { get; set; }
+
+        private float Delta => 1.0f / FrameRate;
 
         private int _currentFrame = 0;
 
@@ -64,68 +75,46 @@ namespace Kotono.Graphics.Objects
             }
         }
 
-        private readonly float _startTime;
-
-        private readonly float _duration;
-
         private float _lastFrameTime;
 
         private float TimeSinceLastFrame => Time.Now - _lastFrameTime;
 
         private float _pausedTime = 0;
 
-        private float EndTime => _startTime + _duration + _pausedTime;
+        private float EndTime => StartTime + Duration + _pausedTime;
 
         private bool _isStarted = false;
 
         public bool IsPlaying { get; private set; } = false;
 
-        /// <summary> 
-        /// Create an Animation from files in a directory.
-        /// </summary>
-        internal Animation(AnimationSettings settings)
-            : base(settings)
+        [JsonConstructor]
+        internal Animation() { }
+
+        internal Animation(string directoryPath) : this()
         {
-            IsDraw = false;
+            DirectoryPath = directoryPath;
 
-            string[] filePaths;
-
-            string directory = Path.ASSETS + settings.Directory;
-
-            if (Directory.Exists(directory))
+            if (Directory.Exists(DirectoryPath))
             {
-                filePaths = Directory.GetFiles(directory);
+                var filePaths = Directory.GetFiles(DirectoryPath);
+
+                foreach (var filePath in filePaths)
+                {
+                    if (filePath.EndsWith(".png"))
+                    {
+                        _frames.Add(new Image(filePath));
+                    }
+                }
             }
             else
             {
-                throw new DirectoryNotFoundException($"error: couldn't find directory at \"{directory}\"");
+                throw new DirectoryNotFoundException($"error: couldn't find directory at \"{DirectoryPath}\"");
             }
-
-            foreach (var filePath in filePaths)
-            {
-                if (filePath.EndsWith(".png"))
-                {
-                    _frames.Add(new Image(
-                        new ImageSettings
-                        {
-                            IsDraw = false,
-                            Texture = filePath,
-                            Rect = settings.Rect,
-                            Layer = settings.Layer,
-                            Color = settings.Color
-                        }
-                    ));
-                }
-            }
-
-            _frameRate = settings.FrameRate;
-            _startTime = settings.StartTime;
-            _duration = settings.Duration;
         }
 
         public override void Update()
         {
-            if (!_isStarted && (Time.Now >= _startTime))
+            if (!_isStarted && (Time.Now >= StartTime))
             {
                 _isStarted = true;
                 IsPlaying = true;
@@ -180,7 +169,7 @@ namespace Kotono.Graphics.Objects
 
         internal void PreviousFrame() => CurrentFrame--;
 
-        public override string ToString() => $"Directory: {_settings.Directory}";
+        public override string ToString() => $"Directory: {DirectoryPath}";
 
         public override void Dispose()
         {

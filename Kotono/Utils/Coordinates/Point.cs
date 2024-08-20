@@ -111,6 +111,16 @@ namespace Kotono.Utils.Coordinates
             return p;
         }
 
+        public static bool IsNullOrZero(Point? p)
+        {
+            return p is null || p == Zero;
+        }
+
+        public static Point Half(Point p)
+        {
+            return p / 2.0f;
+        }
+
         public static Point operator +(Point left, Point right)
         {
             left.X += right.X;

@@ -14,7 +14,6 @@ namespace Kotono.Utils
         private object? _oldValue;
 
         internal LogChangeAttribute(string propertyName, bool isLogWhenSame)
-            : base()
         {
             _propertyName = propertyName;
             _isLogWhenSame = isLogWhenSame;

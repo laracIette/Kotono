@@ -1,12 +1,10 @@
 ﻿namespace Kotono.Graphics.Objects.Lights
 {
-    internal class SpotLight : Object3D
+    internal class SpotLight : Light
     {
         private float _cutOffAngle = 12.5f;
 
         private float _outerCutOffAngle = 17.5f;
-
-        private bool _isOn = true;
 
         internal float CutOffAngle
         {
@@ -24,7 +22,7 @@
 
         public override void Update()
         {
-            if (_isOn)
+            if (IsOn)
             {
                 if (OuterCutOffAngle >= 5.0f)
                 {
@@ -41,7 +39,7 @@
 
         private void OnFKeyPressed()
         {
-            _isOn = !_isOn;
+            SwitchOnOff();
         }
     }
 }

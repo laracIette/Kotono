@@ -4,8 +4,8 @@ using Kotono.Graphics.Objects;
 using Kotono.Graphics.Objects.Buttons;
 using Kotono.Graphics.Objects.Lights;
 using Kotono.Graphics.Objects.Meshes;
+using Kotono.Graphics.Objects.Texts;
 using Kotono.Input;
-using Kotono.Settings;
 using Kotono.Utils;
 using Kotono.Utils.Coordinates;
 using Kotono.Utils.Timing;
@@ -30,24 +30,40 @@ namespace Kotono
             _ = new TestImage();
 
             _ = new TextButtonList(
-                new TextButtonListSettings
-                {
-                    Color = Color.DarkSlateGray,
-                    Texts =
-                    [
-                        "Hey",
-                        "Yo",
-                        "BOoOOooOo"
-                    ],
-                    Rect = new Rect(new Point(150.0f, 150.0f), new Point(200.0f, 50.0f)),
-                    CornerSize = 15.0f
-                }
+                [
+                    "Hey",
+                    "Yo",
+                    "BOoOOooOo"
+                ], 
+                new Point(150.0f, 150.0f),
+                new Point(200.0f, 50.0f),
+                Color.DarkSlateGray,
+                15.0f,
+                1.0f,
+                0
             );
 
-            _animation = new Animation(JsonParser.Parse<AnimationSettings>(Path.ASSETS + @"Animations\Counting\Counting.json"));
+            _animation = new Animation(Path.FromAssets(@"Animations\Counting"))
+            {
+                BaseSize = new Point(50.0f, 60.0f),
+                Position = new Point(100.0f, 200.0f),
+                Color = Color.Yellow,
+                IsDraw = false,
+                FrameRate = 10.0f,
+                StartTime = 3.0f,
+                Duration = 5.0f
+            };
+            _animation.Play();
 
             _timer = new Timer();
             _timer.Timeout += OnTimerTimeout;
+
+            //var text = new TTFText
+            //{
+            //    FontSize = 15.0f,
+            //    Size = new Point(200.0f, 150.0f)
+            //};
+            //text.AddText("Test", Point.Zero);
 
             CreateObjects();
         }
@@ -120,7 +136,7 @@ namespace Kotono
             _ = new Cube
             {
                 IsGravity = true,
-                IsFizix = false,
+                IsUpdateFizix = false,
             };
 
             _cube = new Cube

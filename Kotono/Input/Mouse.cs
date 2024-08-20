@@ -124,7 +124,7 @@ namespace Kotono.Input
                     delta.Y -= Window.Size.Y;
                 }
 
-                if (delta != Point.Zero)
+                if (!Point.IsNullOrZero(delta))
                 {
                     PreviousPositionFromOrigin += delta;
                     PositionFromOrigin += delta;
@@ -134,7 +134,7 @@ namespace Kotono.Input
 
             Delta = PositionFromOrigin - PreviousPositionFromOrigin;
 
-            if (Delta != Point.Zero)
+            if (!Point.IsNullOrZero(Delta))
             {
                 UpdateRay();
             }

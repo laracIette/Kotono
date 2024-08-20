@@ -14,7 +14,7 @@ namespace Kotono.Graphics.Objects
 
         private float _pitch = 0.0f;
 
-        private float _yaw = -Math.PI / 2.0f;
+        private float _yaw = -Math.PiOver2;
 
         private float _fov = 90.0f;
 
@@ -30,7 +30,7 @@ namespace Kotono.Graphics.Objects
 
         internal Vector Location { get; set; } = Vector.Zero;
 
-        internal Rotator Rotation => new(Pitch, -Yaw - Math.PI / 2.0f, 0.0f);
+        internal Rotator Rotation => new(Pitch, -Yaw - Math.PiOver2, 0.0f);
 
         internal float AspectRatio { get; set; } = 16.0f / 9.0f;
 
@@ -64,11 +64,12 @@ namespace Kotono.Graphics.Objects
 
         internal Matrix4 ProjectionMatrix => Matrix4.CreatePerspectiveFieldOfView(Math.Rad(Fov), AspectRatio, 0.01f, 1000.0f);
 
-        internal Camera() : base()
+        internal Camera()
         {
-            _line = new Line(Location, Front, Transform.Default, Color.Red)
+            _line = new Line(Location, Front)
             {
-                IsDraw = false
+                IsDraw = false,
+                Color = Color.Red
             };
         }
 

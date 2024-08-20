@@ -34,20 +34,12 @@ namespace Kotono.Graphics.Objects
             1.0f
         ];
 
-        internal static int VertexArrayObject { get; }
-
-        internal static int VertexBufferObject { get; }
+        internal static VertexArraySetup VertexArraySetup { get; } = new();
 
         static SquareVertices()
         {
-            // Create vertex array
-            VertexArrayObject = GL.GenVertexArray();
-            BindVertexArrayObject();
-
-            // Create vertex buffer
-            VertexBufferObject = GL.GenBuffer();
-            BindVertexBufferObject();
-            GL.BufferData(BufferTarget.ArrayBuffer, sizeof(float) * _vertices.Length, _vertices, BufferUsageHint.StaticDraw);
+            VertexArraySetup.VertexArrayObject.Bind();
+            VertexArraySetup.VertexBufferObject.SetData(_vertices, sizeof(float));
 
             GL.EnableVertexAttribArray(0);
             GL.VertexAttribPointer(0, 2, VertexAttribPointerType.Float, false, 4 * sizeof(float), 0);
@@ -57,13 +49,9 @@ namespace Kotono.Graphics.Objects
 
         internal static void Draw()
         {
-            BindVertexArrayObject();
+            VertexArraySetup.VertexArrayObject.Bind();
 
             GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
         }
-
-        internal static void BindVertexArrayObject() => GL.BindVertexArray(VertexArrayObject);
-
-        internal static void BindVertexBufferObject() => GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
     }
 }

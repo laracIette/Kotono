@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace Kotono.Utils.Coordinates
 {
-    internal class Transform : Object, ITransform, IReplaceable<Transform>, ICloneable<Transform>, IEquatable<Transform>
+    internal class Transform : Object, ITransform, ICloneable<Transform>, IEquatable<Transform>
     {
         private record class Transformation<T>(T Value, float EndTime) where T : struct
         {
@@ -148,7 +148,7 @@ namespace Kotono.Utils.Coordinates
         /// The default location of Transform.
         /// </summary>
         /// <remarks>
-        /// Default value : Vector.Zero
+        /// Value : Vector.Zero
         /// </remarks>
         internal static Vector DefaultLocation => Vector.Zero;
 
@@ -156,7 +156,7 @@ namespace Kotono.Utils.Coordinates
         /// The default rotation of Transform.
         /// </summary>
         /// <remarks>
-        /// Default value : Rotator.Zero
+        /// Value : Rotator.Zero
         /// </remarks>
         internal static Rotator DefaultRotation => Rotator.Zero;
 
@@ -164,7 +164,7 @@ namespace Kotono.Utils.Coordinates
         /// The default scale of Transform.
         /// </summary>
         /// <remarks>
-        /// Default value : Vector.Unit
+        /// Value : Vector.Unit
         /// </remarks>
         internal static Vector DefaultScale => Vector.Unit;
 
@@ -172,7 +172,7 @@ namespace Kotono.Utils.Coordinates
         /// The default velocity of Transform's location.
         /// </summary>
         /// <remarks>
-        /// Default value : Vector.Zero
+        /// Value : Vector.Zero
         /// </remarks>
         internal static Vector DefaultLocationVelocity => Vector.Zero;
 
@@ -180,7 +180,7 @@ namespace Kotono.Utils.Coordinates
         /// The default velocity of Transform's rotation.
         /// </summary>
         /// <remarks>
-        /// Default value : Rotator.Zero
+        /// Value : Rotator.Zero
         /// </remarks>
         internal static Rotator DefaultRotationVelocity => Rotator.Zero;
 
@@ -188,19 +188,17 @@ namespace Kotono.Utils.Coordinates
         /// The default velocity of Transform's scale.
         /// </summary>
         /// <remarks>
-        /// Default value : Vector.Zero
+        /// Value : Vector.Zero
         /// </remarks>
         internal static Vector DefaultScaleVelocity => Vector.Zero;
 
         internal Transform(Vector location, Rotator rotation, Vector scale)
-            : base()
         {
             RelativeLocation = location;
             RelativeRotation = rotation;
             RelativeScale = scale;
         }
 
-        [JsonConstructor]
         internal Transform() : this(DefaultLocation, DefaultRotation, DefaultScale) { }
 
         internal Transform(Transform t) : this(t.RelativeLocation, t.RelativeRotation, t.RelativeScale) { }
@@ -211,23 +209,23 @@ namespace Kotono.Utils.Coordinates
             RelativeRotation += Time.Delta * RelativeRotationVelocity;
             RelativeScale += Time.Delta * RelativeScaleVelocity;
 
-            if (GetTransformation(ref _locationTransformation, out Vector location))
+            if (TryGetTransformation(ref _locationTransformation, out Vector location))
             {
                 RelativeLocation += Time.Delta * location;
             }
 
-            if (GetTransformation(ref _rotationTransformation, out Rotator rotation))
+            if (TryGetTransformation(ref _rotationTransformation, out Rotator rotation))
             {
                 RelativeRotation += Time.Delta * rotation;
             }
 
-            if (GetTransformation(ref _scaleTransformation, out Vector scale))
+            if (TryGetTransformation(ref _scaleTransformation, out Vector scale))
             {
                 RelativeScale += Time.Delta * scale;
             }
         }
 
-        private static bool GetTransformation<T>(ref Transformation<T>? transformation, out T value) where T : struct
+        private static bool TryGetTransformation<T>(ref Transformation<T>? transformation, out T value) where T : struct
         {
             if (transformation?.IsValid ?? false)
             {
@@ -327,22 +325,6 @@ namespace Kotono.Utils.Coordinates
             };
         }
 
-        /// <inheritdoc cref="IReplaceable{T}.ReplaceBy(T)"/>
-        /// <remarks>
-        /// Includes velocities.
-        /// </remarks>
-        public void ReplaceBy(Transform t) => ReplaceBy(t, true);
-
-        internal void ReplaceBy(Transform t, bool isVelocity)
-        {
-            _base = t._base;
-
-            if (isVelocity)
-            {
-                _velocity = t._velocity;
-            }
-        }
-
         public override int GetHashCode()
         {
             return HashCode.Combine(WorldLocation, WorldRotation, WorldScale);
@@ -357,7 +339,7 @@ namespace Kotono.Utils.Coordinates
         {
             return ToString() + (isVelocity ?
                 $"\nLocationVelocity: {WorldLocationVelocity}\nRotationVelocity: {WorldRotationVelocity}\nScaleVelocity   : {WorldScaleVelocity}" :
-                ""
+                string.Empty
             );
         }
     }

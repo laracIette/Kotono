@@ -12,7 +12,7 @@ namespace Kotono.Engine
 
         private readonly ObjectExplorer _objectExplorer = new();
 
-        private readonly Viewport _viewport = new(Rect.Default);
+        private readonly Viewport _viewport = new();
 
         internal Scene()
         {

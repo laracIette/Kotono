@@ -1,26 +1,19 @@
 ﻿using Kotono.Utils;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace Kotono.Graphics.Objects
 {
-    internal abstract class Drawable<TSettings> : Object, IDrawable, ISaveable, ISelectable where TSettings : DrawableSettings
+    internal abstract class Drawable : Object, IDrawable, ISaveable, ISelectable
     {
-        protected readonly TSettings _settings;
+        public string FilePath { get; set; } = string.Empty;
 
-        public virtual bool IsDraw
-        {
-            get => _settings.IsDraw;
-            set => _settings.IsDraw = value;
-        }
+        public virtual bool IsDraw { get; set; } = true;
 
-        public virtual Color Color
-        {
-            get => _settings.Color;
-            set => _settings.Color = value;
-        }
+        public virtual Visibility Visibility { get; set; } = Visibility.EditorAndPlaying;
+
+        public virtual Color Color { get; set; } = Color.White;
 
         public Viewport Viewport { get; set; } = Viewport.Active;
 
@@ -30,19 +23,13 @@ namespace Kotono.Graphics.Objects
 
         public bool IsActive => ISelectable.Active == this;
 
-        public IDrawable? Parent { get; set; }
-
         public List<Drawable> Childrens { get; } = [];
-
-        internal Drawable(TSettings settings) : base() => _settings = settings;
-
-        internal Drawable() : this(Activator.CreateInstance<TSettings>()) { }
 
         public virtual void Draw() { }
 
         public virtual void Save()
         {
-            JsonParser.WriteFile(_settings);
+            //JsonParser.WriteFile(this, string.Empty);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

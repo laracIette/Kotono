@@ -2,98 +2,85 @@
 
 namespace Kotono.Graphics.Objects
 {
-    internal abstract class Object3D<T> : Drawable<T>, IObject3D where T : Object3DSettings
+    internal abstract class Object3D : Drawable, IObject3D
     {
-        private Transform _transform = Transform.Default;
-
-        public virtual Transform Transform
-        {
-            get => _transform;
-            set
-            {
-                if (!ReferenceEquals(_transform, value))
-                {
-                    _transform.Dispose();
-                    _transform = value;
-                }
-            }
-        }
+        public virtual Transform Transform { get; } = Transform.Default;
 
         public virtual Vector RelativeLocation
         {
-            get => _transform.RelativeLocation;
-            set => _transform.RelativeLocation = value;
+            get => Transform.RelativeLocation;
+            set => Transform.RelativeLocation = value;
         }
 
         public virtual Rotator RelativeRotation
         {
-            get => _transform.RelativeRotation;
-            set => _transform.RelativeRotation = value;
+            get => Transform.RelativeRotation;
+            set => Transform.RelativeRotation = value;
         }
 
         public virtual Vector RelativeScale
         {
-            get => _transform.RelativeScale;
-            set => _transform.RelativeScale = value;
+            get => Transform.RelativeScale;
+            set => Transform.RelativeScale = value;
         }
 
         public virtual Vector WorldLocation
         {
-            get => _transform.WorldLocation;
-            set => _transform.WorldLocation = value;
+            get => Transform.WorldLocation;
+            set => Transform.WorldLocation = value;
         }
 
         public virtual Rotator WorldRotation
         {
-            get => _transform.WorldRotation;
-            set => _transform.WorldRotation = value;
+            get => Transform.WorldRotation;
+            set => Transform.WorldRotation = value;
         }
 
         public virtual Vector WorldScale
         {
-            get => _transform.WorldScale;
-            set => _transform.WorldScale = value;
+            get => Transform.WorldScale;
+            set => Transform.WorldScale = value;
         }
 
         public virtual Vector RelativeLocationVelocity
         {
-            get => _transform.RelativeLocationVelocity;
-            set => _transform.RelativeLocationVelocity = value;
+            get => Transform.RelativeLocationVelocity;
+            set => Transform.RelativeLocationVelocity = value;
         }
 
         public virtual Rotator RelativeRotationVelocity
         {
-            get => _transform.RelativeRotationVelocity;
-            set => _transform.RelativeRotationVelocity = value;
+            get => Transform.RelativeRotationVelocity;
+            set => Transform.RelativeRotationVelocity = value;
         }
 
         public virtual Vector RelativeScaleVelocity
         {
-            get => _transform.RelativeScaleVelocity;
-            set => _transform.RelativeScaleVelocity = value;
+            get => Transform.RelativeScaleVelocity;
+            set => Transform.RelativeScaleVelocity = value;
         }
 
         public virtual Vector WorldLocationVelocity
         {
-            get => _transform.WorldLocationVelocity;
-            set => _transform.WorldLocationVelocity = value;
+            get => Transform.WorldLocationVelocity;
+            set => Transform.WorldLocationVelocity = value;
         }
 
         public virtual Rotator WorldRotationVelocity
         {
-            get => _transform.WorldRotationVelocity;
-            set => _transform.WorldRotationVelocity = value;
+            get => Transform.WorldRotationVelocity;
+            set => Transform.WorldRotationVelocity = value;
         }
-
+        
         public virtual Vector WorldScaleVelocity
         {
-            get => _transform.WorldScaleVelocity;
-            set => _transform.WorldScaleVelocity = value;
+            get => Transform.WorldScaleVelocity;
+            set => Transform.WorldScaleVelocity = value;
         }
 
         private IObject3D? _parent = null;
 
-        public new virtual IObject3D? Parent
+        public virtual IObject3D? Parent
         {
             get => _parent;
             set
@@ -112,25 +99,10 @@ namespace Kotono.Graphics.Objects
 
         public override bool IsHovered => false;
 
-        internal Object3D(T settings)
-            : base(settings)
-        {
-            Transform = settings.Transform;
-        }
-
-        internal Object3D() : base() { }
-
-        public override void Save()
-        {
-            _settings.Transform = Transform;
-
-            base.Save();
-        }
-
         public override void Dispose()
         {
             Transform.Dispose();
-
+            
             base.Dispose();
         }
     }

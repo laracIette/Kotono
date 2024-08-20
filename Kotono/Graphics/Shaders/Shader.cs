@@ -19,12 +19,12 @@ namespace Kotono.Graphics.Shaders
 
         internal Shader(string name)
         {
-            var shaderSource = IO.File.ReadAllText($@"{Path.SHADERS}{name}\{name}.vert");
+            var shaderSource = IO.File.ReadAllText(Path.FromShaders($@"{name}\{name}.vert"));
             var vertexShader = GL.CreateShader(ShaderType.VertexShader);
             GL.ShaderSource(vertexShader, shaderSource);
             CompileShader(vertexShader);
 
-            shaderSource = IO.File.ReadAllText($@"{Path.SHADERS}{name}\{name}.frag");
+            shaderSource = IO.File.ReadAllText(Path.FromShaders($@"{name}\{name}.frag"));
             var fragmentShader = GL.CreateShader(ShaderType.FragmentShader);
             GL.ShaderSource(fragmentShader, shaderSource);
             CompileShader(fragmentShader);
@@ -53,10 +53,7 @@ namespace Kotono.Graphics.Shaders
             Name = name;
         }
 
-        internal virtual void Update()
-        {
-            Use();
-        }
+        internal virtual void Update() => Use();
 
         private static void CompileShader(int shader)
         {
@@ -119,31 +116,31 @@ namespace Kotono.Graphics.Shaders
         internal void SetVector(string name, Vector data)
         {
             Use();
-            GL.Uniform3(_uniformLocations[name], (Vector3)data);
+            GL.Uniform3(_uniformLocations[name], data.X, data.Y, data.Z);
         }
 
         internal void SetColor(string name, Color data)
         {
             Use();
-            GL.Uniform4(_uniformLocations[name], (Vector4)data);
+            GL.Uniform4(_uniformLocations[name], data.R, data.G, data.B, data.A);
         }
 
         internal void SetRect(string name, Rect data)
         {
             Use();
-            GL.Uniform4(_uniformLocations[name], (Vector4)data);
+            GL.Uniform4(_uniformLocations[name], data.Position.X, data.Position.Y, data.Size.X, data.Size.Y);
         }
 
         internal void SetSides(string name, Sides data)
         {
             Use();
-            GL.Uniform4(_uniformLocations[name], (Vector4)data);
+            GL.Uniform4(_uniformLocations[name], data.Left, data.Right, data.Top, data.Bottom);
         }
 
         internal void SetPoint(string name, Point data)
         {
             Use();
-            GL.Uniform2(_uniformLocations[name], (Vector2)data);
+            GL.Uniform2(_uniformLocations[name], data.X, data.Y);
         }
     }
 }

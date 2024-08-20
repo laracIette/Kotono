@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Kotono.Graphics.Objects.Hitboxes
 {
-    internal abstract class Hitbox(HitboxSettings settings)
-        : Object3D<HitboxSettings>(settings),
-        IHitbox
+    internal abstract class Hitbox : Object3D, IHitbox
     {
         public EventHandler<CollisionEventArgs>? EnterCollision { get; set; } = null;
 
         public EventHandler<CollisionEventArgs>? ExitCollision { get; set; } = null;
 
-        public List<IHitbox> Collisions { get; } = settings.Collisions;
+        public List<IHitbox> Collisions { get; set; } = [];
 
         public List<IHitbox> Colliders { get; set; } = [];
 
@@ -42,7 +41,7 @@ namespace Kotono.Graphics.Objects.Hitboxes
 
         public abstract bool CollidesWith(IHitbox hitbox);
 
-        public bool TryGetCollider(out IHitbox? collider)
+        public bool TryGetCollider([NotNullWhen(true)] out IHitbox? collider)
         {
             collider = Collisions.Find(CollidesWith);
 

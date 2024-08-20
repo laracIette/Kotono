@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Kotono.Graphics.Objects.Hitboxes
 {
@@ -27,6 +28,6 @@ namespace Kotono.Graphics.Objects.Hitboxes
 
         public bool CollidesWith(IHitbox h);
 
-        public bool TryGetCollider(out IHitbox? collider);
+        public bool TryGetCollider([NotNullWhen(true)] out IHitbox? collider);
     }
 }

@@ -25,8 +25,9 @@
     <PackageReference Include="NAudio" Version="2.2.1" />
     <PackageReference Include="OpenTK" Version="4.7.7" />
     <PackageReference Include="PostSharp" Version="2024.1.4" />
-    <PackageReference Include="StbImageSharp" Version="2.27.13" />
-    <PackageReference Include="System.Drawing.Common" Version="8.0.0" />
+    <PackageReference Include="StbImageSharp" Version="2.27.14" />
+    <PackageReference Include="StbTrueTypeSharp" Version="1.26.12" />
+    <PackageReference Include="System.Drawing.Common" Version="8.0.7" />
     <PackageReference Include="System.Runtime" Version="4.3.1" />
     <PackageReference Include="System.Speech" Version="8.0.0" />
   </ItemGroup>

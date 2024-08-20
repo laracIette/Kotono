@@ -1,17 +1,18 @@
 ﻿using Kotono.Graphics.Shaders;
+using Kotono.Utils;
 using Kotono.Utils.Coordinates;
 using OpenTK.Graphics.OpenGL;
 using System;
 
 namespace Kotono.Graphics.Objects.Shapes
 {
-    internal class Shape2D : Object2D<Shape2DSettings>
+    internal class Shape2D : Object2D
     {
+        private static readonly Object3DShader _shader = (Object3DShader)ShaderManager.Shaders["shape2D"];
+
         private readonly PrimitiveType _mode;
 
-        private readonly int _vertexArrayObject;
-
-        private readonly int _vertexBufferObject;
+        private readonly VertexArraySetup _vertexArraySetup = new();
 
         private bool _hasInitBuffers = false;
 
@@ -23,30 +24,22 @@ namespace Kotono.Graphics.Objects.Shapes
             set
             {
                 _points[index] = value;
-
                 UpdateBuffers();
             }
         }
 
-        internal int Length => _points.Length;
-
-        internal Shape2D(Shape2DSettings settings)
-            : base(settings)
+        internal Shape2D(Point[] points, Color color, bool isLoop)
         {
-            _points = settings.Points;
-            Color = settings.Color;
+            _points = points;
+            Color = color;
 
-            _mode = Length switch
+            _mode = _points.Length switch
             {
                 0 => throw new Exception($"error: Points musn't be empty."),
                 1 => PrimitiveType.Points,
                 2 => PrimitiveType.Lines,
-                _ => settings.IsLoop ? PrimitiveType.LineLoop : PrimitiveType.LineStrip
+                _ => isLoop ? PrimitiveType.LineLoop : PrimitiveType.LineStrip
             };
-
-            _vertexArrayObject = GL.GenVertexArray();
-
-            _vertexBufferObject = GL.GenBuffer();
         }
 
         internal void AddPoint(Point point)
@@ -67,20 +60,18 @@ namespace Kotono.Graphics.Objects.Shapes
 
         public override void Draw()
         {
-            ShaderManager.Shaders["shape2D"].SetColor("color", Color);
-            ShaderManager.Shaders["shape2D"].SetMatrix4("model", Rect.Model);
+            _shader.SetColor(Color);
+            _shader.SetModelMatrix(Rect.Model);
 
-            GL.BindVertexArray(_vertexArrayObject);
-            GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
-            GL.DrawArrays(_mode, 0, Length);
+            _vertexArraySetup.VertexArrayObject.Bind();
+            _vertexArraySetup.VertexBufferObject.Bind();
+            GL.DrawArrays(_mode, 0, _points.Length);
         }
 
         private void UpdateBuffers()
         {
-            GL.BindVertexArray(_vertexArrayObject);
-
-            GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
-            GL.BufferData(BufferTarget.ArrayBuffer, Length * Point.SizeInBytes, _points, BufferUsageHint.StaticDraw);
+            _vertexArraySetup.VertexArrayObject.Bind();
+            _vertexArraySetup.VertexBufferObject.SetData(_points, Point.SizeInBytes);
 
             GL.EnableVertexAttribArray(0);
             GL.VertexAttribPointer(0, 2, VertexAttribPointerType.Float, false, Point.SizeInBytes, 0);

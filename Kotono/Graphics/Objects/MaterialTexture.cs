@@ -2,9 +2,8 @@
 
 namespace Kotono.Graphics.Objects
 {
-    internal class MaterialTexture(MaterialTextureSettings settings)
-        : Texture(settings.Path, TextureUnit.Texture0 + settings.TextureUnit)
+    internal class MaterialTexture(string path, TextureUnit textureUnit)
+        : Texture(path, textureUnit)
     {
-        internal string Name { get; set; } = settings.Name;
     }
 }

@@ -5,7 +5,9 @@ namespace Kotono.Engine.UserInterface.AddMenu.MainButtons
     internal class TriggersButton : MainButton
     {
         internal TriggersButton()
-            : base("Triggers", [], Anchor.TopLeft)
-        { }
+            : base([], Anchor.TopLeft)
+        {
+            Source = "Triggers";
+        }
     }
 }

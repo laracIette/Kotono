@@ -9,6 +9,8 @@ namespace Kotono.Graphics.Objects.Meshes
 
         internal Vector[] Vertices { get; }
 
+        internal Vector Center => Vector.Avg(Vertices);
+
         internal Vector this[int index]
         {
             get => index switch
