@@ -1,4 +1,5 @@
-﻿using Kotono.Utils;
+﻿using Kotono.Graphics.Shaders;
+using Kotono.Utils;
 using System.Collections.Generic;
 
 namespace Kotono.Graphics.Objects
@@ -27,6 +28,11 @@ namespace Kotono.Graphics.Objects
         /// The viewport in which the <see cref="IDrawable"/> is drawn.
         /// </summary>
         public Viewport Viewport { get; set; }
+
+        /// <summary>
+        /// The shader the <see cref="IDrawable"/> uses to be drawn.
+        /// </summary>
+        public Shader Shader { get; }
 
         /// <summary>
         /// The objects that are dependant to the <see cref="IDrawable"/>.

@@ -135,9 +135,15 @@ namespace Kotono.Utils.Coordinates
 
         public static Vector Right => UnitX;
 
+        public static Vector Left => -UnitX;
+
         public static Vector Up => UnitY;
 
+        public static Vector Down => -UnitY;
+
         public static Vector Forward => UnitZ;
+
+        public static Vector Backward => -UnitZ;
 
         public static Vector MinValue => new(float.MinValue, float.MinValue, float.MinValue);
 

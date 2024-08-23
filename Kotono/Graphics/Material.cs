@@ -8,19 +8,22 @@ namespace Kotono.Graphics
 
         internal MaterialTexture? Normal { get; set; }
 
-        internal MaterialTexture? Metalness { get; set; }
+        internal MaterialTexture? Metallic { get; set; }
 
         internal MaterialTexture? Roughness { get; set; }
 
         internal MaterialTexture? AmbientOcclusion { get; set; }
 
+        internal MaterialTexture? Emissive { get; set; }
+
         public void Use()
         {
             Albedo?.Use();
             Normal?.Use();
-            Metalness?.Use();
+            Metallic?.Use();
             Roughness?.Use();
             AmbientOcclusion?.Use();
+            Emissive?.Use();
         }
     }
 }

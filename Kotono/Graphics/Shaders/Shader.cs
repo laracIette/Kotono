@@ -1,4 +1,6 @@
-﻿using Kotono.Utils;
+﻿using Kotono.Graphics.Objects;
+using Kotono.Graphics.Objects.Lights;
+using Kotono.Utils;
 using Kotono.Utils.Coordinates;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
@@ -13,7 +15,6 @@ namespace Kotono.Graphics.Shaders
         private readonly int _handle;
 
         private readonly Dictionary<string, int> _uniformLocations = [];
-
 
         internal string Name { get; }
 
@@ -141,6 +142,41 @@ namespace Kotono.Graphics.Shaders
         {
             Use();
             GL.Uniform2(_uniformLocations[name], data.X, data.Y);
+        }
+
+        internal void SetMaterial(string name, Material data)
+        {
+            SetMaterialTexture($"{name}.albedo", data.Albedo);
+            SetMaterialTexture($"{name}.normal", data.Normal);
+            SetMaterialTexture($"{name}.metallic", data.Metallic);
+            SetMaterialTexture($"{name}.roughness", data.Roughness);
+            SetMaterialTexture($"{name}.ambientOcclusion", data.AmbientOcclusion);
+            SetMaterialTexture($"{name}.emissive", data.Emissive);
+        }
+
+        private void SetMaterialTexture(string name, MaterialTexture? data)
+        {
+            if (data != null)
+            {
+                SetInt($"{name}.handle", data.Handle);
+                SetFloat($"{name}.strength", data.Strength);
+            }
+        }
+
+        internal void SetDirectionalLight(string name, DirectionalLight data)
+        {
+            //SetColor($"{name}.ambient", data.Color);
+            SetVector($"{name}.direction", data.Direction);
+            SetColor($"{name}.diffuse", data.Diffuse);
+            SetFloat($"{name}.power", data.Power);
+        }
+
+        internal void SetPointLight(string name, PointLight data)
+        {
+            SetColor($"{name}.ambient", data.Color);
+            SetColor($"{name}.specular", data.Specular);
+            SetColor($"{name}.diffuse", data.Diffuse);
+            SetFloat($"{name}.power", data.Power);
         }
     }
 }

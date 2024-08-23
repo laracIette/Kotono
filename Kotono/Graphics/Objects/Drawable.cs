@@ -1,4 +1,5 @@
-﻿using Kotono.Utils;
+﻿using Kotono.Graphics.Shaders;
+using Kotono.Utils;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -24,6 +25,8 @@ namespace Kotono.Graphics.Objects
         public bool IsActive => ISelectable.Active == this;
 
         public List<Drawable> Childrens { get; } = [];
+
+        public virtual Shader Shader => NewLightingShader.Instance;
 
         public virtual void Draw() { }
 

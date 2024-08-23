@@ -64,6 +64,8 @@ namespace Kotono.Graphics.Objects.Meshes
             }
         }
 
+        public override Shader Shader => NewLightingShader.Instance;
+
         internal Mesh(string shader, List<Hitbox> hitboxes, string model)
         {
             _shader = (Object3DShader)ShaderManager.Shaders[shader];
@@ -151,9 +153,13 @@ namespace Kotono.Graphics.Objects.Meshes
         public override void Draw()
         {
             var color = IsSelected ? (IsActive ? Color.Green : Color.Orange) : Color;
-
-            _shader.SetModelMatrix(Transform.Model);
-            _shader.SetColor(color);
+            
+            if (Shader is NewLightingShader newLightingShader)
+            {
+                newLightingShader.SetModel(Transform.Model);
+                newLightingShader.SetBaseColor(color);
+                newLightingShader.SetMaterial(Material);
+            }
 
             Material.Use();
 

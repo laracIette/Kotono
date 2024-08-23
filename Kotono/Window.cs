@@ -102,6 +102,7 @@ namespace Kotono
                 PerformanceWindow.AddFrameTime((float)e.Time);
 
                 ShaderManager.Update();
+                NewLightingShader.Instance.Update();
 
                 ObjectManager.Draw();
 

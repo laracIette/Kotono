@@ -45,7 +45,7 @@ namespace Kotono.Graphics.Objects
             }
         }
 
-        protected virtual Shader Shader => ShaderManager.Shaders["roundedBox"];
+        public override Shader Shader => ShaderManager.Shaders["roundedBox"];
 
         protected virtual Matrix4 Model => new NDCRect(Position, Size + new Point(FallOff * 2.0f)).Model;
 

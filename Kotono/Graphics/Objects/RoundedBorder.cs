@@ -20,7 +20,7 @@ namespace Kotono.Graphics.Objects
             }
         }
 
-        protected override Shader Shader => ShaderManager.Shaders["roundedBorder"];
+        public override Shader Shader => ShaderManager.Shaders["roundedBorder"];
 
         protected override Matrix4 Model => new NDCRect(Position, Size + new Point(FallOff * 2.0f + Thickness)).Model;
 

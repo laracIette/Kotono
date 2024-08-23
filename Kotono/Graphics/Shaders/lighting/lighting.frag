@@ -1,13 +1,5 @@
 #version 430 core
 
-struct Material2 {
-    sampler2D albedo;
-    sampler2D normal;
-    sampler2D metalness;
-    sampler2D roughness;
-    sampler2D ambientOcclusion;
-};
-
 struct Material {
     sampler2D diffuse;
     sampler2D specular;

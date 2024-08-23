@@ -33,7 +33,7 @@ namespace Kotono.Graphics.Objects.Meshes
 
             using (var importer = new AssimpContext())
             {
-                var scene = importer.ImportFile(Path, PostProcessSteps.Triangulate);
+                var scene = importer.ImportFile(Path, PostProcessSteps.Triangulate | PostProcessSteps.CalculateTangentSpace);
 
                 Triangles = new ModelTriangle[scene.Meshes[0].Faces.Count];
 
@@ -60,11 +60,18 @@ namespace Kotono.Graphics.Objects.Meshes
 
                     for (int j = 0; j < mesh.Vertices.Count; j++)
                     {
-                        var loc = new Vector(mesh.Vertices[j].X, mesh.Vertices[j].Y, mesh.Vertices[j].Z);
+                        var location = new Vector(mesh.Vertices[j].X, mesh.Vertices[j].Y, mesh.Vertices[j].Z);
                         var normal = new Vector(mesh.Normals[j].X, mesh.Normals[j].Y, mesh.Normals[j].Z);
+                        var tangent = new Vector(mesh.Tangents[j].X, mesh.Tangents[j].Y, mesh.Tangents[j].Z);
                         var texCoord = new Point(mesh.TextureCoordinateChannels[0][j].X, mesh.TextureCoordinateChannels[0][j].Y);
 
-                        models[i][j] = new Vertex3D(loc, normal, texCoord);
+                        models[i][j] = new Vertex3D 
+                        { 
+                            Location = location, 
+                            Normal = normal, 
+                            Tangent = tangent,
+                            TexCoord = texCoord
+                        };
                     }
 
                     indices[i] = mesh.GetIndices();
@@ -100,10 +107,14 @@ namespace Kotono.Graphics.Objects.Meshes
             int normalAttributeLocation = settings.Shader.GetAttribLocation("aNormal");
             GL.EnableVertexAttribArray(normalAttributeLocation);
             GL.VertexAttribPointer(normalAttributeLocation, 3, VertexAttribPointerType.Float, false, Vertex3D.SizeInBytes, Vector.SizeInBytes);
+            
+            int tangentAttributeLocation = settings.Shader.GetAttribLocation("aTangent");
+            GL.EnableVertexAttribArray(tangentAttributeLocation);
+            GL.VertexAttribPointer(tangentAttributeLocation, 3, VertexAttribPointerType.Float, false, Vertex3D.SizeInBytes, Vector.SizeInBytes * 2);
 
             int texCoordAttributeLocation = settings.Shader.GetAttribLocation("aTexCoords");
             GL.EnableVertexAttribArray(texCoordAttributeLocation);
-            GL.VertexAttribPointer(texCoordAttributeLocation, 2, VertexAttribPointerType.Float, false, Vertex3D.SizeInBytes, Vector.SizeInBytes * 2);
+            GL.VertexAttribPointer(texCoordAttributeLocation, 2, VertexAttribPointerType.Float, false, Vertex3D.SizeInBytes, Vector.SizeInBytes * 3);
 
             // Create element buffer
             int elementBufferObject = GL.GenBuffer();
