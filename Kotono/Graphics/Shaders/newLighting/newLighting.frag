@@ -49,8 +49,7 @@ struct PointLight {
     float power;
 };
 
-#define MAX_POINT_LIGHTS 100
-uniform PointLight pointLights[MAX_POINT_LIGHTS];
+uniform PointLight pointLights[100];
 uniform int numPointLights;
 
 uniform DirectionalLight dirLight;

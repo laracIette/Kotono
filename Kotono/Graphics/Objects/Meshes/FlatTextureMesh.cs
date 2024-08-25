@@ -1,14 +1,26 @@
-﻿namespace Kotono.Graphics.Objects.Meshes
+﻿using Kotono.Graphics.Shaders;
+
+namespace Kotono.Graphics.Objects.Meshes
 {
-    internal class FlatTextureMesh()
-        : Mesh("flatTexture", [], Path.FromAssets(@"Meshes\flatTextureMesh.obj"))
+    internal class FlatTextureMesh : Mesh
     {
+        public override Shader Shader { get; set; } = ShaderManager.Shaders["flatTexture"];
+
+        public override Model Model { get; set; } = Model.Load(new ModelSettings
+        {
+            Path = Path.FromAssets(@"Meshes\flatTextureMesh.obj"),
+            Shader = ShaderManager.Shaders["lighting"]
+        });
+
         public override void Draw()
         {
-            Material.Use();
+            if (Shader is NewLightingShader newLightingShader)
+            {
+                newLightingShader.SetModel(Transform.Model);
+                newLightingShader.SetBaseColor(Color);
+            }
 
-            _shader.SetModelMatrix(Transform.Model);
-            _shader.SetColor(Color);
+            Material.Use();
 
             Model.Draw();
 

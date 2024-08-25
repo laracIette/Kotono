@@ -1,145 +1,74 @@
-﻿using Assimp;
+﻿using Kotono.Graphics.Shaders;
 using Kotono.Utils.Coordinates;
 using OpenTK.Graphics.OpenGL4;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using PrimitiveType = OpenTK.Graphics.OpenGL4.PrimitiveType;
 
 namespace Kotono.Graphics.Objects.Meshes
 {
     internal class Model
     {
-        private static readonly Dictionary<string, Model> _models = [];
+        private static readonly Dictionary<string, ModelVertices> _models = [];
 
-        internal string Path { get; }
+        private readonly ElementBufferObject _elementBufferObject = new();
 
-        internal VertexArraySetup VertexArraySetup { get; } = new();
+        private readonly ModelVertices _modelVertices;
 
-        internal int IndicesCount { get; }
+        private Shader _shader;
 
-        internal Vector Center { get; }
-
-        internal Vector[] Vertices { get; }
-
-        internal ModelTriangle[] Triangles { get; }
-
-        private Model(ModelSettings settings)
+        internal Shader Shader
         {
-            Path = settings.Path;
-
-            Vertex3D[][] models;
-            int[][] indices;
-
-            using (var importer = new AssimpContext())
+            get => _shader;
+            set
             {
-                var scene = importer.ImportFile(Path, PostProcessSteps.Triangulate | PostProcessSteps.CalculateTangentSpace);
-
-                Triangles = new ModelTriangle[scene.Meshes[0].Faces.Count];
-
-                for (int i = 0; i < scene.Meshes[0].Faces.Count; i++)
+                if (_shader != value)
                 {
-                    var face = scene.Meshes[0].Faces[i];
+                    _shader = value;
 
-                    Triangles[i] = new ModelTriangle(
-                        this,
-                        (Vector)scene.Meshes[0].Vertices[face.Indices[0]],
-                        (Vector)scene.Meshes[0].Vertices[face.Indices[1]],
-                        (Vector)scene.Meshes[0].Vertices[face.Indices[2]]
-                    );
-                }
+                    _shader.Use();
 
-                models = new Vertex3D[scene.Meshes.Count][];
-                indices = new int[scene.Meshes.Count][];
+                    _modelVertices.VertexArraySetup.VertexArrayObject.Bind();
 
-                for (int i = 0; i < scene.Meshes.Count; i++)
-                {
-                    var mesh = scene.Meshes[i];
+                    BindAttributes();
 
-                    models[i] = new Vertex3D[mesh.Vertices.Count];
-
-                    for (int j = 0; j < mesh.Vertices.Count; j++)
-                    {
-                        var location = new Vector(mesh.Vertices[j].X, mesh.Vertices[j].Y, mesh.Vertices[j].Z);
-                        var normal = new Vector(mesh.Normals[j].X, mesh.Normals[j].Y, mesh.Normals[j].Z);
-                        var tangent = new Vector(mesh.Tangents[j].X, mesh.Tangents[j].Y, mesh.Tangents[j].Z);
-                        var texCoord = new Point(mesh.TextureCoordinateChannels[0][j].X, mesh.TextureCoordinateChannels[0][j].Y);
-
-                        models[i][j] = new Vertex3D 
-                        { 
-                            Location = location, 
-                            Normal = normal, 
-                            Tangent = tangent,
-                            TexCoord = texCoord
-                        };
-                    }
-
-                    indices[i] = mesh.GetIndices();
+                    _elementBufferObject.Bind();
                 }
             }
+        }
 
-            IndicesCount = indices[0].Length;
+        internal Model(string path, Shader shader)
+        {
+            _shader = shader;
 
-            var vertices = new List<Vector>();
-            foreach (var vertex in models[0])
+            if (!_models.TryGetValue(path, out ModelVertices? modelVertices))
             {
-                if (!vertices.Any(v => v == vertex.Location))
-                {
-                    vertices.Add(vertex.Location);
-                }
+                modelVertices = new ModelVertices(path);
+                _models[path] = modelVertices;
             }
-            Vertices = [.. vertices];
 
-            Center = Vector.Zero;
-            foreach (var vertex in Vertices)
-            {
-                Center += vertex;
-            }
-            Center /= Vertices.Length;
+            _modelVertices = modelVertices;
 
-            VertexArraySetup.VertexArrayObject.Bind();
-            VertexArraySetup.VertexBufferObject.SetData(models[0], Vertex3D.SizeInBytes);
+            BindAttributes();
 
-            int locationAttributeLocation = settings.Shader.GetAttribLocation("aPos");
+            _elementBufferObject.SetData(_modelVertices.Indices, sizeof(int));
+        }
+
+        private void BindAttributes()
+        {
+            int locationAttributeLocation = Shader.GetAttribLocation("aPos");
             GL.EnableVertexAttribArray(locationAttributeLocation);
             GL.VertexAttribPointer(locationAttributeLocation, 3, VertexAttribPointerType.Float, false, Vertex3D.SizeInBytes, 0);
 
-            int normalAttributeLocation = settings.Shader.GetAttribLocation("aNormal");
+            int normalAttributeLocation = Shader.GetAttribLocation("aNormal");
             GL.EnableVertexAttribArray(normalAttributeLocation);
             GL.VertexAttribPointer(normalAttributeLocation, 3, VertexAttribPointerType.Float, false, Vertex3D.SizeInBytes, Vector.SizeInBytes);
-            
-            int tangentAttributeLocation = settings.Shader.GetAttribLocation("aTangent");
+
+            int tangentAttributeLocation = Shader.GetAttribLocation("aTangent");
             GL.EnableVertexAttribArray(tangentAttributeLocation);
             GL.VertexAttribPointer(tangentAttributeLocation, 3, VertexAttribPointerType.Float, false, Vertex3D.SizeInBytes, Vector.SizeInBytes * 2);
 
-            int texCoordAttributeLocation = settings.Shader.GetAttribLocation("aTexCoords");
+            int texCoordAttributeLocation = Shader.GetAttribLocation("aTexCoords");
             GL.EnableVertexAttribArray(texCoordAttributeLocation);
             GL.VertexAttribPointer(texCoordAttributeLocation, 2, VertexAttribPointerType.Float, false, Vertex3D.SizeInBytes, Vector.SizeInBytes * 3);
-
-            // Create element buffer
-            int elementBufferObject = GL.GenBuffer();
-            GL.BindBuffer(BufferTarget.ElementArrayBuffer, elementBufferObject);
-            GL.BufferData(BufferTarget.ElementArrayBuffer, IndicesCount * sizeof(int), indices[0], BufferUsageHint.StaticDraw);
-        }
-
-        internal static Model Load(ModelSettings settings)
-        {
-            if (!_models.TryGetValue(settings.Path, out Model? value))
-            {
-                value = new Model(settings);
-
-                _models[settings.Path] = value;
-            }
-
-            return value;
-        }
-
-        internal void Draw()
-        {
-            VertexArraySetup.VertexArrayObject.Bind();
-            VertexArraySetup.VertexBufferObject.Bind();
-
-            GL.DrawElements(PrimitiveType.Triangles, IndicesCount, DrawElementsType.UnsignedInt, IntPtr.Zero);
         }
     }
 }

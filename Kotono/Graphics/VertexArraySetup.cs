@@ -1,6 +1,6 @@
 ﻿namespace Kotono.Graphics
 {
-    internal class VertexArraySetup
+    internal sealed class VertexArraySetup
     {
         internal VertexArrayObject VertexArrayObject { get; } = new();
 

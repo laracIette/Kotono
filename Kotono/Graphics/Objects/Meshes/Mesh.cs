@@ -11,23 +11,19 @@ namespace Kotono.Graphics.Objects.Meshes
 {
     internal abstract class Mesh : Object3D, IMesh
     {
-        private readonly List<Hitbox> _hitboxes;
+        public List<Hitbox> Hitboxes { get; set; } = [];
 
-        protected readonly Object3DShader _shader;
+        public virtual Model Model { get; set; } = Model.Load(new ModelSettings 
+        { 
+            Path = Path.FromAssets(@"meshes\cube.obj"), 
+            Shader = ShaderManager.Shaders["lighting"] 
+        });
 
-        internal Model Model { get; }
-
-        internal Material Material { get; set; } = new();
+        public virtual Material Material { get; set; } = new();
 
         internal bool IsGravity { get; set; } = false;
 
         internal CollisionState CollisionState { get; set; }
-
-        public override Rotator RelativeRotationVelocity
-        {
-            get => base.RelativeRotationVelocity;
-            set => base.RelativeRotationVelocity = value;
-        }
 
         public bool IsUpdateFizix { get; set; } = false;
 
@@ -64,24 +60,20 @@ namespace Kotono.Graphics.Objects.Meshes
             }
         }
 
-        public override Shader Shader => NewLightingShader.Instance;
-
-        internal Mesh(string shader, List<Hitbox> hitboxes, string model)
+        internal void AddHitbox(Hitbox hitbox)
         {
-            _shader = (Object3DShader)ShaderManager.Shaders[shader];
+            Hitboxes.Add(hitbox);
 
-            _hitboxes = hitboxes;
+            hitbox.Transform.Parent = Transform;
+            hitbox.Color = Color.Red;
 
-            foreach (var hitbox in _hitboxes)
-            {
-                hitbox.Transform.Parent = Transform;
-                hitbox.Color = Color.Red;
+            hitbox.EnterCollision += (s, e) => OnEnterCollision(e);
+            hitbox.ExitCollision += (s, e) => OnExitCollision(e);
+        }
 
-                hitbox.EnterCollision += (s, e) => OnEnterCollision(e);
-                hitbox.ExitCollision += (s, e) => OnExitCollision(e);
-            }
-
-            Model = Model.Load(new ModelSettings { Path = model, Shader = _shader });
+        internal void RemoveHitbox(Hitbox hitbox)
+        {
+            Hitboxes.Remove(hitbox);
         }
 
         public override void Update()
@@ -93,7 +85,7 @@ namespace Kotono.Graphics.Objects.Meshes
                 tempLoc += Time.Delta * Fizix.Gravity;
             }
 
-            foreach (var hitbox in _hitboxes)
+            foreach (var hitbox in Hitboxes)
             {
                 hitbox.RelativeLocation = tempLoc;
 
@@ -153,7 +145,7 @@ namespace Kotono.Graphics.Objects.Meshes
         public override void Draw()
         {
             var color = IsSelected ? (IsActive ? Color.Green : Color.Orange) : Color;
-            
+
             if (Shader is NewLightingShader newLightingShader)
             {
                 newLightingShader.SetModel(Transform.Model);
@@ -174,7 +166,7 @@ namespace Kotono.Graphics.Objects.Meshes
 
         public override void Dispose()
         {
-            foreach (var hitbox in _hitboxes)
+            foreach (var hitbox in Hitboxes)
             {
                 hitbox.Dispose();
             }

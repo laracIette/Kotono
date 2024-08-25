@@ -26,7 +26,7 @@ namespace Kotono.Graphics.Objects
 
         public List<Drawable> Childrens { get; } = [];
 
-        public virtual Shader Shader => NewLightingShader.Instance;
+        public virtual Shader Shader { get; set; } = ShaderManager.Shaders["lighting"];
 
         public virtual void Draw() { }
 

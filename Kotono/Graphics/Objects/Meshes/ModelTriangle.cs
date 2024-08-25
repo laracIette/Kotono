@@ -5,7 +5,7 @@ namespace Kotono.Graphics.Objects.Meshes
 {
     internal class ModelTriangle
     {
-        internal Model Model { get; }
+        internal ModelVertices Model { get; }
 
         internal Vector[] Vertices { get; }
 
@@ -22,7 +22,7 @@ namespace Kotono.Graphics.Objects.Meshes
             };
         }
 
-        internal ModelTriangle(Model model, Vector vertex1, Vector vertex2, Vector vertex3)
+        internal ModelTriangle(ModelVertices model, Vector vertex1, Vector vertex2, Vector vertex3)
         {
             Model = model;
 

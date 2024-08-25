@@ -1,14 +1,19 @@
-﻿using Kotono.Utils;
+﻿using Kotono.Graphics.Shaders;
+using Kotono.Utils;
 
 namespace Kotono.Graphics.Objects.Meshes
 {
-    internal class GizmoMesh : FrontMesh
+    internal class GizmoMesh(Color color, string axis) : FrontMesh
     {
-        public GizmoMesh(Color color, string axis)
-            : base("gizmo", [], Path.FromAssets(@"Gizmo\gizmo_" + axis + ".obj"))
+        public override Shader Shader { get; set; } = ShaderManager.Shaders["gizmo"];
+
+        public override Model Model { get; set; } = Model.Load(new ModelSettings
         {
-            Color = color;
-        }
+            Path = Path.FromAssets(@"Gizmo\gizmo_" + axis + ".obj"),
+            Shader = ShaderManager.Shaders["gizmo"]
+        });
+
+        public override Color Color { get; set; } = color;
 
         public override void Update() { }
 
