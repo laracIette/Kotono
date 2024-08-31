@@ -132,12 +132,12 @@ namespace Kotono
 
             _ = new Cube
             {
-                RelativeLocation = new Vector(0.0f, 0.0f, -5.0f)
+                RelativeLocation = new Vector(0.0f, 0.0f, -5.0f),
             };
 
             _ = new Cube
             {
-                RelativeLocation = new Vector(6.0f, 0.0f, 0.0f)
+                RelativeLocation = new Vector(6.0f, 0.0f, 0.0f),
             };
 
             for (int i = 0; i < 10; i++)

@@ -96,20 +96,25 @@ namespace Kotono.Graphics.Objects.Hitboxes
 
         private static readonly VertexArraySetup _vertexArraySetup = new();
 
-        private static readonly Object3DShader _shader = (Object3DShader)ShaderManager.Shaders["hitbox"];
+        public override Shader Shader => HitboxShader.Instance;
 
         static Box()
         {
             _vertexArraySetup.SetData(_vertices, sizeof(float));
+            HitboxShader.Instance.SetVertexAttributesData();
+        }
 
-            Shader.SetVertexAttributeData(0, 3, VertexAttribPointerType.Float, 0, 0);
+        public override void UpdateShader()
+        {
+            if (Shader is HitboxShader hitboxShader)
+            {
+                hitboxShader.SetColor(Color);
+                hitboxShader.SetModel(Transform.Model);
+            }
         }
 
         public override void Draw()
         {
-            _shader.SetColor(Color);
-            _shader.SetModelMatrix(Transform.Model);
-
             _vertexArraySetup.Bind();
             GL.DrawArrays(PrimitiveType.Lines, 0, _vertices.Length);
         }

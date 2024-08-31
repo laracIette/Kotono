@@ -5,26 +5,28 @@ using OpenTK.Graphics.OpenGL4;
 
 namespace Kotono.Graphics.Objects
 {
-    internal class Image : Object2D
+    internal class Image(string texturePath)
+        : Object2D()
     {
-        private readonly ImageTexture _texture;
+        private readonly ImageTexture _texture = new(texturePath);
 
-        public override Shader Shader => ShaderManager.Shaders["image"];
+        public override Shader Shader => ImageShader.Instance;
 
         internal bool IsMouseOn => Rect.Overlaps(Rect, Mouse.Position);
 
-        internal Image(string texturePath)
+        static Image() => GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+
+        public override void UpdateShader()
         {
-            _texture = new ImageTexture(texturePath);
+            if (Shader is ImageShader imageShader)
+            {
+                imageShader.SetModel(Rect.Model);
+                imageShader.SetColor(Color);
+            }
         }
 
         public override void Draw()
         {
-            GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
-
-            Shader.SetMatrix4("model", Rect.Model);
-            Shader.SetColor("color", Color);
-
             _texture.Draw();
         }
 

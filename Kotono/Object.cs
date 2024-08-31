@@ -62,6 +62,10 @@ namespace Kotono
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected static void log(object? obj) => Logger.Log(obj);
 
+        /// <inheritdoc cref="Logger.Log(object[])"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        protected static void log(params object[] obj) => Logger.Log(obj);
+
         /// <inheritdoc cref="Logger.Log()"/>>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected static void log() => Logger.Log();

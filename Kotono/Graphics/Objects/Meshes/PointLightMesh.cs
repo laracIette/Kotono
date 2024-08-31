@@ -6,10 +6,10 @@ namespace Kotono.Graphics.Objects.Meshes
     {
         public override Model Model { get; set; } = new Model(
             Path.FromAssets(@"Meshes\sphere.obj"),
-            ShaderManager.Shaders["pointLight"]
+            PointLightShader.Instance
         );
 
-        public override Shader Shader { get; set; } = ShaderManager.Shaders["pointLight"];
+        public override Shader Shader => PointLightShader.Instance;
 
         public override void Update()
         {
@@ -21,11 +21,17 @@ namespace Kotono.Graphics.Objects.Meshes
             }
         }
 
+        public override void UpdateShader()
+        {
+            if (Shader is PointLightShader pointLightShader)
+            {
+                pointLightShader.SetModel(Transform.Model);
+                pointLightShader.SetColor(Color);
+            }
+        }
+
         public override void Draw()
         {
-            Shader.SetMatrix4("model", Transform.Model);
-            Shader.SetColor("color", Color);
-
             Model.Draw();
         }
     }

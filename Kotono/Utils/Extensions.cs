@@ -177,10 +177,10 @@ namespace Kotono.Utils
         }
 
         /// <summary>
-        /// Adds an item to the List if it doesn't contain the item.
+        /// Adds an item to the <see cref="List{T}"/> if it doesn't contain the item.
         /// </summary>
         /// <returns> Wether the item was added to the List. </returns>
-        internal static bool TryAddUnique<TSource>(this List<TSource> source, TSource item)
+        internal static bool TryAddDistinct<TSource>(this List<TSource> source, TSource item)
         {
             if (source.Contains(item))
             {

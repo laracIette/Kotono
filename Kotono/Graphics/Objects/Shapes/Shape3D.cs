@@ -1,7 +1,7 @@
 ﻿using Kotono.Graphics.Shaders;
 using Kotono.Utils.Coordinates;
+using Kotono.Utils.Exceptions;
 using OpenTK.Graphics.OpenGL4;
-using System;
 
 namespace Kotono.Graphics.Objects.Shapes
 {
@@ -17,7 +17,7 @@ namespace Kotono.Graphics.Objects.Shapes
 
         private Vector[] _vertices;
 
-        public override Shader Shader => ShaderManager.Shaders["hitbox"];
+        public override Shader Shader => HitboxShader.Instance;
 
         internal Vector this[int index]
         {
@@ -56,7 +56,7 @@ namespace Kotono.Graphics.Objects.Shapes
         {
             _mode = _vertices.Length switch
             {
-                0 => throw new Exception($"error: Vertices musn't be empty."),
+                0 => throw new KotonoException($"Vertices musn't be empty"),
                 1 => PrimitiveType.Points,
                 2 => PrimitiveType.Lines,
                 _ => IsLoop ? PrimitiveType.LineLoop : PrimitiveType.LineStrip
@@ -72,14 +72,17 @@ namespace Kotono.Graphics.Objects.Shapes
             }
         }
 
+        public override void UpdateShader()
+        {
+            if (Shader is HitboxShader hitboxShader)
+            {
+                hitboxShader.SetColor(Color);
+                hitboxShader.SetModel(Transform.Model);
+            }
+        }
+
         public override void Draw()
         {
-            if (Shader is Object3DShader object3DShader)
-            {
-                object3DShader.SetColor(Color);
-                object3DShader.SetModelMatrix(Transform.Model);
-            }
-
             _vertexArraySetup.Bind();
             GL.DrawArrays(_mode, 0, _vertices.Length);
         }

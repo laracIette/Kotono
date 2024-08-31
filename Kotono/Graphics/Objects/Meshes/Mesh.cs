@@ -13,10 +13,7 @@ namespace Kotono.Graphics.Objects.Meshes
     {
         public List<Hitbox> Hitboxes { get; set; } = [];
 
-        public virtual Model Model { get; set; } = new Model( 
-            Path.FromAssets(@"meshes\cube.obj"),
-            LightingShader.Instance
-        );
+        public abstract Model Model { get; set; }
 
         public virtual Material Material { get; set; } = new();
 
@@ -31,6 +28,8 @@ namespace Kotono.Graphics.Objects.Meshes
         public float IntersectionDistance { get; private set; } = 0.0f;
 
         public Vector IntersectionLocation { get; private set; } = Vector.Zero;
+
+        public override Shader Shader => NewLightingShader.Instance;
 
         public override bool IsHovered
         {
@@ -72,6 +71,8 @@ namespace Kotono.Graphics.Objects.Meshes
 
         internal void RemoveHitbox(Hitbox hitbox)
         {
+            hitbox.EnterCollision -= (s, e) => OnEnterCollision(e);
+            hitbox.ExitCollision -= (s, e) => OnExitCollision(e);
             Hitboxes.Remove(hitbox);
         }
 
@@ -98,7 +99,7 @@ namespace Kotono.Graphics.Objects.Meshes
             RelativeLocation = tempLoc;
         }
 
-        protected virtual void OnLeftButtonPressed()
+        private void OnLeftButtonPressed()
         {
             // If gizmo isn't selected
             if (!Gizmo.IsSelected)
@@ -141,9 +142,10 @@ namespace Kotono.Graphics.Objects.Meshes
             }
         }
 
-        public override void Draw()
+        public override void UpdateShader()
         {
-            var color = IsSelected ? (IsActive ? Color.Green : Color.Orange) : Color;
+            var mixColor = IsSelected ? (IsActive ? Color.Green : Color.Orange) : Color;
+            var color = Color.Blend(Color, mixColor);
 
             if (Shader is NewLightingShader newLightingShader)
             {
@@ -151,7 +153,10 @@ namespace Kotono.Graphics.Objects.Meshes
                 newLightingShader.SetBaseColor(color);
                 newLightingShader.SetMaterial(Material);
             }
+        }
 
+        public override void Draw()
+        {
             Material.Use();
 
             Model.Draw();
@@ -167,10 +172,7 @@ namespace Kotono.Graphics.Objects.Meshes
 
         public override void Dispose()
         {
-            foreach (var hitbox in Hitboxes)
-            {
-                hitbox.Dispose();
-            }
+            Hitboxes.ForEach(h => h.Dispose());
 
             base.Dispose();
         }

@@ -255,6 +255,41 @@ namespace Kotono.Utils
             );
         }
 
+        /// <summary>
+        /// Additive blending.
+        /// </summary>
+        public static Color Blend(Color left, Color right)
+        {
+            return Clamp(left + right);
+        }
+
+        /// <summary>
+        /// Linear interpolation blending.
+        /// </summary>
+        public static Color Blend(Color left, Color right, float blendFactor)
+        {
+            return Clamp(left * (1 - blendFactor) + right * blendFactor);
+        }
+
+        /// <summary>
+        /// Clamps the color's RGB values in range [0, 1].
+        /// </summary>
+        public static Color Clamp(Color color)
+        {
+            return Clamp(color, 0.0f, 1.0f);
+        }
+
+        /// <summary>
+        /// Clamps the color's RGB values in range [min, max].
+        /// </summary>
+        public static Color Clamp(Color color, float min, float max)
+        {
+            color.R = Math.Clamp(color.R, min, max);
+            color.G = Math.Clamp(color.G, min, max);
+            color.B = Math.Clamp(color.B, min, max);
+            return color;
+        }
+
         /// <summary> 
         /// Adds right to left, considering alpha.
         /// </summary>

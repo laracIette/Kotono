@@ -92,9 +92,9 @@ namespace Kotono.Graphics
 
         private static void ClearColorAndDepthBuffers() => GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
-        private void DrawColor() => ((TextureBufferShader)ShaderManager.Shaders["color"]).Draw(_colorBufferTexture);
+        private void DrawColor() => ColorShader.Instance.Draw(_colorBufferTexture);
 
-        private void DrawOutline() => ((TextureBufferShader)ShaderManager.Shaders["outline"]).Draw(_depthStencilBufferTexture);
+        private void DrawOutline() => OutlineShader.Instance.Draw(_depthStencilBufferTexture);
 
         #endregion Helpers
 

@@ -39,9 +39,7 @@ namespace Kotono.Graphics.Objects
         static SquareVertices()
         {
             VertexArraySetup.SetData(_vertices, sizeof(float));
-
-            Shader.SetVertexAttributeData(0, 2, VertexAttribPointerType.Float, 4 * sizeof(float), 0);
-            Shader.SetVertexAttributeData(1, 2, VertexAttribPointerType.Float, 4 * sizeof(float), 2 * sizeof(float));
+            ImageShader.Instance.SetVertexAttributesData();
         }
 
         internal static void Draw()

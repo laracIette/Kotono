@@ -10,7 +10,7 @@ namespace Kotono
                 new WindowSettings
                 {
                     WindowSize = (1600, 800),
-                    MaxFrameRate = 165.0f,
+                    MaxFrameRate = 60.0f,
                     CursorState = CursorState.Confined
                 }
             ).Run();

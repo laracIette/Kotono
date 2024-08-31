@@ -30,6 +30,8 @@ namespace Kotono.Graphics.Objects
 
         public virtual Shader Shader { get; set; } = LightingShader.Instance;
 
+        public virtual void UpdateShader() { }
+
         public virtual void Draw() { }
 
         public virtual void Save()

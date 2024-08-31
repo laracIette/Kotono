@@ -16,7 +16,7 @@ namespace Kotono.Graphics.Shaders
 
         internal void SetColor(global::Kotono.Utils.Color color) => SetColor("color", color);
 
-        internal void SetSides(global::Kotono.Utils.Color sides) => SetColor("sides", sides);
+        internal void SetSides(global::Kotono.Utils.Coordinates.Sides sides) => SetSides("sides", sides);
 
         internal void SetFallOff(float fallOff) => SetFloat("fallOff", fallOff);
 

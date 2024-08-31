@@ -15,9 +15,11 @@ namespace Kotono
         /// </summary>
         public static void Log() => Log(string.Empty);
 
+        public static void Log(params object[] objs) => Log(string.Join(' ', objs));
+
         /// <summary>
         /// Prints an error to the console.
         /// </summary>
-        public static void LogError(string err) => Log($"error: {err}.");
+        public static void LogError(object? err) => Log($"error: {err}.");
     }
 }

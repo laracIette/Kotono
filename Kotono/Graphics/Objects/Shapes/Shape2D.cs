@@ -1,7 +1,7 @@
 ﻿using Kotono.Graphics.Shaders;
 using Kotono.Utils.Coordinates;
+using Kotono.Utils.Exceptions;
 using OpenTK.Graphics.OpenGL4;
-using System;
 
 namespace Kotono.Graphics.Objects.Shapes
 {
@@ -17,7 +17,7 @@ namespace Kotono.Graphics.Objects.Shapes
 
         private Point[] _points;
 
-        public override Shader Shader => ShaderManager.Shaders["shape2D"];
+        public override Shader Shader => Shape2DShader.Instance;
 
         internal Point this[int index]
         {
@@ -56,7 +56,7 @@ namespace Kotono.Graphics.Objects.Shapes
         {
             _mode = _points.Length switch
             {
-                0 => throw new Exception($"error: Points musn't be empty."),
+                0 => throw new KotonoException($"Points musn't be empty"),
                 1 => PrimitiveType.Points,
                 2 => PrimitiveType.Lines,
                 _ => IsLoop ? PrimitiveType.LineLoop : PrimitiveType.LineStrip
@@ -72,14 +72,17 @@ namespace Kotono.Graphics.Objects.Shapes
             }
         }
 
+        public override void UpdateShader()
+        {
+            if (Shader is Shape2DShader shape2DShader)
+            {
+                shape2DShader.SetColor(Color);
+                shape2DShader.SetModel(Rect.Model);
+            }
+        }
+
         public override void Draw()
         {
-            if (Shader is Object3DShader object3DShader)
-            {
-                object3DShader.SetColor(Color);
-                object3DShader.SetModelMatrix(Rect.Model);
-            }
-
             _vertexArraySetup.Bind();
             GL.DrawArrays(_mode, 0, _points.Length);
         }

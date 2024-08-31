@@ -51,7 +51,7 @@ namespace Kotono.Graphics.Objects
                     break;
             }
 
-            if (_objects.TryAddUnique(obj))
+            if (_objects.TryAddDistinct(obj))
             {
                 Subscribe(obj);
             }

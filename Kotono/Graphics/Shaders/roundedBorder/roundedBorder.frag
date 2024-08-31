@@ -1,15 +1,22 @@
 #version 430 core
 
+struct Sides {
+    float left;
+    float right;
+    float top;
+    float bottom;
+};
+
 uniform vec4 color;
-uniform vec4 sides;
+uniform Sides sides;
 uniform float fallOff;
 uniform float cornerSize;
 uniform float thickness;
 
-float left =   sides.x;
-float right =  sides.y;
-float top =    sides.z;
-float bottom = sides.w;
+float left =   sides.left;
+float right =  sides.right;
+float top =    sides.top;
+float bottom = sides.bottom;
 
 out vec4 FragColor;
 

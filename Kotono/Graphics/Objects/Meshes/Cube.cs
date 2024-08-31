@@ -11,7 +11,7 @@ namespace Kotono.Graphics.Objects.Meshes
 
         public override Model Model { get; set; } = new Model(
             Path.FromAssets(@"Meshes\cube.obj"),
-            LightingShader.Instance
+            NewLightingShader.Instance
         );
     }
 }

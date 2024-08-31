@@ -13,7 +13,7 @@ namespace Kotono.Graphics.Objects.Hitboxes
 
         private static readonly VertexArraySetup _vertexArraySetup = new();
 
-        private static readonly Object3DShader _shader = (Object3DShader)ShaderManager.Shaders["hitbox"];
+        public override Shader Shader => HitboxShader.Instance;
 
         internal float Radius => RelativeScale.X;
 
@@ -31,8 +31,15 @@ namespace Kotono.Graphics.Objects.Hitboxes
             }
 
             _vertexArraySetup.SetData(_vertices, Vector.SizeInBytes);
+            HitboxShader.Instance.SetVertexAttributesData();
+        }
 
-            Shader.SetVertexAttributeData(0, 3, VertexAttribPointerType.Float, Vector.SizeInBytes, 0);
+        public override void UpdateShader()
+        {
+            if (Shader is HitboxShader hitboxShader)
+            {
+                hitboxShader.SetColor(Color);
+            }
         }
 
         public override void Draw()
@@ -51,8 +58,10 @@ namespace Kotono.Graphics.Objects.Hitboxes
                 * Matrix4.CreateRotationZ(WorldRotation.Yaw + rotation.Yaw)
                 * Matrix4.CreateTranslation((Vector3)WorldLocation);
 
-            _shader.SetColor(Color);
-            _shader.SetModelMatrix(model);
+            if (Shader is HitboxShader hitboxShader)
+            {
+                hitboxShader.SetModel(model);
+            }
 
             _vertexArraySetup.Bind();
             GL.DrawArrays(PrimitiveType.LineLoop, 0, _vertices.Length);

@@ -45,6 +45,11 @@ namespace Kotono.Graphics.Objects
         public List<Drawable> Childrens { get; }
 
         /// <summary>
+        /// Update the <see cref="IDrawable"/>'s shader.
+        /// </summary>
+        public void UpdateShader();
+
+        /// <summary>
         /// Draw the <see cref="IDrawable"/>.
         /// </summary>
         public void Draw();

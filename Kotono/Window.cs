@@ -22,9 +22,9 @@ namespace Kotono
         private float _stalledTime = 0.0f;
 
         private static Point _size = new(1280.0f, 720.0f);
-        
+
         private bool ShouldRenderFrame => IsFocused && (_performanceWindow.FrameRate < _performanceWindow.MaxFrameRate);
-        
+
         internal static Point Position { get; set; } = Point.Zero;
 
         internal new static Point Size
@@ -104,8 +104,6 @@ namespace Kotono
                 _performanceWindow.AddFrameTime((float)e.Time);
 
                 ShaderManager.Update();
-                NewLightingShader.Instance.Update();
-                LightingShader.Instance.Update();
 
                 ObjectManager.Draw();
 

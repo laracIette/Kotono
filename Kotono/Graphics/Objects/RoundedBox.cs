@@ -45,7 +45,7 @@ namespace Kotono.Graphics.Objects
             }
         }
 
-        public override Shader Shader => ShaderManager.Shaders["roundedBox"];
+        public override Shader Shader => RoundedBoxShader.Instance;
 
         protected virtual Matrix4 Model => new NDCRect(RelativePosition, RelativeSize + new Point(FallOff * 2.0f)).Model;
 
@@ -63,18 +63,24 @@ namespace Kotono.Graphics.Objects
             FallOff = Math.Max(0.0f, TargetFallOff);
         }
 
+        public override void UpdateShader()
+        {
+            if (Shader is RoundedBoxShader roundedBoxShader)
+            {
+                roundedBoxShader.SetModel(Model);
+                roundedBoxShader.SetColor(Color);
+                roundedBoxShader.SetSides(Sides);
+                roundedBoxShader.SetFallOff(FallOff);
+                roundedBoxShader.SetCornerSize(CornerSize);
+            }
+        }
+
         public override void Draw()
         {
-            Shader.SetMatrix4("model", Model);
-            Shader.SetColor("color", Color);
-            Shader.SetSides("sides", Sides);
-            Shader.SetFloat("fallOff", FallOff);
-            Shader.SetFloat("cornerSize", CornerSize);
-
             SquareVertices.Draw();
         }
 
-        private Sides Sides
+        protected Sides Sides
         {
             get
             {

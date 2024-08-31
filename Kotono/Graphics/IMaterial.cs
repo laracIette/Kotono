@@ -3,7 +3,7 @@
     internal interface IMaterial
     {
         /// <summary>
-        /// Use the <see cref="IMaterial"/>.
+        /// Use all the <see cref="ImageTexture"/> of the <see cref="IMaterial"/>.
         /// </summary>
         public void Use();
     }

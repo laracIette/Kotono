@@ -7,7 +7,7 @@ namespace Kotono.Graphics.Objects.Texts
 {
     internal class TTFText : Object2D
     {
-        public override Shader Shader => ShaderManager.Shaders["image"];
+        public override Shader Shader => ImageShader.Instance;
 
         internal string Text { get; set; } = string.Empty;
 
@@ -27,11 +27,7 @@ namespace Kotono.Graphics.Objects.Texts
             _vertexArraySetup.VertexArrayObject.Bind();
             _vertexArraySetup.VertexBufferObject.Bind();
 
-            GL.EnableVertexAttribArray(0);
-            GL.VertexAttribPointer(0, 2, VertexAttribPointerType.Float, false, sizeof(float) * 4, 0);
-
-            GL.EnableVertexAttribArray(1);
-            GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, sizeof(float) * 4, sizeof(float) * 2);
+            ImageShader.Instance.SetVertexAttributesData();
         }
 
         internal void AddText(string text, Point position)
@@ -68,10 +64,16 @@ namespace Kotono.Graphics.Objects.Texts
             _vertexArraySetup.SetData([.. _vertices], Vertex2D.SizeInBytes);
         }
 
+        public override void UpdateShader()
+        {
+            if (Shader is ImageShader imageShader)
+            {
+                imageShader.SetColor(Color);
+            }
+        }
+
         public override void Draw()
         {
-            Shader.SetColor("color", Color);
-
             _glyphsTextures.ForEach(t => t.Use());
             print("draw");
 

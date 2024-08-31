@@ -2,7 +2,6 @@
 using Kotono.Graphics.Objects.Lights;
 using Kotono.Utils;
 using Kotono.Utils.Coordinates;
-using OpenTK.Mathematics;
 using System.Linq;
 
 namespace Kotono.Graphics.Shaders

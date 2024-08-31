@@ -141,7 +141,7 @@ namespace Kotono.Graphics
         private static void DrawDrawable(IDrawable drawable)
         {
             drawable.Viewport.Use();
-
+            drawable.UpdateShader();
             drawable.Draw();
         }
 

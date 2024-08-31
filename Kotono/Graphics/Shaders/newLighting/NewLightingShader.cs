@@ -14,11 +14,11 @@ namespace Kotono.Graphics.Shaders
 
         private static void SetANormal() => SetVertexAttributeData(1, 3, global::OpenTK.Graphics.OpenGL4.VertexAttribPointerType.Float, 44, 12);
 
-        private static void SetATexCoords() => SetVertexAttributeData(2, 2, global::OpenTK.Graphics.OpenGL4.VertexAttribPointerType.Float, 44, 24);
+        private static void SetATangent() => SetVertexAttributeData(2, 3, global::OpenTK.Graphics.OpenGL4.VertexAttribPointerType.Float, 44, 24);
 
-        private static void SetATangent() => SetVertexAttributeData(3, 3, global::OpenTK.Graphics.OpenGL4.VertexAttribPointerType.Float, 44, 32);
+        private static void SetATexCoords() => SetVertexAttributeData(3, 2, global::OpenTK.Graphics.OpenGL4.VertexAttribPointerType.Float, 44, 36);
 
-        internal override void SetVertexAttributesData() { SetAPos(); SetANormal(); SetATexCoords(); SetATangent(); }
+        internal override void SetVertexAttributesData() { SetAPos(); SetANormal(); SetATangent(); SetATexCoords(); }
 
         internal void SetModel(global::OpenTK.Mathematics.Matrix4 model) => SetMatrix4("model", model);
 

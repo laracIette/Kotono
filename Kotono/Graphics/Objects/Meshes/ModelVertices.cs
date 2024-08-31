@@ -1,10 +1,6 @@
 ﻿using Assimp;
 using Kotono.Utils.Coordinates;
-using OpenTK.Graphics.OpenGL4;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using PrimitiveType = OpenTK.Graphics.OpenGL4.PrimitiveType;
 
 namespace Kotono.Graphics.Objects.Meshes
 {
@@ -77,7 +73,7 @@ namespace Kotono.Graphics.Objects.Meshes
                         Location = (Vector)mesh.Vertices[j],
                         Normal = (Vector)mesh.Normals[j],
                         Tangent = (Vector)mesh.Tangents[j],
-                        TexCoord = (Point)mesh.TextureCoordinateChannels[0][j] 
+                        TexCoord = (Point)mesh.TextureCoordinateChannels[0][j]
                     };
                 }
             }

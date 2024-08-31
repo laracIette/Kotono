@@ -20,7 +20,7 @@ namespace Kotono.Graphics.Objects
             }
         }
 
-        public override Shader Shader => ShaderManager.Shaders["roundedBorder"];
+        public override Shader Shader => RoundedBorderShader.Instance;
 
         protected override Matrix4 Model => new NDCRect(RelativePosition, RelativeSize + new Point(FallOff * 2.0f + Thickness)).Model;
 
@@ -44,11 +44,17 @@ namespace Kotono.Graphics.Objects
             CornerSize = Math.Clamp(TargetCornerSize, Math.Half(Thickness) + FallOff, Math.Half(minSize));
         }
 
-        public override void Draw()
+        public override void UpdateShader()
         {
-            Shader.SetFloat("thickness", Thickness);
-
-            base.Draw();
+            if (Shader is RoundedBorderShader roundedBorderShader)
+            {
+                roundedBorderShader.SetModel(Model);
+                roundedBorderShader.SetColor(Color);
+                roundedBorderShader.SetSides(Sides);
+                roundedBorderShader.SetFallOff(FallOff);
+                roundedBorderShader.SetCornerSize(CornerSize);
+                roundedBorderShader.SetThickness(Thickness);
+            }
         }
     }
 }

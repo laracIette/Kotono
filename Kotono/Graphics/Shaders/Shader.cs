@@ -52,6 +52,8 @@ namespace Kotono.Graphics.Shaders
             }
 
             Name = name;
+
+            ShaderManager.Create(this);
         }
 
         internal virtual void SetVertexAttributesData() { }
@@ -98,7 +100,7 @@ namespace Kotono.Graphics.Shaders
 
         internal void SetBool(string name, bool data)
         {
-            if (TryGetUniformLocation(name, out int location)) 
+            if (TryGetUniformLocation(name, out int location))
             {
                 GL.Uniform1(location, data ? 1 : 0);
             }
@@ -149,15 +151,15 @@ namespace Kotono.Graphics.Shaders
             if (TryGetUniformLocation(name, out int location))
             {
                 GL.Uniform4(location, data.RelativePosition.X, data.RelativePosition.Y, data.RelativeSize.X, data.RelativeSize.Y);
-            } 
+            }
         }
 
         internal void SetSides(string name, Sides data)
         {
-            if (TryGetUniformLocation(name, out int location))
-            {
-                GL.Uniform4(location, data.Left, data.Right, data.Top, data.Bottom);
-            }
+            SetFloat($"{name}.left", data.Left);
+            SetFloat($"{name}.right", data.Right);
+            SetFloat($"{name}.top", data.Top);
+            SetFloat($"{name}.bottom", data.Bottom);
         }
 
         internal void SetPoint(string name, Point data)
