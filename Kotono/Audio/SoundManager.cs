@@ -1,8 +1,8 @@
 ﻿using OpenTK.Audio.OpenAL;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime.InteropServices;
-using IO = System.IO;
 
 namespace Kotono.Audio
 {
@@ -19,10 +19,7 @@ namespace Kotono.Audio
         internal static float GeneralVolume
         {
             get => _generalVolume;
-            set
-            {
-                _generalVolume = Math.Clamp(value);
-            }
+            set => _generalVolume = Math.Clamp(value);
         }
 
         static SoundManager()
@@ -65,28 +62,35 @@ namespace Kotono.Audio
         /// <param name="bits"></param>
         /// <param name="rate"></param>
         /// <returns></returns>
-        /// <exception cref="ArgumentNullException">The file doesn't exist or isn't found.</exception>
-        /// <exception cref="NotSupportedException">The file isn't a WAVE file.</exception>
+        /// <exception cref="ArgumentNullException"> The file doesn't exist or isn't found. </exception>
+        /// <exception cref="NotSupportedException"> The file isn't a WAVE file. </exception>
         private static byte[] LoadWAV(string filename, out int channels, out int bits, out int rate)
         {
-            var stream = IO.File.OpenRead(filename) ?? throw new ArgumentNullException(filename);
+            var stream = File.OpenRead(filename) ?? throw new ArgumentNullException(filename);
 
-            using var reader = new IO.BinaryReader(stream);
+            using var reader = new BinaryReader(stream);
+
             // RIFF header
             var signature = new string(reader.ReadChars(4));
             if (signature != "RIFF")
+            {
                 throw new NotSupportedException("error: Specified stream is not a wave file.");
+            }
 
             int riff_chunck_size = reader.ReadInt32();
 
             var format = new string(reader.ReadChars(4));
             if (format != "WAVE")
+            {
                 throw new NotSupportedException("error: Specified stream is not a wave file.");
+            }
 
             // WAVE header
             var format_signature = new string(reader.ReadChars(4));
             if (format_signature != "fmt ")
+            {
                 throw new NotSupportedException("error: Specified wave file is not supported.");
+            }
 
             int format_chunk_size = reader.ReadInt32();
             int audio_format = reader.ReadInt16();
@@ -98,7 +102,9 @@ namespace Kotono.Audio
 
             var data_signature = new string(reader.ReadChars(4));
             if (data_signature != "data")
+            {
                 throw new NotSupportedException("error: Specified wave file is not supported.");
+            }
 
             int data_chunk_size = reader.ReadInt32();
 

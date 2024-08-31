@@ -18,7 +18,7 @@ namespace Kotono.Engine.UserInterface.AddMenu
             {
                 for (int i = 0; i < _options.Count; i++)
                 {
-                    _options[i].Position = GetTextPosition(i, value);
+                    _options[i].RelativePosition = GetTextPosition(i, value);
                 }
             }
         }
@@ -43,8 +43,8 @@ namespace Kotono.Engine.UserInterface.AddMenu
                 _options.Add(
                     new Text
                     {
-                        Position = position,
-                        Size = new Point(20.0f, 24.0f),
+                        RelativePosition = position,
+                        RelativeSize = new Point(20.0f, 24.0f),
                         Layer = 3,
                         Source = options[i],
                         Anchor = _anchor,

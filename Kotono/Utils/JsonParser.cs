@@ -5,7 +5,7 @@ using IO = System.IO;
 
 namespace Kotono.Utils
 {
-    internal class JsonParser : Object
+    internal class JsonParser
     {
         private JsonParser() { }
 

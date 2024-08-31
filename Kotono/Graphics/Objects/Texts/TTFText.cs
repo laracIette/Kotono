@@ -7,7 +7,7 @@ namespace Kotono.Graphics.Objects.Texts
 {
     internal class TTFText : Object2D
     {
-        private static readonly Shader _shader = ShaderManager.Shaders["image"];
+        public override Shader Shader => ShaderManager.Shaders["image"];
 
         internal string Text { get; set; } = string.Empty;
 
@@ -17,7 +17,7 @@ namespace Kotono.Graphics.Objects.Texts
 
         private readonly List<Vertex2D> _vertices = [];
 
-        private readonly List<int> _glyphsTextureHandles = [];
+        private readonly List<Texture> _glyphsTextures = [];
 
         private readonly VertexArraySetup _vertexArraySetup = new();
 
@@ -59,24 +59,23 @@ namespace Kotono.Graphics.Objects.Texts
                 _vertices.Add(new Vertex2D(new Point(xpos + w, ypos), new Point(1.0f, 1.0f))); // top-right
                 _vertices.Add(new Vertex2D(new Point(xpos, ypos), new Point(0.0f, 1.0f))); // top-left
 
-                _glyphsTextureHandles.Add(glyph.TextureHandle);
+                _glyphsTextures.Add(glyph.Texture);
 
                 x += glyph.Advance;
             }
 
             // Upload vertices to the GPU
-            _vertexArraySetup.VertexBufferObject.Bind();
-            _vertexArraySetup.VertexBufferObject.SetData([.. _vertices], Vertex2D.SizeInBytes);
+            _vertexArraySetup.SetData([.. _vertices], Vertex2D.SizeInBytes);
         }
 
         public override void Draw()
         {
-            _shader.SetColor("color", Color);
+            Shader.SetColor("color", Color);
 
-            _glyphsTextureHandles.ForEach(Texture.Use);
+            _glyphsTextures.ForEach(t => t.Use());
             print("draw");
 
-            _vertexArraySetup.VertexArrayObject.Bind();
+            _vertexArraySetup.Bind();
             GL.DrawArrays(PrimitiveType.Triangles, 0, _vertices.Count);
         }
 

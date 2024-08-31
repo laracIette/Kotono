@@ -1,10 +1,8 @@
 ﻿using Assimp;
-using Kotono.Graphics.Objects;
 using Kotono.Utils.Exceptions;
 using OpenTK.Mathematics;
 using System;
 using System.Runtime.InteropServices;
-using System.Text.Json.Serialization;
 using Quaternion = OpenTK.Mathematics.Quaternion;
 
 namespace Kotono.Utils.Coordinates
@@ -15,19 +13,16 @@ namespace Kotono.Utils.Coordinates
         /// <summary> 
         /// The X component of the <see cref="Vector"/>. 
         /// </summary>
-        [JsonInclude]
         public float X = 0.0f;
 
         /// <summary>
         /// The Y component of the <see cref="Vector"/>. 
         /// </summary>
-        [JsonInclude]
         public float Y = 0.0f;
 
         /// <summary> 
         /// The Z component of the <see cref="Vector"/>. 
         /// </summary>
-        [JsonInclude]
         public float Z = 0.0f;
 
         /// <summary>
@@ -228,9 +223,9 @@ namespace Kotono.Utils.Coordinates
             return (left - right).Length;
         }
 
-        internal static float Distance(in IObject3D left, in IObject3D right)
+        internal static float Distance(in ITransform left, in ITransform right)
         {
-            return Distance(left.RelativeLocation, right.RelativeLocation);
+            return Distance(left.WorldLocation, right.WorldLocation);
         }
 
         public static Vector Clamp(Vector v, float min, float max)

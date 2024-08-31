@@ -1,12 +1,9 @@
 ﻿using Assimp;
-using Kotono.Graphics.Shaders;
 using Kotono.Utils.Coordinates;
 using OpenTK.Graphics.OpenGL4;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using PrimitiveType = OpenTK.Graphics.OpenGL4.PrimitiveType;
 
 namespace Kotono.Graphics.Objects.Meshes
@@ -21,94 +18,69 @@ namespace Kotono.Graphics.Objects.Meshes
 
         internal ModelTriangle[] Triangles { get; }
 
-        internal VertexArraySetup VertexArraySetup { get; } = new();
-
         internal int[] Indices { get; }
 
-        internal int IndicesCount { get; }
+        internal int IndicesCount => Indices.Length;
+
+        internal VertexArraySetup VertexArraySetup { get; } = new();
 
         internal ModelVertices(string path)
         {
             Path = path;
 
-            Vertex3D[][] models;
-            int[][] indices;
+            LoadModelData(out var vertices, out var indices, out var triangles);
 
-            using (var importer = new AssimpContext())
+            var modelVertices = vertices[0];
+            var modelIndices = indices[0];
+            var modelTriangles = triangles[0];
+
+            Vertices = [.. modelVertices.Select(v => v.Location).Distinct()];
+            Center = Vector.Avg(Vertices);
+            Indices = modelIndices;
+            Triangles = modelTriangles;
+
+            VertexArraySetup.SetData(modelVertices, Vertex3D.SizeInBytes);
+        }
+
+        private void LoadModelData(out Vertex3D[][] vertices, out int[][] indices, out ModelTriangle[][] triangles)
+        {
+            using var importer = new AssimpContext();
+            var scene = importer.ImportFile(Path, PostProcessSteps.Triangulate | PostProcessSteps.CalculateTangentSpace);
+
+            triangles = new ModelTriangle[scene.MeshCount][];
+            vertices = new Vertex3D[scene.MeshCount][];
+            indices = new int[scene.MeshCount][];
+
+            for (int i = 0; i < scene.MeshCount; i++)
             {
-                var scene = importer.ImportFile(Path, PostProcessSteps.Triangulate | PostProcessSteps.CalculateTangentSpace);
+                var mesh = scene.Meshes[i];
 
-                Triangles = new ModelTriangle[scene.Meshes[0].Faces.Count];
+                triangles[i] = new ModelTriangle[mesh.FaceCount];
+                vertices[i] = new Vertex3D[mesh.VertexCount];
+                indices[i] = mesh.GetIndices();
 
-                for (int i = 0; i < scene.Meshes[0].Faces.Count; i++)
+                for (int j = 0; j < mesh.FaceCount; j++)
                 {
-                    var face = scene.Meshes[0].Faces[i];
-
-                    Triangles[i] = new ModelTriangle(
+                    var face = mesh.Faces[j];
+                    triangles[i][j] = new ModelTriangle(
                         this,
-                        (Vector)scene.Meshes[0].Vertices[face.Indices[0]],
-                        (Vector)scene.Meshes[0].Vertices[face.Indices[1]],
-                        (Vector)scene.Meshes[0].Vertices[face.Indices[2]]
+                        (Vector)mesh.Vertices[face.Indices[0]],
+                        (Vector)mesh.Vertices[face.Indices[1]],
+                        (Vector)mesh.Vertices[face.Indices[2]]
                     );
                 }
 
-                models = new Vertex3D[scene.Meshes.Count][];
-                indices = new int[scene.Meshes.Count][];
-
-                for (int i = 0; i < scene.Meshes.Count; i++)
+                for (int j = 0; j < mesh.VertexCount; j++)
                 {
-                    var mesh = scene.Meshes[i];
-
-                    models[i] = new Vertex3D[mesh.Vertices.Count];
-
-                    for (int j = 0; j < mesh.Vertices.Count; j++)
+                    vertices[i][j] = new Vertex3D
                     {
-                        var location = new Vector(mesh.Vertices[j].X, mesh.Vertices[j].Y, mesh.Vertices[j].Z);
-                        var normal = new Vector(mesh.Normals[j].X, mesh.Normals[j].Y, mesh.Normals[j].Z);
-                        var tangent = new Vector(mesh.Tangents[j].X, mesh.Tangents[j].Y, mesh.Tangents[j].Z);
-                        var texCoord = new Point(mesh.TextureCoordinateChannels[0][j].X, mesh.TextureCoordinateChannels[0][j].Y);
-
-                        models[i][j] = new Vertex3D
-                        {
-                            Location = location,
-                            Normal = normal,
-                            Tangent = tangent,
-                            TexCoord = texCoord
-                        };
-                    }
-
-                    indices[i] = mesh.GetIndices();
+                        Location = (Vector)mesh.Vertices[j],
+                        Normal = (Vector)mesh.Normals[j],
+                        Tangent = (Vector)mesh.Tangents[j],
+                        TexCoord = (Point)mesh.TextureCoordinateChannels[0][j] 
+                    };
                 }
             }
-
-            var modelVertices = models[0];
-            var modelIndices = indices[0];
-
-            var vertices = new List<Vector>();
-            foreach (var vertex in modelVertices)
-            {
-                if (!vertices.Contains(vertex.Location))
-                {
-                    vertices.Add(vertex.Location);
-                }
-            }
-            Vertices = [.. vertices];
-
-            Indices = modelIndices;
-            IndicesCount = modelIndices.Length;
-
-            Center = Vector.Avg(Vertices);
-
-            VertexArraySetup.VertexArrayObject.Bind();
-            VertexArraySetup.VertexBufferObject.SetData(modelVertices, Vertex3D.SizeInBytes);
-        }
-
-        internal void Draw()
-        {
-            VertexArraySetup.VertexArrayObject.Bind();
-            VertexArraySetup.VertexBufferObject.Bind();
-
-            GL.DrawElements(PrimitiveType.Triangles, IndicesCount, DrawElementsType.UnsignedInt, IntPtr.Zero);
         }
     }
 }

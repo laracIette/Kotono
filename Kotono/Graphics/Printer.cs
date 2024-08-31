@@ -39,7 +39,9 @@ namespace Kotono.Graphics
         {
             if (text != null)
             {
-                // Split the text for each line skip, and Reverse the list cause the last element printed gets lowered, so it's by default in wrong order
+                // Split the text for each line skip,
+                // and Reverse the list cause the last element printed gets lowered,
+                // so it's by default in wrong order
                 foreach (var token in text.Split('\n').Reverse())
                 {
                     Lower();

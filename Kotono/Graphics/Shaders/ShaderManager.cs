@@ -6,7 +6,6 @@ namespace Kotono.Graphics.Shaders
     {
         internal static Dictionary<string, Shader> Shaders { get; } = new()
         {
-            ["lighting"] = new LightingShader(),
             ["hitbox"] = new Object3DShader("hitbox"),
             ["pointLight"] = new Object3DShader("pointLight"),
             ["image"] = new Shader("image"),

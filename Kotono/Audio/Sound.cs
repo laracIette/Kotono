@@ -2,52 +2,83 @@
 
 namespace Kotono.Audio
 {
-    internal class Sound(string path) : Object
+    internal class Sound : Object
     {
-        private float _volume = 1.0f;
+        private int _source = InvalidSource;
 
-        internal int Source { get; } = SoundManager.GetSource(path);
+        private float _volume = 1.0f;
 
         internal float Volume
         {
             get => _volume;
             set
             {
+                if (_source == InvalidSource)
+                {
+                    logError($"Invalid Source");
+                    return;
+                }
+
                 _volume = Math.Clamp(value);
-                AL.Source(Source, ALSourcef.Gain, _volume * SoundManager.GeneralVolume);
+                UpdateVolume();
             }
         }
 
-        internal bool IsPlaying => AL.GetSourceState(Source) == ALSourceState.Playing;
+        internal bool IsPlaying => AL.GetSourceState(_source) == ALSourceState.Playing;
 
-        internal bool IsPaused => AL.GetSourceState(Source) == ALSourceState.Paused;
+        internal bool IsPaused => AL.GetSourceState(_source) == ALSourceState.Paused;
 
-        internal bool IsStopped => AL.GetSourceState(Source) == ALSourceState.Stopped;
+        internal bool IsStopped => AL.GetSourceState(_source) == ALSourceState.Stopped;
+
+        internal static int InvalidSource => -1;
+
+        internal void SetSource(string path)
+        {
+            _source = SoundManager.GetSource(path);
+            UpdateVolume();
+        }
 
         internal void Play()
         {
-            AL.SourcePlay(Source);
+            AL.SourcePlay(_source);
         }
 
         internal void Pause()
         {
-            AL.SourcePause(Source);
+            AL.SourcePause(_source);
         }
 
         internal void Rewind()
         {
-            AL.SourceRewind(Source);
+            AL.SourceRewind(_source);
         }
 
         internal void Stop()
         {
-            AL.SourceStop(Source);
+            AL.SourceStop(_source);
+        }
+
+        internal void Switch()
+        {
+            if (IsPlaying)
+            {
+                Pause();
+            }
+            else
+            {
+                Play();
+            }
+        }
+
+        private void UpdateVolume()
+        {
+            AL.Source(_source, ALSourcef.Gain, Volume * SoundManager.GeneralVolume);
         }
 
         public override void Dispose()
         {
             Stop();
-            AL.DeleteSource(Source);
+            AL.DeleteSource(_source);
 
             base.Dispose();
         }

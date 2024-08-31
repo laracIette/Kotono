@@ -59,14 +59,14 @@ namespace Kotono.Graphics.Objects.Texts
             StbTrueType.stbtt_MakeGlyphBitmap(_fontInfo, bitmap, width, height, width, Scale, Scale, glyphIndex);
 
             // Create OpenGL texture
-            int textureHandle = Texture.Gen();
-            GL.BindTexture(TextureTarget.Texture2D, textureHandle);
+            var texture = new Texture();
+            texture.Bind();
             GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.R8, width, height, 0, PixelFormat.Red, PixelType.UnsignedByte, new IntPtr(bitmap));
 
             // Store the glyph information
             var glyphInfo = new GlyphInfo
             {
-                TextureHandle = textureHandle,
+                Texture = texture,
                 Width = width,
                 Height = height,
                 BearingX = leftSideBearing * Scale,

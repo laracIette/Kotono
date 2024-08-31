@@ -7,7 +7,7 @@ namespace Kotono.Utils.Coordinates
     {
         internal Point Position { get; } = Position.NDC;
 
-        internal Point Size { get; } = Size / Viewport.Active.Size;
+        internal Point Size { get; } = Size / Viewport.Active.RelativeSize;
 
         public Matrix4 Model =>
             Matrix4.CreateScale(Size.X, Size.Y, 1.0f)

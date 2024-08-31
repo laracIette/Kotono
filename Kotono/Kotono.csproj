@@ -24,7 +24,6 @@
     <PackageReference Include="Catalyst.Models.English" Version="1.0.30952" />
     <PackageReference Include="NAudio" Version="2.2.1" />
     <PackageReference Include="OpenTK" Version="4.7.7" />
-    <PackageReference Include="PostSharp" Version="2024.1.4" />
     <PackageReference Include="StbImageSharp" Version="2.27.14" />
     <PackageReference Include="StbTrueTypeSharp" Version="1.26.12" />
     <PackageReference Include="System.Drawing.Common" Version="8.0.7" />

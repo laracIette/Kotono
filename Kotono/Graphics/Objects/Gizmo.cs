@@ -3,13 +3,20 @@ using Kotono.Input;
 using Kotono.Utils;
 using Kotono.Utils.Coordinates;
 using OpenTK.Windowing.GraphicsLibraryFramework;
-using System.Linq;
 using CursorState = Kotono.Input.CursorState;
 
 namespace Kotono.Graphics.Objects
 {
     internal class Gizmo : Object3D
     {
+        private Gizmo()
+        {
+            foreach (var mesh in _meshes)
+            {
+                mesh.Parent = this;
+            }
+        }
+
         private static readonly Gizmo _instance = new();
 
         private readonly GizmoMesh[] _meshes =
@@ -20,64 +27,9 @@ namespace Kotono.Graphics.Objects
             new GizmoMesh(Color.White, "sphere")
         ];
 
-        private static IObject3D? ActiveMesh => ISelectable.Active as IObject3D;
+        public override bool IsDraw => IsUpdate;
 
-        public override Vector WorldLocation
-        {
-            get => Transform.WorldLocation;
-            set
-            {
-                Transform.WorldLocation = value;
-                foreach (var mesh in _meshes)
-                {
-                    mesh.WorldLocation = value;
-                }
-            }
-        }
-
-        public override Rotator WorldRotation
-        {
-            get => Transform.WorldRotation;
-            set
-            {
-                Transform.WorldRotation = value;
-                foreach (var mesh in _meshes)
-                {
-                    mesh.WorldRotation = value;
-                }
-            }
-        }
-
-        public override Vector WorldScale
-        {
-            get => Transform.WorldScale;
-            set
-            {
-                Transform.WorldScale = value;
-                foreach (var mesh in _meshes)
-                {
-                    mesh.WorldScale = value;
-                }
-            }
-        }
-
-        public override bool IsDraw
-        {
-            get
-            {
-                foreach (var mesh in _meshes)
-                {
-                    mesh.IsDraw = IsUpdate;
-                }
-                return IsUpdate;
-            }
-        }
-
-        public override bool IsUpdate
-        {
-            get => ActiveMesh != null;
-            set { }
-        }
+        public override bool IsUpdate => ISelectable3D.Active != null;
 
         private static int _selectedMeshIndex = -1;
 
@@ -87,8 +39,6 @@ namespace Kotono.Graphics.Objects
 
         private readonly GizmoMode _gizmoMode = GizmoMode.Location;
 
-        private Gizmo() { }
-
         public override void Update()
         {
             if (Mouse.CursorState != CursorState.Confined)
@@ -96,7 +46,7 @@ namespace Kotono.Graphics.Objects
                 _selectedMeshIndex = -1;
             }
 
-            WorldLocation = ActiveMesh!.WorldLocation;
+            WorldLocation = ISelectable3D.Active!.WorldLocation;
 
             switch (_transformSpace)
             {
@@ -118,7 +68,7 @@ namespace Kotono.Graphics.Objects
                     {
                         WorldLocation += locDelta;
 
-                        foreach (var selected3D in ISelectable.Selected.OfType<IObject3D>())
+                        foreach (var selected3D in ISelectable3D.Selected)
                         {
                             selected3D.RelativeLocation += locDelta;
                         }
@@ -132,7 +82,7 @@ namespace Kotono.Graphics.Objects
                     {
                         WorldRotation += rotDelta;
 
-                        foreach (var selected3D in ISelectable.Selected.OfType<IObject3D>())
+                        foreach (var selected3D in ISelectable3D.Selected)
                         {
                             selected3D.RelativeRotation += rotDelta;
                         }
@@ -163,7 +113,7 @@ namespace Kotono.Graphics.Objects
             {
                 WorldRotation += delta;
 
-                //Printer.Print(WorldRotation, true);
+                //print(WorldRotation, true);
             }
         }
 
@@ -226,7 +176,7 @@ namespace Kotono.Graphics.Objects
             }
         }
 
-        protected virtual void OnLeftButtonReleased()
+        private void OnLeftButtonReleased()
         {
             _selectedMeshIndex = -1;
         }

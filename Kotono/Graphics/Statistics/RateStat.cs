@@ -1,5 +1,4 @@
 ﻿using Kotono.Graphics.Objects.Texts;
-using Kotono.Utils;
 using Kotono.Utils.Coordinates;
 using System.Linq;
 
@@ -23,7 +22,7 @@ namespace Kotono.Graphics.Statistics
 
         public RateStat()
         {
-            Size = new Point(50.0f, 60.0f);
+            RelativeSize = new Point(50.0f, 60.0f);
             Layer = 1;
             Source = "0.00";
         }

@@ -6,17 +6,14 @@ namespace Kotono.Graphics.Objects.Lights
     {
         public bool IsOn { get; set; } = true;
 
-        public float Power { get; set; } = 1.0f;
+        public float Intensity { get; set; } = 1.0f;
 
-        internal Color Diffuse
-        {
-            get => Color;
-            set => Color = value;
-        }
+        public Color Ambient { get; set; }
 
-        public void SwitchOnOff()
-        {
-            IsOn = !IsOn;
-        }
+        public Color Diffuse { get; set; }
+
+        public Color Specular { get; set; }
+
+        public void Switch() => IsOn = !IsOn;
     }
 }

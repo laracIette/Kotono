@@ -28,11 +28,11 @@ namespace Kotono.Engine.UserInterface.AddMenu
         {
             _subMenu = new SubMenu(options, anchor);
             Anchor = anchor;
-            Size = new Point(100.0f, 100.0f);
+            RelativeSize = new Point(100.0f, 100.0f);
             Color = Color.Gray;
             Layer = 1;
-            CornerSize = 25.0f;
-            FallOff = 2.0f;
+            TargetCornerSize = 25.0f;
+            TargetFallOff = 2.0f;
         }
 
         public override void OnPressed()
@@ -47,8 +47,6 @@ namespace Kotono.Engine.UserInterface.AddMenu
                 Anchor.BottomRight => Rect.BottomRight,
                 _ => throw new SwitchException(typeof(Anchor), Anchor)
             };
-
-            base.OnPressed();
         }
     }
 }

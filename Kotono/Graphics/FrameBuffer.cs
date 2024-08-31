@@ -1,6 +1,7 @@
 ﻿using Kotono.Graphics.Shaders;
 using Kotono.Utils;
 using Kotono.Utils.Coordinates;
+using Kotono.Utils.Exceptions;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using System;
@@ -11,9 +12,9 @@ namespace Kotono.Graphics
     {
         private readonly int _handle;
 
-        private readonly int _colorBufferTextureHandle;
+        private readonly Texture _colorBufferTexture = new();
 
-        private readonly int _depthStencilBufferTextureHandle;
+        private readonly Texture _depthStencilBufferTexture = new();
 
         private Point _size = Point.Zero;
 
@@ -32,26 +33,20 @@ namespace Kotono.Graphics
 
         internal Framebuffer()
         {
-            // Create the color texture
-            _colorBufferTextureHandle = Texture.Gen();
-
-            // Create the depth and stencil texture
-            _depthStencilBufferTextureHandle = Texture.Gen();
-
             // Create the framebuffer
             _handle = GL.GenFramebuffer();
 
             Size = Window.Size;
-
+            Size = (1800, 900);
             // Attach textures to framebuffer
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, _handle);
-            GL.FramebufferTexture2D(FramebufferTarget.Framebuffer, FramebufferAttachment.ColorAttachment0, TextureTarget.Texture2D, _colorBufferTextureHandle, 0);
-            GL.FramebufferTexture2D(FramebufferTarget.Framebuffer, FramebufferAttachment.DepthStencilAttachment, TextureTarget.Texture2D, _depthStencilBufferTextureHandle, 0);
+            GL.FramebufferTexture2D(FramebufferTarget.Framebuffer, FramebufferAttachment.ColorAttachment0, TextureTarget.Texture2D, _colorBufferTexture.Handle, 0);
+            GL.FramebufferTexture2D(FramebufferTarget.Framebuffer, FramebufferAttachment.DepthStencilAttachment, TextureTarget.Texture2D, _depthStencilBufferTexture.Handle, 0);
 
             // Check frame buffer completion
             if (GL.CheckFramebufferStatus(FramebufferTarget.Framebuffer) != FramebufferErrorCode.FramebufferComplete)
             {
-                throw new Exception($"error: Framebuffer isn't complete.");
+                throw new KotonoException($"Framebuffer isn't complete");
             }
 
             // Unbind framebuffer
@@ -61,15 +56,15 @@ namespace Kotono.Graphics
         private void ResizeFramebuffer()
         {
             // Update the color texture
-            Texture.Bind(_colorBufferTextureHandle);
+            _colorBufferTexture.Bind();
             GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgb, (int)Size.X, (int)Size.Y, 0, PixelFormat.Rgb, PixelType.UnsignedByte, IntPtr.Zero);
 
             // Update the depth and stencil texture
-            Texture.Bind(_depthStencilBufferTextureHandle);
+            _depthStencilBufferTexture.Bind();
             GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Depth24Stencil8, (int)Size.X, (int)Size.Y, 0, PixelFormat.DepthStencil, PixelType.UnsignedInt248, IntPtr.Zero);
 
             // Unbind texture
-            Texture.Bind(0);
+            ITexture.Unbind();
         }
 
         public void BeginDraw()
@@ -105,16 +100,17 @@ namespace Kotono.Graphics
 
         private static void ClearColorAndDepthBuffers() => GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
-        private void DrawColor() => ((TextureBufferShader)ShaderManager.Shaders["color"]).Draw(_colorBufferTextureHandle);
+        private void DrawColor() => ((TextureBufferShader)ShaderManager.Shaders["color"]).Draw(_colorBufferTexture);
 
-        private void DrawOutline() => ((TextureBufferShader)ShaderManager.Shaders["outline"]).Draw(_depthStencilBufferTextureHandle);
+        private void DrawOutline() => ((TextureBufferShader)ShaderManager.Shaders["outline"]).Draw(_depthStencilBufferTexture);
 
         #endregion Helpers
 
         public void Dispose()
         {
-            GL.DeleteTexture(_depthStencilBufferTextureHandle);
-            GL.DeleteTexture(_colorBufferTextureHandle);
+            _depthStencilBufferTexture.Delete();
+            _colorBufferTexture.Delete();
+
             GL.DeleteFramebuffer(_handle);
 
             GC.SuppressFinalize(this);

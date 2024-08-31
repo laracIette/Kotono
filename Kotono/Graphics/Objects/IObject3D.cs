@@ -10,7 +10,7 @@ namespace Kotono.Graphics.Objects
         public Transform Transform { get; }
 
         /// <summary>
-        /// The object to which the <see cref="IObject3D"/> is dependant.
+        /// The <see cref="IObject3D"/> the <see cref="IObject3D"/> is relative to.
         /// </summary>
         public IObject3D? Parent { get; set; }
     }

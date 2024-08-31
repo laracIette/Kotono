@@ -10,7 +10,7 @@ namespace Kotono.Utils
 
         private static readonly ExecuteAction _instance = new();
 
-        private static readonly List<DelayedAction> _actionDelays = [];
+        private readonly List<DelayedAction> _actionDelays = [];
 
         private ExecuteAction() { }
 
@@ -22,7 +22,7 @@ namespace Kotono.Utils
             }
             else
             {
-                _actionDelays.Add(new DelayedAction(action, Time.Now + delay));
+                _instance._actionDelays.Add(new DelayedAction(action, Time.Now + delay));
             }
         }
 

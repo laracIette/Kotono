@@ -6,6 +6,6 @@ namespace Kotono.Graphics.Objects.Meshes
     {
         internal string Path { get; set; } = string.Empty;
 
-        internal Shader Shader { get; set; } = ShaderManager.Shaders["lighting"];
+        internal Shader Shader { get; set; } = LightingShader.Instance;
     }
 }

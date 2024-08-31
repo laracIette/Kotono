@@ -31,7 +31,7 @@ namespace Kotono.Graphics
 
                 using IO.Stream stream = IO.File.OpenRead(path);
 
-                ImageResult image = ImageResult.FromStream(stream, ColorComponents.RedGreenBlueAlpha);
+                var image = ImageResult.FromStream(stream, ColorComponents.RedGreenBlueAlpha);
 
                 var colors = new Color[image.Width, image.Height];
 

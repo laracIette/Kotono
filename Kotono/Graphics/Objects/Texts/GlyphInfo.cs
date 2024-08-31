@@ -2,7 +2,7 @@
 {
     internal struct GlyphInfo
     {
-        public int TextureHandle { get; set; }
+        public Texture Texture { get; set; }
 
         public float Width { get; set; }
 

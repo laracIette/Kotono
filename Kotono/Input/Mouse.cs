@@ -1,5 +1,6 @@
 ﻿using Kotono.Engine;
 using Kotono.Graphics.Objects;
+using Kotono.Utils;
 using Kotono.Utils.Coordinates;
 using Kotono.Utils.Exceptions;
 using OpenTK.Mathematics;
@@ -48,7 +49,7 @@ namespace Kotono.Input
                 else
                 {
                     result = Point.Zero;
-                    Logger.Log("error: couldn't retrieve cursor position");
+                    Logger.LogError("couldn't retrieve cursor position");
                 }
 
                 return result;
@@ -64,7 +65,7 @@ namespace Kotono.Input
 
         internal static MouseState MouseState
         {
-            get => _mouseState ?? throw new Exception($"error: _mouseState must not be null");
+            get => _mouseState ?? throw new KotonoException($"_mouseState must not be null");
             set => _mouseState = value;
         }
 
@@ -141,8 +142,9 @@ namespace Kotono.Input
 
             if (CursorState == CursorState.Centered)
             {
-                //var center = Window.Rect.TopRight; TODO
-                var center = new Point(960.0f, 540.0f);
+                //                                maybe Point.Zero
+                var center = Rect.GetPositionFromAnchor(Window.Position, Window.Size, Anchor.TopLeft);
+
                 if (PositionFromOrigin != center)
                 {
                     SetCursorPos(center);
@@ -253,10 +255,16 @@ namespace Kotono.Input
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static bool IsButtonReleased(MouseButton button) => MouseState.IsButtonReleased(button);
 
+        /// <summary>
+        /// Shows the system pointer.
+        /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static void ShowCursor() => ShowCursor(true);
+        internal static void ShowPointer() => ShowCursor(true);
 
+        /// <summary>
+        /// Hides the system pointer.
+        /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static void HideCursor() => ShowCursor(false);
+        internal static void HidePointer() => ShowCursor(false);
     }
 }

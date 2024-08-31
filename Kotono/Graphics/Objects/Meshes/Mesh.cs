@@ -13,11 +13,10 @@ namespace Kotono.Graphics.Objects.Meshes
     {
         public List<Hitbox> Hitboxes { get; set; } = [];
 
-        public virtual Model Model { get; set; } = Model.Load(new ModelSettings 
-        { 
-            Path = Path.FromAssets(@"meshes\cube.obj"), 
-            Shader = ShaderManager.Shaders["lighting"] 
-        });
+        public virtual Model Model { get; set; } = new Model( 
+            Path.FromAssets(@"meshes\cube.obj"),
+            LightingShader.Instance
+        );
 
         public virtual Material Material { get; set; } = new();
 
@@ -111,7 +110,7 @@ namespace Kotono.Graphics.Objects.Meshes
                     if (Keyboard.IsKeyDown(Keys.LeftControl))
                     {
                         IsSelected = true;
-                        ISelectable.Selected.Remove(this);
+                        ISelectable3D.Selected.Remove(this);
                     }
                     // If left control is up
                     else
@@ -127,18 +126,18 @@ namespace Kotono.Graphics.Objects.Meshes
             }
 
             // If mesh is in ISelectable.Selected
-            if (ISelectable.Selected.Contains(this))
+            if (ISelectable3D.Selected.Contains(this))
             {
                 // If mesh isn't selected
                 if (!IsSelected)
                 {
-                    ISelectable.Selected.Remove(this);
+                    ISelectable3D.Selected.Remove(this);
                 }
             }
             // If mesh isn't in ISelectable.Selected and is selected
             else if (IsSelected)
             {
-                ISelectable.Selected.Add(this);
+                ISelectable3D.Selected.Add(this);
             }
         }
 
@@ -157,12 +156,14 @@ namespace Kotono.Graphics.Objects.Meshes
 
             Model.Draw();
 
-            Texture.Bind(0);
+            ITexture.Unbind();
         }
 
         protected virtual void OnEnterCollision(CollisionEventArgs collision) { }
 
         protected virtual void OnExitCollision(CollisionEventArgs collision) { }
+
+        public virtual void UpdateFizix() { }
 
         public override void Dispose()
         {

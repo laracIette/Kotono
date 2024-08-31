@@ -1,15 +1,18 @@
 ﻿using Kotono.Graphics.Objects;
+using Kotono.Graphics.Objects.Lights;
 using Kotono.Utils;
 using Kotono.Utils.Coordinates;
+using OpenTK.Mathematics;
+using System.Linq;
 
 namespace Kotono.Graphics.Shaders
 {
-    internal class LightingShader() 
-        : Object3DShader("lighting")
+    internal partial class LightingShader
     {
         internal override void Update()
         {
-            base.Update();
+            SetView(Camera.Active.ViewMatrix);
+            SetProjection(Camera.Active.ProjectionMatrix);
 
             SetVector("viewPos", Camera.Active.Location);
 
@@ -23,7 +26,7 @@ namespace Kotono.Graphics.Shaders
             SetVector("dirLight.diffuse", new Vector(0.4f, 0.4f, 0.4f));
             SetVector("dirLight.specular", new Vector(0.5f, 0.5f, 0.5f));
 
-            var pointLights = ObjectManager.PointLights;
+            var pointLights = ObjectManager.GetObjectsOfType<PointLight>(p => p.IsOn).ToArray();
 
             SetInt("numPointLights", pointLights.Length);
 
@@ -36,10 +39,10 @@ namespace Kotono.Graphics.Shaders
                 SetFloat($"pointLights[{i}].constant", pointLights[i].Constant);
                 SetFloat($"pointLights[{i}].linear", pointLights[i].Linear);
                 SetFloat($"pointLights[{i}].quadratic", pointLights[i].Quadratic);
-                SetFloat($"pointLights[{i}].power", pointLights[i].Power);
+                SetFloat($"pointLights[{i}].intensity", pointLights[i].Intensity);
             }
 
-            var spotLights = ObjectManager.SpotLights;
+            var spotLights = ObjectManager.GetObjectsOfType<SpotLight>(p => p.IsOn).ToArray();
 
             SetInt("numSpotLights", spotLights.Length);
 
@@ -55,7 +58,7 @@ namespace Kotono.Graphics.Shaders
                 SetFloat($"spotLights[{i}].constant", 1.0f);
                 SetFloat($"spotLights[{i}].linear", 0.09f);
                 SetFloat($"spotLights[{i}].quadratic", 0.032f);
-                SetFloat($"spotLights[{i}].power", spotLights[i].Power);
+                SetFloat($"spotLights[{i}].intensity", spotLights[i].Intensity);
             }
         }
     }

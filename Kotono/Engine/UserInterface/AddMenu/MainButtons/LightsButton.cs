@@ -7,7 +7,7 @@ namespace Kotono.Engine.UserInterface.AddMenu.MainButtons
         internal LightsButton()
             : base(["PointLight", "SpotLight", "Directional Light"], Anchor.TopRight)
         {
-            Source = "Lights";
+            Text.Source = "Lights";
         }
     }
 }

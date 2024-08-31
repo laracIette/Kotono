@@ -1,22 +1,23 @@
 ﻿using Kotono.Graphics.Shaders;
-using Kotono.Utils;
 using Kotono.Utils.Coordinates;
-using OpenTK.Graphics.OpenGL;
+using OpenTK.Graphics.OpenGL4;
 using System;
 
 namespace Kotono.Graphics.Objects.Shapes
 {
     internal class Shape2D : Object2D
     {
-        private static readonly Object3DShader _shader = (Object3DShader)ShaderManager.Shaders["shape2D"];
-
-        private readonly PrimitiveType _mode;
-
         private readonly VertexArraySetup _vertexArraySetup = new();
+
+        private PrimitiveType _mode;
+
+        private bool _isLoop;
 
         private bool _hasInitBuffers = false;
 
         private Point[] _points;
+
+        public override Shader Shader => ShaderManager.Shaders["shape2D"];
 
         internal Point this[int index]
         {
@@ -28,25 +29,38 @@ namespace Kotono.Graphics.Objects.Shapes
             }
         }
 
-        internal Shape2D(Point[] points, Color color, bool isLoop)
+        internal bool IsLoop
+        {
+            get => _isLoop;
+            set
+            {
+                _isLoop = value;
+                UpdateMode();
+            }
+        }
+
+        internal Shape2D(Point[] points)
         {
             _points = points;
-            Color = color;
-
-            _mode = _points.Length switch
-            {
-                0 => throw new Exception($"error: Points musn't be empty."),
-                1 => PrimitiveType.Points,
-                2 => PrimitiveType.Lines,
-                _ => isLoop ? PrimitiveType.LineLoop : PrimitiveType.LineStrip
-            };
+            UpdateMode();
         }
 
         internal void AddPoint(Point point)
         {
             _points = [.. _points, point];
-
             UpdateBuffers();
+            UpdateMode();
+        }
+
+        private void UpdateMode()
+        {
+            _mode = _points.Length switch
+            {
+                0 => throw new Exception($"error: Points musn't be empty."),
+                1 => PrimitiveType.Points,
+                2 => PrimitiveType.Lines,
+                _ => IsLoop ? PrimitiveType.LineLoop : PrimitiveType.LineStrip
+            };
         }
 
         public override void Update()
@@ -60,21 +74,20 @@ namespace Kotono.Graphics.Objects.Shapes
 
         public override void Draw()
         {
-            _shader.SetColor(Color);
-            _shader.SetModelMatrix(Rect.Model);
+            if (Shader is Object3DShader object3DShader)
+            {
+                object3DShader.SetColor(Color);
+                object3DShader.SetModelMatrix(Rect.Model);
+            }
 
-            _vertexArraySetup.VertexArrayObject.Bind();
-            _vertexArraySetup.VertexBufferObject.Bind();
+            _vertexArraySetup.Bind();
             GL.DrawArrays(_mode, 0, _points.Length);
         }
 
         private void UpdateBuffers()
         {
-            _vertexArraySetup.VertexArrayObject.Bind();
-            _vertexArraySetup.VertexBufferObject.SetData(_points, Point.SizeInBytes);
-
-            GL.EnableVertexAttribArray(0);
-            GL.VertexAttribPointer(0, 2, VertexAttribPointerType.Float, false, Point.SizeInBytes, 0);
+            _vertexArraySetup.SetData(_points, Point.SizeInBytes);
+            Shader.SetVertexAttributeData(0, 2, VertexAttribPointerType.Float, Point.SizeInBytes, 0);
         }
     }
 }

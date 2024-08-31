@@ -1,10 +1,9 @@
 ﻿using OpenTK.Graphics.OpenGL4;
 using System;
-using System.Linq;
 
 namespace Kotono.Graphics
 {
-    internal sealed class VertexBufferObject
+    internal sealed class VertexBufferObject : IDisposable
     {
         private readonly int _handle = GL.GenBuffer();
 
@@ -14,6 +13,12 @@ namespace Kotono.Graphics
         {
             Bind();
             GL.BufferData(BufferTarget.ArrayBuffer, data.Length * size, data, BufferUsageHint.StaticDraw);
+        }
+
+        public void Dispose()
+        {
+            GL.DeleteBuffer(_handle);
+            GC.SuppressFinalize(this);
         }
     }
 }

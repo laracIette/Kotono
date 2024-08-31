@@ -6,11 +6,10 @@ namespace Kotono.Graphics.Objects.Meshes
     {
         public override Shader Shader { get; set; } = ShaderManager.Shaders["flatTexture"];
 
-        public override Model Model { get; set; } = Model.Load(new ModelSettings
-        {
-            Path = Path.FromAssets(@"Meshes\flatTextureMesh.obj"),
-            Shader = ShaderManager.Shaders["lighting"]
-        });
+        public override Model Model { get; set; } = new Model(
+            Path.FromAssets(@"Meshes\flatTextureMesh.obj"),
+            LightingShader.Instance
+        );
 
         public override void Draw()
         {
@@ -24,7 +23,7 @@ namespace Kotono.Graphics.Objects.Meshes
 
             Model.Draw();
 
-            Texture.Bind(0);
+            ITexture.Unbind();
         }
     }
 }

@@ -3,28 +3,48 @@
     internal interface IRect
     {
         /// <summary> 
-        /// The base size component of the Rect. 
+        /// The base size component of the <see cref="IRect"/>. 
         /// </summary>
         public Point BaseSize { get; set; }
 
         /// <summary>
-        /// The size component of the Rect.
+        /// The size component of the <see cref="IRect"/>.
         /// </summary>
-        public Point Size { get; set; }
+        public Point RelativeSize { get; set; }
 
         /// <summary>
-        /// The position component of the Rect.
+        /// The position component of the <see cref="IRect"/>.
         /// </summary>
-        public Point Position { get; set; }
+        public Point RelativePosition { get; set; }
 
         /// <summary>
-        /// The rotation component of the Rect.
+        /// The rotation component of the <see cref="IRect"/>.
         /// </summary>
-        public Rotator Rotation { get; set; }
+        public Rotator RelativeRotation { get; set; }
 
         /// <summary>
-        /// The scale component of the Rect.
+        /// The scale component of the <see cref="IRect"/>.
         /// </summary>
-        public Point Scale { get; set; }
+        public Point RelativeScale { get; set; }
+
+        /// <summary>
+        /// The size component of the <see cref="IRect"/>.
+        /// </summary>
+        public Point WorldSize { get; set; }
+
+        /// <summary>
+        /// The position component of the <see cref="IRect"/>.
+        /// </summary>
+        public Point WorldPosition { get; set; }
+
+        /// <summary>
+        /// The rotation component of the <see cref="IRect"/>.
+        /// </summary>
+        public Rotator WorldRotation { get; set; }
+
+        /// <summary>
+        /// The scale component of the <see cref="IRect"/>.
+        /// </summary>
+        public Point WorldScale { get; set; }
     }
 }

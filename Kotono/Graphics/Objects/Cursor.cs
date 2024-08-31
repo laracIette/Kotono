@@ -5,15 +5,16 @@ namespace Kotono.Graphics.Objects
 {
     internal class Cursor : Image
     {
-        internal Cursor() : base(Path.FromAssets(@"coke.png"))
+        internal Cursor()
+            : base(Path.FromAssets(@"coke.png"))
         {
-            Size = new Point(50.0f, 50.0f);
+            WorldSize = new Point(50.0f, 50.0f);
             Layer = int.MaxValue;
         }
 
         public override void Update()
         {
-            Position = Mouse.Position + 25.0f;
+            WorldPosition = Mouse.Position + 25.0f;
         }
     }
 }

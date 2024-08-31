@@ -32,21 +32,21 @@ struct DirectionalLight {
     vec4 diffuse;
     //vec4 specular;
 
-    float power;
+    float intensity;
 };
 
 struct PointLight {
     vec3 location;
 
-    float constant;
-    float linear;
-    float quadratic;
-
     vec4 ambient;
     vec4 diffuse;
     vec4 specular;
 
-    float power;
+    float constant;
+    float linear;
+    float quadratic;
+
+    float intensity;
 };
 
 uniform PointLight pointLights[100];
@@ -127,7 +127,7 @@ vec3 CalculateLighting(DirectionalLight dirLight, vec3 N, vec3 V, vec3 albedo, f
     vec3 H = normalize(V + L);
 
     vec3 F0 = mix(vec3(0.04), albedo, metallic);
-    vec3 radiance = dirLight.diffuse.rgb * dirLight.power;
+    vec3 radiance = dirLight.diffuse.rgb * dirLight.intensity;
 
     float NDF = DistributionGGX(N, H, roughness);
     float G = GeometrySmith(N, V, L, roughness);
@@ -153,7 +153,7 @@ vec3 CalculateLighting(PointLight pointLight, vec3 N, vec3 V, vec3 FragPos, vec3
     vec3 H = normalize(V + L);
 
     vec3 F0 = mix(vec3(0.04), albedo, metallic);
-    vec3 radiance = pointLight.diffuse.rgb * pointLight.power;
+    vec3 radiance = pointLight.diffuse.rgb * pointLight.intensity;
 
     float distance = length(pointLight.location - FragPos);
     float attenuation = 1.0 / (pointLight.constant + pointLight.linear * distance + pointLight.quadratic * (distance * distance));

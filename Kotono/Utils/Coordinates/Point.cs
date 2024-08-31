@@ -1,8 +1,8 @@
-﻿using Kotono.Graphics;
+﻿using Assimp;
+using Kotono.Graphics;
 using OpenTK.Mathematics;
 using System;
 using System.Runtime.InteropServices;
-using System.Text.Json.Serialization;
 
 namespace Kotono.Utils.Coordinates
 {
@@ -12,13 +12,11 @@ namespace Kotono.Utils.Coordinates
         /// <summary> 
         /// The X component of the Point. 
         /// </summary>
-        [JsonInclude]
         public float X = 0.0f;
 
         /// <summary>
         /// The Y component of the Point. 
         /// </summary>
-        [JsonInclude]
         public float Y = 0.0f;
 
         /// <summary> 
@@ -36,8 +34,8 @@ namespace Kotono.Utils.Coordinates
         /// </summary>
         public readonly Point NDC =>
             new(
-                2.0f * X / Viewport.Active.Size.X - 1.0f,
-                1.0f - Y / Viewport.Active.Size.Y * 2.0f
+                2.0f * X / Viewport.Active.RelativeSize.X - 1.0f,
+                1.0f - Y / Viewport.Active.RelativeSize.Y * 2.0f
             );
 
         /// <summary>
@@ -259,6 +257,16 @@ namespace Kotono.Utils.Coordinates
         }
 
         public static explicit operator Point(Vector2i v)
+        {
+            return new Point(v.X, v.Y);
+        }
+
+        public static explicit operator Vector3D(Point p)
+        {
+            return new Vector3D(p.X, p.Y, 0.0f);
+        }
+
+        public static explicit operator Point(Vector3D v)
         {
             return new Point(v.X, v.Y);
         }

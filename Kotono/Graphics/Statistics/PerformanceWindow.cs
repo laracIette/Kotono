@@ -4,25 +4,30 @@ using Kotono.Utils.Coordinates;
 
 namespace Kotono.Graphics.Statistics
 {
-    internal static class PerformanceWindow
+    internal class PerformanceWindow
     {
-        private static readonly RoundedBox _background;
+        private readonly RoundedBox _background = new()
+        {
+            RelativeSize = new Point(400.0f, 120.0f),
+            Color = Color.DarkSlateGray,
+            TargetCornerSize = 10.0f
+        };
 
-        private static readonly RateStat _frame;
+        private readonly RateStat _frame = new() { Anchor = Anchor.Bottom };
 
-        private static readonly RateStat _update;
+        private readonly RateStat _update = new() { Anchor = Anchor.Top };
 
-        internal static float MaxFrameRate { get; set; } = 60.0f;
+        internal float MaxFrameRate { get; set; } = 60.0f;
 
-        internal static float FrameTime => _frame.Time;
+        internal float FrameTime => _frame.Time;
 
-        internal static float FrameRate => _frame.Rate;
+        internal float FrameRate => _frame.Rate;
 
-        internal static float UpdateTime => _update.Time;
+        internal float UpdateTime => _update.Time;
 
-        internal static float UpdateRate => _update.Rate;
+        internal float UpdateRate => _update.Rate;
 
-        internal static bool IsDraw
+        internal bool IsDraw
         {
             get => _background.IsDraw;
             set
@@ -35,36 +40,27 @@ namespace Kotono.Graphics.Statistics
 
         internal static Point Position => Window.Size - new Point(200.0f, 60.0f);
 
-        static PerformanceWindow()
+        internal PerformanceWindow()
         {
-            _frame = new RateStat { Anchor = Anchor.Bottom };
-            _update = new RateStat { Anchor = Anchor.Top };
-
-            _background = new RoundedBox
-            {
-                Position = Position,
-                Size = new Point(400.0f, 120.0f),
-                Color = Color.DarkSlateGray,
-                CornerSize = 10.0f
-            };
+            _background.RelativePosition = Position;
         }
 
-        internal static void AddFrameTime(float frameTime)
+        internal void AddFrameTime(float frameTime)
         {
             _frame.AddTime(frameTime);
         }
 
-        internal static void AddUpdateTime(float updateTime)
+        internal void AddUpdateTime(float updateTime)
         {
             _update.AddTime(updateTime);
         }
 
-        internal static void UpdatePosition()
+        internal void UpdatePosition()
         {
-            _frame.Position = Position;
-            _update.Position = Position;
+            _frame.RelativePosition = Position;
+            _update.RelativePosition = Position;
 
-            _background.Position = Position;
+            _background.RelativePosition = Position;
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using OpenTK.Mathematics;
 using System;
-using System.Text.Json.Serialization;
 
 namespace Kotono.Utils.Coordinates
 {
@@ -57,42 +56,36 @@ namespace Kotono.Utils.Coordinates
             set => _velocity.Scale = value;
         }
 
-        [JsonIgnore]
         public Vector WorldLocation
         {
             get => RelativeLocation + ParentWorldLocation;
             set => RelativeLocation = value - ParentWorldLocation;
         }
 
-        [JsonIgnore]
         public Rotator WorldRotation
         {
             get => RelativeRotation + ParentWorldRotation;
             set => RelativeRotation = value - ParentWorldRotation;
         }
 
-        [JsonIgnore]
         public Vector WorldScale
         {
             get => RelativeScale * ParentWorldScale;
             set => RelativeScale = value / ParentWorldScale;
         }
 
-        [JsonIgnore]
         public Vector WorldLocationVelocity
         {
             get => RelativeLocationVelocity + ParentWorldLocationVelocity;
             set => RelativeLocationVelocity = value - ParentWorldLocationVelocity;
         }
 
-        [JsonIgnore]
         public Rotator WorldRotationVelocity
         {
             get => RelativeRotationVelocity + ParentWorldRotationVelocity;
             set => RelativeRotationVelocity = value - ParentWorldRotationVelocity;
         }
 
-        [JsonIgnore]
         public Vector WorldScaleVelocity
         {
             get => RelativeScaleVelocity * ParentWorldScaleVelocity;
@@ -100,7 +93,7 @@ namespace Kotono.Utils.Coordinates
         }
 
         /// <summary>
-        /// The transform the Transform is relative to.
+        /// The <see cref="Transform"/> the <see cref="Transform"/> is relative to.
         /// </summary>
         public Transform? Parent { get; set; } = null;
 

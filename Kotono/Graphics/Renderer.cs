@@ -2,7 +2,6 @@
 using Kotono.Graphics.Objects.Meshes;
 using Kotono.Utils;
 using Kotono.Utils.Coordinates;
-using Kotono.Utils.Timing;
 using OpenTK.Graphics.OpenGL4;
 using System;
 using System.Collections.Generic;
@@ -52,9 +51,9 @@ namespace Kotono.Graphics
 
         private void AddToObject2DRenderQueue(IObject2D object2D)
         {
-            var position = Rect.GetPositionFromAnchor(object2D.Viewport.Position, object2D.Viewport.Size, Anchor.TopLeft);
+            var position = Rect.GetPositionFromAnchor(object2D.Viewport.RelativePosition, object2D.Viewport.RelativeSize, Anchor.TopLeft);
 
-            if (!Rect.Overlaps(object2D.Rect, new RectBase(position, object2D.Viewport.Size)))
+            if (!Rect.Overlaps(object2D.Rect, new RectBase(position, object2D.Viewport.RelativeSize)))
             {
                 return;
             }

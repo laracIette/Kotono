@@ -3,7 +3,6 @@ using Kotono.Utils.Exceptions;
 using OpenTK.Mathematics;
 using System;
 using System.Linq;
-using System.Text.Json.Serialization;
 
 namespace Kotono.Utils.Coordinates
 {
@@ -21,34 +20,71 @@ namespace Kotono.Utils.Coordinates
             set => _base.BaseSize = value;
         }
 
-        public Point Size
+        public Point RelativeSize
         {
             get => _base.Size;
             set => _base.Size = value;
         }
 
-        public Point Position
+        public Point RelativePosition
         {
             get => _base.Position;
             set => _base.Position = value;
         }
 
-        public Rotator Rotation
+        public Rotator RelativeRotation
         {
             get => _base.Rotation;
             set => _base.Rotation = value;
         }
 
-        public Point Scale
+        public Point RelativeScale
         {
             get => _base.Scale;
             set => _base.Scale = value;
         }
 
+        public Point WorldSize
+        {
+            get => RelativeSize + ParentWorldSize;
+            set => RelativeSize = value - ParentWorldSize;
+        }
+
+        public Point WorldPosition
+        {
+            get => RelativePosition + ParentWorldPosition;
+            set => RelativePosition = value - ParentWorldPosition;
+        }
+
+        public Rotator WorldRotation
+        {
+            get => RelativeRotation + ParentWorldRotation;
+            set => RelativeRotation = value - ParentWorldRotation;
+        }
+
+        public Point WorldScale
+        {
+            get => RelativeScale * ParentWorldScale;
+            set => RelativeScale = value / ParentWorldScale;
+        }
+
+        /// <summary>
+        /// The <see cref="Rect"/> the <see cref="Rect"/> is relative to.
+        /// </summary>
+        public Rect? Parent { get; set; } = null;
+
+        private Point ParentWorldSize => Parent?.WorldSize ?? DefaultSize;
+
+        private Point ParentWorldPosition => Parent?.WorldPosition ?? DefaultPosition;
+
+        private Rotator ParentWorldRotation => Parent?.WorldRotation ?? DefaultRotation;
+
+        private Point ParentWorldScale => Parent?.WorldScale ?? DefaultScale;
+
         /// <summary>
         /// The Normalized Device Coordinates of the Rect.
         /// </summary>
-        public NDCRect NDC => new(Position, Size);
+        public NDCRect NDC => new(WorldPosition, WorldSize);
 
         /// <summary>
         /// The model matrix of the Rect.
@@ -58,47 +94,47 @@ namespace Kotono.Utils.Coordinates
         /// <summary>
         /// The center Point of the Rect.
         /// </summary>
-        public Point Center => Position;
+        public Point Center => RelativePosition;
 
         /// <summary>
         /// The left Point of the Rect.
         /// </summary>
-        public Point Left => new(Position.X - Math.Half(Size.X), Position.Y);
+        public Point Left => new(RelativePosition.X - Math.Half(RelativeSize.X), RelativePosition.Y);
 
         /// <summary>
         /// The right Point of the Rect.
         /// </summary>
-        public Point Right => new(Position.X + Math.Half(Size.X), Position.Y);
+        public Point Right => new(RelativePosition.X + Math.Half(RelativeSize.X), RelativePosition.Y);
 
         /// <summary>
         /// The top Point of the Rect.
         /// </summary>
-        public Point Top => new(Position.X, Position.Y + Math.Half(Size.Y));
+        public Point Top => new(RelativePosition.X, RelativePosition.Y + Math.Half(RelativeSize.Y));
 
         /// <summary>
         /// The bottom Point of the Rect.
         /// </summary>
-        public Point Bottom => new(Position.X, Position.Y - Math.Half(Size.Y));
+        public Point Bottom => new(RelativePosition.X, RelativePosition.Y - Math.Half(RelativeSize.Y));
 
         /// <summary>
         /// The top left Point of the Rect.
         /// </summary>
-        public Point TopLeft => new(Position.X - Math.Half(Size.X), Position.Y + Math.Half(Size.Y));
+        public Point TopLeft => new(RelativePosition.X - Math.Half(RelativeSize.X), RelativePosition.Y + Math.Half(RelativeSize.Y));
 
         /// <summary>
         /// The top right Point of the Rect.
         /// </summary>
-        public Point TopRight => new(Position.X + Math.Half(Size.X), Position.Y + Math.Half(Size.Y));
+        public Point TopRight => new(RelativePosition.X + Math.Half(RelativeSize.X), RelativePosition.Y + Math.Half(RelativeSize.Y));
 
         /// <summary>
         /// The bottom left Point of the Rect.
         /// </summary>
-        public Point BottomLeft => new(Position.X - Math.Half(Size.X), Position.Y - Math.Half(Size.Y));
+        public Point BottomLeft => new(RelativePosition.X - Math.Half(RelativeSize.X), RelativePosition.Y - Math.Half(RelativeSize.Y));
 
         /// <summary>
         /// The bottom right Point of the Rect.
         /// </summary>
-        public Point BottomRight => new(Position.X + Math.Half(Size.X), Position.Y - Math.Half(Size.Y));
+        public Point BottomRight => new(RelativePosition.X + Math.Half(RelativeSize.X), RelativePosition.Y - Math.Half(RelativeSize.Y));
 
         public static Point DefaultPosition => Point.Zero;
 
@@ -277,8 +313,8 @@ namespace Kotono.Utils.Coordinates
         /// </summary>
         public static bool Overlaps(Rect r, Point p)
         {
-            return Math.Abs(r.Position.X - p.X) < Math.Half(r.Size.X)
-                && Math.Abs(r.Position.Y - p.Y) < Math.Half(r.Size.Y);
+            return Math.Abs(r.RelativePosition.X - p.X) < Math.Half(r.RelativeSize.X)
+                && Math.Abs(r.RelativePosition.Y - p.Y) < Math.Half(r.RelativeSize.Y);
         }
 
         public static Rect Parse(string[] values)
@@ -311,12 +347,12 @@ namespace Kotono.Utils.Coordinates
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Position, Size);
+            return HashCode.Combine(RelativePosition, RelativeSize);
         }
 
         public static explicit operator Vector4(Rect r)
         {
-            return new Vector4(r.Position.X, r.Position.Y, r.Size.X, r.Size.Y);
+            return new Vector4(r.RelativePosition.X, r.RelativePosition.Y, r.RelativeSize.X, r.RelativeSize.Y);
         }
 
         public static explicit operator Rect(Vector4 v)
@@ -326,7 +362,7 @@ namespace Kotono.Utils.Coordinates
 
         public override string ToString()
         {
-            return $"X: {Position.X}, Y: {Position.Y}, W: {Size.X}, H: {Size.Y}"; ;
+            return $"X: {RelativePosition.X}, Y: {RelativePosition.Y}, W: {RelativeSize.X}, H: {RelativeSize.Y}"; ;
         }
     }
 }

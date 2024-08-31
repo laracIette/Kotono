@@ -15,7 +15,7 @@ namespace Kotono.Graphics.Objects
         public int Layer { get; set; }
 
         /// <summary>
-        /// The object to which the <see cref="IObject2D"/> is dependant.
+        /// The <see cref="IObject2D"/> the <see cref="IObject2D"/> is relative to.
         /// </summary>
         public IObject2D? Parent { get; set; }
     }

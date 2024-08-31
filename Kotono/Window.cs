@@ -17,13 +17,15 @@ namespace Kotono
 {
     internal abstract class Window : GameWindow
     {
-        private float _stalledTime = 0;
+        private static readonly PerformanceWindow _performanceWindow = new();
 
-        private bool ShouldRenderFrame => IsFocused && (PerformanceWindow.FrameRate < PerformanceWindow.MaxFrameRate);
-
-        internal static Point Position { get; set; } = Point.Zero;
+        private float _stalledTime = 0.0f;
 
         private static Point _size = new(1280.0f, 720.0f);
+        
+        private bool ShouldRenderFrame => IsFocused && (_performanceWindow.FrameRate < _performanceWindow.MaxFrameRate);
+        
+        internal static Point Position { get; set; } = Point.Zero;
 
         internal new static Point Size
         {
@@ -36,7 +38,7 @@ namespace Kotono
 
                 WindowComponentManager.WindowViewport.BaseSize = Size;
 
-                PerformanceWindow.UpdatePosition();
+                _performanceWindow.UpdatePosition();
 
                 if (Size > Point.Zero)
                 {
@@ -50,33 +52,33 @@ namespace Kotono
                 GameWindowSettings.Default,
                 new NativeWindowSettings
                 {
-                    Size = new Vector2i(windowSettings.Width, windowSettings.Height),
+                    Size = (Vector2i)windowSettings.WindowSize,
                     Title = windowSettings.WindowTitle,
                     StartVisible = false,
-                    Location = new Vector2i((1920 - windowSettings.Width) / 2, (1080 - windowSettings.Height) / 2),
+                    Location = ((Vector2i)(1920, 1080) - (Vector2i)windowSettings.WindowSize) / 2,
                     NumberOfSamples = 1
                 }
             )
         {
+            Position = (Point)Location;
+            Size = (Point)ClientSize;
+
             // Needed to parse correctly
             CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
             CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
 
-            PerformanceWindow.MaxFrameRate = windowSettings.MaxFrameRate;
+            _performanceWindow.MaxFrameRate = windowSettings.MaxFrameRate;
 
             SoundManager.GeneralVolume = 1.0f;
 
             Mouse.CursorState = windowSettings.CursorState;
             Mouse.MouseState = MouseState;
 
-            Mouse.HideCursor();
+            Mouse.HidePointer();
 
             Keyboard.KeyboardState = KeyboardState;
 
             _ = new MainMenu();
-
-            Position = (Point)Location;
-            Size = (Point)ClientSize;
         }
 
         protected override void OnLoad()
@@ -99,10 +101,11 @@ namespace Kotono
             {
                 _stalledTime = 0.0f;
 
-                PerformanceWindow.AddFrameTime((float)e.Time);
+                _performanceWindow.AddFrameTime((float)e.Time);
 
                 ShaderManager.Update();
                 NewLightingShader.Instance.Update();
+                LightingShader.Instance.Update();
 
                 ObjectManager.Draw();
 
@@ -111,7 +114,7 @@ namespace Kotono
             else
             {
                 _stalledTime += (float)e.Time;
-                PerformanceWindow.AddFrameTime(_stalledTime);
+                _performanceWindow.AddFrameTime(_stalledTime);
             }
         }
 
@@ -124,7 +127,7 @@ namespace Kotono
                 base.Close();
             }
 
-            PerformanceWindow.AddUpdateTime((float)e.Time);
+            _performanceWindow.AddUpdateTime((float)e.Time);
 
             Time.Update();
             Keyboard.Update();
@@ -167,7 +170,7 @@ namespace Kotono
         protected override void OnUnload()
         {
             SoundManager.Dispose();
-            Texture.DisposeAll();
+            ImageTexture.DisposeAll();
             ObjectManager.Dispose();
 
             base.OnUnload();

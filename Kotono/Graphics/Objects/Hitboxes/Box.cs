@@ -98,20 +98,11 @@ namespace Kotono.Graphics.Objects.Hitboxes
 
         private static readonly Object3DShader _shader = (Object3DShader)ShaderManager.Shaders["hitbox"];
 
-        private static bool _isFirst = true;
-
-        internal Box()
+        static Box()
         {
-            if (_isFirst)
-            {
-                _isFirst = false;
+            _vertexArraySetup.SetData(_vertices, sizeof(float));
 
-                _vertexArraySetup.VertexArrayObject.Bind();
-                _vertexArraySetup.VertexBufferObject.SetData(_vertices, sizeof(float));
-
-                GL.EnableVertexAttribArray(0);
-                GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 0, 0);
-            }
+            Shader.SetVertexAttributeData(0, 3, VertexAttribPointerType.Float, 0, 0);
         }
 
         public override void Draw()
@@ -119,17 +110,16 @@ namespace Kotono.Graphics.Objects.Hitboxes
             _shader.SetColor(Color);
             _shader.SetModelMatrix(Transform.Model);
 
-            _vertexArraySetup.VertexArrayObject.Bind();
-            _vertexArraySetup.VertexBufferObject.Bind();
+            _vertexArraySetup.Bind();
             GL.DrawArrays(PrimitiveType.Lines, 0, _vertices.Length);
         }
 
         public override bool CollidesWith(IHitbox hitbox)
         {
             return (hitbox is IObject3D object3D)
-                && (Math.Abs(RelativeLocation.X - object3D.RelativeLocation.X) <= Math.Avg(RelativeScale.X, object3D.RelativeScale.X))
-                && (Math.Abs(RelativeLocation.Y - object3D.RelativeLocation.Y) <= Math.Avg(RelativeScale.Y, object3D.RelativeScale.Y))
-                && (Math.Abs(RelativeLocation.Z - object3D.RelativeLocation.Z) <= Math.Avg(RelativeScale.Z, object3D.RelativeScale.Z));
+                && (Math.Abs(RelativeLocation.X - object3D.RelativeLocation.X) <= Math.Half(RelativeScale.X + object3D.RelativeScale.X))
+                && (Math.Abs(RelativeLocation.Y - object3D.RelativeLocation.Y) <= Math.Half(RelativeScale.Y + object3D.RelativeScale.Y))
+                && (Math.Abs(RelativeLocation.Z - object3D.RelativeLocation.Z) <= Math.Half(RelativeScale.Z + object3D.RelativeScale.Z));
         }
     }
 }

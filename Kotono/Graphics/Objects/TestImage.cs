@@ -7,8 +7,8 @@ namespace Kotono.Graphics.Objects
         internal TestImage()
             : base(Path.FromAssets("Characters/a.png"))
         {
-            Position = new Point(150.0f, 250.0f);
-            Size = new Point(50.0f, 60.0f);
+            RelativePosition = new Point(150.0f, 250.0f);
+            RelativeSize = new Point(50.0f, 60.0f);
         }
 
         protected virtual void OnUpKeyDown()

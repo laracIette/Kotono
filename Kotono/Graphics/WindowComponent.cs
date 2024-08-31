@@ -12,21 +12,21 @@ namespace Kotono.Graphics
 
         internal Point Position
         {
-            get => _background.Position;
+            get => _background.RelativePosition;
             set
             {
-                _background.Position = value;
-                Viewport.Position = Rect.GetPositionFromAnchor(value, Size, Anchor.BottomRight);
+                _background.RelativePosition = value;
+                Viewport.RelativePosition = Rect.GetPositionFromAnchor(value, Size, Anchor.BottomRight);
             }
         }
 
         internal Point Size
         {
-            get => _background.Size;
+            get => _background.RelativeSize;
             set
             {
-                _background.Size = value;
-                Viewport.Size = value;
+                _background.RelativeSize = value;
+                Viewport.RelativeSize = value;
             }
         }
 
@@ -40,7 +40,7 @@ namespace Kotono.Graphics
         {
             _background = new Background
             {
-                Viewport = Viewport 
+                Viewport = Viewport
             };
         }
     }

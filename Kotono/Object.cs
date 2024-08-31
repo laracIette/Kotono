@@ -9,15 +9,6 @@ namespace Kotono
 {
     internal abstract class Object : IObject
     {
-#if DEBUG
-#pragma warning disable IDE1006 // Naming Styles
-        private string? __type => GetType().FullName;
-
-        private int __index => ObjectManager.IndexOf(this);
-#pragma warning restore IDE1006 // Naming Styles
-#endif
-
-
         public virtual bool IsUpdate { get; set; } = true;
 
         public bool IsDelete { get; private set; } = false;
@@ -26,10 +17,7 @@ namespace Kotono
 
         public float TimeSinceCreation => Time.Now - CreationTime;
 
-        internal Object()
-        {
-            ObjectManager.Create(this);
-        }
+        internal Object() => ObjectManager.Create(this);
 
         public virtual void Update() { }
 
@@ -46,7 +34,15 @@ namespace Kotono
         }
 
 
+
 #pragma warning disable IDE1006 // Naming Styles
+
+#if DEBUG
+        private string? __type => GetType().FullName;
+
+        private int __index => ObjectManager.IndexOf(this);
+#endif
+
         /// <inheritdoc cref="Printer.Print(object?, Color)"/>
         [Conditional("DEBUG")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

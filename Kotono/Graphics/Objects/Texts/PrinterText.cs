@@ -10,7 +10,7 @@ namespace Kotono.Graphics.Objects.Texts
             get => base.Source;
             set
             {
-                Position = Point.Zero;
+                RelativePosition = Point.Zero;
 
                 base.Source = value;
 
@@ -20,7 +20,7 @@ namespace Kotono.Graphics.Objects.Texts
 
         internal PrinterText()
         {
-            Size = new Point(25.0f, 30.0f);
+            RelativeSize = new Point(25.0f, 30.0f);
             Anchor = Anchor.TopLeft;
             Spacing = 2.0f / 3.0f;
             Layer = int.MaxValue;
@@ -28,11 +28,11 @@ namespace Kotono.Graphics.Objects.Texts
 
         internal void Lower()
         {
-            LettersRect.Position += new Point(0.0f, LettersRect.BaseSize.Y);
+            LettersRect.RelativePosition += new Point(0.0f, LettersRect.BaseSize.Y);
 
             foreach (var letter in _letters)
             {
-                letter.Position += new Point(0.0f, LettersRect.BaseSize.Y);
+                letter.RelativePosition += new Point(0.0f, LettersRect.BaseSize.Y);
             }
         }
     }

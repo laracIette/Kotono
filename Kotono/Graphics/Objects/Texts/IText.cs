@@ -1,9 +1,4 @@
 ﻿using Kotono.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Kotono.Graphics.Objects.Texts
 {
@@ -22,7 +17,7 @@ namespace Kotono.Graphics.Objects.Texts
         /// <summary>
         /// The spacing between the <see cref="IText"/>'s letters.
         /// </summary>
-        public float Spacing { get; set; }  
+        public float Spacing { get; set; }
 
         /// <summary>
         /// The anchor of the <see cref="IText"/>.

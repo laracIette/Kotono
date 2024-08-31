@@ -7,7 +7,7 @@ namespace Kotono.Engine.UserInterface.AddMenu.MainButtons
         internal TriggersButton()
             : base([], Anchor.TopLeft)
         {
-            Source = "Triggers";
+            Text.Source = "Triggers";
         }
     }
 }

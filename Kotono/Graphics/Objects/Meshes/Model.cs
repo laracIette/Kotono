@@ -1,19 +1,20 @@
 ﻿using Kotono.Graphics.Shaders;
 using Kotono.Utils.Coordinates;
 using OpenTK.Graphics.OpenGL4;
+using System;
 using System.Collections.Generic;
 
 namespace Kotono.Graphics.Objects.Meshes
 {
     internal class Model
     {
-        private static readonly Dictionary<string, ModelVertices> _models = [];
+        private static readonly Dictionary<string, ModelVertices> _modelsVertices = [];
 
         private readonly ElementBufferObject _elementBufferObject = new();
 
         private readonly ModelVertices _modelVertices;
 
-        private Shader _shader;
+        private Shader _shader = NewLightingShader.Instance;
 
         internal Shader Shader
         {
@@ -23,52 +24,47 @@ namespace Kotono.Graphics.Objects.Meshes
                 if (_shader != value)
                 {
                     _shader = value;
-
-                    _shader.Use();
-
-                    _modelVertices.VertexArraySetup.VertexArrayObject.Bind();
-
-                    BindAttributes();
-
-                    _elementBufferObject.Bind();
+                    UpdateShaderAndBuffers();
                 }
             }
         }
 
+        internal ModelTriangle[] Triangles => _modelVertices.Triangles;
+
+        internal Vector[] Vertices => _modelVertices.Vertices;
+
+        internal Vector Center => _modelVertices.Center;
+
         internal Model(string path, Shader shader)
         {
-            _shader = shader;
-
-            if (!_models.TryGetValue(path, out ModelVertices? modelVertices))
+            if (!_modelsVertices.TryGetValue(path, out ModelVertices? modelVertices))
             {
                 modelVertices = new ModelVertices(path);
-                _models[path] = modelVertices;
+                _modelsVertices[path] = modelVertices;
             }
 
             _modelVertices = modelVertices;
 
-            BindAttributes();
+            Shader = shader;
 
             _elementBufferObject.SetData(_modelVertices.Indices, sizeof(int));
         }
 
-        private void BindAttributes()
+        private void UpdateShaderAndBuffers()
         {
-            int locationAttributeLocation = Shader.GetAttribLocation("aPos");
-            GL.EnableVertexAttribArray(locationAttributeLocation);
-            GL.VertexAttribPointer(locationAttributeLocation, 3, VertexAttribPointerType.Float, false, Vertex3D.SizeInBytes, 0);
+            _shader.Use();
+            _modelVertices.VertexArraySetup.Bind();
+            _shader.SetVertexAttributesData();
+            _elementBufferObject.Bind();
+        }
 
-            int normalAttributeLocation = Shader.GetAttribLocation("aNormal");
-            GL.EnableVertexAttribArray(normalAttributeLocation);
-            GL.VertexAttribPointer(normalAttributeLocation, 3, VertexAttribPointerType.Float, false, Vertex3D.SizeInBytes, Vector.SizeInBytes);
+        internal void Draw()
+        {
+            _modelVertices.VertexArraySetup.Bind();
 
-            int tangentAttributeLocation = Shader.GetAttribLocation("aTangent");
-            GL.EnableVertexAttribArray(tangentAttributeLocation);
-            GL.VertexAttribPointer(tangentAttributeLocation, 3, VertexAttribPointerType.Float, false, Vertex3D.SizeInBytes, Vector.SizeInBytes * 2);
+            _elementBufferObject.Bind();
 
-            int texCoordAttributeLocation = Shader.GetAttribLocation("aTexCoords");
-            GL.EnableVertexAttribArray(texCoordAttributeLocation);
-            GL.VertexAttribPointer(texCoordAttributeLocation, 2, VertexAttribPointerType.Float, false, Vertex3D.SizeInBytes, Vector.SizeInBytes * 3);
+            GL.DrawElements(PrimitiveType.Triangles, _modelVertices.IndicesCount, DrawElementsType.UnsignedInt, IntPtr.Zero);
         }
     }
 }

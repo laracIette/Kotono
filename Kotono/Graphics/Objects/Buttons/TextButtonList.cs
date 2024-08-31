@@ -17,21 +17,16 @@ namespace Kotono.Graphics.Objects.Buttons
             {
                 _buttons[i] = new TextButton
                 {
-                    Position = positions[i],
-                    Size = size,
-                    Source = texts[i],
+                    RelativePosition = positions[i],
+                    RelativeSize = size,
                     Color = color,
-                    CornerSize = cornerSize,
-                    FallOff = fallOff,
+                    TargetCornerSize = cornerSize,
+                    TargetFallOff = fallOff,
                     Layer = layer,
-                    Pressed = OnPressed
+                    Pressed = (s, e) => Printer.Print(e.Source, true)
                 };
+                _buttons[i].Text.Source = texts[i];
             }
-        }
-
-        private void OnPressed(object? sender, TextButtonEventArgs e)
-        {
-            Printer.Print(e.Source, true);
         }
     }
 }

@@ -2,7 +2,6 @@
 using Kotono.Utils;
 using Kotono.Utils.Coordinates;
 using Kotono.Utils.Exceptions;
-using System;
 using System.Collections.Generic;
 
 namespace Kotono.Graphics.Objects.Texts
@@ -127,13 +126,13 @@ namespace Kotono.Graphics.Objects.Texts
                         path = _charactersPath[' '];
                     }
 
-                    var position = GetLetterPosition(i, LettersRect.Position, LettersRect.Size);
+                    var position = GetLetterPosition(i, LettersRect.RelativePosition, LettersRect.RelativeSize);
 
                     _letters.Add(
                         new Image(Path.FromAssets(path))
                         {
-                            Position = position,
-                            Size = LettersRect.Size,
+                            RelativePosition = position,
+                            RelativeSize = LettersRect.RelativeSize,
                             Color = Color,
                             Layer = Layer
                         }
@@ -150,7 +149,7 @@ namespace Kotono.Graphics.Objects.Texts
         {
             get
             {
-                base.Rect.Position = Rect.GetPositionFromAnchor(LettersRect.Position, new Point(LettersRect.BaseSize.X * Value.Length * Spacing, LettersRect.BaseSize.Y), Anchor);
+                base.Rect.RelativePosition = Rect.GetPositionFromAnchor(LettersRect.RelativePosition, new Point(LettersRect.BaseSize.X * Value.Length * Spacing, LettersRect.BaseSize.Y), Anchor);
                 base.Rect.BaseSize = new Point(LettersRect.BaseSize.X * Value.Length * Spacing, LettersRect.BaseSize.Y);
                 return base.Rect;
             }
@@ -158,16 +157,16 @@ namespace Kotono.Graphics.Objects.Texts
 
         internal Rect LettersRect { get; } = Rect.Default;
 
-        public override Point Position
+        public override Point RelativePosition
         {
-            get => Rect.Position;
+            get => Rect.RelativePosition;
             set
             {
-                LettersRect.Position = value;
+                LettersRect.RelativePosition = value;
 
                 for (int i = 0; i < _letters.Count; i++)
                 {
-                    _letters[i].Position = GetLetterPosition(i, LettersRect.Position, LettersRect.Size);
+                    _letters[i].RelativePosition = GetLetterPosition(i, LettersRect.RelativePosition, LettersRect.RelativeSize);
                 }
             }
         }

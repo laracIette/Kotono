@@ -13,7 +13,8 @@ namespace Kotono
         public bool IsUpdate { get; set; }
 
         /// <summary>
-        /// Wether the <see cref="IObject"/> should be deleted, if true, the <see cref="IObject"/> will be deleted before the next update.
+        /// Wether the <see cref="IObject"/> should be deleted, 
+        /// if <see langword="true"/>, the <see cref="IObject"/> will be deleted before the next update.
         /// </summary>
         public bool IsDelete { get; }
 

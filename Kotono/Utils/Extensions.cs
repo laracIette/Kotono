@@ -107,37 +107,6 @@ namespace Kotono.Utils
         }
 
         /// <summary>
-        /// Get a sorted string given a separator and a newSeparator to replace it with.
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="separator"></param>
-        /// <param name="newSeparator"></param>
-        /// <returns></returns>
-        internal static string Sorted(this string source, string separator, string newSeparator)
-        {
-            var sortedList = source.Split(separator).ToList().Sorted();
-
-            source = string.Empty;
-            foreach (var item in sortedList)
-            {
-                source += item + newSeparator;
-            }
-
-            return source;
-        }
-
-        /// <summary>
-        /// Get a sorted string given a separator.
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="separator"></param>
-        /// <returns></returns>
-        internal static string Sorted(this string source, string separator)
-        {
-            return source.Sorted(separator, separator);
-        }
-
-        /// <summary>
         /// Get wether a Type is a list. If <see langword="true"/>, itemType gets assigned the type the list contains.
         /// </summary>
         /// <param name="type"></param>

@@ -1,10 +1,8 @@
-﻿using Kotono.Graphics.Objects.Hitboxes;
-using Kotono.Graphics.Objects.Lights;
+﻿using Kotono.Graphics.Objects.Lights;
 using Kotono.Input;
 using Kotono.Physics;
 using Kotono.Utils;
 using Kotono.Utils.Coordinates;
-using Kotono.Utils.Timing;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
 using System.Collections.Generic;
@@ -21,11 +19,9 @@ namespace Kotono.Graphics.Objects
 
         private static readonly Dictionary<Type, MethodInfo[]> _typeInputMethods = [];
 
-        internal static PointLight[] PointLights => _objects.OfType<PointLight>().Where(p => p.IsOn).ToArray();
+        internal static IEnumerable<T> GetObjectsOfType<T>() where T : IObject => _objects.OfType<T>();
 
-        internal static SpotLight[] SpotLights => _objects.OfType<SpotLight>().Where(s => s.IsOn).ToArray();
-
-        internal static IHitbox[] Hitboxes => _objects.OfType<IHitbox>().ToArray();
+        internal static IEnumerable<T> GetObjectsOfType<T>(Func<T, bool> predicate) where T : IObject => _objects.OfType<T>().Where(predicate);
 
         internal static int IndexOf(IObject obj) => _objects.IndexOf(obj);
 
@@ -36,7 +32,7 @@ namespace Kotono.Graphics.Objects
             switch (obj)
             {
                 case PointLight:
-                    if (PointLights.Length >= PointLight.MAX_COUNT)
+                    if (GetObjectsOfType<PointLight>().Count() >= PointLight.MAX_COUNT)
                     {
                         Logger.LogError($"The number of PointLight is already at its max value: {PointLight.MAX_COUNT}");
                         return;
@@ -44,7 +40,7 @@ namespace Kotono.Graphics.Objects
                     break;
 
                 case SpotLight:
-                    if (SpotLights.Length >= SpotLight.MAX_COUNT)
+                    if (GetObjectsOfType<SpotLight>().Count() >= SpotLight.MAX_COUNT)
                     {
                         Logger.LogError($"The number of SpotLight is already at its max value: {SpotLight.MAX_COUNT}");
                         return;
@@ -117,6 +113,11 @@ namespace Kotono.Graphics.Objects
 
             UpdateFizix();
 
+            UpdateDeleteObjects();
+        }
+
+        private static void UpdateDeleteObjects()
+        {
             if (Keyboard.IsKeyPressed(Keys.Delete))
             {
                 OnDeleteKeyPressed();
@@ -130,24 +131,22 @@ namespace Kotono.Graphics.Objects
                     Delete(_objects[i]);
                 }
             }
-
-            //Logger.Log(_objects.OfType<Rect>().Count());
         }
 
         private static void UpdateFizix()
         {
-            foreach (var obj in _objects.OfType<IFizixObject>())
+            foreach (var obj in GetObjectsOfType<IFizixObject>())
             {
                 if (obj.IsUpdateFizix)
                 {
-                    Fizix.Update(obj);
+                    obj.UpdateFizix();
                 }
             }
         }
 
         internal static void Draw()
         {
-            foreach (var obj in _objects.OfType<IDrawable>())
+            foreach (var obj in GetObjectsOfType<IDrawable>())
             {
                 _renderer.AddToRenderQueue(obj);
             }
@@ -157,7 +156,7 @@ namespace Kotono.Graphics.Objects
 
         internal static void Save()
         {
-            foreach (var obj in _objects.OfType<ISaveable>())
+            foreach (var obj in GetObjectsOfType<ISaveable>())
             {
                 obj.Save();
             }
@@ -165,10 +164,16 @@ namespace Kotono.Graphics.Objects
 
         private static void OnDeleteKeyPressed()
         {
-            for (int i = ISelectable.Selected.Count - 1; i >= 0; i--)
+            DeleteSelectedList(ISelectable2D.Selected);
+            DeleteSelectedList(ISelectable3D.Selected);
+
+            static void DeleteSelectedList<T>(List<T> selected) where T : ISelectable
             {
-                ISelectable.Selected[i].Dispose();
-                ISelectable.Selected.RemoveAt(i);
+                for (int i = selected.Count - 1; i >= 0; i--)
+                {
+                    selected[i].Dispose();
+                    selected.RemoveAt(i);
+                }
             }
         }
 

@@ -2,8 +2,15 @@
 
 namespace Kotono.Graphics.Objects
 {
-    internal abstract class Object3D : Drawable, IObject3D
+    internal abstract class Object3D : Drawable, IObject3D, ISelectable3D
     {
+        private bool _isDraw = true;
+
+        public override bool IsDraw
+        {
+            get => _isDraw && (Parent?.IsDraw ?? true);
+            set => _isDraw = value;
+        }
         public virtual Transform Transform { get; } = Transform.Default;
 
         public virtual Vector RelativeLocation
@@ -71,7 +78,7 @@ namespace Kotono.Graphics.Objects
             get => Transform.WorldRotationVelocity;
             set => Transform.WorldRotationVelocity = value;
         }
-        
+
         public virtual Vector WorldScaleVelocity
         {
             get => Transform.WorldScaleVelocity;
@@ -85,9 +92,10 @@ namespace Kotono.Graphics.Objects
             get => _parent;
             set
             {
+                _parent = value;
+
                 using var clone = Transform.Clone();
 
-                _parent = value;
                 Transform.Parent = value?.Transform;
 
                 // Remove relative offset, not sure if it'll stay
@@ -99,10 +107,12 @@ namespace Kotono.Graphics.Objects
 
         public override bool IsHovered => false;
 
+        public override bool IsActive => ISelectable3D.Active == this;
+
         public override void Dispose()
         {
             Transform.Dispose();
-            
+
             base.Dispose();
         }
     }

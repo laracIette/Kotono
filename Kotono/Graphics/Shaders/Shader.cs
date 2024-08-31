@@ -54,6 +54,8 @@ namespace Kotono.Graphics.Shaders
             Name = name;
         }
 
+        internal virtual void SetVertexAttributesData() { }
+
         internal virtual void Update() => Use();
 
         private static void CompileShader(int shader)
@@ -80,68 +82,90 @@ namespace Kotono.Graphics.Shaders
             }
         }
 
-        internal void Use()
-        {
-            GL.UseProgram(_handle);
-        }
+        internal void Use() => GL.UseProgram(_handle);
 
-        internal int GetAttribLocation(string attribName)
+        private bool TryGetUniformLocation(string name, out int location)
         {
-            return GL.GetAttribLocation(_handle, attribName);
+            if (_uniformLocations.TryGetValue(name, out location))
+            {
+                Use();
+                return true;
+            }
+
+            Logger.LogError($"couldn't find attribute location \"{name}\" in Shader \"{Name}\"");
+            return false;
         }
 
         internal void SetBool(string name, bool data)
         {
-            Use();
-            GL.Uniform1(_uniformLocations[name], data ? 1 : 0);
+            if (TryGetUniformLocation(name, out int location)) 
+            {
+                GL.Uniform1(location, data ? 1 : 0);
+            }
         }
 
         internal void SetInt(string name, int data)
         {
-            Use();
-            GL.Uniform1(_uniformLocations[name], data);
+            if (TryGetUniformLocation(name, out int location))
+            {
+                GL.Uniform1(location, data);
+            }
         }
 
         internal void SetFloat(string name, float data)
         {
-            Use();
-            GL.Uniform1(_uniformLocations[name], data);
+            if (TryGetUniformLocation(name, out int location))
+            {
+                GL.Uniform1(location, data);
+            }
         }
 
         internal void SetMatrix4(string name, Matrix4 data)
         {
-            Use();
-            GL.UniformMatrix4(_uniformLocations[name], true, ref data);
+            if (TryGetUniformLocation(name, out int location))
+            {
+                GL.UniformMatrix4(location, true, ref data);
+            }
         }
 
         internal void SetVector(string name, Vector data)
         {
-            Use();
-            GL.Uniform3(_uniformLocations[name], data.X, data.Y, data.Z);
+            if (TryGetUniformLocation(name, out int location))
+            {
+                GL.Uniform3(location, data.X, data.Y, data.Z);
+            }
         }
 
         internal void SetColor(string name, Color data)
         {
-            Use();
-            GL.Uniform4(_uniformLocations[name], data.R, data.G, data.B, data.A);
+            if (TryGetUniformLocation(name, out int location))
+            {
+                GL.Uniform4(location, data.R, data.G, data.B, data.A);
+            }
         }
 
         internal void SetRect(string name, Rect data)
         {
-            Use();
-            GL.Uniform4(_uniformLocations[name], data.Position.X, data.Position.Y, data.Size.X, data.Size.Y);
+            if (TryGetUniformLocation(name, out int location))
+            {
+                GL.Uniform4(location, data.RelativePosition.X, data.RelativePosition.Y, data.RelativeSize.X, data.RelativeSize.Y);
+            } 
         }
 
         internal void SetSides(string name, Sides data)
         {
-            Use();
-            GL.Uniform4(_uniformLocations[name], data.Left, data.Right, data.Top, data.Bottom);
+            if (TryGetUniformLocation(name, out int location))
+            {
+                GL.Uniform4(location, data.Left, data.Right, data.Top, data.Bottom);
+            }
         }
 
         internal void SetPoint(string name, Point data)
         {
-            Use();
-            GL.Uniform2(_uniformLocations[name], data.X, data.Y);
+            if (TryGetUniformLocation(name, out int location))
+            {
+                GL.Uniform2(location, data.X, data.Y);
+            }
         }
 
         internal void SetMaterial(string name, Material data)
@@ -165,18 +189,41 @@ namespace Kotono.Graphics.Shaders
 
         internal void SetDirectionalLight(string name, DirectionalLight data)
         {
-            //SetColor($"{name}.ambient", data.Color);
             SetVector($"{name}.direction", data.Direction);
+            //SetColor($"{name}.ambient", data.Ambient);
             SetColor($"{name}.diffuse", data.Diffuse);
-            SetFloat($"{name}.power", data.Power);
+            //SetColor($"{name}.specular", data.Specular);
+            SetFloat($"{name}.intensity", data.Intensity);
         }
 
         internal void SetPointLight(string name, PointLight data)
         {
-            SetColor($"{name}.ambient", data.Color);
-            SetColor($"{name}.specular", data.Specular);
+            SetColor($"{name}.ambient", data.Ambient);
             SetColor($"{name}.diffuse", data.Diffuse);
-            SetFloat($"{name}.power", data.Power);
+            SetColor($"{name}.specular", data.Specular);
+            SetFloat($"{name}.constant", data.Constant);
+            SetFloat($"{name}.linear", data.Linear);
+            SetFloat($"{name}.quadratic", data.Quadratic);
+            SetFloat($"{name}.intensity", data.Intensity);
+        }
+
+        internal void SetSpotLight(string name, SpotLight data)
+        {
+            SetColor($"{name}.ambient", data.Ambient);
+            SetColor($"{name}.diffuse", data.Diffuse);
+            SetColor($"{name}.specular", data.Specular);
+            SetFloat($"{name}.constant", data.Constant);
+            SetFloat($"{name}.linear", data.Linear);
+            SetFloat($"{name}.quadratic", data.Quadratic);
+            SetFloat($"{name}.cutOffAngle", data.CutOffAngle);
+            SetFloat($"{name}.outerCutOffAngle", data.OuterCutOffAngle);
+            SetFloat($"{name}.intensity", data.Intensity);
+        }
+
+        internal static void SetVertexAttributeData(int index, int size, VertexAttribPointerType type, int stride, int offset)
+        {
+            GL.EnableVertexAttribArray(index);
+            GL.VertexAttribPointer(index, size, type, false, stride, offset);
         }
     }
 }

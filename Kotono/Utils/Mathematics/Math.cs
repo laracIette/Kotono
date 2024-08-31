@@ -7,7 +7,7 @@ namespace Kotono.Utils.Mathematics
         public static float PiOver2 => 1.5707963267948966f;
 
         public static float Pi => 3.1415926535897931f;
-        
+
         public static float Tau => 6.2831853071795862f;
 
         /// <summary> 

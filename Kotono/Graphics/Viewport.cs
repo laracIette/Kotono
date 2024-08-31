@@ -6,6 +6,10 @@ namespace Kotono.Graphics
 {
     internal class Viewport : IRect
     {
+        internal static Viewport Active { get; set; } = WindowComponentManager.WindowViewport;
+
+        internal List<Viewport> Connections { get; } = [];
+
         internal Rect Rect { get; } = Rect.Default;
 
         public Point BaseSize
@@ -14,43 +18,60 @@ namespace Kotono.Graphics
             set => Rect.BaseSize = value;
         }
 
-        public Point Size
+        public Point RelativeSize
         {
-            get => Rect.Size;
-            set => Rect.Size = value;
+            get => Rect.RelativeSize;
+            set => Rect.RelativeSize = value;
         }
 
-        public Point Position
+        public Point RelativePosition
         {
-            get => Rect.Position;
-            set => Rect.Position = value;
+            get => Rect.RelativePosition;
+            set => Rect.RelativePosition = value;
         }
 
-        public Rotator Rotation
+        public Rotator RelativeRotation
         {
-            get => Rect.Rotation;
-            set => Rect.Rotation = value;
+            get => Rect.RelativeRotation;
+            set => Rect.RelativeRotation = value;
         }
 
-        public Point Scale
+        public Point RelativeScale
         {
-            get => Rect.Scale;
-            set => Rect.Scale = value;
+            get => Rect.RelativeScale;
+            set => Rect.RelativeScale = value;
         }
 
-        private readonly List<Viewport> _connections = [];
+        public Point WorldSize
+        {
+            get => Rect.WorldSize;
+            set => Rect.WorldSize = value;
+        }
 
-        internal static Viewport Active { get; set; } = WindowComponentManager.WindowViewport;
+        public Point WorldPosition
+        {
+            get => Rect.WorldPosition;
+            set => Rect.WorldPosition = value;
+        }
+
+        public Rotator WorldRotation
+        {
+            get => Rect.WorldRotation;
+            set => Rect.WorldRotation = value;
+        }
+
+        public Point WorldScale
+        {
+            get => Rect.WorldScale;
+            set => Rect.WorldScale = value;
+        }
 
         internal void Use()
         {
             Active = this;
-            GL.Viewport((int)Position.X, (int)(Window.Size.Y - Position.Y - Size.Y), (int)Size.X, (int)Size.Y);
+            GL.Viewport((int)RelativePosition.X, (int)(Window.Size.Y - RelativePosition.Y - RelativeSize.Y), (int)RelativeSize.X, (int)RelativeSize.Y);
         }
 
-        public override string ToString()
-        {
-            return Rect.ToString();
-        }
+        public override string ToString() => Rect.ToString();
     }
 }

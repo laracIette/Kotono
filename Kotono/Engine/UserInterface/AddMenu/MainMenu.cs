@@ -11,10 +11,10 @@ namespace Kotono.Engine.UserInterface.AddMenu
     {
         private readonly RoundedBox _backgroundBox = new()
         {
-            Size = new Point(300.0f, 300.0f),
+            RelativeSize = new Point(300.0f, 300.0f),
             Color = Color.DarkSlateGray,
-            FallOff = 2.0f,
-            CornerSize = 30.0f
+            TargetFallOff = 2.0f,
+            TargetCornerSize = 30.0f
         };
 
         private readonly MainButton[] _buttons =
@@ -40,17 +40,17 @@ namespace Kotono.Engine.UserInterface.AddMenu
 
         internal Point Position
         {
-            get => _backgroundBox.Position;
+            get => _backgroundBox.RelativePosition;
             set
             {
-                _backgroundBox.Position = value;
+                _backgroundBox.RelativePosition = value;
 
                 var size = new Point(140.0f, 140.0f);
 
-                _buttons[0].Position = Rect.GetPositionFromAnchor(value, size, Anchor.BottomRight, 5.0f);
-                _buttons[1].Position = Rect.GetPositionFromAnchor(value, size, Anchor.BottomLeft, 5.0f);
-                _buttons[2].Position = Rect.GetPositionFromAnchor(value, size, Anchor.TopRight, 5.0f);
-                _buttons[3].Position = Rect.GetPositionFromAnchor(value, size, Anchor.TopLeft, 5.0f);
+                _buttons[0].RelativePosition = Rect.GetPositionFromAnchor(value, size, Anchor.BottomRight, 5.0f);
+                _buttons[1].RelativePosition = Rect.GetPositionFromAnchor(value, size, Anchor.BottomLeft, 5.0f);
+                _buttons[2].RelativePosition = Rect.GetPositionFromAnchor(value, size, Anchor.TopRight, 5.0f);
+                _buttons[3].RelativePosition = Rect.GetPositionFromAnchor(value, size, Anchor.TopLeft, 5.0f);
             }
         }
 

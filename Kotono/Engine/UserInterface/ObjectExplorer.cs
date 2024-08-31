@@ -5,11 +5,6 @@ namespace Kotono.Engine.UserInterface
 {
     internal class ObjectExplorer : Object2D
     {
-        private readonly List<Object> _objects;
-
-        internal ObjectExplorer()
-        {
-            _objects = [];
-        }
+        private readonly List<Object> _objects = [];
     }
 }

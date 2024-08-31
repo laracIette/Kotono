@@ -7,11 +7,10 @@ namespace Kotono.Graphics.Objects.Meshes
     {
         public override Shader Shader { get; set; } = ShaderManager.Shaders["gizmo"];
 
-        public override Model Model { get; set; } = Model.Load(new ModelSettings
-        {
-            Path = Path.FromAssets(@"Gizmo\gizmo_" + axis + ".obj"),
-            Shader = ShaderManager.Shaders["gizmo"]
-        });
+        public override Model Model { get; set; } = new Model(
+            Path.FromAssets($@"Gizmo\gizmo_{axis}.obj"),
+            ShaderManager.Shaders["gizmo"]
+        );
 
         public override Color Color { get; set; } = color;
 

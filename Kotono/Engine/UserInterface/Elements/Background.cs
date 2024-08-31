@@ -6,8 +6,8 @@ namespace Kotono.Engine.UserInterface.Elements
     {
         public Background()
         {
-            FallOff = 1.0f;
-            CornerSize = 15.0f;
+            TargetFallOff = 1.0f;
+            TargetCornerSize = 15.0f;
         }
     }
 }

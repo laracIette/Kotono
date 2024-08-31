@@ -1,91 +1,31 @@
-﻿using Kotono.Graphics.Objects;
-using OpenTK.Graphics.OpenGL4;
-using System.Collections.Generic;
+﻿using OpenTK.Graphics.OpenGL4;
 
 namespace Kotono.Graphics
 {
-    internal class Texture
+    internal class Texture : ITexture
     {
-        private static readonly Dictionary<string, int> _textures = [];
+        public int Handle { get; }
 
-        internal string Path { get; }
+        public TextureUnit TextureUnit { get; set; }
 
-        internal int Handle { get; }
-
-        internal TextureUnit Unit { get; }
-
-        internal Texture(string path, TextureUnit unit)
+        internal Texture()
         {
-            if (!_textures.TryGetValue(path, out int value))
-            {
-                value = Gen();
+            Handle = GL.GenTexture();
 
-                Use(value);
-
-                var imageData = ImageData.GetFrom(path);
-
-                GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, imageData.Size.X, imageData.Size.Y, 0, PixelFormat.Rgba, PixelType.UnsignedByte, imageData.Bytes);
-
-                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Repeat);
-                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat);
-
-                GL.GenerateMipmap(GenerateMipmapTarget.Texture2D);
-
-                _textures[path] = value;
-            }
-
-            Path = path;
-            Handle = value;
-            Unit = unit;
-        }
-
-        /// <summary>
-        /// Generate a new Texture.
-        /// </summary>
-        internal static int Gen()
-        {
-            int handle = GL.GenTexture();
-            Use(handle);
+            Use();
 
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
 
-            Bind(0);
-
-            return handle;
+            ITexture.Unbind();
         }
 
-        internal static void Bind(int handle) => GL.BindTexture(TextureTarget.Texture2D, handle);
+        public void Bind() => ITexture.Bind(Handle);
 
-        internal static void Use(int handle) => Use(handle, TextureUnit.Texture0);
+        public void Use() => ITexture.Use(Handle, TextureUnit);
 
-        internal static void Use(int handle, TextureUnit unit)
-        {
-            GL.ActiveTexture(unit);
+        public void Draw() => ITexture.Draw(Handle, TextureUnit);
 
-            Bind(handle);
-        }
-
-        internal void Use() => Use(Handle, Unit);
-
-        internal static void Draw(int handle) => Draw(handle, TextureUnit.Texture0);
-
-        internal static void Draw(int handle, TextureUnit unit)
-        {
-            Use(handle, unit);
-
-            SquareVertices.Draw();
-
-            Bind(0);
-        }
-
-        internal void Draw() => Draw(Handle, Unit);
-
-        internal static void DisposeAll()
-        {
-            Bind(0);
-
-            GL.DeleteTextures(_textures.Values.Count, [.. _textures.Values]);
-        }
+        public void Delete() => ITexture.Delete(Handle);
     }
 }

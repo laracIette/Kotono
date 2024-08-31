@@ -4,11 +4,10 @@ namespace Kotono.Graphics.Objects.Meshes
 {
     internal class PointLightMesh : Mesh
     {
-        public override Model Model { get; set; } = Model.Load(new ModelSettings
-        {
-            Path = Path.FromAssets(@"Meshes\sphere.obj"),
-            Shader = ShaderManager.Shaders["pointLight"]
-        });
+        public override Model Model { get; set; } = new Model(
+            Path.FromAssets(@"Meshes\sphere.obj"),
+            ShaderManager.Shaders["pointLight"]
+        );
 
         public override Shader Shader { get; set; } = ShaderManager.Shaders["pointLight"];
 

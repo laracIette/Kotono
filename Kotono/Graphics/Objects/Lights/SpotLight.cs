@@ -1,24 +1,12 @@
 ﻿namespace Kotono.Graphics.Objects.Lights
 {
-    internal class SpotLight : Light
+    internal class SpotLight : AttenuatedLight
     {
-        private float _cutOffAngle = 12.5f;
-
-        private float _outerCutOffAngle = 17.5f;
-
-        internal float CutOffAngle
-        {
-            get => _cutOffAngle;
-            set => _cutOffAngle = Math.Clamp(value, 0.0f, 12.5f);
-        }
-
-        internal float OuterCutOffAngle
-        {
-            get => _outerCutOffAngle;
-            set => _outerCutOffAngle = Math.Clamp(value, 0.0f, 17.5f);
-        }
-
         internal const int MAX_COUNT = 1;
+
+        internal float CutOffAngle { get; set; }
+
+        internal float OuterCutOffAngle { get; set; }
 
         public override void Update()
         {
@@ -35,11 +23,11 @@
                 CutOffAngle -= 100.0f * Time.Delta;
                 OuterCutOffAngle -= 100.0f * Time.Delta;
             }
+
+            CutOffAngle = Math.Clamp(CutOffAngle, 0.0f, 12.5f);
+            OuterCutOffAngle = Math.Clamp(OuterCutOffAngle, 0.0f, 17.5f);
         }
 
-        private void OnFKeyPressed()
-        {
-            SwitchOnOff();
-        }
+        private void OnFKeyPressed() => Switch();
     }
 }

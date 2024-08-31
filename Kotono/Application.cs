@@ -4,7 +4,6 @@ using Kotono.Graphics.Objects;
 using Kotono.Graphics.Objects.Buttons;
 using Kotono.Graphics.Objects.Lights;
 using Kotono.Graphics.Objects.Meshes;
-using Kotono.Graphics.Objects.Texts;
 using Kotono.Input;
 using Kotono.Utils;
 using Kotono.Utils.Coordinates;
@@ -34,7 +33,7 @@ namespace Kotono
                     "Hey",
                     "Yo",
                     "BOoOOooOo"
-                ], 
+                ],
                 new Point(150.0f, 150.0f),
                 new Point(200.0f, 50.0f),
                 Color.DarkSlateGray,
@@ -46,7 +45,7 @@ namespace Kotono
             _animation = new Animation(Path.FromAssets(@"Animations\Counting"))
             {
                 BaseSize = new Point(50.0f, 60.0f),
-                Position = new Point(100.0f, 200.0f),
+                RelativePosition = new Point(100.0f, 200.0f),
                 Color = Color.Yellow,
                 IsDraw = false,
                 FrameRate = 10.0f,
@@ -75,7 +74,7 @@ namespace Kotono
 
         private static void OnEnterKeyPressed()
         {
-            Mouse.CursorState = (CursorState)Math.Loop((float)Mouse.CursorState + 1.0f, 3.0f);
+            Mouse.CursorState = (CursorState)Math.Loop((int)Mouse.CursorState + 1, 3);
         }
 
         private void OnTKeyPressed()
@@ -90,9 +89,9 @@ namespace Kotono
 
         private static void OnJKeyPressed()
         {
-            foreach (var obj in ISelectable.Selected3D.Where(s => s != ISelectable.Active))
+            foreach (var obj in ISelectable3D.Selected.Where(s => s != ISelectable3D.Active))
             {
-                obj.Parent = ISelectable.Active3D;
+                obj.Parent = ISelectable3D.Active;
             }
         }
 
@@ -100,16 +99,11 @@ namespace Kotono
         {
             if (Keyboard.IsKeyPressed(Keys.K))
             {
-                foreach (var obj in ISelectable.Selected3D)
+                foreach (var obj in ISelectable3D.Selected)
                 {
                     obj.Parent = null;
                 }
             }
-        }
-
-        private static void OnUKeyPressed()
-        {
-            _cube?.Transform.SetLocationTransformation(new Vector(0.0f, 1.0f, 0.0f), 1.0f);
         }
 
         protected override void Start()
@@ -124,10 +118,7 @@ namespace Kotono
             if (Keyboard.IsKeyPressed(Keys.I)) OnIKeyPressed();
             if (Keyboard.IsKeyPressed(Keys.J)) OnJKeyPressed();
             if (Keyboard.IsKeyPressed(Keys.K)) OnKKeyPressed();
-            if (Keyboard.IsKeyPressed(Keys.U)) OnUKeyPressed();
         }
-
-        private static Cube? _cube;
 
         private static void CreateObjects()
         {
@@ -139,7 +130,7 @@ namespace Kotono
                 IsUpdateFizix = false,
             };
 
-            _cube = new Cube
+            _ = new Cube
             {
                 RelativeLocation = new Vector(0.0f, 0.0f, -5.0f)
             };

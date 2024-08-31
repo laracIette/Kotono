@@ -1,4 +1,5 @@
-﻿using OpenTK.Graphics.OpenGL4;
+﻿using Kotono.Graphics.Shaders;
+using OpenTK.Graphics.OpenGL4;
 
 namespace Kotono.Graphics.Objects
 {
@@ -6,7 +7,6 @@ namespace Kotono.Graphics.Objects
     {
         private static readonly float[] _vertices =
         [
-            // locations   // texCoords
             -1.0f,
             1.0f,
             0.0f,
@@ -38,19 +38,15 @@ namespace Kotono.Graphics.Objects
 
         static SquareVertices()
         {
-            VertexArraySetup.VertexArrayObject.Bind();
-            VertexArraySetup.VertexBufferObject.SetData(_vertices, sizeof(float));
+            VertexArraySetup.SetData(_vertices, sizeof(float));
 
-            GL.EnableVertexAttribArray(0);
-            GL.VertexAttribPointer(0, 2, VertexAttribPointerType.Float, false, 4 * sizeof(float), 0);
-            GL.EnableVertexAttribArray(1);
-            GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 4 * sizeof(float), 2 * sizeof(float));
+            Shader.SetVertexAttributeData(0, 2, VertexAttribPointerType.Float, 4 * sizeof(float), 0);
+            Shader.SetVertexAttributeData(1, 2, VertexAttribPointerType.Float, 4 * sizeof(float), 2 * sizeof(float));
         }
 
         internal static void Draw()
         {
-            VertexArraySetup.VertexArrayObject.Bind();
-
+            VertexArraySetup.Bind();
             GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
         }
     }

@@ -1,5 +1,4 @@
-﻿using Kotono.Utils.Exceptions;
-using System;
+﻿using System;
 
 namespace Kotono.Utils.Coordinates
 {

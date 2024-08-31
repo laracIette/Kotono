@@ -6,42 +6,42 @@ namespace Kotono.Graphics.Objects
 {
     internal class RoundedBorder : RoundedBox
     {
-        internal float TargetThickness { get; private set; }
+        private float _targetThickness;
 
-        private float _thickness;
+        public float Thickness { get; protected set; }
 
-        internal float Thickness
+        internal float TargetThickness
         {
-            get => _thickness;
+            get => _targetThickness;
             set
             {
-                TargetThickness = value;
+                _targetThickness = value;
                 UpdateValues();
             }
         }
 
         public override Shader Shader => ShaderManager.Shaders["roundedBorder"];
 
-        protected override Matrix4 Model => new NDCRect(Position, Size + new Point(FallOff * 2.0f + Thickness)).Model;
+        protected override Matrix4 Model => new NDCRect(RelativePosition, RelativeSize + new Point(FallOff * 2.0f + Thickness)).Model;
 
         protected override void UpdateValues()
         {
-            float minSize = Point.Min(Rect.BaseSize);
+            float minSize = Point.Min(Rect.RelativeSize);
 
             /// Thickness has :
             ///     a minimum value of 0,
             ///     a maximum value of the smallest value between the border's Width and Height
-            _thickness = Math.Clamp(TargetThickness, 0.0f, minSize);
-
-            /// CornerSize has :
-            ///     a minimum value of the border's Thickness / 2 + its FallOff,
-            ///     a maximum value of the smallest value between the border's Width and Height divided by 2
-            _cornerSize = Math.Clamp(TargetCornerSize, Thickness / 2.0f + FallOff, minSize / 2.0f);
+            Thickness = Math.Clamp(TargetThickness, 0.0f, minSize);
 
             /// FallOff has : 
-            ///     a minimum value of 0.000001 so that there is no division by 0 in glsl,
+            ///     a minimum value of 0,
             ///     a maximum value of the difference between the border's Width and its Thickness
-            _fallOff = Math.Clamp(TargetFallOff, 0.000001f, Rect.Size.X - Thickness);
+            FallOff = Math.Clamp(TargetFallOff, 0.0f, Rect.RelativeSize.X - Thickness);
+
+            /// CornerSize has :
+            ///     a minimum value of half the border's Thickness + its FallOff,
+            ///     a maximum value of half the smallest value between the border's Width and Height
+            CornerSize = Math.Clamp(TargetCornerSize, Math.Half(Thickness) + FallOff, Math.Half(minSize));
         }
 
         public override void Draw()

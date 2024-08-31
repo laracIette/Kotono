@@ -63,7 +63,7 @@ void main()
         return;
     }
     
-    float ratio = clamp(dist / fallOff, 0.0, 1.0) * color.a;
+    float ratio = clamp(dist / max(1e-7, fallOff), 0.0, 1.0) * color.a;
     
     vec4 result = color;
     result.a -= ratio;

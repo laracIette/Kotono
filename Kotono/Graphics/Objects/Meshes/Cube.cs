@@ -1,5 +1,4 @@
 ﻿using Kotono.Graphics.Shaders;
-using OpenTK.Graphics.OpenGL4;
 
 namespace Kotono.Graphics.Objects.Meshes
 {
@@ -7,13 +6,12 @@ namespace Kotono.Graphics.Objects.Meshes
     {
         public override Material Material { get; set; } = new()
         {
-            Albedo = new MaterialTexture(Path.FromAssets(@"Meshes\cube_diff.png"), TextureUnit.Texture0)
+            Albedo = new MaterialTexture(Path.FromAssets(@"Meshes\cube_diff.png"))
         };
 
-        public override Model Model { get; set; } = Model.Load(new ModelSettings
-        {
-            Path = Path.FromAssets(@"Meshes\cube.obj"),
-            Shader = ShaderManager.Shaders["lighting"]
-        });
+        public override Model Model { get; set; } = new Model(
+            Path.FromAssets(@"Meshes\cube.obj"),
+            LightingShader.Instance
+        );
     }
 }

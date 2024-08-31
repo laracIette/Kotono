@@ -2,11 +2,9 @@
 using Kotono.Utils.Exceptions;
 using OpenTK.Mathematics;
 using System;
-using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text.Json.Serialization;
 
 namespace Kotono.Utils
 {
@@ -16,25 +14,21 @@ namespace Kotono.Utils
         /// <summary> 
         /// The red component of the Color. 
         /// </summary>
-        [JsonInclude]
         public float R = 0.0f;
 
         /// <summary> 
         /// The green component of the Color. 
         /// </summary>
-        [JsonInclude]
         public float G = 0.0f;
 
         /// <summary> 
         /// The blue component of the Color. 
         /// </summary>
-        [JsonInclude]
         public float B = 0.0f;
 
         /// <summary> 
         /// The alpha component of the Color. 
         /// </summary>
-        [JsonInclude]
         public float A = 1.0f;
 
         /// <summary>
@@ -182,17 +176,6 @@ namespace Kotono.Utils
             G = 0.0f;
             B = 0.0f;
             A = 1.0f;
-        }
-
-        /// <summary> 
-        /// Initialize a Color with R = c.R, G = c.G, B = c.B, A = c.A. 
-        /// </summary>
-        public Color(Color c)
-        {
-            R = c.R;
-            G = c.G;
-            B = c.B;
-            A = c.A;
         }
 
         /// <summary> 

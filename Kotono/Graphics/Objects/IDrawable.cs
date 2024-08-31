@@ -10,6 +10,11 @@ namespace Kotono.Graphics.Objects
     internal interface IDrawable : IObject
     {
         /// <summary>
+        /// The name of the <see cref="IDrawable"/>.
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
         /// Wether the <see cref="IDrawable"/> should be drawn.
         /// </summary>
         public bool IsDraw { get; set; }

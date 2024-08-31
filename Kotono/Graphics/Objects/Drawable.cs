@@ -8,9 +8,11 @@ namespace Kotono.Graphics.Objects
 {
     internal abstract class Drawable : Object, IDrawable, ISaveable, ISelectable
     {
-        public string FilePath { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
 
-        public virtual bool IsDraw { get; set; } = true;
+        public string SavePath { get; set; } = string.Empty;
+
+        public abstract bool IsDraw { get; set; }
 
         public virtual Visibility Visibility { get; set; } = Visibility.EditorAndPlaying;
 
@@ -22,11 +24,11 @@ namespace Kotono.Graphics.Objects
 
         public bool IsSelected { get; protected set; } = false;
 
-        public bool IsActive => ISelectable.Active == this;
+        public abstract bool IsActive { get; }
 
         public List<Drawable> Childrens { get; } = [];
 
-        public virtual Shader Shader { get; set; } = ShaderManager.Shaders["lighting"];
+        public virtual Shader Shader { get; set; } = LightingShader.Instance;
 
         public virtual void Draw() { }
 
@@ -46,5 +48,7 @@ namespace Kotono.Graphics.Objects
         {
             return Childrens.First(Extensions.OfType<TChildren>) as TChildren;
         }
+
+        public override string ToString() => $"{Name}: {base.ToString()}";
     }
 }

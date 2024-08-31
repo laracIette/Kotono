@@ -25,6 +25,7 @@ namespace Kotono.Graphics.Objects.Hitboxes
                 if (!Colliders.Contains(hitbox))
                 {
                     OnEnterCollision(hitbox);
+                    EnterCollision?.Invoke(this, new CollisionEventArgs(this, hitbox));
                 }
             }
 
@@ -33,29 +34,23 @@ namespace Kotono.Graphics.Objects.Hitboxes
                 if (!colliders.Contains(hitbox))
                 {
                     OnExitCollision(hitbox);
+                    ExitCollision?.Invoke(this, new CollisionEventArgs(this, hitbox));
                 }
             }
 
             Colliders = colliders;
         }
 
-        public abstract bool CollidesWith(IHitbox hitbox);
-
         public bool TryGetCollider([NotNullWhen(true)] out IHitbox? collider)
         {
             collider = Collisions.Find(CollidesWith);
-
             return collider != null;
         }
 
-        public void OnEnterCollision(IHitbox hitbox)
-        {
-            EnterCollision?.Invoke(this, new CollisionEventArgs(this, hitbox));
-        }
+        public abstract bool CollidesWith(IHitbox hitbox);
 
-        public void OnExitCollision(IHitbox hitbox)
-        {
-            ExitCollision?.Invoke(this, new CollisionEventArgs(this, hitbox));
-        }
+        public virtual void OnEnterCollision(IHitbox hitbox) { }
+
+        public virtual void OnExitCollision(IHitbox hitbox) { }
     }
 }

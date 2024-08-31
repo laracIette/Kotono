@@ -1,5 +1,4 @@
-﻿using System;
-using System.Speech.Recognition;
+﻿using System.Speech.Recognition;
 using System.Threading;
 
 namespace Kotono.Audio
@@ -26,7 +25,7 @@ namespace Kotono.Audio
             _recognizer.LoadGrammarAsync(servicesGrammar);
 
             // Add a handler for the speech recognized event.  
-            _recognizer.SpeechRecognized += new EventHandler<SpeechRecognizedEventArgs>(OnSpeechRecognized);
+            _recognizer.SpeechRecognized += OnSpeechRecognized;
 
             // Configure input to the speech _recognizer.  
             _recognizer.SetInputToDefaultAudioDevice();

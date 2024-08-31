@@ -5,13 +5,13 @@ namespace Kotono.Graphics.Shaders
     internal class TextureBufferShader(string name)
         : Shader(name)
     {
-        internal void Draw(int handle)
+        internal void Draw(Texture texture)
         {
             Use();
 
             GL.Disable(EnableCap.DepthTest);
 
-            Texture.Draw(handle);
+            texture.Draw();
         }
     }
 }

@@ -7,7 +7,7 @@ namespace Kotono.Engine.UserInterface.AddMenu.MainButtons
         internal Objects3DButton()
             : base(["Mesh"], Anchor.BottomLeft)
         {
-            Source = "3D Objects";
+            Text.Source = "3D Objects";
         }
     }
 }

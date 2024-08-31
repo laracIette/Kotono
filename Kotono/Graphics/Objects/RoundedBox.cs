@@ -7,58 +7,60 @@ namespace Kotono.Graphics.Objects
 {
     internal class RoundedBox : Object2D
     {
-        public override Point Size 
-        { 
-            get => base.Size;
+        protected float _targetFallOff;
+
+        protected float _targetCornerSize;
+
+        public float FallOff { get; protected set; }
+
+        public float CornerSize { get; protected set; }
+
+        internal float TargetFallOff
+        {
+            get => _targetFallOff;
             set
             {
-                base.Size = value;
+                _targetFallOff = value;
                 UpdateValues();
             }
         }
 
-        internal float TargetFallOff { get; private set; }
-
-        protected float _fallOff;
-
-        internal float FallOff
+        internal float TargetCornerSize
         {
-            get => _fallOff;
+            get => _targetCornerSize;
             set
             {
-                TargetFallOff = value;
+                _targetCornerSize = value;
                 UpdateValues();
             }
         }
 
-        internal float TargetCornerSize { get; private set; }
-
-        protected float _cornerSize;
-
-        internal float CornerSize
+        public override Point RelativeSize
         {
-            get => _cornerSize;
+            get => base.RelativeSize;
             set
             {
-                TargetCornerSize = value;
+                base.RelativeSize = value;
                 UpdateValues();
             }
         }
 
         public override Shader Shader => ShaderManager.Shaders["roundedBox"];
 
-        protected virtual Matrix4 Model => new NDCRect(Position, Size + new Point(FallOff * 2.0f)).Model;
+        protected virtual Matrix4 Model => new NDCRect(RelativePosition, RelativeSize + new Point(FallOff * 2.0f)).Model;
 
         protected virtual void UpdateValues()
         {
+            float minSize = Point.Min(Rect.RelativeSize);
+
             /// CornerSize has : 
             ///     a minimum value of 0,
-            ///     a maximum value of the smallest value between the box's Width and Height divided by 2
-            _cornerSize = Math.Clamp(TargetCornerSize, 0.0f, Math.Min(Rect.Size.X, Rect.Size.Y) / 2.0f);
+            ///     a maximum value of half the smallest value between the box's Width and Height
+            CornerSize = Math.Clamp(TargetCornerSize, 0.0f, Math.Half(minSize));
 
             /// FallOff has :
-            ///     a minimum value of 0.000001 so that there is no division by 0 in glsl
-            _fallOff = Math.Max(0.000001f, TargetFallOff);
+            ///     a minimum value of 0
+            FallOff = Math.Max(0.0f, TargetFallOff);
         }
 
         public override void Draw()
@@ -77,15 +79,15 @@ namespace Kotono.Graphics.Objects
             get
             {
                 var position = new Point(
-                    Viewport.Active.Position.X + Position.X,
-                    Window.Size.Y - Viewport.Active.Position.Y - Position.Y
+                    Viewport.Active.RelativePosition.X + RelativePosition.X,
+                    Window.Size.Y - Viewport.Active.RelativePosition.Y - RelativePosition.Y
                 );
 
                 return new Sides(
-                    position.X - Size.X / 2,
-                    position.X + Size.X / 2,
-                    position.Y + Size.Y / 2,
-                    position.Y - Size.Y / 2
+                    position.X - RelativeSize.X / 2,
+                    position.X + RelativeSize.X / 2,
+                    position.Y + RelativeSize.Y / 2,
+                    position.Y - RelativeSize.Y / 2
                 );
             }
         }
