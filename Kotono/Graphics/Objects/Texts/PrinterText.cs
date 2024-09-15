@@ -3,7 +3,7 @@ using Kotono.Utils.Coordinates;
 
 namespace Kotono.Graphics.Objects.Texts
 {
-    internal class PrinterText : Text
+    internal sealed class PrinterText : Text
     {
         public override object? Source
         {
@@ -28,12 +28,7 @@ namespace Kotono.Graphics.Objects.Texts
 
         internal void Lower()
         {
-            LettersRect.RelativePosition += new Point(0.0f, LettersRect.BaseSize.Y);
-
-            foreach (var letter in _letters)
-            {
-                letter.RelativePosition += new Point(0.0f, LettersRect.BaseSize.Y);
-            }
+            RelativePosition += new Point(0.0f, LettersRect.BaseSize.Y);
         }
     }
 }

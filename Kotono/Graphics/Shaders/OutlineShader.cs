@@ -1,4 +1,6 @@
-﻿using OpenTK.Graphics.OpenGL4;
+﻿using Kotono.Graphics.Objects;
+using Kotono.Graphics.Textures;
+using OpenTK.Graphics.OpenGL4;
 
 namespace Kotono.Graphics.Shaders
 {
@@ -10,7 +12,8 @@ namespace Kotono.Graphics.Shaders
 
             GL.Disable(EnableCap.DepthTest);
 
-            texture.Draw();
+            texture.Use();
+            SquareVertices.Draw();
         }
     }
 }

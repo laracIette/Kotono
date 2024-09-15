@@ -83,14 +83,14 @@ namespace Kotono.Graphics.Objects.Shapes
 
         public override void Draw()
         {
-            _vertexArraySetup.Bind();
+            _vertexArraySetup.VertexArrayObject.Bind();
             GL.DrawArrays(_mode, 0, _vertices.Length);
         }
 
         private void UpdateBuffers()
         {
             _vertexArraySetup.SetData(_vertices, Vector.SizeInBytes);
-            Shader.SetVertexAttributeData(0, 3, VertexAttribPointerType.Float, Vector.SizeInBytes, 0);
+            _vertexArraySetup.VertexArrayObject.SetVertexAttributesLayout(HitboxShader.Instance);
         }
     }
 }

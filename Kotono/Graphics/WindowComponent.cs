@@ -4,7 +4,7 @@ using Kotono.Utils.Coordinates;
 
 namespace Kotono.Graphics
 {
-    internal class WindowComponent : Object
+    internal sealed class WindowComponent : Object
     {
         private readonly Background _background;
 

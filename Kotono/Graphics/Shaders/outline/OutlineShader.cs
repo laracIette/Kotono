@@ -2,7 +2,7 @@
 
 namespace Kotono.Graphics.Shaders
 {
-    internal partial class OutlineShader : Shader
+    internal sealed partial class OutlineShader : Shader
     {
         private OutlineShader() : base("outline") { }
 
@@ -14,8 +14,8 @@ namespace Kotono.Graphics.Shaders
 
         private static void SetATexCoords() => SetVertexAttributeData(1, 2, global::OpenTK.Graphics.OpenGL4.VertexAttribPointerType.Float, 16, 8);
 
-        internal override void SetVertexAttributesData() { SetAPos(); SetATexCoords(); }
+        internal override void SetVertexAttributesLayout() { SetAPos(); SetATexCoords(); }
 
-        internal void SetDepth(int depth) => SetInt("depth", depth);
+        internal void SetDepth(global::OpenTK.Graphics.OpenGL4.TextureUnit depth) => SetTextureUnit("depth", depth);
     }
 }

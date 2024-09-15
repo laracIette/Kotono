@@ -1,4 +1,6 @@
-﻿using Kotono.Graphics.Objects.Meshes;
+﻿using Kotono.Graphics;
+using Kotono.Graphics.Objects;
+using Kotono.Graphics.Objects.Meshes;
 using Kotono.Utils.Coordinates;
 using OpenTK.Mathematics;
 

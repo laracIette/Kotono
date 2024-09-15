@@ -3,7 +3,7 @@ using Kotono.Graphics;
 
 namespace Kotono.Engine
 {
-    internal class Scene : Object
+    internal sealed class Scene : Object
     {
         private readonly ObjectExplorer _objectExplorer = new();
 

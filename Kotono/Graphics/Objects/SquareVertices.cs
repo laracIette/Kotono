@@ -1,51 +1,41 @@
 ﻿using Kotono.Graphics.Shaders;
 using OpenTK.Graphics.OpenGL4;
+using System;
 
 namespace Kotono.Graphics.Objects
 {
     internal static class SquareVertices
     {
-        private static readonly float[] _vertices =
+        private static readonly float[] _vertices = 
         [
-            -1.0f,
-            1.0f,
-            0.0f,
-            1.0f,
-            -1.0f,
-            -1.0f,
-            0.0f,
-            0.0f,
-            1.0f,
-            -1.0f,
-            1.0f,
-            0.0f,
+            // Positions         // Texture Coords
+            1.0f,  1.0f, 0.0f,   1.0f, 1.0f, // Top Right
+            1.0f, -1.0f, 0.0f,   1.0f, 0.0f, // Bottom Right
+           -1.0f, -1.0f, 0.0f,   0.0f, 0.0f, // Bottom Left
+           -1.0f,  1.0f, 0.0f,   0.0f, 1.0f  // Top Left 
+        ];
 
-            -1.0f,
-            1.0f,
-            0.0f,
-            1.0f,
-            1.0f,
-            -1.0f,
-            1.0f,
-            0.0f,
-            1.0f,
-            1.0f,
-            1.0f,
-            1.0f
+        private static readonly int[] _indices = 
+        [
+            0, 1, 3, // First Triangle
+            1, 2, 3  // Second Triangle
         ];
 
         internal static VertexArraySetup VertexArraySetup { get; } = new();
 
+        internal static ElementBufferObject ElementBufferObject { get; } = new();
+
         static SquareVertices()
         {
             VertexArraySetup.SetData(_vertices, sizeof(float));
-            ImageShader.Instance.SetVertexAttributesData();
+            ElementBufferObject.SetData(_indices, sizeof(int));
+            VertexArraySetup.VertexArrayObject.SetVertexAttributesLayout(ImageShader.Instance);
         }
 
         internal static void Draw()
         {
-            VertexArraySetup.Bind();
-            GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
+            VertexArraySetup.VertexArrayObject.Bind();
+            GL.DrawElements(PrimitiveType.Triangles, _indices.Length, DrawElementsType.UnsignedInt, IntPtr.Zero);
         }
     }
 }

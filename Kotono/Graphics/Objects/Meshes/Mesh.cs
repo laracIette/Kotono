@@ -1,21 +1,34 @@
 ﻿using Kotono.Graphics.Objects.Hitboxes;
 using Kotono.Graphics.Shaders;
+using Kotono.Graphics.Textures;
 using Kotono.Input;
 using Kotono.Physics;
 using Kotono.Utils;
 using Kotono.Utils.Coordinates;
+using OpenTK.Graphics.OpenGL4;
 using OpenTK.Windowing.GraphicsLibraryFramework;
-using System.Collections.Generic;
 
 namespace Kotono.Graphics.Objects.Meshes
 {
     internal abstract class Mesh : Object3D, IMesh
     {
-        public List<Hitbox> Hitboxes { get; set; } = [];
+        private Model _model = new(Path.FromAssets(@"Default\model.obj"));
 
-        public abstract Model Model { get; set; }
+        public override Shader Shader
+        {
+            get => base.Shader;
+            set => Model.SetVertexAttributesLayout(base.Shader = value);
+        }
 
-        public virtual Material Material { get; set; } = new();
+        public CustomList<Hitbox> Hitboxes { get; } = [];
+
+        public Model Model
+        {
+            get => _model;
+            set => (_model = value).SetVertexAttributesLayout(Shader);
+        }
+
+        public Material Material { get; set; } = new();
 
         internal bool IsGravity { get; set; } = false;
 
@@ -28,8 +41,6 @@ namespace Kotono.Graphics.Objects.Meshes
         public float IntersectionDistance { get; private set; } = 0.0f;
 
         public Vector IntersectionLocation { get; private set; } = Vector.Zero;
-
-        public override Shader Shader => NewLightingShader.Instance;
 
         public override bool IsHovered
         {
@@ -44,7 +55,7 @@ namespace Kotono.Graphics.Objects.Meshes
 
                     foreach (var triangle in Model.Triangles)
                     {
-                        if (Intersection.IntersectRayTriangle(Camera.Active.Location, Mouse.Ray, in triangle, Transform, out Vector intersectionLocation, out float intersectionDistance))
+                        if (Intersection.IntersectRayTriangle(Camera.Active.WorldLocation, Mouse.Ray, in triangle, Transform, out Vector intersectionLocation, out float intersectionDistance))
                         {
                             IntersectionLocation = intersectionLocation;
                             IntersectionDistance = intersectionDistance;
@@ -58,45 +69,31 @@ namespace Kotono.Graphics.Objects.Meshes
             }
         }
 
-        internal void AddHitbox(Hitbox hitbox)
+        internal Mesh()
         {
-            Hitboxes.Add(hitbox);
+            Hitboxes.AddAction = h =>
+            {
+                h.Parent = this;
 
-            hitbox.Transform.Parent = Transform;
-            hitbox.Color = Color.Red;
+                h.EnterCollision = (s, e) => OnEnterCollision(e);
+                h.ExitCollision = (s, e) => OnExitCollision(e);
+            };
 
-            hitbox.EnterCollision += (s, e) => OnEnterCollision(e);
-            hitbox.ExitCollision += (s, e) => OnExitCollision(e);
+            Hitboxes.RemoveAction = h => h.Dispose();
         }
 
-        internal void RemoveHitbox(Hitbox hitbox)
-        {
-            hitbox.EnterCollision -= (s, e) => OnEnterCollision(e);
-            hitbox.ExitCollision -= (s, e) => OnExitCollision(e);
-            Hitboxes.Remove(hitbox);
-        }
+        protected virtual void OnEnterCollision(CollisionEventArgs collision) { }
+
+        protected virtual void OnExitCollision(CollisionEventArgs collision) { }
+
+        public virtual void UpdateFizix() { }
 
         public override void Update()
         {
-            var tempLoc = RelativeLocation;
-
             if (IsGravity)
             {
-                tempLoc += Time.Delta * Fizix.Gravity;
+                RelativeLocationVelocity = Fizix.Gravity;
             }
-
-            foreach (var hitbox in Hitboxes)
-            {
-                hitbox.RelativeLocation = tempLoc;
-
-                if ((CollisionState == CollisionState.BlockAll) && hitbox.IsColliding)
-                {
-                    hitbox.RelativeLocation = RelativeLocation;
-                    tempLoc = RelativeLocation;
-                }
-            }
-
-            RelativeLocation = tempLoc;
         }
 
         private void OnLeftButtonPressed()
@@ -144,14 +141,14 @@ namespace Kotono.Graphics.Objects.Meshes
 
         public override void UpdateShader()
         {
-            var mixColor = IsSelected ? (IsActive ? Color.Green : Color.Orange) : Color;
+            var mixColor = IsSelected ? (IsActive ? Color.Green : Color.Orange) : Color.Black;
             var color = Color.Blend(Color, mixColor);
 
-            if (Shader is NewLightingShader newLightingShader)
+            if (Shader is LightingPBRShader lightingPBRShader)
             {
-                newLightingShader.SetModel(Transform.Model);
-                newLightingShader.SetBaseColor(color);
-                newLightingShader.SetMaterial(Material);
+                lightingPBRShader.SetModel(Transform.Model);
+                lightingPBRShader.SetBaseColor(color);
+                lightingPBRShader.SetMaterial(Material);
             }
         }
 
@@ -161,18 +158,12 @@ namespace Kotono.Graphics.Objects.Meshes
 
             Model.Draw();
 
-            ITexture.Unbind();
+            ITexture.Unbind(TextureTarget.Texture2D);
         }
-
-        protected virtual void OnEnterCollision(CollisionEventArgs collision) { }
-
-        protected virtual void OnExitCollision(CollisionEventArgs collision) { }
-
-        public virtual void UpdateFizix() { }
 
         public override void Dispose()
         {
-            Hitboxes.ForEach(h => h.Dispose());
+            Hitboxes.ForEach(h => h.Dispose()); 
 
             base.Dispose();
         }

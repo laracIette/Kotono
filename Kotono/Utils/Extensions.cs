@@ -29,7 +29,7 @@ namespace Kotono.Utils
         /// <returns></returns>
         internal static MemberInfo[] OfAttribute<T>(this MemberInfo[] memberInfo) where T : Attribute
         {
-            return memberInfo.Where(m => m.GetCustomAttribute<T>() != null).ToArray();
+            return memberInfo.Where(m => m.GetCustomAttribute<T>() is not null).ToArray();
         }
 
         /// <summary>
@@ -191,15 +191,6 @@ namespace Kotono.Utils
                 source.Add(item);
                 return true;
             }
-        }
-
-        /// <summary>
-        /// Get wether the object is of type T.
-        /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static bool OfType<T>(this object? obj)
-        {
-            return obj?.GetType() == typeof(T);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

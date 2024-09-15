@@ -2,7 +2,7 @@
 
 namespace Kotono.Graphics.Objects.Lights
 {
-    internal class DirectionalLight : Light
+    internal sealed class DirectionalLight : Light
     {
         /// <summary>
         /// The direction of the <see cref="DirectionalLight"/>.

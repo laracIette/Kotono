@@ -2,10 +2,6 @@
 
 namespace Kotono.Utils.Exceptions
 {
-    internal class SwitchException : KotonoException
-    {
-        internal SwitchException(Type switchType, object obj)
-            : base($"switch of type {switchType} doesn't handle {obj}")
-        { }
-    }
+    internal sealed class SwitchException(Type switchType, object obj)
+        : KotonoException($"switch of type {switchType} doesn't handle {obj}");
 }

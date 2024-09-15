@@ -2,7 +2,7 @@
 
 namespace Kotono.Graphics.Shaders
 {
-    internal partial class PainterShader : Shader
+    internal sealed partial class PainterShader : Shader
     {
         private PainterShader() : base("painter") { }
 
@@ -10,10 +10,10 @@ namespace Kotono.Graphics.Shaders
 
         internal static PainterShader Instance => _instance.Value;
 
-        internal override void SetVertexAttributesData() { }
+        internal override void SetVertexAttributesLayout() { }
 
         internal void SetModel(global::OpenTK.Mathematics.Matrix4 model) => SetMatrix4("model", model);
 
-        internal void SetTex(int tex) => SetInt("tex", tex);
+        internal void SetTex(global::OpenTK.Graphics.OpenGL4.TextureUnit tex) => SetTextureUnit("tex", tex);
     }
 }

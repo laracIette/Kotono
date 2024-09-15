@@ -4,11 +4,11 @@ using OpenTK.Mathematics;
 
 namespace Kotono.Graphics.Objects
 {
-    internal class RoundedBorder : RoundedBox
+    internal sealed class RoundedBorder : RoundedBox
     {
         private float _targetThickness;
 
-        public float Thickness { get; protected set; }
+        public float Thickness { get; private set; }
 
         internal float TargetThickness
         {
@@ -22,7 +22,7 @@ namespace Kotono.Graphics.Objects
 
         public override Shader Shader => RoundedBorderShader.Instance;
 
-        protected override Matrix4 Model => new NDCRect(RelativePosition, RelativeSize + new Point(FallOff * 2.0f + Thickness)).Model;
+        protected override Matrix4 Model => new NDCRect(WorldPosition, FallOff * 2.0f + Thickness + WorldSize).Model;
 
         protected override void UpdateValues()
         {

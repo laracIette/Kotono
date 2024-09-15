@@ -2,7 +2,7 @@
 
 namespace Kotono.Graphics.Shaders
 {
-    internal partial class FlatTextureShader : Shader
+    internal sealed partial class FlatTextureShader : Shader
     {
         private FlatTextureShader() : base("flatTexture") { }
 
@@ -12,7 +12,7 @@ namespace Kotono.Graphics.Shaders
 
         private static void SetAPos() => SetVertexAttributeData(0, 3, global::OpenTK.Graphics.OpenGL4.VertexAttribPointerType.Float, 12, 0);
 
-        internal override void SetVertexAttributesData() { SetAPos(); }
+        internal override void SetVertexAttributesLayout() { SetAPos(); }
 
         internal void SetModel(global::OpenTK.Mathematics.Matrix4 model) => SetMatrix4("model", model);
 
@@ -20,7 +20,7 @@ namespace Kotono.Graphics.Shaders
 
         internal void SetProjection(global::OpenTK.Mathematics.Matrix4 projection) => SetMatrix4("projection", projection);
 
-        internal void SetTexSampler(int texSampler) => SetInt("texSampler", texSampler);
+        internal void SetTexSampler(global::OpenTK.Graphics.OpenGL4.TextureUnit texSampler) => SetTextureUnit("texSampler", texSampler);
 
         internal void SetColor(global::Kotono.Utils.Color color) => SetColor("color", color);
     }

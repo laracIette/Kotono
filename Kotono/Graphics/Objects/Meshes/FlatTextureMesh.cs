@@ -2,14 +2,14 @@
 
 namespace Kotono.Graphics.Objects.Meshes
 {
-    internal class FlatTextureMesh : Mesh
+    internal sealed class FlatTextureMesh : Mesh
     {
         public override Shader Shader => FlatTextureShader.Instance;
 
-        public override Model Model { get; set; } = new Model(
-            Path.FromAssets(@"Meshes\flatTextureMesh.obj"),
-            FlatTextureShader.Instance
-        );
+        internal FlatTextureMesh()
+        {
+            Model = new Model(Path.FromAssets(@"Meshes\flatTextureMesh.obj"));
+        }
 
         public override void UpdateShader()
         {

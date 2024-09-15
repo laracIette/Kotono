@@ -5,10 +5,10 @@ namespace Kotono.Utils
     [Flags]
     internal enum Visibility
     {
-        None = 0b0000,
+        None = 0x0,
 
-        Editor = 0b0001,
-        Playing = 0b0010,
+        Editor = 0x1,
+        Playing = 0x2,
 
         EditorAndPlaying = Editor | Playing
     }

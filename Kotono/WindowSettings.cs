@@ -6,7 +6,7 @@ namespace Kotono
     /// <summary>
     /// Settings class for creating a <see cref="Window"/>.
     /// </summary>
-    internal class WindowSettings
+    internal sealed class WindowSettings
     {
         /// <summary>
         /// This is the Title of the program's Window.

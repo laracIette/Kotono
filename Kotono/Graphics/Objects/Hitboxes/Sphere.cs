@@ -5,7 +5,7 @@ using OpenTK.Mathematics;
 
 namespace Kotono.Graphics.Objects.Hitboxes
 {
-    internal class Sphere : Hitbox
+    internal sealed class Sphere : Hitbox
     {
         private const int SEGMENTS = 64;
 
@@ -22,16 +22,15 @@ namespace Kotono.Graphics.Objects.Hitboxes
             for (int i = 0; i < SEGMENTS; i++)
             {
                 float rotation = i / (float)SEGMENTS * Math.Tau;
-                _vertices[i] = new Vector
-                {
-                    X = 0.5f * Math.Cos(rotation),
-                    Y = 0.5f * Math.Sin(rotation),
-                    Z = 0.0f
-                };
+                _vertices[i] = new Vector(
+                    0.5f * Math.Cos(rotation),
+                    0.5f * Math.Sin(rotation),
+                    0.0f
+                );
             }
 
             _vertexArraySetup.SetData(_vertices, Vector.SizeInBytes);
-            HitboxShader.Instance.SetVertexAttributesData();
+            _vertexArraySetup.VertexArrayObject.SetVertexAttributesLayout(HitboxShader.Instance);
         }
 
         public override void UpdateShader()
@@ -63,7 +62,7 @@ namespace Kotono.Graphics.Objects.Hitboxes
                 hitboxShader.SetModel(model);
             }
 
-            _vertexArraySetup.Bind();
+            _vertexArraySetup.VertexArrayObject.Bind();
             GL.DrawArrays(PrimitiveType.LineLoop, 0, _vertices.Length);
         }
 

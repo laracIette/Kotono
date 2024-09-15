@@ -2,9 +2,9 @@
 
 namespace Kotono.Engine.UserInterface.Elements
 {
-    internal class Background : RoundedBox
+    internal sealed class Background : RoundedBox
     {
-        public Background()
+        internal Background()
         {
             TargetFallOff = 1.0f;
             TargetCornerSize = 15.0f;

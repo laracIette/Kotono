@@ -9,25 +9,13 @@ namespace Kotono.Engine.UserInterface.AddMenu
     {
         private readonly SubMenu _subMenu;
 
-        internal Anchor Anchor { get; set; }
-
-        public override bool IsDraw
+        internal MainButton(string[] options)
         {
-            get => base.IsDraw;
-            set
+            _subMenu = new SubMenu(options)
             {
-                base.IsDraw = value;
-                if (!value)
-                {
-                    _subMenu.IsDraw = false;
-                }
-            }
-        }
+                Parent = this
+            };
 
-        public MainButton(string[] options, Anchor anchor)
-        {
-            _subMenu = new SubMenu(options, anchor);
-            Anchor = anchor;
             RelativeSize = new Point(100.0f, 100.0f);
             Color = Color.Gray;
             Layer = 1;
@@ -39,7 +27,7 @@ namespace Kotono.Engine.UserInterface.AddMenu
         {
             _subMenu.IsDraw = true;
 
-            _subMenu.Position = Anchor switch
+            _subMenu.RelativePosition = Anchor switch
             {
                 Anchor.TopLeft => Rect.TopLeft,
                 Anchor.TopRight => Rect.TopRight,

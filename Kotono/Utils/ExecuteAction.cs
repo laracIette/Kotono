@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 namespace Kotono.Utils
 {
-    internal class ExecuteAction : Object
+    internal sealed class ExecuteAction : Object
     {
-        private record class DelayedAction(Action Action, float Time);
+        private sealed record class DelayedAction(Action Action, float Time);
 
         private static readonly ExecuteAction _instance = new();
 

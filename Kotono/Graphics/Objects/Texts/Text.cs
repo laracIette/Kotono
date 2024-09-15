@@ -1,4 +1,5 @@
-﻿using Kotono.Input;
+﻿using Kotono.Graphics.Textures;
+using Kotono.Input;
 using Kotono.Utils;
 using Kotono.Utils.Coordinates;
 using Kotono.Utils.Exceptions;
@@ -8,7 +9,7 @@ namespace Kotono.Graphics.Objects.Texts
 {
     internal class Text : Object2D, IText
     {
-        private static readonly Dictionary<char, string> _charactersPath = new()
+        private static readonly Dictionary<char, string> _characterPaths = new()
         {
             ['a'] = @"Characters\a.png",
             ['b'] = @"Characters\b.png",
@@ -88,11 +89,13 @@ namespace Kotono.Graphics.Objects.Texts
             [','] = @"Characters\,.png"
         };
 
-        protected readonly List<Image> _letters = []; // TODO: replace by private, and change only position in PrinterText
+        private Image[] _letters = [];
 
         private object? _source = null;
 
         private string _value = string.Empty;
+
+        private Color _lettersColor = Color.White;
 
         public virtual object? Source
         {
@@ -119,76 +122,40 @@ namespace Kotono.Graphics.Objects.Texts
 
                 Clear();
 
+                _letters = new Image[value.Length];
+
                 for (int i = 0; i < value.Length; i++)
                 {
-                    if (!_charactersPath.TryGetValue(value[i], out string? path))
+                    if (!_characterPaths.TryGetValue(value[i], out string? path))
                     {
-                        path = _charactersPath[' '];
+                        path = _characterPaths[' '];
                     }
 
-                    var position = GetLetterPosition(i, LettersRect.RelativePosition, LettersRect.RelativeSize);
-
-                    _letters.Add(
-                        new Image(Path.FromAssets(path))
-                        {
-                            RelativePosition = position,
-                            RelativeSize = LettersRect.RelativeSize,
-                            Color = Color,
-                            Layer = Layer
-                        }
-                    );
+                    _letters[i] = new Image
+                    {
+                        Texture = new ImageTexture(Path.FromAssets(path)),
+                        RelativePosition = GetLetterPosition(i, LettersRect.RelativeSize),
+                        RelativeSize = LettersRect.RelativeSize,
+                        Color = LettersColor,
+                        Layer = Layer,
+                        Parent = this
+                    };
                 }
             }
         }
-
-        public Anchor Anchor { get; set; } = Anchor.Center;
 
         public float Spacing { get; set; } = 1.0f;
 
-        public override Rect Rect
-        {
-            get
-            {
-                base.Rect.RelativePosition = Rect.GetPositionFromAnchor(LettersRect.RelativePosition, new Point(LettersRect.BaseSize.X * Value.Length * Spacing, LettersRect.BaseSize.Y), Anchor);
-                base.Rect.BaseSize = new Point(LettersRect.BaseSize.X * Value.Length * Spacing, LettersRect.BaseSize.Y);
-                return base.Rect;
-            }
-        }
+        public override Point RelativeSize => new(LettersRect.RelativeSize.X * Value.Length * Spacing, LettersRect.RelativeSize.Y);
 
         internal Rect LettersRect { get; } = Rect.Default;
 
-        public override Point RelativePosition
+        public Color LettersColor
         {
-            get => Rect.RelativePosition;
+            get => _lettersColor;
             set
             {
-                LettersRect.RelativePosition = value;
-
-                for (int i = 0; i < _letters.Count; i++)
-                {
-                    _letters[i].RelativePosition = GetLetterPosition(i, LettersRect.RelativePosition, LettersRect.RelativeSize);
-                }
-            }
-        }
-
-        public override bool IsDraw
-        {
-            get => _letters.FirstOrNull()?.IsDraw ?? false; // Don't draw if empty
-            set
-            {
-                foreach (var frame in _letters)
-                {
-                    frame.IsDraw = value;
-                }
-            }
-        }
-
-        public override Color Color
-        {
-            get => base.Color;
-            set
-            {
-                base.Color = value;
+                _lettersColor = value;
                 foreach (var letter in _letters)
                 {
                     letter.Color = value;
@@ -196,39 +163,26 @@ namespace Kotono.Graphics.Objects.Texts
             }
         }
 
-        public new bool IsSelected { get; } = false; // TODO: temporary fix
-
-        public new bool IsActive { get; } = false; // TODO: temporary fix
-
-        internal bool IsMouseOn => Rect.Overlaps(Rect, Mouse.Position);
-
-        private Point GetLetterPosition(int index, Point position, Point size)
+        private Point GetLetterPosition(int index, Point size)
         {
-            float horizontalOffset = Spacing * size.X * (index - (Value.Length - 1) / 2.0f);
-            float verticalOffset = size.Y / 2.0f;
+            float centerOffset = Spacing * size.X * Math.Half(index - (Value.Length - 1));
+            float verticalOffset = Math.Half(size.Y);
 
-            position = Anchor switch
-            {
-                Anchor.Center => new Point(position.X + horizontalOffset, position.Y),
-                Anchor.Top => new Point(position.X + horizontalOffset, position.Y + verticalOffset),
-                Anchor.Bottom => new Point(position.X + horizontalOffset, position.Y - verticalOffset),
-                Anchor.Left => new Point(position.X + GetLeftOffset(index, size.X), position.Y),
-                Anchor.Right => new Point(position.X - GetRightOffset(index, size.X), position.Y),
-                Anchor.TopLeft => new Point(position.X + GetLeftOffset(index, size.X), position.Y + verticalOffset),
-                Anchor.TopRight => new Point(position.X - GetRightOffset(index, size.X), position.Y + verticalOffset),
-                Anchor.BottomLeft => new Point(position.X + GetLeftOffset(index, size.X), position.Y - verticalOffset),
-                Anchor.BottomRight => new Point(position.X - GetRightOffset(index, size.X), position.Y - verticalOffset),
-                _ => throw new KotonoException($"Text.Init()'s switch on Anchor doesn't handle \"{Anchor}\""),
-            };
-
-            return position;
+            return new Point(
+                  (Anchor & Anchor.Left) == Anchor.Left ? GetLeftOffset(index, size.X)
+                : (Anchor & Anchor.Right) == Anchor.Right ? GetRightOffset(index, size.X)
+                : centerOffset,
+                  (Anchor & Anchor.Top) == Anchor.Top ? verticalOffset
+                : (Anchor & Anchor.Bottom) == Anchor.Bottom ? -verticalOffset
+                : 0.0f
+            );
         }
 
-        private float GetLeftOffset(int index, float sizeX) =>
-            Spacing * sizeX * (0.5f + index);
+        private float GetLeftOffset(int index, float sizeX)
+            => Spacing * sizeX * (0.5f + index);
 
-        private float GetRightOffset(int index, float sizeX) =>
-            -Spacing * sizeX * (1.5f + index - Value.Length);
+        private float GetRightOffset(int index, float sizeX)
+            => -Spacing * sizeX * (Value.Length - index - 0.5f);
 
         private void DisposeLetters()
         {
@@ -242,7 +196,7 @@ namespace Kotono.Graphics.Objects.Texts
         {
             DisposeLetters();
 
-            _letters.Clear();
+            _letters = [];
         }
 
         public override void Dispose()

@@ -5,17 +5,17 @@ using System.Runtime.InteropServices;
 namespace Kotono.Utils.Coordinates
 {
     [StructLayout(LayoutKind.Sequential)]
-    public struct PointI : IEquatable<PointI>
+    public readonly struct PointI : IEquatable<PointI>
     {
         /// <summary> 
         /// The X component of the PointI. 
         /// </summary>
-        public int X = 0;
+        public readonly int X;
 
         /// <summary>
         /// The Y component of the PointI. 
         /// </summary>
-        public int Y = 0;
+        public readonly int Y;
 
         /// <summary> 
         /// The length component of the PointI. 
@@ -30,7 +30,7 @@ namespace Kotono.Utils.Coordinates
         /// <summary>
         /// The X / Y ratio of the PointI.
         /// </summary>
-        public readonly float Ratio => X / Y;
+        public readonly float Ratio => X / (float)Y;
 
         /// <summary>
         /// The X * Y product of the PointI.
@@ -47,29 +47,24 @@ namespace Kotono.Utils.Coordinates
 
         public static int SizeInBytes => sizeof(int) * 2;
 
-        public PointI()
-        {
-            X = 0;
-            Y = 0;
-        }
-
-        public PointI(PointI p)
-        {
-            X = p.X;
-            Y = p.Y;
-        }
-
-        public PointI(int i)
-        {
-            X = i;
-            Y = i;
-        }
-
-        public PointI(int x = 0, int y = 0)
+        /// <summary> 
+        /// Initialize a <see cref="PointI"/> with X = x, Y = y.
+        /// </summary>
+        public PointI(int x, int y)
         {
             X = x;
             Y = y;
         }
+
+        /// <summary> 
+        /// Initialize a <see cref="PointI"/> with X = 0, Y = 0.
+        /// </summary>
+        public PointI() : this(0, 0) { }
+
+        /// <summary> 
+        /// Initialize a <see cref="PointI"/> with X = f, Y = f.
+        /// </summary>
+        public PointI(int f) : this(f, f) { }
 
         public static float Distance(PointI left, PointI right)
         {
@@ -93,58 +88,53 @@ namespace Kotono.Utils.Coordinates
 
         public static PointI Clamp(PointI p, PointI min, PointI max)
         {
-            p.X = (int)Math.Clamp(p.X, min.X, max.X);
-            p.Y = (int)Math.Clamp(p.Y, min.Y, max.Y);
-            return p;
+            return new PointI((int)Math.Clamp(p.X, min.X, max.X), (int)Math.Clamp(p.Y, min.Y, max.Y));
+        }
+
+        public static bool IsNullOrZero(PointI? p)
+        {
+            return p is null || p == Zero;
         }
 
         public static PointI operator +(PointI left, PointI right)
         {
-            left.X += right.X;
-            left.Y += right.Y;
-            return left;
+            return new PointI(left.X + right.X, left.Y + right.Y);
         }
 
+        public static PointI operator +(int i, PointI p)
+        {
+            return new PointI(p.X + i, p.Y + i);
+        }
+
+        [Obsolete("Reorder operands, use \"PointI.operator +(int, PointI)\" instead.")]
         public static PointI operator +(PointI p, int i)
         {
-            p.X += i;
-            p.Y += i;
-            return p;
+            return i + p;
         }
 
         public static PointI operator -(PointI left, PointI right)
         {
-            left.X -= right.X;
-            left.Y -= right.Y;
-            return left;
+            return new PointI(left.X - right.X, left.Y - right.Y);
         }
 
         public static PointI operator -(PointI p, int i)
         {
-            p.X -= i;
-            p.Y -= i;
-            return p;
+            return new PointI(p.X - i, p.Y - i);
         }
 
         public static PointI operator -(PointI p)
         {
-            p.X = -p.X;
-            p.Y = -p.Y;
-            return p;
+            return new PointI(-p.X, -p.Y);
         }
 
         public static PointI operator *(PointI left, PointI right)
         {
-            left.X *= right.X;
-            left.Y *= right.Y;
-            return left;
+            return new PointI(left.X * right.X, left.Y * right.Y);
         }
 
         public static PointI operator *(int i, PointI p)
         {
-            p.X *= i;
-            p.Y *= i;
-            return p;
+            return new PointI(p.X * i, p.Y * i);
         }
 
         [Obsolete("Reorder operands, use \"PointI.operator *(int, PointI)\" instead.")]
@@ -155,23 +145,17 @@ namespace Kotono.Utils.Coordinates
 
         public static PointI operator /(PointI left, PointI right)
         {
-            left.X /= right.X;
-            left.Y /= right.Y;
-            return left;
+            return new PointI(left.X / right.X, left.Y / right.Y);
         }
 
         public static PointI operator /(PointI p, int i)
         {
-            p.X /= i;
-            p.Y /= i;
-            return p;
+            return new PointI(p.X / i, p.Y / i);
         }
 
         public static PointI operator /(PointI p, float f)
         {
-            p.X = (int)(p.X / f);
-            p.Y = (int)(p.Y / f);
-            return p;
+            return new PointI((int)(p.X / f), (int)(p.Y / f));
         }
 
         public static bool operator ==(PointI left, PointI right)
@@ -206,6 +190,12 @@ namespace Kotono.Utils.Coordinates
         {
             return left.X <= right.X
                 && left.Y <= right.Y;
+        }
+
+        public readonly void Deconstruct(out int x, out int y)
+        {
+            x = X;
+            y = Y;
         }
 
         public override readonly bool Equals(object? obj)

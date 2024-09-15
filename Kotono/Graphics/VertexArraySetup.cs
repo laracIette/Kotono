@@ -9,15 +9,6 @@ namespace Kotono.Graphics
         internal VertexBufferObject VertexBufferObject { get; } = new();
 
         /// <summary>
-        /// Binds the <see cref="Graphics.VertexArrayObject"/> and the <see cref="Graphics.VertexBufferObject"/>.
-        /// </summary>
-        internal void Bind()
-        {
-            VertexArrayObject.Bind();
-            VertexBufferObject.Bind();
-        }
-
-        /// <summary>
         /// Binds the <see cref="Graphics.VertexArrayObject"/> and sets the <see cref="Graphics.VertexBufferObject"/>'s data.
         /// </summary>
         internal void SetData<T>(T[] data, int size) where T : struct
@@ -28,9 +19,14 @@ namespace Kotono.Graphics
 
         public void Dispose()
         {
-            VertexArrayObject.Dispose();
             VertexBufferObject.Dispose();
-            GC.SuppressFinalize(this);
+            VertexArrayObject.Dispose();
+        }
+
+        internal static void Unbind()
+        {
+            VertexBufferObject.Unbind();
+            VertexArrayObject.Unbind();
         }
     }
 }

@@ -1,8 +1,8 @@
 ﻿namespace Kotono.Graphics.Objects.Lights
 {
-    internal class SpotLight : AttenuatedLight
+    internal sealed class SpotLight : AttenuatedLight
     {
-        internal const int MAX_COUNT = 1;
+        internal const int MAX_COUNT = 100;
 
         internal float CutOffAngle { get; set; }
 

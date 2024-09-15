@@ -4,6 +4,7 @@ using Kotono.Graphics;
 using Kotono.Graphics.Objects;
 using Kotono.Graphics.Shaders;
 using Kotono.Graphics.Statistics;
+using Kotono.Graphics.Textures;
 using Kotono.Input;
 using Kotono.Utils;
 using Kotono.Utils.Coordinates;
@@ -34,11 +35,7 @@ namespace Kotono
             {
                 _size = value;
 
-                Camera.Active.AspectRatio = Size.Ratio;
-
                 WindowComponentManager.WindowViewport.BaseSize = Size;
-
-                _performanceWindow.UpdatePosition();
 
                 if (Size > Point.Zero)
                 {
@@ -60,16 +57,14 @@ namespace Kotono
                 }
             )
         {
-            Position = (Point)Location;
-            Size = (Point)ClientSize;
-
             // Needed to parse correctly
             CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
             CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
 
-            _performanceWindow.MaxFrameRate = windowSettings.MaxFrameRate;
+            Position = (Point)Location;
+            Size = (Point)ClientSize;
 
-            SoundManager.GeneralVolume = 1.0f;
+            _performanceWindow.MaxFrameRate = windowSettings.MaxFrameRate;
 
             Mouse.CursorState = windowSettings.CursorState;
             Mouse.MouseState = MouseState;
@@ -90,7 +85,7 @@ namespace Kotono
             Start();
         }
 
-        protected virtual void Start() { }
+        protected abstract void Start();
 
         protected override void OnRenderFrame(FrameEventArgs e)
         {
@@ -134,9 +129,9 @@ namespace Kotono
 
             if (Keyboard.IsKeyPressed(Keys.F11))
             {
-                WindowState = (WindowState == WindowState.Normal) ?
-                    WindowState.Fullscreen :
-                    WindowState.Normal;
+                WindowState = (WindowState == WindowState.Normal)
+                    ? WindowState.Fullscreen
+                    : WindowState.Normal;
             }
 
             if (Keyboard.IsKeyPressed(Keys.S) && Keyboard.IsKeyDown(Keys.LeftControl))
@@ -148,7 +143,7 @@ namespace Kotono
             Update();
         }
 
-        protected virtual void Update() { }
+        protected abstract void Update();
 
         protected override void OnResize(ResizeEventArgs e)
         {
@@ -167,7 +162,8 @@ namespace Kotono
 
         protected override void OnUnload()
         {
-            SoundManager.Dispose();
+            Source.DisposeAll();
+            AudioManager.Dispose();
             ImageTexture.DisposeAll();
             ObjectManager.Dispose();
 

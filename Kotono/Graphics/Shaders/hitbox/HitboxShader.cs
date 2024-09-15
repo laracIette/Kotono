@@ -2,7 +2,7 @@
 
 namespace Kotono.Graphics.Shaders
 {
-    internal partial class HitboxShader : Shader
+    internal sealed partial class HitboxShader : Shader
     {
         private HitboxShader() : base("hitbox") { }
 
@@ -12,7 +12,7 @@ namespace Kotono.Graphics.Shaders
 
         private static void SetAPos() => SetVertexAttributeData(0, 3, global::OpenTK.Graphics.OpenGL4.VertexAttribPointerType.Float, 12, 0);
 
-        internal override void SetVertexAttributesData() { SetAPos(); }
+        internal override void SetVertexAttributesLayout() { SetAPos(); }
 
         internal void SetModel(global::OpenTK.Mathematics.Matrix4 model) => SetMatrix4("model", model);
 

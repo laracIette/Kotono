@@ -3,9 +3,9 @@ using Kotono.Utils.Coordinates;
 
 namespace Kotono.Graphics.Objects.Lights
 {
-    internal class RainbowPointLight : PointLight
+    internal sealed class RainbowPointLight : PointLight
     {
-        public RainbowPointLight()
+        internal RainbowPointLight()
         {
             RelativeLocation = Random.Vector(-20.0f, 20.0f);
             Ambient = Color.White / 20.0f;

@@ -17,15 +17,14 @@ uniform mat4 projection;
 
 void main()
 {
-    FragPos = vec3(model * vec4(aPos, 1.0));
-    Normal = mat3(transpose(inverse(model))) * aNormal;
-    Tangent = mat3(model) * aTangent;
+    gl_Position = vec4(aPos, 1.0) * model * view * projection;
+    FragPos = vec3(vec4(aPos, 1.0) * model);
+    Normal = aNormal * mat3(transpose(inverse(model)));
+    Tangent = aTangent * mat3(model);
     TexCoords = aTexCoords;
 
     vec3 T = normalize(Tangent);
     vec3 N = normalize(Normal);
     float handedness = (dot(cross(N, T), Bitangent) < 0.0) ? -1.0 : 1.0;
-    Bitangent = normalize(cross(N, T)) * handedness;
-
-    gl_Position = projection * view * vec4(FragPos, 1.0);
+    Bitangent = handedness * normalize(cross(N, T));
 }

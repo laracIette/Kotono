@@ -44,7 +44,7 @@ namespace Kotono.Graphics.Objects.Hitboxes
         public bool TryGetCollider([NotNullWhen(true)] out IHitbox? collider)
         {
             collider = Collisions.Find(CollidesWith);
-            return collider != null;
+            return collider is not null;
         }
 
         public abstract bool CollidesWith(IHitbox hitbox);

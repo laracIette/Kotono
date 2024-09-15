@@ -2,17 +2,59 @@
 using Kotono.Utils.Exceptions;
 using OpenTK.Mathematics;
 using System;
-using System.Linq;
+using System.Drawing;
 
 namespace Kotono.Utils.Coordinates
 {
-    internal class Rect : Object, IRect, IEquatable<Rect>
+    internal sealed partial class Rect : Object, IRect, IEquatable<Rect>
     {
-        private record class Transformation(RectBase RectBase, float EndTime);
+        private sealed class Base
+        {
+            internal Point BaseSize { get; set; } = DefaultSize;
 
-        private Transformation? _transformation = null;
+            internal Point Position { get; set; } = DefaultPosition;
 
-        private RectBase _base = new(DefaultPosition, DefaultSize);
+            internal Rotator Rotation { get; set; } = DefaultRotation;
+
+            internal Point Scale { get; set; } = DefaultScale;
+
+            internal Point Size
+            {
+                get => BaseSize * Scale;
+                set
+                {
+                    if (Point.IsNullOrZero(BaseSize))
+                    {
+                        BaseSize = value / Scale;
+                    }
+                    else
+                    {
+                        Scale = value / BaseSize;
+                    }
+                }
+            }
+        }
+
+        private sealed record class Transformation<T>(T Value, float EndTime) where T : struct;
+
+        private Transformation<Point>? _positionTransformation = null;
+
+        private Transformation<Rotator>? _rotationTransformation = null;
+
+        private Transformation<Point>? _sizeTransformation = null;
+
+        private readonly Base _base = new();
+
+        public Anchor Anchor { get; set; } = Anchor.Center;
+
+        private Point AnchorDelta => new(
+              (Anchor & Anchor.Left) == Anchor.Left ? Math.Half(RelativeSize.X)
+            : (Anchor & Anchor.Right) == Anchor.Right ? -Math.Half(RelativeSize.X)
+            : 0.0f,
+              (Anchor & Anchor.Top) == Anchor.Top ? Math.Half(RelativeSize.Y)
+            : (Anchor & Anchor.Bottom) == Anchor.Bottom ? -Math.Half(RelativeSize.Y)
+            : 0.0f
+        );
 
         public Point BaseSize
         {
@@ -28,8 +70,8 @@ namespace Kotono.Utils.Coordinates
 
         public Point RelativePosition
         {
-            get => _base.Position;
-            set => _base.Position = value;
+            get => _base.Position + AnchorDelta;
+            set => _base.Position = value - AnchorDelta;
         }
 
         public Rotator RelativeRotation
@@ -84,65 +126,65 @@ namespace Kotono.Utils.Coordinates
         /// <summary>
         /// The Normalized Device Coordinates of the Rect.
         /// </summary>
-        public NDCRect NDC => new(WorldPosition, WorldSize);
+        internal NDCRect NDC => new(WorldPosition, WorldSize);
 
         /// <summary>
         /// The model matrix of the Rect.
         /// </summary>
-        public Matrix4 Model => NDC.Model;
+        internal Matrix4 Model => NDC.Model;
 
         /// <summary>
         /// The center Point of the Rect.
         /// </summary>
-        public Point Center => RelativePosition;
+        internal Point Center => RelativePosition;
 
         /// <summary>
         /// The left Point of the Rect.
         /// </summary>
-        public Point Left => new(RelativePosition.X - Math.Half(RelativeSize.X), RelativePosition.Y);
+        internal Point Left => new(RelativePosition.X - Math.Half(RelativeSize.X), RelativePosition.Y);
 
         /// <summary>
         /// The right Point of the Rect.
         /// </summary>
-        public Point Right => new(RelativePosition.X + Math.Half(RelativeSize.X), RelativePosition.Y);
+        internal Point Right => new(RelativePosition.X + Math.Half(RelativeSize.X), RelativePosition.Y);
 
         /// <summary>
         /// The top Point of the Rect.
         /// </summary>
-        public Point Top => new(RelativePosition.X, RelativePosition.Y + Math.Half(RelativeSize.Y));
+        internal Point Top => new(RelativePosition.X, RelativePosition.Y + Math.Half(RelativeSize.Y));
 
         /// <summary>
         /// The bottom Point of the Rect.
         /// </summary>
-        public Point Bottom => new(RelativePosition.X, RelativePosition.Y - Math.Half(RelativeSize.Y));
+        internal Point Bottom => new(RelativePosition.X, RelativePosition.Y - Math.Half(RelativeSize.Y));
 
         /// <summary>
         /// The top left Point of the Rect.
         /// </summary>
-        public Point TopLeft => new(RelativePosition.X - Math.Half(RelativeSize.X), RelativePosition.Y + Math.Half(RelativeSize.Y));
+        internal Point TopLeft => new(RelativePosition.X - Math.Half(RelativeSize.X), RelativePosition.Y + Math.Half(RelativeSize.Y));
 
         /// <summary>
         /// The top right Point of the Rect.
         /// </summary>
-        public Point TopRight => new(RelativePosition.X + Math.Half(RelativeSize.X), RelativePosition.Y + Math.Half(RelativeSize.Y));
+        internal Point TopRight => new(RelativePosition.X + Math.Half(RelativeSize.X), RelativePosition.Y + Math.Half(RelativeSize.Y));
 
         /// <summary>
         /// The bottom left Point of the Rect.
         /// </summary>
-        public Point BottomLeft => new(RelativePosition.X - Math.Half(RelativeSize.X), RelativePosition.Y - Math.Half(RelativeSize.Y));
+        internal Point BottomLeft => new(RelativePosition.X - Math.Half(RelativeSize.X), RelativePosition.Y - Math.Half(RelativeSize.Y));
 
         /// <summary>
         /// The bottom right Point of the Rect.
         /// </summary>
-        public Point BottomRight => new(RelativePosition.X + Math.Half(RelativeSize.X), RelativePosition.Y - Math.Half(RelativeSize.Y));
+        internal Point BottomRight => new(RelativePosition.X + Math.Half(RelativeSize.X), RelativePosition.Y - Math.Half(RelativeSize.Y));
 
-        public static Point DefaultPosition => Point.Zero;
+        internal static Point DefaultPosition => Point.Zero;
 
-        public static Point DefaultSize => Point.Zero;
+        internal static Point DefaultSize => Point.Zero;
 
-        public static Rotator DefaultRotation => Rotator.Zero;
+        internal static Rotator DefaultRotation => Rotator.Zero;
 
-        public static Point DefaultScale => Point.Unit;
+        internal static Point DefaultScale => Point.Unit;
 
         /// <summary> 
         /// A Rect with 
@@ -151,97 +193,155 @@ namespace Kotono.Utils.Coordinates
         /// Rotation = <see cref="Rotator.Zero"/>,
         /// Scale = <see cref="Point.Unit"/>.
         /// </summary>
-        public static Rect Default => new(DefaultPosition, DefaultSize, DefaultRotation);
+        internal static Rect Default => new(DefaultPosition, DefaultSize, DefaultRotation);
 
-        public Rect() : this(DefaultPosition, DefaultSize, DefaultRotation) { }
+        internal Rect() : this(DefaultPosition, DefaultSize, DefaultRotation) { }
 
-        public Rect(Point position, Point baseSize, Point size, Rotator rotation)
+        internal Rect(Point position, Point baseSize, Point size, Rotator rotation)
         {
-            _base = new RectBase(position, baseSize, size, rotation);
+            RelativePosition = position;
+            BaseSize = baseSize;
+            RelativeSize = size;
+            RelativeRotation = rotation;
         }
 
-        public Rect(Point position, Point baseSize, Rotator rotation, Point scale)
+        internal Rect(Point position, Point baseSize, Rotator rotation, Point scale)
         {
-            _base = new RectBase(position, baseSize, rotation, scale);
+            RelativePosition = position;
+            BaseSize = baseSize;
+            RelativeRotation = rotation;
+            RelativeScale = scale;
         }
 
-        public Rect(Point position, Point size, Rotator rotation)
+        internal Rect(Point position, Point size, Rotator rotation)
         {
-            _base = new RectBase(position, size, rotation);
+            RelativePosition = position;
+            BaseSize = size;
+            RelativeRotation = rotation;
         }
 
-        public Rect(Point position, Point size)
+        internal Rect(Point position, Point size)
         {
-            _base = new RectBase(position, size);
+            RelativePosition = position;
+            BaseSize = size;
         }
 
         public override void Update()
         {
-            if (_transformation != null)
+            //RelativePosition += Time.Delta * RelativePositionVelocity;
+            //RelativeRotation += Time.Delta * RelativeRotationVelocity;
+            //RelativeSize += Time.Delta * RelativeSizeVelocity;
+
+            if (_positionTransformation is not null 
+             && TryGetTransformation(ref _positionTransformation, out var position))
             {
-                if (Time.Now > _transformation.EndTime)
-                {
-                    _transformation = null;
-                }
-                else
-                {
-                    _base += Time.Delta * _transformation.RectBase;
-                }
+                Logger.Log(position);
+                RelativePosition += Time.Delta * position;
+            }
+
+            if (_rotationTransformation is not null
+             && TryGetTransformation(ref _rotationTransformation, out var rotation))
+            {
+                RelativeRotation += Time.Delta * rotation;
+            }
+
+            if (_sizeTransformation is not null 
+             && TryGetTransformation(ref _sizeTransformation, out var size))
+            {
+                RelativeSize += Time.Delta * size;
+            }
+        }
+
+        private static bool TryGetTransformation<T>(ref Transformation<T>? transformation, out T value) where T : struct
+        {
+            if (transformation!.EndTime >= Time.Now)
+            {
+                value = transformation.Value;
+                return true;
+            }
+            else
+            {
+                value = default;
+                transformation = null;
+                return false;
             }
         }
 
         /// <summary>
-        /// Transform the rect of the <see cref="Image"/> in a given time span.
+        /// Transform the <see cref="Rect"/>'s position in a given time span.
         /// </summary>
-        /// <param name="r"> The transformation to add. </param>
-        /// <param name="duration"> The duration of the transformation. </param>
-        internal void SetTransformation(RectBase r, float duration)
+        internal void SetPositionTransformation(Point position, float duration)
         {
+            Logger.Log(position, duration);
             if (duration <= 0.0f)
             {
-                _base = r;
+                RelativePosition += position;
             }
             else
             {
-                _transformation = new Transformation(r / duration, Time.Now + duration);
+                _positionTransformation = new(position / duration, Time.Now + duration);
             }
         }
 
-        public static Point GetPositionFromAnchor(Point position, Point size, Anchor anchor, Point offset)
+        /// <summary>
+        /// Transform the <see cref="Rect"/>'s rotation in a given time span.
+        /// </summary>
+        internal void SetRotationTransformation(Rotator rotation, float duration)
         {
+            if (duration <= 0.0f)
+            {
+                RelativeRotation += rotation;
+            }
+            else
+            {
+                _rotationTransformation = new(rotation / duration, Time.Now + duration);
+            }
+        }
+
+        /// <summary>
+        /// Transform the <see cref="Rect"/>'s size in a given time span.
+        /// </summary>
+        internal void SetSizeTransformation(Point size, float duration)
+        {
+            if (duration <= 0.0f)
+            {
+                RelativeSize += size;
+            }
+            else
+            {
+                _sizeTransformation = new(size / duration, Time.Now + duration);
+            }
+        }
+
+        internal static Point GetPositionFromAnchor(Point position, Point size, Anchor anchor, Point offset)
+        {
+            var (x, y) = position + offset;
+
             if ((anchor & Anchor.Left) == Anchor.Left)
             {
-                position.X += Math.Half(size.X) + offset.X;
+                x += Math.Half(size.X);
             }
             else if ((anchor & Anchor.Right) == Anchor.Right)
             {
-                position.X -= Math.Half(size.X) + offset.X;
-            }
-            else // Centered horizontally
-            {
-                position.X += offset.X;
+                x -= Math.Half(size.X);
             }
 
             if ((anchor & Anchor.Top) == Anchor.Top)
             {
-                position.Y += Math.Half(size.Y) + offset.Y;
+                y += Math.Half(size.Y);
             }
             else if ((anchor & Anchor.Bottom) == Anchor.Bottom)
             {
-                position.Y -= Math.Half(size.Y) + offset.Y;
-            }
-            else // Centered vertically
-            {
-                position.Y += offset.Y;
+                y -= Math.Half(size.Y);
             }
 
-            return position;
+            return new Point(x, y);
         }
 
         /// <summary> 
         /// Get the position given a position, a size and an Anchor.
         /// </summary>
-        public static Point GetPositionFromAnchor(Point position, Point size, Anchor anchor, float offset = 0.0f)
+        internal static Point GetPositionFromAnchor(Point position, Point size, Anchor anchor, float offset = 0.0f)
         {
             return GetPositionFromAnchor(position, size, anchor, new Point(offset));
         }
@@ -249,80 +349,46 @@ namespace Kotono.Utils.Coordinates
         /// <summary>
         /// Creates an array of Rect given a number of elements, a Rect and an Anchor.
         /// </summary>
-        public static Point[] GetPositionFromAnchor(int n, Point position, Point size, Anchor anchor, Point offset)
+        internal static void GetPositionsFromAnchor(Point[] points, Point position, Point size, Anchor anchor, Point offset)
         {
-            var result = Enumerable.Repeat(GetPositionFromAnchor(position, size, anchor, offset), n).ToArray();
-
-            for (int i = 0; i < n; i++)
+            for (int i = 0; i < points.Length; i++)
             {
-                result[i].Y = anchor switch
+                var (x, y) = GetPositionFromAnchor(position, size, anchor, offset);
+
+                y = anchor switch
                 {
-                    Anchor.Center or Anchor.Left or Anchor.Right => position.Y - Math.Half(size.Y) * (n - 1) + size.Y * i,
+                    Anchor.Center or Anchor.Left or Anchor.Right => y - Math.Half(size.Y) * (points.Length - 1) + size.Y * i,
                     Anchor.Top or Anchor.TopLeft or Anchor.TopRight => throw new NotImplementedException(),
                     Anchor.Bottom or Anchor.BottomLeft or Anchor.BottomRight => throw new NotImplementedException(),
                     _ => throw new SwitchException(typeof(Anchor), anchor)
                 };
-            }
 
-            return result;
+                points[i] = new Point(x, y);
+            }
         }
 
         /// <summary>
         /// Creates an array of Rect given a number of elements, a Rect and an Anchor.
         /// </summary>
-        public static Point[] GetPositionFromAnchor(int n, Point position, Point size, Anchor anchor, float offset = 0.0f)
+        internal static void GetPositionsFromAnchor(Point[] points, Point position, Point size, Anchor anchor, float offset = 0.0f)
         {
-            return GetPositionFromAnchor(n, position, size, anchor, new Point(offset));
+            GetPositionsFromAnchor(points, position, size, anchor, new Point(offset));
         }
 
         /// <summary> 
         /// Checks if left is overlapping with right.
         /// </summary>
-        public static bool Overlaps(RectBase left, RectBase right)
+        internal static bool Overlaps(IRect left, IRect right)
         {
-            return Math.Abs(left.Position.X - right.Position.X) < Math.Half(left.Size.X + right.BaseSize.X)
-                && Math.Abs(left.Position.Y - right.Position.Y) < Math.Half(left.Size.Y + right.BaseSize.Y);
+            return Point.Abs(left.WorldPosition - right.WorldPosition) < Point.Half(left.WorldSize + right.WorldSize);
         }
 
         /// <summary> 
-        /// Checks if left is overlapping with right.
+        /// Checks if the <see cref="Rect"/> is overlapping with p.
         /// </summary>
-        public static bool Overlaps(Rect left, RectBase right)
+        internal bool Overlaps(Point p)
         {
-            return Overlaps(left._base, right);
-        }
-
-        /// <summary> 
-        /// Checks if left is overlapping with right.
-        /// </summary>
-        public static bool Overlaps(Rect left, Rect right)
-        {
-            return Overlaps(left._base, right._base);
-        }
-
-        /// <summary> 
-        /// Checks if left is overlapping with right.
-        /// </summary>
-        internal static bool Overlaps(IObject2D left, IObject2D right)
-        {
-            return Overlaps(left.Rect._base, right.Rect._base);
-        }
-
-        /// <summary> 
-        /// Checks if r is overlapping with p.
-        /// </summary>
-        public static bool Overlaps(Rect r, Point p)
-        {
-            return Math.Abs(r.RelativePosition.X - p.X) < Math.Half(r.RelativeSize.X)
-                && Math.Abs(r.RelativePosition.Y - p.Y) < Math.Half(r.RelativeSize.Y);
-        }
-
-        public static Rect Parse(string[] values)
-        {
-            return new Rect(
-                (float.Parse(values[0]), float.Parse(values[1])),
-                (float.Parse(values[2]), float.Parse(values[3]))
-            );
+            return Point.Abs(RelativePosition - p) < Point.Half(RelativeSize);
         }
 
         public static bool operator ==(Rect? left, Rect? right)
@@ -342,7 +408,10 @@ namespace Kotono.Utils.Coordinates
 
         public bool Equals(Rect? r)
         {
-            return r?._base == _base;
+            return r is not null
+                && r.WorldPosition == WorldPosition
+                && r.WorldRotation == WorldRotation
+                && r.WorldSize == WorldSize;
         }
 
         public override int GetHashCode()
@@ -362,7 +431,8 @@ namespace Kotono.Utils.Coordinates
 
         public override string ToString()
         {
-            return $"X: {RelativePosition.X}, Y: {RelativePosition.Y}, W: {RelativeSize.X}, H: {RelativeSize.Y}"; ;
+            return $"Relative: {{Position: {{{RelativePosition}}}, Rotation: {{{RelativeRotation}}}, Size: {{{RelativeSize}}}}}\n" +
+                   $"World: {{Position: {{{WorldPosition}}}, Rotation: {{{WorldRotation}}}, Size: {{{WorldSize}}}}}";
         }
     }
 }

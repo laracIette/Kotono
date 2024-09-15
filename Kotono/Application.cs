@@ -8,12 +8,13 @@ using Kotono.Input;
 using Kotono.Utils;
 using Kotono.Utils.Coordinates;
 using Kotono.Utils.Timing;
+using System;
 using System.Linq;
 using Keys = OpenTK.Windowing.GraphicsLibraryFramework.Keys;
 
 namespace Kotono
 {
-    internal class Application : Window
+    internal sealed class Application : Window
     {
         private readonly Animation _animation;
 
@@ -24,68 +25,35 @@ namespace Kotono
         {
             _ = new Cursor();
 
-            _ = new TestSound();
-
-            _ = new TestImage();
-
-            _ = new TextButtonList(
-                [
-                    "Hey",
-                    "Yo",
-                    "BOoOOooOo"
-                ],
-                new Point(150.0f, 150.0f),
-                new Point(200.0f, 50.0f),
-                Color.DarkSlateGray,
-                15.0f,
-                1.0f,
-                0
-            );
+            _ = new Cubemap();
 
             _animation = new Animation(Path.FromAssets(@"Animations\Counting"))
             {
-                BaseSize = new Point(50.0f, 60.0f),
+                RelativeSize = new Point(50.0f, 60.0f),
                 RelativePosition = new Point(100.0f, 200.0f),
                 Color = Color.Yellow,
-                IsDraw = false,
                 FrameRate = 10.0f,
                 StartTime = 3.0f,
                 Duration = 5.0f
             };
             _animation.Play();
 
-            _timer = new Timer();
-            _timer.Timeout += OnTimerTimeout;
-
-            //var text = new TTFText
-            //{
-            //    FontSize = 15.0f,
-            //    Size = new Point(200.0f, 150.0f)
-            //};
-            //text.AddText("Test", Point.Zero);
+            _timer = new Timer
+            {
+                Timeout = (s, e) => Printer.Print((int)e.Time, true),
+            };
 
             CreateObjects();
         }
 
-        private void OnTimerTimeout(object? sender, TimeoutEventArgs e)
-        {
-            Printer.Print((int)e.Time, true);
-        }
+        private static void OnEnterKeyPressed() 
+            => Mouse.CursorState = (CursorState)Math.Loop((int)Mouse.CursorState + 1, 3);
 
-        private static void OnEnterKeyPressed()
-        {
-            Mouse.CursorState = (CursorState)Math.Loop((int)Mouse.CursorState + 1, 3);
-        }
+        private void OnTKeyPressed() 
+            => _animation.Switch();
 
-        private void OnTKeyPressed()
-        {
-            _animation.Switch();
-        }
-
-        private static void OnIKeyPressed()
-        {
-            Printer.Print(Time.Now, true);
-        }
+        private static void OnIKeyPressed() 
+            => Printer.Print(Time.Now, true);
 
         private static void OnJKeyPressed()
         {
@@ -99,10 +67,7 @@ namespace Kotono
         {
             if (Keyboard.IsKeyPressed(Keys.K))
             {
-                foreach (var obj in ISelectable3D.Selected)
-                {
-                    obj.Parent = null;
-                }
+                ISelectable3D.Selected.ForEach(s => s.Parent = null);
             }
         }
 
@@ -122,17 +87,39 @@ namespace Kotono
 
         private static void CreateObjects()
         {
+            //var text = new TTFText
+            //{
+            //    FontSize = 15.0f,
+            //    Size = new Point(200.0f, 150.0f)
+            //};
+            //text.AddText("Test", Point.Zero);
+
+            _ = new TestSound();
+
+            _ = new TestImage();
+
+            _ = new TextButtonList(
+                [
+                    "Hey",
+                    "Yo",
+                    "BOoOOooOo"
+                ],
+                new Point(150.0f, 150.0f),
+                new Point(200.0f, 50.0f),
+                15.0f,
+                1.0f,
+                0
+            )
+            {
+                ButtonsColor = Color.DarkSlateGray,
+            };
+
             _ = new SpotLight();
 
             _ = new Cube
             {
-                IsGravity = true,
-                IsUpdateFizix = false,
-            };
-
-            _ = new Cube
-            {
                 RelativeLocation = new Vector(0.0f, 0.0f, -5.0f),
+                IsGravity = true,
             };
 
             _ = new Cube
@@ -145,10 +132,8 @@ namespace Kotono
                 _ = new PointLightMesh
                 {
                     Parent = new RainbowPointLight(),
-                    RelativeLocation = Vector.Zero
                 };
             }
         }
     }
-
 }

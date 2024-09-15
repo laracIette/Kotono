@@ -10,7 +10,7 @@ namespace Kotono.Input
 {
     internal static class Keyboard
     {
-        private record class Method(InputAction InputAction, IObject Instance, MethodInfo MethodInfo);
+        private sealed record class Method(InputAction InputAction, IObject Instance, MethodInfo MethodInfo);
 
         private static KeyboardState? _keyboardState;
 

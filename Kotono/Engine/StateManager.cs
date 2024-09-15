@@ -1,8 +1,8 @@
 ﻿namespace Kotono.Engine
 {
-    internal class StateManager : Object
+    internal sealed class StateManager : Object
     {
-        private static StateManager _instance = new();
+        private static readonly StateManager _instance = new();
 
         private StateManager() { }
 

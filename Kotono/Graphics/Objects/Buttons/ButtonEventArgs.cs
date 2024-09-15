@@ -2,7 +2,5 @@
 
 namespace Kotono.Graphics.Objects.Buttons
 {
-    internal class ButtonEventArgs : TimedEventArgs
-    {
-    }
+    internal class ButtonEventArgs : TimedEventArgs;
 }

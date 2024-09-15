@@ -1,16 +1,13 @@
 ﻿namespace Kotono.Audio
 {
-    internal class TestSound : Sound
+    internal sealed class TestSound : Sound
     {
         internal TestSound()
         {
-            SetSource(Path.FromAssets(@"test.wav"));
+            Source = new Source(Path.FromAssets(@"test.wav"));
             Volume = 0.2f;
         }
 
-        private void OnSpaceKeyPressed()
-        {
-            Switch();
-        }
+        private void OnSpaceKeyPressed() => Switch();
     }
 }

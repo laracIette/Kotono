@@ -16,7 +16,7 @@ namespace Kotono.Input
 {
     internal static partial class Mouse
     {
-        private record class Method(InputAction InputAction, IObject Instance, MethodInfo MethodInfo);
+        private sealed record class Method(InputAction InputAction, IObject Instance, MethodInfo MethodInfo);
 
         internal struct POINT
         {
@@ -107,23 +107,27 @@ namespace Kotono.Input
 
             if (CursorState == CursorState.Confined)
             {
-                var delta = Point.Zero;
+                float x = 0.0f;
+                float y = 0.0f;
+
                 if (Position.X < 0.0f)
                 {
-                    delta.X += Window.Size.X;
+                    x = Window.Size.X;
                 }
                 else if (Position.X > Window.Size.X)
                 {
-                    delta.X -= Window.Size.X;
+                    x = -Window.Size.X;
                 }
                 if (Position.Y < 0.0f)
                 {
-                    delta.Y += Window.Size.Y;
+                    y = Window.Size.Y;
                 }
                 else if (Position.Y > Window.Size.Y)
                 {
-                    delta.Y -= Window.Size.Y;
+                    y = -Window.Size.Y;
                 }
+
+                var delta = new Point(x, y);
 
                 if (!Point.IsNullOrZero(delta))
                 {

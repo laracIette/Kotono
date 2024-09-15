@@ -1,16 +1,23 @@
-﻿using Kotono.Utils.Coordinates;
+﻿using Kotono.Utils;
+using Kotono.Utils.Coordinates;
 using OpenTK.Graphics.OpenGL4;
 using System.Collections.Generic;
 
 namespace Kotono.Graphics
 {
-    internal class Viewport : IRect
+    internal sealed class Viewport : IRect
     {
         internal static Viewport Active { get; set; } = WindowComponentManager.WindowViewport;
 
         internal List<Viewport> Connections { get; } = [];
 
         internal Rect Rect { get; } = Rect.Default;
+
+        public Anchor Anchor
+        {
+            get => Rect.Anchor;
+            set => Rect.Anchor = value;
+        }
 
         public Point BaseSize
         {

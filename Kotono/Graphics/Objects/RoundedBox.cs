@@ -47,7 +47,7 @@ namespace Kotono.Graphics.Objects
 
         public override Shader Shader => RoundedBoxShader.Instance;
 
-        protected virtual Matrix4 Model => new NDCRect(RelativePosition, RelativeSize + new Point(FallOff * 2.0f)).Model;
+        protected virtual Matrix4 Model => new NDCRect(WorldPosition, FallOff * 2.0f + WorldSize).Model;
 
         protected virtual void UpdateValues()
         {

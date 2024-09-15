@@ -1,8 +1,7 @@
-﻿namespace Kotono.Graphics.Objects
+﻿using Kotono.Graphics.Textures;
+
+namespace Kotono.Graphics.Objects
 {
-    internal class MaterialTexture(string path)
-        : ImageTexture(path)
-    {
-        internal float Strength { get; set; } = 1.0f;
-    }
+    internal sealed class MaterialTexture(string path)
+        : ImageTexture(path);
 }

@@ -1,4 +1,6 @@
 ﻿using Kotono.Utils.Coordinates;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Kotono.Graphics.Objects
 {
@@ -11,7 +13,8 @@ namespace Kotono.Graphics.Objects
             get => _isDraw && (Parent?.IsDraw ?? true);
             set => _isDraw = value;
         }
-        public virtual Transform Transform { get; } = Transform.Default;
+
+        public Transform Transform { get; } = Transform.Default;
 
         public virtual Vector RelativeLocation
         {
@@ -85,32 +88,59 @@ namespace Kotono.Graphics.Objects
             set => Transform.WorldScaleVelocity = value;
         }
 
+        public override bool IsHovered => false;
+
+        public override bool IsActive => ISelectable3D.Active == this;
+
         private IObject3D? _parent = null;
 
+        /// <inheritdoc cref="IObject3D.Parent"/>
+        /// <remarks>
+        /// Changing this will affect the relative transform of the <see cref="Object3D"/> so that it's world transform stays the same.
+        /// </remarks>
         public virtual IObject3D? Parent
         {
             get => _parent;
             set
             {
+                if (_parent == value)
+                {
+                    return;
+                }
+
                 _parent = value;
 
-                using var clone = Transform.Clone();
+                var worldLocation = WorldLocation;
+                var worldRotation = WorldRotation;
+                var worldScale = WorldScale;
 
                 Transform.Parent = value?.Transform;
 
-                // Remove relative offset, not sure if it'll stay
-                Transform.WorldLocation = clone.WorldLocation;
-                Transform.WorldRotation = clone.WorldRotation;
-                Transform.WorldScale = clone.WorldScale;
+                WorldLocation = worldLocation;
+                WorldRotation = worldRotation;
+                WorldScale = worldScale;
             }
         }
 
-        public override bool IsHovered => false;
+        public IEnumerable<IObject3D> Children => ObjectManager.GetObjectsOfType<IObject3D>(o => o.Parent == this);
 
-        public override bool IsActive => ISelectable3D.Active == this;
+        public IEnumerable<TChildren> GetChildren<TChildren>() where TChildren : IObject3D
+        {
+            return Children.OfType<TChildren>();
+        }
+
+        public TChild? GetChild<TChild>() where TChild : IObject3D
+        {
+            return GetChildren<TChild>().First();
+        }
 
         public override void Dispose()
         {
+            foreach (var child in Children)
+            {
+                child.Parent = Parent;
+            }
+
             Transform.Dispose();
 
             base.Dispose();

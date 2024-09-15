@@ -72,7 +72,7 @@ namespace Kotono.Tests.Painter
     }
 #else
 
-    internal class Canvas : Object2D
+    internal sealed class Canvas : Object2D
     {
         private Shape3D? _shape = null;
 

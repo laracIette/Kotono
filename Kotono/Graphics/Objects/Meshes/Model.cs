@@ -1,70 +1,42 @@
 ﻿using Kotono.Graphics.Shaders;
 using Kotono.Utils.Coordinates;
-using OpenTK.Graphics.OpenGL4;
-using System;
-using System.Collections.Generic;
+using System.Linq;
 
 namespace Kotono.Graphics.Objects.Meshes
 {
-    internal class Model
+    internal sealed class Model
     {
-        private static readonly Dictionary<string, ModelVertices> _modelsVertices = [];
+        private readonly ModelData[] _modelDatas;
 
-        private readonly ElementBufferObject _elementBufferObject = new();
+        internal string Path { get; }
 
-        private readonly ModelVertices _modelVertices;
+        internal ModelTriangle[] Triangles => [.. _modelDatas.SelectMany(m => m.Triangles)];
 
-        private Shader _shader = NewLightingShader.Instance;
+        internal Vector[] Vertices => [.. _modelDatas.SelectMany(m => m.Vertices)];
 
-        internal Shader Shader
+        internal Vector Center => Vector.Avg([.. _modelDatas.Select(m => m.Center)]);
+
+        internal Model(string path)
         {
-            get => _shader;
-            set
-            {
-                if (_shader != value)
-                {
-                    _shader = value;
-                    UpdateShaderAndBuffers();
-                }
-            }
+            Path = path;
+
+            _modelDatas = ModelData.Parse(path);
         }
 
-        internal ModelTriangle[] Triangles => _modelVertices.Triangles;
-
-        internal Vector[] Vertices => _modelVertices.Vertices;
-
-        internal Vector Center => _modelVertices.Center;
-
-        internal Model(string path, Shader shader)
+        internal void SetVertexAttributesLayout(Shader shader)
         {
-            if (!_modelsVertices.TryGetValue(path, out ModelVertices? modelVertices))
+            foreach (var modelData in _modelDatas)
             {
-                modelVertices = new ModelVertices(path);
-                _modelsVertices[path] = modelVertices;
+                modelData.VertexArraySetup.VertexArrayObject.SetVertexAttributesLayout(shader);
             }
-
-            _modelVertices = modelVertices;
-
-            Shader = shader;
-
-            _elementBufferObject.SetData(_modelVertices.Indices, sizeof(int));
-        }
-
-        private void UpdateShaderAndBuffers()
-        {
-            _shader.Use();
-            _modelVertices.VertexArraySetup.Bind();
-            _shader.SetVertexAttributesData();
-            _elementBufferObject.Bind();
         }
 
         internal void Draw()
         {
-            _modelVertices.VertexArraySetup.Bind();
-
-            _elementBufferObject.Bind();
-
-            GL.DrawElements(PrimitiveType.Triangles, _modelVertices.IndicesCount, DrawElementsType.UnsignedInt, IntPtr.Zero);
+            foreach (var modelData in _modelDatas)
+            {
+                modelData.Draw();
+            }
         }
     }
 }

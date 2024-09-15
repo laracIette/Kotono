@@ -2,8 +2,5 @@
 
 namespace Kotono.Graphics.Objects.Shapes
 {
-    internal class Line(Vector start, Vector end)
-        : Shape3D([start, end])
-    {
-    }
+    internal sealed class Line(Vector start, Vector end) : Shape3D([start, end]);
 }

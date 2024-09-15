@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Kotono.Graphics.Statistics
 {
-    internal class RateStat : Text
+    internal sealed class RateStat : Text
     {
         private readonly float[] _times = new float[60];
 
@@ -20,7 +20,7 @@ namespace Kotono.Graphics.Statistics
 
         internal float Rate => 1.0f / Time;
 
-        public RateStat()
+        internal RateStat()
         {
             RelativeSize = new Point(50.0f, 60.0f);
             Layer = 1;

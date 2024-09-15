@@ -5,7 +5,7 @@ using OpenTK.Graphics.OpenGL4;
 
 namespace Kotono.Graphics.Objects.Shapes
 {
-    internal class Shape2D : Object2D
+    internal sealed class Shape2D : Object2D
     {
         private readonly VertexArraySetup _vertexArraySetup = new();
 
@@ -83,14 +83,14 @@ namespace Kotono.Graphics.Objects.Shapes
 
         public override void Draw()
         {
-            _vertexArraySetup.Bind();
+            _vertexArraySetup.VertexArrayObject.Bind();
             GL.DrawArrays(_mode, 0, _points.Length);
         }
 
         private void UpdateBuffers()
         {
             _vertexArraySetup.SetData(_points, Point.SizeInBytes);
-            Shader.SetVertexAttributeData(0, 2, VertexAttribPointerType.Float, Point.SizeInBytes, 0);
+            _vertexArraySetup.VertexArrayObject.SetVertexAttributesLayout(Shape2DShader.Instance);
         }
     }
 }

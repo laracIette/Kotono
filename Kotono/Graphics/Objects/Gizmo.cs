@@ -7,7 +7,7 @@ using CursorState = Kotono.Input.CursorState;
 
 namespace Kotono.Graphics.Objects
 {
-    internal class Gizmo : Object3D
+    internal sealed class Gizmo : Object3D
     {
         private Gizmo()
         {
@@ -21,15 +21,31 @@ namespace Kotono.Graphics.Objects
 
         private readonly GizmoMesh[] _meshes =
         [
-            new GizmoMesh(Color.Red, "x"),
-            new GizmoMesh(Color.Green, "y"),
-            new GizmoMesh(Color.Blue, "z"),
-            new GizmoMesh(Color.White, "sphere")
+            new GizmoMesh
+            { 
+                Color = Color.Red,
+                Model = new Model(Path.FromAssets($@"Gizmo\gizmo_x.obj"))
+            },
+            new GizmoMesh
+            { 
+                Color = Color.Green,
+                Model = new Model(Path.FromAssets($@"Gizmo\gizmo_y.obj"))
+            },
+            new GizmoMesh
+            { 
+                Color = Color.Blue,
+                Model = new Model(Path.FromAssets($@"Gizmo\gizmo_z.obj"))
+            },
+            new GizmoMesh
+            { 
+                Color = Color.White,
+                Model = new Model(Path.FromAssets($@"Gizmo\gizmo_shpere.obj"))
+            }
         ];
 
         public override bool IsDraw => IsUpdate;
 
-        public override bool IsUpdate => ISelectable3D.Active != null;
+        public override bool IsUpdate => ISelectable3D.Active is not null;
 
         private static int _selectedMeshIndex = -1;
 
@@ -64,7 +80,7 @@ namespace Kotono.Graphics.Objects
                 case GizmoMode.Location:
                     var locDelta = GetLocationDelta();
 
-                    if (!locDelta.IsZero)
+                    if (!Vector.IsNullOrZero(locDelta))
                     {
                         WorldLocation += locDelta;
 
@@ -78,7 +94,7 @@ namespace Kotono.Graphics.Objects
                 case GizmoMode.Rotation:
                     var rotDelta = GetRotationDelta();
 
-                    if (!rotDelta.IsZero)
+                    if (!Rotator.IsNullOrZero(rotDelta))
                     {
                         WorldRotation += rotDelta;
 
@@ -93,27 +109,30 @@ namespace Kotono.Graphics.Objects
                     break;
             }
 
-            WorldScale = (Vector)(Vector.Distance(WorldLocation, Camera.Active.Location) / 75.0f);
+            WorldScale = (Vector)(Vector.Distance(WorldLocation, Camera.Active.WorldLocation) / 75.0f);
 
-            var delta = Rotator.Zero;
+            float pitch = 0.0f;
+            float yaw = 0.0f;
+            float roll = 0.0f;
+
             if (Keyboard.IsKeyDown(Keys.Left))
             {
-                delta.Pitch = Keyboard.IsKeyDown(Keys.LeftShift) ? -Time.Delta : Time.Delta;
+                pitch = Keyboard.IsKeyDown(Keys.LeftShift) ? -Time.Delta : Time.Delta;
             }
             if (Keyboard.IsKeyDown(Keys.Down))
             {
-                delta.Yaw = Keyboard.IsKeyDown(Keys.LeftShift) ? -Time.Delta : Time.Delta;
+                yaw = Keyboard.IsKeyDown(Keys.LeftShift) ? -Time.Delta : Time.Delta;
             }
             if (Keyboard.IsKeyDown(Keys.Right))
             {
-                delta.Roll = Keyboard.IsKeyDown(Keys.LeftShift) ? -Time.Delta : Time.Delta;
+                roll = Keyboard.IsKeyDown(Keys.LeftShift) ? -Time.Delta : Time.Delta;
             }
 
-            if (!delta.IsZero)
+            var delta = new Rotator(pitch, yaw, roll);
+
+            if (!Rotator.IsNullOrZero(delta))
             {
                 WorldRotation += delta;
-
-                //print(WorldRotation, true);
             }
         }
 

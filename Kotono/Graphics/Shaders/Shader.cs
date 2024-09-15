@@ -1,16 +1,16 @@
-﻿using Kotono.Graphics.Objects;
-using Kotono.Graphics.Objects.Lights;
+﻿using Kotono.Graphics.Objects.Lights;
 using Kotono.Utils;
 using Kotono.Utils.Coordinates;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using System;
 using System.Collections.Generic;
+using System.Text;
 using IO = System.IO;
 
 namespace Kotono.Graphics.Shaders
 {
-    internal class Shader
+    internal abstract class Shader
     {
         private readonly int _handle;
 
@@ -56,9 +56,29 @@ namespace Kotono.Graphics.Shaders
             ShaderManager.Create(this);
         }
 
-        internal virtual void SetVertexAttributesData() { }
+        internal abstract void SetVertexAttributesLayout();
 
-        internal virtual void Update() => Use();
+        internal string[] GetVertexAttributes()
+        {
+            GL.GetProgram(_handle, GetProgramParameterName.ActiveAttributes, out int numAttributes);
+            GL.GetProgram(_handle, GetProgramParameterName.ActiveAttributeMaxLength, out int maxNameLength);
+
+            var attributes = new string[numAttributes];
+            for (int i = 0; i < numAttributes; ++i)
+            {
+                GL.GetActiveAttrib(_handle, i, maxNameLength, out _, out _, out _, out string name);
+                attributes[i] = name;
+            }
+
+            return attributes;
+        }
+
+        internal string[] GetUniforms()
+        {
+            return [.. _uniformLocations.Keys];
+        }
+
+        internal virtual void Update() { }
 
         private static void CompileShader(int shader)
         {
@@ -86,7 +106,7 @@ namespace Kotono.Graphics.Shaders
 
         internal void Use() => GL.UseProgram(_handle);
 
-        private bool TryGetUniformLocation(string name, out int location)
+        private bool TryGetUniformLocation(in string name, out int location)
         {
             if (_uniformLocations.TryGetValue(name, out location))
             {
@@ -94,11 +114,11 @@ namespace Kotono.Graphics.Shaders
                 return true;
             }
 
-            Logger.LogError($"couldn't find attribute location \"{name}\" in Shader \"{Name}\"");
+            //Logger.LogError($"couldn't find attribute location \"{name}\" in Shader \"{Name}\"");
             return false;
         }
 
-        internal void SetBool(string name, bool data)
+        internal void SetBool(in string name, bool data)
         {
             if (TryGetUniformLocation(name, out int location))
             {
@@ -106,7 +126,7 @@ namespace Kotono.Graphics.Shaders
             }
         }
 
-        internal void SetInt(string name, int data)
+        internal void SetInt(in string name, int data)
         {
             if (TryGetUniformLocation(name, out int location))
             {
@@ -114,7 +134,7 @@ namespace Kotono.Graphics.Shaders
             }
         }
 
-        internal void SetFloat(string name, float data)
+        internal void SetFloat(in string name, float data)
         {
             if (TryGetUniformLocation(name, out int location))
             {
@@ -122,7 +142,7 @@ namespace Kotono.Graphics.Shaders
             }
         }
 
-        internal void SetMatrix4(string name, Matrix4 data)
+        internal void SetMatrix4(in string name, Matrix4 data)
         {
             if (TryGetUniformLocation(name, out int location))
             {
@@ -130,7 +150,7 @@ namespace Kotono.Graphics.Shaders
             }
         }
 
-        internal void SetVector(string name, Vector data)
+        internal void SetVector(in string name, Vector data)
         {
             if (TryGetUniformLocation(name, out int location))
             {
@@ -138,7 +158,7 @@ namespace Kotono.Graphics.Shaders
             }
         }
 
-        internal void SetColor(string name, Color data)
+        internal void SetColor(in string name, Color data)
         {
             if (TryGetUniformLocation(name, out int location))
             {
@@ -146,7 +166,7 @@ namespace Kotono.Graphics.Shaders
             }
         }
 
-        internal void SetRect(string name, Rect data)
+        internal void SetRect(in string name, Rect data)
         {
             if (TryGetUniformLocation(name, out int location))
             {
@@ -154,7 +174,7 @@ namespace Kotono.Graphics.Shaders
             }
         }
 
-        internal void SetSides(string name, Sides data)
+        internal void SetSides(in string name, Sides data)
         {
             SetFloat($"{name}.left", data.Left);
             SetFloat($"{name}.right", data.Right);
@@ -162,7 +182,7 @@ namespace Kotono.Graphics.Shaders
             SetFloat($"{name}.bottom", data.Bottom);
         }
 
-        internal void SetPoint(string name, Point data)
+        internal void SetPoint(in string name, Point data)
         {
             if (TryGetUniformLocation(name, out int location))
             {
@@ -170,35 +190,31 @@ namespace Kotono.Graphics.Shaders
             }
         }
 
-        internal void SetMaterial(string name, Material data)
+        internal void SetTextureUnit(in string name, TextureUnit data)
         {
-            SetMaterialTexture($"{name}.albedo", data.Albedo);
-            SetMaterialTexture($"{name}.normal", data.Normal);
-            SetMaterialTexture($"{name}.metallic", data.Metallic);
-            SetMaterialTexture($"{name}.roughness", data.Roughness);
-            SetMaterialTexture($"{name}.ambientOcclusion", data.AmbientOcclusion);
-            SetMaterialTexture($"{name}.emissive", data.Emissive);
+            SetInt(name, data - TextureUnit.Texture0);
         }
 
-        private void SetMaterialTexture(string name, MaterialTexture? data)
+        internal void SetMaterial(in string name, Material data)
         {
-            if (data != null)
-            {
-                SetInt($"{name}.handle", data.Handle);
-                SetFloat($"{name}.strength", data.Strength);
-            }
+            SetTextureUnit($"{name}.albedo", data.Albedo.TextureUnit);
+            SetTextureUnit($"{name}.normal", data.Normal.TextureUnit);
+            SetTextureUnit($"{name}.metallic", data.Metallic.TextureUnit);
+            SetTextureUnit($"{name}.roughness", data.Roughness.TextureUnit);
+            SetTextureUnit($"{name}.ambientOcclusion", data.AmbientOcclusion.TextureUnit);
+            SetTextureUnit($"{name}.emissive", data.Emissive.TextureUnit);
         }
 
-        internal void SetDirectionalLight(string name, DirectionalLight data)
+        internal void SetDirectionalLight(in string name, DirectionalLight data)
         {
             SetVector($"{name}.direction", data.Direction);
-            //SetColor($"{name}.ambient", data.Ambient);
+            SetColor($"{name}.ambient", data.Ambient);
             SetColor($"{name}.diffuse", data.Diffuse);
-            //SetColor($"{name}.specular", data.Specular);
+            SetColor($"{name}.specular", data.Specular);
             SetFloat($"{name}.intensity", data.Intensity);
         }
 
-        internal void SetPointLight(string name, PointLight data)
+        internal void SetPointLight(in string name, PointLight data)
         {
             SetColor($"{name}.ambient", data.Ambient);
             SetColor($"{name}.diffuse", data.Diffuse);
@@ -209,7 +225,7 @@ namespace Kotono.Graphics.Shaders
             SetFloat($"{name}.intensity", data.Intensity);
         }
 
-        internal void SetSpotLight(string name, SpotLight data)
+        internal void SetSpotLight(in string name, SpotLight data)
         {
             SetColor($"{name}.ambient", data.Ambient);
             SetColor($"{name}.diffuse", data.Diffuse);
@@ -227,5 +243,7 @@ namespace Kotono.Graphics.Shaders
             GL.EnableVertexAttribArray(index);
             GL.VertexAttribPointer(index, size, type, false, stride, offset);
         }
+
+        public override string ToString() => $"Name: {Name}";
     }
 }

@@ -1,6 +1,5 @@
 ﻿using Kotono.Graphics.Objects;
 using Kotono.Graphics.Objects.Meshes;
-using Kotono.Utils;
 using Kotono.Utils.Coordinates;
 using OpenTK.Graphics.OpenGL4;
 using System;
@@ -16,20 +15,20 @@ namespace Kotono.Graphics
 
         private readonly List<IObject2D> _object2DRenderQueue = [];
 
-        private readonly List<IObject3D> _object3DRenderQueue = [];
+        private readonly List<IObject3D> _object3DOpaqueRenderQueue = [];
+
+        private readonly List<IObject3D> _object3DTransparentRenderQueue = [];
+
+        private ICubemap? _cubemap = null;
+
+        private int _renders = 0;
 
         internal void SetSize(Point size) => _framebuffer.Size = size;
 
         #region RenderQueue
 
-        public void AddToRenderQueue(IDrawable drawable) // TODO: use IEnumerator and yield return,
-                                                         // for each Drawable, create branch
+        public void AddToRenderQueue(IDrawable drawable)
         {
-            if (!drawable.IsDraw)
-            {
-                return;
-            }
-
             switch (drawable)
             {
                 case IFrontMesh frontMesh:
@@ -44,6 +43,10 @@ namespace Kotono.Graphics
                     AddToObject3DRenderQueue(object3D);
                     break;
 
+                case ICubemap cubemap:
+                    _cubemap = cubemap;
+                    break;
+
                 default:
                     break;
             }
@@ -51,44 +54,38 @@ namespace Kotono.Graphics
 
         private void AddToObject2DRenderQueue(IObject2D object2D)
         {
-            var position = Rect.GetPositionFromAnchor(object2D.Viewport.RelativePosition, object2D.Viewport.RelativeSize, Anchor.TopLeft);
+            //var position = Rect.GetPositionFromAnchor(object2D.Viewport.RelativePosition, object2D.Viewport.RelativeSize, Anchor.TopLeft);
 
-            if (!Rect.Overlaps(object2D.Rect, new RectBase(position, object2D.Viewport.RelativeSize)))
-            {
-                return;
-            }
-
-            // Index of the first object of a superior layer
-            int index = _object2DRenderQueue.FindIndex(i => i.Layer > object2D.Layer);
-
-            // If every object has an inferior Layer
-            if (index == -1)
-            {
-                // Add object2D at the end
-                _object2DRenderQueue.Add(object2D);
-            }
-            else
-            {
-                // Insert before the first object of a superior layer 
-                _object2DRenderQueue.Insert(index, object2D);
-            }
+            //if (!Rect.Overlaps(object2D.Rect, new RectBase(position, object2D.Viewport.RelativeSize)))
+            //{
+            //    return;
+            //}
+               
+            _object2DRenderQueue.Add(object2D);
         }
 
         private void AddToObject3DRenderQueue(IObject3D object3D)
         {
-            _object3DRenderQueue.Add(object3D);
+            if (object3D.Color.A >= 1.0f)
+            {
+                _object3DOpaqueRenderQueue.Add(object3D);
+            }
+            else
+            {
+                _object3DTransparentRenderQueue.Add(object3D);
+            }
         }
 
-        private void AddToFrontMeshRenderQueue(IFrontMesh frontMesh)
-        {
-            _frontMeshRenderQueue.Add(frontMesh);
-        }
+        private void AddToFrontMeshRenderQueue(IFrontMesh frontMesh) 
+            => _frontMeshRenderQueue.Add(frontMesh);
 
         private void ClearRenderQueues()
         {
             _object2DRenderQueue.Clear();
-            _object3DRenderQueue.Clear();
+            _object3DOpaqueRenderQueue.Clear();
+            _object3DTransparentRenderQueue.Clear();
             _frontMeshRenderQueue.Clear();
+            _cubemap = null;
         }
 
         #endregion RenderQueue
@@ -99,7 +96,9 @@ namespace Kotono.Graphics
         {
             _framebuffer.BeginDraw();
 
-            DrawObject3DRenderQueue();
+            DrawCubemap();
+            DrawObject3DOpaqueRenderQueue();
+            DrawObject3DTransparentRenderQueue();
             DrawFrontMeshRenderQueue();
             DrawObject2DRenderQueue();
 
@@ -107,35 +106,94 @@ namespace Kotono.Graphics
 
             ClearRenderQueues();
 
+            ++_renders;
         }
 
         private void DrawObject2DRenderQueue()
         {
-            GL.Enable(EnableCap.Blend);
+            if (_object2DRenderQueue.Count == 0)
+            {
+                return;
+            }
 
-            _object2DRenderQueue.ForEach(DrawObject2D);
+            _object2DRenderQueue.Sort((a, b) => a.Layer.CompareTo(b.Layer));
+
+            GL.Enable(EnableCap.Blend);
+            GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+
+            _object2DRenderQueue.ForEach(DrawDrawable);
 
             GL.Disable(EnableCap.Blend);
         }
 
-        private void DrawObject3DRenderQueue()
+        private void DrawObject3DOpaqueRenderQueue()
         {
+            if (_object3DOpaqueRenderQueue.Count == 0)
+            {
+                return;
+            }
+
+            GL.DepthFunc(DepthFunction.Lequal);
             GL.Enable(EnableCap.DepthTest);
 
-            _object3DRenderQueue.ForEach(DrawObject3D);
+            _object3DOpaqueRenderQueue.ForEach(DrawDrawable);
 
+            GL.DepthFunc(DepthFunction.Less);
+            GL.Disable(EnableCap.DepthTest);
+        }
+
+        private void DrawObject3DTransparentRenderQueue()
+        {
+            if (_object3DTransparentRenderQueue.Count == 0)
+            {
+                return;
+            }
+
+            _object3DTransparentRenderQueue.Sort(
+                (a, b) => Vector.Distance(b.WorldLocation, Camera.Active.WorldLocation)
+                .CompareTo(Vector.Distance(a.WorldLocation, Camera.Active.WorldLocation))
+            );
+
+            GL.DepthMask(false);
+            GL.Enable(EnableCap.Blend);
+            GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+            GL.Enable(EnableCap.DepthTest);
+
+            _object3DTransparentRenderQueue.ForEach(DrawDrawable);
+
+            GL.DepthMask(true);
+            GL.Disable(EnableCap.Blend);
             GL.Disable(EnableCap.DepthTest);
         }
 
         private void DrawFrontMeshRenderQueue()
         {
-            //GL.Enable(EnableCap.DepthTest);
+            if (_frontMeshRenderQueue.Count == 0)
+            {
+                return;
+            }
 
+            //GL.Enable(EnableCap.DepthTest);
             //GL.Clear(ClearBufferMask.DepthBufferBit);
 
-            _frontMeshRenderQueue.ForEach(DrawFrontMesh);
+            _frontMeshRenderQueue.ForEach(DrawDrawable);
 
             //GL.Disable(EnableCap.DepthTest);
+        }
+       
+        private void DrawCubemap()
+        {
+            if (_cubemap is null)
+            {
+                return;
+            }
+
+            GL.DepthMask(false);
+            GL.DepthFunc(DepthFunction.Lequal);
+            DrawDrawable(_cubemap);
+
+            GL.DepthMask(true);
+            GL.DepthFunc(DepthFunction.Less);
         }
 
         private static void DrawDrawable(IDrawable drawable)
@@ -145,19 +203,8 @@ namespace Kotono.Graphics
             drawable.Draw();
         }
 
-        private static void DrawObject2D(IObject2D object2D) => DrawDrawable(object2D);
-
-        private static void DrawObject3D(IObject3D object3D) => DrawDrawable(object3D);
-
-        private static void DrawFrontMesh(IFrontMesh frontMesh) => DrawDrawable(frontMesh);
-
         #endregion Render
 
-        public void Dispose()
-        {
-            _framebuffer.Dispose();
-
-            GC.SuppressFinalize(this);
-        }
+        public void Dispose() => _framebuffer.Dispose();
     }
 }

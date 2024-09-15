@@ -16,7 +16,7 @@ namespace Kotono.Graphics.Shaders
 
         internal override void Update()
         {
-            SetViewPos(Camera.Active.Location);
+            SetViewPos(Camera.Active.WorldLocation);
             SetProjection(Camera.Active.ProjectionMatrix);
 
             SetDirLight(_directionalLight);

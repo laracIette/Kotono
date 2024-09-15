@@ -12,22 +12,22 @@ namespace Kotono.Utils
     public struct Color : IEquatable<Color>
     {
         /// <summary> 
-        /// The red component of the Color. 
+        /// The red component of the <see cref="Color"/>. 
         /// </summary>
         public float R = 0.0f;
 
         /// <summary> 
-        /// The green component of the Color. 
+        /// The green component of the <see cref="Color"/>. 
         /// </summary>
         public float G = 0.0f;
 
         /// <summary> 
-        /// The blue component of the Color. 
+        /// The blue component of the <see cref="Color"/>. 
         /// </summary>
         public float B = 0.0f;
 
         /// <summary> 
-        /// The alpha component of the Color. 
+        /// The alpha component of the <see cref="Color"/>. 
         /// </summary>
         public float A = 1.0f;
 
@@ -268,7 +268,7 @@ namespace Kotono.Utils
         /// </summary>
         public static Color Blend(Color left, Color right, float blendFactor)
         {
-            return Clamp(left * (1 - blendFactor) + right * blendFactor);
+            return Clamp((1 - blendFactor) * left + blendFactor * right);
         }
 
         /// <summary>
@@ -284,10 +284,12 @@ namespace Kotono.Utils
         /// </summary>
         public static Color Clamp(Color color, float min, float max)
         {
-            color.R = Math.Clamp(color.R, min, max);
-            color.G = Math.Clamp(color.G, min, max);
-            color.B = Math.Clamp(color.B, min, max);
-            return color;
+            return new Color(
+                Math.Clamp(color.R, min, max),
+                Math.Clamp(color.G, min, max),
+                Math.Clamp(color.B, min, max),
+                color.A
+            );
         }
 
         /// <summary> 
@@ -295,11 +297,7 @@ namespace Kotono.Utils
         /// </summary>
         public static Color Add(Color left, Color right)
         {
-            left.R += right.R;
-            left.G += right.G;
-            left.B += right.B;
-            left.A += right.A;
-            return left;
+            return new Color(left.R + right.R, left.G + right.G, left.B + right.B, left.A + right.A);
         }
 
         /// <summary> 
@@ -307,86 +305,74 @@ namespace Kotono.Utils
         /// </summary>
         public static Color Substract(Color left, Color right)
         {
-            left.R -= right.R;
-            left.G -= right.G;
-            left.B -= right.B;
-            left.A -= right.A;
-            return left;
+            return new Color(left.R - right.R, left.G - right.G, left.B - right.B, left.A - right.A);
         }
 
         public static Color Parse(string[] values)
         {
-            return new Color
-            {
-                R = float.Parse(values[0]),
-                G = float.Parse(values[1]),
-                B = float.Parse(values[2]),
-                A = float.Parse(values[3])
-            };
+            return new Color(
+                float.Parse(values[0]),
+                float.Parse(values[1]),
+                float.Parse(values[2]),
+                float.Parse(values[3])
+            );
         }
 
         public static Color operator +(Color left, Color right)
         {
-            left.R += right.R;
-            left.G += right.G;
-            left.B += right.B;
-            return left;
+            return new Color(left.R + right.R, left.G + right.G, left.B + right.B, left.A);
+        }
+
+        public static Color operator +(float f, Color c)
+        {
+            return new Color(c.R + f, c.G + f, c.B + f, c.A);
+        }
+
+        [Obsolete("Reorder operands, use \"Color.operator +(float, Color)\" instead.")]
+        public static Color operator +(Color c, float f)
+        {
+            return f + c;
         }
 
         public static Color operator -(Color left, Color right)
         {
-            left.R -= right.R;
-            left.G -= right.G;
-            left.B -= right.B;
-            return left;
+            return new Color(left.R - right.R, left.G - right.G, left.B - right.B, left.A);
         }
 
         public static Color operator -(Color c, float f)
         {
-            c.R -= f;
-            c.G -= f;
-            c.B -= f;
-            return c;
+            return new Color(c.R - f, c.G - f, c.B - f, c.A);
         }
 
         public static Color operator -(Color c)
         {
-            c.R = -c.R;
-            c.G = -c.G;
-            c.B = -c.B;
-            return c;
+            return new Color(-c.R, -c.G, -c.B, c.A);
         }
 
         public static Color operator *(Color left, Color right)
         {
-            left.R *= right.R;
-            left.G *= right.G;
-            left.B *= right.B;
-            return left;
+            return new Color(left.R * right.R, left.G * right.G, left.B * right.B, left.A);
         }
 
+        public static Color operator *(float f, Color c)
+        {
+            return new Color(c.R * f, c.G * f, c.B * f, c.A);
+        }
+
+        [Obsolete("Reorder operands, use \"Color.operator *(float, Color)\" instead.")]
         public static Color operator *(Color c, float f)
         {
-            c.R *= f;
-            c.G *= f;
-            c.B *= f;
-            return c;
+            return f * c;
         }
 
         public static Color operator /(Color left, Color right)
         {
-            left.R /= right.R;
-            left.G /= right.G;
-            left.B /= right.B;
-            return left;
+            return new Color(left.R / right.R, left.G / right.G, left.B / right.B, left.A);
         }
 
         public static Color operator /(Color c, float f)
         {
-            c.R /= f;
-            c.G /= f;
-            c.B /= f;
-            return c;
+            return new Color(c.R / f, c.G / f, c.B / f, c.A);
         }
 
         public static bool operator ==(Color left, Color right)

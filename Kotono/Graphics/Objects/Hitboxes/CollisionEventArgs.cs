@@ -2,7 +2,7 @@
 
 namespace Kotono.Graphics.Objects.Hitboxes
 {
-    internal class CollisionEventArgs(IHitbox source, IHitbox collider) : TimedEventArgs
+    internal sealed class CollisionEventArgs(IHitbox source, IHitbox collider) : TimedEventArgs
     {
         /// <summary>
         /// The <see cref="IHitbox"/> that detected the collision.

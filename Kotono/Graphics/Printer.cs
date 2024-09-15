@@ -37,7 +37,7 @@ namespace Kotono.Graphics
 
         private static void Print(string? text, Color color)
         {
-            if (text != null)
+            if (text is not null)
             {
                 // Split the text for each line skip,
                 // and Reverse the list cause the last element printed gets lowered,
@@ -48,7 +48,7 @@ namespace Kotono.Graphics
                     _texts[CurrentIndex].Source = token;
                     _texts[CurrentIndex].Color = color;
 
-                    CurrentIndex++;
+                    ++CurrentIndex;
                 }
             }
         }
@@ -60,7 +60,7 @@ namespace Kotono.Graphics
         /// <param name="color"> The color of the text. </param>
         internal static void Print(object? obj, Color color)
         {
-            if (obj != null)
+            if (obj is not null)
             {
                 Print(obj.ToString(), color);
             }

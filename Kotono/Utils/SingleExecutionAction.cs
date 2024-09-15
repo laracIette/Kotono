@@ -2,7 +2,7 @@
 
 namespace Kotono.Utils
 {
-    internal class SingleExecutionAction(Action action)
+    internal sealed class SingleExecutionAction(Action action)
     {
         private bool _hasBeenExecuted = false;
 

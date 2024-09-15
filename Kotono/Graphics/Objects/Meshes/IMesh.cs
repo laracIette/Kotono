@@ -1,7 +1,7 @@
 ﻿using Kotono.Graphics.Objects.Hitboxes;
 using Kotono.Physics;
+using Kotono.Utils;
 using Kotono.Utils.Coordinates;
-using System.Collections.Generic;
 
 namespace Kotono.Graphics.Objects.Meshes
 {
@@ -19,6 +19,9 @@ namespace Kotono.Graphics.Objects.Meshes
 
         public Material Material { get; set; }
 
-        public List<Hitbox> Hitboxes { get; set; }
+        /// <summary>
+        /// The hitboxes of the <see cref="IMesh"/>.
+        /// </summary>
+        public CustomList<Hitbox> Hitboxes { get; }
     }
 }

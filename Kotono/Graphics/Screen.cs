@@ -69,11 +69,10 @@ namespace Kotono.Graphics
             monitorInfo.Size = (uint)Marshal.SizeOf(monitorInfo);
             GetMonitorInfo(hMonitor, ref monitorInfo);
 
-            Size = new Point
-            {
-                X = monitorInfo.Monitor.Right - monitorInfo.Monitor.Left,
-                Y = monitorInfo.Monitor.Bottom - monitorInfo.Monitor.Top
-            };
+            Size = new Point(
+                monitorInfo.Monitor.Right - monitorInfo.Monitor.Left,
+                monitorInfo.Monitor.Bottom - monitorInfo.Monitor.Top
+            );
 
             return true;
         }

@@ -3,15 +3,15 @@
 namespace Kotono.Utils.Coordinates
 {
     [StructLayout(LayoutKind.Sequential)]
-    public struct Vertex3D
+    public readonly struct Vertex3D
     {
-        public Vector Location { get; set; }
+        public required Vector Pos { get; init; }
 
-        public Vector Normal { get; set; }
+        public required Vector Normal { get; init; }
 
-        public Vector Tangent { get; set; }
+        public required Vector Tangent { get; init; }
 
-        public Point TexCoord { get; set; }
+        public required Point TexCoords { get; init; }
 
         public static int SizeInBytes => Vector.SizeInBytes * 3 + Point.SizeInBytes;
     }

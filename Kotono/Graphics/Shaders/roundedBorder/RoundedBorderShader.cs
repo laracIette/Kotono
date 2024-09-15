@@ -2,7 +2,7 @@
 
 namespace Kotono.Graphics.Shaders
 {
-    internal partial class RoundedBorderShader : Shader
+    internal sealed partial class RoundedBorderShader : Shader
     {
         private RoundedBorderShader() : base("roundedBorder") { }
 
@@ -10,7 +10,11 @@ namespace Kotono.Graphics.Shaders
 
         internal static RoundedBorderShader Instance => _instance.Value;
 
-        internal override void SetVertexAttributesData() { }
+        private static void SetAPos() => SetVertexAttributeData(0, 3, global::OpenTK.Graphics.OpenGL4.VertexAttribPointerType.Float, 20, 0);
+
+        private static void SetATexCoords() => SetVertexAttributeData(1, 2, global::OpenTK.Graphics.OpenGL4.VertexAttribPointerType.Float, 20, 12);
+
+        internal override void SetVertexAttributesLayout() { SetAPos(); SetATexCoords(); }
 
         internal void SetModel(global::OpenTK.Mathematics.Matrix4 model) => SetMatrix4("model", model);
 

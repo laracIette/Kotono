@@ -3,7 +3,7 @@ using OpenTK.Graphics.OpenGL4;
 
 namespace Kotono.Graphics.Objects.Hitboxes
 {
-    internal class Box : Hitbox
+    internal sealed class Box : Hitbox
     {
         private static readonly float[] _vertices =
         [
@@ -101,7 +101,7 @@ namespace Kotono.Graphics.Objects.Hitboxes
         static Box()
         {
             _vertexArraySetup.SetData(_vertices, sizeof(float));
-            HitboxShader.Instance.SetVertexAttributesData();
+            _vertexArraySetup.VertexArrayObject.SetVertexAttributesLayout(HitboxShader.Instance);
         }
 
         public override void UpdateShader()
@@ -115,7 +115,7 @@ namespace Kotono.Graphics.Objects.Hitboxes
 
         public override void Draw()
         {
-            _vertexArraySetup.Bind();
+            _vertexArraySetup.VertexArrayObject.Bind();
             GL.DrawArrays(PrimitiveType.Lines, 0, _vertices.Length);
         }
 

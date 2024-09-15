@@ -1,4 +1,5 @@
 ﻿using Kotono.Graphics.Shaders;
+using Kotono.Graphics.Textures;
 using Kotono.Utils;
 using Kotono.Utils.Coordinates;
 using Kotono.Utils.Exceptions;
@@ -60,7 +61,7 @@ namespace Kotono.Graphics
             GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Depth24Stencil8, (int)Size.X, (int)Size.Y, 0, PixelFormat.DepthStencil, PixelType.UnsignedInt248, IntPtr.Zero);
 
             // Unbind texture
-            ITexture.Unbind();
+            ITexture.Unbind(TextureTarget.Texture2D);
         }
 
         public void BeginDraw()
@@ -103,9 +104,7 @@ namespace Kotono.Graphics
             _depthStencilBufferTexture.Delete();
             _colorBufferTexture.Delete();
 
-            _framebufferObject.Delete();
-
-            GC.SuppressFinalize(this);
+            _framebufferObject.Dispose();
         }
     }
 }

@@ -13,7 +13,7 @@ namespace Kotono.Graphics.Shaders
             SetView(Camera.Active.ViewMatrix);
             SetProjection(Camera.Active.ProjectionMatrix);
 
-            SetVector("viewPos", Camera.Active.Location);
+            SetVector("viewPos", Camera.Active.WorldLocation);
 
             SetInt("material.diffuse", 0);
             SetInt("material.specular", 1);

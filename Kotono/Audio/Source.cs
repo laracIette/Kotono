@@ -6,62 +6,104 @@ using System.Runtime.InteropServices;
 
 namespace Kotono.Audio
 {
-    internal static class SoundManager
+    internal sealed class Source
     {
-        private static readonly ALDevice _device;
+        private static readonly Dictionary<string, int> _buffers = [];
 
-        private static readonly ALContext _context;
+        private readonly int _id;
 
-        private static readonly Dictionary<string, int> _sources = [];
+        private float _volume = 1.0f;
 
-        private static float _generalVolume = 1.0f;
-
-        internal static float GeneralVolume
+        internal float Volume
         {
-            get => _generalVolume;
-            set => _generalVolume = Math.Clamp(value);
-        }
-
-        static SoundManager()
-        {
-            _device = ALC.OpenDevice(null);
-            _context = ALC.CreateContext(_device, Array.Empty<int>());
-
-            ALC.MakeContextCurrent(_context);
-        }
-
-        internal static int GetSource(string path)
-        {
-            if (!_sources.TryGetValue(path, out int value))
+            get => _volume;
+            set
             {
-                int buffer = AL.GenBuffer();
-                value = AL.GenSource();
+                var newVolume = Math.Clamp(value);
+                if (newVolume != _volume)
+                {
+                    _volume = value;
+                    UpdateVolume();
+                }
+            }
+        }
+
+        internal ALSourceState SourceState => AL.GetSourceState(_id);
+
+        internal bool IsPlaying => SourceState == ALSourceState.Playing;
+
+        internal bool IsPaused => SourceState == ALSourceState.Paused;
+
+        internal bool IsStopped => SourceState == ALSourceState.Stopped;
+
+        internal Source(string path)
+        {
+            if (!_buffers.TryGetValue(path, out var value))
+            {
+                value = AL.GenBuffer();
 
                 var data = LoadWAV(path, out int channels, out int bits, out int rate);
 
                 nint dataPtr = Marshal.AllocHGlobal(data.Length * sizeof(byte));
                 Marshal.Copy(data, 0, dataPtr, data.Length);
 
-                AL.BufferData(buffer, GetSoundFormat(channels, bits), dataPtr, data.Length, rate);
+                AL.BufferData(value, GetSoundFormat(channels, bits), dataPtr, data.Length, rate);
 
-                AL.Source(value, ALSourcei.Buffer, buffer);
-
-                AL.DeleteBuffer(buffer);
-
-                _sources[path] = value;
+                _buffers[path] = value;
             }
 
-            return value;
+            _id = AL.GenSource();
+
+            AL.Source(_id, ALSourcei.Buffer, value);
+
+            UpdateVolume();
+
+            AudioManager.UpdateGeneralVolume += OnUpdateGeneralVolume;
+        }
+
+        internal void Play() => AL.SourcePlay(_id);
+
+        internal void Pause() => AL.SourcePause(_id);
+
+        internal void Rewind() => AL.SourceRewind(_id);
+
+        internal void Stop() => AL.SourceStop(_id);
+
+        internal void Switch()
+        {
+            if (IsPlaying)
+            {
+                Pause();
+            }
+            else
+            {
+                Play();
+            }
+        }
+
+        private void OnUpdateGeneralVolume(object? sender, EventArgs e) => UpdateVolume();
+
+        private void UpdateVolume() => AL.Source(_id, ALSourcef.Gain, _volume * AudioManager.GeneralVolume);
+
+        private void Delete() => AL.DeleteSource(_id);
+
+        internal void Dispose()
+        {
+            Stop();
+            Delete();
+        }
+
+        internal static void DisposeAll()
+        {
+            foreach (var buffer in _buffers.Values)
+            {
+                AL.DeleteBuffer(buffer);
+            }
         }
 
         /// <summary>
-        /// Creates an array of byte from a WAV file
+        /// Creates an array of byte from a WAV file.
         /// </summary>
-        /// <param name="filename"></param>
-        /// <param name="channels"></param>
-        /// <param name="bits"></param>
-        /// <param name="rate"></param>
-        /// <returns></returns>
         /// <exception cref="ArgumentNullException"> The file doesn't exist or isn't found. </exception>
         /// <exception cref="NotSupportedException"> The file isn't a WAVE file. </exception>
         private static byte[] LoadWAV(string filename, out int channels, out int bits, out int rate)
@@ -115,13 +157,6 @@ namespace Kotono.Audio
             return reader.ReadBytes((int)reader.BaseStream.Length);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="channels"></param>
-        /// <param name="bits"></param>
-        /// <returns></returns>
-        /// <exception cref="NotSupportedException">The sound format isn't supported.</exception>
         private static ALFormat GetSoundFormat(int channels, int bits)
         {
             return channels switch
@@ -130,20 +165,6 @@ namespace Kotono.Audio
                 2 => (bits == 8) ? ALFormat.Stereo8 : ALFormat.Stereo16,
                 _ => throw new NotSupportedException("error: The specified sound format is not supported."),
             };
-        }
-
-        internal static void Dispose()
-        {
-            if (_context != ALContext.Null)
-            {
-                ALC.MakeContextCurrent(ALContext.Null);
-                ALC.DestroyContext(_context);
-            }
-
-            if (_device != ALDevice.Null)
-            {
-                ALC.CloseDevice(_device);
-            }
         }
     }
 }

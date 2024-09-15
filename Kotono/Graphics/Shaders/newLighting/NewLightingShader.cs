@@ -2,7 +2,7 @@
 
 namespace Kotono.Graphics.Shaders
 {
-    internal partial class NewLightingShader : Shader
+    internal sealed partial class NewLightingShader : Shader
     {
         private NewLightingShader() : base("newLighting") { }
 
@@ -18,7 +18,7 @@ namespace Kotono.Graphics.Shaders
 
         private static void SetATexCoords() => SetVertexAttributeData(3, 2, global::OpenTK.Graphics.OpenGL4.VertexAttribPointerType.Float, 44, 36);
 
-        internal override void SetVertexAttributesData() { SetAPos(); SetANormal(); SetATangent(); SetATexCoords(); }
+        internal override void SetVertexAttributesLayout() { SetAPos(); SetANormal(); SetATangent(); SetATexCoords(); }
 
         internal void SetModel(global::OpenTK.Mathematics.Matrix4 model) => SetMatrix4("model", model);
 

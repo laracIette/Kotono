@@ -1,4 +1,6 @@
-﻿namespace Kotono.Graphics.Objects.Texts
+﻿using Kotono.Graphics.Textures;
+
+namespace Kotono.Graphics.Objects.Texts
 {
     internal struct GlyphInfo
     {

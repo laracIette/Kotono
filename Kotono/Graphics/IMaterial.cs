@@ -1,9 +1,11 @@
-﻿namespace Kotono.Graphics
+﻿using Kotono.Graphics.Textures;
+
+namespace Kotono.Graphics
 {
     internal interface IMaterial
     {
         /// <summary>
-        /// Use all the <see cref="ImageTexture"/> of the <see cref="IMaterial"/>.
+        /// Use all the <see cref="ImageTexture"/>s of the <see cref="IMaterial"/>.
         /// </summary>
         public void Use();
     }

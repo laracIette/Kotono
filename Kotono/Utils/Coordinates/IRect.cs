@@ -2,6 +2,11 @@
 {
     internal interface IRect
     {
+        /// <summary>
+        /// The point to which the <see cref="IRect"/> is anchored.
+        /// </summary>
+        public Anchor Anchor { get; set; }
+
         /// <summary> 
         /// The base size component of the <see cref="IRect"/>. 
         /// </summary>

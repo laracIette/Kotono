@@ -1,11 +1,12 @@
-﻿using OpenTK.Graphics.OpenGL4;
+﻿using Kotono.Graphics.Textures;
+using OpenTK.Graphics.OpenGL4;
 using StbTrueTypeSharp;
 using System;
 using System.Collections.Generic;
 
 namespace Kotono.Graphics.Objects.Texts
 {
-    internal class Font
+    internal sealed class Font
     {
         private readonly StbTrueType.stbtt_fontinfo _fontInfo;
 

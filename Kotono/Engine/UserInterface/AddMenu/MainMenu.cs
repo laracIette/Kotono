@@ -7,63 +7,58 @@ using OpenTK.Windowing.GraphicsLibraryFramework;
 
 namespace Kotono.Engine.UserInterface.AddMenu
 {
-    internal class MainMenu : Object
+    internal sealed class MainMenu : Object2D
     {
-        private readonly RoundedBox _backgroundBox = new()
-        {
-            RelativeSize = new Point(300.0f, 300.0f),
-            Color = Color.DarkSlateGray,
-            TargetFallOff = 2.0f,
-            TargetCornerSize = 30.0f
-        };
+        private readonly RoundedBox _backgroundBox;
 
-        private readonly MainButton[] _buttons =
-        [
-            new Objects2DButton(),
-            new Objects3DButton(),
-            new LightsButton(),
-            new TriggersButton()
-        ];
-
-        internal bool IsDraw
-        {
-            get => _backgroundBox.IsDraw;
-            set
-            {
-                _backgroundBox.IsDraw = value;
-                foreach (var button in _buttons)
-                {
-                    button.IsDraw = value;
-                }
-            }
-        }
-
-        internal Point Position
-        {
-            get => _backgroundBox.RelativePosition;
-            set
-            {
-                _backgroundBox.RelativePosition = value;
-
-                var size = new Point(140.0f, 140.0f);
-
-                _buttons[0].RelativePosition = Rect.GetPositionFromAnchor(value, size, Anchor.BottomRight, 5.0f);
-                _buttons[1].RelativePosition = Rect.GetPositionFromAnchor(value, size, Anchor.BottomLeft, 5.0f);
-                _buttons[2].RelativePosition = Rect.GetPositionFromAnchor(value, size, Anchor.TopRight, 5.0f);
-                _buttons[3].RelativePosition = Rect.GetPositionFromAnchor(value, size, Anchor.TopLeft, 5.0f);
-            }
-        }
+        private readonly MainButton[] _buttons;
 
         internal MainMenu()
         {
             IsDraw = false;
+
+            _backgroundBox = new RoundedBox()
+            {
+                RelativeSize = new Point(300.0f, 300.0f),
+                Color = Color.DarkSlateGray,
+                TargetFallOff = 2.0f,
+                TargetCornerSize = 30.0f,
+                Parent = this
+            };
+
+            var size = new Point(140.0f, 140.0f);
+            float offset = 5.0f;
+
+            _buttons =
+            [
+                new Objects2DButton
+                {
+                    RelativePosition = Rect.GetPositionFromAnchor(Point.Zero, size, Anchor.BottomRight, offset),
+                    Parent = this
+                },
+                new Objects3DButton
+                {
+                    RelativePosition = Rect.GetPositionFromAnchor(Point.Zero, size, Anchor.BottomLeft, offset),
+                    Parent = this
+                },
+                new LightsButton
+                {
+                    RelativePosition = Rect.GetPositionFromAnchor(Point.Zero, size, Anchor.TopRight, offset),
+                    Parent = this
+                },
+                new TriggersButton
+                {
+                    RelativePosition = Rect.GetPositionFromAnchor(Point.Zero, size, Anchor.TopLeft, offset),
+                    Parent = this
+                }
+            ];
         }
 
         private void OnAKeyPressed()
         {
             if (Mouse.CursorState == CursorState.Confined && Keyboard.IsKeyDown(Keys.LeftShift))
             {
-                Position = Mouse.Position;
+                RelativePosition = Mouse.Position;
                 IsDraw = true;
             }
         }
@@ -72,7 +67,7 @@ namespace Kotono.Engine.UserInterface.AddMenu
         {
             if (IsDraw)
             {
-                if (!Rect.Overlaps(_backgroundBox.Rect, Mouse.Position))
+                if (!_backgroundBox.Rect.Overlaps(Mouse.Position))
                 {
                     IsDraw = false;
                 }

@@ -1,11 +1,12 @@
 ﻿using Kotono.Graphics.Shaders;
+using Kotono.Graphics.Textures;
 using Kotono.Utils.Coordinates;
 using OpenTK.Graphics.OpenGL4;
 using System.Collections.Generic;
 
 namespace Kotono.Graphics.Objects.Texts
 {
-    internal class TTFText : Object2D
+    internal sealed class TTFText : Object2D
     {
         public override Shader Shader => ImageShader.Instance;
 
@@ -20,15 +21,6 @@ namespace Kotono.Graphics.Objects.Texts
         private readonly List<Texture> _glyphsTextures = [];
 
         private readonly VertexArraySetup _vertexArraySetup = new();
-
-        internal TTFText()
-        {
-            // Generate OpenGL buffers
-            _vertexArraySetup.VertexArrayObject.Bind();
-            _vertexArraySetup.VertexBufferObject.Bind();
-
-            ImageShader.Instance.SetVertexAttributesData();
-        }
 
         internal void AddText(string text, Point position)
         {
@@ -47,13 +39,13 @@ namespace Kotono.Graphics.Objects.Texts
                 float h = glyph.Height;
 
                 // Add vertices for the glyph quad
-                _vertices.Add(new Vertex2D(new Point(xpos, ypos + h), new Point(0.0f, 0.0f))); // bottom-left
-                _vertices.Add(new Vertex2D(new Point(xpos + w, ypos + h), new Point(1.0f, 0.0f))); // bottom-right
-                _vertices.Add(new Vertex2D(new Point(xpos + w, ypos), new Point(1.0f, 1.0f))); // top-right
+                _vertices.Add(new Vertex2D { Pos = new Point(xpos, ypos + h), TexCoords = new Point(0.0f, 0.0f) }); // bottom-left
+                _vertices.Add(new Vertex2D { Pos = new Point(xpos + w, ypos + h), TexCoords = new Point(1.0f, 0.0f) }); // bottom-right
+                _vertices.Add(new Vertex2D { Pos = new Point(xpos + w, ypos), TexCoords = new Point(1.0f, 1.0f) }); // top-right
 
-                _vertices.Add(new Vertex2D(new Point(xpos, ypos + h), new Point(0.0f, 0.0f))); // bottom-left
-                _vertices.Add(new Vertex2D(new Point(xpos + w, ypos), new Point(1.0f, 1.0f))); // top-right
-                _vertices.Add(new Vertex2D(new Point(xpos, ypos), new Point(0.0f, 1.0f))); // top-left
+                _vertices.Add(new Vertex2D { Pos = new Point(xpos, ypos + h), TexCoords = new Point(0.0f, 0.0f) }); // bottom-left
+                _vertices.Add(new Vertex2D { Pos = new Point(xpos + w, ypos), TexCoords = new Point(1.0f, 1.0f) }); // top-right
+                _vertices.Add(new Vertex2D { Pos = new Point(xpos, ypos), TexCoords = new Point(0.0f, 1.0f) }); // top-left
 
                 _glyphsTextures.Add(glyph.Texture);
 
@@ -62,6 +54,7 @@ namespace Kotono.Graphics.Objects.Texts
 
             // Upload vertices to the GPU
             _vertexArraySetup.SetData([.. _vertices], Vertex2D.SizeInBytes);
+            _vertexArraySetup.VertexArrayObject.SetVertexAttributesLayout(ImageShader.Instance);
         }
 
         public override void UpdateShader()
@@ -75,9 +68,9 @@ namespace Kotono.Graphics.Objects.Texts
         public override void Draw()
         {
             _glyphsTextures.ForEach(t => t.Use());
-            print("draw");
+            //Printer.Print("draw");
 
-            _vertexArraySetup.Bind();
+            _vertexArraySetup.VertexArrayObject.Bind();
             GL.DrawArrays(PrimitiveType.Triangles, 0, _vertices.Count);
         }
 

@@ -58,6 +58,8 @@ uniform vec3 viewPos;
 
 uniform vec4 baseColor;
 
+const float PI = 3.14159265359;
+
 bool isTextureValid(sampler2D texture) 
 {
     vec2 size = textureSize(texture, 0);
@@ -95,7 +97,7 @@ float DistributionGGX(vec3 N, vec3 H, float roughness)
 
     float num = a2;
     float denom = (NdotH2 * (a2 - 1.0) + 1.0);
-    denom = 3.14159265359 * denom * denom;
+    denom = PI * denom * denom;
 
     return num / denom;
 }
@@ -142,7 +144,7 @@ vec3 CalculateLighting(DirectionalLight dirLight, vec3 N, vec3 V, vec3 albedo, f
     kD *= 1.0 - metallic;
 
     float NdotL = max(dot(N, L), 0.0);
-    vec3 diffuse = kD * albedo / 3.14159265359;
+    vec3 diffuse = kD * albedo / PI;
 
     return (diffuse + specular) * radiance * NdotL;
 }
@@ -171,7 +173,7 @@ vec3 CalculateLighting(PointLight pointLight, vec3 N, vec3 V, vec3 FragPos, vec3
     kD *= 1.0 - metallic;
 
     float NdotL = max(dot(N, L), 0.0);
-    vec3 diffuse = kD * albedo / 3.14159265359;
+    vec3 diffuse = kD * albedo / PI;
 
     vec3 ambient = pointLight.ambient.rgb;
     vec3 diffuseColor = pointLight.diffuse.rgb * diffuse * NdotL;
@@ -189,7 +191,7 @@ void main()
         albedo *= texture(material.albedo.handle, TexCoords).rgb * material.albedo.strength;
     }
 
-    float metallic = 0.0;
+    float metallic = 0.0; // Default metallic for no mettalic when no texture is provided
     if (isTextureValid(material.metallic.handle)) 
     {
         metallic = texture(material.metallic.handle, TexCoords).r * material.metallic.strength;

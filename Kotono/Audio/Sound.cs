@@ -1,84 +1,70 @@
-﻿using OpenTK.Audio.OpenAL;
-
-namespace Kotono.Audio
+﻿namespace Kotono.Audio
 {
     internal class Sound : Object
     {
-        private int _source = InvalidSource;
+        /// <summary>
+        /// The audio source of the <see cref="Sound"/>.
+        /// </summary>
+        internal Source? Source { get; set; } = null;
 
-        private float _volume = 1.0f;
-
+        /// <summary>
+        /// The volume of the <see cref="Audio.Source"/> of the <see cref="Sound"/>, clamped in range [0, 1].
+        /// </summary>
         internal float Volume
         {
-            get => _volume;
+            get => Source?.Volume ?? 0.0f;
             set
             {
-                if (_source == InvalidSource)
+                if (Source != null)
                 {
-                    logError($"Invalid Source");
-                    return;
+                    Source.Volume = value;
                 }
-
-                _volume = Math.Clamp(value);
-                UpdateVolume();
             }
         }
 
-        internal bool IsPlaying => AL.GetSourceState(_source) == ALSourceState.Playing;
+        /// <summary>
+        /// Wether the <see cref="Audio.Source"/> of the <see cref="Sound"/> is currently playing. 
+        /// </summary>
+        internal bool IsPlaying => Source?.IsPlaying ?? false;
 
-        internal bool IsPaused => AL.GetSourceState(_source) == ALSourceState.Paused;
+        /// <summary>
+        /// Wether the <see cref="Audio.Source"/> of the <see cref="Sound"/> is currently paused. 
+        /// </summary>
+        internal bool IsPaused => Source?.IsPaused ?? false;
 
-        internal bool IsStopped => AL.GetSourceState(_source) == ALSourceState.Stopped;
+        /// <summary>
+        /// Wether the <see cref="Audio.Source"/> of the <see cref="Sound"/> is currently stopped. 
+        /// </summary>
+        internal bool IsStopped => Source?.IsStopped ?? false;
 
-        internal static int InvalidSource => -1;
+        /// <summary>
+        /// Play the <see cref="Audio.Source"/> of the <see cref="Sound"/>. 
+        /// </summary>
+        internal void Play() => Source?.Play();
 
-        internal void SetSource(string path)
-        {
-            _source = SoundManager.GetSource(path);
-            UpdateVolume();
-        }
+        /// <summary>
+        /// Pause the <see cref="Audio.Source"/> of the <see cref="Sound"/>. 
+        /// </summary>
+        internal void Pause() => Source?.Pause();
 
-        internal void Play()
-        {
-            AL.SourcePlay(_source);
-        }
+        /// <summary>
+        /// Rewind the <see cref="Audio.Source"/> of the <see cref="Sound"/>. 
+        /// </summary>
+        internal void Rewind() => Source?.Rewind();
 
-        internal void Pause()
-        {
-            AL.SourcePause(_source);
-        }
+        /// <summary>
+        /// Stop the <see cref="Audio.Source"/> of the <see cref="Sound"/>. 
+        /// </summary>
+        internal void Stop() => Source?.Stop();
 
-        internal void Rewind()
-        {
-            AL.SourceRewind(_source);
-        }
-
-        internal void Stop()
-        {
-            AL.SourceStop(_source);
-        }
-
-        internal void Switch()
-        {
-            if (IsPlaying)
-            {
-                Pause();
-            }
-            else
-            {
-                Play();
-            }
-        }
-
-        private void UpdateVolume()
-        {
-            AL.Source(_source, ALSourcef.Gain, Volume * SoundManager.GeneralVolume);
-        }
+        /// <summary>
+        /// Play / pause the <see cref="Audio.Source"/> of the <see cref="Sound"/>. 
+        /// </summary>
+        internal void Switch() => Source?.Switch();
 
         public override void Dispose()
         {
-            Stop();
-            AL.DeleteSource(_source);
+            Source?.Dispose();
 
             base.Dispose();
         }

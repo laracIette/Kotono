@@ -1,6 +1,8 @@
-﻿
-using Kotono.Input;
+﻿using Kotono.Input;
+using Kotono.Utils;
 using Kotono.Utils.Coordinates;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Kotono.Graphics.Objects
 {
@@ -14,9 +16,15 @@ namespace Kotono.Graphics.Objects
             set => _isDraw = value;
         }
 
-        public virtual Rect Rect { get; } = Rect.Default;
+        public Rect Rect { get; } = Rect.Default;
 
-        public Point BaseSize
+        public virtual Anchor Anchor
+        {
+            get => Rect.Anchor;
+            set => Rect.Anchor = value;
+        }
+
+        public virtual Point BaseSize
         {
             get => Rect.BaseSize;
             set => Rect.BaseSize = value;
@@ -70,26 +78,61 @@ namespace Kotono.Graphics.Objects
             set => Rect.WorldScale = value;
         }
 
+        public virtual int Layer { get; set; } = 0;
+
+        public override bool IsHovered => Rect.Overlaps(Mouse.Position);
+
+        public override bool IsActive => ISelectable2D.Active == this;
+
         private IObject2D? _parent = null;
 
+        /// <inheritdoc cref="IObject2D.Parent"/>
+        /// <remarks>
+        /// Changing this will affect the relative rect of the <see cref="Object2D"/> so that it's world rect stays the same.
+        /// </remarks>
         public IObject2D? Parent
         {
             get => _parent;
             set
             {
+                if (_parent == value)
+                {
+                    return;
+                }
+
                 _parent = value;
+
+                var worldPosition = WorldPosition;
+                var worldRotation = WorldRotation;
+                var worldSize = WorldSize;
+
                 Rect.Parent = value?.Rect;
+
+                WorldPosition = worldPosition;
+                WorldRotation = worldRotation;
+                WorldSize = worldSize;
             }
         }
 
-        public virtual int Layer { get; set; } = 0;
+        public IEnumerable<IObject2D> Children => ObjectManager.GetObjectsOfType<IObject2D>(o => o.Parent == this);
 
-        public override bool IsHovered => Rect.Overlaps(Rect, Mouse.Position);
+        public IEnumerable<TChildren> GetChildren<TChildren>() where TChildren : IObject2D
+        {
+            return Children.OfType<TChildren>();
+        }
 
-        public override bool IsActive => ISelectable2D.Active == this;
+        public TChild? GetChild<TChild>() where TChild : IObject2D
+        {
+            return GetChildren<TChild>().First();
+        }
 
         public override void Dispose()
         {
+            foreach (var child in Children)
+            {
+                child.Parent = Parent;
+            }
+
             Rect.Dispose();
 
             base.Dispose();

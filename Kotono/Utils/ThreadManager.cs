@@ -4,7 +4,7 @@ using System.Threading;
 
 namespace Kotono.Utils
 {
-    internal class ThreadManager : Object
+    internal sealed class ThreadManager : Object
     {
         private static readonly ThreadManager _instance = new();
 

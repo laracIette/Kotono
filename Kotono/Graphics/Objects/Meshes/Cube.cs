@@ -1,17 +1,20 @@
 ﻿using Kotono.Graphics.Shaders;
+using Kotono.Utils.Coordinates;
 
 namespace Kotono.Graphics.Objects.Meshes
 {
-    internal class Cube : Mesh
+    internal sealed class Cube : Mesh
     {
-        public override Material Material { get; set; } = new()
+        internal Cube()
         {
-            Albedo = new MaterialTexture(Path.FromAssets(@"Meshes\cube_diff.png"))
-        };
+            Model = new Model(Path.FromAssets(@"Meshes\cube.obj"));
 
-        public override Model Model { get; set; } = new Model(
-            Path.FromAssets(@"Meshes\cube.obj"),
-            NewLightingShader.Instance
-        );
+            Material = new Material
+            {
+                Albedo = new MaterialTexture(Path.FromAssets(@"Meshes\cube_diff.png")),
+            };
+
+            Shader = LightingPBRShader.Instance;
+        }
     }
 }

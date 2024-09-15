@@ -3,6 +3,7 @@ using Kotono.Input;
 using Kotono.Physics;
 using Kotono.Utils;
 using Kotono.Utils.Coordinates;
+using OpenTK.Graphics.OpenGL4;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
 using System.Collections.Generic;
@@ -15,15 +16,13 @@ namespace Kotono.Graphics.Objects
     {
         private static readonly Renderer _renderer = new();
 
-        private static readonly List<IObject> _objects = [];
+        private static readonly HashSet<IObject> _objects = [];
 
         private static readonly Dictionary<Type, MethodInfo[]> _typeInputMethods = [];
 
         internal static IEnumerable<T> GetObjectsOfType<T>() where T : IObject => _objects.OfType<T>();
 
         internal static IEnumerable<T> GetObjectsOfType<T>(Func<T, bool> predicate) where T : IObject => _objects.OfType<T>().Where(predicate);
-
-        internal static int IndexOf(IObject obj) => _objects.IndexOf(obj);
 
         internal static void SetRendererSize(Point value) => _renderer.SetSize(value);
 
@@ -51,7 +50,7 @@ namespace Kotono.Graphics.Objects
                     break;
             }
 
-            if (_objects.TryAddDistinct(obj))
+            if (_objects.Add(obj))
             {
                 Subscribe(obj);
             }
@@ -81,6 +80,9 @@ namespace Kotono.Graphics.Objects
             }
         }
 
+        /// <summary>
+        /// Unsubscribes the <see cref="IObject"/> and removes it from <see cref="_objects"/>.
+        /// </summary>
         private static void Delete(IObject obj)
         {
             Unsubscribe(obj);
@@ -91,6 +93,9 @@ namespace Kotono.Graphics.Objects
             }
         }
 
+        /// <summary>
+        /// Unsubscribes the <see cref="IObject"/> from <see cref="Mouse"/> and <see cref="Keyboard"/> input events.
+        /// </summary>
         private static void Unsubscribe(IObject obj)
         {
             if (_typeInputMethods[obj.GetType()].Length > 0)
@@ -100,20 +105,29 @@ namespace Kotono.Graphics.Objects
             }
         }
 
+        /// <summary>
+        /// Updates all the <see cref="IObject"/>s of the <see cref="ObjectManager"/>
+        /// and deletes those disposed.
+        /// </summary>
         internal static void Update()
         {
-            // List can change during for loop
-            for (int i = 0; i < _objects.Count; i++)
+            Span<IObject> objects = [.. GetObjectsOfType<IObject>(o => o.IsUpdate)];
+
+            foreach (var obj in objects)
             {
-                if (_objects[i].IsUpdate)
-                {
-                    _objects[i].Update();
-                }
+                obj.Update();
             }
 
             UpdateFizix();
-
             UpdateDeleteObjects();
+        }
+
+        private static void UpdateFizix()
+        {
+            foreach (var obj in GetObjectsOfType<IFizixObject>(o => o.IsUpdateFizix))
+            {
+                obj.UpdateFizix();
+            }
         }
 
         private static void UpdateDeleteObjects()
@@ -123,30 +137,17 @@ namespace Kotono.Graphics.Objects
                 OnDeleteKeyPressed();
             }
 
-            // List can change during for loop
-            for (int i = _objects.Count - 1; i >= 0; i--)
-            {
-                if (_objects[i].IsDelete)
-                {
-                    Delete(_objects[i]);
-                }
-            }
-        }
+            Span<IObject> objects = [.. GetObjectsOfType<IObject>(o => o.IsDelete)];
 
-        private static void UpdateFizix()
-        {
-            foreach (var obj in GetObjectsOfType<IFizixObject>())
+            foreach (var obj in objects)
             {
-                if (obj.IsUpdateFizix)
-                {
-                    obj.UpdateFizix();
-                }
+                Delete(obj);
             }
         }
 
         internal static void Draw()
         {
-            foreach (var obj in GetObjectsOfType<IDrawable>())
+            foreach (var obj in GetObjectsOfType<IDrawable>(d => d.IsDraw))
             {
                 _renderer.AddToRenderQueue(obj);
             }

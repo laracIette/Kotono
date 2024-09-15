@@ -1,7 +1,7 @@
 ﻿using OpenTK.Graphics.OpenGL4;
 using System.Collections.Generic;
 
-namespace Kotono.Graphics
+namespace Kotono.Graphics.Textures
 {
     internal class ImageTexture : ITexture
     {
@@ -11,7 +11,7 @@ namespace Kotono.Graphics
 
         public int Handle { get; }
 
-        public TextureUnit TextureUnit { get; set; }
+        public TextureUnit TextureUnit { get; set; } = TextureUnit.Texture0;
 
         internal ImageTexture(string path)
         {
@@ -20,12 +20,25 @@ namespace Kotono.Graphics
             if (!_handles.TryGetValue(path, out int handle))
             {
                 handle = GL.GenTexture();
-
+                Handle = handle;
+                
                 Use();
 
-                var imageData = ImageData.GetFrom(path);
+                var imageData = ImageData.Parse(path, true);
 
-                GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, imageData.Size.X, imageData.Size.Y, 0, PixelFormat.Rgba, PixelType.UnsignedByte, imageData.Bytes);
+                bool isAlpha = imageData.Size.Product * 4 == imageData.Bytes.Length;
+
+                GL.TexImage2D(
+                    TextureTarget.Texture2D, 
+                    0, 
+                    isAlpha ? PixelInternalFormat.Rgba : PixelInternalFormat.Rgb, 
+                    imageData.Size.X, 
+                    imageData.Size.Y, 
+                    0, 
+                    isAlpha ? PixelFormat.Rgba : PixelFormat.Rgb, 
+                    PixelType.UnsignedByte, 
+                    imageData.Bytes
+                );
 
                 GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Repeat);
                 GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat);
@@ -35,7 +48,7 @@ namespace Kotono.Graphics
 
                 GL.GenerateMipmap(GenerateMipmapTarget.Texture2D);
 
-                ITexture.Unbind();
+                ITexture.Unbind(TextureTarget.Texture2D);
 
                 _handles[path] = handle;
             }
@@ -43,18 +56,22 @@ namespace Kotono.Graphics
             Handle = handle;
         }
 
-        public void Bind() => ITexture.Bind(Handle);
+        public void Bind()
+            => ITexture.Bind(TextureTarget.Texture2D, Handle);
 
-        public void Use() => ITexture.Use(Handle, TextureUnit);
+        public void Use()
+            => ITexture.Use(TextureTarget.Texture2D, TextureUnit, Handle);
 
-        public void Draw() => ITexture.Draw(Handle, TextureUnit);
-
-        public void Delete() => ITexture.Delete(Handle);
+        public void Delete()
+            => ITexture.Delete(Handle);
 
         internal static void DisposeAll()
         {
-            ITexture.Unbind();
+            ITexture.Unbind(TextureTarget.Texture2D);
             GL.DeleteTextures(_handles.Values.Count, [.. _handles.Values]);
         }
+
+        public override string ToString()
+            => $"Path: {Path}, Handle: {Handle}, TextureUnit: {TextureUnit}";
     }
 }

@@ -2,20 +2,20 @@
 
 namespace Kotono.Graphics.Objects.Meshes
 {
-    internal class PointLightMesh : Mesh
+    internal sealed class PointLightMesh : Mesh
     {
-        public override Model Model { get; set; } = new Model(
-            Path.FromAssets(@"Meshes\sphere.obj"),
-            PointLightShader.Instance
-        );
-
         public override Shader Shader => PointLightShader.Instance;
+
+        internal PointLightMesh()
+        {
+            Model = new Model(Path.FromAssets(@"Meshes\sphere.obj"));
+        }
 
         public override void Update()
         {
             base.Update();
 
-            if (Parent != null)
+            if (Parent is not null)
             {
                 Color = Parent.Color;
             }
@@ -30,9 +30,6 @@ namespace Kotono.Graphics.Objects.Meshes
             }
         }
 
-        public override void Draw()
-        {
-            Model.Draw();
-        }
+        public override void Draw() => Model?.Draw();
     }
 }

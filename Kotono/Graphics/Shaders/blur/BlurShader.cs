@@ -2,7 +2,7 @@
 
 namespace Kotono.Graphics.Shaders
 {
-    internal partial class BlurShader : Shader
+    internal sealed partial class BlurShader : Shader
     {
         private BlurShader() : base("blur") { }
 
@@ -14,8 +14,8 @@ namespace Kotono.Graphics.Shaders
 
         private static void SetATexCoords() => SetVertexAttributeData(1, 2, global::OpenTK.Graphics.OpenGL4.VertexAttribPointerType.Float, 16, 8);
 
-        internal override void SetVertexAttributesData() { SetAPos(); SetATexCoords(); }
+        internal override void SetVertexAttributesLayout() { SetAPos(); SetATexCoords(); }
 
-        internal void SetColor(int color) => SetInt("color", color);
+        internal void SetColor(global::OpenTK.Graphics.OpenGL4.TextureUnit color) => SetTextureUnit("color", color);
     }
 }

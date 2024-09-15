@@ -23,7 +23,7 @@ namespace Kotono.Graphics.Objects.Buttons
         {
             WasDown = IsDown;
 
-            IsDown = IsDraw && Mouse.IsButtonDown(MouseButton.Left) && Rect.Overlaps(Rect, Mouse.Position);
+            IsDown = IsDraw && Mouse.IsButtonDown(MouseButton.Left) && Rect.Overlaps(Mouse.Position);
 
             if (IsPressed)
             {

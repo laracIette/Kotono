@@ -3,11 +3,11 @@
 namespace Kotono.Utils.Coordinates
 {
     [StructLayout(LayoutKind.Sequential)]
-    public readonly struct Vertex2D(Point position, Point texCoord)
+    public readonly struct Vertex2D
     {
-        public Point Position { get; } = position;
+        public required Point Pos { get; init; } 
 
-        public Point TexCoord { get; } = texCoord;
+        public required Point TexCoords { get; init; } 
 
         public static int SizeInBytes => Point.SizeInBytes * 2;
     }

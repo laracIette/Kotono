@@ -1,6 +1,5 @@
 ﻿using Kotono.Graphics.Shaders;
 using Kotono.Utils;
-using System.Collections.Generic;
 
 namespace Kotono.Graphics.Objects
 {
@@ -30,27 +29,24 @@ namespace Kotono.Graphics.Objects
         public Color Color { get; set; }
 
         /// <summary>
-        /// The viewport in which the <see cref="IDrawable"/> is drawn.
-        /// </summary>
-        public Viewport Viewport { get; set; }
-
-        /// <summary>
         /// The shader the <see cref="IDrawable"/> uses to be drawn.
         /// </summary>
         public Shader Shader { get; }
 
         /// <summary>
-        /// The objects that are dependant to the <see cref="IDrawable"/>.
+        /// The viewport in which the <see cref="IDrawable"/> is drawn.
         /// </summary>
-        public List<Drawable> Childrens { get; }
+        public Viewport Viewport { get; set; }
 
         /// <summary>
-        /// Update the <see cref="IDrawable"/>'s shader.
+        /// Update the <see cref="IDrawable"/>'s shader,
+        /// is called immediately before drawing the <see cref="IDrawable"/>.
         /// </summary>
         public void UpdateShader();
 
         /// <summary>
-        /// Draw the <see cref="IDrawable"/>.
+        /// Draw the <see cref="IDrawable"/>,
+        /// is called immediately after updating the <see cref="IDrawable"/>'s shader.
         /// </summary>
         public void Draw();
     }

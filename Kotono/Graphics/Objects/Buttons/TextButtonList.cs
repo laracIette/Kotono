@@ -3,15 +3,31 @@ using Kotono.Utils.Coordinates;
 
 namespace Kotono.Graphics.Objects.Buttons
 {
-    internal class TextButtonList
+    internal sealed class TextButtonList : RoundedBox
     {
         private readonly TextButton[] _buttons;
 
-        internal TextButtonList(string[] texts, Point position, Point size, Color color, float cornerSize, float fallOff, int layer)
+        private Color _buttonsColor;
+
+        internal Color ButtonsColor
+        {
+            get => _buttonsColor;
+            set
+            {
+                _buttonsColor = value;
+                foreach (var button in _buttons)
+                {
+                    button.Color = value;
+                }
+            }
+        }
+
+        internal TextButtonList(string[] texts, Point position, Point size, float cornerSize, float fallOff, int layer)
         {
             _buttons = new TextButton[texts.Length];
 
-            var positions = Rect.GetPositionFromAnchor(texts.Length, position, size, Anchor.Center);
+            var positions = new Point[texts.Length];
+            Rect.GetPositionsFromAnchor(positions, position, size, Anchor.Center);
 
             for (int i = 0; i < texts.Length; i++)
             {
@@ -19,7 +35,6 @@ namespace Kotono.Graphics.Objects.Buttons
                 {
                     RelativePosition = positions[i],
                     RelativeSize = size,
-                    Color = color,
                     TargetCornerSize = cornerSize,
                     TargetFallOff = fallOff,
                     Layer = layer,
