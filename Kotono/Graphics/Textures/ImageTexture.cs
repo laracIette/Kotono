@@ -1,5 +1,7 @@
-﻿using OpenTK.Graphics.OpenGL4;
+﻿using Kotono.Utils.Exceptions;
+using OpenTK.Graphics.OpenGL4;
 using System.Collections.Generic;
+using IO = System.IO;
 
 namespace Kotono.Graphics.Textures
 {
@@ -15,10 +17,13 @@ namespace Kotono.Graphics.Textures
 
         internal ImageTexture(string path)
         {
-            Path = path;
-
             if (!_handles.TryGetValue(path, out int handle))
             {
+                if (!IsValidPath(path))
+                {
+                    throw new KotonoException($"Image path '{path}' isn't a valid image path");
+                }
+
                 handle = GL.GenTexture();
                 Handle = handle;
                 
@@ -53,6 +58,7 @@ namespace Kotono.Graphics.Textures
                 _handles[path] = handle;
             }
 
+            Path = path;
             Handle = handle;
         }
 
@@ -64,6 +70,13 @@ namespace Kotono.Graphics.Textures
 
         public void Delete()
             => ITexture.Delete(Handle);
+
+        internal static bool IsValidPath(string path)
+        {
+            return IO.File.Exists(path)
+                && IO.Path.GetExtension(path.ToLower()) is string extension
+                && (extension == ".jpeg" || extension == ".jpg" || extension == ".png");
+        }
 
         internal static void DisposeAll()
         {

@@ -198,7 +198,7 @@ namespace Kotono.Utils.Coordinates
         public static Vector operator +(float f, Vector v) 
             => new(v.X + f, v.Y + f, v.Z + f);
 
-        [Obsolete("Reorder operands, use \"Vector.operator +(float, Vector)\" instead.")]
+        [Obsolete("Reorder operands, use 'Vector.operator +(float, Vector)' instead.")]
         public static Vector operator +(Vector v, float f) 
             => f + v;
 
@@ -217,7 +217,7 @@ namespace Kotono.Utils.Coordinates
         public static Vector operator *(float f, Vector v) 
             => new(v.X * f, v.Y * f, v.Z * f);
 
-        [Obsolete("Reorder operands, use \"Vector.operator *(float, Vector)\" instead.")]
+        [Obsolete("Reorder operands, use 'Vector.operator *(float, Vector)' instead.")]
         public static Vector operator *(Vector v, float f) 
             => f * v;
 

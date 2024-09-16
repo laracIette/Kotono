@@ -18,7 +18,7 @@ namespace Kotono.Utils
         {
             if (delay < 0.0f)
             {
-                throw new KotonoException($"delay \"{delay}\" should not be negative");
+                throw new KotonoException($"delay '{delay}' should not be negative");
             }
             else
             {

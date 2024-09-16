@@ -106,7 +106,7 @@ namespace Kotono.Utils.Coordinates
             return new PointI(p.X + i, p.Y + i);
         }
 
-        [Obsolete("Reorder operands, use \"PointI.operator +(int, PointI)\" instead.")]
+        [Obsolete("Reorder operands, use 'PointI.operator +(int, PointI)' instead.")]
         public static PointI operator +(PointI p, int i)
         {
             return i + p;
@@ -137,7 +137,7 @@ namespace Kotono.Utils.Coordinates
             return new PointI(p.X * i, p.Y * i);
         }
 
-        [Obsolete("Reorder operands, use \"PointI.operator *(int, PointI)\" instead.")]
+        [Obsolete("Reorder operands, use 'PointI.operator *(int, PointI)' instead.")]
         public static PointI operator *(PointI p, int i)
         {
             return i * p;

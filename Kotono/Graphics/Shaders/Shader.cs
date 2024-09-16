@@ -114,7 +114,7 @@ namespace Kotono.Graphics.Shaders
                 return true;
             }
 
-            //Logger.LogError($"couldn't find attribute location \"{name}\" in Shader \"{Name}\"");
+            //Logger.LogError($"couldn't find attribute location '{name}' in Shader '{Name}'");
             return false;
         }
 

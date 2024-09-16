@@ -116,7 +116,7 @@ namespace Kotono.Utils.Coordinates
         }
 
 
-        [Obsolete("Reorder operands, use \"Rotator.operator *(float, Rotator)\" instead.")]
+        [Obsolete("Reorder operands, use 'Rotator.operator *(float, Rotator)' instead.")]
         public static Rotator operator *(Rotator r, float f)
         {
             return f * r;

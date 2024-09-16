@@ -132,7 +132,7 @@ namespace Kotono.Utils.Coordinates
             return new Point(p.X + f, p.Y + f);
         }
 
-        [Obsolete("Reorder operands, use \"Point.operator +(float, Point)\" instead.")]
+        [Obsolete("Reorder operands, use 'Point.operator +(float, Point)' instead.")]
         public static Point operator +(Point p, float f)
         {
             return f + p;
@@ -163,7 +163,7 @@ namespace Kotono.Utils.Coordinates
             return new Point(p.X * f, p.Y * f);
         }
 
-        [Obsolete("Reorder operands, use \"Point.operator *(float, Point)\" instead.")]
+        [Obsolete("Reorder operands, use 'Point.operator *(float, Point)' instead.")]
         public static Point operator *(Point p, float f)
         {
             return f * p;

@@ -217,7 +217,7 @@ namespace Kotono.Input
             }
             else
             {
-                throw new KotonoException($"couldn't parse method \"{methodInfo.Name}\" to Action");
+                throw new KotonoException($"couldn't parse method '{methodInfo.Name}' to Action");
             }
 
             if (Enum.TryParse(methodInfo.Name[2..^nameEnd], out MouseButton button))
@@ -226,7 +226,7 @@ namespace Kotono.Input
             }
             else
             {
-                Logger.Log($"error: couldn't parse \"{methodInfo.Name[2..^10]}\" to Keys in Keyboard.Subscribe(IObject, MethodInfo).");
+                Logger.Log($"error: couldn't parse '{methodInfo.Name[2..^10]}' to Keys in Keyboard.Subscribe(IObject, MethodInfo).");
             }
         }
 

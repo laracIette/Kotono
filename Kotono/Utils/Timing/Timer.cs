@@ -57,7 +57,7 @@ namespace Kotono.Utils.Timing
             }
             else
             {
-                throw new KotonoException($"duration \"{duration}\" should be over 0.0f");
+                throw new KotonoException($"duration '{duration}' should be over 0.0f");
             }
         }
 

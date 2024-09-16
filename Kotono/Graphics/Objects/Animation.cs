@@ -1,6 +1,7 @@
 ﻿using Kotono.Graphics.Textures;
 using Kotono.Utils;
 using Kotono.Utils.Exceptions;
+using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,13 +10,15 @@ namespace Kotono.Graphics.Objects
 {
     internal sealed class Animation : Object2D, ISaveable
     {
-        private readonly List<Image> _frames = [];
+        private readonly List<Image> _frames = []; // maybe change to ImageTexture[]
 
         private int _currentFrame = 0;
 
         private float _lastFrameTime = 0.0f;
 
-        private float _pausedTime = 0.0f;
+        private float _currentPausedTime = 0.0f;
+
+        private float _totalPausedTime = 0.0f;
 
         public override int Layer
         {
@@ -42,6 +45,10 @@ namespace Kotono.Graphics.Objects
 
         internal bool IsLoop { get; set; }
 
+        private float EndTime => CreationTime + StartTime + Duration + _totalPausedTime;
+
+        private float TimeSinceLastFrame => Time.Now - _lastFrameTime;
+
         private float Delta => 1.0f / FrameRate;
 
         internal int CurrentFrame
@@ -52,13 +59,8 @@ namespace Kotono.Graphics.Objects
                 _frames[_currentFrame].IsDraw = false;
                 _currentFrame = (int)Math.Loop(value, _frames.Count);
                 _frames[_currentFrame].IsDraw = true;
-                Logger.Log("update frame", _currentFrame);
             }
         }
-
-        private float TimeSinceLastFrame => Time.Now - _lastFrameTime;
-
-        private float EndTime { get; set; }
 
         internal bool IsPlaying { get; private set; } = false;
 
@@ -68,12 +70,12 @@ namespace Kotono.Graphics.Objects
         {
             if (!Directory.Exists(directoryPath))
             {
-                throw new DirectoryNotFoundException($"error: couldn't find directory at '{directoryPath}'");
+                throw new KotonoException($"couldn't find directory at '{directoryPath}'");
             }
 
-            var filePaths = Directory.GetFiles(directoryPath);
+            var imagePaths = Directory.GetFiles(directoryPath).Where(ImageTexture.IsValidPath);
 
-            foreach (var filePath in filePaths.Where(f => f.EndsWith(".png")))
+            foreach (var filePath in imagePaths)
             {
                 _frames.Add(new Image
                 {
@@ -84,7 +86,6 @@ namespace Kotono.Graphics.Objects
             }
 
             DirectoryPath = directoryPath;
-            EndTime = Time.Now + StartTime + Duration;
         }
 
         public override void Update()
@@ -96,19 +97,30 @@ namespace Kotono.Graphics.Objects
 
             if (IsPaused)
             {
-                _pausedTime += Time.Delta;
-                EndTime += Time.Delta;
+                _currentPausedTime += Time.Delta;
+                _totalPausedTime += Time.Delta;
             }
-            else if (TimeSinceLastFrame - _pausedTime >= Delta)
+            else if (TimeSinceLastFrame - _currentPausedTime >= Delta)
             {
-                NextFrame();
-                UpdateTimes();
+                _lastFrameTime = Time.Now;
+                ++CurrentFrame;
+                _currentPausedTime = 0.0f;
             }
         }
 
         internal void Play() => IsPlaying = true;
 
         internal void Pause() => IsPlaying = false;
+
+        /// <summary>
+        /// Revert back to the first frame of the <see cref="Animation"/>, 
+        /// without pausing the <see cref="Animation"/>.
+        /// </summary>
+        internal void Reset()
+        {
+            CurrentFrame = 0;
+            _currentPausedTime = 0.0f;
+        }
 
         /// <summary>
         /// Switch between playing and paused.
@@ -123,18 +135,6 @@ namespace Kotono.Graphics.Objects
             {
                 Play();
             }
-        }
-
-        internal void Reset() => CurrentFrame = 0;
-
-        internal void NextFrame() => ++CurrentFrame;
-
-        internal void PreviousFrame() => --CurrentFrame;
-
-        private void UpdateTimes()
-        {
-            _lastFrameTime = Time.Now;
-            _pausedTime = 0.0f;
         }
 
         public override string ToString() => $"Directory: {DirectoryPath}";

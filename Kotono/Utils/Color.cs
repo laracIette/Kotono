@@ -214,7 +214,7 @@ namespace Kotono.Utils
                 4 => new Color(HexToF(hex[0]), HexToF(hex[1]), HexToF(hex[2]), HexToF(hex[3])),
                 6 => new Color(HexToF(hex[0..2]), HexToF(hex[2..4]), HexToF(hex[4..6])),
                 8 => new Color(HexToF(hex[0..2]), HexToF(hex[2..4]), HexToF(hex[4..6]), HexToF(hex[6..8])),
-                _ => throw new KotonoException($"string \"{hex}\" Length \"{hex.Length}\" isn't handled")
+                _ => throw new KotonoException($"string '{hex}' Length '{hex.Length}' isn't handled")
             };
         }
 
@@ -225,7 +225,7 @@ namespace Kotono.Utils
         {
             if (hex.Length != 2)
             {
-                throw new KotonoException($"string \"{hex}\" Length \"{hex.Length}\" must be of \"2\"");
+                throw new KotonoException($"string '{hex}' Length '{hex.Length}' must be of '2'");
             }
             else
             {
@@ -328,7 +328,7 @@ namespace Kotono.Utils
             return new Color(c.R + f, c.G + f, c.B + f, c.A);
         }
 
-        [Obsolete("Reorder operands, use \"Color.operator +(float, Color)\" instead.")]
+        [Obsolete("Reorder operands, use 'Color.operator +(float, Color)' instead.")]
         public static Color operator +(Color c, float f)
         {
             return f + c;
@@ -359,7 +359,7 @@ namespace Kotono.Utils
             return new Color(c.R * f, c.G * f, c.B * f, c.A);
         }
 
-        [Obsolete("Reorder operands, use \"Color.operator *(float, Color)\" instead.")]
+        [Obsolete("Reorder operands, use 'Color.operator *(float, Color)' instead.")]
         public static Color operator *(Color c, float f)
         {
             return f * c;
