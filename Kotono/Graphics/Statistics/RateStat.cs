@@ -22,9 +22,9 @@ namespace Kotono.Graphics.Statistics
 
         internal RateStat()
         {
-            RelativeSize = new Point(50.0f, 60.0f);
+            LettersSize = new Point(50.0f, 60.0f);
             Layer = 1;
-            Source = "0.00";
+            Value = "0.00";
         }
 
         internal void AddTime(float newTime)
@@ -33,7 +33,7 @@ namespace Kotono.Graphics.Statistics
 
             Time = _times.Average();
 
-            Source = Rate.ToString("0.00");
+            Value = Rate.ToString("0.00");
         }
     }
 }

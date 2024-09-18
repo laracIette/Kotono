@@ -1,5 +1,6 @@
 ﻿using Kotono.Graphics;
 using Kotono.Graphics.Objects;
+using Kotono.Utils.Exceptions;
 using OpenTK.Mathematics;
 using System;
 
@@ -7,15 +8,6 @@ namespace Kotono.Utils.Coordinates
 {
     internal sealed class Transform : Object, ITransform, IEquatable<Transform>
     {
-        private sealed class Base
-        {
-            public Vector Location { get; set; } = DefaultLocation;
-
-            public Rotator Rotation { get; set; } = DefaultRotation;
-
-            public Vector Scale { get; set; } = DefaultScale;
-        }
-
         private sealed record class Transformation<T>(T Value, float EndTime) where T : struct;
 
         private Transformation<Vector>? _locationTransformation = null;
@@ -24,45 +16,17 @@ namespace Kotono.Utils.Coordinates
 
         private Transformation<Vector>? _scaleTransformation = null;
 
-        private readonly Base _base = new();
+        public Vector RelativeLocation { get; set; } = DefaultLocation;
 
-        private readonly Base _velocity = new();
+        public Rotator RelativeRotation { get; set; } = DefaultRotation;
 
-        public Vector RelativeLocation
-        {
-            get => _base.Location;
-            set => _base.Location = value;
-        }
+        public Vector RelativeScale { get; set; } = DefaultScale;
 
-        public Rotator RelativeRotation
-        {
-            get => _base.Rotation;
-            set => _base.Rotation = value;
-        }
+        public Vector RelativeLocationVelocity { get; set; } = DefaultLocationVelocity;
 
-        public Vector RelativeScale
-        {
-            get => _base.Scale;
-            set => _base.Scale = value;
-        }
+        public Rotator RelativeRotationVelocity { get; set; } = DefaultRotationVelocity;
 
-        public Vector RelativeLocationVelocity
-        {
-            get => _velocity.Location;
-            set => _velocity.Location = value;
-        }
-
-        public Rotator RelativeRotationVelocity
-        {
-            get => _velocity.Rotation;
-            set => _velocity.Rotation = value;
-        }
-
-        public Vector RelativeScaleVelocity
-        {
-            get => _velocity.Scale;
-            set => _velocity.Scale = value;
-        }
+        public Vector RelativeScaleVelocity { get; set; } = DefaultScaleVelocity;
 
         public Vector WorldLocation
         {
@@ -103,7 +67,7 @@ namespace Kotono.Utils.Coordinates
         /// <summary>
         /// The <see cref="Transform"/> the <see cref="Transform"/> is relative to.
         /// </summary>
-        public Transform? Parent { get; set; } = null;
+        internal Transform? Parent { get; set; } = null;
 
         private Vector ParentWorldLocation => Parent?.WorldLocation ?? DefaultLocation;
 
@@ -165,11 +129,6 @@ namespace Kotono.Utils.Coordinates
             }
         }
 
-        /// <summary> 
-        /// A Transform with default location, rotation and scale. 
-        /// </summary>
-        internal static Transform Default => new(DefaultLocation, DefaultRotation, DefaultScale);
-
         /// <summary>
         /// The default location of Transform.
         /// </summary>
@@ -217,16 +176,7 @@ namespace Kotono.Utils.Coordinates
         /// Value : Vector.Zero
         /// </remarks>
         internal static Vector DefaultScaleVelocity => Vector.Zero;
-
-        internal Transform(Vector location, Rotator rotation, Vector scale)
-        {
-            RelativeLocation = location;
-            RelativeRotation = rotation;
-            RelativeScale = scale;
-        }
-
-        internal Transform() : this(DefaultLocation, DefaultRotation, DefaultScale) { }
-
+        
         public override void Update()
         {
             RelativeLocation += Time.Delta * RelativeLocationVelocity;
@@ -345,8 +295,18 @@ namespace Kotono.Utils.Coordinates
 
         public override string ToString()
         {
-            return $"World: {{Location: {WorldLocation}, Rotation: {WorldRotation}, Scale: {WorldScale}}}\n"
+            return $"World: {{Location: {WorldLocation}, Rotation: {WorldRotation}, Scale: {WorldScale}}} "
                  + $"Relative: {{Location: {RelativeLocation}, Rotation: {RelativeRotation}, Scale: {RelativeScale}}}";
+        }
+
+        internal string ToString(CoordinateSpace coordinateSpace)
+        {
+            return coordinateSpace switch
+            {
+                CoordinateSpace.Relative => $"Relative: {{Location: {{{RelativeLocation}}}, Rotation: {{{RelativeRotation}}}, Scale: {{{RelativeScale}}}}}",
+                CoordinateSpace.World => $"World: {{Location: {{{WorldLocation}}}, Rotation: {{{WorldRotation}}}, Scale: {{{WorldScale}}}}}",
+                _ => throw new SwitchException(typeof(CoordinateSpace), coordinateSpace)
+            };
         }
     }
 }

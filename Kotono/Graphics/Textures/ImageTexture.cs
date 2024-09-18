@@ -26,7 +26,7 @@ namespace Kotono.Graphics.Textures
 
                 handle = GL.GenTexture();
                 Handle = handle;
-                
+
                 Use();
 
                 var imageData = ImageData.Parse(path, true);
@@ -34,14 +34,14 @@ namespace Kotono.Graphics.Textures
                 bool isAlpha = imageData.Size.Product * 4 == imageData.Bytes.Length;
 
                 GL.TexImage2D(
-                    TextureTarget.Texture2D, 
-                    0, 
-                    isAlpha ? PixelInternalFormat.Rgba : PixelInternalFormat.Rgb, 
-                    imageData.Size.X, 
-                    imageData.Size.Y, 
-                    0, 
-                    isAlpha ? PixelFormat.Rgba : PixelFormat.Rgb, 
-                    PixelType.UnsignedByte, 
+                    TextureTarget.Texture2D,
+                    0,
+                    isAlpha ? PixelInternalFormat.Rgba : PixelInternalFormat.Rgb,
+                    imageData.Size.X,
+                    imageData.Size.Y,
+                    0,
+                    isAlpha ? PixelFormat.Rgba : PixelFormat.Rgb,
+                    PixelType.UnsignedByte,
                     imageData.Bytes
                 );
 

@@ -1,7 +1,6 @@
 ﻿using Kotono.Graphics.Textures;
 using Kotono.Utils;
 using Kotono.Utils.Exceptions;
-using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;

@@ -1,40 +1,11 @@
-﻿using Kotono.Graphics.Objects;
-using Kotono.Utils.Exceptions;
+﻿using Kotono.Utils.Exceptions;
 using OpenTK.Mathematics;
 using System;
-using System.Drawing;
 
 namespace Kotono.Utils.Coordinates
 {
     internal sealed partial class Rect : Object, IRect, IEquatable<Rect>
     {
-        private sealed class Base
-        {
-            internal Point BaseSize { get; set; } = DefaultSize;
-
-            internal Point Position { get; set; } = DefaultPosition;
-
-            internal Rotator Rotation { get; set; } = DefaultRotation;
-
-            internal Point Scale { get; set; } = DefaultScale;
-
-            internal Point Size
-            {
-                get => BaseSize * Scale;
-                set
-                {
-                    if (Point.IsNullOrZero(BaseSize))
-                    {
-                        BaseSize = value / Scale;
-                    }
-                    else
-                    {
-                        Scale = value / BaseSize;
-                    }
-                }
-            }
-        }
-
         private sealed record class Transformation<T>(T Value, float EndTime) where T : struct;
 
         private Transformation<Point>? _positionTransformation = null;
@@ -43,7 +14,7 @@ namespace Kotono.Utils.Coordinates
 
         private Transformation<Point>? _sizeTransformation = null;
 
-        private readonly Base _base = new();
+        private Point _relativePosition = DefaultPosition;
 
         public Anchor Anchor { get; set; } = Anchor.Center;
 
@@ -56,46 +27,54 @@ namespace Kotono.Utils.Coordinates
             : 0.0f
         );
 
-        public Point BaseSize
+        public Point RelativePosition
         {
-            get => _base.BaseSize;
-            set => _base.BaseSize = value;
+            get => _relativePosition + AnchorDelta;
+            set => _relativePosition = value;
         }
+
+        public Point BaseSize { get; set; } = DefaultSize;
 
         public Point RelativeSize
         {
-            get => _base.Size;
-            set => _base.Size = value;
+            get => BaseSize * RelativeScale;
+            set
+            {
+                if (Point.IsZero(BaseSize))
+                {
+                    BaseSize = value / RelativeScale;
+                }
+                else
+                {
+                    RelativeScale = value / BaseSize;
+                }
+            }
         }
 
-        public Point RelativePosition
-        {
-            get => _base.Position + AnchorDelta;
-            set => _base.Position = value - AnchorDelta;
-        }
+        public Rotator RelativeRotation { get; set; } = DefaultRotation;
 
-        public Rotator RelativeRotation
-        {
-            get => _base.Rotation;
-            set => _base.Rotation = value;
-        }
-
-        public Point RelativeScale
-        {
-            get => _base.Scale;
-            set => _base.Scale = value;
-        }
-
-        public Point WorldSize
-        {
-            get => RelativeSize + ParentWorldSize;
-            set => RelativeSize = value - ParentWorldSize;
-        }
+        public Point RelativeScale { get; set; } = DefaultScale;
 
         public Point WorldPosition
         {
             get => RelativePosition + ParentWorldPosition;
             set => RelativePosition = value - ParentWorldPosition;
+        }
+
+        public Point WorldSize
+        {
+            get => BaseSize * WorldScale;
+            set
+            {
+                if (Point.IsZero(BaseSize))
+                {
+                    BaseSize = value / WorldScale;
+                }
+                else
+                {
+                    WorldScale = value / BaseSize;
+                }
+            }
         }
 
         public Rotator WorldRotation
@@ -115,9 +94,9 @@ namespace Kotono.Utils.Coordinates
         /// </summary>
         public Rect? Parent { get; set; } = null;
 
-        private Point ParentWorldSize => Parent?.WorldSize ?? DefaultSize;
-
         private Point ParentWorldPosition => Parent?.WorldPosition ?? DefaultPosition;
+
+        private Point ParentWorldSize => Parent?.WorldSize ?? DefaultSize;
 
         private Rotator ParentWorldRotation => Parent?.WorldRotation ?? DefaultRotation;
 
@@ -232,7 +211,7 @@ namespace Kotono.Utils.Coordinates
             //RelativeRotation += Time.Delta * RelativeRotationVelocity;
             //RelativeSize += Time.Delta * RelativeSizeVelocity;
 
-            if (_positionTransformation is not null 
+            if (_positionTransformation is not null
              && TryGetTransformation(ref _positionTransformation, out var position))
             {
                 Logger.Log(position);
@@ -245,7 +224,7 @@ namespace Kotono.Utils.Coordinates
                 RelativeRotation += Time.Delta * rotation;
             }
 
-            if (_sizeTransformation is not null 
+            if (_sizeTransformation is not null
              && TryGetTransformation(ref _sizeTransformation, out var size))
             {
                 RelativeSize += Time.Delta * size;
@@ -272,7 +251,6 @@ namespace Kotono.Utils.Coordinates
         /// </summary>
         internal void SetPositionTransformation(Point position, float duration)
         {
-            Logger.Log(position, duration);
             if (duration <= 0.0f)
             {
                 RelativePosition += position;
@@ -431,8 +409,18 @@ namespace Kotono.Utils.Coordinates
 
         public override string ToString()
         {
-            return $"Relative: {{Position: {{{RelativePosition}}}, Rotation: {{{RelativeRotation}}}, Size: {{{RelativeSize}}}}}\n" +
-                   $"World: {{Position: {{{WorldPosition}}}, Rotation: {{{WorldRotation}}}, Size: {{{WorldSize}}}}}";
+            return $"Relative: {{Position: {{{RelativePosition}}}, Rotation: {{{RelativeRotation}}}, Size: {{{RelativeSize}}}}} "
+                 + $"World: {{Position: {{{WorldPosition}}}, Rotation: {{{WorldRotation}}}, Size: {{{WorldSize}}}}}";
+        }
+
+        internal string ToString(CoordinateSpace coordinateSpace)
+        {
+            return coordinateSpace switch
+            {
+                CoordinateSpace.Relative => $"Relative: {{Position: {{{RelativePosition}}}, Rotation: {{{RelativeRotation}}}, Size: {{{RelativeSize}}}}}",
+                CoordinateSpace.World => $"World: {{Position: {{{WorldPosition}}}, Rotation: {{{WorldRotation}}}, Size: {{{WorldSize}}}}}",
+                _ => throw new SwitchException(typeof(CoordinateSpace), coordinateSpace)
+            };
         }
     }
 }

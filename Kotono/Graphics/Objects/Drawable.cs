@@ -29,6 +29,6 @@ namespace Kotono.Graphics.Objects
 
         public virtual void Save() => JsonParser.WriteFile(this, Path.FromData($@"{Guid}.json"));
 
-        public override string ToString() => $"{Name}: {GetType().Name}";
+        public override string ToString() => $"Name: '{Name}', Type: {GetType().Name}, IsDraw: {IsDraw}";
     }
 }

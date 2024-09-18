@@ -5,7 +5,6 @@ using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using IO = System.IO;
 
 namespace Kotono.Graphics.Shaders

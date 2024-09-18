@@ -6,7 +6,7 @@ namespace Kotono.Graphics.Objects
 {
     internal static class SquareVertices
     {
-        private static readonly float[] _vertices = 
+        private static readonly float[] _vertices =
         [
             // Positions         // Texture Coords
             1.0f,  1.0f, 0.0f,   1.0f, 1.0f, // Top Right
@@ -15,7 +15,7 @@ namespace Kotono.Graphics.Objects
            -1.0f,  1.0f, 0.0f,   0.0f, 1.0f  // Top Left 
         ];
 
-        private static readonly int[] _indices = 
+        private static readonly int[] _indices =
         [
             0, 1, 3, // First Triangle
             1, 2, 3  // Second Triangle

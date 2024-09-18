@@ -30,6 +30,7 @@ namespace Kotono.Graphics.Objects
             ITexture.Unbind(TextureTarget.Texture2D);
         }
 
-        public override string ToString() => $"Shader: {{{Shader}}}, Texture: {{{Texture}}}";
+        public override string ToString()
+            => $"{base.ToString()}: {{Shader: {{{Shader}}}, Texture: {{{Texture}}}}}";
     }
 }

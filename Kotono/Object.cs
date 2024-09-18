@@ -1,10 +1,5 @@
-﻿using Kotono.Graphics;
-using Kotono.Graphics.Objects;
-using Kotono.Utils;
+﻿using Kotono.Graphics.Objects;
 using System;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
-using System.Text;
 
 namespace Kotono
 {
@@ -25,24 +20,5 @@ namespace Kotono
         public virtual void Update() { }
 
         public virtual void Dispose() => IsDelete = true;
-
-
-
-#pragma warning disable IDE1006 // Naming Styles
-
-#if DEBUG
-        private string? __type => GetType().FullName;
-#endif
-
-        protected static string str(params object?[] objects)
-        {
-            var builder = new StringBuilder();
-            foreach (var obj in objects)
-            {
-                builder.Append(obj + " ");
-            }
-            return builder.ToString();
-        }
-#pragma warning restore IDE1006 // Naming Styles
     }
 }

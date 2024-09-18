@@ -5,7 +5,7 @@
         /// <summary>
         /// The source of the <see cref="IText"/>'s Value.
         /// </summary>
-        public object? Source { get; set; }
+        //public object? Source { get; set; }
 
         /// <summary>
         /// The value of the <see cref="IText"/>.

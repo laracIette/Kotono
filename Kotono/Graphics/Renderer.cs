@@ -60,7 +60,7 @@ namespace Kotono.Graphics
             //{
             //    return;
             //}
-               
+
             _object2DRenderQueue.Add(object2D);
         }
 
@@ -76,7 +76,7 @@ namespace Kotono.Graphics
             }
         }
 
-        private void AddToFrontMeshRenderQueue(IFrontMesh frontMesh) 
+        private void AddToFrontMeshRenderQueue(IFrontMesh frontMesh)
             => _frontMeshRenderQueue.Add(frontMesh);
 
         private void ClearRenderQueues()
@@ -180,7 +180,7 @@ namespace Kotono.Graphics
 
             //GL.Disable(EnableCap.DepthTest);
         }
-       
+
         private void DrawCubemap()
         {
             if (_cubemap is null)

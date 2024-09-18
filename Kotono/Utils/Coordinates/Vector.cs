@@ -112,65 +112,65 @@ namespace Kotono.Utils.Coordinates
         /// </summary>
         public Vector(float f) : this(f, f, f) { }
 
-        public static Vector RotateAroundPoint(Vector v, Vector point, in Rotator rotation) 
+        public static Vector RotateAroundPoint(Vector v, Vector point, in Rotator rotation)
             => (Vector)(Quaternion.FromEulerAngles((Vector3)rotation) * (Vector3)(v - point)) + point;
 
-        public static Vector Rotate(Vector v, in Rotator r) 
+        public static Vector Rotate(Vector v, in Rotator r)
             => (Vector)Vector3.Transform((Vector3)v, (Quaternion)r);
 
-        public static Vector Cross(Vector left, Vector right) 
+        public static Vector Cross(Vector left, Vector right)
             => new(
                 left.Y * right.Z - left.Z * right.Y,
                 left.Z * right.X - left.X * right.Z,
                 left.X * right.Y - left.Y * right.X
             );
 
-        public static float Dot(Vector left, Vector right) 
+        public static float Dot(Vector left, Vector right)
             => left.X * right.X + left.Y * right.Y + left.Z * right.Z;
 
         /// <summary> 
         /// Get the minimum value of the <see cref="Vector"/>.
         /// </summary>
-        public static float Min(Vector v) 
+        public static float Min(Vector v)
             => Math.Min(Math.Min(v.X, v.Y), v.Z);
 
         /// <summary> 
         /// Get the maximum value of the <see cref="Vector"/>.
         /// </summary>
-        public static float Max(Vector v) 
+        public static float Max(Vector v)
             => Math.Max(Math.Max(v.X, v.Y), v.Z);
 
         /// <summary> 
         /// Get the absolute values of the <see cref="Vector"/>. 
         /// </summary>
-        public static Vector Abs(Vector v) 
+        public static Vector Abs(Vector v)
             => new(Math.Abs(v.X), Math.Abs(v.Y), Math.Abs(v.Z));
 
         /// <summary> 
         /// Convert a <see cref="Vector"/> from degrees to radians. 
         /// </summary>
-        public static Vector Rad(Vector v) 
+        public static Vector Rad(Vector v)
             => new(Math.Rad(v.X), Math.Rad(v.Y), Math.Rad(v.Z));
 
         /// <summary> 
         /// Convert a <see cref="Vector"/> from radians to degrees. 
         /// </summary>
-        public static Vector Deg(Vector v) 
+        public static Vector Deg(Vector v)
             => new(Math.Deg(v.X), Math.Deg(v.Y), Math.Deg(v.Z));
 
-        public static float Distance(Vector left, Vector right) 
+        public static float Distance(Vector left, Vector right)
             => (left - right).Length;
 
-        internal static float Distance(in ITransform left, in ITransform right) 
+        internal static float Distance(in ITransform left, in ITransform right)
             => Distance(left.WorldLocation, right.WorldLocation);
 
-        public static Vector Clamp(Vector v, float min, float max) 
+        public static Vector Clamp(Vector v, float min, float max)
             => new(Math.Clamp(v.X, min, max), Math.Clamp(v.Y, min, max), Math.Clamp(v.Z, min, max));
 
-        public static Vector Clamp(Vector v) 
+        public static Vector Clamp(Vector v)
             => new(Math.Clamp(v.X), Math.Clamp(v.Y), Math.Clamp(v.Z));
 
-        public static Vector Parse(in string[] values) 
+        public static Vector Parse(in string[] values)
             => new(float.Parse(values[1]), float.Parse(values[2]), float.Parse(values[0]));
 
         public static Vector Avg(params Vector[] values)
@@ -183,54 +183,54 @@ namespace Kotono.Utils.Coordinates
             return result / values.Length;
         }
 
-        public static Matrix4 CreateScaleMatrix(Vector v) 
+        public static Matrix4 CreateScaleMatrix(Vector v)
             => Matrix4.CreateScale((Vector3)v);
 
-        public static Matrix4 CreateTranslationMatrix(Vector v) 
+        public static Matrix4 CreateTranslationMatrix(Vector v)
             => Matrix4.CreateTranslation((Vector3)v);
 
-        public static bool IsNullOrZero(Vector? v) 
+        public static bool IsNullOrZero(Vector? v)
             => v is null || v == Zero;
 
         public static Vector operator +(Vector left, Vector right)
             => new(left.X + right.X, left.Y + right.Y, left.Z + right.Z);
 
-        public static Vector operator +(float f, Vector v) 
+        public static Vector operator +(float f, Vector v)
             => new(v.X + f, v.Y + f, v.Z + f);
 
         [Obsolete("Reorder operands, use 'Vector.operator +(float, Vector)' instead.")]
-        public static Vector operator +(Vector v, float f) 
+        public static Vector operator +(Vector v, float f)
             => f + v;
 
-        public static Vector operator -(Vector left, Vector right) 
+        public static Vector operator -(Vector left, Vector right)
             => new(left.X - right.X, left.Y - right.Y, left.Z - right.Z);
 
-        public static Vector operator -(Vector v, float f) 
+        public static Vector operator -(Vector v, float f)
             => new(v.X - f, v.Y - f, v.Z - f);
 
-        public static Vector operator -(Vector v) 
+        public static Vector operator -(Vector v)
             => new(-v.X, -v.Y, -v.Z);
 
-        public static Vector operator *(Vector left, Vector right) 
+        public static Vector operator *(Vector left, Vector right)
             => new(left.X * right.X, left.Y * right.Y, left.Z * right.Z);
 
-        public static Vector operator *(float f, Vector v) 
+        public static Vector operator *(float f, Vector v)
             => new(v.X * f, v.Y * f, v.Z * f);
 
         [Obsolete("Reorder operands, use 'Vector.operator *(float, Vector)' instead.")]
-        public static Vector operator *(Vector v, float f) 
+        public static Vector operator *(Vector v, float f)
             => f * v;
 
-        public static Vector operator /(Vector left, Vector right) 
+        public static Vector operator /(Vector left, Vector right)
             => new(left.X / right.X, left.Y / right.Y, left.Z / right.Z);
 
-        public static Vector operator /(Vector v, float f) 
+        public static Vector operator /(Vector v, float f)
             => new(v.X / f, v.Y / f, v.Z / f);
 
-        public static bool operator ==(Vector left, Vector right) 
+        public static bool operator ==(Vector left, Vector right)
             => left.Equals(right);
 
-        public static bool operator !=(Vector left, Vector right) 
+        public static bool operator !=(Vector left, Vector right)
             => !(left == right);
 
         public readonly void Deconstruct(out float x, out float y, out float z)
@@ -240,7 +240,7 @@ namespace Kotono.Utils.Coordinates
             z = Z;
         }
 
-        public override readonly bool Equals(object? obj) 
+        public override readonly bool Equals(object? obj)
             => obj is Vector v && Equals(v);
 
         public readonly bool Equals(Vector other)
@@ -248,25 +248,25 @@ namespace Kotono.Utils.Coordinates
             && Y == other.Y
             && Z == other.Z;
 
-        public override readonly int GetHashCode() 
+        public override readonly int GetHashCode()
             => HashCode.Combine(X, Y, Z);
 
         public static explicit operator Vector3(Vector v)
             => new(v.X, v.Y, v.Z);
 
-        public static explicit operator Vector(Vector3 v) 
+        public static explicit operator Vector(Vector3 v)
             => new(v.X, v.Y, v.Z);
 
-        public static explicit operator Vector3D(Vector v) 
+        public static explicit operator Vector3D(Vector v)
             => new(v.X, v.Y, v.Z);
 
         public static explicit operator Vector(Vector3D v)
             => new(v.X, v.Y, v.Z);
 
-        public static explicit operator Vector(float f) 
+        public static explicit operator Vector(float f)
             => new(f, f, f);
 
-        public override readonly string ToString() 
+        public override readonly string ToString()
             => $"X: {X}, Y: {Y}, Z: {Z}";
     }
 }

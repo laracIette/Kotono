@@ -21,7 +21,7 @@ namespace Kotono.Engine.UserInterface.AddMenu
                 base.Anchor = value;
                 for (int i = 0; i < _options.Length; i++)
                 {
-                    _options[i].RelativePosition = GetTextPosition(i, _letterSize.Y);   
+                    _options[i].RelativePosition = GetTextPosition(i, _letterSize.Y);
                     _options[i].Anchor = value;
                 }
             }
@@ -33,7 +33,7 @@ namespace Kotono.Engine.UserInterface.AddMenu
             {
                 RelativeSize = _letterSize,
                 Layer = 3,
-                Source = o,
+                Value = o,
                 Spacing = 0.6f,
                 Parent = this
             })];

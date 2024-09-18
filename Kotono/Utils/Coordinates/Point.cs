@@ -117,9 +117,9 @@ namespace Kotono.Utils.Coordinates
             return new Point(Math.Clamp(p.X, min.X, max.X), Math.Clamp(p.Y, min.Y, max.Y));
         }
 
-        public static bool IsNullOrZero(Point? p)
+        public static bool IsZero(Point p)
         {
-            return p is null || p == Zero;
+            return p == Zero;
         }
 
         public static Point operator +(Point left, Point right)

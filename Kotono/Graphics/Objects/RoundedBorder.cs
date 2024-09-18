@@ -8,7 +8,7 @@ namespace Kotono.Graphics.Objects
     {
         private float _targetThickness;
 
-        public float Thickness { get; private set; }
+        internal float Thickness { get; private set; }
 
         internal float TargetThickness
         {

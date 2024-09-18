@@ -7,40 +7,33 @@ namespace Kotono.Graphics.Objects.Buttons
     {
         private readonly TextButton[] _buttons;
 
-        private Color _buttonsColor;
-
-        internal Color ButtonsColor
+        public override int Layer
         {
-            get => _buttonsColor;
+            get => base.Layer;
             set
             {
-                _buttonsColor = value;
+                base.Layer = value;
                 foreach (var button in _buttons)
                 {
-                    button.Color = value;
+                    button.Layer = value + 1;
                 }
             }
         }
 
-        internal TextButtonList(string[] texts, Point position, Point size, float cornerSize, float fallOff, int layer)
+        internal TextButtonList(TextButton[] buttons, Point size)
         {
-            _buttons = new TextButton[texts.Length];
+            _buttons = buttons;
 
-            var positions = new Point[texts.Length];
-            Rect.GetPositionsFromAnchor(positions, position, size, Anchor.Center);
+            var positions = new Point[buttons.Length];
+            Rect.GetPositionsFromAnchor(positions, Point.Zero, size, Anchor.Center);
 
-            for (int i = 0; i < texts.Length; i++)
+            for (int i = 0; i < buttons.Length; i++)
             {
-                _buttons[i] = new TextButton
-                {
-                    RelativePosition = positions[i],
-                    RelativeSize = size,
-                    TargetCornerSize = cornerSize,
-                    TargetFallOff = fallOff,
-                    Layer = layer,
-                    Pressed = (s, e) => Printer.Print(e.Source, true)
-                };
-                _buttons[i].Text.Source = texts[i];
+                var button = buttons[i];
+
+                button.RelativePosition = positions[i];
+                button.Pressed = (s, e) => Printer.PrintRainbow(e.Source, 0.01f);
+                button.Parent = this;
             }
         }
     }

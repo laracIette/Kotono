@@ -242,16 +242,15 @@ namespace Kotono.Utils
         }
 
         /// <summary>
-        /// Loops through colors given a frequency.
+        /// Loops through <see cref="Color"/>s given a frequency.
         /// </summary>
-        /// <param name="frequency"> The frequency at which the color loops through RGB values. </param>
-        /// <returns></returns>
+        /// <param name="frequency"> The frequency at which the <see cref="Color"/> loops through RGB values. </param>
         public static Color Rainbow(float frequency)
         {
             return new Color(
-                (Math.Sin(frequency * Time.Now * 1000.0f + 0.0f) * 0.5f) + 0.5f,
-                (Math.Sin(frequency * Time.Now * 1000.0f + 2.0f) * 0.5f) + 0.5f,
-                (Math.Sin(frequency * Time.Now * 1000.0f + 4.0f) * 0.5f) + 0.5f
+                Math.Sin(frequency * Time.Now * 1000.0f + 0.0f) * 0.5f + 0.5f,
+                Math.Sin(frequency * Time.Now * 1000.0f + 2.0f) * 0.5f + 0.5f,
+                Math.Sin(frequency * Time.Now * 1000.0f + 4.0f) * 0.5f + 0.5f
             );
         }
 
@@ -272,7 +271,7 @@ namespace Kotono.Utils
         }
 
         /// <summary>
-        /// Clamps the color's RGB values in range [0, 1].
+        /// Clamps the <see cref="Color"/>'s RGB values in range [0, 1].
         /// </summary>
         public static Color Clamp(Color color)
         {
@@ -280,7 +279,7 @@ namespace Kotono.Utils
         }
 
         /// <summary>
-        /// Clamps the color's RGB values in range [min, max].
+        /// Clamps the <see cref="Color"/>'s RGB values in range [min, max].
         /// </summary>
         public static Color Clamp(Color color, float min, float max)
         {

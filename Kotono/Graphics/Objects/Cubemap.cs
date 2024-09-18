@@ -1,6 +1,5 @@
 ﻿//#define USE_MODEL
 
-using Kotono.Graphics.Objects.Meshes;
 using Kotono.Graphics.Shaders;
 using Kotono.Graphics.Textures;
 using OpenTK.Graphics.OpenGL4;

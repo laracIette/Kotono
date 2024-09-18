@@ -7,7 +7,10 @@ namespace Kotono.Graphics
 {
     internal static class Printer
     {
-        private static readonly PrinterText[] _texts;
+        private static readonly PrinterText[] _texts = 
+            Enumerable.Range(0, 50)
+            .Select(i => new PrinterText())
+            .ToArray();
 
         private static int _currentIndex = 0;
 
@@ -15,16 +18,6 @@ namespace Kotono.Graphics
         {
             get => _currentIndex;
             set => _currentIndex = (int)Math.Loop(value, _texts.Length);
-        }
-
-        static Printer()
-        {
-            _texts = new PrinterText[50];
-
-            for (int i = 0; i < _texts.Length; i++)
-            {
-                _texts[i] = new PrinterText();
-            }
         }
 
         private static void Lower()
@@ -35,7 +28,12 @@ namespace Kotono.Graphics
             }
         }
 
-        private static void Print(string? text, Color color)
+        /// <summary>
+        /// Prints an text to the <see cref="Window"/> given a <see cref="Color"/>.
+        /// </summary>
+        /// <param name="text"> The text to print. </param>
+        /// <param name="color"> The color of the text. </param>
+        internal static void Print(string? text, Color color)
         {
             if (text is not null)
             {
@@ -44,11 +42,13 @@ namespace Kotono.Graphics
                 // so it's by default in wrong order
                 foreach (var token in text.Split('\n').Reverse())
                 {
-                    Lower();
-                    _texts[CurrentIndex].Source = token;
-                    _texts[CurrentIndex].Color = color;
-
                     ++CurrentIndex;
+
+                    Lower();
+
+                    _texts[CurrentIndex].IsDraw = true;
+                    _texts[CurrentIndex].Value = token;
+                    _texts[CurrentIndex].LettersColor = color;
                 }
             }
         }
@@ -70,10 +70,10 @@ namespace Kotono.Graphics
         /// Prints an object to the <see cref="Window"/>.
         /// </summary>
         /// <param name="obj"> The object to print. </param>
-        /// <param name="isRainbow"> Whether the Color of the text should loop through RGB values. </param>
-        internal static void Print(object? obj, bool isRainbow = false)
+        /// <param name="frequency"> The frequency at which the <see cref="Color"/> loops through RGB values. </param>
+        internal static void PrintRainbow(object? obj, float frequency)
         {
-            Print(obj, isRainbow ? Color.Rainbow(0.01f) : Color.White);
+            Print(obj, Color.Rainbow(frequency));
         }
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace Kotono.Graphics
         /// </summary>
         internal static void Print()
         {
-            Print(string.Empty);
+            Print(string.Empty, Color.White);
         }
     }
 }

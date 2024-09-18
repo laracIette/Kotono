@@ -5,30 +5,29 @@ namespace Kotono.Graphics.Objects.Texts
 {
     internal sealed class PrinterText : Text
     {
-        public override object? Source
+        public override string Value
         {
-            get => base.Source;
+            get => base.Value;
             set
             {
                 RelativePosition = Point.Zero;
 
-                base.Source = value;
-
-                ExecuteAction.Delay(Clear, 3.0f);
+                base.Value = value;
+                
+                ExecuteAction.Delay(() => IsDraw = false, 3.0f);
             }
         }
 
         internal PrinterText()
         {
-            RelativeSize = new Point(25.0f, 30.0f);
+            LettersSize = new Point(25.0f, 30.0f);
             Anchor = Anchor.TopLeft;
             Spacing = 2.0f / 3.0f;
             Layer = int.MaxValue;
+            IsDraw = false;
         }
 
         internal void Lower()
-        {
-            RelativePosition += new Point(0.0f, LettersRect.BaseSize.Y);
-        }
+            => RelativePosition += new Point(0.0f, LettersSize.Y);
     }
 }

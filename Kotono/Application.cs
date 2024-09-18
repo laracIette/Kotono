@@ -1,14 +1,13 @@
 ﻿using Kotono.Audio;
 using Kotono.Graphics;
 using Kotono.Graphics.Objects;
-using Kotono.Graphics.Objects.Buttons;
 using Kotono.Graphics.Objects.Lights;
 using Kotono.Graphics.Objects.Meshes;
+using Kotono.Graphics.Objects.Texts;
 using Kotono.Input;
 using Kotono.Utils;
 using Kotono.Utils.Coordinates;
 using Kotono.Utils.Timing;
-using System;
 using System.Linq;
 using Keys = OpenTK.Windowing.GraphicsLibraryFramework.Keys;
 
@@ -29,8 +28,8 @@ namespace Kotono
 
             _animation = new Animation(Path.FromAssets(@"Animations\Counting"))
             {
-                RelativeSize = new Point(50.0f, 60.0f),
                 RelativePosition = new Point(100.0f, 200.0f),
+                RelativeSize = new Point(50.0f, 60.0f),
                 Color = Color.Yellow,
                 FrameRate = 10.0f,
                 StartTime = 3.0f,
@@ -40,20 +39,20 @@ namespace Kotono
 
             _timer = new Timer
             {
-                Timeout = (s, e) => Printer.Print((int)e.Time, true),
+                Timeout = (s, e) => Printer.PrintRainbow((int)e.Time, 0.01f),
             };
 
             CreateObjects();
         }
 
-        private static void OnEnterKeyPressed() 
+        private static void OnEnterKeyPressed()
             => Mouse.CursorState = (CursorState)Math.Loop((int)Mouse.CursorState + 1, 3);
 
-        private void OnTKeyPressed() 
+        private void OnTKeyPressed()
             => _animation.Switch();
 
-        private static void OnIKeyPressed() 
-            => Printer.Print(Time.Now, true);
+        private static void OnIKeyPressed()
+            => Printer.PrintRainbow(Time.Now, 0.01f);
 
         private static void OnJKeyPressed()
         {
@@ -98,20 +97,11 @@ namespace Kotono
 
             _ = new TestImage();
 
-            _ = new TextButtonList(
-                [
-                    "Hey",
-                    "Yo",
-                    "BOoOOooOo"
-                ],
-                new Point(150.0f, 150.0f),
-                new Point(200.0f, 50.0f),
-                15.0f,
-                1.0f,
-                0
-            )
+            _ = new Text
             {
-                ButtonsColor = Color.DarkSlateGray,
+                Value = "dhgudd",
+                RelativePosition = new Point(150.0f, 200.0f),
+                LettersSize = new Point(50.0f, 60.0f),
             };
 
             _ = new SpotLight();

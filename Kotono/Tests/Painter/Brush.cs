@@ -1,5 +1,4 @@
-﻿using Kotono.Graphics;
-using Kotono.Graphics.Objects;
+﻿using Kotono.Graphics.Objects;
 using Kotono.Graphics.Textures;
 using Kotono.Input;
 using Kotono.Utils.Coordinates;

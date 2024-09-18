@@ -8,9 +8,11 @@ namespace Kotono.Utils
     {
         private sealed record class DelayedAction(Action Action, float Time);
 
-        private static readonly ExecuteAction _instance = new();
-
         private readonly List<DelayedAction> _actionDelays = [];
+
+        private static readonly Lazy<ExecuteAction> _instance = new(() => new());
+
+        private static ExecuteAction Instance => _instance.Value;
 
         private ExecuteAction() { }
 
@@ -22,7 +24,7 @@ namespace Kotono.Utils
             }
             else
             {
-                _instance._actionDelays.Add(new DelayedAction(action, Time.Now + delay));
+                Instance._actionDelays.Add(new DelayedAction(action, Time.Now + delay));
             }
         }
 

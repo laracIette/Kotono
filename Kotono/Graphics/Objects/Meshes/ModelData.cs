@@ -58,7 +58,7 @@ namespace Kotono.Graphics.Objects.Meshes
         {
             using var importer = new AssimpContext();
             var scene = importer.ImportFile(path, PostProcessSteps.Triangulate | PostProcessSteps.CalculateTangentSpace);
-            
+
             if (!_datas.TryGetValue(path, out var data))
             {
                 data = new Data[scene.MeshCount];

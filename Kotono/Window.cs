@@ -18,11 +18,15 @@ namespace Kotono
 {
     internal abstract class Window : GameWindow
     {
-        private static readonly PerformanceWindow _performanceWindow = new();
+        private static readonly PerformanceWindow _performanceWindow = new()
+        {
+            RelativeSize = new Point(400.0f, 120.0f),
+            Anchor = Anchor.BottomRight,
+        };
 
         private float _stalledTime = 0.0f;
 
-        private static Point _size = new(1280.0f, 720.0f);
+        private static Point _size = Point.Zero;
 
         private bool ShouldRenderFrame => IsFocused && (_performanceWindow.FrameRate < _performanceWindow.MaxFrameRate);
 
@@ -35,11 +39,13 @@ namespace Kotono
             {
                 _size = value;
 
-                WindowComponentManager.WindowViewport.BaseSize = Size;
+                _performanceWindow.RelativePosition = value;
 
-                if (Size > Point.Zero)
+                WindowComponentManager.WindowViewport.BaseSize = value;
+
+                if (value > Point.Zero)
                 {
-                    ObjectManager.SetRendererSize(Size);
+                    ObjectManager.SetRendererSize(value);
                 }
             }
         }

@@ -1,5 +1,4 @@
 ﻿using Kotono.Graphics.Shaders;
-using Kotono.Utils.Coordinates;
 
 namespace Kotono.Graphics.Objects.Meshes
 {

@@ -14,7 +14,7 @@ namespace Kotono.Graphics.Objects
             set => _isDraw = value;
         }
 
-        public Transform Transform { get; } = Transform.Default;
+        public Transform Transform { get; } = new();
 
         public virtual Vector RelativeLocation
         {

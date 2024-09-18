@@ -15,20 +15,20 @@ namespace Kotono
         /// <summary>
         /// Prints an empty line to the console.
         /// </summary>
-        [Conditional("DEBUG")] 
+        [Conditional("DEBUG")]
         public static void Log() => Log(string.Empty);
 
         /// <summary>
         /// Prints objects to the console, each separated by a whitespace.
         /// </summary>
         /// <param name="obj"> The objects to log. </param>
-        [Conditional("DEBUG")] 
+        [Conditional("DEBUG")]
         public static void Log(params object?[] objs) => Log(string.Join(' ', objs));
 
         /// <summary>
         /// Prints an error to the console.
         /// </summary>
-        [Conditional("DEBUG")] 
+        [Conditional("DEBUG")]
         public static void LogError(params object?[] objs) => Log(["error:", .. objs]);
 
         /// <summary>

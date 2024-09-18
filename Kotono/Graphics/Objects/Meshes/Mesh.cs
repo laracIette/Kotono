@@ -163,7 +163,7 @@ namespace Kotono.Graphics.Objects.Meshes
 
         public override void Dispose()
         {
-            Hitboxes.ForEach(h => h.Dispose()); 
+            Hitboxes.ForEach(h => h.Dispose());
 
             base.Dispose();
         }

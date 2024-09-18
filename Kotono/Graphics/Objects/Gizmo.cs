@@ -22,22 +22,22 @@ namespace Kotono.Graphics.Objects
         private readonly GizmoMesh[] _meshes =
         [
             new GizmoMesh
-            { 
+            {
                 Color = Color.Red,
                 Model = new Model(Path.FromAssets($@"Gizmo\gizmo_x.obj"))
             },
             new GizmoMesh
-            { 
+            {
                 Color = Color.Green,
                 Model = new Model(Path.FromAssets($@"Gizmo\gizmo_y.obj"))
             },
             new GizmoMesh
-            { 
+            {
                 Color = Color.Blue,
                 Model = new Model(Path.FromAssets($@"Gizmo\gizmo_z.obj"))
             },
             new GizmoMesh
-            { 
+            {
                 Color = Color.White,
                 Model = new Model(Path.FromAssets($@"Gizmo\gizmo_shpere.obj"))
             }
@@ -51,7 +51,7 @@ namespace Kotono.Graphics.Objects
 
         internal static new bool IsSelected => _selectedMeshIndex != -1;
 
-        private readonly TransformSpace _transformSpace = TransformSpace.Relative;
+        private readonly CoordinateSpace _transformSpace = CoordinateSpace.Relative;
 
         private readonly GizmoMode _gizmoMode = GizmoMode.Location;
 
@@ -66,11 +66,11 @@ namespace Kotono.Graphics.Objects
 
             switch (_transformSpace)
             {
-                case TransformSpace.World:
+                case CoordinateSpace.World:
                     WorldRotation = Rotator.Zero;
                     break;
 
-                case TransformSpace.Relative:
+                case CoordinateSpace.Relative:
                     //Rotation = ActiveMesh.RelativeRotation;
                     break;
             }

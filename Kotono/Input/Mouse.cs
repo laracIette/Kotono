@@ -129,7 +129,7 @@ namespace Kotono.Input
 
                 var delta = new Point(x, y);
 
-                if (!Point.IsNullOrZero(delta))
+                if (!Point.IsZero(delta))
                 {
                     PreviousPositionFromOrigin += delta;
                     PositionFromOrigin += delta;
@@ -139,7 +139,7 @@ namespace Kotono.Input
 
             Delta = PositionFromOrigin - PreviousPositionFromOrigin;
 
-            if (!Point.IsNullOrZero(Delta))
+            if (!Point.IsZero(Delta))
             {
                 UpdateRay();
             }

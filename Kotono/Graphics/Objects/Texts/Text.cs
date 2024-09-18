@@ -1,8 +1,6 @@
 ﻿using Kotono.Graphics.Textures;
-using Kotono.Input;
 using Kotono.Utils;
 using Kotono.Utils.Coordinates;
-using Kotono.Utils.Exceptions;
 using System.Collections.Generic;
 
 namespace Kotono.Graphics.Objects.Texts
@@ -89,42 +87,31 @@ namespace Kotono.Graphics.Objects.Texts
             [','] = @"Characters\,.png"
         };
 
-        private Image[] _letters = [];
-
-        private object? _source = null;
+        private Image[] _letters = []; // replace by ImageTexture[]
 
         private string _value = string.Empty;
 
         private Color _lettersColor = Color.White;
 
-        public virtual object? Source
-        {
-            get => _source;
-            set
-            {
-                _source = value;
+        private Point _lettersSize;
 
-                string newValue = value?.ToString() ?? string.Empty;
-
-                if (newValue != Value)
-                {
-                    Value = newValue;
-                }
-            }
-        }
-
-        public string Value
+        public virtual string Value
         {
             get => _value;
-            private set
+            set
             {
+                if (value == _value)
+                {
+                    return;
+                }
+
                 _value = value;
 
                 Clear();
 
                 _letters = new Image[value.Length];
 
-                for (int i = 0; i < value.Length; i++)
+                for (int i = 0; i < _letters.Length; i++)
                 {
                     if (!_characterPaths.TryGetValue(value[i], out string? path))
                     {
@@ -134,8 +121,8 @@ namespace Kotono.Graphics.Objects.Texts
                     _letters[i] = new Image
                     {
                         Texture = new ImageTexture(Path.FromAssets(path)),
-                        RelativePosition = GetLetterPosition(i, LettersRect.RelativeSize),
-                        RelativeSize = LettersRect.RelativeSize,
+                        RelativePosition = GetLetterPosition(i),
+                        RelativeSize = LettersSize,
                         Color = LettersColor,
                         Layer = Layer,
                         Parent = this
@@ -146,9 +133,7 @@ namespace Kotono.Graphics.Objects.Texts
 
         public float Spacing { get; set; } = 1.0f;
 
-        public override Point RelativeSize => new(LettersRect.RelativeSize.X * Value.Length * Spacing, LettersRect.RelativeSize.Y);
-
-        internal Rect LettersRect { get; } = Rect.Default;
+        public override Point RelativeSize => new(LettersSize.X * Value.Length * Spacing, LettersSize.Y);
 
         public Color LettersColor
         {
@@ -163,8 +148,24 @@ namespace Kotono.Graphics.Objects.Texts
             }
         }
 
-        private Point GetLetterPosition(int index, Point size)
+        internal Point LettersSize
         {
+            get => _lettersSize;
+            set
+            {
+                _lettersSize = value;
+                for (int i = 0; i < _letters.Length; i++)
+                {
+                    _letters[i].RelativeSize = value;
+                    _letters[i].RelativePosition = GetLetterPosition(i);
+                }
+            }
+        }
+
+        private Point GetLetterPosition(int index)
+        {
+            Point size = LettersSize;
+
             float centerOffset = Spacing * size.X * Math.Half(index - (Value.Length - 1));
             float verticalOffset = Math.Half(size.Y);
 
@@ -201,13 +202,12 @@ namespace Kotono.Graphics.Objects.Texts
 
         public override void Dispose()
         {
-            LettersRect.Dispose();
-
             DisposeLetters();
 
             base.Dispose();
         }
 
-        public override string ToString() => Value;
+        public override string ToString()
+            => $"{base.ToString()}, Value: '{Value}', Rect: {{{Rect.ToString(CoordinateSpace.World)}}}";
     }
 }

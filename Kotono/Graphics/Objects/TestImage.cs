@@ -12,13 +12,13 @@ namespace Kotono.Graphics.Objects
             RelativeSize = new Point(50.0f, 60.0f);
         }
 
-        private void OnUpKeyDown() 
+        private void OnUpKeyDown()
             => Rect.SetPositionTransformation(new Point(0.0f, -50.0f), 1.0f);
-        private void OnDownKeyDown() 
+        private void OnDownKeyDown()
             => Rect.SetPositionTransformation(new Point(0.0f, 50.0f), 1.0f);
-        private void OnLeftKeyDown() 
+        private void OnLeftKeyDown()
             => Rect.SetPositionTransformation(new Point(-50.0f, 0.0f), 1.0f);
-        private void OnRightKeyDown() 
+        private void OnRightKeyDown()
             => Rect.SetPositionTransformation(new Point(50.0f, 0.0f), 1.0f);
     }
 }

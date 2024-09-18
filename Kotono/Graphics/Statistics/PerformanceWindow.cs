@@ -6,11 +6,22 @@ namespace Kotono.Graphics.Statistics
 {
     internal sealed class PerformanceWindow : Object2D
     {
-        private readonly RoundedBox _background;
+        private readonly RoundedBox _background = new()
+        {
+            Color = Color.DarkSlateGray,
+            TargetCornerSize = 10.0f,
+            TargetFallOff = 1.0f,
+        };
 
-        private readonly RateStat _frame;
+        private readonly RateStat _frame = new()
+        {
+            Anchor = Anchor.Bottom,
+        };
 
-        private readonly RateStat _update;
+        private readonly RateStat _update = new()
+        {
+            Anchor = Anchor.Top,
+        };
 
         internal float MaxFrameRate { get; set; } = 60.0f;
 
@@ -22,33 +33,19 @@ namespace Kotono.Graphics.Statistics
 
         internal float UpdateRate => _update.Rate;
 
-        internal PerformanceWindow()
+        public override Point RelativeSize
         {
-            _frame = new RateStat
-            {
-                Anchor = Anchor.Bottom,
-                Parent = this
-            };
-
-            _update = new RateStat
-            {
-                Anchor = Anchor.Top,
-                Parent = this
-            };
-
-            _background = new RoundedBox
-            {
-                RelativeSize = new Point(400.0f, 120.0f),
-                Color = Color.DarkSlateGray,
-                TargetCornerSize = 10.0f,
-                Parent = this
-            };
+            get => base.RelativeSize;
+            set => base.RelativeSize = _background.RelativeSize = value;
         }
 
-        public override void Update() => RelativePosition = Rect.GetPositionFromAnchor(Window.Size, _background.RelativeSize, Anchor.BottomRight);
+        internal PerformanceWindow() 
+            => _background.Parent = _frame.Parent = _update.Parent = this;
 
-        internal void AddFrameTime(float frameTime) => _frame.AddTime(frameTime);
+        internal void AddFrameTime(float frameTime)
+            => _frame.AddTime(frameTime);
 
-        internal void AddUpdateTime(float updateTime) => _update.AddTime(updateTime);
+        internal void AddUpdateTime(float updateTime)
+            => _update.AddTime(updateTime);
     }
 }

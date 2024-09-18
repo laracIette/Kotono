@@ -1,5 +1,4 @@
-﻿using Kotono.Graphics.Objects;
-using System;
+﻿using System;
 using System.Text.Json;
 using IO = System.IO;
 
