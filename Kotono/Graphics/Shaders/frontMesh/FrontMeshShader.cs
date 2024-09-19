@@ -2,13 +2,13 @@
 
 namespace Kotono.Graphics.Shaders
 {
-    internal sealed partial class GizmoShader : Shader
+    internal sealed partial class FrontMeshShader : Shader
     {
-        private GizmoShader() : base("gizmo") { }
+        private FrontMeshShader() : base("frontMesh") { }
 
-        private static readonly global::System.Lazy<GizmoShader> _instance = new(() => new());
+        private static readonly global::System.Lazy<FrontMeshShader> _instance = new(() => new());
 
-        internal static GizmoShader Instance => _instance.Value;
+        internal static FrontMeshShader Instance => _instance.Value;
 
         private static void SetAPos() => SetVertexAttributeData(0, 3, global::OpenTK.Graphics.OpenGL4.VertexAttribPointerType.Float, 44, 0);
 

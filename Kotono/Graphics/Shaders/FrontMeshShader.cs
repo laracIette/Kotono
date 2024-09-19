@@ -2,7 +2,7 @@
 
 namespace Kotono.Graphics.Shaders
 {
-    internal partial class GizmoShader
+    internal partial class FrontMeshShader
     {
         internal override void Update()
         {

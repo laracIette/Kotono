@@ -90,10 +90,10 @@ namespace Kotono.Graphics.Objects
                 );
 
                 return new Sides(
-                    position.X - RelativeSize.X / 2,
-                    position.X + RelativeSize.X / 2,
-                    position.Y + RelativeSize.Y / 2,
-                    position.Y - RelativeSize.Y / 2
+                    position.X - Math.Half(RelativeSize.X),
+                    position.X + Math.Half(RelativeSize.X),
+                    position.Y + Math.Half(RelativeSize.Y),
+                    position.Y - Math.Half(RelativeSize.Y)
                 );
             }
         }

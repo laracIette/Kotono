@@ -1,5 +1,6 @@
 ﻿using Kotono.Utils.Coordinates;
 using Kotono.Utils.Mathematics;
+using Newtonsoft.Json.Linq;
 using System.Runtime.CompilerServices;
 
 namespace Kotono.Utils
@@ -42,7 +43,7 @@ namespace Kotono.Utils
         /// </summary>
         public static double Double(double min, double max, int? seed = null)
         {
-            return MathD.Lerp(GetRandom(seed).NextDouble(), min, max);
+            return min + (max - min) * GetRandom(seed).NextDouble();
         }
 
         /// <summary>

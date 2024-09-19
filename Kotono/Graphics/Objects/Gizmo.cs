@@ -9,6 +9,8 @@ namespace Kotono.Graphics.Objects
 {
     internal sealed class Gizmo : Object3D
     {
+        private static readonly Gizmo _instance = new();
+
         private Gizmo()
         {
             foreach (var mesh in _meshes)
@@ -17,43 +19,43 @@ namespace Kotono.Graphics.Objects
             }
         }
 
-        private static readonly Gizmo _instance = new();
-
-        private readonly GizmoMesh[] _meshes =
+        private readonly FrontMesh[] _meshes =
         [
-            new GizmoMesh
+            new FrontMesh
             {
                 Color = Color.Red,
-                Model = new Model(Path.FromAssets($@"Gizmo\gizmo_x.obj"))
+                Model = new Model(Path.FromAssets(@"Gizmo\gizmo_x.obj"))
             },
-            new GizmoMesh
+            new FrontMesh
             {
                 Color = Color.Green,
-                Model = new Model(Path.FromAssets($@"Gizmo\gizmo_y.obj"))
+                Model = new Model(Path.FromAssets(@"Gizmo\gizmo_y.obj"))
             },
-            new GizmoMesh
+            new FrontMesh
             {
                 Color = Color.Blue,
-                Model = new Model(Path.FromAssets($@"Gizmo\gizmo_z.obj"))
+                Model = new Model(Path.FromAssets(@"Gizmo\gizmo_z.obj"))
             },
-            new GizmoMesh
+            new FrontMesh
             {
                 Color = Color.White,
-                Model = new Model(Path.FromAssets($@"Gizmo\gizmo_shpere.obj"))
+                Model = new Model(Path.FromAssets(@"Gizmo\gizmo_sphere.obj"))
             }
         ];
 
-        public override bool IsDraw => IsUpdate;
-
-        public override bool IsUpdate => ISelectable3D.Active is not null;
-
         private static int _selectedMeshIndex = -1;
-
-        internal static new bool IsSelected => _selectedMeshIndex != -1;
 
         private readonly CoordinateSpace _transformSpace = CoordinateSpace.Relative;
 
         private readonly GizmoMode _gizmoMode = GizmoMode.Location;
+
+        internal new static bool IsSelected => _selectedMeshIndex != -1;
+
+        private new static bool IsActive => ISelectable3D.Active is not null;
+
+        public override bool IsDraw => IsActive;
+
+        public override bool IsUpdate => IsActive;
 
         public override void Update()
         {

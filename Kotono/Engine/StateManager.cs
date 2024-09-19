@@ -9,13 +9,9 @@
         internal static EngineState EngineState { get; private set; } = EngineState.Navigate;
 
         private void OnRightButtonPressed()
-        {
-            EngineState = EngineState.Play;
-        }
+            => EngineState = EngineState.Play;
 
         private void OnRightButtonReleased()
-        {
-            EngineState = EngineState.Navigate;
-        }
+            => EngineState = EngineState.Navigate;
     }
 }

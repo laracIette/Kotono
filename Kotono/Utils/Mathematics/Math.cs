@@ -164,6 +164,9 @@ namespace Kotono.Utils.Mathematics
             return Add(values) / values.Length;
         }
 
+        /// <summary>
+        /// Get half of the value.
+        /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static float Half(float value)
         {

@@ -96,7 +96,7 @@ namespace Kotono.Graphics.Objects.Meshes
             }
         }
 
-        private void OnLeftButtonPressed()
+        protected virtual void OnLeftButtonPressed()
         {
             // If gizmo isn't selected
             if (!Gizmo.IsSelected)

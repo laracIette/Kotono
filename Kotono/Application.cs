@@ -35,7 +35,6 @@ namespace Kotono
                 StartTime = 3.0f,
                 Duration = 5.0f
             };
-            _animation.Play();
 
             _timer = new Timer
             {
@@ -73,6 +72,7 @@ namespace Kotono
         protected override void Start()
         {
             _timer.Start(1.0f, true);
+            _animation.Play();
         }
 
         protected override void Update()
