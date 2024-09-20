@@ -6,7 +6,7 @@ using System;
 
 namespace Kotono.Utils.Coordinates
 {
-    internal sealed class Transform : Object, ITransform, IEquatable<Transform>
+    internal sealed class Transform : Object, ITransform
     {
         private sealed record class Transformation<T>(T Value, float EndTime) where T : struct;
 
@@ -265,39 +265,8 @@ namespace Kotono.Utils.Coordinates
             }
         }
 
-        public static bool operator ==(Transform? left, Transform? right)
-        {
-            return left?.Equals(right) ?? right is null;
-        }
-
-        public static bool operator !=(Transform? left, Transform? right)
-        {
-            return !(left == right);
-        }
-
-        public override bool Equals(object? obj)
-        {
-            return obj is Transform t && Equals(t);
-        }
-
-        public bool Equals(Transform? t)
-        {
-            return t is not null
-                && t.WorldLocation == WorldLocation
-                && t.WorldRotation == WorldRotation
-                && t.WorldScale == WorldScale;
-        }
-
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(WorldLocation, WorldRotation, WorldScale);
-        }
-
         public override string ToString()
-        {
-            return $"World: {{Location: {WorldLocation}, Rotation: {WorldRotation}, Scale: {WorldScale}}} "
-                 + $"Relative: {{Location: {RelativeLocation}, Rotation: {RelativeRotation}, Scale: {RelativeScale}}}";
-        }
+            => ToString(CoordinateSpace.World);
 
         internal string ToString(CoordinateSpace coordinateSpace)
         {

@@ -88,7 +88,7 @@ namespace Kotono.Graphics.Objects
 
             if (!_objects.Remove(obj))
             {
-                Logger.LogError($"couldn't remove {obj.GetType().Name} '{obj}' from _objects");
+                Logger.LogError($"couldn't remove '{obj}' from _objects");
             }
         }
 

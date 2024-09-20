@@ -23,8 +23,6 @@ namespace Kotono.Graphics.Statistics
             Anchor = Anchor.Top,
         };
 
-        internal float MaxFrameRate { get; set; } = 60.0f;
-
         internal float FrameTime => _frame.Time;
 
         internal float FrameRate => _frame.Rate;

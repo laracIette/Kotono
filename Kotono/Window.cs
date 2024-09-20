@@ -28,7 +28,9 @@ namespace Kotono
 
         private static Point _size = Point.Zero;
 
-        private bool ShouldRenderFrame => IsFocused && (_performanceWindow.FrameRate < _performanceWindow.MaxFrameRate);
+        private bool ShouldRenderFrame => IsFocused && (_performanceWindow.FrameRate < MaxFrameRate);
+
+        internal static float MaxFrameRate { get; set; }
 
         internal static Point Position { get; set; } = Point.Zero;
 
@@ -70,7 +72,7 @@ namespace Kotono
             Position = (Point)Location;
             Size = (Point)ClientSize;
 
-            _performanceWindow.MaxFrameRate = windowSettings.MaxFrameRate;
+            MaxFrameRate = windowSettings.MaxFrameRate;
 
             Mouse.CursorState = windowSettings.CursorState;
             Mouse.MouseState = MouseState;

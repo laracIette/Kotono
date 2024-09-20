@@ -86,25 +86,28 @@ namespace Kotono
 
         private static void CreateObjects()
         {
-            //var text = new TTFText
-            //{
-            //    FontSize = 15.0f,
-            //    Size = new Point(200.0f, 150.0f)
-            //};
-            //text.AddText("Test", Point.Zero);
-
             _ = new TestSound();
 
             _ = new TestImage();
 
-            _ = new Text
-            {
-                Value = "dhgudd",
-                RelativePosition = new Point(150.0f, 200.0f),
-                LettersSize = new Point(50.0f, 60.0f),
-            };
-
             _ = new SpotLight();
+
+            _ = new Text // debug that
+            {
+                Value = "kakaka",
+                LettersSize = new Point(50.0f, 60.0f),
+                LettersColor = Color.Yellow,
+                Layer = 1,
+                Parent = new RoundedBox
+                {
+                    RelativePosition = new Point(250.0f),
+                    RelativeSize = new Point(100.0f, 200.0f),
+                    Color = Color.DarkSlateGray,
+                    TargetCornerSize = 30.0f,
+                    TargetFallOff = 1.0f,
+                    Layer = 0
+                },
+            };
 
             _ = new Cube
             {

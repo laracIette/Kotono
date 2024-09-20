@@ -4,7 +4,7 @@ using System;
 
 namespace Kotono.Utils.Coordinates
 {
-    internal sealed partial class Rect : Object, IRect, IEquatable<Rect>
+    internal sealed partial class Rect : Object, IRect
     {
         private sealed record class Transformation<T>(T Value, float EndTime) where T : struct;
 
@@ -320,9 +320,7 @@ namespace Kotono.Utils.Coordinates
         /// Get the position given a position, a size and an Anchor.
         /// </summary>
         internal static Point GetPositionFromAnchor(Point position, Point size, Anchor anchor, float offset = 0.0f)
-        {
-            return GetPositionFromAnchor(position, size, anchor, new Point(offset));
-        }
+            => GetPositionFromAnchor(position, size, anchor, new Point(offset));
 
         /// <summary>
         /// Creates an array of Rect given a number of elements, a Rect and an Anchor.
@@ -349,69 +347,28 @@ namespace Kotono.Utils.Coordinates
         /// Creates an array of Rect given a number of elements, a Rect and an Anchor.
         /// </summary>
         internal static void GetPositionsFromAnchor(Point[] points, Point position, Point size, Anchor anchor, float offset = 0.0f)
-        {
-            GetPositionsFromAnchor(points, position, size, anchor, new Point(offset));
-        }
+            => GetPositionsFromAnchor(points, position, size, anchor, new Point(offset));
 
         /// <summary> 
         /// Checks if left is overlapping with right.
         /// </summary>
-        internal static bool Overlaps(IRect left, IRect right)
-        {
-            return Point.Abs(left.WorldPosition - right.WorldPosition) < Point.Half(left.WorldSize + right.WorldSize);
-        }
+        internal static bool Overlaps(IRect left, IRect right) 
+            => Point.Abs(left.WorldPosition - right.WorldPosition) < Point.Half(left.WorldSize + right.WorldSize);
 
         /// <summary> 
         /// Checks if the <see cref="Rect"/> is overlapping with p.
         /// </summary>
-        internal bool Overlaps(Point p)
-        {
-            return Point.Abs(RelativePosition - p) < Point.Half(RelativeSize);
-        }
-
-        public static bool operator ==(Rect? left, Rect? right)
-        {
-            return left?.Equals(right) ?? right is null;
-        }
-
-        public static bool operator !=(Rect? left, Rect? right)
-        {
-            return !(left == right);
-        }
-
-        public override bool Equals(object? obj)
-        {
-            return obj is Rect r && Equals(r);
-        }
-
-        public bool Equals(Rect? r)
-        {
-            return r is not null
-                && r.WorldPosition == WorldPosition
-                && r.WorldRotation == WorldRotation
-                && r.WorldSize == WorldSize;
-        }
-
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(RelativePosition, RelativeSize);
-        }
+        internal bool Overlaps(Point p) 
+            => Point.Abs(RelativePosition - p) < Point.Half(RelativeSize);
 
         public static explicit operator Vector4(Rect r)
-        {
-            return new Vector4(r.RelativePosition.X, r.RelativePosition.Y, r.RelativeSize.X, r.RelativeSize.Y);
-        }
+            => new(r.RelativePosition.X, r.RelativePosition.Y, r.RelativeSize.X, r.RelativeSize.Y);
 
         public static explicit operator Rect(Vector4 v)
-        {
-            return new Rect(new Point(v.X, v.Y), new Point(v.Z, v.W));
-        }
+            => new(new Point(v.X, v.Y), new Point(v.Z, v.W));
 
-        public override string ToString()
-        {
-            return $"Relative: {{Position: {{{RelativePosition}}}, Rotation: {{{RelativeRotation}}}, Size: {{{RelativeSize}}}}} "
-                 + $"World: {{Position: {{{WorldPosition}}}, Rotation: {{{WorldRotation}}}, Size: {{{WorldSize}}}}}";
-        }
+        public override string ToString() 
+            => ToString(CoordinateSpace.World);
 
         internal string ToString(CoordinateSpace coordinateSpace)
         {
