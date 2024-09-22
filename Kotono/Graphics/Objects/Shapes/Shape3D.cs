@@ -54,9 +54,10 @@ namespace Kotono.Graphics.Objects.Shapes
 
         private void UpdateMode()
         {
+            ExceptionHelper.ThrowIf(_vertices.Length == 0, "_vertices musn't be empty");
+
             _mode = _vertices.Length switch
             {
-                0 => throw new KotonoException($"Vertices musn't be empty"),
                 1 => PrimitiveType.Points,
                 2 => PrimitiveType.Lines,
                 _ => IsLoop ? PrimitiveType.LineLoop : PrimitiveType.LineStrip

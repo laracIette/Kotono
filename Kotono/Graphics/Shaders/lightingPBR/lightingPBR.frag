@@ -1,8 +1,10 @@
 ﻿#version 430 core
 
-in vec2 TexCoords;
-in vec3 WorldPos;
+in vec3 FragPos;
 in vec3 Normal;
+in vec2 TexCoords;
+in vec3 Tangent;
+in vec3 Bitangent;
 in mat3 TBN;
 
 out vec4 FragColor;
@@ -31,12 +33,9 @@ struct PointLight {
 };
 
 uniform Material material;
-
 uniform PointLight pointLights[100];
 uniform int numPointLights;
-
 uniform vec3 camLoc;
-
 uniform vec4 baseColor;
 
 const float PI = 3.14159265359;
@@ -48,10 +47,7 @@ vec3 fresnelSchlick(float cosTheta, vec3 F0);
 vec3 getNormalFromNormalMap();
 
 void main()
-{		
-    FragColor = vec4(texture(material.albedo, TexCoords).rgb, 1.0);
-    return;
-
+{		 
     vec3 albedo = pow(texture(material.albedo, TexCoords).rgb, vec3(2.2));
     vec3 normal = getNormalFromNormalMap();
     float metallic = texture(material.metallic, TexCoords).r;
@@ -59,7 +55,7 @@ void main()
     float ao = texture(material.ambientOcclusion, TexCoords).r;
 
     vec3 N = normalize(normal);
-    vec3 V = normalize(camLoc - WorldPos);
+    vec3 V = normalize(camLoc - FragPos);
 
     vec3 F0 = vec3(0.04); 
     F0 = mix(F0, albedo, metallic);
@@ -69,9 +65,9 @@ void main()
     for (int i = 0; i < numPointLights; ++i)
     {
         // calculate per-light radiance
-        vec3 L = normalize(pointLights[i].location - WorldPos);
+        vec3 L = normalize(pointLights[i].location - FragPos);
         vec3 H = normalize(V + L);
-        float distance    = length(pointLights[i].location - WorldPos);
+        float distance    = length(pointLights[i].location - FragPos);
         float attenuation = 1.0 / (distance * distance);
         vec3 radiance     = pointLights[i].diffuse.rgb * attenuation;        
         
@@ -98,9 +94,8 @@ void main()
 	
     color = color / (color + vec3(1.0));
     color = pow(color, vec3(1.0 / 2.2));  
-    color = (color + baseColor.rgb) / 2.0;
 
-    FragColor = vec4(color, 1.0);
+    FragColor = vec4(color, 1.0) * baseColor;
 }  
 
 vec3 fresnelSchlick(float cosTheta, vec3 F0)

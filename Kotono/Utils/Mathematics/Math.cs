@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using Kotono.Utils.Exceptions;
+using System.Runtime.CompilerServices;
 
 namespace Kotono.Utils.Mathematics
 {
@@ -60,16 +61,14 @@ namespace Kotono.Utils.Mathematics
         /// </summary>
         public static float Clamp(float value, float min, float max)
         {
-            if (min > max)
-            {
-                (min, max) = (max, min);
-            }
+            ExceptionHelper.ThrowIf(min > max, "min must not be over max");
 
             if (value < min)
             {
                 return min;
             }
-            else if (value > max)
+
+            if (value > max)
             {
                 return max;
             }
@@ -92,12 +91,14 @@ namespace Kotono.Utils.Mathematics
             return min + (max - min) * value;
         }
 
+        /// <inheritdoc cref="System.MathF.Min(float, float)"/>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float Min(float left, float right)
         {
             return left < right ? left : right;
         }
 
+        /// <inheritdoc cref="System.MathF.Max(float, float)"/>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float Max(float left, float right)
         {

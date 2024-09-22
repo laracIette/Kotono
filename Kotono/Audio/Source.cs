@@ -1,4 +1,5 @@
-﻿using OpenTK.Audio.OpenAL;
+﻿using Kotono.Utils.Exceptions;
+using OpenTK.Audio.OpenAL;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -114,25 +115,16 @@ namespace Kotono.Audio
 
             // RIFF header
             var signature = new string(reader.ReadChars(4));
-            if (signature != "RIFF")
-            {
-                throw new NotSupportedException("error: Specified stream is not a wave file.");
-            }
+            ExceptionHelper.ThrowIf(signature != "RIFF", "specified stream is not a wave file");
 
             int riff_chunck_size = reader.ReadInt32();
 
             var format = new string(reader.ReadChars(4));
-            if (format != "WAVE")
-            {
-                throw new NotSupportedException("error: Specified stream is not a wave file.");
-            }
+            ExceptionHelper.ThrowIf(format != "WAVE", "specified stream is not a wave file");
 
             // WAVE header
             var format_signature = new string(reader.ReadChars(4));
-            if (format_signature != "fmt ")
-            {
-                throw new NotSupportedException("error: Specified wave file is not supported.");
-            }
+            ExceptionHelper.ThrowIf(format_signature != "fmt ", "specified wave file is not supported");
 
             int format_chunk_size = reader.ReadInt32();
             int audio_format = reader.ReadInt16();
@@ -143,10 +135,7 @@ namespace Kotono.Audio
             int bits_per_sample = reader.ReadInt16();
 
             var data_signature = new string(reader.ReadChars(4));
-            if (data_signature != "data")
-            {
-                throw new NotSupportedException("error: Specified wave file is not supported.");
-            }
+            ExceptionHelper.ThrowIf(data_signature != "data", "specified wave file is not supported");
 
             int data_chunk_size = reader.ReadInt32();
 

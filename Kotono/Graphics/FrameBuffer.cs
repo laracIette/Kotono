@@ -42,10 +42,8 @@ namespace Kotono.Graphics
             GL.FramebufferTexture2D(FramebufferTarget.Framebuffer, FramebufferAttachment.DepthStencilAttachment, TextureTarget.Texture2D, _depthStencilBufferTexture.Handle, 0);
 
             // Check frame buffer completion
-            if (GL.CheckFramebufferStatus(FramebufferTarget.Framebuffer) != FramebufferErrorCode.FramebufferComplete)
-            {
-                throw new KotonoException($"Framebuffer isn't complete");
-            }
+            bool isComplete = GL.CheckFramebufferStatus(FramebufferTarget.Framebuffer) == FramebufferErrorCode.FramebufferComplete;
+            ExceptionHelper.ThrowIf(!isComplete, "Framebuffer isn't complete");
 
             FramebufferObject.Unbind();
         }

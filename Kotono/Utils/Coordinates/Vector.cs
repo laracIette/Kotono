@@ -1,7 +1,9 @@
 ﻿using Assimp;
+using Kotono.Utils.Exceptions;
 using OpenTK.Mathematics;
 using System;
 using System.Runtime.InteropServices;
+using static Catalyst.Models.English;
 using Quaternion = OpenTK.Mathematics.Quaternion;
 
 namespace Kotono.Utils.Coordinates
@@ -169,6 +171,54 @@ namespace Kotono.Utils.Coordinates
 
         public static Vector Clamp(Vector v)
             => new(Math.Clamp(v.X), Math.Clamp(v.Y), Math.Clamp(v.Z));
+
+        public static Vector ClampLength(Vector v, float minLength, float maxLength)
+        {
+            ExceptionHelper.ThrowIf(minLength < 0.0f, "minLength must not be negative");
+            ExceptionHelper.ThrowIf(minLength > maxLength, "minLength must not be over maxLength");
+
+            if (v.Length < minLength)
+            {
+                return minLength * v.Normalized;
+            }
+
+            if (v.Length > maxLength)
+            {
+                return maxLength * v.Normalized;
+            }
+
+            return v;
+        }
+
+        /// <summary>
+        /// Get the <see cref="Vector"/> with the smallest length.
+        /// </summary>
+        public static Vector MinLength(Vector v, float minLength)
+        {
+            ExceptionHelper.ThrowIf(minLength < 0.0f, "minLength must not be negative");
+           
+            if (v.Length > minLength)
+            {
+                return minLength * v.Normalized;
+            }
+
+            return v;
+        }
+
+        /// <summary>
+        /// Get the <see cref="Vector"/> with the biggest length.
+        /// </summary>
+        public static Vector MaxLength(Vector v, float maxLength)
+        {
+            ExceptionHelper.ThrowIf(maxLength < 0.0f, "maxLength must not be negative");
+           
+            if (v.Length < maxLength)
+            {
+                return maxLength * v.Normalized;
+            }
+
+            return v;
+        }
 
         public static Vector Parse(in string[] values)
             => new(float.Parse(values[1]), float.Parse(values[2]), float.Parse(values[0]));

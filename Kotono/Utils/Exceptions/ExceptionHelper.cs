@@ -1,8 +1,6 @@
-﻿using Kotono.Utils.Exceptions;
-
-namespace Kotono.Utils
+﻿namespace Kotono.Utils.Exceptions
 {
-    internal static class ThrowHelper
+    internal static class ExceptionHelper
     {
         internal static void ThrowIf(bool condition, string message)
         {

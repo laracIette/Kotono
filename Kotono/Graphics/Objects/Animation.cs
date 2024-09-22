@@ -67,10 +67,7 @@ namespace Kotono.Graphics.Objects
 
         internal Animation(string directoryPath)
         {
-            if (!Directory.Exists(directoryPath))
-            {
-                throw new KotonoException($"couldn't find directory at '{directoryPath}'");
-            }
+            ExceptionHelper.ThrowIf(!Directory.Exists(directoryPath), $"couldn't find directory at '{directoryPath}'");
 
             var imagePaths = Directory.GetFiles(directoryPath).Where(ImageTexture.IsValidPath);
 

@@ -19,10 +19,7 @@ namespace Kotono.Graphics.Textures
         {
             if (!_handles.TryGetValue(path, out int handle))
             {
-                if (!IsValidPath(path))
-                {
-                    throw new KotonoException($"Image path '{path}' isn't a valid image path");
-                }
+                ExceptionHelper.ThrowIf(!IsValidPath(path), $"Image path '{path}' isn't a valid image path");
 
                 handle = GL.GenTexture();
                 Handle = handle;

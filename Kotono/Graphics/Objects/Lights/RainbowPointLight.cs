@@ -13,11 +13,12 @@ namespace Kotono.Graphics.Objects.Lights
 
         public override void Update()
         {
-            Color = Color.Rainbow(0.002f);
+            Diffuse = Color.Rainbow(0.002f);
+            Color = Diffuse;
 
             RelativeLocationVelocity += Random.Vector(-0.1f, 0.1f);
 
-            RelativeLocationVelocity = Vector.Clamp(RelativeLocationVelocity, -1.0f, 1.0f);
+            RelativeLocationVelocity = Vector.MinLength(RelativeLocationVelocity, 10.0f);
         }
     }
 }

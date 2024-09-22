@@ -1,6 +1,7 @@
 ﻿using Kotono.Graphics.Objects.Lights;
 using Kotono.Utils;
 using Kotono.Utils.Coordinates;
+using Kotono.Utils.Exceptions;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using System;
@@ -87,7 +88,7 @@ namespace Kotono.Graphics.Shaders
             if (code != (int)All.True)
             {
                 var infoLog = GL.GetShaderInfoLog(shader);
-                throw new Exception($"Error occurred whilst compiling Shader({shader}).\n\n{infoLog}");
+                throw new KotonoException($"whilst compiling Shader '{shader}'.\n\n{infoLog}");
             }
         }
 
@@ -99,7 +100,7 @@ namespace Kotono.Graphics.Shaders
             if (code != (int)All.True)
             {
                 var infoLog = GL.GetProgramInfoLog(program);
-                throw new Exception($"Error occurred whilst linking Program({program}).\n\n{infoLog}");
+                throw new KotonoException($"whilst linking Program '{program}'.\n\n{infoLog}");
             }
         }
 
@@ -113,7 +114,7 @@ namespace Kotono.Graphics.Shaders
                 return true;
             }
 
-            //Logger.LogError($"couldn't find attribute location '{name}' in Shader '{Name}'");
+            Logger.LogErrorIf(false, $"couldn't find attribute location '{name}' in Shader '{Name}'");
             return false;
         }
 
@@ -215,6 +216,7 @@ namespace Kotono.Graphics.Shaders
 
         internal void SetPointLight(in string name, PointLight data)
         {
+            SetVector($"{name}.location", data.WorldLocation);
             SetColor($"{name}.ambient", data.Ambient);
             SetColor($"{name}.diffuse", data.Diffuse);
             SetColor($"{name}.specular", data.Specular);
