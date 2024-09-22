@@ -108,6 +108,7 @@ namespace Kotono
                 _ = new PointLightMesh
                 {
                     Parent = new RainbowPointLight(),
+                    RelativeLocation = Vector.Zero,
                 };
             }
         }
