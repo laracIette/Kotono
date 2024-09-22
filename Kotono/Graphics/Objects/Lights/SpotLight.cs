@@ -4,30 +4,34 @@
     {
         internal const int MAX_COUNT = 100;
 
-        internal float CutOffAngle { get; set; }
+        internal float CutoffAngle { get; set; }
 
-        internal float OuterCutOffAngle { get; set; }
+        internal float OuterCutoffAngle { get; set; }
+
+        private bool _isShrink = false;
 
         public override void Update()
         {
-            if (IsOn)
+            if (_isShrink)
             {
-                if (OuterCutOffAngle >= 5.0f)
+                if (OuterCutoffAngle >= 5.0f)
                 {
-                    CutOffAngle += 100.0f * Time.Delta;
+                    CutoffAngle += 10.0f * Time.Delta;
                 }
-                OuterCutOffAngle += 100.0f * Time.Delta;
+                OuterCutoffAngle += 10.0f * Time.Delta;
             }
             else
             {
-                CutOffAngle -= 100.0f * Time.Delta;
-                OuterCutOffAngle -= 100.0f * Time.Delta;
+                CutoffAngle -= 10.0f * Time.Delta;
+                OuterCutoffAngle -= 10.0f * Time.Delta;
             }
 
-            CutOffAngle = Math.Clamp(CutOffAngle, 0.0f, 12.5f);
-            OuterCutOffAngle = Math.Clamp(OuterCutOffAngle, 0.0f, 17.5f);
+            CutoffAngle = Math.Clamp(CutoffAngle, 0.0f, 12.5f);
+            OuterCutoffAngle = Math.Clamp(OuterCutoffAngle, 0.0f, 17.5f);
+
+            IsOn = OuterCutoffAngle != 0.0f;
         }
 
-        private void OnFKeyPressed() => Switch();
+        private void OnFKeyPressed() => _isShrink = !_isShrink;
     }
 }

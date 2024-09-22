@@ -28,9 +28,13 @@ namespace Kotono.Graphics.Shaders
 
         internal void SetMaterial(global::Kotono.Graphics.Material material) => SetMaterial("material", material);
 
-        internal void SetPointLights(global::Kotono.Graphics.Objects.Lights.PointLight[] pointLights) { for (int i = 0; i < pointLights.Length; i++) SetPointLight($"pointLights[{i}]", pointLights[i]); }
+        internal void SetPointLights(global::Kotono.Graphics.Objects.Lights.PointLight[] pointLights) { for (int i = 0; i < (int)global::Kotono.Utils.Mathematics.Math.Min(100, pointLights.Length); i++) SetPointLight($"pointLights[{i}]", pointLights[i]); }
+
+        internal void SetSpotLights(global::Kotono.Graphics.Objects.Lights.SpotLight[] spotLights) { for (int i = 0; i < (int)global::Kotono.Utils.Mathematics.Math.Min(100, spotLights.Length); i++) SetSpotLight($"spotLights[{i}]", spotLights[i]); }
 
         internal void SetNumPointLights(int numPointLights) => SetInt("numPointLights", numPointLights);
+
+        internal void SetNumSpotLights(int numSpotLights) => SetInt("numSpotLights", numSpotLights);
 
         internal void SetCamLoc(global::Kotono.Utils.Coordinates.Vector camLoc) => SetVector("camLoc", camLoc);
 

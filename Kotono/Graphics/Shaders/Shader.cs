@@ -228,14 +228,16 @@ namespace Kotono.Graphics.Shaders
 
         internal void SetSpotLight(in string name, SpotLight data)
         {
+            SetVector($"{name}.location", data.WorldLocation);
+            SetVector($"{name}.direction", data.Transform.Forward);
+            SetFloat($"{name}.cutoffAngle", data.CutoffAngle);
+            SetFloat($"{name}.outerCutoffAngle", data.OuterCutoffAngle);
             SetColor($"{name}.ambient", data.Ambient);
             SetColor($"{name}.diffuse", data.Diffuse);
             SetColor($"{name}.specular", data.Specular);
             SetFloat($"{name}.constant", data.Constant);
             SetFloat($"{name}.linear", data.Linear);
             SetFloat($"{name}.quadratic", data.Quadratic);
-            SetFloat($"{name}.cutOffAngle", data.CutOffAngle);
-            SetFloat($"{name}.outerCutOffAngle", data.OuterCutOffAngle);
             SetFloat($"{name}.intensity", data.Intensity);
         }
 

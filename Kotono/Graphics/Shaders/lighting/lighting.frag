@@ -29,9 +29,7 @@ struct PointLight {
     float intensity;
 };
 
-#define MAX_POINT_LIGHTS 100
-
-uniform PointLight pointLights[MAX_POINT_LIGHTS];
+uniform PointLight pointLights[100];
 
 uniform int numPointLights;
 
@@ -51,9 +49,8 @@ struct SpotLight{
 
     float intensity;
 };
-#define MAX_SPOT_LIGHTS 1
 
-uniform SpotLight spotLights[MAX_SPOT_LIGHTS];
+uniform SpotLight spotLights[100];
 
 uniform int numSpotLights;
 

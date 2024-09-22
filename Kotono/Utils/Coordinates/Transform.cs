@@ -82,22 +82,22 @@ namespace Kotono.Utils.Coordinates
         private Vector ParentWorldScaleVelocity => Parent?.WorldScaleVelocity ?? DefaultScale;
 
         /// <summary> 
-        /// The right vector of the Transform. 
+        /// The right vector of the <see cref="Transform"/>. 
         /// </summary>
-        internal Vector Right => (Vector)(Quaternion.FromEulerAngles((Vector3)RelativeRotation) * Vector3.UnitX);
+        internal Vector Right => (Vector)(Quaternion.FromEulerAngles((Vector3)WorldRotation) * Vector3.UnitX);
 
         /// <summary> 
-        /// The up vector of the Transform. 
+        /// The up vector of the <see cref="Transform"/>. 
         /// </summary>
-        internal Vector Up => (Vector)(Quaternion.FromEulerAngles((Vector3)RelativeRotation) * Vector3.UnitY);
+        internal Vector Up => (Vector)(Quaternion.FromEulerAngles((Vector3)WorldRotation) * Vector3.UnitY);
 
         /// <summary> 
-        /// The forward vector of the Transform. 
+        /// The forward vector of the <see cref="Transform"/>. 
         /// </summary>
-        internal Vector Forward => (Vector)(Quaternion.FromEulerAngles((Vector3)RelativeRotation) * Vector3.UnitZ);
+        internal Vector Forward => (Vector)(Quaternion.FromEulerAngles((Vector3)WorldRotation) * Vector3.UnitZ);
 
         /// <summary>
-        /// The model matrix of the Transform.
+        /// The model matrix of the <see cref="Transform"/>.
         /// </summary>
         internal Matrix4 Model
             => Vector.CreateScaleMatrix(WorldScale)

@@ -15,6 +15,10 @@ namespace Kotono.Graphics.Shaders
             var pointLights = ObjectManager.GetObjectsOfType<PointLight>(p => p.IsOn).ToArray();
             SetNumPointLights(pointLights.Length);
             SetPointLights(pointLights);
+
+            var spotLights = ObjectManager.GetObjectsOfType<SpotLight>(p => p.IsOn).ToArray();
+            SetNumSpotLights(spotLights.Length);
+            SetSpotLights(spotLights);
         }
     }
 }

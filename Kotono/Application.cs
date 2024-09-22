@@ -90,7 +90,13 @@ namespace Kotono
 
             _ = new TestImage();
 
-            _ = new SpotLight();
+            _ = new SpotLight
+            {
+                Parent = Camera.Active,
+                Diffuse = Color.Red,
+                Intensity = 1.0f,
+                IsOn = false,
+            };
 
             _ = new Cube
             {
@@ -107,7 +113,10 @@ namespace Kotono
             {
                 _ = new PointLightMesh
                 {
-                    Parent = new RainbowPointLight(),
+                    Parent = new RainbowPointLight
+                    {
+                        Intensity = 1.0f,
+                    },
                     RelativeLocation = Vector.Zero,
                 };
             }

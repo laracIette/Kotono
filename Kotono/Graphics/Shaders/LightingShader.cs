@@ -47,8 +47,8 @@ namespace Kotono.Graphics.Shaders
 
             for (int i = 0; i < spotLights.Length; i++)
             {
-                SetFloat($"spotLights[{i}].cutOff", Math.Cos(Math.Rad(spotLights[i].CutOffAngle)));
-                SetFloat($"spotLights[{i}].outerCutOff", Math.Cos(Math.Rad(spotLights[i].OuterCutOffAngle)));
+                SetFloat($"spotLights[{i}].cutOff", Math.Cos(Math.Rad(spotLights[i].CutoffAngle)));
+                SetFloat($"spotLights[{i}].outerCutOff", Math.Cos(Math.Rad(spotLights[i].OuterCutoffAngle)));
                 SetVector($"spotLights[{i}].location", spotLights[i].WorldLocation);
                 SetVector($"spotLights[{i}].direction", spotLights[i].Transform.Forward);
                 SetColor($"spotLights[{i}].ambient", Color.Black);

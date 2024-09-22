@@ -1,14 +1,5 @@
 ﻿#version 430 core
 
-in vec3 FragPos;
-in vec3 Normal;
-in vec2 TexCoords;
-in vec3 Tangent;
-in vec3 Bitangent;
-in mat3 TBN;
-
-out vec4 FragColor;
-
 struct Material {
     sampler2D albedo;
     sampler2D normal;
@@ -20,21 +11,43 @@ struct Material {
 
 struct PointLight {
     vec3 location;
-
     vec4 ambient;
     vec4 diffuse;
     vec4 specular;
-
     float constant;
     float linear;
     float quadratic;
-
     float intensity;
 };
 
+struct SpotLight {
+    vec3 location;
+    vec3 direction;
+    float cutoffAngle;
+    float outerCutoffAngle;
+    vec4 ambient;
+    vec4 diffuse;
+    vec4 specular;
+    float constant;
+    float linear;
+    float quadratic;
+    float intensity;
+};
+
+in vec3 FragPos;
+in vec3 Normal;
+in vec2 TexCoords;
+in vec3 Tangent;
+in vec3 Bitangent;
+in mat3 TBN;
+
+out vec4 FragColor;
+
 uniform Material material;
 uniform PointLight pointLights[100];
+uniform SpotLight spotLights[100];
 uniform int numPointLights;
+uniform int numSpotLights;
 uniform vec3 camLoc;
 uniform vec4 baseColor;
 
@@ -69,7 +82,7 @@ void main()
         vec3 H = normalize(V + L);
         float distance    = length(pointLights[i].location - FragPos);
         float attenuation = 1.0 / (distance * distance);
-        vec3 radiance     = pointLights[i].diffuse.rgb * attenuation;        
+        vec3 radiance     = pointLights[i].diffuse.rgb * attenuation * pointLights[i].intensity;        
         
         // cook-torrance brdf
         float NDF = DistributionGGX(N, H, roughness);        
@@ -88,6 +101,38 @@ void main()
         float NdotL = max(dot(N, L), 0.0);                
         Lo += (kD * albedo / PI + specular) * radiance * NdotL; 
     }   
+
+    for (int i = 0; i < numSpotLights; ++i)
+    {
+        vec3 L = normalize(spotLights[i].location - FragPos);
+        vec3 H = normalize(V + L);
+        float distance = length(spotLights[i].location - FragPos);
+        float attenuation = 1.0 / (spotLights[i].constant + spotLights[i].linear * distance + spotLights[i].quadratic * (distance * distance));
+        vec3 radiance = spotLights[i].diffuse.rgb * attenuation * spotLights[i].intensity;
+
+        // spotlight direction
+        float theta = dot(L, normalize(-spotLights[i].direction));
+        float epsilon = spotLights[i].cutoffAngle - spotLights[i].outerCutoffAngle;
+        float intensity = clamp((theta - spotLights[i].outerCutoffAngle) / epsilon, 0.0, 1.0);
+        radiance *= intensity;
+
+        // cook-torrance brdf
+        float NDF = DistributionGGX(N, H, roughness);        
+        float G   = GeometrySmith(N, V, L, roughness);      
+        vec3 F    = fresnelSchlick(max(dot(H, V), 0.0), F0);       
+
+        vec3 kS = F;
+        vec3 kD = vec3(1.0) - kS;
+        kD *= 1.0 - metallic;	  
+        
+        vec3 numerator    = NDF * G * F;
+        float denominator = max(4.0 * max(dot(N, V), 0.0) * max(dot(N, L), 0.0), 0.0001);
+        vec3 specular     = numerator / denominator;  
+            
+        // add to outgoing radiance Lo
+        float NdotL = max(dot(N, L), 0.0);                
+        Lo += (kD * albedo / PI + specular) * radiance * NdotL;
+    } 
   
     vec3 ambient = vec3(0.03) * albedo * ao;
     vec3 color = ambient + Lo;
