@@ -1,10 +1,11 @@
 ﻿using Kotono.Graphics.Objects;
+using Kotono.Graphics.Textures;
 using Kotono.Input;
 using Kotono.Utils.Coordinates;
 
 namespace Kotono.Tests.Painter
 {
-    internal class Brush : Object
+    internal sealed class Brush : Object
     {
         private readonly Image _texture;
 
@@ -14,17 +15,14 @@ namespace Kotono.Tests.Painter
 
         internal Rect Rect => new(Mouse.Position, Size);
 
-        internal Brush(BrushSettings settings)
-            : base()
+        internal Brush(string name)
         {
-            Name = settings.Name;
-            Size = settings.Size;
-            _texture = new Image(
-                new ImageSettings
-                {
-                    Texture = Path.ASSETS + @"brushes\" + Name
-                }
-            );
+            Name = name;
+
+            _texture = new Image
+            {
+                Texture = new ImageTexture(Path.FromAssets(@"brushes\" + name))
+            };
         }
     }
 }

@@ -1,29 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Kotono.Graphics.Shaders
 {
     internal static class ShaderManager
     {
-        internal static Dictionary<string, Shader> Shaders { get; } = new()
-        {
-            ["lighting"] = new LightingShader(),
-            ["hitbox"] = new Object3DShader("hitbox"),
-            ["pointLight"] = new Object3DShader("pointLight"),
-            ["image"] = new Shader("image"),
-            ["gizmo"] = new Object3DShader("gizmo"),
-            ["roundedBox"] = new Shader("roundedBox"),
-            ["roundedBorder"] = new Shader("roundedBorder"),
-            ["color"] = new TextureBufferShader("color"),
-            ["blur"] = new TextureBufferShader("blur"),
-            ["outline"] = new TextureBufferShader("outline"),
-            ["flatTexture"] = new Object3DShader("flatTexture"),
-            ["painter"] = new Shader("painter"),
-            ["shape2D"] = new Shader("shape2D")
-        };
+        private static readonly HashSet<Shader> _shaders = [];
+
+        internal static void Create(Shader shader) => _shaders.Add(shader);
 
         internal static void Update()
         {
-            foreach (var shader in Shaders.Values)
+            foreach (var shader in _shaders)
             {
                 shader.Update();
             }

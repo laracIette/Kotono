@@ -1,0 +1,97 @@
+{
+  "RelativeSize": {
+    "X": 1280,
+    "Y": 720
+  },
+  "IsDraw": true,
+  "Anchor": 0,
+  "BaseSize": {
+    "X": 1280,
+    "Y": 720
+  },
+  "RelativePosition": {
+    "X": 640,
+    "Y": 360
+  },
+  "RelativeRotation": {
+    "Pitch": 0,
+    "Yaw": 0,
+    "Roll": 0
+  },
+  "RelativeScale": {
+    "X": 1,
+    "Y": 1
+  },
+  "WorldSize": {
+    "X": 1280,
+    "Y": 720
+  },
+  "WorldPosition": {
+    "X": 640,
+    "Y": 360
+  },
+  "WorldRotation": {
+    "Pitch": 0,
+    "Yaw": 0,
+    "Roll": 0
+  },
+  "WorldScale": {
+    "X": 1,
+    "Y": 1
+  },
+  "Layer": 0,
+  "Parent": null,
+  "Children": [],
+  "Name": "",
+  "Visibility": 3,
+  "Color": {
+    "R": 1,
+    "G": 1,
+    "B": 1,
+    "A": 0
+  },
+  "Viewport": {
+    "Anchor": 0,
+    "BaseSize": {
+      "X": 1600,
+      "Y": 800
+    },
+    "RelativeSize": {
+      "X": 1600,
+      "Y": 800
+    },
+    "RelativePosition": {
+      "X": 0,
+      "Y": 0
+    },
+    "RelativeRotation": {
+      "Pitch": 0,
+      "Yaw": 0,
+      "Roll": 0
+    },
+    "RelativeScale": {
+      "X": 1,
+      "Y": 1
+    },
+    "WorldSize": {
+      "X": 1600,
+      "Y": 800
+    },
+    "WorldPosition": {
+      "X": 0,
+      "Y": 0
+    },
+    "WorldRotation": {
+      "Pitch": 0,
+      "Yaw": 0,
+      "Roll": 0
+    },
+    "WorldScale": {
+      "X": 1,
+      "Y": 1
+    }
+  },
+  "IsSelected": false,
+  "Guid": "6d6288c7-71e0-4e89-9ea3-1b95b7da1363",
+  "IsUpdate": true
+}

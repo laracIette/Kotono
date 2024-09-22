@@ -9,9 +9,8 @@ namespace Kotono
             new Application(
                 new WindowSettings
                 {
-                    Width = 1600,
-                    Height = 800,
-                    MaxFrameRate = 165.0f,
+                    WindowSize = (1600, 800),
+                    MaxFrameRate = 60.0f,
                     CursorState = CursorState.Confined
                 }
             ).Run();

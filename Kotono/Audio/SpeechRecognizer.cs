@@ -1,5 +1,4 @@
-﻿using System;
-using System.Speech.Recognition;
+﻿using System.Speech.Recognition;
 using System.Threading;
 
 namespace Kotono.Audio
@@ -10,7 +9,7 @@ namespace Kotono.Audio
 
         private static readonly SpeechRecognitionEngine _recognizer = new(new System.Globalization.CultureInfo("en-US"));
 
-        public static string Text { get; private set; } = "";
+        public static string Text { get; private set; } = string.Empty;
 
         // int instead of bool for IsSpeechRecognized's Interlocked.Exchange() that doesn't support bool
         private static int _isSpeechRecognized = 0;
@@ -26,7 +25,7 @@ namespace Kotono.Audio
             _recognizer.LoadGrammarAsync(servicesGrammar);
 
             // Add a handler for the speech recognized event.  
-            _recognizer.SpeechRecognized += new EventHandler<SpeechRecognizedEventArgs>(OnSpeechRecognized);
+            _recognizer.SpeechRecognized += OnSpeechRecognized;
 
             // Configure input to the speech _recognizer.  
             _recognizer.SetInputToDefaultAudioDevice();

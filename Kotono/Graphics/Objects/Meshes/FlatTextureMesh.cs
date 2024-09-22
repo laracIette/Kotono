@@ -1,20 +1,23 @@
-﻿using Kotono.Utils;
+﻿using Kotono.Graphics.Shaders;
 
 namespace Kotono.Graphics.Objects.Meshes
 {
-    internal class FlatTextureMesh()
-        : Mesh(JsonParser.Parse<MeshSettings>(Path.ASSETS + @"Meshes\flatTextureMesh.json"))
+    internal sealed class FlatTextureMesh : Mesh
     {
-        public override void Draw()
+        public override Shader Shader => FlatTextureShader.Instance;
+
+        internal FlatTextureMesh()
         {
-            Material.Use();
+            Model = new Model(Path.FromAssets(@"Meshes\flatTextureMesh.obj"));
+        }
 
-            _shader.SetMatrix4("model", Transform.Model);
-            _shader.SetColor("color", Color);
-
-            Model.Draw();
-
-            Texture.Bind(0);
+        public override void UpdateShader()
+        {
+            if (Shader is FlatTextureShader flatTextureShader)
+            {
+                flatTextureShader.SetModel(Transform.Model);
+                flatTextureShader.SetColor(Color);
+            }
         }
     }
 }

@@ -2,10 +2,13 @@
 
 namespace Kotono.Engine.UserInterface.AddMenu.MainButtons
 {
-    internal class TriggersButton : MainButton
+    internal sealed class TriggersButton : MainButton
     {
         internal TriggersButton()
-            : base("Triggers", [], Anchor.TopLeft)
-        { }
+            : base([])
+        {
+            Text.Value = "Triggers";
+            Anchor = Anchor.TopLeft;
+        }
     }
 }

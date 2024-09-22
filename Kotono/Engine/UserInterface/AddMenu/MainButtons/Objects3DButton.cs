@@ -2,10 +2,13 @@
 
 namespace Kotono.Engine.UserInterface.AddMenu.MainButtons
 {
-    internal class Objects3DButton : MainButton
+    internal sealed class Objects3DButton : MainButton
     {
         internal Objects3DButton()
-            : base("3D Objects", ["Mesh"], Anchor.BottomLeft)
-        { }
+            : base(["Mesh"])
+        {
+            Text.Value = "3D Objects";
+            Anchor = Anchor.BottomLeft;
+        }
     }
 }

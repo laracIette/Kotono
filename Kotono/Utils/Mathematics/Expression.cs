@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Kotono.Utils.Mathematics
 {
-    internal class Expression
+    internal sealed class Expression
     {
         private float _currentResult = 0.0f;
 

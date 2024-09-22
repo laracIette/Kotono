@@ -2,9 +2,6 @@
 
 namespace Kotono.Utils.Exceptions
 {
-    internal class KotonoException : Exception
-    {
-        internal KotonoException(string message)
-            : base($"error: {message}.") { }
-    }
+    internal class KotonoException(string message)
+        : Exception($"error: {message}.");
 }

@@ -4,68 +4,61 @@ using Kotono.Utils.Coordinates;
 
 namespace Kotono.Graphics.Statistics
 {
-    internal static class PerformanceWindow
+    internal sealed class PerformanceWindow : Object2D
     {
-        private static readonly RoundedBox _background;
+        private readonly RoundedBox _background;
 
-        private static readonly RateStat _frame;
+        private readonly RateStat _frame;
 
-        private static readonly RateStat _update;
+        private readonly RateStat _update;
 
-        internal static float MaxFrameRate { get; set; } = 60.0f;
+        internal float FrameTime => _frame.Time;
 
-        internal static float FrameTime => _frame.Time;
+        internal float FrameRate => _frame.Rate;
 
-        internal static float FrameRate => _frame.Rate;
+        internal float UpdateTime => _update.Time;
 
-        internal static float UpdateTime => _update.Time;
+        internal float UpdateRate => _update.Rate;
 
-        internal static float UpdateRate => _update.Rate;
-
-        public static bool IsDraw
+        public override Point RelativeSize
         {
-            get => _background.IsDraw;
-            set
+            get => base.RelativeSize;
+            set => base.RelativeSize = _background.RelativeSize = value;
+        }
+
+        internal PerformanceWindow()
+        {
+            _background = new RoundedBox
             {
-                _background.IsDraw = value;
-                _frame.IsDraw = value;
-                _update.IsDraw = value;
-            }
+                Color = Color.DarkSlateGray,
+                TargetCornerSize = 10.0f,
+                TargetFallOff = 1.0f,
+                Parent = this,
+                RelativePosition = Point.Zero,
+                Layer = Layer,
+            };
+
+            _frame = new RateStat
+            {
+                Anchor = Anchor.Bottom,
+                Parent = this,
+                RelativePosition = Point.Zero,
+                Layer = Layer + 1,
+            };
+
+            _update = new RateStat
+            {
+                Anchor = Anchor.Top,
+                Parent = this,
+                RelativePosition = Point.Zero,
+                Layer = Layer + 1,
+            };
         }
 
-        public static Point Position => Window.Size - new Point(200.0f, 60.0f);
+        internal void AddFrameTime(float frameTime)
+            => _frame.AddTime(frameTime);
 
-        static PerformanceWindow()
-        {
-            _frame = new RateStat(Anchor.Bottom);
-            _update = new RateStat(Anchor.Top);
-
-            _background = new RoundedBox(
-                new RoundedBoxSettings
-                {
-                    Rect = new Rect(Position, new Point(400.0f, 120.0f)),
-                    Color = Color.DarkSlateGray,
-                    CornerSize = 10.0f
-                }
-            );
-        }
-
-        internal static void AddFrameTime(float frameTime)
-        {
-            _frame.AddTime(frameTime);
-        }
-
-        internal static void AddUpdateTime(float updateTime)
-        {
-            _update.AddTime(updateTime);
-        }
-
-        internal static void UpdatePosition()
-        {
-            _frame.Position = Position;
-            _update.Position = Position;
-
-            _background.Position = Position;
-        }
+        internal void AddUpdateTime(float updateTime)
+            => _update.AddTime(updateTime);
     }
 }

@@ -4,7 +4,7 @@ using System.Threading;
 
 namespace Kotono.Utils
 {
-    internal class ThreadManager : Object
+    internal sealed class ThreadManager : Object
     {
         private static readonly ThreadManager _instance = new();
 
@@ -14,7 +14,7 @@ namespace Kotono.Utils
 
         internal static void Start(ThreadStart threadStart)
         {
-            if (_threads.Count < 32767)
+            if (_threads.Count < short.MaxValue)
             {
                 var thread = new Thread(threadStart);
 

@@ -4,19 +4,44 @@ using Kotono.Utils.Coordinates;
 
 namespace Kotono.Graphics
 {
-    internal class WindowComponent : Object
+    internal sealed class WindowComponent : Object
     {
-        internal Viewport Viewport { get; }
-
         private readonly Background _background;
 
-        internal WindowComponent(Rect rect, Color color)
+        internal Viewport Viewport { get; } = new();
+
+        internal Point Position
         {
-            Viewport = new Viewport(rect);
+            get => _background.RelativePosition;
+            set
+            {
+                _background.RelativePosition = value;
+                Viewport.RelativePosition = Rect.GetPositionFromAnchor(value, Size, Anchor.BottomRight);
+            }
+        }
 
-            var position = Rect.FromAnchor(Point.Zero, rect.BaseSize, Anchor.TopLeft);
+        internal Point Size
+        {
+            get => _background.RelativeSize;
+            set
+            {
+                _background.RelativeSize = value;
+                Viewport.RelativeSize = value;
+            }
+        }
 
-            _background = new Background(new Rect(position, rect.BaseSize), color, Viewport);
+        internal Color BackgroundColor
+        {
+            get => _background.Color;
+            set => _background.Color = value;
+        }
+
+        internal WindowComponent()
+        {
+            _background = new Background
+            {
+                Viewport = Viewport
+            };
         }
     }
 }

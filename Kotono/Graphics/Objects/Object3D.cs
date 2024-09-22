@@ -1,134 +1,146 @@
 ﻿using Kotono.Utils.Coordinates;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Kotono.Graphics.Objects
 {
-    internal abstract class Object3D<T> : Drawable<T>, IObject3D where T : Object3DSettings
+    internal abstract class Object3D : Drawable, IObject3D, ISelectable3D
     {
-        private Transform _transform = Transform.Default;
+        private bool _isDraw = true;
 
-        public virtual Transform Transform
+        public override bool IsDraw
         {
-            get => _transform;
-            set
-            {
-                if (!ReferenceEquals(_transform, value))
-                {
-                    _transform.Dispose();
-                    _transform = value;
-                }
-            }
+            get => _isDraw && (Parent?.IsDraw ?? true);
+            set => _isDraw = value;
         }
+
+        public Transform Transform { get; } = new();
 
         public virtual Vector RelativeLocation
         {
-            get => _transform.RelativeLocation;
-            set => _transform.RelativeLocation = value;
+            get => Transform.RelativeLocation;
+            set => Transform.RelativeLocation = value;
         }
 
         public virtual Rotator RelativeRotation
         {
-            get => _transform.RelativeRotation;
-            set => _transform.RelativeRotation = value;
+            get => Transform.RelativeRotation;
+            set => Transform.RelativeRotation = value;
         }
 
         public virtual Vector RelativeScale
         {
-            get => _transform.RelativeScale;
-            set => _transform.RelativeScale = value;
+            get => Transform.RelativeScale;
+            set => Transform.RelativeScale = value;
         }
 
         public virtual Vector WorldLocation
         {
-            get => _transform.WorldLocation;
-            set => _transform.WorldLocation = value;
+            get => Transform.WorldLocation;
+            set => Transform.WorldLocation = value;
         }
 
         public virtual Rotator WorldRotation
         {
-            get => _transform.WorldRotation;
-            set => _transform.WorldRotation = value;
+            get => Transform.WorldRotation;
+            set => Transform.WorldRotation = value;
         }
 
         public virtual Vector WorldScale
         {
-            get => _transform.WorldScale;
-            set => _transform.WorldScale = value;
+            get => Transform.WorldScale;
+            set => Transform.WorldScale = value;
         }
 
         public virtual Vector RelativeLocationVelocity
         {
-            get => _transform.RelativeLocationVelocity;
-            set => _transform.RelativeLocationVelocity = value;
+            get => Transform.RelativeLocationVelocity;
+            set => Transform.RelativeLocationVelocity = value;
         }
 
         public virtual Rotator RelativeRotationVelocity
         {
-            get => _transform.RelativeRotationVelocity;
-            set => _transform.RelativeRotationVelocity = value;
+            get => Transform.RelativeRotationVelocity;
+            set => Transform.RelativeRotationVelocity = value;
         }
 
         public virtual Vector RelativeScaleVelocity
         {
-            get => _transform.RelativeScaleVelocity;
-            set => _transform.RelativeScaleVelocity = value;
+            get => Transform.RelativeScaleVelocity;
+            set => Transform.RelativeScaleVelocity = value;
         }
 
         public virtual Vector WorldLocationVelocity
         {
-            get => _transform.WorldLocationVelocity;
-            set => _transform.WorldLocationVelocity = value;
+            get => Transform.WorldLocationVelocity;
+            set => Transform.WorldLocationVelocity = value;
         }
 
         public virtual Rotator WorldRotationVelocity
         {
-            get => _transform.WorldRotationVelocity;
-            set => _transform.WorldRotationVelocity = value;
+            get => Transform.WorldRotationVelocity;
+            set => Transform.WorldRotationVelocity = value;
         }
 
         public virtual Vector WorldScaleVelocity
         {
-            get => _transform.WorldScaleVelocity;
-            set => _transform.WorldScaleVelocity = value;
-        }
-
-        private IObject3D? _parent = null;
-
-        public new virtual IObject3D? Parent
-        {
-            get => _parent;
-            set
-            {
-                using var clone = Transform.Clone();
-
-                _parent = value;
-                Transform.Parent = value?.Transform;
-
-                // Remove relative offset, not sure if it'll stay
-                Transform.WorldLocation = clone.WorldLocation;
-                Transform.WorldRotation = clone.WorldRotation;
-                Transform.WorldScale = clone.WorldScale;
-            }
+            get => Transform.WorldScaleVelocity;
+            set => Transform.WorldScaleVelocity = value;
         }
 
         public override bool IsHovered => false;
 
-        internal Object3D(T settings)
-            : base(settings)
+        public override bool IsActive => ISelectable3D.Active == this;
+
+        private IObject3D? _parent = null;
+
+        /// <inheritdoc cref="IObject3D.Parent"/>
+        /// <remarks>
+        /// Changing this will affect the relative transform of the <see cref="Object3D"/> so that it's world transform stays the same.
+        /// </remarks>
+        public virtual IObject3D? Parent
         {
-            Transform = settings.Transform;
+            get => _parent;
+            set
+            {
+                if (_parent == value)
+                {
+                    return;
+                }
+
+                _parent = value;
+
+                var worldLocation = WorldLocation;
+                var worldRotation = WorldRotation;
+                var worldScale = WorldScale;
+
+                Transform.Parent = value?.Transform;
+
+                WorldLocation = worldLocation;
+                WorldRotation = worldRotation;
+                WorldScale = worldScale;
+            }
         }
 
-        internal Object3D() : base() { }
+        public IEnumerable<IObject3D> Children => ObjectManager.GetObjectsOfType<IObject3D>(o => o.Parent == this);
 
-        public override void Save()
+        public IEnumerable<TChildren> GetChildren<TChildren>() where TChildren : IObject3D
         {
-            _settings.Transform = Transform;
+            return Children.OfType<TChildren>();
+        }
 
-            base.Save();
+        public TChild? GetChild<TChild>() where TChild : IObject3D
+        {
+            return GetChildren<TChild>().First();
         }
 
         public override void Dispose()
         {
+            foreach (var child in Children)
+            {
+                child.Parent = Parent;
+            }
+
             Transform.Dispose();
 
             base.Dispose();

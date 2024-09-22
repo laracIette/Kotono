@@ -4,57 +4,57 @@ using OpenTK.Mathematics;
 
 namespace Kotono.Graphics.Objects
 {
-    internal class RoundedBorder : RoundedBox<RoundedBorderSettings>
+    internal sealed class RoundedBorder : RoundedBox
     {
-        internal float TargetThickness { get; private set; }
+        private float _targetThickness;
 
-        private float _thickness;
+        internal float Thickness { get; private set; }
 
-        internal float Thickness
+        internal float TargetThickness
         {
-            get => _thickness;
+            get => _targetThickness;
             set
             {
-                TargetThickness = value;
+                _targetThickness = value;
                 UpdateValues();
             }
         }
 
-        protected override Shader Shader => ShaderManager.Shaders["roundedBorder"];
+        public override Shader Shader => RoundedBorderShader.Instance;
 
-        protected override Matrix4 Model => new NDCRect(Position, Size + new Point(FallOff * 2.0f + Thickness)).Model;
-
-        internal RoundedBorder(RoundedBorderSettings settings)
-            : base(settings)
-        {
-            Thickness = settings.Thickness;
-        }
+        protected override Matrix4 Model => new NDCRect(WorldPosition, FallOff * 2.0f + Thickness + WorldSize).Model;
 
         protected override void UpdateValues()
         {
-            float minSize = Point.Min(Rect.BaseSize);
+            float minSize = Point.Min(Rect.WorldSize);
 
             /// Thickness has :
             ///     a minimum value of 0,
             ///     a maximum value of the smallest value between the border's Width and Height
-            _thickness = Math.Clamp(TargetThickness, 0.0f, minSize);
-
-            /// CornerSize has :
-            ///     a minimum value of the border's Thickness / 2 + its FallOff,
-            ///     a maximum value of the smallest value between the border's Width and Height divided by 2
-            _cornerSize = Math.Clamp(TargetCornerSize, Thickness / 2.0f + FallOff, minSize / 2.0f);
+            Thickness = Math.Clamp(TargetThickness, 0.0f, minSize);
 
             /// FallOff has : 
-            ///     a minimum value of 0.000001 so that there is no division by 0 in glsl,
-            ///     a maximum value of the border's Width - its Thickness
-            _fallOff = Math.Clamp(TargetFallOff, 0.000001f, Rect.BaseSize.X - Thickness);
+            ///     a minimum value of 0,
+            ///     a maximum value of the difference between the border's Width and its Thickness
+            FallOff = Math.Clamp(TargetFallOff, 0.0f, minSize - Thickness);
+
+            /// CornerSize has :
+            ///     a minimum value of half the border's Thickness + its FallOff,
+            ///     a maximum value of half the smallest value between the border's Width and Height
+            CornerSize = Math.Clamp(TargetCornerSize, Math.Half(Thickness) + FallOff, Math.Half(minSize));
         }
 
-        public override void Draw()
+        public override void UpdateShader()
         {
-            Shader.SetFloat("thickness", Thickness);
-
-            base.Draw();
+            if (Shader is RoundedBorderShader roundedBorderShader)
+            {
+                roundedBorderShader.SetModel(Model);
+                roundedBorderShader.SetColor(Color);
+                roundedBorderShader.SetSides(Sides);
+                roundedBorderShader.SetFallOff(FallOff);
+                roundedBorderShader.SetCornerSize(CornerSize);
+                roundedBorderShader.SetThickness(Thickness);
+            }
         }
     }
 }

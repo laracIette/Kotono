@@ -1,12 +1,26 @@
-﻿using OpenTK.Mathematics;
+﻿using System.Runtime.InteropServices;
 
 namespace Kotono.Utils.Coordinates
 {
-    internal readonly record struct Sides(float Left, float Right, float Top, float Bottom)
+    [StructLayout(LayoutKind.Sequential)]
+    public readonly struct Sides
     {
-        public static explicit operator Vector4(Sides s)
+        public readonly float Left;
+
+        public readonly float Right;
+
+        public readonly float Top;
+
+        public readonly float Bottom;
+
+        public Sides(float left, float right, float top, float bottom)
         {
-            return new Vector4(s.Left, s.Right, s.Top, s.Bottom);
+            Left = left;
+            Right = right;
+            Top = top;
+            Bottom = bottom;
         }
+
+        public Sides() : this(0.0f, 0.0f, 0.0f, 0.0f) { }
     }
 }

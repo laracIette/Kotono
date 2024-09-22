@@ -1,39 +1,32 @@
-﻿using Kotono.Graphics.Objects;
-using System;
+﻿using System;
 using System.Text.Json;
 using IO = System.IO;
 
 namespace Kotono.Utils
 {
-    internal class JsonParser : Object
+    internal sealed class JsonParser
     {
-        private JsonParser() : base() { }
+        private JsonParser() { }
 
         private static readonly JsonSerializerOptions _jsonSerializerOptions = new()
         {
             WriteIndented = true,
-            IgnoreReadOnlyFields = true,
             IgnoreReadOnlyProperties = true,
             IncludeFields = true
         };
 
-        internal static T Parse<T>(string path) where T : DrawableSettings
+        internal static T Parse<T>(string path)
         {
             string jsonString = IO.File.ReadAllText(path);
-
-            var settings = JsonSerializer.Deserialize<T>(jsonString) ?? Activator.CreateInstance<T>();
-
-            settings.Path = path;
-
-            return settings;
+            return JsonSerializer.Deserialize<T>(jsonString) ?? Activator.CreateInstance<T>();
         }
 
-        internal static void WriteFile<T>(T settings) where T : DrawableSettings
+        internal static void WriteFile(object obj, string path)
         {
-            if (settings.Path != "")
+            if (!string.IsNullOrEmpty(path))
             {
-                string jsonString = JsonSerializer.Serialize(settings, settings.GetType(), _jsonSerializerOptions);
-                IO.File.WriteAllText(settings.Path, jsonString);
+                string jsonString = JsonSerializer.Serialize(obj, obj.GetType(), _jsonSerializerOptions);
+                IO.File.WriteAllText(path, jsonString);
             }
         }
     }

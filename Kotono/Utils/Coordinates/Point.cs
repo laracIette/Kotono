@@ -1,28 +1,26 @@
-﻿using Kotono.Graphics;
+﻿using Assimp;
+using Kotono.Graphics;
 using OpenTK.Mathematics;
 using System;
 using System.Runtime.InteropServices;
-using System.Text.Json.Serialization;
 
 namespace Kotono.Utils.Coordinates
 {
     [StructLayout(LayoutKind.Sequential)]
-    public struct Point : IEquatable<Point>
+    public readonly struct Point : IEquatable<Point>
     {
         /// <summary> 
-        /// The X component of the Point. 
+        /// The X component of the <see cref="Point"/>. 
         /// </summary>
-        [JsonInclude]
-        public float X = 0.0f;
+        public readonly float X;
 
         /// <summary>
-        /// The Y component of the Point. 
+        /// The Y component of the <see cref="Point"/>. 
         /// </summary>
-        [JsonInclude]
-        public float Y = 0.0f;
+        public readonly float Y;
 
         /// <summary> 
-        /// The length component of the Point. 
+        /// The length component of the <see cref="Point"/>. 
         /// </summary>
         public readonly float Length => Math.Sqrt(X * X + Y * Y);
 
@@ -34,19 +32,18 @@ namespace Kotono.Utils.Coordinates
         /// <summary>
         /// The Point scaled to Normalized Device Coordinates.
         /// </summary>
-        public readonly Point NDC =>
-            new(
-                2.0f * X / Viewport.Active.Size.X - 1.0f,
-                1.0f - Y / Viewport.Active.Size.Y * 2.0f
-            );
+        public readonly Point NDC => new(
+            2.0f * X / Viewport.Active.RelativeSize.X - 1.0f,
+            1.0f - Y / Viewport.Active.RelativeSize.Y * 2.0f
+        );
 
         /// <summary>
-        /// The X / Y ratio of the Point.
+        /// The X / Y ratio of the <see cref="Point"/>.
         /// </summary>
         public readonly float Ratio => X / Y;
 
         /// <summary>
-        /// The X * Y product of the Point.
+        /// The X * Y product of the <see cref="Point"/>.
         /// </summary>
         public readonly float Product => X * Y;
 
@@ -60,33 +57,44 @@ namespace Kotono.Utils.Coordinates
 
         public static int SizeInBytes => sizeof(float) * 2;
 
-        public Point()
-        {
-            X = 0.0f;
-            Y = 0.0f;
-        }
-
-        public Point(Point p)
-        {
-            X = p.X;
-            Y = p.Y;
-        }
-
-        public Point(float f)
-        {
-            X = f;
-            Y = f;
-        }
-
-        public Point(float x = 0.0f, float y = 0.0f)
+        /// <summary> 
+        /// Initialize a <see cref="Point"/> with X = x, Y = y.
+        /// </summary>
+        public Point(float x, float y)
         {
             X = x;
             Y = y;
         }
 
+        /// <summary> 
+        /// Initialize a <see cref="Point"/> with X = 0, Y = 0.
+        /// </summary>
+        public Point() : this(0.0f, 0.0f) { }
+
+        /// <summary> 
+        /// Initialize a <see cref="Point"/> with X = f, Y = f.
+        /// </summary>
+        public Point(float f) : this(f, f) { }
+
         public static float Distance(Point left, Point right)
         {
             return (left - right).Length;
+        }
+
+        /// <summary> 
+        /// Get the absolute values of the <see cref="Point"/>. 
+        /// </summary>
+        public static Point Abs(Point p)
+        {
+            return new Point(Math.Abs(p.X), Math.Abs(p.Y));
+        }
+
+        /// <summary> 
+        /// Get the half of the values of the <see cref="Point"/>. 
+        /// </summary>
+        public static Point Half(Point p)
+        {
+            return new Point(Math.Half(p.X), Math.Half(p.Y));
         }
 
         public static float Min(Point p)
@@ -106,54 +114,56 @@ namespace Kotono.Utils.Coordinates
 
         public static Point Clamp(Point p, Point min, Point max)
         {
-            p.X = Math.Clamp(p.X, min.X, max.X);
-            p.Y = Math.Clamp(p.Y, min.Y, max.Y);
-            return p;
+            return new Point(Math.Clamp(p.X, min.X, max.X), Math.Clamp(p.Y, min.Y, max.Y));
+        }
+
+        public static bool IsZero(Point p)
+        {
+            return p == Zero;
         }
 
         public static Point operator +(Point left, Point right)
         {
-            left.X += right.X;
-            left.Y += right.Y;
-            return left;
+            return new Point(left.X + right.X, left.Y + right.Y);
         }
 
+        public static Point operator +(float f, Point p)
+        {
+            return new Point(p.X + f, p.Y + f);
+        }
+
+        [Obsolete("Reorder operands, use 'Point.operator +(float, Point)' instead.")]
         public static Point operator +(Point p, float f)
         {
-            p.X += f;
-            p.Y += f;
-            return p;
+            return f + p;
         }
 
         public static Point operator -(Point left, Point right)
         {
-            left.X -= right.X;
-            left.Y -= right.Y;
-            return left;
+            return new Point(left.X - right.X, left.Y - right.Y);
+        }
+
+        public static Point operator -(Point p, float f)
+        {
+            return new Point(p.X - f, p.Y - f);
         }
 
         public static Point operator -(Point p)
         {
-            p.X = -p.X;
-            p.Y = -p.Y;
-            return p;
+            return new Point(-p.X, -p.Y);
         }
 
         public static Point operator *(Point left, Point right)
         {
-            left.X *= right.X;
-            left.Y *= right.Y;
-            return left;
+            return new Point(left.X * right.X, left.Y * right.Y);
         }
 
         public static Point operator *(float f, Point p)
         {
-            p.X *= f;
-            p.Y *= f;
-            return p;
+            return new Point(p.X * f, p.Y * f);
         }
 
-        [Obsolete("Reorder operands, use \"Point.operator *(float, Point)\" instead.")]
+        [Obsolete("Reorder operands, use 'Point.operator *(float, Point)' instead.")]
         public static Point operator *(Point p, float f)
         {
             return f * p;
@@ -161,16 +171,12 @@ namespace Kotono.Utils.Coordinates
 
         public static Point operator /(Point left, Point right)
         {
-            left.X /= right.X;
-            left.Y /= right.Y;
-            return left;
+            return new Point(left.X / right.X, left.Y / right.Y);
         }
 
         public static Point operator /(Point p, float f)
         {
-            p.X /= f;
-            p.Y /= f;
-            return p;
+            return new Point(p.X / f, p.Y / f);
         }
 
         public static bool operator ==(Point left, Point right)
@@ -205,6 +211,12 @@ namespace Kotono.Utils.Coordinates
         {
             return left.X <= right.X
                 && left.Y <= right.Y;
+        }
+
+        public readonly void Deconstruct(out float x, out float y)
+        {
+            x = X;
+            y = Y;
         }
 
         public override readonly bool Equals(object? obj)
@@ -249,6 +261,16 @@ namespace Kotono.Utils.Coordinates
         }
 
         public static explicit operator Point(Vector2i v)
+        {
+            return new Point(v.X, v.Y);
+        }
+
+        public static explicit operator Vector3D(Point p)
+        {
+            return new Vector3D(p.X, p.Y, 0.0f);
+        }
+
+        public static explicit operator Point(Vector3D v)
         {
             return new Point(v.X, v.Y);
         }

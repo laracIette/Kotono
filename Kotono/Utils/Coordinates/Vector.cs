@@ -1,67 +1,30 @@
 ﻿using Assimp;
-using Kotono.Graphics.Objects;
 using Kotono.Utils.Exceptions;
 using OpenTK.Mathematics;
 using System;
 using System.Runtime.InteropServices;
-using System.Text.Json.Serialization;
+using static Catalyst.Models.English;
 using Quaternion = OpenTK.Mathematics.Quaternion;
 
 namespace Kotono.Utils.Coordinates
 {
     [StructLayout(LayoutKind.Sequential)]
-    public struct Vector : IEquatable<Vector>
+    public readonly struct Vector : IEquatable<Vector>
     {
         /// <summary> 
         /// The X component of the <see cref="Vector"/>. 
         /// </summary>
-        [JsonInclude]
-        public float X = 0.0f;
+        public readonly float X;
 
         /// <summary>
         /// The Y component of the <see cref="Vector"/>. 
         /// </summary>
-        [JsonInclude]
-        public float Y = 0.0f;
+        public readonly float Y;
 
         /// <summary> 
         /// The Z component of the <see cref="Vector"/>. 
         /// </summary>
-        [JsonInclude]
-        public float Z = 0.0f;
-
-        /// <summary>
-        /// The component of the <see cref="Vector"/> corresponding to the index.
-        /// </summary>
-        /// <param name="index"> 0 => X, 1 => Y, 2 => Z. </param>
-        /// <exception cref="SwitchException"></exception>
-        public float this[int index]
-        {
-            readonly get => index switch
-            {
-                0 => X,
-                1 => Y,
-                2 => Z,
-                _ => throw new SwitchException(typeof(int), index)
-            };
-            set
-            {
-                switch (index)
-                {
-                    case 0:
-                        X = value;
-                        break;
-                    case 1:
-                        Y = value;
-                        break;
-                    case 2:
-                        Z = value;
-                        break;
-                    default:
-                        throw new SwitchException(typeof(int), index);
-                }
-            }
-        }
+        public readonly float Z;
 
         /// <summary>
         /// The length of the <see cref="Vector"/>. 
@@ -72,26 +35,6 @@ namespace Kotono.Utils.Coordinates
         /// The <see cref="Vector"/> scaled to unit length.
         /// </summary>
         public readonly Vector Normalized => this / Length;
-
-        /// <summary> 
-        /// The minimum value of the <see cref="Vector"/>.
-        /// </summary>
-        public readonly float Min => Math.Min(Math.Min(X, Y), Z);
-
-        /// <summary> 
-        /// The maximum value of the <see cref="Vector"/>.
-        /// </summary>
-        public readonly float Max => Math.Max(Math.Max(X, Y), Z);
-
-        /// <summary> 
-        /// The absolute value of the <see cref="Vector"/>.
-        /// </summary>
-        public readonly Vector Abs => new(Math.Abs(X), Math.Abs(Y), Math.Abs(Z));
-
-        /// <summary> 
-        /// Wether the <see cref="Vector"/> is equal to <see cref="Zero"/>.
-        /// </summary>
-        public readonly bool IsZero => this == Zero;
 
         /// <summary>
         /// A <see cref="Vector"/> with X = 0, Y = 0, Z = 0.
@@ -135,9 +78,15 @@ namespace Kotono.Utils.Coordinates
 
         public static Vector Right => UnitX;
 
+        public static Vector Left => -UnitX;
+
         public static Vector Up => UnitY;
 
+        public static Vector Down => -UnitY;
+
         public static Vector Forward => UnitZ;
+
+        public static Vector Backward => -UnitZ;
 
         public static Vector MinValue => new(float.MinValue, float.MinValue, float.MinValue);
 
@@ -148,7 +97,7 @@ namespace Kotono.Utils.Coordinates
         /// <summary> 
         /// Initialize a <see cref="Vector"/> with X = x, Y = y, Z = z.
         /// </summary>
-        public Vector(float x = 0.0f, float y = 0.0f, float z = 0.0f)
+        public Vector(float x, float y, float z)
         {
             X = x;
             Y = y;
@@ -161,188 +110,178 @@ namespace Kotono.Utils.Coordinates
         public Vector() : this(0.0f, 0.0f, 0.0f) { }
 
         /// <summary>
-        /// Initialize a <see cref="Vector"/> with X = v.X, Y = v.Y, Z = v.Z.
-        /// </summary>
-        public Vector(Vector v) : this(v.X, v.Y, v.Z) { }
-
-        /// <summary>
         /// Initialize a <see cref="Vector"/> with X = f, Y = f, Z = f.
         /// </summary>
         public Vector(float f) : this(f, f, f) { }
 
-        public static Vector RotateAroundPoint(in Vector v, in Vector point, in Rotator rotation)
-        {
-            return (Vector)(Quaternion.FromEulerAngles((Vector3)rotation) * (Vector3)(v - point)) + point;
-        }
+        public static Vector RotateAroundPoint(Vector v, Vector point, in Rotator rotation)
+            => (Vector)(Quaternion.FromEulerAngles((Vector3)rotation) * (Vector3)(v - point)) + point;
 
-        public static Vector Rotate(in Vector v, in Rotator r)
-        {
-            return (Vector)Vector3.Transform((Vector3)v, (Quaternion)r);
-        }
+        public static Vector Rotate(Vector v, in Rotator r)
+            => (Vector)Vector3.Transform((Vector3)v, (Quaternion)r);
 
-        public static Vector Cross(in Vector left, in Vector right)
-        {
-            return new Vector
-            {
-                X = left.Y * right.Z - left.Z * right.Y,
-                Y = left.Z * right.X - left.X * right.Z,
-                Z = left.X * right.Y - left.Y * right.X
-            };
-        }
+        public static Vector Cross(Vector left, Vector right)
+            => new(
+                left.Y * right.Z - left.Z * right.Y,
+                left.Z * right.X - left.X * right.Z,
+                left.X * right.Y - left.Y * right.X
+            );
 
-        public static float Dot(in Vector left, in Vector right)
-        {
-            return left.X * right.X + left.Y * right.Y + left.Z * right.Z;
-        }
+        public static float Dot(Vector left, Vector right)
+            => left.X * right.X + left.Y * right.Y + left.Z * right.Z;
+
+        /// <summary> 
+        /// Get the minimum value of the <see cref="Vector"/>.
+        /// </summary>
+        public static float Min(Vector v)
+            => Math.Min(Math.Min(v.X, v.Y), v.Z);
+
+        /// <summary> 
+        /// Get the maximum value of the <see cref="Vector"/>.
+        /// </summary>
+        public static float Max(Vector v)
+            => Math.Max(Math.Max(v.X, v.Y), v.Z);
+
+        /// <summary> 
+        /// Get the absolute values of the <see cref="Vector"/>. 
+        /// </summary>
+        public static Vector Abs(Vector v)
+            => new(Math.Abs(v.X), Math.Abs(v.Y), Math.Abs(v.Z));
 
         /// <summary> 
         /// Convert a <see cref="Vector"/> from degrees to radians. 
         /// </summary>
         public static Vector Rad(Vector v)
-        {
-            v.X = Math.Rad(v.X);
-            v.Y = Math.Rad(v.Y);
-            v.Z = Math.Rad(v.Z);
-            return v;
-        }
+            => new(Math.Rad(v.X), Math.Rad(v.Y), Math.Rad(v.Z));
 
         /// <summary> 
         /// Convert a <see cref="Vector"/> from radians to degrees. 
         /// </summary>
         public static Vector Deg(Vector v)
-        {
-            v.X = Math.Deg(v.X);
-            v.Y = Math.Deg(v.Y);
-            v.Z = Math.Deg(v.Z);
-            return v;
-        }
+            => new(Math.Deg(v.X), Math.Deg(v.Y), Math.Deg(v.Z));
 
-        public static float Distance(in Vector left, in Vector right)
-        {
-            return (left - right).Length;
-        }
+        public static float Distance(Vector left, Vector right)
+            => (left - right).Length;
 
-        internal static float Distance(in IObject3D left, in IObject3D right)
-        {
-            return Distance(left.RelativeLocation, right.RelativeLocation);
-        }
+        internal static float Distance(in ITransform left, in ITransform right)
+            => Distance(left.WorldLocation, right.WorldLocation);
 
         public static Vector Clamp(Vector v, float min, float max)
+            => new(Math.Clamp(v.X, min, max), Math.Clamp(v.Y, min, max), Math.Clamp(v.Z, min, max));
+
+        public static Vector Clamp(Vector v)
+            => new(Math.Clamp(v.X), Math.Clamp(v.Y), Math.Clamp(v.Z));
+
+        public static Vector ClampLength(Vector v, float minLength, float maxLength)
         {
-            v.X = Math.Clamp(v.X, min, max);
-            v.Y = Math.Clamp(v.Y, min, max);
-            v.Z = Math.Clamp(v.Z, min, max);
+            ExceptionHelper.ThrowIf(minLength < 0.0f, "minLength must not be negative");
+            ExceptionHelper.ThrowIf(minLength > maxLength, "minLength must not be over maxLength");
+
+            if (v.Length < minLength)
+            {
+                return minLength * v.Normalized;
+            }
+
+            if (v.Length > maxLength)
+            {
+                return maxLength * v.Normalized;
+            }
+
             return v;
         }
 
-        public static Vector Clamp(Vector v)
+        /// <summary>
+        /// Get the <see cref="Vector"/> with the smallest length.
+        /// </summary>
+        public static Vector MinLength(Vector v, float minLength)
         {
-            v.X = Math.Clamp(v.X);
-            v.Y = Math.Clamp(v.Y);
-            v.Z = Math.Clamp(v.Z);
+            ExceptionHelper.ThrowIf(minLength < 0.0f, "minLength must not be negative");
+           
+            if (v.Length > minLength)
+            {
+                return minLength * v.Normalized;
+            }
+
+            return v;
+        }
+
+        /// <summary>
+        /// Get the <see cref="Vector"/> with the biggest length.
+        /// </summary>
+        public static Vector MaxLength(Vector v, float maxLength)
+        {
+            ExceptionHelper.ThrowIf(maxLength < 0.0f, "maxLength must not be negative");
+           
+            if (v.Length < maxLength)
+            {
+                return maxLength * v.Normalized;
+            }
+
             return v;
         }
 
         public static Vector Parse(in string[] values)
+            => new(float.Parse(values[1]), float.Parse(values[2]), float.Parse(values[0]));
+
+        public static Vector Avg(params Vector[] values)
         {
-            return new Vector
+            var result = Zero;
+            foreach (var vector in values)
             {
-                X = float.Parse(values[0]),
-                Y = float.Parse(values[1]),
-                Z = float.Parse(values[2])
-            };
+                result += vector;
+            }
+            return result / values.Length;
         }
 
+        public static Matrix4 CreateScaleMatrix(Vector v)
+            => Matrix4.CreateScale((Vector3)v);
 
-        public static Matrix4 CreateScaleMatrix(in Vector v)
-        {
-            return Matrix4.CreateScale((Vector3)v);
-        }
+        public static Matrix4 CreateTranslationMatrix(Vector v)
+            => Matrix4.CreateTranslation((Vector3)v);
 
-        public static Matrix4 CreateTranslationMatrix(in Vector v)
-        {
-            return Matrix4.CreateTranslation((Vector3)v);
-        }
+        public static bool IsNullOrZero(Vector? v)
+            => v is null || v == Zero;
 
         public static Vector operator +(Vector left, Vector right)
-        {
-            left.X += right.X;
-            left.Y += right.Y;
-            left.Z += right.Z;
-            return left;
-        }
+            => new(left.X + right.X, left.Y + right.Y, left.Z + right.Z);
+
+        public static Vector operator +(float f, Vector v)
+            => new(v.X + f, v.Y + f, v.Z + f);
+
+        [Obsolete("Reorder operands, use 'Vector.operator +(float, Vector)' instead.")]
+        public static Vector operator +(Vector v, float f)
+            => f + v;
 
         public static Vector operator -(Vector left, Vector right)
-        {
-            left.X -= right.X;
-            left.Y -= right.Y;
-            left.Z -= right.Z;
-            return left;
-        }
+            => new(left.X - right.X, left.Y - right.Y, left.Z - right.Z);
 
         public static Vector operator -(Vector v, float f)
-        {
-            v.X -= f;
-            v.Y -= f;
-            v.Z -= f;
-            return v;
-        }
+            => new(v.X - f, v.Y - f, v.Z - f);
 
         public static Vector operator -(Vector v)
-        {
-            v.X = -v.X;
-            v.Y = -v.Y;
-            v.Z = -v.Z;
-            return v;
-        }
+            => new(-v.X, -v.Y, -v.Z);
 
         public static Vector operator *(Vector left, Vector right)
-        {
-            left.X *= right.X;
-            left.Y *= right.Y;
-            left.Z *= right.Z;
-            return left;
-        }
+            => new(left.X * right.X, left.Y * right.Y, left.Z * right.Z);
 
         public static Vector operator *(float f, Vector v)
-        {
-            v.X *= f;
-            v.Y *= f;
-            v.Z *= f;
-            return v;
-        }
+            => new(v.X * f, v.Y * f, v.Z * f);
 
-        [Obsolete("Reorder operands, use \"Vector.operator *(float, Vector)\" instead.")]
+        [Obsolete("Reorder operands, use 'Vector.operator *(float, Vector)' instead.")]
         public static Vector operator *(Vector v, float f)
-        {
-            return f * v;
-        }
+            => f * v;
 
         public static Vector operator /(Vector left, Vector right)
-        {
-            left.X /= right.X;
-            left.Y /= right.Y;
-            left.Z /= right.Z;
-            return left;
-        }
+            => new(left.X / right.X, left.Y / right.Y, left.Z / right.Z);
 
         public static Vector operator /(Vector v, float f)
-        {
-            v.X /= f;
-            v.Y /= f;
-            v.Z /= f;
-            return v;
-        }
+            => new(v.X / f, v.Y / f, v.Z / f);
 
         public static bool operator ==(Vector left, Vector right)
-        {
-            return left.Equals(right);
-        }
+            => left.Equals(right);
 
         public static bool operator !=(Vector left, Vector right)
-        {
-            return !(left == right);
-        }
+            => !(left == right);
 
         public readonly void Deconstruct(out float x, out float y, out float z)
         {
@@ -352,50 +291,32 @@ namespace Kotono.Utils.Coordinates
         }
 
         public override readonly bool Equals(object? obj)
-        {
-            return obj is Vector v && Equals(v);
-        }
+            => obj is Vector v && Equals(v);
 
         public readonly bool Equals(Vector other)
-        {
-            return X == other.X
-                && Y == other.Y
-                && Z == other.Z;
-        }
+            => X == other.X
+            && Y == other.Y
+            && Z == other.Z;
 
         public override readonly int GetHashCode()
-        {
-            return HashCode.Combine(X, Y, Z);
-        }
+            => HashCode.Combine(X, Y, Z);
 
         public static explicit operator Vector3(Vector v)
-        {
-            return new Vector3(v.X, v.Y, v.Z);
-        }
+            => new(v.X, v.Y, v.Z);
 
         public static explicit operator Vector(Vector3 v)
-        {
-            return new Vector(v.X, v.Y, v.Z);
-        }
+            => new(v.X, v.Y, v.Z);
 
         public static explicit operator Vector3D(Vector v)
-        {
-            return new Vector3D(v.X, v.Y, v.Z);
-        }
+            => new(v.X, v.Y, v.Z);
 
         public static explicit operator Vector(Vector3D v)
-        {
-            return new Vector(v.X, v.Y, v.Z);
-        }
+            => new(v.X, v.Y, v.Z);
 
         public static explicit operator Vector(float f)
-        {
-            return new Vector(f, f, f);
-        }
+            => new(f, f, f);
 
         public override readonly string ToString()
-        {
-            return $"X: {X}, Y: {Y}, Z: {Z}";
-        }
+            => $"X: {X}, Y: {Y}, Z: {Z}";
     }
 }

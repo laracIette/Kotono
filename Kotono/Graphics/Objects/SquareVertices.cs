@@ -1,4 +1,6 @@
-﻿using OpenTK.Graphics.OpenGL4;
+﻿using Kotono.Graphics.Shaders;
+using OpenTK.Graphics.OpenGL4;
+using System;
 
 namespace Kotono.Graphics.Objects
 {
@@ -6,64 +8,34 @@ namespace Kotono.Graphics.Objects
     {
         private static readonly float[] _vertices =
         [
-            // locations   // texCoords
-            -1.0f,
-            1.0f,
-            0.0f,
-            1.0f,
-            -1.0f,
-            -1.0f,
-            0.0f,
-            0.0f,
-            1.0f,
-            -1.0f,
-            1.0f,
-            0.0f,
-
-            -1.0f,
-            1.0f,
-            0.0f,
-            1.0f,
-            1.0f,
-            -1.0f,
-            1.0f,
-            0.0f,
-            1.0f,
-            1.0f,
-            1.0f,
-            1.0f
+            // Positions         // Texture Coords
+            1.0f,  1.0f, 0.0f,   1.0f, 1.0f, // Top Right
+            1.0f, -1.0f, 0.0f,   1.0f, 0.0f, // Bottom Right
+           -1.0f, -1.0f, 0.0f,   0.0f, 0.0f, // Bottom Left
+           -1.0f,  1.0f, 0.0f,   0.0f, 1.0f  // Top Left 
         ];
 
-        internal static int VertexArrayObject { get; }
+        private static readonly int[] _indices =
+        [
+            0, 1, 3, // First Triangle
+            1, 2, 3  // Second Triangle
+        ];
 
-        internal static int VertexBufferObject { get; }
+        internal static VertexArraySetup VertexArraySetup { get; } = new();
+
+        internal static ElementBufferObject ElementBufferObject { get; } = new();
 
         static SquareVertices()
         {
-            // Create vertex array
-            VertexArrayObject = GL.GenVertexArray();
-            BindVertexArrayObject();
-
-            // Create vertex buffer
-            VertexBufferObject = GL.GenBuffer();
-            BindVertexBufferObject();
-            GL.BufferData(BufferTarget.ArrayBuffer, sizeof(float) * _vertices.Length, _vertices, BufferUsageHint.StaticDraw);
-
-            GL.EnableVertexAttribArray(0);
-            GL.VertexAttribPointer(0, 2, VertexAttribPointerType.Float, false, 4 * sizeof(float), 0);
-            GL.EnableVertexAttribArray(1);
-            GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 4 * sizeof(float), 2 * sizeof(float));
+            VertexArraySetup.SetData(_vertices, sizeof(float));
+            ElementBufferObject.SetData(_indices, sizeof(int));
+            VertexArraySetup.VertexArrayObject.SetVertexAttributesLayout(ImageShader.Instance);
         }
 
         internal static void Draw()
         {
-            BindVertexArrayObject();
-
-            GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
+            VertexArraySetup.VertexArrayObject.Bind();
+            GL.DrawElements(PrimitiveType.Triangles, _indices.Length, DrawElementsType.UnsignedInt, IntPtr.Zero);
         }
-
-        internal static void BindVertexArrayObject() => GL.BindVertexArray(VertexArrayObject);
-
-        internal static void BindVertexBufferObject() => GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
     }
 }

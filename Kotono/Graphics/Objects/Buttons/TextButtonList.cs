@@ -1,44 +1,40 @@
-﻿using Kotono.Graphics.Objects.Texts;
-using Kotono.Settings;
-using Kotono.Utils;
+﻿using Kotono.Utils;
 using Kotono.Utils.Coordinates;
 
 namespace Kotono.Graphics.Objects.Buttons
 {
-    internal class TextButtonList
+    internal sealed class TextButtonList : RoundedBox
     {
         private readonly TextButton[] _buttons;
 
-        internal TextButtonList(TextButtonListSettings settings)
+        public override int Layer
         {
-            _buttons = new TextButton[settings.Texts.Length];
-
-            var positions = Rect.FromAnchor(settings.Texts.Length, settings.Rect.Position, settings.Rect.Size, Anchor.Center);
-
-            for (int i = 0; i < settings.Texts.Length; i++)
+            get => base.Layer;
+            set
             {
-                _buttons[i] = new TextButton(
-                    new TextButtonSettings
-                    {
-                        Color = settings.Color,
-                        CornerSize = settings.CornerSize,
-                        FallOff = settings.FallOff,
-                        Layer = settings.Layer,
-                        Rect = new Rect(positions[i], settings.Rect.Size),
-                        TextSettings = new TextSettings
-                        {
-                            Source = settings.Texts[i]
-                        }
-                    }
-                );
-
-                _buttons[i].Pressed += OnPressed;
+                base.Layer = value;
+                foreach (var button in _buttons)
+                {
+                    button.Layer = value + 1;
+                }
             }
         }
 
-        private void OnPressed(object? sender, TextButtonEventArgs e)
+        internal TextButtonList(TextButton[] buttons, Point size)
         {
-            Printer.Print(e.Source, true);
+            _buttons = buttons;
+
+            var positions = new Point[buttons.Length];
+            Rect.GetPositionsFromAnchor(positions, Point.Zero, size, Anchor.Center);
+
+            for (int i = 0; i < buttons.Length; i++)
+            {
+                var button = buttons[i];
+
+                button.RelativePosition = positions[i];
+                button.Pressed = (s, e) => Printer.PrintRainbow(e.Source, 0.01f);
+                button.Parent = this;
+            }
         }
     }
 }

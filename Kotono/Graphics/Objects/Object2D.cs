@@ -1,83 +1,138 @@
-﻿
-using Kotono.Input;
+﻿using Kotono.Input;
+using Kotono.Utils;
 using Kotono.Utils.Coordinates;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Kotono.Graphics.Objects
 {
-    internal abstract class Object2D<T> : Drawable<T>, IObject2D where T : Object2DSettings
+    internal abstract class Object2D : Drawable, IObject2D, ISelectable2D
     {
-        private Rect _rect = Rect.Default;
+        private bool _isDraw = true;
 
-        public virtual Rect Rect
+        public override bool IsDraw
         {
-            get => _rect;
+            get => _isDraw && (Parent?.IsDraw ?? true);
+            set => _isDraw = value;
+        }
+
+        public Rect Rect { get; } = Rect.Default;
+
+        public virtual Anchor Anchor
+        {
+            get => Rect.Anchor;
+            set => Rect.Anchor = value;
+        }
+
+        public virtual Point BaseSize
+        {
+            get => Rect.BaseSize;
+            set => Rect.BaseSize = value;
+        }
+
+        public virtual Point RelativeSize
+        {
+            get => Rect.RelativeSize;
+            set => Rect.RelativeSize = value;
+        }
+
+        public virtual Point RelativePosition
+        {
+            get => Rect.RelativePosition;
+            set => Rect.RelativePosition = value;
+        }
+
+        public virtual Rotator RelativeRotation
+        {
+            get => Rect.RelativeRotation;
+            set => Rect.RelativeRotation = value;
+        }
+
+        public virtual Point RelativeScale
+        {
+            get => Rect.RelativeScale;
+            set => Rect.RelativeScale = value;
+        }
+
+        public virtual Point WorldSize
+        {
+            get => Rect.WorldSize;
+            set => Rect.WorldSize = value;
+        }
+
+        public virtual Point WorldPosition
+        {
+            get => Rect.WorldPosition;
+            set => Rect.WorldPosition = value;
+        }
+
+        public virtual Rotator WorldRotation
+        {
+            get => Rect.WorldRotation;
+            set => Rect.WorldRotation = value;
+        }
+
+        public virtual Point WorldScale
+        {
+            get => Rect.WorldScale;
+            set => Rect.WorldScale = value;
+        }
+
+        public virtual int Layer { get; set; } = 0;
+
+        public override bool IsHovered => Rect.Overlaps(Mouse.Position);
+
+        public override bool IsActive => ISelectable2D.Active == this;
+
+        private IObject2D? _parent = null;
+
+        /// <inheritdoc cref="IObject2D.Parent"/>
+        /// <remarks>
+        /// Changing this will affect the relative rect of the <see cref="Object2D"/> so that it's world rect stays the same.
+        /// </remarks>
+        public IObject2D? Parent
+        {
+            get => _parent;
             set
             {
-                if (!ReferenceEquals(_rect, value))
+                if (_parent == value)
                 {
-                    _rect.Dispose();
-                    _rect = value;
+                    return;
                 }
+
+                _parent = value;
+
+                var worldPosition = WorldPosition;
+                var worldRotation = WorldRotation;
+                var worldSize = WorldSize;
+
+                Rect.Parent = value?.Rect;
+
+                WorldPosition = worldPosition;
+                WorldRotation = worldRotation;
+                WorldSize = worldSize;
             }
         }
 
-        public Point BaseSize
+        public IEnumerable<IObject2D> Children => ObjectManager.GetObjectsOfType<IObject2D>(o => o.Parent == this);
+
+        public IEnumerable<TChildren> GetChildren<TChildren>() where TChildren : IObject2D
         {
-            get => _rect.BaseSize;
-            set => _rect.BaseSize = value;
+            return Children.OfType<TChildren>();
         }
 
-        public virtual Point Size
+        public TChild? GetChild<TChild>() where TChild : IObject2D
         {
-            get => _rect.Size;
-            set => _rect.Size = value;
-        }
-
-        public virtual Point Position
-        {
-            get => _rect.Position;
-            set => _rect.Position = value;
-        }
-
-        public virtual Rotator Rotation
-        {
-            get => _rect.Rotation;
-            set => _rect.Rotation = value;
-        }
-
-        public virtual Point Scale
-        {
-            get => _rect.Scale;
-            set => _rect.Scale = value;
-        }
-
-        public virtual int Layer
-        {
-            get => _settings.Layer;
-            set => _settings.Layer = value;
-        }
-
-        public override bool IsHovered => Rect.Overlaps(Rect, Mouse.Position);
-
-        public new IObject2D? Parent { get; set; }
-
-        internal Object2D(T settings)
-            : base(settings)
-        {
-            Rect = settings.Rect;
-        }
-
-        internal Object2D() : base() { }
-
-        public override void Save()
-        {
-            _settings.Rect = Rect;
-
-            base.Save();
+            return GetChildren<TChild>().First();
         }
 
         public override void Dispose()
         {
+            foreach (var child in Children)
+            {
+                child.Parent = Parent;
+            }
+
             Rect.Dispose();
 
             base.Dispose();

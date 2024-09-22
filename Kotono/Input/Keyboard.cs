@@ -1,4 +1,5 @@
-﻿using Kotono.Utils.Exceptions;
+﻿using Kotono.Utils;
+using Kotono.Utils.Exceptions;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ namespace Kotono.Input
 {
     internal static class Keyboard
     {
-        private record class Method(InputAction InputAction, IObject Instance, MethodInfo MethodInfo);
+        private sealed record class Method(InputAction InputAction, IObject Instance, MethodInfo MethodInfo);
 
         private static KeyboardState? _keyboardState;
 
@@ -80,7 +81,7 @@ namespace Kotono.Input
             }
             else
             {
-                throw new KotonoException($"couldn't parse method \"{methodInfo.Name}\" to Action");
+                throw new KotonoException($"couldn't parse method '{methodInfo.Name}' to Action");
             }
 
             if (Enum.TryParse(methodInfo.Name[2..^nameEnd], out Keys key))
@@ -89,7 +90,7 @@ namespace Kotono.Input
             }
             else
             {
-                Logger.Log($"error: couldn't parse \"{methodInfo.Name[2..^10]}\" to Keys in Keyboard.Subscribe(IObject, MethodInfo).");
+                Logger.Log($"error: couldn't parse '{methodInfo.Name[2..^10]}' to Keys in Keyboard.Subscribe(IObject, MethodInfo).");
             }
         }
 

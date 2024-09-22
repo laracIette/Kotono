@@ -3,7 +3,7 @@ using System;
 
 namespace Kotono.Utils.Timing
 {
-    internal class Timer : Object
+    internal sealed class Timer : Object
     {
         private bool _isTicking = false;
 
@@ -13,7 +13,7 @@ namespace Kotono.Utils.Timing
 
         private float _currentDuration = 0.0f;
 
-        internal event EventHandler<TimeoutEventArgs>? Timeout = null;
+        internal EventHandler<TimeoutEventArgs>? Timeout { get; set; } = null;
 
         internal bool IsLoop { get; set; } = false;
 
@@ -57,7 +57,7 @@ namespace Kotono.Utils.Timing
             }
             else
             {
-                throw new KotonoException($"duration \"{duration}\" should be over 0.0f");
+                throw new KotonoException($"duration '{duration}' should be over 0.0f");
             }
         }
 

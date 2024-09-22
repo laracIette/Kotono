@@ -1,10 +1,7 @@
-﻿using OpenTK.Graphics.OpenGL4;
+﻿using Kotono.Graphics.Textures;
 
 namespace Kotono.Graphics.Objects
 {
-    internal class MaterialTexture(MaterialTextureSettings settings)
-        : Texture(settings.Path, TextureUnit.Texture0 + settings.TextureUnit)
-    {
-        internal string Name { get; set; } = settings.Name;
-    }
+    internal sealed class MaterialTexture(string path)
+        : ImageTexture(path);
 }

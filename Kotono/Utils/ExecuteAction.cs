@@ -4,25 +4,27 @@ using System.Collections.Generic;
 
 namespace Kotono.Utils
 {
-    internal class ExecuteAction : Object
+    internal sealed class ExecuteAction : Object
     {
-        private record class DelayedAction(Action Action, float Time);
+        private sealed record class DelayedAction(Action Action, float Time);
 
-        private static readonly ExecuteAction _instance = new();
+        private readonly List<DelayedAction> _actionDelays = [];
 
-        private static readonly List<DelayedAction> _actionDelays = [];
+        private static readonly Lazy<ExecuteAction> _instance = new(() => new());
 
-        private ExecuteAction() : base() { }
+        private static ExecuteAction Instance => _instance.Value;
+
+        private ExecuteAction() { }
 
         internal static void Delay(Action action, float delay = 0.0f)
         {
             if (delay < 0.0f)
             {
-                throw new KotonoException($"delay \"{delay}\" should not be negative");
+                throw new KotonoException($"delay '{delay}' should not be negative");
             }
             else
             {
-                _actionDelays.Add(new DelayedAction(action, Time.Now + delay));
+                Instance._actionDelays.Add(new DelayedAction(action, Time.Now + delay));
             }
         }
 

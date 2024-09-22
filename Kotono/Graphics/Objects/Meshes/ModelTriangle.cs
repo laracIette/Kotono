@@ -3,11 +3,11 @@ using Kotono.Utils.Exceptions;
 
 namespace Kotono.Graphics.Objects.Meshes
 {
-    internal class ModelTriangle
+    internal sealed class ModelTriangle
     {
-        internal Model Model { get; }
-
         internal Vector[] Vertices { get; }
+
+        internal Vector Center => Vector.Avg(Vertices);
 
         internal Vector this[int index]
         {
@@ -20,11 +20,7 @@ namespace Kotono.Graphics.Objects.Meshes
             };
         }
 
-        internal ModelTriangle(Model model, Vector vertex1, Vector vertex2, Vector vertex3)
-        {
-            Model = model;
-
-            Vertices = [vertex1, vertex2, vertex3];
-        }
+        internal ModelTriangle(Vector vertex1, Vector vertex2, Vector vertex3)
+            => Vertices = [vertex1, vertex2, vertex3];
     }
 }

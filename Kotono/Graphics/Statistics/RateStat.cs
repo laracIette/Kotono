@@ -1,20 +1,10 @@
 ﻿using Kotono.Graphics.Objects.Texts;
-using Kotono.Utils;
 using Kotono.Utils.Coordinates;
 using System.Linq;
 
 namespace Kotono.Graphics.Statistics
 {
-    internal class RateStat(Anchor anchor)
-        : Text(
-            new TextSettings
-            {
-                Rect = new Rect(Point.Zero, new Point(50.0f, 60.0f)),
-                Layer = 1,
-                Source = "0.00",
-                Anchor = anchor
-            }
-        )
+    internal sealed class RateStat : Text
     {
         private readonly float[] _times = new float[60];
 
@@ -30,13 +20,19 @@ namespace Kotono.Graphics.Statistics
 
         internal float Rate => 1.0f / Time;
 
+        internal RateStat()
+        {
+            LettersSize = new Point(50.0f, 60.0f);
+            Value = "0.00";
+        }
+
         internal void AddTime(float newTime)
         {
             _times[TimeIndex++] = newTime;
 
             Time = _times.Average();
 
-            Source = Rate.ToString("0.00");
+            Value = Rate.ToString("0.00");
         }
     }
 }

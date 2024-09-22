@@ -1,6 +1,6 @@
 ﻿namespace Kotono.Graphics.Objects.Buttons
 {
-    internal class TextButtonEventArgs : ButtonEventArgs
+    internal sealed class TextButtonEventArgs : ButtonEventArgs
     {
         internal object? Source { get; set; } = null;
     }

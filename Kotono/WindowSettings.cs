@@ -1,11 +1,12 @@
 ﻿using Kotono.Input;
+using Kotono.Utils.Coordinates;
 
 namespace Kotono
 {
     /// <summary>
     /// Settings class for creating a <see cref="Window"/>.
     /// </summary>
-    internal class WindowSettings
+    internal sealed class WindowSettings
     {
         /// <summary>
         /// This is the Title of the program's Window.
@@ -16,22 +17,13 @@ namespace Kotono
         public string WindowTitle { get; set; } = "Kotono - Application";
 
         /// <summary>
-        /// This is the program's Window Width,
+        /// This is the program's Window Size,
         /// this can be changed at runtime using Window.Size.
         /// </summary>
         /// <remarks> 
-        /// Default value : 1280 
+        /// Default value : new PointI(1280, 720)
         /// </remarks>
-        public int Width { get; set; } = 1280;
-
-        /// <summary>
-        /// This is the program's Window Height,
-        /// this can be changed at runtime using Window.Size.
-        /// </summary>
-        /// <remarks> 
-        /// Default value : 720 
-        /// </remarks>
-        public int Height { get; set; } = 720;
+        public PointI WindowSize { get; set; } = new(1280, 720);
 
         /// <summary>
         /// This is the Max FrameRate you want your program to run at,

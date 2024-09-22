@@ -1,55 +1,40 @@
 ﻿using Kotono.Graphics.Objects.Buttons;
-using Kotono.Graphics.Objects.Texts;
 using Kotono.Utils;
 using Kotono.Utils.Coordinates;
 using Kotono.Utils.Exceptions;
 
 namespace Kotono.Engine.UserInterface.AddMenu
 {
-    internal class MainButton(string text, string[] options, Anchor anchor)
-        : TextButton(
-            new TextButtonSettings
-            {
-                Rect = new Rect(Point.Zero, new Point(100.0f, 100.0f)),
-                Color = Color.Gray,
-                Layer = 1,
-                TextSettings = new TextSettings { Source = text },
-                CornerSize = 25.0f,
-                FallOff = 2.0f
-            }
-        )
+    internal class MainButton : TextButton
     {
-        private readonly SubMenu _subMenu = new(options, anchor);
+        private readonly SubMenu _subMenu;
 
-        private readonly Anchor _anchor = anchor;
-
-        public override bool IsDraw
+        internal MainButton(string[] options)
         {
-            get => base.IsDraw;
-            set
+            _subMenu = new SubMenu(options)
             {
-                base.IsDraw = value;
-                if (!value)
-                {
-                    _subMenu.IsDraw = false;
-                }
-            }
+                Parent = this
+            };
+
+            RelativeSize = new Point(100.0f, 100.0f);
+            Color = Color.Gray;
+            Layer = 1;
+            TargetCornerSize = 25.0f;
+            TargetFallOff = 2.0f;
         }
 
         public override void OnPressed()
         {
             _subMenu.IsDraw = true;
 
-            _subMenu.Position = _anchor switch
+            _subMenu.RelativePosition = Anchor switch
             {
                 Anchor.TopLeft => Rect.TopLeft,
                 Anchor.TopRight => Rect.TopRight,
                 Anchor.BottomLeft => Rect.BottomLeft,
                 Anchor.BottomRight => Rect.BottomRight,
-                _ => throw new SwitchException(typeof(Anchor), _anchor)
+                _ => throw new SwitchException(typeof(Anchor), Anchor)
             };
-
-            base.OnPressed();
         }
     }
 }

@@ -1,30 +1,26 @@
 ﻿using OpenTK.Mathematics;
 using System;
 using System.Runtime.InteropServices;
-using System.Text.Json.Serialization;
 
 namespace Kotono.Utils.Coordinates
 {
     [StructLayout(LayoutKind.Sequential)]
-    public struct Rotator : IEquatable<Rotator>
+    public readonly struct Rotator : IEquatable<Rotator>
     {
         /// <summary>
         /// The pitch angle of the <see cref="Rotator"/> in degrees.
         /// </summary>
-        [JsonInclude]
-        public float Pitch = 0.0f;
+        public readonly float Pitch;
 
         /// <summary>
         /// The yaw angle of the <see cref="Rotator"/> in degrees.
         /// </summary>
-        [JsonInclude]
-        public float Yaw = 0.0f;
+        public readonly float Yaw;
 
         /// <summary>
         /// The roll angle of the <see cref="Rotator"/> in degrees.
         /// </summary>
-        [JsonInclude]
-        public float Roll = 0.0f;
+        public readonly float Roll;
 
         /// <summary>
         /// The <see cref="Rotator"/> in radians.
@@ -37,39 +33,34 @@ namespace Kotono.Utils.Coordinates
         public readonly Matrix4 RotationMatrix => Matrix4.CreateFromQuaternion((Quaternion)this);
 
         /// <summary>
-        /// Wether the <see cref="Rotator"/> is equal to <see cref="Zero"/>.
-        /// </summary>
-        public readonly bool IsZero => this == Zero;
-
-        /// <summary>
         /// A <see cref="Rotator"/> with Pitch = 0, Yaw = 0, Roll = 0.
         /// </summary>
         public static Rotator Zero => new(0.0f, 0.0f, 0.0f);
 
         /// <summary>
-        /// A <see cref="Rotator"/> with Pitch = <see cref="Math.TAU"/>, Yaw = <see cref="Math.TAU"/>, Roll = <see cref="Math.TAU"/>.
+        /// A <see cref="Rotator"/> with Pitch = <see cref="Math.Tau"/>, Yaw = <see cref="Math.Tau"/>, Roll = <see cref="Math.Tau"/>.
         /// </summary>
-        public static Rotator Unit => new(Math.TAU, Math.TAU, Math.TAU);
+        public static Rotator Unit => new(Math.Tau, Math.Tau, Math.Tau);
 
         /// <summary>
-        /// A <see cref="Rotator"/> with Pitch = <see cref="Math.TAU"/>, Yaw = 0, Roll = 0.
+        /// A <see cref="Rotator"/> with Pitch = <see cref="Math.Tau"/>, Yaw = 0, Roll = 0.
         /// </summary>
-        public static Rotator UnitPitch => new(Math.TAU, 0.0f, 0.0f);
+        public static Rotator UnitPitch => new(Math.Tau, 0.0f, 0.0f);
 
         /// <summary>
-        /// A <see cref="Rotator"/> with Pitch = 0, Yaw = <see cref="Math.TAU"/>, Roll = 0.
+        /// A <see cref="Rotator"/> with Pitch = 0, Yaw = <see cref="Math.Tau"/>, Roll = 0.
         /// </summary>
-        public static Rotator UnitYaw => new(0.0f, Math.TAU, 0.0f);
+        public static Rotator UnitYaw => new(0.0f, Math.Tau, 0.0f);
 
         /// <summary>
-        /// A <see cref="Rotator"/> with Pitch = 0, Yaw = 0, Roll = <see cref="Math.TAU"/>.
+        /// A <see cref="Rotator"/> with Pitch = 0, Yaw = 0, Roll = <see cref="Math.Tau"/>.
         /// </summary>
-        public static Rotator UnitRoll => new(0.0f, 0.0f, Math.TAU);
+        public static Rotator UnitRoll => new(0.0f, 0.0f, Math.Tau);
 
         /// <summary>
         /// Initialize a <see cref="Rotator"/> from radians with Pitch = pitch, Yaw = yaw, Roll = roll.
         /// </summary>
-        public Rotator(float pitch = 0.0f, float yaw = 0.0f, float roll = 0.0f)
+        public Rotator(float pitch, float yaw, float roll)
         {
             Pitch = pitch;
             Yaw = yaw;
@@ -80,11 +71,6 @@ namespace Kotono.Utils.Coordinates
         /// Initialize a <see cref="Rotator"/> from radians with Pitch = 0, Yaw = 0, Roll = 0.
         /// </summary>
         public Rotator() : this(0.0f, 0.0f, 0.0f) { }
-
-        /// <summary>
-        /// Initialize a <see cref="Rotator"/> with Pitch = r.Pitch, Yaw = r.Yaw, Roll = r.Roll.
-        /// </summary>
-        public Rotator(Rotator r) : this(r.Pitch, r.Yaw, r.Roll) { }
 
         /// <summary>
         /// Initialize a <see cref="Rotator"/> from radians with Pitch = f, Yaw = f, Roll = f.
@@ -99,47 +85,38 @@ namespace Kotono.Utils.Coordinates
             return new Rotator(Math.Rad(pitch), Math.Rad(yaw), Math.Rad(roll));
         }
 
+        public static bool IsNullOrZero(Rotator? r)
+        {
+            return r is null || r == Zero;
+        }
+
         public static Rotator operator +(Rotator left, Rotator right)
         {
-            left.Pitch += right.Pitch;
-            left.Yaw += right.Yaw;
-            left.Roll += right.Roll;
-            return left;
+            return new Rotator(left.Pitch + right.Pitch, left.Yaw + right.Yaw, left.Roll + right.Roll);
         }
 
         public static Rotator operator -(Rotator left, Rotator right)
         {
-            left.Pitch -= right.Pitch;
-            left.Yaw -= right.Yaw;
-            left.Roll -= right.Roll;
-            return left;
+            return new Rotator(left.Pitch - right.Pitch, left.Yaw - right.Yaw, left.Roll - right.Roll);
         }
 
         public static Rotator operator -(Rotator r, float f)
         {
-            r.Pitch -= f;
-            r.Yaw -= f;
-            r.Roll -= f;
-            return r;
+            return new Rotator(r.Pitch - f, r.Yaw - f, r.Roll - f);
         }
 
         public static Rotator operator -(Rotator r)
         {
-            r.Pitch = -r.Pitch;
-            r.Yaw = -r.Yaw;
-            r.Roll = -r.Roll;
-            return r;
+            return new Rotator(-r.Pitch, -r.Yaw, -r.Roll);
         }
 
         public static Rotator operator *(float f, Rotator r)
         {
-            r.Pitch *= f;
-            r.Yaw *= f;
-            r.Roll *= f;
-            return r;
+            return new Rotator(r.Pitch * f, r.Yaw * f, r.Roll * f);
         }
 
-        [Obsolete("Reorder operands, use \"Rotator.operator *(float, Rotator)\" instead.")]
+
+        [Obsolete("Reorder operands, use 'Rotator.operator *(float, Rotator)' instead.")]
         public static Rotator operator *(Rotator r, float f)
         {
             return f * r;
@@ -147,10 +124,7 @@ namespace Kotono.Utils.Coordinates
 
         public static Rotator operator /(Rotator r, float f)
         {
-            r.Pitch /= f;
-            r.Yaw /= f;
-            r.Roll /= f;
-            return r;
+            return new Rotator(r.Pitch / f, r.Yaw / f, r.Roll / f);
         }
 
         public static bool operator ==(Rotator left, Rotator right)

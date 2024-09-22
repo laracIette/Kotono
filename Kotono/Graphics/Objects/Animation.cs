@@ -1,62 +1,59 @@
-﻿using Kotono.Settings;
+﻿using Kotono.Graphics.Textures;
 using Kotono.Utils;
-using Kotono.Utils.Coordinates;
 using Kotono.Utils.Exceptions;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Kotono.Graphics.Objects
 {
-    internal class Animation : Object2D<AnimationSettings>, ISaveable
+    internal sealed class Animation : Object2D, ISaveable
     {
-        protected readonly List<Image> _frames = [];
+        private readonly List<Image> _frames = []; // maybe change to ImageTexture[]
 
-        public override Rect Rect
-        {
-            get => _frames.FirstOrNull()?.Rect ?? throw new KotonoException("cannot access Rect, _frames is empty");
-            set
-            {
-                foreach (var frame in _frames)
-                {
-                    frame.Rect = value;
-                }
-            }
-        }
+        private int _currentFrame = 0;
+
+        private float _lastFrameTime = 0.0f;
+
+        private float _currentPausedTime = 0.0f;
+
+        private float _totalPausedTime = 0.0f;
 
         public override int Layer
         {
             get => _frames.FirstOrNull()?.Layer ?? throw new KotonoException("cannot access Layer, _frames is empty");
-            set
-            {
-                foreach (var frame in _frames)
-                {
-                    frame.Layer = value;
-                }
-            }
+            set => _frames.ForEach(f => f.Layer = value);
         }
 
-        public override bool IsDraw
+        public override Color Color
         {
-            get => _frames.FirstOrNull()?.IsDraw ?? throw new KotonoException("cannot access IsDraw, _frames is empty");
-            set
-            {
-                foreach (var frame in _frames)
-                {
-                    frame.IsDraw = value;
-                }
-            }
+            get => _frames.FirstOrNull()?.Color ?? throw new KotonoException("cannot access Color, _frames is empty");
+            set => _frames.ForEach(f => f.Color = value);
         }
 
-        private readonly int _frameRate;
+        /// <summary>
+        /// The directory at which the Animation's frames are located.
+        /// </summary>
+        internal string DirectoryPath { get; }
 
-        private float Delta => 1.0f / _frameRate;
+        internal float Duration { get; set; }
 
-        private int _currentFrame = 0;
+        internal float StartTime { get; set; }
 
-        private int CurrentFrame
+        internal float FrameRate { get; set; }
+
+        internal bool IsLoop { get; set; }
+
+        private float EndTime => CreationTime + StartTime + Duration + _totalPausedTime;
+
+        private float TimeSinceLastFrame => Time.Now - _lastFrameTime;
+
+        private float Delta => 1.0f / FrameRate;
+
+        internal int CurrentFrame
         {
             get => _currentFrame;
-            set
+            private set
             {
                 _frames[_currentFrame].IsDraw = false;
                 _currentFrame = (int)Math.Loop(value, _frames.Count);
@@ -64,101 +61,61 @@ namespace Kotono.Graphics.Objects
             }
         }
 
-        private readonly float _startTime;
+        internal bool IsPlaying { get; private set; } = false;
 
-        private readonly float _duration;
+        private bool IsPaused => !IsPlaying;
 
-        private float _lastFrameTime;
-
-        private float TimeSinceLastFrame => Time.Now - _lastFrameTime;
-
-        private float _pausedTime = 0;
-
-        private float EndTime => _startTime + _duration + _pausedTime;
-
-        private bool _isStarted = false;
-
-        public bool IsPlaying { get; private set; } = false;
-
-        /// <summary> 
-        /// Create an Animation from files in a directory.
-        /// </summary>
-        internal Animation(AnimationSettings settings)
-            : base(settings)
+        internal Animation(string directoryPath)
         {
-            IsDraw = false;
+            ExceptionHelper.ThrowIf(!Directory.Exists(directoryPath), $"couldn't find directory at '{directoryPath}'");
 
-            string[] filePaths;
+            var imagePaths = Directory.GetFiles(directoryPath).Where(ImageTexture.IsValidPath);
 
-            string directory = Path.ASSETS + settings.Directory;
-
-            if (Directory.Exists(directory))
+            foreach (var filePath in imagePaths)
             {
-                filePaths = Directory.GetFiles(directory);
-            }
-            else
-            {
-                throw new DirectoryNotFoundException($"error: couldn't find directory at \"{directory}\"");
-            }
-
-            foreach (var filePath in filePaths)
-            {
-                if (filePath.EndsWith(".png"))
+                _frames.Add(new Image
                 {
-                    _frames.Add(new Image(
-                        new ImageSettings
-                        {
-                            IsDraw = false,
-                            Texture = filePath,
-                            Rect = settings.Rect,
-                            Layer = settings.Layer,
-                            Color = settings.Color
-                        }
-                    ));
-                }
+                    Texture = new ImageTexture(filePath),
+                    IsDraw = false,
+                    Parent = this
+                });
             }
 
-            _frameRate = settings.FrameRate;
-            _startTime = settings.StartTime;
-            _duration = settings.Duration;
+            DirectoryPath = directoryPath;
         }
 
         public override void Update()
         {
-            if (!_isStarted && (Time.Now >= _startTime))
+            if (Time.Now > EndTime)
             {
-                _isStarted = true;
-                IsPlaying = true;
+                return;
+            }
+
+            if (IsPaused)
+            {
+                _currentPausedTime += Time.Delta;
+                _totalPausedTime += Time.Delta;
+            }
+            else if (TimeSinceLastFrame - _currentPausedTime >= Delta)
+            {
                 _lastFrameTime = Time.Now;
-                _frames[0].IsDraw = true;
-            }
-
-            if (_isStarted && (Time.Now <= EndTime))
-            {
-                if (IsPlaying)
-                {
-                    if ((TimeSinceLastFrame - _pausedTime) >= Delta)
-                    {
-                        _lastFrameTime = Time.Now - _pausedTime;
-
-                        NextFrame();
-                    }
-                }
-                else
-                {
-                    _pausedTime += Time.Delta;
-                }
+                ++CurrentFrame;
+                _currentPausedTime = 0.0f;
             }
         }
 
-        internal void Play()
-        {
-            IsPlaying = true;
-        }
+        internal void Play() => IsPlaying = true;
 
-        internal void Pause()
+        internal void Pause() => IsPlaying = false;
+
+        /// <summary>
+        /// Revert back to the first frame of the <see cref="Animation"/>, 
+        /// without pausing the <see cref="Animation"/>.
+        /// </summary>
+        internal void Reset()
         {
-            IsPlaying = false;
+            CurrentFrame = 0;
+            _currentPausedTime = 0.0f;
         }
 
         /// <summary>
@@ -176,18 +133,11 @@ namespace Kotono.Graphics.Objects
             }
         }
 
-        internal void NextFrame() => CurrentFrame++;
-
-        internal void PreviousFrame() => CurrentFrame--;
-
-        public override string ToString() => $"Directory: {_settings.Directory}";
+        public override string ToString() => $"Directory: {DirectoryPath}";
 
         public override void Dispose()
         {
-            foreach (var frame in _frames)
-            {
-                frame.Dispose();
-            }
+            _frames.ForEach(f => f.Dispose());
 
             base.Dispose();
         }

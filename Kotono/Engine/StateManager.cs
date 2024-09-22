@@ -1,26 +1,17 @@
-﻿using Kotono.Input;
-using OpenTK.Windowing.GraphicsLibraryFramework;
-
-namespace Kotono.Engine
+﻿namespace Kotono.Engine
 {
-    internal class StateManager : Object
+    internal sealed class StateManager : Object
     {
-        private StateManager _instance = new();
+        private static readonly StateManager _instance = new();
 
-        private StateManager() : base() { }
+        private StateManager() { }
 
         internal static EngineState EngineState { get; private set; } = EngineState.Navigate;
 
-        public override void Update()
-        {
-            if (Mouse.IsButtonDown(MouseButton.Right))
-            {
-                EngineState = EngineState.Play;
-            }
-            else
-            {
-                EngineState = EngineState.Navigate;
-            }
-        }
+        private void OnRightButtonPressed()
+            => EngineState = EngineState.Play;
+
+        private void OnRightButtonReleased()
+            => EngineState = EngineState.Navigate;
     }
 }

@@ -1,69 +1,53 @@
-﻿using Kotono.Graphics.Objects.Texts;
+﻿using Kotono.Graphics.Objects;
+using Kotono.Graphics.Objects.Texts;
 using Kotono.Utils;
 using Kotono.Utils.Coordinates;
 using Kotono.Utils.Exceptions;
-using System.Collections.Generic;
+using System.Linq;
 
 namespace Kotono.Engine.UserInterface.AddMenu
 {
-    internal class SubMenu
+    internal sealed class SubMenu : Object2D
     {
-        private readonly List<Text> _options = [];
+        private readonly Text[] _options;
 
-        private readonly Anchor _anchor;
+        private readonly Point _letterSize = new(20.0f, 24.0f);
 
-        internal Point Position
+        public override Anchor Anchor
         {
+            get => base.Anchor;
             set
             {
-                for (int i = 0; i < _options.Count; i++)
+                base.Anchor = value;
+                for (int i = 0; i < _options.Length; i++)
                 {
-                    _options[i].Position = GetTextPosition(i, value);
+                    _options[i].RelativePosition = GetTextPosition(i, _letterSize.Y);
+                    _options[i].Anchor = value;
                 }
             }
         }
 
-        internal bool IsDraw
+        internal SubMenu(string[] options)
         {
-            get => _options.FirstOrNull()?.IsDraw ?? throw new KotonoException("cannot access IsDraw, _frames is empty");
-            set
+            _options = [.. options.Select((o, i) => new Text
             {
-                _options.ForEach(o => o.IsDraw = value);
-            }
+                RelativeSize = _letterSize,
+                Layer = 3,
+                Value = o,
+                Spacing = 0.6f,
+                Parent = this
+            })];
         }
 
-        internal SubMenu(string[] options, Anchor anchor)
+        private Point GetTextPosition(int index, float spacing)
         {
-            _anchor = anchor;
-
-            for (int i = 0; i < options.Length; i++)
+            return Anchor switch
             {
-                var position = GetTextPosition(i, Window.Size / 2.0f);
-
-                _options.Add(
-                    new Text(
-                        new TextSettings
-                        {
-                            Rect = new Rect(position, new Point(20.0f, 24.0f)),
-                            Layer = 3,
-                            Source = options[i],
-                            Anchor = _anchor,
-                            Spacing = 0.6f
-                        }
-                    )
-                );
-            }
-        }
-
-        private Point GetTextPosition(int index, Point position)
-        {
-            return _anchor switch
-            {
-                Anchor.TopLeft => new Point(position.X, position.Y + index * 24.0f),
-                Anchor.TopRight => new Point(position.X, position.Y + index * 24.0f),
-                Anchor.BottomLeft => new Point(position.X, position.Y - index * 24.0f),
-                Anchor.BottomRight => new Point(position.X, position.Y - index * 24.0f),
-                _ => throw new SwitchException(typeof(Anchor), _anchor)
+                Anchor.TopLeft => new Point(0.0f, index * spacing),
+                Anchor.TopRight => new Point(0.0f, index * spacing),
+                Anchor.BottomLeft => new Point(0.0f, -index * spacing),
+                Anchor.BottomRight => new Point(0.0f, -index * spacing),
+                _ => throw new SwitchException(typeof(Anchor), Anchor)
             };
         }
     }

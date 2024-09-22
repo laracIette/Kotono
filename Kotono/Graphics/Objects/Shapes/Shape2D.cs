@@ -1,21 +1,23 @@
 ﻿using Kotono.Graphics.Shaders;
 using Kotono.Utils.Coordinates;
-using OpenTK.Graphics.OpenGL;
-using System;
+using Kotono.Utils.Exceptions;
+using OpenTK.Graphics.OpenGL4;
 
 namespace Kotono.Graphics.Objects.Shapes
 {
-    internal class Shape2D : Object2D<Shape2DSettings>
+    internal sealed class Shape2D : Object2D
     {
-        private readonly PrimitiveType _mode;
+        private readonly VertexArraySetup _vertexArraySetup = new();
 
-        private readonly int _vertexArrayObject;
+        private PrimitiveType _mode;
 
-        private readonly int _vertexBufferObject;
+        private bool _isLoop;
 
         private bool _hasInitBuffers = false;
 
         private Point[] _points;
+
+        public override Shader Shader => Shape2DShader.Instance;
 
         internal Point this[int index]
         {
@@ -23,37 +25,43 @@ namespace Kotono.Graphics.Objects.Shapes
             set
             {
                 _points[index] = value;
-
                 UpdateBuffers();
             }
         }
 
-        internal int Length => _points.Length;
-
-        internal Shape2D(Shape2DSettings settings)
-            : base(settings)
+        internal bool IsLoop
         {
-            _points = settings.Points;
-            Color = settings.Color;
-
-            _mode = Length switch
+            get => _isLoop;
+            set
             {
-                0 => throw new Exception($"error: Points musn't be empty."),
-                1 => PrimitiveType.Points,
-                2 => PrimitiveType.Lines,
-                _ => settings.IsLoop ? PrimitiveType.LineLoop : PrimitiveType.LineStrip
-            };
+                _isLoop = value;
+                UpdateMode();
+            }
+        }
 
-            _vertexArrayObject = GL.GenVertexArray();
-
-            _vertexBufferObject = GL.GenBuffer();
+        internal Shape2D(Point[] points)
+        {
+            _points = points;
+            UpdateMode();
         }
 
         internal void AddPoint(Point point)
         {
             _points = [.. _points, point];
-
             UpdateBuffers();
+            UpdateMode();
+        }
+
+        private void UpdateMode()
+        {
+            ExceptionHelper.ThrowIf(_points.Length == 0, "_points musn't be empty");
+
+            _mode = _points.Length switch
+            {
+                1 => PrimitiveType.Points,
+                2 => PrimitiveType.Lines,
+                _ => IsLoop ? PrimitiveType.LineLoop : PrimitiveType.LineStrip
+            };
         }
 
         public override void Update()
@@ -65,25 +73,25 @@ namespace Kotono.Graphics.Objects.Shapes
             }
         }
 
+        public override void UpdateShader()
+        {
+            if (Shader is Shape2DShader shape2DShader)
+            {
+                shape2DShader.SetColor(Color);
+                shape2DShader.SetModel(Rect.Model);
+            }
+        }
+
         public override void Draw()
         {
-            ShaderManager.Shaders["shape2D"].SetColor("color", Color);
-            ShaderManager.Shaders["shape2D"].SetMatrix4("model", Rect.Model);
-
-            GL.BindVertexArray(_vertexArrayObject);
-            GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
-            GL.DrawArrays(_mode, 0, Length);
+            _vertexArraySetup.VertexArrayObject.Bind();
+            GL.DrawArrays(_mode, 0, _points.Length);
         }
 
         private void UpdateBuffers()
         {
-            GL.BindVertexArray(_vertexArrayObject);
-
-            GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
-            GL.BufferData(BufferTarget.ArrayBuffer, Length * Point.SizeInBytes, _points, BufferUsageHint.StaticDraw);
-
-            GL.EnableVertexAttribArray(0);
-            GL.VertexAttribPointer(0, 2, VertexAttribPointerType.Float, false, Point.SizeInBytes, 0);
+            _vertexArraySetup.SetData(_points, Point.SizeInBytes);
+            _vertexArraySetup.VertexArrayObject.SetVertexAttributesLayout(Shape2DShader.Instance);
         }
     }
 }

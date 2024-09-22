@@ -1,5 +1,4 @@
-﻿using Kotono.Graphics.Objects.Hitboxes;
-using Kotono.Graphics.Objects.Lights;
+﻿using Kotono.Graphics.Objects.Lights;
 using Kotono.Input;
 using Kotono.Physics;
 using Kotono.Utils;
@@ -16,17 +15,13 @@ namespace Kotono.Graphics.Objects
     {
         private static readonly Renderer _renderer = new();
 
-        private static readonly List<IObject> _objects = [];
+        private static readonly HashSet<IObject> _objects = [];
 
         private static readonly Dictionary<Type, MethodInfo[]> _typeInputMethods = [];
 
-        internal static PointLight[] PointLights => _objects.OfType<PointLight>().ToArray();
+        internal static IEnumerable<T> GetObjectsOfType<T>() where T : IObject => _objects.OfType<T>();
 
-        internal static SpotLight[] SpotLights => _objects.OfType<SpotLight>().ToArray();
-
-        internal static IHitbox[] Hitboxes => _objects.OfType<IHitbox>().ToArray();
-
-        internal static int IndexOf(IObject obj) => _objects.IndexOf(obj);
+        internal static IEnumerable<T> GetObjectsOfType<T>(Func<T, bool> predicate) where T : IObject => _objects.OfType<T>().Where(predicate);
 
         internal static void SetRendererSize(Point value) => _renderer.SetSize(value);
 
@@ -35,17 +30,17 @@ namespace Kotono.Graphics.Objects
             switch (obj)
             {
                 case PointLight:
-                    if (PointLights.Length >= PointLight.MAX_COUNT)
+                    if (GetObjectsOfType<PointLight>().Count() >= PointLight.MAX_COUNT)
                     {
-                        Logger.Log($"The number of PointLight is already at its max value: {PointLight.MAX_COUNT}.");
+                        Logger.LogError($"The number of PointLight is already at its max value: {PointLight.MAX_COUNT}");
                         return;
                     }
                     break;
 
                 case SpotLight:
-                    if (SpotLights.Length >= SpotLight.MAX_COUNT)
+                    if (GetObjectsOfType<SpotLight>().Count() >= SpotLight.MAX_COUNT)
                     {
-                        Logger.Log($"The number of SpotLight is already at its max value: {SpotLight.MAX_COUNT}.");
+                        Logger.LogError($"The number of SpotLight is already at its max value: {SpotLight.MAX_COUNT}");
                         return;
                     }
                     break;
@@ -54,7 +49,7 @@ namespace Kotono.Graphics.Objects
                     break;
             }
 
-            if (_objects.TryAddUnique(obj))
+            if (_objects.Add(obj))
             {
                 Subscribe(obj);
             }
@@ -84,16 +79,22 @@ namespace Kotono.Graphics.Objects
             }
         }
 
+        /// <summary>
+        /// Unsubscribes the <see cref="IObject"/> and removes it from <see cref="_objects"/>.
+        /// </summary>
         private static void Delete(IObject obj)
         {
             Unsubscribe(obj);
 
             if (!_objects.Remove(obj))
             {
-                Logger.Log($"error: couldn't remove \"{obj}\" from _objects.");
+                Logger.LogError($"couldn't remove '{obj}' from _objects");
             }
         }
 
+        /// <summary>
+        /// Unsubscribes the <see cref="IObject"/> from <see cref="Mouse"/> and <see cref="Keyboard"/> input events.
+        /// </summary>
         private static void Unsubscribe(IObject obj)
         {
             if (_typeInputMethods[obj.GetType()].Length > 0)
@@ -103,48 +104,49 @@ namespace Kotono.Graphics.Objects
             }
         }
 
+        /// <summary>
+        /// Updates all the <see cref="IObject"/>s of the <see cref="ObjectManager"/>
+        /// and deletes those disposed.
+        /// </summary>
         internal static void Update()
         {
-            // List can change during for loop
-            for (int i = 0; i < _objects.Count; i++)
+            IObject[] objects = [.. GetObjectsOfType<IObject>(o => o.IsUpdate)];
+
+            foreach (var obj in objects)
             {
-                if (_objects[i].IsUpdate)
-                {
-                    _objects[i].Update();
-                }
+                obj.Update();
             }
 
             UpdateFizix();
+            UpdateDeleteObjects();
+        }
 
+        private static void UpdateFizix()
+        {
+            foreach (var obj in GetObjectsOfType<IFizixObject>(o => o.IsUpdateFizix))
+            {
+                obj.UpdateFizix();
+            }
+        }
+
+        private static void UpdateDeleteObjects()
+        {
             if (Keyboard.IsKeyPressed(Keys.Delete))
             {
                 OnDeleteKeyPressed();
             }
 
-            // List can change during for loop
-            for (int i = _objects.Count - 1; i >= 0; i--)
-            {
-                if (_objects[i].IsDelete)
-                {
-                    Delete(_objects[i]);
-                }
-            }
-        }
+            IObject[] objects = [.. GetObjectsOfType<IObject>(o => o.IsDelete)];
 
-        private static void UpdateFizix()
-        {
-            foreach (var obj in _objects.OfType<IFizixObject>())
+            foreach (var obj in objects)
             {
-                if (obj.IsFizix)
-                {
-                    Fizix.Update(obj);
-                }
+                Delete(obj);
             }
         }
 
         internal static void Draw()
         {
-            foreach (var obj in _objects.OfType<IDrawable>())
+            foreach (var obj in GetObjectsOfType<IDrawable>(d => d.IsDraw))
             {
                 _renderer.AddToRenderQueue(obj);
             }
@@ -154,7 +156,7 @@ namespace Kotono.Graphics.Objects
 
         internal static void Save()
         {
-            foreach (var obj in _objects.OfType<ISaveable>())
+            foreach (var obj in GetObjectsOfType<ISaveable>())
             {
                 obj.Save();
             }
@@ -162,10 +164,16 @@ namespace Kotono.Graphics.Objects
 
         private static void OnDeleteKeyPressed()
         {
-            for (int i = ISelectable.Selected.Count - 1; i >= 0; i--)
+            DeleteSelectedList(ISelectable2D.Selected);
+            DeleteSelectedList(ISelectable3D.Selected);
+
+            static void DeleteSelectedList<T>(List<T> selected) where T : ISelectable
             {
-                ISelectable.Selected[i].Dispose();
-                ISelectable.Selected.RemoveAt(i);
+                for (int i = selected.Count - 1; i >= 0; i--)
+                {
+                    selected[i].Dispose();
+                    selected.RemoveAt(i);
+                }
             }
         }
 

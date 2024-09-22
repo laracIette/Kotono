@@ -1,11 +1,10 @@
 ﻿using Kotono.Audio;
 using Kotono.Graphics;
 using Kotono.Graphics.Objects;
-using Kotono.Graphics.Objects.Buttons;
 using Kotono.Graphics.Objects.Lights;
 using Kotono.Graphics.Objects.Meshes;
+using Kotono.Graphics.Objects.Texts;
 using Kotono.Input;
-using Kotono.Settings;
 using Kotono.Utils;
 using Kotono.Utils.Coordinates;
 using Kotono.Utils.Timing;
@@ -14,7 +13,7 @@ using Keys = OpenTK.Windowing.GraphicsLibraryFramework.Keys;
 
 namespace Kotono
 {
-    internal class Application : Window
+    internal sealed class Application : Window
     {
         private readonly Animation _animation;
 
@@ -25,58 +24,40 @@ namespace Kotono
         {
             _ = new Cursor();
 
-            _ = new TestSound();
+            _ = new Cubemap();
 
-            _ = new TestImage();
+            _animation = new Animation(Path.FromAssets(@"Animations\Counting"))
+            {
+                RelativePosition = new Point(100.0f, 200.0f),
+                RelativeSize = new Point(50.0f, 60.0f),
+                Color = Color.Yellow,
+                FrameRate = 10.0f,
+                StartTime = 3.0f,
+                Duration = 5.0f
+            };
 
-            _ = new TextButtonList(
-                new TextButtonListSettings
-                {
-                    Color = Color.DarkSlateGray,
-                    Texts =
-                    [
-                        "Hey",
-                        "Yo",
-                        "BOoOOooOo"
-                    ],
-                    Rect = new Rect(new Point(150.0f, 150.0f), new Point(200.0f, 50.0f)),
-                    CornerSize = 15.0f
-                }
-            );
-
-            _animation = new Animation(JsonParser.Parse<AnimationSettings>(Path.ASSETS + @"Animations\Counting\Counting.json"));
-
-            _timer = new Timer();
-            _timer.Timeout += OnTimerTimeout;
+            _timer = new Timer
+            {
+                Timeout = (s, e) => Printer.PrintRainbow((int)e.Time, 0.01f),
+            };
 
             CreateObjects();
         }
 
-        private void OnTimerTimeout(object? sender, TimeoutEventArgs e)
-        {
-            Printer.Print((int)e.Time, true);
-        }
-
         private static void OnEnterKeyPressed()
-        {
-            Mouse.CursorState = (CursorState)Math.Loop((float)Mouse.CursorState + 1.0f, 3.0f);
-        }
+            => Mouse.CursorState = (CursorState)Math.Loop((int)Mouse.CursorState + 1, 3);
 
         private void OnTKeyPressed()
-        {
-            _animation.Switch();
-        }
+            => _animation.Switch();
 
         private static void OnIKeyPressed()
-        {
-            Printer.Print(Time.Now, true);
-        }
+            => Printer.PrintRainbow(Time.Now, 0.01f);
 
         private static void OnJKeyPressed()
         {
-            foreach (var obj in ISelectable.Selected3D.Where(s => s != ISelectable.Active))
+            foreach (var obj in ISelectable3D.Selected.Where(s => s != ISelectable3D.Active))
             {
-                obj.Parent = ISelectable.Active3D;
+                obj.Parent = ISelectable3D.Active;
             }
         }
 
@@ -84,21 +65,14 @@ namespace Kotono
         {
             if (Keyboard.IsKeyPressed(Keys.K))
             {
-                foreach (var obj in ISelectable.Selected3D)
-                {
-                    obj.Parent = null;
-                }
+                ISelectable3D.Selected.ForEach(s => s.Parent = null);
             }
-        }
-
-        private static void OnUKeyPressed()
-        {
-            _cube?.Transform.SetLocationTransformation(new Vector(0.0f, 1.0f, 0.0f), 1.0f);
         }
 
         protected override void Start()
         {
             _timer.Start(1.0f, true);
+            _animation.Play();
         }
 
         protected override void Update()
@@ -108,40 +82,44 @@ namespace Kotono
             if (Keyboard.IsKeyPressed(Keys.I)) OnIKeyPressed();
             if (Keyboard.IsKeyPressed(Keys.J)) OnJKeyPressed();
             if (Keyboard.IsKeyPressed(Keys.K)) OnKKeyPressed();
-            if (Keyboard.IsKeyPressed(Keys.U)) OnUKeyPressed();
         }
-
-        private static Cube? _cube;
 
         private static void CreateObjects()
         {
-            _ = new SpotLight();
+            _ = new TestSound();
+
+            _ = new TestImage();
+
+            _ = new SpotLight
+            {
+                Parent = Camera.Active,
+                Diffuse = Color.Red,
+                Intensity = 1.0f,
+                IsOn = false,
+            };
 
             _ = new Cube
             {
+                RelativeLocation = new Vector(0.0f, 0.0f, -5.0f),
                 IsGravity = true,
-                IsFizix = false,
-            };
-
-            _cube = new Cube
-            {
-                RelativeLocation = new Vector(0.0f, 0.0f, -5.0f)
             };
 
             _ = new Cube
             {
-                RelativeLocation = new Vector(6.0f, 0.0f, 0.0f)
+                RelativeLocation = new Vector(6.0f, 0.0f, 0.0f),
             };
 
             for (int i = 0; i < 10; i++)
             {
                 _ = new PointLightMesh
                 {
-                    Parent = new RainbowPointLight(),
-                    RelativeLocation = Vector.Zero
+                    Parent = new RainbowPointLight
+                    {
+                        Intensity = 1.0f,
+                    },
+                    RelativeLocation = Vector.Zero,
                 };
             }
         }
     }
-
 }

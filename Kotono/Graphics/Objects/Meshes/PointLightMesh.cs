@@ -1,18 +1,35 @@
-﻿using Kotono.Utils;
+﻿using Kotono.Graphics.Shaders;
 
 namespace Kotono.Graphics.Objects.Meshes
 {
-    internal class PointLightMesh()
-        : Mesh(
-            JsonParser.Parse<MeshSettings>(Path.ASSETS + @"Meshes\pointLightMesh.json")
-        )
+    internal sealed class PointLightMesh : Mesh
     {
-        public override void Draw()
-        {
-            _shader.SetMatrix4("model", Transform.Model);
-            _shader.SetColor("color", Color);
+        public override Shader Shader => PointLightShader.Instance;
 
-            Model.Draw();
+        internal PointLightMesh()
+        {
+            Model = new Model(Path.FromAssets(@"Meshes\sphere.obj"));
         }
+
+        public override void Update()
+        {
+            base.Update();
+
+            if (Parent is not null)
+            {
+                Color = Parent.Color;
+            }
+        }
+
+        public override void UpdateShader()
+        {
+            if (Shader is PointLightShader pointLightShader)
+            {
+                pointLightShader.SetModel(Transform.Model);
+                pointLightShader.SetColor(Color);
+            }
+        }
+
+        public override void Draw() => Model?.Draw();
     }
 }

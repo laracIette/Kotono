@@ -2,7 +2,7 @@
 using Kotono.Utils.Coordinates;
 using StbImageSharp;
 using System.Collections.Generic;
-using IO = System.IO;
+using System.IO;
 
 namespace Kotono.Graphics
 {
@@ -23,15 +23,19 @@ namespace Kotono.Graphics
             Bytes = bytes;
         }
 
-        internal static ImageData GetFrom(string path)
+        internal static ImageData Parse(string path, bool flipVerticallyOnLoad)
         {
             if (!_datas.TryGetValue(path, out ImageData? value))
             {
-                StbImage.stbi_set_flip_vertically_on_load(1);
+                bool isAlpha = path.EndsWith(".png");
 
-                using IO.Stream stream = IO.File.OpenRead(path);
+                var colorComponents = isAlpha ? ColorComponents.RedGreenBlueAlpha : ColorComponents.RedGreenBlue;
 
-                ImageResult image = ImageResult.FromStream(stream, ColorComponents.RedGreenBlueAlpha);
+                StbImage.stbi_set_flip_vertically_on_load(flipVerticallyOnLoad ? 1 : 0);
+
+                using Stream stream = File.OpenRead(path);
+
+                var image = ImageResult.FromStream(stream, colorComponents);
 
                 var colors = new Color[image.Width, image.Height];
 
@@ -39,18 +43,20 @@ namespace Kotono.Graphics
                 {
                     for (int x = 0; x < image.Width; x++)
                     {
-                        int index = y * image.Width * 4 + x * 4;
+                        int size = isAlpha ? 4 : 3;
+                        int index = y * image.Width * size + x * size;
 
                         colors[x, y] = new Color(
                             image.Data[index + 0] / 255.0f,
                             image.Data[index + 1] / 255.0f,
                             image.Data[index + 2] / 255.0f,
-                            image.Data[index + 3] / 255.0f
+                            isAlpha ? image.Data[index + 3] / 255.0f : 1.0f
                         );
                     }
                 }
 
                 value = new ImageData((image.Width, image.Height), colors, image.Data);
+
                 _datas[path] = value;
             }
 

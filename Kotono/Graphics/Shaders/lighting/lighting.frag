@@ -6,14 +6,14 @@ struct Material {
     float     shininess;
 };
 
-struct DirLight {
+struct DirectionalLight {
     vec3 direction;
 
     vec4 ambient;
     vec4 diffuse;
     vec4 specular;
 };
-uniform DirLight dirLight;
+uniform DirectionalLight dirLight;
 
 struct PointLight {
     vec3 location;
@@ -25,16 +25,17 @@ struct PointLight {
     vec4 ambient;
     vec4 diffuse;
     vec4 specular;
-};
-#define MAX_POINT_LIGHTS 100
 
-uniform PointLight pointLights[MAX_POINT_LIGHTS];
+    float intensity;
+};
+
+uniform PointLight pointLights[100];
 
 uniform int numPointLights;
 
 struct SpotLight{
-    vec3  location;
-    vec3  direction;
+    vec3 location;
+    vec3 direction;
     float cutOff;
     float outerCutOff;
 
@@ -45,10 +46,11 @@ struct SpotLight{
     float constant;
     float linear;
     float quadratic;
-};
-#define MAX_SPOT_LIGHTS 1
 
-uniform SpotLight spotLights[MAX_SPOT_LIGHTS];
+    float intensity;
+};
+
+uniform SpotLight spotLights[100];
 
 uniform int numSpotLights;
 
@@ -63,10 +65,10 @@ in vec3 Normal;
 in vec3 FragPos;
 in vec2 TexCoords;
 
-vec4 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir);
+vec4 CalcDirectionalLight(DirectionalLight light, vec3 normal, vec3 viewDir);
 vec4 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir);
 vec4 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir);
-vec4 CalcOutline();
+bool IsTextureValid(sampler2D texture);
 
 void main()
 {
@@ -75,7 +77,7 @@ void main()
     vec3 viewDir = normalize(viewPos - FragPos);
 
     // Phase 1: Directional lighting
-    vec4 result = CalcDirLight(dirLight, norm, viewDir);
+    vec4 result = CalcDirectionalLight(dirLight, norm, viewDir);
     
     // Phase 2: Point lights
     for (int i = 0; i < numPointLights; i++)
@@ -92,7 +94,7 @@ void main()
     FragColor = result * color;
 }
 
-vec4 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir)
+vec4 CalcDirectionalLight(DirectionalLight light, vec3 normal, vec3 viewDir)
 {
     vec3 lightDir = normalize(-light.direction);
     
@@ -135,7 +137,7 @@ vec4 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
     diffuse  *= attenuation;
     specular *= attenuation;
     
-    return (ambient + diffuse + specular);
+    return (ambient + diffuse + specular) * light.intensity;
 } 
 
 vec4 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
@@ -151,8 +153,7 @@ vec4 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
 
     // Attenuation
     float distance    = length(light.location - FragPos);
-    float attenuation = 1.0 / (light.constant + light.linear * distance +
-    light.quadratic * (distance * distance));
+    float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));
 
     // Spotlight intensity
     float theta     = dot(lightDir, normalize(-light.direction));
@@ -168,5 +169,12 @@ vec4 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
     diffuse  *= attenuation * intensity;
     specular *= attenuation * intensity;
     
-    return (ambient + diffuse + specular);
+    return (ambient + diffuse + specular) * light.intensity;
+}
+
+bool IsTextureValid(sampler2D texture)
+{    
+    vec2 size = textureSize(texture, 0);
+
+    return size.x != 0 && size.y != 0;
 }

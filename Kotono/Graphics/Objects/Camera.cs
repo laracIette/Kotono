@@ -8,13 +8,13 @@ using CursorState = Kotono.Input.CursorState;
 
 namespace Kotono.Graphics.Objects
 {
-    internal class Camera : Object
+    internal sealed class Camera : Object3D
     {
         internal static Camera Active { get; set; } = new();
 
         private float _pitch = 0.0f;
 
-        private float _yaw = -Math.PI / 2.0f;
+        private float _yaw = -Math.PiOver2;
 
         private float _fov = 90.0f;
 
@@ -28,11 +28,9 @@ namespace Kotono.Graphics.Objects
 
         internal Vector Right { get; private set; } = Vector.UnitX;
 
-        internal Vector Location { get; set; } = Vector.Zero;
+        public override Rotator RelativeRotation => new(Pitch, -Yaw - Math.PiOver2, 0.0f);
 
-        internal Rotator Rotation => new(Pitch, -Yaw - Math.PI / 2.0f, 0.0f);
-
-        internal float AspectRatio { get; set; } = 16.0f / 9.0f;
+        internal float AspectRatio => Viewport.WorldSize.Ratio;
 
         internal float Pitch
         {
@@ -57,28 +55,24 @@ namespace Kotono.Graphics.Objects
         internal float Fov
         {
             get => _fov;
-            set => _fov = Math.Clamp(value, 1.0f, 90.0f);
+            set => _fov = Math.Clamp(value, 1.0f, 170.0f);
         }
 
-        internal Matrix4 ViewMatrix => Matrix4.LookAt((Vector3)Location, (Vector3)(Location + Front), (Vector3)Up);
+        internal Matrix4 ViewMatrix => Matrix4.LookAt((Vector3)WorldLocation, (Vector3)(WorldLocation + Front), (Vector3)Up);
 
         internal Matrix4 ProjectionMatrix => Matrix4.CreatePerspectiveFieldOfView(Math.Rad(Fov), AspectRatio, 0.01f, 1000.0f);
 
-        internal Camera() : base()
+        internal Camera()
         {
-            _line = new Line(Location, Front, Transform.Default, Color.Red)
+            _line = new Line(WorldLocation, Front)
             {
-                IsDraw = false
+                IsDraw = false,
+                Color = Color.Red,
+                Parent = this
             };
         }
 
-        public override void Update()
-        {
-            Move();
-
-            _line.RelativeLocation = Location;
-            _line.RelativeRotation = Rotation;
-        }
+        public override void Update() => Move();
 
         private void Move()
         {
@@ -102,27 +96,27 @@ namespace Kotono.Graphics.Objects
 
             if (Keyboard.IsKeyDown(Keys.W))
             {
-                Location += speed * Front; // Forward
+                WorldLocation += speed * Front; // Forward
             }
             if (Keyboard.IsKeyDown(Keys.S))
             {
-                Location -= speed * Front; // Backwards
+                WorldLocation -= speed * Front; // Backwards
             }
             if (Keyboard.IsKeyDown(Keys.A))
             {
-                Location -= speed * Right; // Left
+                WorldLocation -= speed * Right; // Left
             }
             if (Keyboard.IsKeyDown(Keys.D))
             {
-                Location += speed * Right; // Right
+                WorldLocation += speed * Right; // Right
             }
             if (Keyboard.IsKeyDown(Keys.E))
             {
-                Location += speed * Up; // Up
+                WorldLocation += speed * Up; // Up
             }
             if (Keyboard.IsKeyDown(Keys.Q))
             {
-                Location -= speed * Up; // Down
+                WorldLocation -= speed * Up; // Down
             }
 
         }
@@ -138,5 +132,15 @@ namespace Kotono.Graphics.Objects
             Up = Vector.Cross(Right, Front).Normalized;
         }
 
+        private void OnXKeyDown() => Fov -= Time.Delta * 50.0f;
+
+        private void OnCKeyDown() => Fov += Time.Delta * 50.0f;
+
+        public override void Dispose()
+        {
+            _line.Dispose();
+
+            base.Dispose();
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Kotono.Graphics.Objects.Shapes;
+﻿using Kotono.Graphics.Objects;
+using Kotono.Graphics.Objects.Shapes;
 using Kotono.Input;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 
@@ -51,7 +52,7 @@ namespace Kotono.Tests.Painter
 
             GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, Size.X, Size.Y, 0, PixelFormat.Rgba, PixelType.UnsignedByte, _fragments);
 
-            Texture.Bind(0);
+            Texture.Unbind();
         }
 
         private void OnLeftButtonDown()
@@ -71,9 +72,9 @@ namespace Kotono.Tests.Painter
     }
 #else
 
-    internal class Canvas : Object2D
+    internal sealed class Canvas : Object2D
     {
-        private Shape? _shape = null;
+        private Shape3D? _shape = null;
 
         public override void Update()
         {
@@ -87,12 +88,7 @@ namespace Kotono.Tests.Painter
         {
             if (!Mouse.WasButtonDown(MouseButton.Left))
             {
-                _shape = new Shape(
-                    new ShapeSettings
-                    {
-
-                    }
-                );
+                _shape = new Shape3D([]);
             }
         }
     }

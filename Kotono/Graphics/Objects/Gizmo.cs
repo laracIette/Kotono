@@ -3,91 +3,59 @@ using Kotono.Input;
 using Kotono.Utils;
 using Kotono.Utils.Coordinates;
 using OpenTK.Windowing.GraphicsLibraryFramework;
-using System.Linq;
 using CursorState = Kotono.Input.CursorState;
 
 namespace Kotono.Graphics.Objects
 {
-    internal class Gizmo : Object3D
+    internal sealed class Gizmo : Object3D
     {
         private static readonly Gizmo _instance = new();
 
-        private readonly GizmoMesh[] _meshes =
+        private Gizmo()
+        {
+            foreach (var mesh in _meshes)
+            {
+                mesh.Parent = this;
+            }
+        }
+
+        private readonly FrontMesh[] _meshes =
         [
-            new GizmoMesh("x"),
-            new GizmoMesh("y"),
-            new GizmoMesh("z"),
-            new GizmoMesh("sphere")
+            new FrontMesh
+            {
+                Color = Color.Red,
+                Model = new Model(Path.FromAssets(@"Gizmo\gizmo_x.obj"))
+            },
+            new FrontMesh
+            {
+                Color = Color.Green,
+                Model = new Model(Path.FromAssets(@"Gizmo\gizmo_y.obj"))
+            },
+            new FrontMesh
+            {
+                Color = Color.Blue,
+                Model = new Model(Path.FromAssets(@"Gizmo\gizmo_z.obj"))
+            },
+            new FrontMesh
+            {
+                Color = Color.White,
+                Model = new Model(Path.FromAssets(@"Gizmo\gizmo_sphere.obj"))
+            }
         ];
-
-        private static IObject3D? ActiveMesh => ISelectable.Active as IObject3D;
-
-        public override Vector WorldLocation
-        {
-            get => Transform.WorldLocation;
-            set
-            {
-                Transform.WorldLocation = value;
-                foreach (var mesh in _meshes)
-                {
-                    mesh.WorldLocation = value;
-                }
-            }
-        }
-
-        public override Rotator WorldRotation
-        {
-            get => Transform.WorldRotation;
-            set
-            {
-                Transform.WorldRotation = value;
-                foreach (var mesh in _meshes)
-                {
-                    mesh.WorldRotation = value;
-                }
-            }
-        }
-
-        public override Vector WorldScale
-        {
-            get => Transform.WorldScale;
-            set
-            {
-                Transform.WorldScale = value;
-                foreach (var mesh in _meshes)
-                {
-                    mesh.WorldScale = value;
-                }
-            }
-        }
-
-        public override bool IsDraw
-        {
-            get
-            {
-                foreach (var mesh in _meshes)
-                {
-                    mesh.IsDraw = IsUpdate;
-                }
-                return IsUpdate;
-            }
-        }
-
-        public override bool IsUpdate
-        {
-            get => ActiveMesh != null;
-            set { }
-        }
 
         private static int _selectedMeshIndex = -1;
 
-        internal static new bool IsSelected => _selectedMeshIndex != -1;
+        private readonly CoordinateSpace _transformSpace = CoordinateSpace.Relative;
 
-        private readonly TransformSpace _transformSpace = TransformSpace.Relative;
+        private readonly GizmoMode _gizmoMode = GizmoMode.Location;
 
-        private readonly GizmoMode _gizmoMode = GizmoMode.Rotation;
+        internal new static bool IsSelected => _selectedMeshIndex != -1;
 
-        private Gizmo() : base() { }
+        private new static bool IsActive => ISelectable3D.Active is not null;
+
+        public override bool IsDraw => IsActive;
+
+        public override bool IsUpdate => IsActive;
 
         public override void Update()
         {
@@ -96,15 +64,15 @@ namespace Kotono.Graphics.Objects
                 _selectedMeshIndex = -1;
             }
 
-            WorldLocation = ActiveMesh!.WorldLocation;
+            WorldLocation = ISelectable3D.Active!.WorldLocation;
 
             switch (_transformSpace)
             {
-                case TransformSpace.World:
+                case CoordinateSpace.World:
                     WorldRotation = Rotator.Zero;
                     break;
 
-                case TransformSpace.Relative:
+                case CoordinateSpace.Relative:
                     //Rotation = ActiveMesh.RelativeRotation;
                     break;
             }
@@ -114,11 +82,11 @@ namespace Kotono.Graphics.Objects
                 case GizmoMode.Location:
                     var locDelta = GetLocationDelta();
 
-                    if (!locDelta.IsZero)
+                    if (!Vector.IsNullOrZero(locDelta))
                     {
                         WorldLocation += locDelta;
 
-                        foreach (var selected3D in ISelectable.Selected.OfType<IObject3D>())
+                        foreach (var selected3D in ISelectable3D.Selected)
                         {
                             selected3D.RelativeLocation += locDelta;
                         }
@@ -128,11 +96,11 @@ namespace Kotono.Graphics.Objects
                 case GizmoMode.Rotation:
                     var rotDelta = GetRotationDelta();
 
-                    if (!rotDelta.IsZero)
+                    if (!Rotator.IsNullOrZero(rotDelta))
                     {
                         WorldRotation += rotDelta;
 
-                        foreach (var selected3D in ISelectable.Selected.OfType<IObject3D>())
+                        foreach (var selected3D in ISelectable3D.Selected)
                         {
                             selected3D.RelativeRotation += rotDelta;
                         }
@@ -143,27 +111,30 @@ namespace Kotono.Graphics.Objects
                     break;
             }
 
-            WorldScale = (Vector)(Vector.Distance(WorldLocation, Camera.Active.Location) / 75.0f);
+            WorldScale = (Vector)(Vector.Distance(WorldLocation, Camera.Active.WorldLocation) / 75.0f);
 
-            var delta = Rotator.Zero;
+            float pitch = 0.0f;
+            float yaw = 0.0f;
+            float roll = 0.0f;
+
             if (Keyboard.IsKeyDown(Keys.Left))
             {
-                delta.Pitch = Keyboard.IsKeyDown(Keys.LeftShift) ? -Time.Delta : Time.Delta;
+                pitch = Keyboard.IsKeyDown(Keys.LeftShift) ? -Time.Delta : Time.Delta;
             }
             if (Keyboard.IsKeyDown(Keys.Down))
             {
-                delta.Yaw = Keyboard.IsKeyDown(Keys.LeftShift) ? -Time.Delta : Time.Delta;
+                yaw = Keyboard.IsKeyDown(Keys.LeftShift) ? -Time.Delta : Time.Delta;
             }
             if (Keyboard.IsKeyDown(Keys.Right))
             {
-                delta.Roll = Keyboard.IsKeyDown(Keys.LeftShift) ? -Time.Delta : Time.Delta;
+                roll = Keyboard.IsKeyDown(Keys.LeftShift) ? -Time.Delta : Time.Delta;
             }
 
-            if (!delta.IsZero)
+            var delta = new Rotator(pitch, yaw, roll);
+
+            if (!Rotator.IsNullOrZero(delta))
             {
                 WorldRotation += delta;
-
-                //Printer.Print(WorldRotation, true);
             }
         }
 
@@ -226,7 +197,7 @@ namespace Kotono.Graphics.Objects
             }
         }
 
-        protected virtual void OnLeftButtonReleased()
+        private void OnLeftButtonReleased()
         {
             _selectedMeshIndex = -1;
         }

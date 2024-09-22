@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Kotono.Graphics.Objects.Hitboxes
 {
-    internal abstract class Hitbox(HitboxSettings settings)
-        : Object3D<HitboxSettings>(settings),
-        IHitbox
+    internal abstract class Hitbox : Object3D, IHitbox
     {
         public EventHandler<CollisionEventArgs>? EnterCollision { get; set; } = null;
 
         public EventHandler<CollisionEventArgs>? ExitCollision { get; set; } = null;
 
-        public List<IHitbox> Collisions { get; } = settings.Collisions;
+        public List<IHitbox> Collisions { get; set; } = [];
 
         public List<IHitbox> Colliders { get; set; } = [];
 
@@ -26,6 +25,7 @@ namespace Kotono.Graphics.Objects.Hitboxes
                 if (!Colliders.Contains(hitbox))
                 {
                     OnEnterCollision(hitbox);
+                    EnterCollision?.Invoke(this, new CollisionEventArgs(this, hitbox));
                 }
             }
 
@@ -34,29 +34,23 @@ namespace Kotono.Graphics.Objects.Hitboxes
                 if (!colliders.Contains(hitbox))
                 {
                     OnExitCollision(hitbox);
+                    ExitCollision?.Invoke(this, new CollisionEventArgs(this, hitbox));
                 }
             }
 
             Colliders = colliders;
         }
 
-        public abstract bool CollidesWith(IHitbox hitbox);
-
-        public bool TryGetCollider(out IHitbox? collider)
+        public bool TryGetCollider([NotNullWhen(true)] out IHitbox? collider)
         {
             collider = Collisions.Find(CollidesWith);
-
-            return collider != null;
+            return collider is not null;
         }
 
-        public void OnEnterCollision(IHitbox hitbox)
-        {
-            EnterCollision?.Invoke(this, new CollisionEventArgs(this, hitbox));
-        }
+        public abstract bool CollidesWith(IHitbox hitbox);
 
-        public void OnExitCollision(IHitbox hitbox)
-        {
-            ExitCollision?.Invoke(this, new CollisionEventArgs(this, hitbox));
-        }
+        public virtual void OnEnterCollision(IHitbox hitbox) { }
+
+        public virtual void OnExitCollision(IHitbox hitbox) { }
     }
 }

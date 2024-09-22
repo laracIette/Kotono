@@ -1,37 +1,36 @@
 ﻿using Kotono.Graphics.Shaders;
-using Kotono.Input;
+using Kotono.Graphics.Textures;
 using Kotono.Utils.Coordinates;
 using OpenTK.Graphics.OpenGL4;
 
 namespace Kotono.Graphics.Objects
 {
-    internal class Image : Object2D<ImageSettings>
+    internal class Image : Object2D
     {
-        private readonly Texture _texture;
+        internal ImageTexture Texture { get; set; } = new(Path.FromAssets(@"Default\Textures\image.jpg"));
 
-        internal string Path { get; }
+        public override Shader Shader => ImageShader.Instance;
 
-        internal bool IsMouseOn => Rect.Overlaps(Rect, Mouse.Position);
-
-        internal Image(ImageSettings settings)
-            : base(settings)
+        public override void UpdateShader()
         {
-            Path = settings.Texture;
-            Color = settings.Color;
-
-            _texture = new Texture(Path);
+            if (Shader is ImageShader imageShader)
+            {
+                imageShader.SetModel(Rect.Model);
+                imageShader.SetColor(Color);
+                imageShader.SetTexSampler(Texture.TextureUnit);
+            }
         }
 
         public override void Draw()
         {
-            GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+            Texture.Use();
 
-            ShaderManager.Shaders["image"].SetMatrix4("model", Rect.Model);
-            ShaderManager.Shaders["image"].SetColor("color", Color);
+            SquareVertices.Draw();
 
-            _texture.Draw();
+            ITexture.Unbind(TextureTarget.Texture2D);
         }
 
-        public override string ToString() => Path;
+        public override string ToString()
+            => $"{base.ToString()}: {{Shader: {{{Shader}}}, Texture: {{{Texture}}}}}";
     }
 }

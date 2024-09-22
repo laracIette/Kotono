@@ -1,60 +1,34 @@
-﻿using Kotono.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
+﻿using Kotono.Graphics.Shaders;
+using Kotono.Utils;
 
 namespace Kotono.Graphics.Objects
 {
-    internal abstract class Drawable<TSettings> : Object, IDrawable, ISaveable, ISelectable where TSettings : DrawableSettings
+    internal abstract class Drawable : Object, IDrawable, ISaveable, ISelectable
     {
-        protected readonly TSettings _settings;
+        public string Name { get; set; } = string.Empty;
 
-        public virtual bool IsDraw
-        {
-            get => _settings.IsDraw;
-            set => _settings.IsDraw = value;
-        }
+        public virtual bool IsDraw { get; set; } = true;
 
-        public virtual Color Color
-        {
-            get => _settings.Color;
-            set => _settings.Color = value;
-        }
+        public virtual Visibility Visibility { get; set; } = Visibility.EditorAndPlaying;
+
+        public virtual Color Color { get; set; } = Color.White;
+
+        public virtual Shader Shader { get; set; } = LightingShader.Instance;
 
         public Viewport Viewport { get; set; } = Viewport.Active;
 
         public abstract bool IsHovered { get; }
 
-        public bool IsSelected { get; protected set; } = false;
+        public bool IsSelected { get; set; } = false;
 
-        public bool IsActive => ISelectable.Active == this;
+        public abstract bool IsActive { get; }
 
-        public IDrawable? Parent { get; set; }
-
-        public List<Drawable> Childrens { get; } = [];
-
-        internal Drawable(TSettings settings) : base() => _settings = settings;
-
-        internal Drawable() : this(Activator.CreateInstance<TSettings>()) { }
+        public virtual void UpdateShader() => Shader.Use();
 
         public virtual void Draw() { }
 
-        public virtual void Save()
-        {
-            JsonParser.WriteFile(_settings);
-        }
+        public virtual void Save() => JsonParser.WriteFile(this, Path.FromData($@"{Guid}.json"));
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal TChildren[] GetChildrens<TChildren>() where TChildren : Drawable
-        {
-            return Childrens.OfType<TChildren>().ToArray();
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal TChildren? GetChildren<TChildren>() where TChildren : Drawable
-        {
-            return Childrens.First(Extensions.OfType<TChildren>) as TChildren;
-        }
+        public override string ToString() => $"Name: '{Name}', Type: {GetType().Name}, IsDraw: {IsDraw}";
     }
 }

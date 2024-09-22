@@ -2,98 +2,97 @@
 using Kotono.Utils.Coordinates;
 using OpenTK.Mathematics;
 
-
 namespace Kotono.Graphics.Objects
 {
-    internal class RoundedBox<T> : Object2D<T> where T : RoundedBoxSettings
+    internal class RoundedBox : Object2D
     {
-        public override Rect Rect
+        protected float _targetFallOff;
+
+        protected float _targetCornerSize;
+
+        public float FallOff { get; protected set; }
+
+        public float CornerSize { get; protected set; }
+
+        internal float TargetFallOff
         {
-            get => base.Rect;
+            get => _targetFallOff;
             set
             {
-                base.Rect = value;
+                _targetFallOff = value;
                 UpdateValues();
             }
         }
 
-        internal float TargetFallOff { get; private set; }
-
-        protected float _fallOff;
-
-        internal float FallOff
+        internal float TargetCornerSize
         {
-            get => _fallOff;
+            get => _targetCornerSize;
             set
             {
-                TargetFallOff = value;
+                _targetCornerSize = value;
                 UpdateValues();
             }
         }
 
-        internal float TargetCornerSize { get; private set; }
-
-        protected float _cornerSize;
-
-        internal float CornerSize
+        public override Point RelativeSize
         {
-            get => _cornerSize;
+            get => base.RelativeSize;
             set
             {
-                TargetCornerSize = value;
+                base.RelativeSize = value;
                 UpdateValues();
             }
         }
 
-        protected virtual Shader Shader => ShaderManager.Shaders["roundedBox"];
+        public override Shader Shader => RoundedBoxShader.Instance;
 
-        protected virtual Matrix4 Model => new NDCRect(Position, Size + new Point(FallOff * 2.0f)).Model;
-
-        internal RoundedBox(T settings)
-            : base(settings)
-        {
-            Color = settings.Color;
-            FallOff = settings.FallOff;
-            CornerSize = settings.CornerSize;
-        }
+        protected virtual Matrix4 Model => new NDCRect(WorldPosition, FallOff * 2.0f + WorldSize).Model;
 
         protected virtual void UpdateValues()
         {
+            float minSize = Point.Min(Rect.WorldSize);
+
             /// CornerSize has : 
             ///     a minimum value of 0,
-            ///     a maximum value of the smallest value between the box's Width and Height divided by 2
-            _cornerSize = Math.Clamp(TargetCornerSize, 0.0f, Math.Min(Rect.Size.X, Rect.Size.Y) / 2.0f);
+            ///     a maximum value of half the smallest value between the box's Width and Height
+            CornerSize = Math.Clamp(TargetCornerSize, 0.0f, Math.Half(minSize));
 
             /// FallOff has :
-            ///     a minimum value of 0.000001 so that there is no division by 0 in glsl
-            _fallOff = Math.Max(0.000001f, TargetFallOff);
+            ///     a minimum value of 0
+            FallOff = Math.Max(0.0f, TargetFallOff);
+        }
+
+        public override void UpdateShader()
+        {
+            if (Shader is RoundedBoxShader roundedBoxShader)
+            {
+                roundedBoxShader.SetModel(Model);
+                roundedBoxShader.SetColor(Color);
+                roundedBoxShader.SetSides(Sides);
+                roundedBoxShader.SetFallOff(FallOff);
+                roundedBoxShader.SetCornerSize(CornerSize);
+            }
         }
 
         public override void Draw()
         {
-            Shader.SetMatrix4("model", Model);
-            Shader.SetColor("color", Color);
-            Shader.SetSides("sides", Sides);
-            Shader.SetFloat("fallOff", FallOff);
-            Shader.SetFloat("cornerSize", CornerSize);
-
             SquareVertices.Draw();
         }
 
-        private Sides Sides
+        protected Sides Sides
         {
             get
             {
                 var position = new Point(
-                    Viewport.Active.Position.X + Position.X,
-                    Window.Size.Y - Viewport.Active.Position.Y - Position.Y
+                    Viewport.Active.WorldPosition.X + WorldPosition.X,
+                    Window.Size.Y - Viewport.Active.WorldPosition.Y - WorldPosition.Y
                 );
 
                 return new Sides(
-                    position.X - Size.X / 2,
-                    position.X + Size.X / 2,
-                    position.Y + Size.Y / 2,
-                    position.Y - Size.Y / 2
+                    position.X - Math.Half(WorldSize.X),
+                    position.X + Math.Half(WorldSize.X),
+                    position.Y + Math.Half(WorldSize.Y),
+                    position.Y - Math.Half(WorldSize.Y)
                 );
             }
         }

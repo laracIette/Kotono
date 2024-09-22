@@ -3,38 +3,31 @@ using Kotono.Utils.Coordinates;
 
 namespace Kotono.Graphics.Objects.Texts
 {
-    internal class PrinterText()
-        : Text(
-            new TextSettings
-            {
-                Rect = new Rect(Point.Zero, new Point(25.0f, 30.0f)),
-                Anchor = Anchor.TopLeft,
-                Spacing = 2.0f / 3.0f,
-                Layer = int.MaxValue
-            }
-        )
+    internal sealed class PrinterText : Text
     {
-        internal override object? Source
+        public override string Value
         {
-            get => base.Source;
+            get => base.Value;
             set
             {
-                Position = Point.Zero;
+                RelativePosition = Point.Zero;
 
-                base.Source = value;
-
-                ExecuteAction.Delay(Clear, 3.0f);
+                base.Value = value;
+                
+                ExecuteAction.Delay(() => IsDraw = false, 3.0f);
             }
+        }
+
+        internal PrinterText()
+        {
+            LettersSize = new Point(25.0f, 30.0f);
+            Anchor = Anchor.TopLeft;
+            Spacing = 2.0f / 3.0f;
+            Layer = int.MaxValue;
+            IsDraw = false;
         }
 
         internal void Lower()
-        {
-            _lettersRect.Position += new Point(0.0f, _lettersRect.BaseSize.Y);
-
-            foreach (var letter in _letters)
-            {
-                letter.Position += new Point(0.0f, _lettersRect.BaseSize.Y);
-            }
-        }
+            => RelativePosition += new Point(0.0f, LettersSize.Y);
     }
 }

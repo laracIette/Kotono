@@ -29,7 +29,7 @@ namespace Kotono.Utils
         /// <returns></returns>
         internal static MemberInfo[] OfAttribute<T>(this MemberInfo[] memberInfo) where T : Attribute
         {
-            return memberInfo.Where(m => m.GetCustomAttribute<T>() != null).ToArray();
+            return memberInfo.Where(m => m.GetCustomAttribute<T>() is not null).ToArray();
         }
 
         /// <summary>
@@ -107,37 +107,6 @@ namespace Kotono.Utils
         }
 
         /// <summary>
-        /// Get a sorted string given a separator and a newSeparator to replace it with.
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="separator"></param>
-        /// <param name="newSeparator"></param>
-        /// <returns></returns>
-        internal static string Sorted(this string source, string separator, string newSeparator)
-        {
-            var sortedList = source.Split(separator).ToList().Sorted();
-
-            source = "";
-            foreach (var item in sortedList)
-            {
-                source += item + newSeparator;
-            }
-
-            return source;
-        }
-
-        /// <summary>
-        /// Get a sorted string given a separator.
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="separator"></param>
-        /// <returns></returns>
-        internal static string Sorted(this string source, string separator)
-        {
-            return source.Sorted(separator, separator);
-        }
-
-        /// <summary>
         /// Get wether a Type is a list. If <see langword="true"/>, itemType gets assigned the type the list contains.
         /// </summary>
         /// <param name="type"></param>
@@ -208,10 +177,10 @@ namespace Kotono.Utils
         }
 
         /// <summary>
-        /// Adds an item to the List if it doesn't contain the item.
+        /// Adds an item to the <see cref="List{T}"/> if it doesn't contain the item.
         /// </summary>
         /// <returns> Wether the item was added to the List. </returns>
-        internal static bool TryAddUnique<TSource>(this List<TSource> source, TSource item)
+        internal static bool TryAddDistinct<TSource>(this List<TSource> source, TSource item)
         {
             if (source.Contains(item))
             {
@@ -224,19 +193,18 @@ namespace Kotono.Utils
             }
         }
 
-        /// <summary>
-        /// Get wether the object is of type T.
-        /// </summary>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static bool OfType<T>(this object? obj)
-        {
-            return obj?.GetType() == typeof(T);
-        }
-
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static string Keep(this string source, string other)
         {
             return new string(source.Where(other.Contains).ToArray());
+        }
+
+        /// <summary>
+        /// Add multiple items to a list of type TSource.
+        /// </summary>
+        internal static void Add<TSource>(this List<TSource> source, params TSource[] items)
+        {
+            source.AddRange(items);
         }
     }
 }

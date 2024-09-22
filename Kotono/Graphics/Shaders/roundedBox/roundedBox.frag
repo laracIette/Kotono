@@ -1,14 +1,21 @@
 #version 430 core
 
+struct Sides {
+    float left;
+    float right;
+    float top;
+    float bottom;
+};
+
 uniform vec4 color;
-uniform vec4 sides;
+uniform Sides sides;
 uniform float fallOff;
 uniform float cornerSize;
 
-float left =   sides.x;
-float right =  sides.y;
-float top =    sides.z;
-float bottom = sides.w;
+float left =   sides.left;
+float right =  sides.right;
+float top =    sides.top;
+float bottom = sides.bottom;
 
 out vec4 FragColor;
 
@@ -63,7 +70,7 @@ void main()
         return;
     }
     
-    float ratio = clamp(dist / fallOff, 0.0, 1.0) * color.a;
+    float ratio = clamp(dist / max(1e-7, fallOff), 0.0, 1.0) * color.a;
     
     vec4 result = color;
     result.a -= ratio;

@@ -1,4 +1,6 @@
-﻿using Kotono.Physics;
+﻿using Kotono.Graphics.Objects.Hitboxes;
+using Kotono.Physics;
+using Kotono.Utils;
 using Kotono.Utils.Coordinates;
 
 namespace Kotono.Graphics.Objects.Meshes
@@ -12,5 +14,14 @@ namespace Kotono.Graphics.Objects.Meshes
         public Vector IntersectionLocation { get; }
 
         public float IntersectionDistance { get; }
+
+        public Model Model { get; set; }
+
+        public Material Material { get; set; }
+
+        /// <summary>
+        /// The hitboxes of the <see cref="IMesh"/>.
+        /// </summary>
+        public CustomList<Hitbox> Hitboxes { get; }
     }
 }
