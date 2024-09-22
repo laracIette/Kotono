@@ -2,7 +2,6 @@
 using Kotono.Graphics.Objects;
 using Kotono.Utils.Exceptions;
 using OpenTK.Mathematics;
-using System;
 
 namespace Kotono.Utils.Coordinates
 {
