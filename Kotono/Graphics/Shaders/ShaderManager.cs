@@ -1,14 +1,20 @@
-﻿using Kotono.Utils;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Kotono.Graphics.Shaders
 {
     internal static class ShaderManager
     {
-        private static readonly List<Shader> _shaders = [];
+        private static readonly HashSet<Shader> _shaders = [];
 
-        internal static void Create(Shader shader) => _shaders.TryAddDistinct(shader);
+        internal static void Create(Shader shader) => _shaders.Add(shader);
 
-        internal static void Update() => _shaders.ForEach(s => s.Update());
+        internal static void Update()
+        {
+            foreach (var shader in _shaders)
+            {
+                shader.Update();
+            }
+        }
     }
 }

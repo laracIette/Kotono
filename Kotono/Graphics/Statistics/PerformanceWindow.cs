@@ -6,22 +6,11 @@ namespace Kotono.Graphics.Statistics
 {
     internal sealed class PerformanceWindow : Object2D
     {
-        private readonly RoundedBox _background = new()
-        {
-            Color = Color.DarkSlateGray,
-            TargetCornerSize = 10.0f,
-            TargetFallOff = 1.0f,
-        };
+        private readonly RoundedBox _background;
 
-        private readonly RateStat _frame = new()
-        {
-            Anchor = Anchor.Bottom,
-        };
+        private readonly RateStat _frame;
 
-        private readonly RateStat _update = new()
-        {
-            Anchor = Anchor.Top,
-        };
+        private readonly RateStat _update;
 
         internal float FrameTime => _frame.Time;
 
@@ -37,8 +26,34 @@ namespace Kotono.Graphics.Statistics
             set => base.RelativeSize = _background.RelativeSize = value;
         }
 
-        internal PerformanceWindow() 
-            => _background.Parent = _frame.Parent = _update.Parent = this;
+        internal PerformanceWindow()
+        {
+            _background = new RoundedBox
+            {
+                Color = Color.DarkSlateGray,
+                TargetCornerSize = 10.0f,
+                TargetFallOff = 1.0f,
+                Parent = this,
+                RelativePosition = Point.Zero,
+                Layer = Layer,
+            };
+
+            _frame = new RateStat
+            {
+                Anchor = Anchor.Bottom,
+                Parent = this,
+                RelativePosition = Point.Zero,
+                Layer = Layer + 1,
+            };
+
+            _update = new RateStat
+            {
+                Anchor = Anchor.Top,
+                Parent = this,
+                RelativePosition = Point.Zero,
+                Layer = Layer + 1,
+            };
+        }
 
         internal void AddFrameTime(float frameTime)
             => _frame.AddTime(frameTime);

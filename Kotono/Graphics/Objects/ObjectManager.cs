@@ -110,7 +110,7 @@ namespace Kotono.Graphics.Objects
         /// </summary>
         internal static void Update()
         {
-            Span<IObject> objects = [.. GetObjectsOfType<IObject>(o => o.IsUpdate)];
+            IObject[] objects = [.. GetObjectsOfType<IObject>(o => o.IsUpdate)];
 
             foreach (var obj in objects)
             {
@@ -136,7 +136,7 @@ namespace Kotono.Graphics.Objects
                 OnDeleteKeyPressed();
             }
 
-            Span<IObject> objects = [.. GetObjectsOfType<IObject>(o => o.IsDelete)];
+            IObject[] objects = [.. GetObjectsOfType<IObject>(o => o.IsDelete)];
 
             foreach (var obj in objects)
             {

@@ -2,7 +2,6 @@
 using Kotono.Utils.Coordinates;
 using OpenTK.Mathematics;
 
-
 namespace Kotono.Graphics.Objects
 {
     internal class RoundedBox : Object2D
@@ -51,7 +50,7 @@ namespace Kotono.Graphics.Objects
 
         protected virtual void UpdateValues()
         {
-            float minSize = Point.Min(Rect.RelativeSize);
+            float minSize = Point.Min(Rect.WorldSize);
 
             /// CornerSize has : 
             ///     a minimum value of 0,
@@ -85,15 +84,15 @@ namespace Kotono.Graphics.Objects
             get
             {
                 var position = new Point(
-                    Viewport.Active.RelativePosition.X + RelativePosition.X,
-                    Window.Size.Y - Viewport.Active.RelativePosition.Y - RelativePosition.Y
+                    Viewport.Active.WorldPosition.X + WorldPosition.X,
+                    Window.Size.Y - Viewport.Active.WorldPosition.Y - WorldPosition.Y
                 );
 
                 return new Sides(
-                    position.X - Math.Half(RelativeSize.X),
-                    position.X + Math.Half(RelativeSize.X),
-                    position.Y + Math.Half(RelativeSize.Y),
-                    position.Y - Math.Half(RelativeSize.Y)
+                    position.X - Math.Half(WorldSize.X),
+                    position.X + Math.Half(WorldSize.X),
+                    position.Y + Math.Half(WorldSize.Y),
+                    position.Y - Math.Half(WorldSize.Y)
                 );
             }
         }

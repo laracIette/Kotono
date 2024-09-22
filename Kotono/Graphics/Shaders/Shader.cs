@@ -169,7 +169,7 @@ namespace Kotono.Graphics.Shaders
         {
             if (TryGetUniformLocation(name, out int location))
             {
-                GL.Uniform4(location, data.RelativePosition.X, data.RelativePosition.Y, data.RelativeSize.X, data.RelativeSize.Y);
+                GL.Uniform4(location, data.WorldPosition.X, data.WorldPosition.Y, data.WorldSize.X, data.WorldSize.Y);
             }
         }
 

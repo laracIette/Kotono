@@ -23,7 +23,6 @@ namespace Kotono.Graphics.Statistics
         internal RateStat()
         {
             LettersSize = new Point(50.0f, 60.0f);
-            Layer = 1;
             Value = "0.00";
         }
 

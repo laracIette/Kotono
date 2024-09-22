@@ -100,33 +100,10 @@ namespace Kotono.Graphics.Objects.Texts
             get => _value;
             set
             {
-                if (value == _value)
+                if (value != _value)
                 {
-                    return;
-                }
-
-                _value = value;
-
-                Clear();
-
-                _letters = new Image[value.Length];
-
-                for (int i = 0; i < _letters.Length; i++)
-                {
-                    if (!_characterPaths.TryGetValue(value[i], out string? path))
-                    {
-                        path = _characterPaths[' '];
-                    }
-
-                    _letters[i] = new Image
-                    {
-                        Texture = new ImageTexture(Path.FromAssets(path)),
-                        RelativePosition = GetLetterPosition(i),
-                        RelativeSize = LettersSize,
-                        Color = LettersColor,
-                        Layer = Layer,
-                        Parent = this
-                    };
+                    _value = value;
+                    UpdateLetters();
                 }
             }
         }
@@ -162,16 +139,45 @@ namespace Kotono.Graphics.Objects.Texts
             }
         }
 
+        private void UpdateLetters()
+        {
+            DisposeLetters();
+
+            if (string.IsNullOrWhiteSpace(_value))
+            {
+                _letters = [];
+                return;
+            }
+
+            _letters = new Image[_value.Length];
+            
+            for (int i = 0; i < _letters.Length; i++)
+            {
+                if (!_characterPaths.TryGetValue(_value[i], out string? path))
+                {
+                    path = _characterPaths[' '];
+                }
+
+                _letters[i] = new Image
+                {
+                    Texture = new ImageTexture(Path.FromAssets(path)),
+                    RelativeSize = LettersSize,
+                    Color = LettersColor,
+                    Layer = Layer,
+                    Parent = this,
+                    RelativePosition = GetLetterPosition(i),
+                };
+            }
+        }
+
         private Point GetLetterPosition(int index)
         {
-            Point size = LettersSize;
-
-            float centerOffset = Spacing * size.X * Math.Half(index - (Value.Length - 1));
-            float verticalOffset = Math.Half(size.Y);
+            float centerOffset = Spacing * LettersSize.X * index + Math.Half(LettersSize.X - Spacing * LettersSize.X * Value.Length);
+            float verticalOffset = Math.Half(LettersSize.Y);
 
             return new Point(
-                  (Anchor & Anchor.Left) == Anchor.Left ? GetLeftOffset(index, size.X)
-                : (Anchor & Anchor.Right) == Anchor.Right ? GetRightOffset(index, size.X)
+                  (Anchor & Anchor.Left) == Anchor.Left ? GetLeftOffset(index)
+                : (Anchor & Anchor.Right) == Anchor.Right ? GetRightOffset(index)
                 : centerOffset,
                   (Anchor & Anchor.Top) == Anchor.Top ? verticalOffset
                 : (Anchor & Anchor.Bottom) == Anchor.Bottom ? -verticalOffset
@@ -179,11 +185,11 @@ namespace Kotono.Graphics.Objects.Texts
             );
         }
 
-        private float GetLeftOffset(int index, float sizeX)
-            => Spacing * sizeX * (0.5f + index);
+        private float GetLeftOffset(int index)
+            => Spacing * LettersSize.X * (0.5f + index);
 
-        private float GetRightOffset(int index, float sizeX)
-            => -Spacing * sizeX * (Value.Length - index - 0.5f);
+        private float GetRightOffset(int index)
+            => -Spacing * LettersSize.X * (Value.Length - index - 0.5f);
 
         private void DisposeLetters()
         {
@@ -191,13 +197,6 @@ namespace Kotono.Graphics.Objects.Texts
             {
                 letter.Dispose();
             }
-        }
-
-        internal void Clear()
-        {
-            DisposeLetters();
-
-            _letters = [];
         }
 
         public override void Dispose()

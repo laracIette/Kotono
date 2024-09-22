@@ -92,23 +92,6 @@ namespace Kotono
 
             _ = new SpotLight();
 
-            _ = new Text // debug that
-            {
-                Value = "kakaka",
-                LettersSize = new Point(50.0f, 60.0f),
-                LettersColor = Color.Yellow,
-                Layer = 1,
-                Parent = new RoundedBox
-                {
-                    RelativePosition = new Point(250.0f),
-                    RelativeSize = new Point(100.0f, 200.0f),
-                    Color = Color.DarkSlateGray,
-                    TargetCornerSize = 30.0f,
-                    TargetFallOff = 1.0f,
-                    Layer = 0
-                },
-            };
-
             _ = new Cube
             {
                 RelativeLocation = new Vector(0.0f, 0.0f, -5.0f),

@@ -26,7 +26,7 @@ namespace Kotono.Graphics.Objects
 
         protected override void UpdateValues()
         {
-            float minSize = Point.Min(Rect.RelativeSize);
+            float minSize = Point.Min(Rect.WorldSize);
 
             /// Thickness has :
             ///     a minimum value of 0,
@@ -36,7 +36,7 @@ namespace Kotono.Graphics.Objects
             /// FallOff has : 
             ///     a minimum value of 0,
             ///     a maximum value of the difference between the border's Width and its Thickness
-            FallOff = Math.Clamp(TargetFallOff, 0.0f, Rect.RelativeSize.X - Thickness);
+            FallOff = Math.Clamp(TargetFallOff, 0.0f, minSize - Thickness);
 
             /// CornerSize has :
             ///     a minimum value of half the border's Thickness + its FallOff,

@@ -359,13 +359,7 @@ namespace Kotono.Utils.Coordinates
         /// Checks if the <see cref="Rect"/> is overlapping with p.
         /// </summary>
         internal bool Overlaps(Point p) 
-            => Point.Abs(RelativePosition - p) < Point.Half(RelativeSize);
-
-        public static explicit operator Vector4(Rect r)
-            => new(r.RelativePosition.X, r.RelativePosition.Y, r.RelativeSize.X, r.RelativeSize.Y);
-
-        public static explicit operator Rect(Vector4 v)
-            => new(new Point(v.X, v.Y), new Point(v.Z, v.W));
+            => Point.Abs(WorldPosition - p) < Point.Half(WorldSize);
 
         public override string ToString() 
             => ToString(CoordinateSpace.World);

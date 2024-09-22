@@ -3,23 +3,15 @@
 namespace Kotono.Utils.Coordinates
 {
     [StructLayout(LayoutKind.Sequential)]
-    public struct Sides
+    public readonly struct Sides
     {
-        public float Left = 0.0f;
+        public readonly float Left;
 
-        public float Right = 0.0f;
+        public readonly float Right;
 
-        public float Top = 0.0f;
+        public readonly float Top;
 
-        public float Bottom = 0.0f;
-
-        public Sides()
-        {
-            Left = 0.0f;
-            Right = 0.0f;
-            Top = 0.0f;
-            Bottom = 0.0f;
-        }
+        public readonly float Bottom;
 
         public Sides(float left, float right, float top, float bottom)
         {
@@ -28,5 +20,7 @@ namespace Kotono.Utils.Coordinates
             Top = top;
             Bottom = bottom;
         }
+
+        public Sides() : this(0.0f, 0.0f, 0.0f, 0.0f) { }
     }
 }
