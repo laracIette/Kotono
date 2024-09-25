@@ -1,12 +1,9 @@
 ﻿using Kotono.Graphics.Objects;
-using System;
 
 namespace Kotono
 {
     internal abstract class Object : IObject
     {
-        public Guid Guid { get; set; } = Guid.NewGuid();
-
         public virtual bool IsUpdate { get; set; } = true;
 
         public bool IsDelete { get; private set; } = false;

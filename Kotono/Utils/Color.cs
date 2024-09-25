@@ -224,7 +224,7 @@ namespace Kotono.Utils
         /// <summary> 
         /// Inputs a char and returns it converted from hexadecimal char to float.
         /// </summary>
-        private static float HexToF(char hex) 
+        private static float HexToF(char hex)
             => HexToF(hex.ToString() + hex.ToString());
 
         /// <summary>
@@ -243,13 +243,13 @@ namespace Kotono.Utils
         /// <summary>
         /// Additive blending.
         /// </summary>
-        public static Color Blend(Color left, Color right) 
+        public static Color Blend(Color left, Color right)
             => Clamp(left + right);
 
         /// <summary>
         /// Linear interpolation blending.
         /// </summary>
-        public static Color Blend(Color left, Color right, float blendFactor) 
+        public static Color Blend(Color left, Color right, float blendFactor)
             => Clamp((1 - blendFactor) * left + blendFactor * right);
 
         /// <summary>
@@ -274,13 +274,13 @@ namespace Kotono.Utils
         /// <summary> 
         /// Adds right to left, considering alpha.
         /// </summary>
-        public static Color Add(Color left, Color right) 
+        public static Color Add(Color left, Color right)
             => new(left.R + right.R, left.G + right.G, left.B + right.B, left.A + right.A);
 
         /// <summary> 
         /// Substracts right to left, considering alpha. 
         /// </summary>
-        public static Color Substract(Color left, Color right) 
+        public static Color Substract(Color left, Color right)
             => new(left.R - right.R, left.G - right.G, left.B - right.B, left.A - right.A);
 
         /// <summary> 
@@ -312,29 +312,29 @@ namespace Kotono.Utils
             => new(c.R + f, c.G + f, c.B + f, c.A);
 
         [Obsolete("Reorder operands, use 'Color.operator +(float, Color)' instead.")]
-        public static Color operator +(Color c, float f) 
+        public static Color operator +(Color c, float f)
             => f + c;
 
-        public static Color operator -(Color left, Color right) 
+        public static Color operator -(Color left, Color right)
             => new(left.R - right.R, left.G - right.G, left.B - right.B, left.A);
 
         public static Color operator -(Color c, float f)
             => new(c.R - f, c.G - f, c.B - f, c.A);
 
-        public static Color operator -(Color c) 
+        public static Color operator -(Color c)
             => new(-c.R, -c.G, -c.B, c.A);
 
-        public static Color operator *(Color left, Color right) 
+        public static Color operator *(Color left, Color right)
             => new(left.R * right.R, left.G * right.G, left.B * right.B, left.A);
 
         public static Color operator *(float f, Color c)
             => new(c.R * f, c.G * f, c.B * f, c.A);
 
         [Obsolete("Reorder operands, use 'Color.operator *(float, Color)' instead.")]
-        public static Color operator *(Color c, float f) 
+        public static Color operator *(Color c, float f)
             => f * c;
 
-        public static Color operator /(Color left, Color right) 
+        public static Color operator /(Color left, Color right)
             => new(left.R / right.R, left.G / right.G, left.B / right.B, left.A);
 
         public static Color operator /(Color c, float f)
@@ -346,7 +346,7 @@ namespace Kotono.Utils
         public static bool operator !=(Color left, Color right)
             => !(left == right);
 
-        public override readonly bool Equals(object? obj) 
+        public override readonly bool Equals(object? obj)
             => obj is Color c && Equals(c);
 
         public readonly bool Equals(Color c)
@@ -357,10 +357,10 @@ namespace Kotono.Utils
                 && A == c.A;
         }
 
-        public override readonly int GetHashCode() 
+        public override readonly int GetHashCode()
             => HashCode.Combine(R, G, B, A);
 
-        public static explicit operator Vector(Color c) 
+        public static explicit operator Vector(Color c)
             => new(c.R, c.G, c.B);
 
         public static explicit operator Color(Vector v)
@@ -369,16 +369,16 @@ namespace Kotono.Utils
         public static explicit operator Vector3(Color c)
             => new(c.R, c.G, c.B);
 
-        public static explicit operator Color(Vector3 v) 
+        public static explicit operator Color(Vector3 v)
             => new(v.X, v.Y, v.Z);
 
         public static explicit operator Vector4(Color c)
             => new(c.R, c.G, c.B, c.A);
 
-        public static explicit operator Color(Vector4 v) 
+        public static explicit operator Color(Vector4 v)
             => new(v.X, v.Y, v.Z, v.W);
 
-        public static explicit operator Color4(Color c) 
+        public static explicit operator Color4(Color c)
             => new(c.R, c.G, c.B, c.A);
 
         public static explicit operator Color(Color4 c)

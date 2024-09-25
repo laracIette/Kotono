@@ -13,7 +13,7 @@ namespace Kotono.Graphics.Objects.Texts
                 RelativePosition = Point.Zero;
 
                 base.Value = value;
-                
+
                 ExecuteAction.Delay(() => IsDraw = false, 3.0f);
             }
         }

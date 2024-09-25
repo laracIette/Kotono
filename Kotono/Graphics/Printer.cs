@@ -8,7 +8,7 @@ namespace Kotono.Graphics
 {
     internal static class Printer
     {
-        private static readonly PrinterText[] _texts = 
+        private static readonly PrinterText[] _texts =
             Enumerable.Range(0, 50)
             .Select(i => new PrinterText())
             .ToArray();
@@ -68,7 +68,7 @@ namespace Kotono.Graphics
         /// <param name="obj"> The object to print. </param>
         /// <param name="color"> The color of the text. </param>
         [Conditional("DEBUG")]
-        internal static void Print(object? obj, Color color) 
+        internal static void Print(object? obj, Color color)
             => Print(obj?.ToString(), color);
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace Kotono.Graphics
         /// <param name="obj"> The object to print. </param>
         /// <param name="frequency"> The frequency at which the <see cref="Color"/> loops through RGB values. </param>
         [Conditional("DEBUG")]
-        internal static void PrintRainbow(object? obj, float frequency) 
+        internal static void PrintRainbow(object? obj, float frequency)
             => Print(obj, Color.Rainbow(frequency));
     }
 }

@@ -1,10 +1,16 @@
 ﻿using Kotono.Graphics.Objects;
-using System.Collections.Generic;
+using Kotono.Utils;
 
 namespace Kotono.Engine.UserInterface
 {
     internal sealed class ObjectExplorer : Object2D
     {
-        private readonly List<Object> _objects = [];
+        private CustomList<Drawable> Drawables { get; } = [];
+
+        internal ObjectExplorer()
+        {
+            Drawables.AddAction = d => { };
+            Drawables.RemoveAction = d => { };
+        }
     }
 }

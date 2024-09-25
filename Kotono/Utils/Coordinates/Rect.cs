@@ -4,7 +4,7 @@ using System;
 
 namespace Kotono.Utils.Coordinates
 {
-    internal sealed partial class Rect : Object, IRect
+    internal sealed partial class Rect : IRect
     {
         private sealed record class Transformation<T>(T Value, float EndTime) where T : struct;
 
@@ -92,7 +92,7 @@ namespace Kotono.Utils.Coordinates
         /// <summary>
         /// The <see cref="Rect"/> the <see cref="Rect"/> is relative to.
         /// </summary>
-        public Rect? Parent { get; set; } = null;
+        internal Rect? Parent { get; set; } = null;
 
         private Point ParentWorldPosition => Parent?.WorldPosition ?? DefaultPosition;
 
@@ -205,7 +205,7 @@ namespace Kotono.Utils.Coordinates
             BaseSize = size;
         }
 
-        public override void Update()
+        internal void Update()
         {
             //RelativePosition += Time.Delta * RelativePositionVelocity;
             //RelativeRotation += Time.Delta * RelativeRotationVelocity;
@@ -214,7 +214,6 @@ namespace Kotono.Utils.Coordinates
             if (_positionTransformation is not null
              && TryGetTransformation(ref _positionTransformation, out var position))
             {
-                Logger.Log(position);
                 RelativePosition += Time.Delta * position;
             }
 
@@ -352,16 +351,16 @@ namespace Kotono.Utils.Coordinates
         /// <summary> 
         /// Checks if left is overlapping with right.
         /// </summary>
-        internal static bool Overlaps(IRect left, IRect right) 
+        internal static bool Overlaps(IRect left, IRect right)
             => Point.Abs(left.WorldPosition - right.WorldPosition) < Point.Half(left.WorldSize + right.WorldSize);
 
         /// <summary> 
         /// Checks if the <see cref="Rect"/> is overlapping with p.
         /// </summary>
-        internal bool Overlaps(Point p) 
+        internal bool Overlaps(Point p)
             => Point.Abs(WorldPosition - p) < Point.Half(WorldSize);
 
-        public override string ToString() 
+        public override string ToString()
             => ToString(CoordinateSpace.World);
 
         internal string ToString(CoordinateSpace coordinateSpace)

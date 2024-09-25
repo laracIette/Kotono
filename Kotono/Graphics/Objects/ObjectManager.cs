@@ -8,11 +8,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace Kotono.Graphics.Objects
 {
     internal static class ObjectManager
     {
+        private static bool _isSaving = false;
+
         private static readonly Renderer _renderer = new();
 
         private static readonly HashSet<IObject> _objects = [];
@@ -115,6 +118,17 @@ namespace Kotono.Graphics.Objects
             foreach (var obj in objects)
             {
                 obj.Update();
+
+                switch (obj)
+                {
+                    case IObject2D object2D:
+                        object2D.Rect.Update();
+                        break;
+
+                    case IObject3D object3D:
+                        object3D.Transform.Update();
+                        break;
+                }
             }
 
             UpdateFizix();
@@ -153,13 +167,33 @@ namespace Kotono.Graphics.Objects
 
             _renderer.Render();
         }
-
+        
         internal static void Save()
         {
             foreach (var obj in GetObjectsOfType<ISaveable>())
             {
                 obj.Save();
             }
+        }
+       
+        internal static async Task SaveAsync()
+        {
+            if (_isSaving)
+            {
+                Logger.LogError("couldn't save, already saving");
+                return;
+            }
+
+            _isSaving = true;
+
+            ISaveable[] saveables = [.. GetObjectsOfType<ISaveable>()];
+
+            foreach (var obj in saveables)
+            {
+                await obj.SaveAsync();
+            }
+
+            _isSaving = false;
         }
 
         private static void OnDeleteKeyPressed()

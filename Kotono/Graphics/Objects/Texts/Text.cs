@@ -150,7 +150,7 @@ namespace Kotono.Graphics.Objects.Texts
             }
 
             _letters = new Image[_value.Length];
-            
+
             for (int i = 0; i < _letters.Length; i++)
             {
                 if (!_characterPaths.TryGetValue(_value[i], out string? path))

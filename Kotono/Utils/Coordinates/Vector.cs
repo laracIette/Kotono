@@ -3,7 +3,6 @@ using Kotono.Utils.Exceptions;
 using OpenTK.Mathematics;
 using System;
 using System.Runtime.InteropServices;
-using static Catalyst.Models.English;
 using Quaternion = OpenTK.Mathematics.Quaternion;
 
 namespace Kotono.Utils.Coordinates
@@ -196,7 +195,7 @@ namespace Kotono.Utils.Coordinates
         public static Vector MinLength(Vector v, float minLength)
         {
             ExceptionHelper.ThrowIf(minLength < 0.0f, "minLength must not be negative");
-           
+
             if (v.Length > minLength)
             {
                 return minLength * v.Normalized;
@@ -211,7 +210,7 @@ namespace Kotono.Utils.Coordinates
         public static Vector MaxLength(Vector v, float maxLength)
         {
             ExceptionHelper.ThrowIf(maxLength < 0.0f, "maxLength must not be negative");
-           
+
             if (v.Length < maxLength)
             {
                 return maxLength * v.Normalized;

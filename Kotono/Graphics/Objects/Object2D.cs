@@ -3,6 +3,7 @@ using Kotono.Utils;
 using Kotono.Utils.Coordinates;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 
 namespace Kotono.Graphics.Objects
 {
@@ -116,15 +117,11 @@ namespace Kotono.Graphics.Objects
 
         public IEnumerable<IObject2D> Children => ObjectManager.GetObjectsOfType<IObject2D>(o => o.Parent == this);
 
-        public IEnumerable<TChildren> GetChildren<TChildren>() where TChildren : IObject2D
-        {
-            return Children.OfType<TChildren>();
-        }
+        public IEnumerable<TChildren> GetChildren<TChildren>() where TChildren : IObject2D 
+            => Children.OfType<TChildren>();
 
         public TChild? GetChild<TChild>() where TChild : IObject2D
-        {
-            return GetChildren<TChild>().First();
-        }
+            => GetChildren<TChild>().First();
 
         public override void Dispose()
         {
@@ -132,8 +129,6 @@ namespace Kotono.Graphics.Objects
             {
                 child.Parent = Parent;
             }
-
-            Rect.Dispose();
 
             base.Dispose();
         }

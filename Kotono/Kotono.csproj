@@ -36,8 +36,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Graphics\Shaders\cubemap\" />
     <Folder Include="Data\" />
+    <Folder Include="Graphics\Shaders\cubemap\" />
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>

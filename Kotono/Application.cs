@@ -3,7 +3,6 @@ using Kotono.Graphics;
 using Kotono.Graphics.Objects;
 using Kotono.Graphics.Objects.Lights;
 using Kotono.Graphics.Objects.Meshes;
-using Kotono.Graphics.Objects.Texts;
 using Kotono.Input;
 using Kotono.Utils;
 using Kotono.Utils.Coordinates;

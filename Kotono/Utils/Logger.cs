@@ -10,7 +10,7 @@ namespace Kotono.Utils
         /// </summary>
         /// <param name="obj"> The object to log. </param>
         [Conditional("DEBUG")]
-        public static void Log(object? obj) 
+        public static void Log(object? obj)
             => Debug.WriteLine(obj);
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace Kotono.Utils
         /// Prints an empty line to the console.
         /// </summary>
         [Conditional("DEBUG")]
-        public static void Log() 
+        public static void Log()
             => Log(string.Empty);
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace Kotono.Utils
         /// </summary>
         /// <param name="objs"> The objects to log. </param>
         [Conditional("DEBUG")]
-        public static void Log(params object?[] objs) 
+        public static void Log(params object?[] objs)
             => Log(string.Join(' ', objs));
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace Kotono.Utils
         /// Prints an error to the console.
         /// </summary>
         [Conditional("DEBUG")]
-        public static void LogError(params object?[] objs) 
+        public static void LogError(params object?[] objs)
             => Log(["error:", .. objs]);
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace Kotono.Utils
         /// Prints the last opengl error to the console.
         /// </summary>
         [Conditional("DEBUG")]
-        public static void LogGLError(params object?[] objs) 
+        public static void LogGLError(params object?[] objs)
             => Log([GL.GetError(), .. objs]);
 
         /// <summary>

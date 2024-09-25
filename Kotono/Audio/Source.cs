@@ -150,8 +150,8 @@ namespace Kotono.Audio
         {
             return channels switch
             {
-                1 => (bits == 8) ? ALFormat.Mono8 : ALFormat.Mono16,
-                2 => (bits == 8) ? ALFormat.Stereo8 : ALFormat.Stereo16,
+                1 => bits == 8 ? ALFormat.Mono8 : ALFormat.Mono16,
+                2 => bits == 8 ? ALFormat.Stereo8 : ALFormat.Stereo16,
                 _ => throw new NotSupportedException("error: The specified sound format is not supported."),
             };
         }

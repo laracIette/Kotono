@@ -1,6 +1,4 @@
 ﻿using Kotono.Utils.Coordinates;
-using Kotono.Utils.Mathematics;
-using Newtonsoft.Json.Linq;
 using System.Runtime.CompilerServices;
 
 namespace Kotono.Utils

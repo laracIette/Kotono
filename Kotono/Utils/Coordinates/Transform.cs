@@ -5,7 +5,7 @@ using OpenTK.Mathematics;
 
 namespace Kotono.Utils.Coordinates
 {
-    internal sealed class Transform : Object, ITransform
+    internal sealed class Transform : ITransform
     {
         private sealed record class Transformation<T>(T Value, float EndTime) where T : struct;
 
@@ -175,8 +175,8 @@ namespace Kotono.Utils.Coordinates
         /// Value : Vector.Zero
         /// </remarks>
         internal static Vector DefaultScaleVelocity => Vector.Zero;
-        
-        public override void Update()
+
+        internal void Update()
         {
             RelativeLocation += Time.Delta * RelativeLocationVelocity;
             RelativeRotation += Time.Delta * RelativeRotationVelocity;

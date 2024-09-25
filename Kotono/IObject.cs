@@ -7,8 +7,6 @@ namespace Kotono
     /// </summary>
     internal interface IObject : IDisposable
     {
-        public Guid Guid { get; set; }
-
         /// <summary>
         /// Wether the <see cref="IObject"/> should be updated.
         /// </summary>

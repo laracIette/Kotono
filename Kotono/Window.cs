@@ -82,6 +82,8 @@ namespace Kotono
             Keyboard.KeyboardState = KeyboardState;
 
             _ = new MainMenu();
+
+            //JsonParser.Init();
         }
 
         protected override void OnLoad()

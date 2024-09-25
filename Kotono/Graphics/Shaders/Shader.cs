@@ -4,7 +4,6 @@ using Kotono.Utils.Coordinates;
 using Kotono.Utils.Exceptions;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
-using System;
 using System.Collections.Generic;
 using IO = System.IO;
 

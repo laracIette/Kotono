@@ -1,10 +1,14 @@
 ﻿using Kotono.Graphics.Shaders;
 using Kotono.Utils;
+using System;
+using System.Threading.Tasks;
 
 namespace Kotono.Graphics.Objects
 {
     internal abstract class Drawable : Object, IDrawable, ISaveable, ISelectable
     {
+        public Guid Guid { get; set; } = Guid.NewGuid();
+
         public string Name { get; set; } = string.Empty;
 
         public virtual bool IsDraw { get; set; } = true;
@@ -27,7 +31,9 @@ namespace Kotono.Graphics.Objects
 
         public virtual void Draw() { }
 
-        public virtual void Save() => JsonParser.WriteFile(this, Path.FromData($@"{Guid}.json"));
+        public void Save() => JsonParser.TryWriteFile(this, Path.FromData($@"{Guid}.json"));
+        
+        public async Task SaveAsync() => await JsonParser.TryWriteFileAsync(this, Path.FromData($@"{Guid}.json"));
 
         public override string ToString() => $"Name: '{Name}', Type: {GetType().Name}, IsDraw: {IsDraw}";
     }
