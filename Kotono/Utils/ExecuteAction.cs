@@ -8,7 +8,7 @@ namespace Kotono.Utils
     {
         private sealed record class DelayedAction(Action Action, float Time);
 
-        private readonly List<DelayedAction> _actionDelays = [];
+        private readonly List<DelayedAction> _delayedActions = [];
 
         private static readonly Lazy<ExecuteAction> _instance = new(() => new());
 
@@ -18,24 +18,21 @@ namespace Kotono.Utils
 
         internal static void Delay(Action action, float delay = 0.0f)
         {
-            if (delay < 0.0f)
-            {
-                throw new KotonoException($"delay '{delay}' should not be negative");
-            }
-            else
-            {
-                Instance._actionDelays.Add(new DelayedAction(action, Time.Now + delay));
-            }
+            ExceptionHelper.ThrowIf(delay < 0.0f, $"delay '{delay}' should not be negative");
+
+            Instance._delayedActions.Add(new DelayedAction(action, Time.Now + delay));
         }
 
         public override void Update()
         {
-            for (int i = _actionDelays.Count - 1; i >= 0; i--)
+            DelayedAction[] delayedActions = [.. _delayedActions];
+
+            foreach (var delayedAction in delayedActions)
             {
-                if (Time.Now >= _actionDelays[i].Time)
+                if (Time.Now >= delayedAction.Time)
                 {
-                    _actionDelays[i].Action();
-                    _actionDelays.RemoveAt(i);
+                    delayedAction.Action();
+                    _delayedActions.Remove(delayedAction);
                 }
             }
         }

@@ -203,10 +203,12 @@ namespace Kotono.Graphics.Objects
 
             static void DeleteSelectedList<T>(List<T> selected) where T : ISelectable
             {
-                for (int i = selected.Count - 1; i >= 0; i--)
+                T[] selectables = [.. selected];
+
+                foreach (var selectable in selectables)
                 {
-                    selected[i].Dispose();
-                    selected.RemoveAt(i);
+                    selectable.Dispose();
+                    selected.Remove(selectable);
                 }
             }
         }

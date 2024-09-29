@@ -11,8 +11,6 @@ namespace Kotono.Input
 {
     internal static class Keyboard
     {
-        private sealed record class Method(InputAction InputAction, IObject Instance, MethodInfo MethodInfo);
-
         private static KeyboardState? _keyboardState;
 
         internal static KeyboardState KeyboardState
@@ -21,20 +19,18 @@ namespace Kotono.Input
             set => _keyboardState = value;
         }
 
-        private static readonly Dictionary<Keys, List<Method>> _keyActions = [];
-
-        static Keyboard()
-        {
-            foreach (var key in Enum.GetValues<Keys>().Distinct())
-            {
-                if (key != Keys.Unknown)
-                {
-                    _keyActions[key] = [];
-                }
-            }
-        }
+        private static readonly Dictionary<Keys, HashSet<InputMethod>> _keyActions =
+            Enum.GetValues<Keys>()
+            .Distinct()
+            .Where(key => key != Keys.Unknown)
+            .ToDictionary(key => key, key => new HashSet<InputMethod>());
 
         internal static void Update()
+        {
+            UpdateActions();
+        }
+
+        private static void UpdateActions()
         {
             foreach (var key in _keyActions.Keys)
             {
@@ -42,8 +38,11 @@ namespace Kotono.Input
                 bool isKeyDown = IsKeyDown(key);
                 bool isKeyReleased = IsKeyReleased(key);
 
-                foreach (var method in _keyActions[key])
+                InputMethod[] methods = [.. _keyActions[key]];
+
+                foreach (var method in methods)
                 {
+                    // sort from most used to least used
                     if ((isKeyPressed && method.InputAction == InputAction.Pressed)
                      || (isKeyDown && method.InputAction == InputAction.Down)
                      || (isKeyReleased && method.InputAction == InputAction.Released))
@@ -81,12 +80,13 @@ namespace Kotono.Input
             }
             else
             {
-                throw new KotonoException($"couldn't parse method '{methodInfo.Name}' to Action");
+                // incorrect name
+                return;
             }
 
             if (Enum.TryParse(methodInfo.Name[2..^nameEnd], out Keys key))
             {
-                _keyActions[key].Add(new Method(action, instance, methodInfo));
+                _keyActions[key].Add(new InputMethod(action, instance, methodInfo));
             }
             else
             {
@@ -102,7 +102,7 @@ namespace Kotono.Input
         {
             foreach (var methods in _keyActions.Values)
             {
-                methods.RemoveAll(m => m.Instance == instance);
+                methods.RemoveWhere(m => m.Instance == instance);
             }
         }
 

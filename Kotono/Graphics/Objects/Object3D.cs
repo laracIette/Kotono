@@ -131,6 +131,9 @@ namespace Kotono.Graphics.Objects
         public TChild? GetChild<TChild>() where TChild : IObject3D 
             => GetChildren<TChild>().First();
 
+        public override string ToString()
+            => $"{base.ToString()}, Transform: {{{Transform}}}";
+
         public override void Dispose()
         {
             foreach (var child in Children)

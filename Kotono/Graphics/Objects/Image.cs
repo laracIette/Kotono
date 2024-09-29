@@ -31,6 +31,6 @@ namespace Kotono.Graphics.Objects
         }
 
         public override string ToString()
-            => $"{base.ToString()}: {{Shader: {{{Shader}}}, Texture: {{{Texture}}}}}";
+            => $"{base.ToString()}, Texture: {{{Texture}}}";
     }
 }

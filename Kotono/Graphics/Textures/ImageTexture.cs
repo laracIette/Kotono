@@ -68,12 +68,10 @@ namespace Kotono.Graphics.Textures
         public void Delete()
             => ITexture.Delete(Handle);
 
-        internal static bool IsValidPath(string path)
-        {
-            return IO.File.Exists(path)
-                && IO.Path.GetExtension(path.ToLower()) is string extension
-                && (extension == ".jpeg" || extension == ".jpg" || extension == ".png");
-        }
+        internal static bool IsValidPath(string path) 
+            => IO.File.Exists(path)
+            && IO.Path.GetExtension(path.ToLower()) is string extension
+            && (extension == ".jpeg" || extension == ".jpg" || extension == ".png");
 
         internal static void DisposeAll()
         {

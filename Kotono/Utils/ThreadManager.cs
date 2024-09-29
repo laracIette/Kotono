@@ -1,5 +1,6 @@
 ﻿using Kotono.Utils.Exceptions;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 
 namespace Kotono.Utils
@@ -10,30 +11,27 @@ namespace Kotono.Utils
 
         private ThreadManager() { }
 
-        private static readonly List<Thread> _threads = [];
+        private static readonly HashSet<Thread> _threads = [];
 
         internal static void Start(ThreadStart threadStart)
         {
-            if (_threads.Count < short.MaxValue)
-            {
-                var thread = new Thread(threadStart);
+            ExceptionHelper.ThrowIf(_threads.Count >= short.MaxValue, "couldn't add the Thread, maximum number of threads reached");
 
-                thread.Start();
-                _threads.Add(thread);
-            }
-            else
-            {
-                throw new KotonoException("couldn't add the Thread, maximum number of threads reached");
-            }
+            var thread = new Thread(threadStart);
+
+            thread.Start();
+            _threads.Add(thread);
         }
 
         public override void Update()
         {
-            for (int i = _threads.Count - 1; i >= 0; i--)
+            Thread[] threads = [.. _threads];
+
+            foreach (var thread in threads)
             {
-                if (_threads[i].ThreadState == ThreadState.Stopped)
+                if (thread.ThreadState == ThreadState.Stopped)
                 {
-                    _threads.RemoveAt(i);
+                    _threads.Remove(thread);
                 }
             }
         }

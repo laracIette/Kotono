@@ -1,5 +1,6 @@
 ﻿using Kotono.Graphics.Textures;
 using Kotono.Utils;
+using Kotono.Utils.Coordinates;
 using Kotono.Utils.Exceptions;
 using System.Collections.Generic;
 using System.IO;
@@ -9,7 +10,7 @@ namespace Kotono.Graphics.Objects
 {
     internal sealed class Animation : Object2D, ISaveable
     {
-        private readonly List<Image> _frames = []; // maybe change to ImageTexture[]
+        private readonly List<Image> _frames = []; // TODO: maybe change to ImageTexture[]
 
         private int _currentFrame = 0;
 
@@ -21,14 +22,32 @@ namespace Kotono.Graphics.Objects
 
         public override int Layer
         {
-            get => _frames.FirstOrNull()?.Layer ?? throw new KotonoException("cannot access Layer, _frames is empty");
-            set => _frames.ForEach(f => f.Layer = value);
+            get => base.Layer;
+            set
+            {
+                base.Layer = value;
+                _frames.ForEach(f => f.Layer = value);
+            }
         }
 
         public override Color Color
         {
-            get => _frames.FirstOrNull()?.Color ?? throw new KotonoException("cannot access Color, _frames is empty");
-            set => _frames.ForEach(f => f.Color = value);
+            get => base.Color;
+            set
+            {
+                base.Color = value;
+                _frames.ForEach(f => f.Color = value);
+            }
+        }
+
+        public override Point RelativeSize
+        {
+            get => base.RelativeSize;
+            set
+            {
+                base.RelativeSize = value;
+                _frames.ForEach(f => f.RelativeSize = value);
+            }
         }
 
         /// <summary>
@@ -46,7 +65,7 @@ namespace Kotono.Graphics.Objects
 
         private float EndTime => CreationTime + StartTime + Duration + _totalPausedTime;
 
-        private float TimeSinceLastFrame => Time.Now - _lastFrameTime;
+        private float TimeSinceLastFrame => Time.Now - _lastFrameTime - _currentPausedTime;
 
         private float Delta => 1.0f / FrameRate;
 
@@ -71,13 +90,13 @@ namespace Kotono.Graphics.Objects
 
             var imagePaths = Directory.GetFiles(directoryPath).Where(ImageTexture.IsValidPath);
 
-            foreach (var filePath in imagePaths)
+            foreach (var imagePath in imagePaths)
             {
                 _frames.Add(new Image
                 {
-                    Texture = new ImageTexture(filePath),
+                    Texture = new ImageTexture(imagePath),
                     IsDraw = false,
-                    Parent = this
+                    Parent = this,
                 });
             }
 
@@ -86,7 +105,8 @@ namespace Kotono.Graphics.Objects
 
         public override void Update()
         {
-            if (Time.Now > EndTime)
+            if (Time.Now < CreationTime + StartTime
+             || Time.Now > EndTime)
             {
                 return;
             }
@@ -95,10 +115,13 @@ namespace Kotono.Graphics.Objects
             {
                 _currentPausedTime += Time.Delta;
                 _totalPausedTime += Time.Delta;
+                return;
             }
-            else if (TimeSinceLastFrame - _currentPausedTime >= Delta)
+
+            if (TimeSinceLastFrame >= Delta)
             {
-                _lastFrameTime = Time.Now;
+                float overtime = TimeSinceLastFrame - Delta;
+                _lastFrameTime = Time.Now - overtime;
                 ++CurrentFrame;
                 _currentPausedTime = 0.0f;
             }

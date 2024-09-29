@@ -27,14 +27,18 @@ namespace Kotono.Graphics.Objects
 
         public abstract bool IsActive { get; }
 
-        public virtual void UpdateShader() => Shader.Use();
+        public virtual void UpdateShader() 
+            => Shader.Use();
 
         public virtual void Draw() { }
 
-        public void Save() => JsonParser.TryWriteFile(this, Path.FromData($@"{Guid}.json"));
+        public void Save() 
+            => JsonParser.TryWriteFile(this, Path.FromData($@"{Guid}.json"));
         
-        public async Task SaveAsync() => await JsonParser.TryWriteFileAsync(this, Path.FromData($@"{Guid}.json"));
+        public async Task SaveAsync() 
+            => await JsonParser.TryWriteFileAsync(this, Path.FromData($@"{Guid}.json"));
 
-        public override string ToString() => $"Name: '{Name}', Type: {GetType().Name}, IsDraw: {IsDraw}";
+        public override string ToString()
+            => $"Name: '{Name}', Type: {GetType().Name}, IsDraw: {IsDraw}, Shader: {{{Shader}}}";
     }
 }

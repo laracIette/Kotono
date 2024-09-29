@@ -92,6 +92,7 @@ namespace Kotono
 
             IsVisible = true;
 
+            Time.StartTime = Time.ExactUTC;
             Start();
         }
 

@@ -1,4 +1,5 @@
-﻿using Kotono.Input;
+﻿using Kotono.Graphics.Textures;
+using Kotono.Input;
 using Kotono.Utils;
 using Kotono.Utils.Coordinates;
 using System.Collections.Generic;
@@ -122,6 +123,9 @@ namespace Kotono.Graphics.Objects
 
         public TChild? GetChild<TChild>() where TChild : IObject2D
             => GetChildren<TChild>().First();
+
+        public override string ToString()
+            => $"{base.ToString()}, Rect: {{{Rect}}}";
 
         public override void Dispose()
         {

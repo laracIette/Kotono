@@ -96,27 +96,27 @@ namespace Kotono.Graphics.Objects
 
             if (Keyboard.IsKeyDown(Keys.W))
             {
-                WorldLocation += speed * Front; // Forward
+                WorldLocation += speed * Front;
             }
             if (Keyboard.IsKeyDown(Keys.S))
             {
-                WorldLocation -= speed * Front; // Backwards
+                WorldLocation -= speed * Front; 
             }
             if (Keyboard.IsKeyDown(Keys.A))
             {
-                WorldLocation -= speed * Right; // Left
+                WorldLocation -= speed * Right; 
             }
             if (Keyboard.IsKeyDown(Keys.D))
             {
-                WorldLocation += speed * Right; // Right
+                WorldLocation += speed * Right; 
             }
             if (Keyboard.IsKeyDown(Keys.E))
             {
-                WorldLocation += speed * Up; // Up
+                WorldLocation += speed * Up; 
             }
             if (Keyboard.IsKeyDown(Keys.Q))
             {
-                WorldLocation -= speed * Up; // Down
+                WorldLocation -= speed * Up;
             }
 
         }

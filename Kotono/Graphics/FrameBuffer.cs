@@ -35,7 +35,7 @@ namespace Kotono.Graphics
         internal Framebuffer()
         {
             Size = Window.Size;
-            Size = (1800, 900); // wtf
+            Size = (1800, 900); // TODO: wtf
             // Attach textures to framebuffer
             _framebufferObject.Bind();
             GL.FramebufferTexture2D(FramebufferTarget.Framebuffer, FramebufferAttachment.ColorAttachment0, TextureTarget.Texture2D, _colorBufferTexture.Handle, 0);

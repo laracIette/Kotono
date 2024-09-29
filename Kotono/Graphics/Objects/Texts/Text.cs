@@ -87,7 +87,7 @@ namespace Kotono.Graphics.Objects.Texts
             [','] = @"Characters\,.png"
         };
 
-        private Image[] _letters = []; // replace by ImageTexture[]
+        private Image[] _letters = []; // TODO: replace by ImageTexture[]
 
         private string _value = string.Empty;
 

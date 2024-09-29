@@ -54,6 +54,7 @@ namespace Kotono.Graphics
 
         private void AddToObject2DRenderQueue(IObject2D object2D)
         {
+            // TODO: plz
             //var position = Rect.GetPositionFromAnchor(object2D.Viewport.RelativePosition, object2D.Viewport.RelativeSize, Anchor.TopLeft);
 
             //if (!Rect.Overlaps(object2D.Rect, new RectBase(position, object2D.Viewport.RelativeSize)))

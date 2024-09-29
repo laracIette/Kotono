@@ -68,7 +68,6 @@ namespace Kotono.Graphics.Objects.Texts
         public override void Draw()
         {
             _glyphsTextures.ForEach(t => t.Use());
-            //Printer.Print("draw");
 
             _vertexArraySetup.VertexArrayObject.Bind();
             GL.DrawArrays(PrimitiveType.Triangles, 0, _vertices.Count);

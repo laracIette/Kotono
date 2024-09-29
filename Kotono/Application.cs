@@ -49,9 +49,6 @@ namespace Kotono
         private void OnTKeyPressed()
             => _animation.Switch();
 
-        private static void OnIKeyPressed()
-            => Printer.PrintRainbow(Time.Now, 0.01f);
-
         private static void OnJKeyPressed()
         {
             foreach (var obj in ISelectable3D.Selected.Where(s => s != ISelectable3D.Active))
@@ -70,7 +67,7 @@ namespace Kotono
 
         protected override void Start()
         {
-            _timer.Start(1.0f, true);
+            _timer.Start(0.1f, true);
             _animation.Play();
         }
 
@@ -78,7 +75,6 @@ namespace Kotono
         {
             if (Keyboard.IsKeyPressed(Keys.Enter)) OnEnterKeyPressed();
             if (Keyboard.IsKeyPressed(Keys.T)) OnTKeyPressed();
-            if (Keyboard.IsKeyPressed(Keys.I)) OnIKeyPressed();
             if (Keyboard.IsKeyPressed(Keys.J)) OnJKeyPressed();
             if (Keyboard.IsKeyPressed(Keys.K)) OnKKeyPressed();
         }

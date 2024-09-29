@@ -2,6 +2,7 @@
 using Kotono.Utils;
 using Kotono.Utils.Coordinates;
 using Kotono.Utils.Exceptions;
+using OpenTK.Compute.OpenCL;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using System.Collections.Generic;
@@ -84,11 +85,11 @@ namespace Kotono.Graphics.Shaders
             GL.CompileShader(shader);
 
             GL.GetShader(shader, ShaderParameter.CompileStatus, out var code);
-            if (code != (int)All.True)
-            {
-                var infoLog = GL.GetShaderInfoLog(shader);
-                throw new KotonoException($"whilst compiling Shader '{shader}'.\n\n{infoLog}");
-            }
+            
+            ExceptionHelper.ThrowIf(
+                code != (int)All.True,
+                $"couldn't compile shader '{shader}'.\n\n{GL.GetProgramInfoLog(shader)}"
+            );
         }
 
         private static void LinkProgram(int program)
@@ -96,11 +97,11 @@ namespace Kotono.Graphics.Shaders
             GL.LinkProgram(program);
 
             GL.GetProgram(program, GetProgramParameterName.LinkStatus, out var code);
-            if (code != (int)All.True)
-            {
-                var infoLog = GL.GetProgramInfoLog(program);
-                throw new KotonoException($"whilst linking Program '{program}'.\n\n{infoLog}");
-            }
+
+            ExceptionHelper.ThrowIf(
+                code != (int)All.True,
+                $"couldn't link shader program '{program}'.\n\n{GL.GetProgramInfoLog(program)}"
+            );
         }
 
         internal void Use() => GL.UseProgram(_handle);
@@ -246,6 +247,7 @@ namespace Kotono.Graphics.Shaders
             GL.VertexAttribPointer(index, size, type, false, stride, offset);
         }
 
-        public override string ToString() => $"Name: {Name}";
+        public override string ToString() 
+            => $"Name: {Name}";
     }
 }

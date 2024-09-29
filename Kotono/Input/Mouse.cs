@@ -16,8 +16,6 @@ namespace Kotono.Input
 {
     internal static partial class Mouse
     {
-        private sealed record class Method(InputAction InputAction, IObject Instance, MethodInfo MethodInfo);
-
         internal struct POINT
         {
             internal int X;
@@ -69,6 +67,11 @@ namespace Kotono.Input
             set => _mouseState = value;
         }
 
+        private static readonly Dictionary<MouseButton, HashSet<InputMethod>> _buttonActions =
+            Enum.GetValues<MouseButton>()
+            .Distinct()
+            .ToDictionary(button => button, button => new HashSet<InputMethod>());
+
         internal static Point PositionFromOrigin { get; private set; } = Point.Zero;
 
         internal static Point PreviousPositionFromOrigin { get; private set; } = Point.Zero;
@@ -84,16 +87,6 @@ namespace Kotono.Input
         internal static Point ScrollDelta => (Point)MouseState.ScrollDelta;
 
         internal static CursorState CursorState { get; set; } = CursorState.Normal;
-
-        private static readonly Dictionary<MouseButton, List<Method>> _buttonActions = []; // maybe array
-
-        static Mouse()
-        {
-            foreach (var button in Enum.GetValues<MouseButton>().Distinct())
-            {
-                _buttonActions[button] = [];
-            }
-        }
 
         internal static void Update()
         {
@@ -146,28 +139,31 @@ namespace Kotono.Input
 
             if (CursorState == CursorState.Centered)
             {
-                //                                maybe Point.Zero
                 var center = Rect.GetPositionFromAnchor(Window.Position, Window.Size, Anchor.TopLeft);
 
                 if (PositionFromOrigin != center)
                 {
-                    SetCursorPos(center);
                     PositionFromOrigin = center;
+                    SetCursorPos(PositionFromOrigin);
                 }
             }
 
-            for (int i = 0; i < _buttonActions.Count; i++)
-            {
-                var (button, methods) = _buttonActions.ElementAt(i);
+            UpdateActions();
+        }
 
+        private static void UpdateActions()
+        {
+            foreach (var button in _buttonActions.Keys)
+            {
                 bool isButtonPressed = IsButtonPressed(button);
                 bool isButtonDown = IsButtonDown(button);
                 bool isButtonReleased = IsButtonReleased(button);
 
-                for (int j = methods.Count - 1; j >= 0; j--)
-                {
-                    var method = methods[j];
+                InputMethod[] methods = [.. _buttonActions[button]];
 
+                foreach (var method in methods)
+                {
+                    // sort from most used to least used
                     if ((isButtonPressed && method.InputAction == InputAction.Pressed)
                      || (isButtonDown && method.InputAction == InputAction.Down)
                      || (isButtonReleased && method.InputAction == InputAction.Released))
@@ -184,7 +180,8 @@ namespace Kotono.Input
 
             var rayClip = new Vector4(mouse.X, mouse.Y, -1.0f, 1.0f);
             var rayView = Matrix4.Invert(Camera.Active.ProjectionMatrix) * rayClip;
-            rayView.Z = -1.0f; rayView.W = 0.0f;
+            rayView.Z = -1.0f; 
+            rayView.W = 0.0f;
             var rayWorld = Camera.Active.ViewMatrix * rayView;
 
             Ray = ((Vector)rayWorld.Xyz).Normalized;
@@ -217,12 +214,13 @@ namespace Kotono.Input
             }
             else
             {
-                throw new KotonoException($"couldn't parse method '{methodInfo.Name}' to Action");
+                // incorrect name
+                return;
             }
 
             if (Enum.TryParse(methodInfo.Name[2..^nameEnd], out MouseButton button))
             {
-                _buttonActions[button].Add(new Method(action, instance, methodInfo));
+                _buttonActions[button].Add(new InputMethod(action, instance, methodInfo));
             }
             else
             {
@@ -238,7 +236,7 @@ namespace Kotono.Input
         {
             foreach (var methods in _buttonActions.Values)
             {
-                methods.RemoveAll(m => m.Instance == instance);
+                methods.RemoveWhere(method => method.Instance == instance);
             }
         }
 

@@ -104,31 +104,6 @@ namespace Kotono.Utils.Coordinates
             * Vector.CreateTranslationMatrix(WorldLocation);
 
         /// <summary>
-        /// The position on screen of the location of the <see cref="Transform"/>.
-        /// </summary>
-        internal Point ScreenPosition
-        {
-            get
-            {
-                // Compute the MVP matrix
-                Matrix4 mvpMatrix = Model * Camera.Active.ViewMatrix * Camera.Active.ProjectionMatrix;
-
-                // Convert the world position to clip space
-                Vector4 clipSpacePos = new Vector4(WorldLocation.X, WorldLocation.Y, WorldLocation.Z, 1.0f);
-                clipSpacePos = Vector4.TransformRow(clipSpacePos, mvpMatrix);
-
-                // Perform perspective division to transform to normalized device coordinates (NDC)
-                Vector3 ndcPos = new Vector3(clipSpacePos.X, clipSpacePos.Y, clipSpacePos.Z) / clipSpacePos.W;
-
-                // Convert NDC to screen space
-                float screenX = (ndcPos.X + 1.0f) * 0.5f * Viewport.Active.RelativeSize.X;
-                float screenY = (1.0f - ndcPos.Y) * 0.5f * Viewport.Active.RelativeSize.Y; // Y is inverted for screen space
-
-                return new Point(screenX, screenY);
-            }
-        }
-
-        /// <summary>
         /// The default location of Transform.
         /// </summary>
         /// <remarks>
@@ -262,6 +237,28 @@ namespace Kotono.Utils.Coordinates
             {
                 _scaleTransformation = new(scale / duration, Time.Now + duration);
             }
+        }
+
+        /// <summary>
+        /// Gets the position on screen of the location of the <see cref="Transform"/>.
+        /// </summary>
+        internal Point GetScreenPosition()
+        {
+            // Compute the MVP matrix
+            Matrix4 mvpMatrix = Model * Camera.Active.ViewMatrix * Camera.Active.ProjectionMatrix;
+
+            // Convert the world position to clip space
+            Vector4 clipSpacePos = new Vector4(WorldLocation.X, WorldLocation.Y, WorldLocation.Z, 1.0f);
+            clipSpacePos = Vector4.TransformRow(clipSpacePos, mvpMatrix);
+
+            // Perform perspective division to transform to normalized device coordinates (NDC)
+            Vector3 ndcPos = new Vector3(clipSpacePos.X, clipSpacePos.Y, clipSpacePos.Z) / clipSpacePos.W;
+
+            // Convert NDC to screen space
+            float screenX = (ndcPos.X + 1.0f) * 0.5f * Viewport.Active.RelativeSize.X;
+            float screenY = (1.0f - ndcPos.Y) * 0.5f * Viewport.Active.RelativeSize.Y; // Y is inverted for screen space
+
+            return new Point(screenX, screenY);
         }
 
         public override string ToString()
