@@ -16,7 +16,7 @@ namespace Kotono.Utils
 
         private ExecuteAction() { }
 
-        internal static void Delay(Action action, float delay = 0.0f)
+        internal static void Delay(Action action, float delay)
         {
             ExceptionHelper.ThrowIf(delay < 0.0f, $"delay '{delay}' should not be negative");
 

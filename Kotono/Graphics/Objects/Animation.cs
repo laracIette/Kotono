@@ -2,6 +2,7 @@
 using Kotono.Utils;
 using Kotono.Utils.Coordinates;
 using Kotono.Utils.Exceptions;
+using Kotono.Utils.Timing;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -12,13 +13,11 @@ namespace Kotono.Graphics.Objects
     {
         private readonly List<Image> _frames = []; // TODO: maybe change to ImageTexture[]
 
+        private readonly Timer _timer;
+
         private int _currentFrame = 0;
 
-        private float _lastFrameTime = 0.0f;
-
-        private float _currentPausedTime = 0.0f;
-
-        private float _totalPausedTime = 0.0f;
+        private float _frameRate = 0.0f;
 
         public override int Layer
         {
@@ -26,7 +25,7 @@ namespace Kotono.Graphics.Objects
             set
             {
                 base.Layer = value;
-                _frames.ForEach(f => f.Layer = value);
+                _frames.ForEach(frame => frame.Layer = value);
             }
         }
 
@@ -36,7 +35,7 @@ namespace Kotono.Graphics.Objects
             set
             {
                 base.Color = value;
-                _frames.ForEach(f => f.Color = value);
+                _frames.ForEach(frame => frame.Color = value);
             }
         }
 
@@ -46,26 +45,30 @@ namespace Kotono.Graphics.Objects
             set
             {
                 base.RelativeSize = value;
-                _frames.ForEach(f => f.RelativeSize = value);
+                _frames.ForEach(frame => frame.RelativeSize = value);
             }
         }
 
         /// <summary>
-        /// The directory at which the Animation's frames are located.
+        /// The directory at which the <see cref="Animation"/>'s frames are located.
         /// </summary>
         internal string DirectoryPath { get; }
 
-        internal float Duration { get; set; }
+        private int FrameCount => _frames.Count;
 
-        internal float StartTime { get; set; }
+        internal float Duration => FrameCount / FrameRate;
 
-        internal float FrameRate { get; set; }
+        internal float FrameRate
+        {
+            get => _frameRate;
+            set
+            {
+                _frameRate = value;
+                _timer.TargetDuration = Delta;
+            }
+        }
 
-        internal bool IsLoop { get; set; }
-
-        private float EndTime => CreationTime + StartTime + Duration + _totalPausedTime;
-
-        private float TimeSinceLastFrame => Time.Now - _lastFrameTime - _currentPausedTime;
+        internal bool IsLoop { get; set; } = false;
 
         private float Delta => 1.0f / FrameRate;
 
@@ -75,21 +78,24 @@ namespace Kotono.Graphics.Objects
             private set
             {
                 _frames[_currentFrame].IsDraw = false;
-                _currentFrame = (int)Math.Loop(value, _frames.Count);
+                _currentFrame = (int)Math.Loop(value, FrameCount);
                 _frames[_currentFrame].IsDraw = true;
             }
         }
 
-        internal bool IsPlaying { get; private set; } = false;
+        internal bool IsPlaying { get; private set; }
 
-        private bool IsPaused => !IsPlaying;
+        internal bool IsPaused => !IsPlaying;
 
         internal Animation(string directoryPath)
         {
-            ExceptionHelper.ThrowIf(!Directory.Exists(directoryPath), $"couldn't find directory at '{directoryPath}'");
+            ExceptionHelper.ThrowIf(
+                !Directory.Exists(directoryPath), 
+                $"couldn't find directory at '{directoryPath}'"
+            );
 
             var imagePaths = Directory.GetFiles(directoryPath).Where(ImageTexture.IsValidPath);
-
+            
             foreach (var imagePath in imagePaths)
             {
                 _frames.Add(new Image
@@ -100,36 +106,43 @@ namespace Kotono.Graphics.Objects
                 });
             }
 
+            _timer = new Timer
+            {
+                Timeout = (s, e) =>
+                {
+                    if (!IsLoop && CurrentFrame == FrameCount - 1)
+                    {
+                        Reset();
+                        _frames[CurrentFrame].IsDraw = false;
+                    }
+                    else
+                    {
+                        ++CurrentFrame;
+                    }
+                },
+                IsLoop = true,
+            };
+
             DirectoryPath = directoryPath;
         }
 
-        public override void Update()
+        internal void Play()
         {
-            if (Time.Now < CreationTime + StartTime
-             || Time.Now > EndTime)
-            {
-                return;
-            }
-
-            if (IsPaused)
-            {
-                _currentPausedTime += Time.Delta;
-                _totalPausedTime += Time.Delta;
-                return;
-            }
-
-            if (TimeSinceLastFrame >= Delta)
-            {
-                float overtime = TimeSinceLastFrame - Delta;
-                _lastFrameTime = Time.Now - overtime;
-                ++CurrentFrame;
-                _currentPausedTime = 0.0f;
-            }
+            IsPlaying = true;
+            _timer.Start();
         }
 
-        internal void Play() => IsPlaying = true;
+        internal void Pause()
+        {
+            IsPlaying = false;
+            _timer.Pause();
+        }
 
-        internal void Pause() => IsPlaying = false;
+        internal void Resume()
+        {
+            IsPlaying = true;
+            _timer.Resume();
+        }
 
         /// <summary>
         /// Revert back to the first frame of the <see cref="Animation"/>, 
@@ -138,7 +151,7 @@ namespace Kotono.Graphics.Objects
         internal void Reset()
         {
             CurrentFrame = 0;
-            _currentPausedTime = 0.0f;
+            _timer.Stop();
         }
 
         /// <summary>
@@ -156,11 +169,12 @@ namespace Kotono.Graphics.Objects
             }
         }
 
-        public override string ToString() => $"Directory: {DirectoryPath}";
+        public override string ToString() 
+            => $"{base.ToString()}, Directory: {DirectoryPath}";
 
         public override void Dispose()
         {
-            _frames.ForEach(f => f.Dispose());
+            _frames.ForEach(frame => frame.Dispose());
 
             base.Dispose();
         }

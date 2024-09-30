@@ -31,13 +31,14 @@ namespace Kotono
                 RelativeSize = new Point(50.0f, 60.0f),
                 Color = Color.Yellow,
                 FrameRate = 10.0f,
-                StartTime = 3.0f,
-                Duration = 5.0f
+                IsLoop = true,
             };
 
             _timer = new Timer
             {
                 Timeout = (s, e) => Printer.PrintRainbow((int)e.Time, 0.01f),
+                TargetDuration = 1.0f,  
+                IsLoop = true,
             };
 
             CreateObjects();
@@ -67,8 +68,8 @@ namespace Kotono
 
         protected override void Start()
         {
-            _timer.Start(0.1f, true);
-            _animation.Play();
+            _timer.Start();
+            ExecuteAction.Delay(_animation.Play, 3.0f);
         }
 
         protected override void Update()

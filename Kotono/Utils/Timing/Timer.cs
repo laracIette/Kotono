@@ -11,14 +11,15 @@ namespace Kotono.Utils.Timing
         private float _startTime = 0.0f;
         private float _pauseTime = 0.0f;
 
-        private float _targetDuration = 0.0f;
         private float _currentDuration = 0.0f;
 
         internal EventHandler<TimeoutEventArgs>? Timeout { get; set; } = null;
 
         internal bool IsLoop { get; set; } = false;
 
-        private float ElapsedTime => Time.Now - _startTime;
+        internal float TargetDuration { get; set; } = 0.0f;
+
+        internal float ElapsedTime => Time.Now - _startTime;
 
         public override void Update()
         {
@@ -31,7 +32,7 @@ namespace Kotono.Utils.Timing
                 if (IsLoop)
                 {
                     float overtime = ElapsedTime - _currentDuration;
-                    Reset(_targetDuration - overtime);
+                    Reset(TargetDuration - overtime);
                 }
 
                 OnTimeout();
@@ -47,23 +48,16 @@ namespace Kotono.Utils.Timing
         }
 
         /// <summary>
-        /// Start the timer given a duration.
+        /// Start the timer.
         /// </summary>
-        internal void Start(float duration)
+        internal void Start()
         {
-            ExceptionHelper.ThrowIf(duration <= 0.0f, $"duration '{duration}' should be over 0");
+            ExceptionHelper.ThrowIf(
+                TargetDuration <= 0.0f, 
+                $"duration '{TargetDuration}' should be over 0"
+            );
 
-            Reset(duration);
-            _targetDuration = duration;
-        }
-
-        /// <summary>
-        /// Start the timer given a duration and whether the timer should restart when timed-out.
-        /// </summary>
-        internal void Start(float duration, bool isLoop)
-        {
-            Start(duration);
-            IsLoop = isLoop;
+            Reset(TargetDuration);
         }
 
         /// <summary>
@@ -94,6 +88,14 @@ namespace Kotono.Utils.Timing
             float pausedDuration = Time.Now - _pauseTime;
             _startTime += pausedDuration;
             _isPaused = false;
+        }
+
+        internal void Stop()
+        {
+            _isTicking = false;
+            _isPaused = false;
+            _startTime = 0.0f;
+            _currentDuration = 0.0f;
         }
 
         internal void Switch()
