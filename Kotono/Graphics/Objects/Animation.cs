@@ -128,6 +128,7 @@ namespace Kotono.Graphics.Objects
 
         internal void Play()
         {
+            Reset();
             IsPlaying = true;
             _timer.Start();
         }

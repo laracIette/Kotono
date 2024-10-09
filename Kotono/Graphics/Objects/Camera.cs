@@ -30,7 +30,7 @@ namespace Kotono.Graphics.Objects
 
         public override Rotator RelativeRotation => new(Pitch, -Yaw - Math.PiOver2, 0.0f);
 
-        internal float AspectRatio => Viewport.WorldSize.Ratio;
+        internal float AspectRatio { get; set; } = Window.Viewport.Size.Ratio;
 
         internal float Pitch
         {

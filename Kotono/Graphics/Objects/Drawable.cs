@@ -19,8 +19,6 @@ namespace Kotono.Graphics.Objects
 
         public virtual Shader Shader { get; set; } = LightingShader.Instance;
 
-        public Viewport Viewport { get; set; } = Viewport.Active;
-
         public abstract bool IsHovered { get; }
 
         public bool IsSelected { get; set; } = false;

@@ -1,5 +1,6 @@
 ﻿using Kotono.Graphics.Objects;
 using Kotono.Graphics.Objects.Meshes;
+using Kotono.Utils;
 using Kotono.Utils.Coordinates;
 using OpenTK.Graphics.OpenGL4;
 using System;
@@ -23,12 +24,19 @@ namespace Kotono.Graphics
 
         private int _renders = 0;
 
-        internal void SetSize(Point size) => _framebuffer.Size = size;
+        internal void SetSize(Point size) 
+            => _framebuffer.Size = size;
 
         #region RenderQueue
 
         public void AddToRenderQueue(IDrawable drawable)
         {
+            // drawable is transparent
+            if (drawable.Color.A <= 0.0f)
+            {
+                return;
+            }
+
             switch (drawable)
             {
                 case IFrontMesh frontMesh:
@@ -54,15 +62,12 @@ namespace Kotono.Graphics
 
         private void AddToObject2DRenderQueue(IObject2D object2D)
         {
-            // TODO: plz
-            //var position = Rect.GetPositionFromAnchor(object2D.Viewport.RelativePosition, object2D.Viewport.RelativeSize, Anchor.TopLeft);
+            var viewportWorldPosition = Window.Viewport.Position + PointI.Half(Window.Viewport.Size);
 
-            //if (!Rect.Overlaps(object2D.Rect, new RectBase(position, object2D.Viewport.RelativeSize)))
-            //{
-            //    return;
-            //}
-
-            _object2DRenderQueue.Add(object2D);
+            if (object2D.Rect.Overlaps(viewportWorldPosition, Window.Viewport.Size))
+            {
+                _object2DRenderQueue.Add(object2D);
+            }
         }
 
         private void AddToObject3DRenderQueue(IObject3D object3D)
@@ -116,7 +121,8 @@ namespace Kotono.Graphics
             {
                 return;
             }
-
+            
+            // sort by layer from lowest to highest
             _object2DRenderQueue.Sort((a, b) => a.Layer.CompareTo(b.Layer));
 
             GL.Enable(EnableCap.Blend);
@@ -150,9 +156,15 @@ namespace Kotono.Graphics
                 return;
             }
 
+            // sort by distance to camera from highest to lowest
             _object3DTransparentRenderQueue.Sort(
-                (a, b) => Vector.Distance(b.WorldLocation, Camera.Active.WorldLocation)
-                .CompareTo(Vector.Distance(a.WorldLocation, Camera.Active.WorldLocation))
+                (a, b) => 
+                {
+                    float distanceA = Vector.Distance(a.WorldLocation, Camera.Active.WorldLocation);
+                    float distanceB = Vector.Distance(b.WorldLocation, Camera.Active.WorldLocation);
+
+                    return distanceB.CompareTo(distanceA);
+                }
             );
 
             GL.DepthMask(false);
@@ -199,13 +211,13 @@ namespace Kotono.Graphics
 
         private static void DrawDrawable(IDrawable drawable)
         {
-            drawable.Viewport.Use();
             drawable.UpdateShader();
             drawable.Draw();
         }
 
         #endregion Render
 
-        public void Dispose() => _framebuffer.Dispose();
+        public void Dispose()
+            => _framebuffer.Dispose();
     }
 }

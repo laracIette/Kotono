@@ -2,7 +2,6 @@
 using Kotono.Utils;
 using Kotono.Utils.Coordinates;
 using Kotono.Utils.Exceptions;
-using OpenTK.Compute.OpenCL;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using System.Collections.Generic;

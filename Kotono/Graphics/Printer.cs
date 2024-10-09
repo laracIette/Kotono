@@ -18,7 +18,7 @@ namespace Kotono.Graphics
         private static int CurrentIndex
         {
             get => _currentIndex;
-            set => _currentIndex = (int)Math.Loop(value, _texts.Length);
+            set => _currentIndex = Math.Loop(value, _texts.Length);
         }
 
         private static void Lower()

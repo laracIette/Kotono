@@ -207,6 +207,7 @@ namespace Kotono.Utils.Coordinates
 
         internal void Update()
         {
+            // TODO:
             //RelativePosition += Time.Delta * RelativePositionVelocity;
             //RelativeRotation += Time.Delta * RelativeRotationVelocity;
             //RelativeSize += Time.Delta * RelativeSizeVelocity;
@@ -316,13 +317,14 @@ namespace Kotono.Utils.Coordinates
         }
 
         /// <summary> 
-        /// Get the position given a position, a size and an Anchor.
+        /// Get the position given a position, a size and an <see cref="Utils.Anchor"/>.
         /// </summary>
         internal static Point GetPositionFromAnchor(Point position, Point size, Anchor anchor, float offset = 0.0f)
             => GetPositionFromAnchor(position, size, anchor, new Point(offset));
 
         /// <summary>
-        /// Creates an array of Rect given a number of elements, a Rect and an Anchor.
+        /// Creates an array of <see cref="Rect"/>s given a number of elements, 
+        /// a <see cref="Rect"/> and an <see cref="Utils.Anchor"/>.
         /// </summary>
         internal static void GetPositionsFromAnchor(Point[] points, Point position, Point size, Anchor anchor, Point offset)
         {
@@ -343,16 +345,23 @@ namespace Kotono.Utils.Coordinates
         }
 
         /// <summary>
-        /// Creates an array of Rect given a number of elements, a Rect and an Anchor.
+        /// Creates an array of <see cref="Rect"/>s given a number of elements, 
+        /// a <see cref="Rect"/> and an <see cref="Utils.Anchor"/>.
         /// </summary>
         internal static void GetPositionsFromAnchor(Point[] points, Point position, Point size, Anchor anchor, float offset = 0.0f)
             => GetPositionsFromAnchor(points, position, size, anchor, new Point(offset));
 
         /// <summary> 
-        /// Checks if left is overlapping with right.
+        /// Checks if the <see cref="Rect"/> is overlapping with the given position and size.
         /// </summary>
-        internal static bool Overlaps(IRect left, IRect right)
-            => Point.Abs(left.WorldPosition - right.WorldPosition) < Point.Half(left.WorldSize + right.WorldSize);
+        internal bool Overlaps(Point position, Point size)
+            => Point.Abs(WorldPosition - position) < Point.Half(WorldSize + size);
+
+        /// <summary> 
+        /// Checks if the <see cref="Rect"/> is overlapping with r.
+        /// </summary>
+        internal bool Overlaps(IRect r)
+            => Overlaps(r.WorldPosition, r.WorldSize);
 
         /// <summary> 
         /// Checks if the <see cref="Rect"/> is overlapping with p.
@@ -364,13 +373,11 @@ namespace Kotono.Utils.Coordinates
             => ToString(CoordinateSpace.World);
 
         internal string ToString(CoordinateSpace coordinateSpace)
-        {
-            return coordinateSpace switch
+            => coordinateSpace switch
             {
                 CoordinateSpace.Relative => $"Relative: {{Position: {{{RelativePosition}}}, Rotation: {{{RelativeRotation}}}, Size: {{{RelativeSize}}}}}",
                 CoordinateSpace.World => $"World: {{Position: {{{WorldPosition}}}, Rotation: {{{WorldRotation}}}, Size: {{{WorldSize}}}}}",
                 _ => throw new SwitchException(typeof(CoordinateSpace), coordinateSpace)
             };
-        }
     }
 }

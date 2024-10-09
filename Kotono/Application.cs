@@ -21,8 +21,6 @@ namespace Kotono
         internal Application(WindowSettings windowSettings)
             : base(windowSettings)
         {
-            _ = new Cursor();
-
             _ = new Cubemap();
 
             _animation = new Animation(Path.FromAssets(@"Animations\Counting"))

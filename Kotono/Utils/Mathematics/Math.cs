@@ -38,6 +38,15 @@ namespace Kotono.Utils.Mathematics
             return value >= 0.0f ? value : -value;
         }
 
+        /// <summary>
+        /// Get the absolute value.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int Abs(int value)
+        {
+            return value >= 0 ? value : -value;
+        }
+
         /// <inheritdoc cref="System.MathF.Cos(float)" />
         public static float Cos(float value)
         {
@@ -77,6 +86,26 @@ namespace Kotono.Utils.Mathematics
         }
 
         /// <summary>
+        /// Clamp a value in range [min, max].
+        /// </summary>
+        public static int Clamp(int value, int min, int max)
+        {
+            ExceptionHelper.ThrowIf(min > max, "min must not be over max");
+
+            if (value < min)
+            {
+                return min;
+            }
+
+            if (value > max)
+            {
+                return max;
+            }
+
+            return value;
+        }
+
+        /// <summary>
         /// Clamp a value in range [0, 1].
         /// </summary>    
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -98,9 +127,23 @@ namespace Kotono.Utils.Mathematics
             return left < right ? left : right;
         }
 
+        /// <inheritdoc cref="System.Math.Min(int, int)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int Min(int left, int right)
+        {
+            return left < right ? left : right;
+        }
+
         /// <inheritdoc cref="System.MathF.Max(float, float)"/>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float Max(float left, float right)
+        {
+            return left > right ? left : right;
+        }
+
+        /// <inheritdoc cref="System.Math.Max(int, int)"/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int Max(int left, int right)
         {
             return left > right ? left : right;
         }
@@ -128,12 +171,43 @@ namespace Kotono.Utils.Mathematics
         }
 
         /// <summary> 
+        /// Loop a number in range [min, max).
+        /// </summary>
+        public static int Loop(int value, int min, int max)
+        {
+            if (min > max)
+            {
+                (min, max) = (max, min);
+            }
+
+            if (value >= max)
+            {
+                value = (value - min) % (max - min) + min;
+            }
+            else if (value < min)
+            {
+                value = (value - min) % (max - min) + max;
+            }
+
+            return value;
+        }
+
+        /// <summary> 
         /// Loop a number in range [0, max).
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float Loop(float value, float max)
         {
             return Loop(value, 0.0f, max);
+        }
+
+        /// <summary> 
+        /// Loop a number in range [0, max).
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int Loop(int value, int max)
+        {
+            return Loop(value, 0, max);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -172,6 +246,15 @@ namespace Kotono.Utils.Mathematics
         internal static float Half(float value)
         {
             return value / 2.0f;
+        }
+
+        /// <summary>
+        /// Get half of the value.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static int Half(int value)
+        {
+            return value / 2;
         }
     }
 }

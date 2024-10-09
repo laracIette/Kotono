@@ -1,10 +1,8 @@
-﻿using Kotono.Graphics.Textures;
-using Kotono.Input;
+﻿using Kotono.Input;
 using Kotono.Utils;
 using Kotono.Utils.Coordinates;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json.Serialization;
 
 namespace Kotono.Graphics.Objects
 {

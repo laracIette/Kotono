@@ -1,6 +1,5 @@
 ﻿using Kotono.Engine.UserInterface;
 using Kotono.Graphics;
-using System;
 
 namespace Kotono.Engine
 {

@@ -1,5 +1,4 @@
 ﻿using Kotono.Utils;
-using Kotono.Utils.Exceptions;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
 using System.Collections.Generic;

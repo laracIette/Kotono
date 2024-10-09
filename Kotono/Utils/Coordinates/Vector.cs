@@ -117,7 +117,7 @@ namespace Kotono.Utils.Coordinates
             => (Vector)(Quaternion.FromEulerAngles((Vector3)rotation) * (Vector3)(v - point)) + point;
 
         public static Vector Rotate(Vector v, in Rotator r)
-            => (Vector)Vector3.Transform((Vector3)v, (Quaternion)r);
+            => Vector3.Transform((Vector3)v, (Quaternion)r);
 
         public static Vector Cross(Vector left, Vector right)
             => new(
@@ -300,19 +300,19 @@ namespace Kotono.Utils.Coordinates
         public override readonly int GetHashCode()
             => HashCode.Combine(X, Y, Z);
 
-        public static explicit operator Vector3(Vector v)
+        public static implicit operator Vector3(Vector v)
             => new(v.X, v.Y, v.Z);
 
-        public static explicit operator Vector(Vector3 v)
+        public static implicit operator Vector(Vector3 v)
             => new(v.X, v.Y, v.Z);
 
-        public static explicit operator Vector3D(Vector v)
+        public static implicit operator Vector3D(Vector v)
             => new(v.X, v.Y, v.Z);
 
-        public static explicit operator Vector(Vector3D v)
+        public static implicit operator Vector(Vector3D v)
             => new(v.X, v.Y, v.Z);
 
-        public static explicit operator Vector(float f)
+        public static implicit operator Vector(float f)
             => new(f, f, f);
 
         public override readonly string ToString()

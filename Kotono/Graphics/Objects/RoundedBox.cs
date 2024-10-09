@@ -84,8 +84,8 @@ namespace Kotono.Graphics.Objects
             get
             {
                 var position = new Point(
-                    Viewport.Active.WorldPosition.X + WorldPosition.X,
-                    Window.Size.Y - Viewport.Active.WorldPosition.Y - WorldPosition.Y
+                    Window.Viewport.Position.X + WorldPosition.X,
+                    Window.Size.Y - Window.Viewport.Position.Y - WorldPosition.Y
                 );
 
                 return new Sides(

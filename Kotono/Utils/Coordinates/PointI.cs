@@ -8,17 +8,17 @@ namespace Kotono.Utils.Coordinates
     public readonly struct PointI : IEquatable<PointI>
     {
         /// <summary> 
-        /// The X component of the PointI. 
+        /// The X component of the <see cref="PointI"/>. 
         /// </summary>
         public readonly int X;
 
         /// <summary>
-        /// The Y component of the PointI. 
+        /// The Y component of the <see cref="PointI"/>. 
         /// </summary>
         public readonly int Y;
 
         /// <summary> 
-        /// The length component of the PointI. 
+        /// The length component of the <see cref="PointI"/>. 
         /// </summary>
         public readonly float Length => Math.Sqrt(X * X + Y * Y);
 
@@ -28,12 +28,12 @@ namespace Kotono.Utils.Coordinates
         public readonly PointI Normalized => this / Length;
 
         /// <summary>
-        /// The X / Y ratio of the PointI.
+        /// The X / Y ratio of the <see cref="PointI"/>.
         /// </summary>
         public readonly float Ratio => X / (float)Y;
 
         /// <summary>
-        /// The X * Y product of the PointI.
+        /// The X * Y product of the <see cref="PointI"/>.
         /// </summary>
         public readonly int Product => X * Y;
 
@@ -67,130 +67,94 @@ namespace Kotono.Utils.Coordinates
         public PointI(int f) : this(f, f) { }
 
         public static float Distance(PointI left, PointI right)
-        {
-            return (left - right).Length;
-        }
+            => (left - right).Length;
+
+        /// <summary> 
+        /// Get the absolute values of the <see cref="PointI"/>. 
+        /// </summary>
+        public static PointI Abs(PointI p)
+            => new(Math.Abs(p.X), Math.Abs(p.Y));
+
+        /// <summary> 
+        /// Get the half of the values of the <see cref="PointI"/>. 
+        /// </summary>
+        public static PointI Half(PointI p)
+            => new(Math.Half(p.X), Math.Half(p.Y));
 
         public static int Min(PointI p)
-        {
-            return (int)Math.Min(p.X, p.Y);
-        }
+            => Math.Min(p.X, p.Y);
 
-        public static int Max(PointI p)
-        {
-            return (int)Math.Max(p.X, p.Y);
-        }
+        public static int Max(PointI p) 
+            => Math.Max(p.X, p.Y);
 
-        public static PointI Clamp(PointI p, int min, int max)
-        {
-            return Clamp(p, new PointI(min), new PointI(max));
-        }
+        public static PointI Clamp(PointI p, int min, int max) 
+            => Clamp(p, new PointI(min), new PointI(max));
 
         public static PointI Clamp(PointI p, PointI min, PointI max)
-        {
-            return new PointI((int)Math.Clamp(p.X, min.X, max.X), (int)Math.Clamp(p.Y, min.Y, max.Y));
-        }
+            => new(Math.Clamp(p.X, min.X, max.X), Math.Clamp(p.Y, min.Y, max.Y));
 
-        public static bool IsNullOrZero(PointI? p)
-        {
-            return p is null || p == Zero;
-        }
+        public static bool IsZero(PointI p) 
+            => p == Zero;
 
-        public static PointI operator +(PointI left, PointI right)
-        {
-            return new PointI(left.X + right.X, left.Y + right.Y);
-        }
+        public static PointI operator +(PointI left, PointI right) 
+            => new(left.X + right.X, left.Y + right.Y);
 
-        public static PointI operator +(int i, PointI p)
-        {
-            return new PointI(p.X + i, p.Y + i);
-        }
+        public static PointI operator +(int i, PointI p) 
+            => new(p.X + i, p.Y + i);
 
         [Obsolete("Reorder operands, use 'PointI.operator +(int, PointI)' instead.")]
-        public static PointI operator +(PointI p, int i)
-        {
-            return i + p;
-        }
+        public static PointI operator +(PointI p, int i) 
+            => i + p;
 
         public static PointI operator -(PointI left, PointI right)
-        {
-            return new PointI(left.X - right.X, left.Y - right.Y);
-        }
+            => new(left.X - right.X, left.Y - right.Y);
 
-        public static PointI operator -(PointI p, int i)
-        {
-            return new PointI(p.X - i, p.Y - i);
-        }
+        public static PointI operator -(PointI p, int i) 
+            => new(p.X - i, p.Y - i);
 
-        public static PointI operator -(PointI p)
-        {
-            return new PointI(-p.X, -p.Y);
-        }
+        public static PointI operator -(PointI p) 
+            => new(-p.X, -p.Y);
 
-        public static PointI operator *(PointI left, PointI right)
-        {
-            return new PointI(left.X * right.X, left.Y * right.Y);
-        }
+        public static PointI operator *(PointI left, PointI right) 
+            => new(left.X * right.X, left.Y * right.Y);
 
-        public static PointI operator *(int i, PointI p)
-        {
-            return new PointI(p.X * i, p.Y * i);
-        }
+        public static PointI operator *(int i, PointI p) 
+            => new(p.X * i, p.Y * i);
 
         [Obsolete("Reorder operands, use 'PointI.operator *(int, PointI)' instead.")]
-        public static PointI operator *(PointI p, int i)
-        {
-            return i * p;
-        }
+        public static PointI operator *(PointI p, int i) 
+            => i * p;
 
         public static PointI operator /(PointI left, PointI right)
-        {
-            return new PointI(left.X / right.X, left.Y / right.Y);
-        }
+            => new(left.X / right.X, left.Y / right.Y);
 
-        public static PointI operator /(PointI p, int i)
-        {
-            return new PointI(p.X / i, p.Y / i);
-        }
+        public static PointI operator /(PointI p, int i) 
+            => new(p.X / i, p.Y / i);
 
-        public static PointI operator /(PointI p, float f)
-        {
-            return new PointI((int)(p.X / f), (int)(p.Y / f));
-        }
+        public static PointI operator /(PointI p, float f) 
+            => new((int)(p.X / f), (int)(p.Y / f));
 
-        public static bool operator ==(PointI left, PointI right)
-        {
-            return left.Equals(right);
-        }
+        public static bool operator ==(PointI left, PointI right) 
+            => left.Equals(right);
 
         public static bool operator !=(PointI left, PointI right)
-        {
-            return !(left == right);
-        }
+            => !(left == right);
 
         public static bool operator >(PointI left, PointI right)
-        {
-            return left.X > right.X
-                && left.Y > right.Y;
-        }
+            => left.X > right.X
+            && left.Y > right.Y;
 
-        public static bool operator <(PointI left, PointI right)
-        {
-            return left.X < right.X
-                && left.Y < right.Y;
-        }
+        public static bool operator <(PointI left, PointI right) 
+            => left.X < right.X
+            && left.Y < right.Y;
 
         public static bool operator >=(PointI left, PointI right)
-        {
-            return left.X >= right.X
-                && left.Y >= right.Y;
-        }
+            => left.X >= right.X
+            && left.Y >= right.Y;
 
         public static bool operator <=(PointI left, PointI right)
-        {
-            return left.X <= right.X
-                && left.Y <= right.Y;
-        }
+            => left.X <= right.X
+            && left.Y <= right.Y;
 
         public readonly void Deconstruct(out int x, out int y)
         {
@@ -198,50 +162,32 @@ namespace Kotono.Utils.Coordinates
             y = Y;
         }
 
-        public override readonly bool Equals(object? obj)
-        {
-            return obj is PointI p && Equals(p);
-        }
+        public override readonly bool Equals(object? obj) 
+            => obj is PointI p && Equals(p);
 
-        public readonly bool Equals(PointI other)
-        {
-            return X == other.X
-                && Y == other.Y;
-        }
+        public readonly bool Equals(PointI other) 
+            => X == other.X
+            && Y == other.Y;
 
-        public override readonly int GetHashCode()
-        {
-            return HashCode.Combine(X, Y);
-        }
+        public override readonly int GetHashCode() 
+            => HashCode.Combine(X, Y);
 
         public static implicit operator (int X, int Y)(PointI p)
-        {
-            return (p.X, p.Y);
-        }
+            => (p.X, p.Y);
 
         public static implicit operator PointI((int X, int Y) t)
-        {
-            return new PointI(t.X, t.Y);
-        }
+            => new(t.X, t.Y);
 
-        public static explicit operator Point(PointI p)
-        {
-            return new Point(p.X, p.Y);
-        }
+        public static implicit operator Point(PointI p) 
+            => new(p.X, p.Y);
 
-        public static explicit operator PointI(Vector2i v)
-        {
-            return new PointI(v.X, v.Y);
-        }
+        public static implicit operator PointI(Vector2i v) 
+            => new(v.X, v.Y);
 
-        public static explicit operator Vector2i(PointI v)
-        {
-            return new Vector2i(v.X, v.Y);
-        }
+        public static implicit operator Vector2i(PointI v) 
+            => new(v.X, v.Y);
 
-        public override readonly string ToString()
-        {
-            return $"X: {X}, Y: {Y}";
-        }
+        public override readonly string ToString() 
+            => $"X: {X}, Y: {Y}";
     }
 }

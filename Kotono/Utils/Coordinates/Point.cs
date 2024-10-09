@@ -1,5 +1,4 @@
 ﻿using Assimp;
-using Kotono.Graphics;
 using OpenTK.Mathematics;
 using System;
 using System.Runtime.InteropServices;
@@ -33,8 +32,8 @@ namespace Kotono.Utils.Coordinates
         /// The Point scaled to Normalized Device Coordinates.
         /// </summary>
         public readonly Point NDC => new(
-            2.0f * X / Viewport.Active.RelativeSize.X - 1.0f,
-            1.0f - Y / Viewport.Active.RelativeSize.Y * 2.0f
+            2.0f * X / Window.Viewport.Size.X - 1.0f,
+            1.0f - Y / Window.Viewport.Size.Y * 2.0f
         );
 
         /// <summary>
@@ -76,142 +75,92 @@ namespace Kotono.Utils.Coordinates
         /// </summary>
         public Point(float f) : this(f, f) { }
 
-        public static float Distance(Point left, Point right)
-        {
-            return (left - right).Length;
-        }
+        public static float Distance(Point left, Point right) 
+            => (left - right).Length;
 
         /// <summary> 
         /// Get the absolute values of the <see cref="Point"/>. 
         /// </summary>
         public static Point Abs(Point p)
-        {
-            return new Point(Math.Abs(p.X), Math.Abs(p.Y));
-        }
+            => new(Math.Abs(p.X), Math.Abs(p.Y));
 
         /// <summary> 
         /// Get the half of the values of the <see cref="Point"/>. 
         /// </summary>
-        public static Point Half(Point p)
-        {
-            return new Point(Math.Half(p.X), Math.Half(p.Y));
-        }
+        public static Point Half(Point p) 
+            => new(Math.Half(p.X), Math.Half(p.Y));
 
-        public static float Min(Point p)
-        {
-            return Math.Min(p.X, p.Y);
-        }
+        public static float Min(Point p) 
+            => Math.Min(p.X, p.Y);
 
         public static float Max(Point p)
-        {
-            return Math.Max(p.X, p.Y);
-        }
+            => Math.Max(p.X, p.Y);
 
-        public static Point Clamp(Point p, float min, float max)
-        {
-            return Clamp(p, new Point(min), new Point(max));
-        }
+        public static Point Clamp(Point p, float min, float max) 
+            => Clamp(p, new Point(min), new Point(max));
 
         public static Point Clamp(Point p, Point min, Point max)
-        {
-            return new Point(Math.Clamp(p.X, min.X, max.X), Math.Clamp(p.Y, min.Y, max.Y));
-        }
+            => new(Math.Clamp(p.X, min.X, max.X), Math.Clamp(p.Y, min.Y, max.Y));
 
         public static bool IsZero(Point p)
-        {
-            return p == Zero;
-        }
+            => p == Zero;
 
         public static Point operator +(Point left, Point right)
-        {
-            return new Point(left.X + right.X, left.Y + right.Y);
-        }
+            => new(left.X + right.X, left.Y + right.Y);
 
-        public static Point operator +(float f, Point p)
-        {
-            return new Point(p.X + f, p.Y + f);
-        }
+        public static Point operator +(float f, Point p) 
+            => new(p.X + f, p.Y + f);
 
         [Obsolete("Reorder operands, use 'Point.operator +(float, Point)' instead.")]
         public static Point operator +(Point p, float f)
-        {
-            return f + p;
-        }
+            => f + p;
 
         public static Point operator -(Point left, Point right)
-        {
-            return new Point(left.X - right.X, left.Y - right.Y);
-        }
+            => new(left.X - right.X, left.Y - right.Y);
 
-        public static Point operator -(Point p, float f)
-        {
-            return new Point(p.X - f, p.Y - f);
-        }
+        public static Point operator -(Point p, float f) 
+            => new(p.X - f, p.Y - f);
 
-        public static Point operator -(Point p)
-        {
-            return new Point(-p.X, -p.Y);
-        }
+        public static Point operator -(Point p) 
+            => new(-p.X, -p.Y);
 
-        public static Point operator *(Point left, Point right)
-        {
-            return new Point(left.X * right.X, left.Y * right.Y);
-        }
+        public static Point operator *(Point left, Point right) 
+            => new(left.X * right.X, left.Y * right.Y);
 
-        public static Point operator *(float f, Point p)
-        {
-            return new Point(p.X * f, p.Y * f);
-        }
+        public static Point operator *(float f, Point p) 
+            => new(p.X * f, p.Y * f);
 
         [Obsolete("Reorder operands, use 'Point.operator *(float, Point)' instead.")]
-        public static Point operator *(Point p, float f)
-        {
-            return f * p;
-        }
+        public static Point operator *(Point p, float f) 
+            => f * p;
 
-        public static Point operator /(Point left, Point right)
-        {
-            return new Point(left.X / right.X, left.Y / right.Y);
-        }
+        public static Point operator /(Point left, Point right) 
+            => new(left.X / right.X, left.Y / right.Y);
 
-        public static Point operator /(Point p, float f)
-        {
-            return new Point(p.X / f, p.Y / f);
-        }
+        public static Point operator /(Point p, float f) 
+            => new(p.X / f, p.Y / f);
 
-        public static bool operator ==(Point left, Point right)
-        {
-            return left.Equals(right);
-        }
+        public static bool operator ==(Point left, Point right) 
+            => left.Equals(right);
 
-        public static bool operator !=(Point left, Point right)
-        {
-            return !(left == right);
-        }
+        public static bool operator !=(Point left, Point right) 
+            => !(left == right);
 
         public static bool operator >(Point left, Point right)
-        {
-            return left.X > right.X
-                && left.Y > right.Y;
-        }
+            => left.X > right.X
+            && left.Y > right.Y;
 
-        public static bool operator <(Point left, Point right)
-        {
-            return left.X < right.X
-                && left.Y < right.Y;
-        }
+        public static bool operator <(Point left, Point right) 
+            => left.X < right.X
+            && left.Y < right.Y;
 
-        public static bool operator >=(Point left, Point right)
-        {
-            return left.X >= right.X
-                && left.Y >= right.Y;
-        }
+        public static bool operator >=(Point left, Point right) 
+            => left.X >= right.X
+            && left.Y >= right.Y;
 
-        public static bool operator <=(Point left, Point right)
-        {
-            return left.X <= right.X
-                && left.Y <= right.Y;
-        }
+        public static bool operator <=(Point left, Point right) 
+            => left.X <= right.X
+            && left.Y <= right.Y;
 
         public readonly void Deconstruct(out float x, out float y)
         {
@@ -220,64 +169,40 @@ namespace Kotono.Utils.Coordinates
         }
 
         public override readonly bool Equals(object? obj)
-        {
-            return obj is Point p && Equals(p);
-        }
+            => obj is Point p && Equals(p);
 
-        public readonly bool Equals(Point other)
-        {
-            return X == other.X
-                && Y == other.Y;
-        }
+        public readonly bool Equals(Point other) 
+            => X == other.X
+            && Y == other.Y;
 
         public override readonly int GetHashCode()
-        {
-            return HashCode.Combine(X, Y);
-        }
+            => HashCode.Combine(X, Y);
 
-        public static implicit operator Point((float X, float Y) t)
-        {
-            return new Point(t.X, t.Y);
-        }
+        public static implicit operator Point((float X, float Y) t) 
+            => new(t.X, t.Y);
 
-        public static explicit operator PointI(Point p)
-        {
-            return new PointI((int)p.X, (int)p.Y);
-        }
+        public static explicit operator PointI(Point p) 
+            => new((int)p.X, (int)p.Y);
 
-        public static explicit operator Vector2(Point p)
-        {
-            return new Vector2(p.X, p.Y);
-        }
+        public static implicit operator Vector2(Point p) 
+            => new(p.X, p.Y);
 
-        public static explicit operator Point(Vector2 v)
-        {
-            return new Point(v.X, v.Y);
-        }
+        public static implicit operator Point(Vector2 v) 
+            => new(v.X, v.Y);
 
-        public static explicit operator Vector2i(Point p)
-        {
-            return new Vector2i((int)p.X, (int)p.Y);
-        }
+        public static explicit operator Vector2i(Point p) 
+            => new((int)p.X, (int)p.Y);
 
-        public static explicit operator Point(Vector2i v)
-        {
-            return new Point(v.X, v.Y);
-        }
+        public static implicit operator Point(Vector2i v) 
+            => new(v.X, v.Y);
 
-        public static explicit operator Vector3D(Point p)
-        {
-            return new Vector3D(p.X, p.Y, 0.0f);
-        }
+        public static implicit operator Vector3D(Point p)
+            => new(p.X, p.Y, 0.0f);
 
-        public static explicit operator Point(Vector3D v)
-        {
-            return new Point(v.X, v.Y);
-        }
+        public static implicit operator Point(Vector3D v)
+            => new(v.X, v.Y);
 
-        public override readonly string ToString()
-        {
-            return $"X: {X}, Y: {Y}";
-        }
+        public override readonly string ToString() 
+            => $"X: {X}, Y: {Y}";
     }
 }

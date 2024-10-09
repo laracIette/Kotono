@@ -75,10 +75,10 @@ namespace Kotono.Graphics.Objects.Meshes
                     {
                         vertices[j] = new Vertex3D
                         {
-                            Pos = (Vector)mesh.Vertices[j],
-                            Normal = (Vector)mesh.Normals[j],
-                            Tangent = (Vector)mesh.Tangents[j],
-                            TexCoords = (Point)mesh.TextureCoordinateChannels[0][j]
+                            Pos = mesh.Vertices[j],
+                            Normal = mesh.Normals[j],
+                            Tangent = mesh.Tangents[j],
+                            TexCoords = mesh.TextureCoordinateChannels[0][j]
                         };
                     }
 
@@ -86,9 +86,9 @@ namespace Kotono.Graphics.Objects.Meshes
                     {
                         var face = mesh.Faces[j];
                         triangles[j] = new ModelTriangle(
-                            (Vector)mesh.Vertices[face.Indices[0]],
-                            (Vector)mesh.Vertices[face.Indices[1]],
-                            (Vector)mesh.Vertices[face.Indices[2]]
+                            mesh.Vertices[face.Indices[0]],
+                            mesh.Vertices[face.Indices[1]],
+                            mesh.Vertices[face.Indices[2]]
                         );
                     }
 

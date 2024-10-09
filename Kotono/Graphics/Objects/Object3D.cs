@@ -1,7 +1,6 @@
 ﻿using Kotono.Utils.Coordinates;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json.Serialization;
 
 namespace Kotono.Graphics.Objects
 {

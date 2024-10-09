@@ -1,5 +1,4 @@
-﻿using Kotono.Graphics;
-using Kotono.Graphics.Objects;
+﻿using Kotono.Graphics.Objects;
 using Kotono.Utils.Exceptions;
 using OpenTK.Mathematics;
 
@@ -83,17 +82,17 @@ namespace Kotono.Utils.Coordinates
         /// <summary> 
         /// The right vector of the <see cref="Transform"/>. 
         /// </summary>
-        internal Vector Right => (Vector)(Quaternion.FromEulerAngles((Vector3)WorldRotation) * Vector3.UnitX);
+        internal Vector Right => Quaternion.FromEulerAngles((Vector3)WorldRotation) * Vector3.UnitX;
 
         /// <summary> 
         /// The up vector of the <see cref="Transform"/>. 
         /// </summary>
-        internal Vector Up => (Vector)(Quaternion.FromEulerAngles((Vector3)WorldRotation) * Vector3.UnitY);
+        internal Vector Up => Quaternion.FromEulerAngles((Vector3)WorldRotation) * Vector3.UnitY;
 
         /// <summary> 
         /// The forward vector of the <see cref="Transform"/>. 
         /// </summary>
-        internal Vector Forward => (Vector)(Quaternion.FromEulerAngles((Vector3)WorldRotation) * Vector3.UnitZ);
+        internal Vector Forward => Quaternion.FromEulerAngles((Vector3)WorldRotation) * Vector3.UnitZ;
 
         /// <summary>
         /// The model matrix of the <see cref="Transform"/>.
@@ -255,8 +254,8 @@ namespace Kotono.Utils.Coordinates
             Vector3 ndcPos = new Vector3(clipSpacePos.X, clipSpacePos.Y, clipSpacePos.Z) / clipSpacePos.W;
 
             // Convert NDC to screen space
-            float screenX = (ndcPos.X + 1.0f) * 0.5f * Viewport.Active.RelativeSize.X;
-            float screenY = (1.0f - ndcPos.Y) * 0.5f * Viewport.Active.RelativeSize.Y; // Y is inverted for screen space
+            float screenX = (ndcPos.X + 1.0f) * 0.5f * Window.Viewport.Size.X;
+            float screenY = (1.0f - ndcPos.Y) * 0.5f * Window.Viewport.Size.Y; // Y is inverted for screen space
 
             return new Point(screenX, screenY);
         }

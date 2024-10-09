@@ -20,12 +20,12 @@ namespace Kotono.Utils
             intersectionLocation = Vector.Zero;
             intersectionDistance = 0.0f;
 
-            var vertex1 = (Vector)Vector3.TransformPosition((Vector3)triangle[0], transform.Model);
-            var vertex2 = (Vector)Vector3.TransformPosition((Vector3)triangle[1], transform.Model);
-            var vertex3 = (Vector)Vector3.TransformPosition((Vector3)triangle[2], transform.Model);
+            Vector vertex1 = Vector3.TransformPosition((Vector3)triangle[0], transform.Model);
+            Vector vertex2 = Vector3.TransformPosition((Vector3)triangle[1], transform.Model);
+            Vector vertex3 = Vector3.TransformPosition((Vector3)triangle[2], transform.Model);
 
-            var triangleNormal = Vector.Cross(vertex2 - vertex1, vertex3 - vertex1);
-            var rayToVertex1 = vertex1 - rayOrigin;
+            Vector triangleNormal = Vector.Cross(vertex2 - vertex1, vertex3 - vertex1);
+            Vector rayToVertex1 = vertex1 - rayOrigin;
 
             float denominator = Vector.Dot(triangleNormal, rayDirection);
             if (Math.Abs(denominator) < float.Epsilon)
@@ -43,9 +43,9 @@ namespace Kotono.Utils
 
             intersectionLocation = rayOrigin + t * rayDirection;
 
-            var v0 = vertex2 - vertex1;
-            var v1 = vertex3 - vertex1;
-            var v2 = intersectionLocation - vertex1;
+            Vector v0 = vertex2 - vertex1;
+            Vector v1 = vertex3 - vertex1;
+            Vector v2 = intersectionLocation - vertex1;
 
             float dot00 = Vector.Dot(v0, v0);
             float dot01 = Vector.Dot(v0, v1);

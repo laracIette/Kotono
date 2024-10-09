@@ -34,11 +34,6 @@ namespace Kotono.Graphics.Objects
         public Shader Shader { get; }
 
         /// <summary>
-        /// The viewport in which the <see cref="IDrawable"/> is drawn.
-        /// </summary>
-        public Viewport Viewport { get; set; }
-
-        /// <summary>
         /// Update the <see cref="IDrawable"/>'s shader,
         /// is called immediately before drawing the <see cref="IDrawable"/>.
         /// </summary>

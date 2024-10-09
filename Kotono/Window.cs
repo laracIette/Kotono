@@ -8,7 +8,6 @@ using Kotono.Graphics.Textures;
 using Kotono.Input;
 using Kotono.Utils;
 using Kotono.Utils.Coordinates;
-using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
 using OpenTK.Windowing.GraphicsLibraryFramework;
@@ -30,6 +29,12 @@ namespace Kotono
 
         private bool ShouldRenderFrame => IsFocused && (_performanceWindow.FrameRate < MaxFrameRate);
 
+        internal static Viewport Viewport { get; } = new()
+        {
+            Position = PointI.Zero,
+            Size = new PointI(1280, 720)
+        };
+
         internal static float MaxFrameRate { get; set; }
 
         internal static Point Position { get; set; } = Point.Zero;
@@ -43,10 +48,9 @@ namespace Kotono
 
                 _performanceWindow.RelativePosition = value;
 
-                WindowComponentManager.WindowViewport.BaseSize = value;
-
                 if (value > Point.Zero)
                 {
+                    Viewport.Size = (PointI)value;
                     ObjectManager.SetRendererSize(value);
                 }
             }
@@ -57,10 +61,10 @@ namespace Kotono
                 GameWindowSettings.Default,
                 new NativeWindowSettings
                 {
-                    Size = (Vector2i)windowSettings.WindowSize,
+                    Size = windowSettings.WindowSize,
                     Title = windowSettings.WindowTitle,
                     StartVisible = false,
-                    Location = ((Vector2i)(1920, 1080) - (Vector2i)windowSettings.WindowSize) / 2,
+                    Location = ((1920, 1080) - windowSettings.WindowSize) / 2,
                     NumberOfSamples = 1
                 }
             )
@@ -69,15 +73,13 @@ namespace Kotono
             CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
             CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
 
-            Position = (Point)Location;
-            Size = (Point)ClientSize;
+            Position = Location;
+            Size = ClientSize;
 
             MaxFrameRate = windowSettings.MaxFrameRate;
 
             Mouse.CursorState = windowSettings.CursorState;
             Mouse.MouseState = MouseState;
-
-            Mouse.HidePointer();
 
             Keyboard.KeyboardState = KeyboardState;
 
@@ -91,6 +93,7 @@ namespace Kotono
             base.OnLoad();
 
             IsVisible = true;
+            Viewport.Use();
 
             Time.StartTime = Time.ExactUTC;
             Start();
@@ -129,6 +132,7 @@ namespace Kotono
             if (Keyboard.IsKeyDown(Keys.Escape))
             {
                 base.Close();
+                return;
             }
 
             _performanceWindow.AddUpdateTime((float)e.Time);
@@ -160,15 +164,15 @@ namespace Kotono
         {
             base.OnResize(e);
 
-            Position = (Point)Location;
-            Size = (Point)ClientSize;
+            Position = Location;
+            Size = ClientSize;
         }
 
         protected override void OnMove(WindowPositionEventArgs e)
         {
             base.OnMove(e);
 
-            Position = (Point)Location;
+            Position = Location;
         }
 
         protected override void OnUnload()
