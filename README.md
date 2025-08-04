@@ -1,3 +1,5 @@
+Deprecated, currently working on the new C++ version [KotonoEngine](https://github.com/laracIette/KotonoEngine).
+
 # Kotono
 
 ## Setup :
